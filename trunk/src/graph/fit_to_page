@@ -1,0 +1,7 @@
+#!/bin/sh
+sed -e "s/FILE/$1/g" -e "s/HEIGHT/$2/g" template.tex | latex 
+dvips texput.dvi -t landscape -o "$1"_fit.ps
+gv -seascape "$1"_fit.ps &
+
+
+

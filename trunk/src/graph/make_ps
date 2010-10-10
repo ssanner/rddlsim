@@ -1,0 +1,2 @@
+#!/bin/sh
+~/Prog/C++/graphviz-1.12/dotneato/dot -Tps $1.dot -o $1.ps

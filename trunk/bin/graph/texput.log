@@ -1,0 +1,94 @@
+This is TeX, Version 3.14159 (Web2C 7.3.1) (format=latex 2001.10.30)  15 JUL 2005 17:57
+**\documentclass[11pt,letter]{article}
+
+*\usepackage{epsfig}
+(/direct/pkgs/teTeX-1.0.7/share/texmf/tex/latex/base/article.cls
+Document Class: article 1999/09/10 v1.4a Standard LaTeX document class
+(/direct/pkgs/teTeX-1.0.7/share/texmf/tex/latex/base/size11.clo
+File: size11.clo 1999/09/10 v1.4a Standard LaTeX file (size option)
+)
+\c@part=\count79
+\c@section=\count80
+\c@subsection=\count81
+\c@subsubsection=\count82
+\c@paragraph=\count83
+\c@subparagraph=\count84
+\c@figure=\count85
+\c@table=\count86
+\abovecaptionskip=\skip41
+\belowcaptionskip=\skip42
+\bibindent=\dimen102
+)
+*\begin{document}
+(/direct/pkgs/teTeX-1.0.7/share/texmf/tex/latex/graphics/epsfig.sty
+Package: epsfig 1999/02/16 v1.7a (e)psfig emulation (SPQR)
+
+(/direct/pkgs/teTeX-1.0.7/share/texmf/tex/latex/graphics/graphicx.sty
+Package: graphicx 1999/02/16 v1.0f Enhanced LaTeX Graphics (DPC,SPQR)
+
+(/direct/pkgs/teTeX-1.0.7/share/texmf/tex/latex/graphics/keyval.sty
+Package: keyval 1999/03/16 v1.13 key=value parser (DPC)
+\KV@toks@=\toks14
+)
+(/direct/pkgs/teTeX-1.0.7/share/texmf/tex/latex/graphics/graphics.sty
+Package: graphics 1999/02/16 v1.0l Standard LaTeX Graphics (DPC,SPQR)
+
+(/direct/pkgs/teTeX-1.0.7/share/texmf/tex/latex/graphics/trig.sty
+Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
+)
+(/direct/pkgs/teTeX-1.0.7/share/texmf/tex/latex/config/graphics.cfg)
+Package graphics Info: Driver file: dvips.def on input line 80.
+
+(/direct/pkgs/teTeX-1.0.7/share/texmf/tex/latex/graphics/dvips.def
+File: dvips.def 1999/02/16 v3.0i Driver-dependant file (DPC,SPQR)
+))
+\Gin@req@height=\dimen103
+\Gin@req@width=\dimen104
+)
+\epsfxsize=\dimen105
+\epsfysize=\dimen106
+)
+
+LaTeX Warning: Unused global option(s):
+    [letter].
+
+(texput.aux)
+\openout1 = `texput.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 0.
+LaTeX Font Info:    ... okay on input line 0.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 0.
+LaTeX Font Info:    ... okay on input line 0.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 0.
+LaTeX Font Info:    ... okay on input line 0.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 0.
+LaTeX Font Info:    ... okay on input line 0.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 0.
+LaTeX Font Info:    ... okay on input line 0.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 0.
+LaTeX Font Info:    ... okay on input line 0.
+
+*\begin{figure}[t!]
+
+*\epsfig{file=graph_format.ps,angle=0,height=3cm}
+File: graph_format.ps Graphic file (type eps)
+<graph_format.ps>
+*\end{figure}
+
+Overfull \hbox (529.82219pt too wide) detected at line 0
+[][] 
+ []
+
+
+*\end{document}
+[1] (texput.aux) 
+Here is how much of TeX's memory you used:
+ 525 strings out of 10901
+ 5995 string characters out of 71995
+ 51593 words of memory out of 700001
+ 3513 multiletter control sequences out of 10000+0
+ 3940 words of font info for 15 fonts, out of 400000 for 1000
+ 14 hyphenation exceptions out of 1000
+ 31i,4n,21p,203b,284s stack positions out of 300i,100n,500p,50000b,4000s
+
+Output written on texput.dvi (1 page, 612 bytes).

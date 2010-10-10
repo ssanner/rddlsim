@@ -1,0 +1,86 @@
+RDDLSim -- A simulator for the relational dynamic influence diagram
+           language (RDDL).
+
+Protocol for client/server interaction in RDDLSim.
+
+NOTE: This is a modified version of the PROTOCOL file from
+      the PPDDL mdpsim simulator: http://www.tempastic.org/mdpsim/
+      Original authors (John Asmuth, Michael Littman, Hakan Younes)
+
+===
+
+**THE FOLLOWING IS STILL IN DEVELOPMENT AND NOT ACCURATE AT THIS TIME.
+
+A session looks like this
+
+client: session request
+server: session init
+--loop
+  client: round request
+  server: round init
+  --loop
+    server: state
+    client: action
+  --
+  server: end round
+--
+server: end session
+
+
+Client messages:
+
+-Session request
+session-request => "<session-request>"  <name><problem>  "</session-request>"
+name => "<name>"  <WORD>  "</name>"
+problem => "<problem>"  <WORD>  "</problem>"
+
+-Round request
+round-request => "<round-request/>"
+
+-action spec
+action spec => <act> | <noop> | <done>
+act => "<act><action>"  <name><term>*  "</action></act>"
+name => "<name>"  <WORD>  "</name>
+noop => "<noop/>"
+done => "<done/>"
+
+Server messages:
+
+-Session init
+session-init => "<session-init>"  <sessionID><setting>  "</session-init>"
+sessionID => "<sessionID>"  <INTEGER>  "</sessionID>"
+setting => "<setting>"  <rounds><allowed-time><allowed-turns>  "</setting>"
+rounds => "<rounds>"  <INTEGER>  "</rounds>"
+allowed-time => "<allowed-time>"  <INTEGER>  "</allowed-time>"
+
+-Round init
+round-init => "<round-init>"  <round><time-left><rounds-left><sessionID>  "</round-init>"
+round => "<round>"  <INTEGER>  "</round>"
+time-left => "<time-left>"  <INTEGER>  "</time-left>"
+rounds-left => "<rounds-left>"  <INTEGER>  "</rounds-left>"
+
+-Turn response
+turn response => <state> | <end-round> | <end-session>
+state => "<state>"  [<is-goal>]<atom>*<fluent>*  "</state>"
+is-goal => "<is-goal/>"
+atom => "<atom>"  <predicate><term>*  "</atom>"
+predicate => "<predicate>"  <WORD>  "</predicate>"
+term => "<term>"  <WORD>  "</term>"
+fluent => "<fluent>"  <function><term>*<value>  "</fluent>"
+function => "<function>"  <WORD>  "</function>"
+value => "<value>"  <RATIONAL>  "</value>"
+
+-End round
+end-round => "<end-round>"  <state>[<goal-reached>]<time-spent><turns-used>  "</end-round>"
+goal-reached => "<goal-reached/>"
+time-spent => "<time-spent>"  <INTEGER>  "</time-spent>"
+turns-used => "<turns-used>"  <INTEGER>  "</turns-used>"
+
+-End session
+end-session => "<end-session>"  <sessionID><problem><rounds><goals><metric-average>  "</end-session>"
+goals => "<goals>"  <failed><reached>  "</goals>"
+failed => "<failed>"  <INTEGER>  "</failed>"
+reached => "<reached>"  <successes>[<time-average>]  "</reached>"
+successes => "<successes>"  <INTEGER>  "</successes>"
+time-average => "<time-average>"  <INTEGER>  "</time-average>"
+metric-average => "<metric-average>"  <RATIONAL>  "</metric-average>"

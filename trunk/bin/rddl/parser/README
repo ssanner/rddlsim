@@ -1,0 +1,9 @@
+The lexer specification is in: 'rddl.lex'
+
+The parser specification is in: 'rddl.cup'
+
+To compile and build the parser, just use 'make lex'
+followed by 'make parser' in the rddl.parser subdirectory.
+
+See INSTALL.txt in RDDLSim parent directory for more 
+details.

@@ -1,0 +1,287 @@
+////////////////////////////////////////////////////////////////////
+// An example RDDL description for the well-known SysAdmin problem
+// (Guestrin, Koller, Parr, IJCAI-01) with a number of enhancements
+// to demonstrate the expressivity of RDDL.
+//
+// Author: Scott Sanner (ssanner [at] gmail.com)
+////////////////////////////////////////////////////////////////////
+domain sysadmin {
+  
+	////////////////////////////////////////////////////////////////////////////
+	// Define requirements up front (we use real value and enum types and the
+	// reward is deterministic).
+	////////////////////////////////////////////////////////////////////////////
+	
+	requirements = { 
+		continuous,  // this domain uses real-valued parameterized variables (pvariables)
+		multivalued, // this domain uses enumerated pvariables 
+		reward-deterministic, // this domain does not use a stochastic reward
+		intermediate-nodes,   // this domain uses intermediate pvariable nodes
+		constrained-state,    // this domain uses state constraints
+		partially-observed    // this domain uses observation pvariables
+		
+		// Not used here:
+		//concurrent          // this domain does not permit multiple non-default actions
+		//integer-valued      // this domain does not use integer variables
+		//cpf-deterministic   // this domain uses stochastic conditional probability functions
+	};
+
+	////////////////////////////////////////////////////////////////////////////
+	// User-defined object and enumeration (multivalued) types.
+	////////////////////////////////////////////////////////////////////////////
+	
+	types {
+  		computer : object;
+ 		status : {@poor, @good, @excellent}; // An enumeration type
+	};
+      
+	////////////////////////////////////////////////////////////////////////////
+	// Provide name[(parameter types)] followed by type, range, etc...
+	// note that variable parameters *must* be object types.
+	////////////////////////////////////////////////////////////////////////////
+	
+	pvariables { 
+    		  		
+		// There are five distinct sections in an RDDL dynamic influence diagram
+		// specification:
+		//
+		// (1) "Non-Fluent layer" (i.e., all parameterized variables that do not
+		//     change, can be bool, int, real, enumerated... and may not even
+		//     have parameters -- used for specifying simple constants).
+		// (2) "State and Action layer" (i.e., current state and action).  Action
+		//     variables are under the control of the user.
+		// (3) "Intermediate layers" (levels 1,2,3..infinity) (i.e., all ephemeral 
+		//     intermediate state variables needed to compute the next state...
+		//     very useful for handling stochastic correlated action effects and
+		//     conflict resolution in concurrent problems; strictly stratified so
+		//     that intermediate variables can only condition on other intermediate
+		//     variables of a lower level or state/action variables).
+		// (4) The "Next-State layer", indicated by primed ' state variables.
+		// (5) An optional "Observation layer" for partially observed problems that
+		//     determines stochastic observations from the state and intermediate
+		//     variables. 
+		//
+		// For states (where the initial state must be specified), constants 
+		// (non-fluents) that must be pre-specified, and action fluents under the 
+		// control of the user, default values are specified to allow a compact 
+		// specification of the value/truth assignment of these fluents. 
+		//
+		// Following are examples of all above-defined fluent layers...
+    		  		
+		// A simple parameter-free real constant (non-fluent).  ALL CAPS is not
+		// required but makes evident this is a constant type.
+		REBOOT-PROB : { non-fluent, real, default = 0.1 };
+    	   		  		
+		// A constant (non-fluent) definition.
+		CONNECTED(computer, computer) : { non-fluent, bool, default = false };
+      
+		// State fluent: is a given computer running or not?
+		running(computer) : { state-fluent, bool, default = false };
+      
+		// Intemediate fluent: are all computers in the current state crashed?
+		all-computers-crashed : { interm-fluent, bool, level = 1 };
+      
+		// Intermediate fluent: will encode the percent of computers running.
+		net-status-real : { interm-fluent, real, level = 1 };
+      
+		// Intermediate fluent: determines enumerated status from net-status.
+		net-status-enum : { interm-fluent, status, level = 2 };
+      
+		// Observational fluent: a noisy observation on net-status-enum of
+		// user-defined enumerated type status (see type section above).
+		net-status-enum-obs : { observ-fluent, status };
+      	
+		// A noisy observation of whether a computer is running.
+		running-obs(computer) : { observ-fluent, bool };
+      
+		// An action variable -- a fluent controlled by the system... actions vars
+		// need a default value to maintain a compact specification of actions.
+		reboot(computer) : { action-fluent, bool, default = false }; 
+      						 
+		// NOTE: Multiple actions variables...
+		//
+		// What if a domain had multiple actions like load(box,truck) and
+		// drive(truck,city) in the BoxWorld logistics domain?  We would simply
+		// define multiple boolean action variables with a default value of
+		// false.  Then in the instance description (below), if only one of 
+		// these actions could be executed at a time, we would specify 
+		// max-nondef-actions = 1 (meaning all action variables would be
+		// false in a state except for one).  If we let max-nondef-actions > 1, 
+		// we could allow for concurrent actions (assuming that the cpfs were 
+		// defined appropriately to handle action conflicts).
+	};
+  
+	////////////////////////////////////////////////////////////////////////////
+	// Provide name(variable names) followed by a conditional probability function
+	// (cpf) definition.  All cpf expressions must define a random variable (i.e., 
+	// a variable with a well-defined probability distribution over assignments).
+	// 
+	// Note: if the domain is deterministic (which would have to be specified in
+	// the requirements using "cpf-deterministic" and "reward-deterministic") then
+	// this section must instead be named "cdfs" (conditional deterministic 
+	// functions) and no random variables (Bernoulli, Poisson, etc...) can be used. 
+	////////////////////////////////////////////////////////////////////////////
+	
+	cpfs {
+  
+		// A computer has a higher chance of running if it is already running and
+		// all of its network connections are also running.  (Note use of ' for next
+		// state variable.)  Also note the use of "sum" to count the number of connected
+		// computers running and the division to normalize by the number of connected
+		// computers.  This shows that random variable parameters can be expressions,
+		// and even random expressions if you want, e.g., Normal(Normal(mu,sigma1),sigma2).
+		// To help readability, both brackets [] and parens () can be used for expression 
+		// grouping.
+		
+		running'(?x) = if (reboot(?x))
+						then KronDelta(true)  // if computer is rebooted then must be running 
+						else if (running(?x)) // otherwise outcome depends on network properties
+							then Bernoulli(.5 + .5*[sum_{?y : computer} CONNECTED(?y,?x) ^ running(?y)] 
+													/ [sum_{?y : computer} CONNECTED(?y,?x)])
+							else Bernoulli(REBOOT-PROB); 
+      
+		// CPFs need to be probability distributions (unless the requirements state that
+		// this is a deterministic domain).  For this cpf we don't require randomness, so
+		// to obtain a proper probability distribution we exploit the fact that all 
+		// logical expressions in RDDL can be treated as integers (false=0, true=1) and
+		// we can just use a Kronecker Delta function to concentrate all probability 
+		// mass (1.0) on the argument.  (In the continuous case we would use a Dirac Delta
+		// function instead as below.)
+		
+		all-computers-crashed = KronDelta( forall_{?y : computer} ~running(?y) );
+      
+		// Ratio of computers running vs. total number of computers.
+      	
+		net-status-real = DiracDelta([sum_{?x : computer} running(?x)] 
+									 / [sum_{?x : computer} 1]);
+      	
+		// Here we use 1 sample from a Discrete distribution to select an
+		// enumerated value.  The first parameter is the variable type.  The
+		// remaining parameters are the probability assignments to each
+		// outcome.  Note that net-status-real above must be in [0,1] so the
+		// Discrete parameters here really do sum to 1 as required.
+		// This requirement would be checked at runtime during simulation.
+		// Note that this intermediate variable of level=2 references the
+		// net-status-real intermediate variable of level=1.
+      	
+		net-status-enum = Discrete(status,
+										@poor : 0.1,
+										@good : (1.0 - net-status-real) - 0.05,
+										@excellent : net-status-real - 0.05
+										);
+      	
+		// Observation variables would only be used in a partially observed problem.
+		// Following is an observation variable that shows off the switch statement.
+		// This simply conflates excellent/good -> good in the observation space.
+		      	
+		net-status-enum-obs = KronDelta(switch (net-status-enum) {
+										case @poor : @poor,   
+										case @good : @good,
+										case @excellent : @good 
+										});
+		      	
+		// A noisy observation on the underlying state.  Simple, just showing
+		// that observations can be parameterized by objects in the domain.
+		// Objects in the domain are assumed to be fully observed (so there is
+		// no identity uncertainty over objects in the observation space... c1
+		// in the observation space is the true c1 in the state space).
+      	
+		running-obs(?x) = if (running(?x) ^ (net-status-real > 0.2)) 
+							then Bernoulli(.9) 
+							else Bernoulli(.1);
+	};
+  
+	// This following is a deterministic reward as defined in the requirements.
+	// It conditions on both state and action variables: +1 is given for every
+	// computer running and a cost of -1 is given for every computer rebooted.
+  	
+	reward = [sum_{?c : computer} running(?c)] - [sum_{?c : computer} reboot(?c)];
+
+	// In any factored or relational problem, usually not all state configurations
+	// are legal.  This is not a problem if you use a search-based formalism
+	// starting from an initial state (which inherently exploits reachability),
+	// but not knowing state constraints can kill your algorithm if you take
+	// a regression solution to the problem.  Hence, RDDL allows the specification
+	// of user-specified state constraints that can be exploited by planners.
+	// State constraints are any expression that can be evaluated to true/false
+	// and are checked at runtime in each state reached during simulation... they
+	// can be viewed as assertions.
+	
+	// And what about preconditions?  These are just action constraints (see below).
+	
+	state-action-constraints {
+		// A simple action constraint saying that a computer cannot be rebooted
+		// if it is already running... commented out for now to allow random policies
+		// forall_{?c : computer} (reboot(?c) => ~running(?c)); 
+
+		// Examples of other constraints
+		net-status-real >= 0.0; // Must be true by definition but never hurts to check
+		net-status-real <= 1.0;
+		forall_{?c : computer} (running(?c) | ~running(?c)); // A tautology 
+	};
+}
+        
+// Define non-fluents here.
+non-fluents ring8 {
+
+	domain = sysadmin;
+	
+	objects { 
+		computer : {c1, c2, c3, c4, c5, c6, c7, c8};
+	};
+  
+	// Only need to specify non-default values
+	non-fluents { 
+		REBOOT-PROB = 0.05; 
+		CONNECTED(c1,c2);
+		CONNECTED(c2,c3);
+		CONNECTED(c3,c4);
+		CONNECTED(c4,c5);
+		CONNECTED(c5,c6);
+		CONNECTED(c6,c7);
+		CONNECTED(c7,c8);
+		CONNECTED(c8,c1);
+	};
+}
+
+// Specify an actual problem instance (full object specification, initial state, 
+// and objective).
+instance is1 {
+
+	domain = sysadmin;
+	
+	non-fluents = ring8;
+  
+	// If there were any object classes that were not needed in the
+	// non-fluents definition and were not specified there then they should
+	// be specified here.  For example, if in SysAdmin there were another
+	// object class for people, since knowing these objects was not needed above
+	// to specify REBOOT-PROB and CONNECTED, the objects could be defined here.
+	// This would make more sense in a domain like Elevator control where you
+	// might want to specify the number of elevators and floors as non-fluents,
+	// but the number of people might change from instance to instance.
+	
+	// Commented out, but as an example...
+	//objects { 
+	//	people : { Scott, Sungwook };
+	//}; 
+
+	// Only need to specify non-default values for initial state, but here we'll
+	// show that even default values can be specified, i.e., ~running(c2).
+	init-state { 
+		running(c1); 
+		~running(c2); 
+	};
+  
+	// For easy and compact translation to PPDDL, max-nondef-actions should be 1.
+	// max-nondef-actions > 1 implies that multiple actions can be executed
+	// concurrently, but care must be taken in the cpf definitions to ensure
+	// that action conflicts are resolved in a reasonable way.
+	max-nondef-actions = 1;
+  
+	// We assume the objective is expected discounted reward over a fixed horizon
+	// length.  Indefinite horizon and average reward objectives are not being 
+	// considered in this first draft.
+	horizon  = 20;
+	discount = 0.9;
+}

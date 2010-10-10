@@ -1,0 +1,119 @@
+RDDLSim -- A simulator for the relational dynamic influence diagram
+           language (RDDL).
+
+Copyright (C) 2010, Scott Sanner (ssanner@gmail.com) and
+                    Sungwook Yoon (sungwook.yoon@gmail.com)
+
+
+Basic RDDLSim Installation and Invocation
+=========================================
+
+rddlsim/ provides the following subdirectories:
+
+    src   All source code (.java files)
+    bin   All binaries (.class files)
+    lib   All 3rd party libraries (.jar files)
+    files All supplementary files (.rddl files, etc.)
+
+Always ensure that all .jar files in lib/ are included in your
+CLASSPATH for both Java compilation and at Java runtime.  We highly
+recommend that you use Eclipse for Java development:
+
+    http://www.eclipse.org/downloads/
+
+In Eclipse the CLASSPATH libraries can be set via 
+
+    Project -> Properties -> Java Build Path -> Libraries Tab
+
+For running RDDLSim from a terminal, we provide two scripts
+
+    run     For Windows/Cygwin and UNIX/Linux systems
+    run.bat For the Windows CMD prompt
+
+In both cases, run these scripts from the **rddlsim/**
+directory with the class name as an argument, e.g.
+
+    Windows/Cygwin and UNIX/Linux: ./run rddl.competition.Server
+    Windows CMD prompt:            .\run.bat rddl.competition.Server
+
+You can pass up to 10 arguments to these scripts as required.
+
+
+Basic RDDLSim Usage
+===================
+
+At the current time, users of RDDLSim will probably want to use
+the following RDDLSim command line utilities:
+
+    Validating RDDL Syntax: 
+
+        rddl.parser.parser [filename]
+        (e.g., files/rddl/test/sysadmin.rddl for filename)
+
+    Running the RDDL Server and Client
+
+        rddl.competition.Client
+        rddl.competition.Server
+        (for now, parameters are hardcoded in the main methods
+         of these files)
+
+
+Modifying the RDDL Language
+===========================
+
+The following lexical pattern, grammar files, and Makefile are provided 
+in rddlsim/src/rddl/parser/
+
+    rddl.lex  The lexical pattern specification for use with JLex.
+    rddl.cup  The parser rules specification and internal representation
+              generation code for use with JavaCUP.
+    Makefile  Makefile with rules for generating lexer and parser.
+    
+Note the versions of JLex and JavaCUP that we are using are *not* the
+most recent versions available on the web and hence we have bundled
+jlex.jar and java_cup.jar in the lib/ directory for use with compiling
+these files and runtime execution.
+
+If you make modifications to the language (not recommended if you are
+competing in IPPC-2011) you can recompile the parser by first
+uncommenting the following line in Makefile
+
+    SEP = : 
+
+*if* you are on a UNIX/Linux system (*otherwise* changing nothing if you
+are on Windows/Cygwin) and then invoking the following commands from
+the **rddlsim/src/rddl/parser/** directory:
+
+    make lex
+
+followed by
+
+    make parser
+
+You may have to change the number of expected production conflict
+errors for the parser in the Makefile if your modifications are
+substantial.  See the parser rule in the Makefile for this parameter.
+
+These commands only produce the Java files in the 
+rddlsim/src/rddl/parser/ directory, they must be compiled
+by javac (this is usually automatic if you are using Eclipse).
+
+
+GraphViz RDDL Visualization
+===========================
+
+Although not required to run the basic RDDL simulator facilities, some
+additional GraphViz visualization tools and a Java interface will be
+provided in future releases of RDDLSim.  
+
+To enable Java Graphviz visualization:
+
+- Download and install GraphViz on your system:
+ 
+  http://www.graphviz.org/
+
+- Make sure "dot" and "neato" (including ".exe" if running on Windows)
+  are in your PATH, i.e., you can execute them from any home directory
+
+Run graph.Graph.main() and verify that a cleanly formatted Java window
+displaying a graph appears.
