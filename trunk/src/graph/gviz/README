@@ -1,0 +1,13 @@
+
+Use Grappa with a '.dot' suffix file.
+
+Both Demos lack layout although Grappa uses a call to
+the GraphViz executable 'dot' to do autolayout.
+
+Grappa extremely slow on X-Connection, JGraphT far
+superior for redrawing, etc... here.  Need to
+investigate how these perform on local machines.
+
+Also, any hope of a Windows script for Grappa 
+formatting?
+
