@@ -99,8 +99,8 @@ public class RDDL {
 						if (_bCPFDeterministic)
 							throw new Exception("'cpfs' used but requirements indicated cpfs were deterministic... use 'cdfs' instead.");
 					} else if (n._sName.equals("cdfs")) {
-						if (_bCPFDeterministic)
-							throw new Exception("'cdfs' used but requirements did not indicate 'cpfs-determinstic'.");
+						if (!_bCPFDeterministic)
+							throw new Exception("'cdfs' used but requirements did not indicate 'cpf-deterministic'.");
 					} else 
 						throw new Exception("Unrecognized cpfs/cdfs header.");
 				} else if (o instanceof CPF_DEF) {
