@@ -15,10 +15,10 @@ domain game_of_life {
 	};
       	
 	pvariables { 
-    	NEIGHBOR(x_pos,y_pos,x_pos,y_pos) : { non-fluent, bool, default = false };
-    	alive(x_pos,y_pos) : { state-fluent,  bool, default = false };
-    	count-neighbors(x_pos,y_pos) : { interm-fluent, int, level = 1 }; 
-    	set(x_pos,y_pos)   : { action-fluent, bool, default = false };
+		NEIGHBOR(x_pos,y_pos,x_pos,y_pos) : { non-fluent, bool, default = false };
+		alive(x_pos,y_pos) : { state-fluent,  bool, default = false };
+		count-neighbors(x_pos,y_pos) : { interm-fluent, int, level = 1 }; 
+		set(x_pos,y_pos)   : { action-fluent, bool, default = false };
 	};
   
 	cdfs {
