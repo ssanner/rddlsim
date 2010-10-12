@@ -100,7 +100,8 @@ public class Simulator {
 	public static void main(String[] args) throws Exception {
 		
 		// Parse file
-		RDDL rddl = parser.parse(new File("files/rddl/test/sysadmin.rddl"));
+		//RDDL rddl = parser.parse(new File("files/rddl/test/sysadmin.rddl"));
+		RDDL rddl = parser.parse(new File("files/rddl/test/game_of_life.rddl"));
 		
 		// Get first instance name in file and create a simulator
 		String instance_name = rddl._tmInstanceNodes.firstKey();
@@ -108,8 +109,11 @@ public class Simulator {
 		
 		// Reset, pass a policy, a visualization interface, a random seed, and simulate!
 		Result r = s.run(
-				new RandomBoolPolicy(instance_name), /* new FixedBoolPolicy(instance_name),*/ 
-				new GenericScreenDisplay(true),      /* new SysAdminScreenDisplay(true)*/
+				new RandomBoolPolicy(instance_name)
+				/* new FixedBoolPolicy(instance_name),*/, 
+				new GameOfLifeScreenDisplay(true)
+				/*new GenericScreenDisplay(true)*
+				/* new SysAdminScreenDisplay(true)*/,
 				123456);
 		System.out.println("==> " + r);
 	}
