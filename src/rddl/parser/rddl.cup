@@ -1,6 +1,6 @@
 /** RDDL Parser: Definitive Grammar (for use with JavaCUP)
  * 
- *  @author Scott Sanner
+ *  @author Scott Sanner (ssanner@gmail.com)
  */
 
 package rddl.parser;

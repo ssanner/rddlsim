@@ -1,6 +1,6 @@
 /** RDDL Parser: Definitive Lexical Patterns for Tokens (for use with JLex)  
  * 
- *  @author Scott Sanner
+ *  @author Scott Sanner (ssanner@gmail.com)
  */
 
 package rddl.parser;
