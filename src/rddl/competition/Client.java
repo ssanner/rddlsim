@@ -33,6 +33,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 import rddl.EvalException;
 import rddl.RDDL;
@@ -44,6 +45,8 @@ import rddl.RDDL.PVAR_INST_DEF;
 import rddl.RDDL.PVAR_NAME;
 import rddl.State;
 import rddl.parser.parser;
+import rddl.policy.Policy;
+import rddl.policy.RandomBoolPolicy;
 import rddl.viz.StateViz;
 /** The SocketClient class is a simple example of a TCP/IP Socket Client.
  *
@@ -53,21 +56,32 @@ public class Client {
 	
 	public static final boolean SHOW_MEMORY_USAGE = true;
 	public static final Runtime RUNTIME = Runtime.getRuntime();
-	private static DecimalFormat _df = new DecimalFormat("0.##");
-	
-	private static int PORT_NUMBER = 2323;
-	
+	private static DecimalFormat _df = new DecimalFormat("0.##");	
 	enum XMLType {
 		ROUND,TURN,ROUND_END,END_TEST,NONAME
 	}
 	
+	int numRounds;
+	double timeAllowed;
+	int curRound;
+	double reward;
+	int id;
+
+	Client () {
+		numRounds = 0;
+		timeAllowed = 0;
+		curRound = 0;
+		reward = 0;
+		id = 0;
+	}
 	public static void main(String[] args) {
 		RDDL rddl;
 		/** Define a host server */
-		String host = "localhost";
+		String host = Server.HOST_NAME;
 		/** Define a port */
-		int port = PORT_NUMBER;
-
+		int port = Server.PORT_NUMBER;
+		String clientName = "random";
+		
 		State      state;
 		INSTANCE   instance;
 		NONFLUENTS nonFluents = null;
@@ -76,13 +90,24 @@ public class Client {
 		
 		StringBuffer instr = new StringBuffer();
 		String TimeStamp;
-		System.out.println("RDDL client initialized");
-
+		
+		if ( args.length < 3 ) {
+			System.out.println("usage: rddlfilename hostname clientname (optional) portnumber");
+			System.exit(1);
+		}
+		host = args[1];
+		clientName = args[2];
+		double timeLeft = 0;
 		try {
-			rddl = parser.parse(new File("files/rddl/test/sysadmin.rddl"));
+			rddl = parser.parse(new File(args[0]));
+			if ( args.length > 3 ) {
+				port = Integer.valueOf(args[1]);
+			}
 			state = new State();
 			// just pick the first
 			String problemInstance = rddl._tmInstanceNodes.firstKey();
+			Policy policy = new RandomBoolPolicy(problemInstance);
+			
 			instance = rddl._tmInstanceNodes.get(problemInstance);
 			if (instance._sNonFluents != null) {
 				nonFluents = rddl._tmNonFluentNodes.get(instance._sNonFluents);
@@ -105,88 +130,70 @@ public class Client {
 			InetAddress address = InetAddress.getByName(host);
 			/** Establish a socket connetion */
 			Socket connection = new Socket(address, port);
+			System.out.println("RDDL client initialized");
+			
 			/** Instantiate a BufferedOutputStream object */
 			BufferedOutputStream bos = new BufferedOutputStream(connection.
 					getOutputStream());
-
 			/** Instantiate an OutputStreamWriter object with the optional character
 			 * encoding.
 			 */
 			OutputStreamWriter osw = new OutputStreamWriter(bos, "US-ASCII");
-			
 			/** Write across the socket connection and flush the buffer */
-			String msg = createXMLProblemInstance(problemInstance) + (char)3;
-			osw.write( msg);
-			osw.flush();
+			String msg = createXMLSessionRequest(problemInstance, clientName);
+			Server.sendOneMessage(osw, msg);
 			BufferedInputStream bis = new BufferedInputStream(connection.
 					getInputStream());
 			/**Instantiate an InputStreamReader with the optional
 			 * character encoding.
 			 */
-
 			InputStreamReader isr = new InputStreamReader(bis, "US-ASCII");
 			DOMParser p = new DOMParser();
+			
 			/**Read the socket's InputStream and append to a StringBuffer */
 
-			StringBuffer message = new StringBuffer();
-			int character;
-
-			while (true) {
-				message = new StringBuffer();
-				while((character = isr.read()) != (char)3) {
-					message.append((char)character);
-				}
-				ByteArrayInputStream bais = new ByteArrayInputStream(message.toString().getBytes());
-				InputSource isrc = new InputSource();
-				isrc.setByteStream(bais);
-				p.parse(isrc);
-				XMLType msgType = getXMLType(p,isrc);
-				if ( msgType != XMLType.ROUND ) {
-					break;
-				}
-
-				int totalRoundNum = getANumber(p,isrc,"round", "round-total-num");
-				int roundnum = getANumber(p,isrc,"round", "round-num");
-				System.out.println("Round " + roundnum + " Among " + totalRoundNum);
-				
+			InputSource isrc = Server.readOneMessage(isr);
+			Client client = processXMLSessionInit(p, isrc);
+			System.out.println(client.id + ":" + client.numRounds);
+			int r = 0;
+			for( ; r < client.numRounds; r++ ) {
 				if (SHOW_MEMORY_USAGE)
 					System.out.print("[ Memory usage: " + 
 							_df.format((RUNTIME.totalMemory() - RUNTIME.freeMemory())/1e6d) + "Mb / " + 
 							_df.format(RUNTIME.totalMemory()/1e6d) + "Mb" + 
 							" = " + _df.format(((double) (RUNTIME.totalMemory() - RUNTIME.freeMemory()) / 
 											   (double) RUNTIME.totalMemory())) + " ]\n");
-				
-				while (true) {
-					message = new StringBuffer();
-					while((character = isr.read()) != (char)3) {
-						message.append((char)character);
-					}
-					bais = new ByteArrayInputStream(message.toString().getBytes());
-					isrc = new InputSource();
-					isrc.setByteStream(bais);
-					p.parse(isrc);
-					msgType = getXMLType(p,isrc);
-					if (msgType == XMLType.ROUND_END) {
-						break;
-					}
-					if (msgType != XMLType.TURN ) {
-						break;
-					}
-
-					int turn = getANumber(p,isrc,"turn","turn-num");
-					System.out.println("Turn " + turn);
-					ArrayList<PVAR_INST_DEF> obs = getXMLObservation(p,isrc);
-					osw = new OutputStreamWriter(bos, "US-ASCII");
-					String returnString = createXMLAction(state);
-					osw.write(returnString + (char)3);
-					osw.flush();
-
-				}
-				if ( ++roundnum >= totalRoundNum ) {
+				state.init(nonFluents != null ? nonFluents._hmObjects : null, instance._hmObjects,
+						domain._hmTypes, domain._hmPVariables, domain._hmCPF,
+						instance._alInitState, nonFluents == null ? null : nonFluents._alNonFluents);
+				msg = createXMLRoundRequest();
+				Server.sendOneMessage(osw, msg);
+				isrc = Server.readOneMessage(isr);
+				timeLeft = processXMLRoundInit(p, isrc, r+1);
+				if ( timeLeft < 0 ) {
 					break;
 				}
-			}	
-
+				int h =0;
+				System.out.println(instance._nHorizon);
+				for(; h < instance._nHorizon; h++ ) {
+					isrc = Server.readOneMessage(isr);
+					ArrayList<PVAR_INST_DEF> obs = processXMLTurn(p,isrc);
+					if ( obs == null ) {
+					} else  {
+						state.setPVariables(state._state, obs);
+					}
+					msg = createXMLAction(state, policy, 0);
+					Server.sendOneMessage(osw, msg);
+				}
+				if ( h < instance._nHorizon ) {
+					break;
+				}
+				isrc = Server.readOneMessage(isr);
+				processXMLRoundEnd(p, isrc);
+			}
+			isrc = Server.readOneMessage(isr);
+			processXMLSessionEnd(p, isrc);
+			
 			/** Close the socket connection. */
 			connection.close();
 			System.out.println(instr);
@@ -216,7 +223,6 @@ public class Client {
 	}
 	
 	static XMLType getXMLType(DOMParser p,InputSource isrc) {
-
 		Element e = p.getDocument().getDocumentElement();
 		if ( e.getNodeName().equals("turn") ) {
 			return XMLType.TURN;
@@ -231,7 +237,7 @@ public class Client {
 		}
 	}
 	
-	static String createXMLProblemInstance (String problemName) {
+	static String createXMLSessionRequest (String problemName, String clientName) {
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		try {
 			//get an instance of builder
@@ -239,26 +245,68 @@ public class Client {
 
 			//create an instance of DOM
 			Document dom = db.newDocument();
-			Element rootEle = dom.createElement("request-test");
+			Element rootEle = dom.createElement(Server.SESSION_REQUEST);
 			dom.appendChild(rootEle);
-			Element pEle = dom.createElement("problem-name");
-			Text pText = dom.createTextNode(problemName); 
-			pEle.appendChild(pText);
-			rootEle.appendChild(pEle);
+			Server.addOneText(dom, rootEle, Server.PROBLEM_NAME, problemName);
+			Server.addOneText(dom, rootEle, Server.CLIENT_NAME, clientName);
 			return serialize(dom);
 		} catch (Exception e) {
 			return null;
 		}
 	}
 	
-	static String createXMLAction(State state) {
+	static String createXMLRoundRequest() {
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		try {
+			DocumentBuilder db = dbf.newDocumentBuilder();
+			Document dom = db.newDocument();
+			Element rootEle = dom.createElement(Server.ROUND_REQUEST);
+			dom.appendChild(rootEle);
+			return serialize(dom);
+		} catch (Exception e) {
+			return null;
+		}
+	}
+	
+	static Client processXMLSessionInit(DOMParser p, InputSource isrc) throws RDDLXMLException {
+		try {
+			p.parse(isrc);
+		} catch (SAXException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+			throw new RDDLXMLException("sax exception");
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+			throw new RDDLXMLException("io exception");
+		}
+		Client c = new Client();
+		Element e = p.getDocument().getDocumentElement();
+		
+		if ( !e.getNodeName().equals(Server.SESSION_INIT) ) {
+			throw new RDDLXMLException("not session init");
+		}
+		ArrayList<String> r = Server.getTextValue(e, Server.SESSION_ID);
+		if ( r != null ) {
+			c.id = Integer.valueOf(r.get(0));
+		}
+		r = Server.getTextValue(e, Server.NUM_ROUNDS);
+		if ( r != null ) {
+			c.numRounds = Integer.valueOf(r.get(0));
+		}
+		r = Server.getTextValue(e, Server.TIME_ALLOWED);
+		if ( r!= null ) {
+			c.timeAllowed = Double.valueOf(r.get(0));
+		}
+		return c;
+	}
+	
+	
+	static String createXMLAction(State state, Policy policy, int nth) {
 		PVAR_NAME p = state._alActionNames.get(0);
 		ArrayList<ArrayList<LCONST>> inst;
 		try {
-			inst = state.generateAtoms(p);
-			ArrayList<LCONST> terms = inst.get(Server.rand.nextInt(inst.size()));
-			// Generate the action list
-			PVAR_INST_DEF d = new PVAR_INST_DEF(p._sPVarName, new Boolean(true), terms); 
+			PVAR_INST_DEF d = policy.getActions(state).get(nth);  
 			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 			DocumentBuilder db = dbf.newDocumentBuilder();
 			Document dom = db.newDocument();
@@ -295,23 +343,60 @@ public class Client {
 		return -1;
 	}
 
-	
-	static ArrayList<PVAR_INST_DEF> getXMLObservation (DOMParser p, InputSource isrc) {
-
+	static double processXMLRoundInit(DOMParser p, InputSource isrc,
+			int curRound) throws RDDLXMLException {
+		try {
+			p.parse(isrc);
+		} catch (SAXException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+			throw new RDDLXMLException("sax exception");
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+			throw new RDDLXMLException("io exception");
+		}
 		Element e = p.getDocument().getDocumentElement();
-		if ( e.getNodeName().equals("turn") ) {
-			NodeList nl = e.getElementsByTagName("observation-fluent");
+		if ( !e.getNodeName().equals(Server.ROUND_INIT)) {
+			return -1;
+		}
+		ArrayList<String> r = Server.getTextValue(e, Server.ROUND_NUM);
+		if ( r == null || curRound != Integer.valueOf(r.get(0))) {
+			return -1;
+		}
+		r =	Server.getTextValue(e, Server.TIME_LEFT);
+		if ( r == null ) {
+			return -1;
+		}
+		return Double.valueOf(r.get(0));
+	}
+	
+	static ArrayList<PVAR_INST_DEF> processXMLTurn (DOMParser p, InputSource isrc) throws RDDLXMLException {
+		try {
+			p.parse(isrc);
+		} catch (SAXException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+			throw new RDDLXMLException("sax exception");
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+			throw new RDDLXMLException("io exception");
+		}
+		Element e = p.getDocument().getDocumentElement();
+		if ( e.getNodeName().equals(Server.TURN) ) {
+			NodeList nl = e.getElementsByTagName(Server.OBSERVED_FLUENT);
 			if(nl != null && nl.getLength() > 0) {
 				ArrayList<PVAR_INST_DEF> ds = new ArrayList<PVAR_INST_DEF>();
 				for(int i = 0 ; i < nl.getLength();i++) {
 					Element el = (Element)nl.item(i);
-					String name = Server.getTextValue(el, "fluent-name").get(0);
-					ArrayList<String> args = Server.getTextValue(el, "fluent-arg");
+					String name = Server.getTextValue(el, Server.FLUENT_NAME).get(0);
+					ArrayList<String> args = Server.getTextValue(el, Server.FLUENT_ARG);
 					ArrayList<LCONST> lcArgs = new ArrayList<LCONST>();
 					for( String arg : args ) {
 						lcArgs.add(new LCONST(arg));
 					}
-					String value = Server.getTextValue(el, "fluent-value").get(0);
+					String value = Server.getTextValue(el, Server.FLUENT_VALUE).get(0);
 					PVAR_INST_DEF d = new PVAR_INST_DEF(name, Double.valueOf(value), lcArgs);
 					ds.add(d);
 				}
@@ -319,8 +404,53 @@ public class Client {
 			}
 			return null;
 		}
-
 		return null;
+	}
+	
+	static double processXMLRoundEnd(DOMParser p, InputSource isrc) throws RDDLXMLException {
+		try {
+			p.parse(isrc);
+		} catch (SAXException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+			throw new RDDLXMLException("sax exception");
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+			throw new RDDLXMLException("io exception");
+		}
+		Element e = p.getDocument().getDocumentElement();
+		if ( e.getNodeName().equals(Server.ROUND_END) ) {
+			ArrayList<String> text = Server.getTextValue(e, Server.ROUND_REWARD);
+			if ( text == null ) {
+				return -1;
+			}
+			return Double.valueOf(text.get(0));
+		}
+		return -1;
+	}
+			
+	static double processXMLSessionEnd(DOMParser p, InputSource isrc) throws RDDLXMLException {
+		try {
+			p.parse(isrc);
+		} catch (SAXException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+			throw new RDDLXMLException("sax exception");
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+			throw new RDDLXMLException("io exception");
+		}
+		Element e = p.getDocument().getDocumentElement();
+		if ( e.getNodeName().equals(Server.SESSION_END) ) {
+			ArrayList<String> text = Server.getTextValue(e, Server.TOTAL_REWARD);
+			if ( text == null ) {
+				return -1;
+			}
+			return Double.valueOf(text.get(0));
+		}
+		return -1;
 	}
 }
 
