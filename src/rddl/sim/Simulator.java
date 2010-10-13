@@ -100,8 +100,8 @@ public class Simulator {
 	public static void main(String[] args) throws Exception {
 		
 		// Parse file
-		//RDDL rddl = parser.parse(new File("files/rddl/test/sysadmin.rddl"));
-		RDDL rddl = parser.parse(new File("files/rddl/test/sysadmin_test.rddl"));
+		RDDL rddl = parser.parse(new File("files/rddl/test/sysadmin.rddl"));
+		//RDDL rddl = parser.parse(new File("files/rddl/test/sysadmin_test.rddl"));
 		//RDDL rddl = parser.parse(new File("files/rddl/test/game_of_life.rddl"));
 		
 		// Get first instance name in file and create a simulator
