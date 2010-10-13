@@ -101,7 +101,8 @@ public class Simulator {
 		
 		// Parse file
 		//RDDL rddl = parser.parse(new File("files/rddl/test/sysadmin.rddl"));
-		RDDL rddl = parser.parse(new File("files/rddl/test/game_of_life.rddl"));
+		RDDL rddl = parser.parse(new File("files/rddl/test/sysadmin_test.rddl"));
+		//RDDL rddl = parser.parse(new File("files/rddl/test/game_of_life.rddl"));
 		
 		// Get first instance name in file and create a simulator
 		String instance_name = rddl._tmInstanceNodes.firstKey();
@@ -111,8 +112,8 @@ public class Simulator {
 		Result r = s.run(
 				new RandomBoolPolicy(instance_name)
 				/* new FixedBoolPolicy(instance_name),*/, 
-				new GameOfLifeScreenDisplay(true)
-				/*new GenericScreenDisplay(true)*
+				/*new GameOfLifeScreenDisplay(true)*/
+				new GenericScreenDisplay(true)
 				/* new SysAdminScreenDisplay(true)*/,
 				123456);
 		System.out.println("==> " + r);
