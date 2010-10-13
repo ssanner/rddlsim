@@ -1462,6 +1462,13 @@ public class RDDL {
 				o1 = ((Boolean)o1 == true ? 1 : 0);
 			if (o2 instanceof Boolean)
 				o2 = ((Boolean)o2 == true ? 1 : 0);
+			if (o1 instanceof ENUM_VAL || o2 instanceof ENUM_VAL) {
+				if (!(o1 instanceof ENUM_VAL && o2 instanceof ENUM_VAL))
+					throw new EvalException("RDDL.COMP_EXPR: both values in enum comparison must be enum" + _comp + "\n" + this);
+				if (!(_comp == NEQ || _comp == EQUAL))
+					throw new EvalException("RDDL.COMP_EXPR: can only compare enums with = or ~=: " + _comp + "\n" + this);
+				return (_comp == EQUAL) ? o1.equals(o2) : !o1.equals(o2);
+			}
 			
 			// Not so efficient, but should be correct
 			double v1 = ((Number)o1).doubleValue();
