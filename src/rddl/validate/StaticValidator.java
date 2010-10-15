@@ -34,4 +34,6 @@ public class StaticValidator {
 	// Note: need runtime validation to verify state constraints
 	
 	// Make sure variable names are not identical (done now in RDDL.addDefs)
+	
+	// Object names cannot be reserved words
 }

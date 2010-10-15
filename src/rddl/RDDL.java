@@ -525,7 +525,10 @@ public class RDDL {
 		
 	//////////////////////////////////////////////////////////
 
-	public static abstract class LTERM { }
+	public static abstract class LTERM { 
+		public abstract Object getTermSub(HashMap<LVAR, LCONST> subs, State s, Random r)
+			throws EvalException;
+	}
 			
 	public static class LVAR extends LTERM {
 		
@@ -550,6 +553,14 @@ public class RDDL {
 		public String toString() {
 			return _sVarName;
 		}
+
+		public Object getTermSub(HashMap<LVAR, LCONST> subs, State s, Random r)
+				throws EvalException {
+			LCONST sub = subs.get(this);
+			if (sub == null)
+				throw new EvalException("RDDL.PVAR_EXPR: No substitution in " + subs + " for " + this + "\n" + this);
+			return sub;
+		}
 	}
 	
 	public static class LTYPED_VAR extends LTERM {
@@ -564,6 +575,14 @@ public class RDDL {
 		
 		public String toString() {
 			return _sVarName + " : " + _sType;
+		}
+
+		public Object getTermSub(HashMap<LVAR, LCONST> subs, State s, Random r)
+				throws EvalException {
+			LCONST sub = subs.get(this);
+			if (sub == null)
+				throw new EvalException("RDDL.PVAR_EXPR: No substitution in " + subs + " for " + this + "\n" + this);
+			return sub;
 		}
 	}
 	
@@ -591,6 +610,11 @@ public class RDDL {
 		// Name was interned so can check reference equality
 		public boolean equals(Object o) {
 			return _sConstValue == ((LCONST)o)._sConstValue; 
+		}
+
+		public Object getTermSub(HashMap<LVAR, LCONST> subs, State s, Random r)
+				throws EvalException {
+			return this;
 		}
 	}
 	
@@ -1435,7 +1459,7 @@ public class RDDL {
 		public static final String LESS = "<".intern();
 		public static final String GREATEREQ = ">=".intern(); 
 		public static final String GREATER = ">".intern(); 
-		public static final String EQUAL = "=".intern(); 
+		public static final String EQUAL = "==".intern(); 
 
 		public COMP_EXPR(EXPR e1, EXPR e2, String comp) throws Exception {
 			if (!comp.equals(NEQ) && !comp.equals(LESSEQ) 
@@ -1456,19 +1480,24 @@ public class RDDL {
 		}
 		
 		public Object sample(HashMap<LVAR,LCONST> subs, State s, Random r) throws EvalException {
+						
 			Object o1 = _e1.sample(subs, s, r);
 			Object o2 = _e2.sample(subs, s, r);
-			if (o1 instanceof Boolean)
-				o1 = ((Boolean)o1 == true ? 1 : 0);
-			if (o2 instanceof Boolean)
-				o2 = ((Boolean)o2 == true ? 1 : 0);
+						
+			// Handle special case of enum comparison
 			if (o1 instanceof ENUM_VAL || o2 instanceof ENUM_VAL) {
 				if (!(o1 instanceof ENUM_VAL && o2 instanceof ENUM_VAL))
 					throw new EvalException("RDDL.COMP_EXPR: both values in enum comparison must be enum" + _comp + "\n" + this);
 				if (!(_comp == NEQ || _comp == EQUAL))
-					throw new EvalException("RDDL.COMP_EXPR: can only compare enums with = or ~=: " + _comp + "\n" + this);
+					throw new EvalException("RDDL.COMP_EXPR: can only compare enums with == or ~=: " + _comp + "\n" + this);
 				return (_comp == EQUAL) ? o1.equals(o2) : !o1.equals(o2);
 			}
+			
+			// Convert boolean to numeric value (allows comparison of boolean with int/real)
+			if (o1 instanceof Boolean)
+				o1 = ((Boolean)o1 == true ? 1 : 0);
+			if (o2 instanceof Boolean)
+				o2 = ((Boolean)o2 == true ? 1 : 0);
 			
 			// Not so efficient, but should be correct
 			double v1 = ((Number)o1).doubleValue();
@@ -1489,6 +1518,41 @@ public class RDDL {
 			} else
 				throw new EvalException("RDDL.COMP_EXPR: Illegal comparison operator: " + _comp + "\n" + this);
 
+		}
+	}
+
+	public static class OBJ_COMP_EXPR extends BOOL_EXPR {
+		
+		public static final String NEQ = "~=".intern();
+		public static final String EQUAL = "==".intern(); 
+
+		public OBJ_COMP_EXPR(LTERM t1, LTERM t2, String comp) throws Exception {
+			if (!comp.equals(NEQ) && !comp.equals(EQUAL))
+					throw new Exception("Unrecognized term (object) comparison: " + comp);
+			_comp = comp.intern();
+			_t1 = t1;
+			_t2 = t2;
+		}
+		
+		public LTERM _t1 = null;
+		public LTERM _t2 = null;
+		public String _comp = UNKNOWN;
+		
+		public String toString() {
+			return "(" + _t1 + " " + _comp + " " + _t2 + ")";
+		}
+		
+		public Object sample(HashMap<LVAR,LCONST> subs, State s, Random r) throws EvalException {
+						
+			Object o1 = _t1.getTermSub(subs, s, r);
+			Object o2 = _t2.getTermSub(subs, s, r);
+						
+			// Handle special case of term (object) comparison
+			if (!(o1 instanceof LCONST && o2 instanceof LCONST))
+				throw new EvalException("RDDL.COMP_EXPR: both values in object comparison must be object terms: " + _comp + "\n" + this);
+			if (!(_comp == NEQ || _comp == EQUAL))
+				throw new EvalException("RDDL.COMP_EXPR: can only compare objects with == or ~=: " + _comp + "\n" + this);
+			return (_comp == EQUAL) ? o1.equals(o2) : !o1.equals(o2);
 		}
 	}
 
