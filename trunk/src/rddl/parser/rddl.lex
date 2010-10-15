@@ -64,7 +64,6 @@ WHITE_SPACE_CHAR=[\r\n\ \t\b\012]
 "cpfs" { return new Symbol(sym.CPFS, yytext()); }
 "cdfs" { return new Symbol(sym.CDFS, yytext()); }
 "params" { return new Symbol(sym.PARAMS, yytext()); }
-"equals" { return new Symbol(sym.EQUALS, yytext()); }
 "reward" { return new Symbol(sym.REWARD, yytext()); }
 "forall" { return new Symbol(sym.FORALL, yytext()); }
 "exists" { return new Symbol(sym.EXISTS, yytext()); }
@@ -106,7 +105,8 @@ WHITE_SPACE_CHAR=[\r\n\ \t\b\012]
 "<" { return new Symbol(sym.LESS, yytext()); }
 ">=" { return new Symbol(sym.GREATEREQ, yytext()); }
 ">" { return new Symbol(sym.GREATER, yytext()); }
-"=" { return new Symbol(sym.EQUAL, yytext()); }
+"=" { return new Symbol(sym.ASSIGN_EQUAL, yytext()); }
+"==" { return new Symbol(sym.COMP_EQUAL, yytext()); }
 "/" { return new Symbol(sym.DIV, yytext()); }
 "-" { return new Symbol(sym.MINUS, yytext()); }
 "#" { return new Symbol(sym.COUNT, yytext()); }

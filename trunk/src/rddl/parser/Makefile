@@ -54,7 +54,7 @@ lex: ALWAYS_BUILD
 	rm ../../../bin/rddl/parser/*.class;
 
 parser: ALWAYS_BUILD
-	$(JAVA) java_cup.Main -expect 159 rddl.cup;
+	$(JAVA) java_cup.Main -expect 200 rddl.cup;
 
 clean:
 	-rm ../../../bin/rddl/parser/*.class *~
