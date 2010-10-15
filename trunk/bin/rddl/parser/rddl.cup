@@ -215,6 +215,7 @@ ANY_TYPE ::= BOOL_TYPE:t {: RESULT = t; :}
 		| DOUBLE_TYPE:t  {: RESULT = t; :}
 		| INT_TYPE:t     {: RESULT = t; :}
 		| IDENT:i        {: RESULT = i; :}
+		| ENUM_VAL:e     {: RESULT = new RDDL.ENUM_VAL(e); :}
 		;
 
 BOOL_TYPE ::= TRUE     {: RESULT = new Boolean(true); :}
