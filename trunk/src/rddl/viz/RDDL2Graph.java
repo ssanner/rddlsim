@@ -105,7 +105,7 @@ public class RDDL2Graph {
 				ArrayList<ArrayList<LCONST>> gfluents = _state.generateAtoms(p);
 				for (ArrayList<LCONST> gfluent : gfluents) {
 					String action_name = CleanFluentName(p + gfluent.toString());
-					g.addNode(action_name, 1, "olivedrab1", "square", "filled");
+					g.addNode(action_name, 1, "olivedrab1", "box", "filled");
 					actions.add(action_name);
 					_hmName2Dependents.put(action_name, "None");
 					_hmName2Formula.put(action_name, "agent controlled");
@@ -379,8 +379,8 @@ public class RDDL2Graph {
 		//RDDL rddl = parser.parse(new File("files/rddl/test/sysadmin.rddl"));
 		//RDDL rddl = parser.parse(new File("files/rddl/test/sysadmin_test.rddl"));
 		//RDDL rddl = parser.parse(new File("files/rddl/test/game_of_life.rddl"));
-		//RDDL rddl = parser.parse(new File("files/rddl/test/sidewalk.rddl"));
-		RDDL rddl = parser.parse(new File("files/rddl/test/dbn_prop.rddl"));
+		RDDL rddl = parser.parse(new File("files/rddl/test/sidewalk.rddl"));
+		//RDDL rddl = parser.parse(new File("files/rddl/test/dbn_prop.rddl"));
 		
 		// Get first instance name in file and create a simulator
 		String instance_name = rddl._tmInstanceNodes.firstKey();
@@ -397,6 +397,7 @@ public class RDDL2Graph {
 		System.out.println("\nBest Order:   " + order);
 		System.out.println("MAX Bin Size: " + r2g._graph._df.format(r2g._graph._dMaxBinaryWidth));
 		System.out.println("Tree Width:   " + r2g._graph.computeTreeWidth(order));
+		//r2g._graph.genDotFile(VIEWER_FILE);
 	}
 
 }
