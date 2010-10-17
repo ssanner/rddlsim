@@ -15,4 +15,5 @@ import rddl.State;
 
 public abstract class StateViz {
 	public abstract void display(State s, int time);
+	public void close() { }
 }

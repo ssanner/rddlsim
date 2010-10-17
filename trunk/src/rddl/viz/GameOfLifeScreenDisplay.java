@@ -9,9 +9,7 @@
 package rddl.viz;
 
 import java.util.ArrayList;
-import java.util.Map;
 
-import rddl.EvalException;
 import rddl.State;
 import rddl.RDDL.LCONST;
 import rddl.RDDL.PVARIABLE_DEF;
@@ -38,15 +36,21 @@ public class GameOfLifeScreenDisplay extends StateViz {
 		
 		PVAR_NAME alive = new PVAR_NAME("alive");
 		PVARIABLE_DEF pvar_def = s._hmPVariables.get(alive);
-		TYPE_NAME type_x = pvar_def._alParamTypes.get(0);
-		TYPE_NAME type_y = pvar_def._alParamTypes.get(1);
+
+		TYPE_NAME type_x = new TYPE_NAME("x_pos");
 		ArrayList<LCONST> x_objects = s._hmObject2Consts.get(type_x);
+
+		TYPE_NAME type_y = new TYPE_NAME("y_pos");
 		ArrayList<LCONST> y_objects = s._hmObject2Consts.get(type_y);
+
+		// Set up an arity-2 parameter list
 		ArrayList<LCONST> params = new ArrayList<LCONST>(2);
-		params.add(new LCONST("X"));
-		params.add(new LCONST("Y"));
+		params.add(null);
+		params.add(null);
 		
 		sb.append("\n\n");
+		
+		// Show the status of alive(x,y) at each point (x,y) in the grid
 		for (LCONST y : y_objects) {
 			for (LCONST x : x_objects) {
 				params.set(0,x);

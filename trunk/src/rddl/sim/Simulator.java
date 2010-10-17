@@ -91,6 +91,7 @@ public class Simulator {
 		}
 		
 		// Problem over, return objective and list of rewards (e.g., for std error calc)
+		v.close();
 		return new Result(accum_reward, rewards);
 	}
 	
@@ -103,18 +104,22 @@ public class Simulator {
 		RDDL rddl = parser.parse(new File("files/rddl/test/sysadmin.rddl"));
 		//RDDL rddl = parser.parse(new File("files/rddl/test/sysadmin_test.rddl"));
 		//RDDL rddl = parser.parse(new File("files/rddl/test/game_of_life.rddl"));
-		
+		//RDDL rddl = parser.parse(new File("files/rddl/test/sidewalk.rddl"));
+		//RDDL rddl = parser.parse(new File("files/rddl/test/dbn_prop.rddl"));
+	
 		// Get first instance name in file and create a simulator
 		String instance_name = rddl._tmInstanceNodes.firstKey();
 		Simulator s = new Simulator(rddl, instance_name);
 		
 		// Reset, pass a policy, a visualization interface, a random seed, and simulate!
 		Result r = s.run(
-				new RandomBoolPolicy(instance_name)
-				/* new FixedBoolPolicy(instance_name),*/, 
-				/*new GameOfLifeScreenDisplay(true)*/
-				new GenericScreenDisplay(true)
-				/* new SysAdminScreenDisplay(true)*/,
+				new RandomBoolPolicy(instance_name),
+//				new RandomEnumPolicy(instance_name),
+//				new FixedBoolPolicy(instance_name), 
+//				new GameOfLifeScreenDisplay(true),
+//				new SidewalkGraphicsDisplay(200),
+//				new GenericScreenDisplay(true),
+				new SysAdminScreenDisplay(true),
 				123456);
 		System.out.println("==> " + r);
 	}

@@ -30,8 +30,12 @@ public class Graph {
 
 	/* Node and link data structures */
 	public boolean _bDirected; // Just used for printing, does not restrict links
+	public boolean _bLeftRight;
+	public boolean _bSuppressRank;
 
 	public boolean _bBottomToTop; 
+	
+	public ArrayList _alRankSame;
 	
 	public HashMap _hmNodes;
 	public HashMap _hmLinks;
@@ -63,17 +67,20 @@ public class Graph {
 	// ///////////////////////////////////////////////////////////////////////////
 
 	public Graph() {
-		this(true, true, false);
+		this(true, true, false, false);
 	}
 
 	public Graph(boolean directed) {
-		this(directed, true, false);
+		this(directed, true, false, false);
 	}
 	
-	public Graph(boolean directed, boolean bottom_to_top, boolean multi_edges) {
+	public Graph(boolean directed, boolean bottom_to_top, boolean left_right, boolean multi_edges) {
 		_bDirected = directed; // Just used for printing, does not restrict
 								// links
+		_bLeftRight = left_right;
+		_bSuppressRank = false;
 		_hmNodes = new HashMap(); // Maps to size
+		_alRankSame  = new ArrayList();
 		_hmNodeColor = new HashMap();
 		_hmNodeShape = new HashMap();
 		_hmNodeStyle = new HashMap();
@@ -89,6 +96,10 @@ public class Graph {
 		_bBottomToTop = bottom_to_top;
 	}
 
+	public void setSuppressRank(boolean suppress) {
+		_bSuppressRank = suppress;
+	}
+	
 	public void setUseColor(boolean uc) {
 		_bUseColor = uc;
 	}
@@ -101,6 +112,10 @@ public class Graph {
 
 	public void setBottomToTop(boolean bottom_to_top) {
 		_bBottomToTop = bottom_to_top;
+	}
+	
+	public void addSameRank(Collection nodes) {
+		_alRankSame.add(nodes);
 	}
 	
 	public void addNode(Object o) {
@@ -388,14 +403,26 @@ public class Graph {
 		return new ArrayList(new HashSet(src));
 	}
 	
+	public boolean genFormatDotFile(String filename) {
+		try {
+			PrintStream ps = new PrintStream(new FileOutputStream(filename));
+			ps.print(format());
+			ps.close();
+		} catch (Exception e) {
+			System.err.println("Graph.formatDotFile: " + e);
+			return false;
+		}
+		return true;
+	}
+	
 	public StringBuilder format() {
 	     try {
 
 	           Process p = null;
 	           if (_bDirected)
-	        	   p = Runtime.getRuntime().exec("dot -Tdot");//WinUNIX.GVIZ_EXE);
+	        	   p = Runtime.getRuntime().exec(WinUNIX.GVIZ_EXE);
 	           else
-	        	   p = Runtime.getRuntime().exec("neato -Tdot");//WinUNIX.GVIZ2_EXE);
+	        	   p = Runtime.getRuntime().exec(WinUNIX.GVIZ2_EXE);
 	           BufferedReader process_out = new BufferedReader(new
 	        		  InputStreamReader(p.getInputStream()));
 	           PrintStream process_in  = new PrintStream(p.getOutputStream(), true);
@@ -433,7 +460,9 @@ public class Graph {
 
 		os.println((_bDirected ? "digraph G { " : "graph G {\n  overlap = false;\n"));
 		os.println("graph [ fontname = \"Helvetica\",fontsize=\"16\",ratio = \"auto\","
-						+ "\n        size=\"7.5,10\",ranksep=\"0.75\" ];"); // ,orientation=\"landscape\"
+						+ "\n        size=\"7.5,10\""  
+						+ (_bLeftRight ? ",rankdir=\"LR\"" : "")  
+						+ ",ranksep=\"2.00\" ];"); // ,orientation=\"landscape\"
 																			// ]");
 		os.println("node [fontsize=\"16\"];");
 		if (_bDirected) {
@@ -479,6 +508,17 @@ public class Graph {
 				}
 			}
 		}
+		
+		// Now print all rank same
+		if (!_bSuppressRank)
+			for (Object o : _alRankSame) {
+				Collection c = (Collection)o;
+				os.print("{ rank=same; ");
+				for (Object node : c)
+					os.print("\"" + node + "\"; ");
+				os.println("};");
+			}
+		
 		os.println("}");
 	}
 
@@ -571,7 +611,7 @@ public class Graph {
 	}
 		
 	public void launchViewer(int w, int h, int x_off, int y_off, int text_h) {
-		genDotFile(VIEWER_FILE);
+		genFormatDotFile(VIEWER_FILE);
 		DotViewer dv = new DotViewer() {
 			public void nodeClicked(String name) {
 			}
@@ -1056,7 +1096,7 @@ public class Graph {
 	// ///////////////////////////////////////////////////////////////////////////
 	
 	public static void main(String[] args) {
-		Graph g = new Graph(/*directed*/true);
+		Graph g = new Graph(/*directed*/true, false, true, false);
 		g.setBottomToTop(false);
 		g.setMultiEdges(false); // Note: still does not allow cyclic edges
 
@@ -1066,6 +1106,8 @@ public class Graph {
 		g.addUniLink("a", "c");
 		g.addUniLink("b", "e");
 		g.addUniLink("a", "f");
+		g.addSameRank(Arrays.asList(new String[] {"f", "e", "c"}));
+		g.setSuppressRank(false);
 		g.launchViewer();
 
 		System.out.println(g.format());
@@ -1093,7 +1135,7 @@ public class Graph {
 		g.addUniLink("H", "J", "red", "dashed", "text");
 		g.addNodeLabel("H", "H's label");
 		g.addNodeColor("H", "lightblue");
-		g.addNodeShape("H", "square");
+		g.addNodeShape("H", "box");
 		g.addNodeStyle("H", "filled");
 
 		

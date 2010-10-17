@@ -25,10 +25,6 @@ import att.grappa.GrappaSupport;
 
 import util.WinUNIX;
 
-/**
- * @author Scott Sanner
- *
- */
 public class GraphFormat {
 
     // Note 1: To redirect output from a Java Process use CMD on Widnows and /bin/sh on UNIX
