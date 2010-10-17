@@ -33,8 +33,8 @@ For running RDDLSim from a terminal, we provide two scripts
 In both cases, run these scripts from the **rddlsim/**
 directory with the class name as an argument, e.g.
 
-    Windows/Cygwin and UNIX/Linux: ./run rddl.competition.Server
-    Windows CMD prompt:            .\run.bat rddl.competition.Server
+    Windows/Cygwin and UNIX/Linux: ./run rddl.sim.Simulator
+    Windows CMD prompt:            .\run.bat rddl.sim.Simulator
 
 You can pass up to 10 arguments to these scripts as required.
 
@@ -50,12 +50,21 @@ the following RDDLSim command line utilities:
         rddl.parser.parser [filename]
         (e.g., files/rddl/test/sysadmin.rddl for filename)
 
+    Running the RDDL Simulator Standalone
+
+        rddl.sim.Simulator
+        (see main() method for examples)
+
     Running the RDDL Server and Client
 
         rddl.competition.Client
         rddl.competition.Server
-        (for now, parameters are hardcoded in the main methods
-         of these files)
+        (see main() methods for parameters)
+
+    Visualizing the RDDL DBN
+
+        rddl.viz.RDDL2Graph
+        (see main() method for examples)
 
 
 Modifying the RDDL Language
@@ -103,8 +112,7 @@ GraphViz RDDL Visualization
 ===========================
 
 Although not required to run the basic RDDL simulator facilities, some
-additional GraphViz visualization tools and a Java interface will be
-provided in future releases of RDDLSim.  
+additional GraphViz visualization tools are provided.  
 
 To enable Java Graphviz visualization:
 
@@ -117,3 +125,7 @@ To enable Java Graphviz visualization:
 
 Run graph.Graph.main() and verify that a cleanly formatted Java window
 displaying a graph appears.
+
+Run rddl.viz.RDDL2Graph.main() to convert RDDL files to interactively
+view DBNs for RDDL instances in a Java viewer and export GraphViz 
+graph specifications for publication. 
