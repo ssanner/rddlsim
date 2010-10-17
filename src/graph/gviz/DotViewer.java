@@ -3,6 +3,9 @@
  *                              by John Mocenigo
  *                              http://www2.research.att.com/~john/Grappa/
  *
+ * Note: autolayout has been disabled so programs must pass the filename
+ *       of a pre-formatted file (see Graph.genFormatDotFile(...))
+ *
  * @author Scott Sanner (ssanner@gmail.com)
  * @version 11/29/04
  *
@@ -281,7 +284,7 @@ public abstract class DotViewer
 	    getContentPane().add("North", panel);
 	    getContentPane().add("Center", jsp);
 
-	    autoLayout();
+	    //autoLayout();
 	    setVisible(true);
 	    jsp.setViewportView(gp);
 	}

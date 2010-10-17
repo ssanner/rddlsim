@@ -1,0 +1,222 @@
+////////////////////////////////////////////////////////////////////
+// An example RDDL description for one or more people walking down a 
+// sidewalk with 2 "lanes" (top and bottom).  Both start out in the 
+// bottom lane.
+//
+// Author: Tom Walsh thomasjwalsh@gmail.com
+////////////////////////////////////////////////////////////////////
+domain sidewalk {
+  
+	
+	requirements = { 
+		concurrent,
+		integer-valued,  
+		multivalued, // this domain uses enumerated pvariables 
+		reward-deterministic, // this domain does not use a stochastic reward
+		intermediate-nodes,   // this domain uses intermediate pvariable nodes
+		constrained-state,    // this domain uses state constraints
+		cpf-deterministic   // this domain uses determinsitic conditional probability functions
+	};
+
+	////////////////////////////////////////////////////////////////////////////
+	// User-defined object and enumeration (multivalued) types.
+	////////////////////////////////////////////////////////////////////////////
+	
+	types {
+  		person : object;
+		direction : {@up, @down, @left, @right, @none};
+	};
+      
+	////////////////////////////////////////////////////////////////////////////
+	// Provide name[(parameter types)] followed by type, range, etc...
+	// note that variable parameters *must* be object types.
+	////////////////////////////////////////////////////////////////////////////
+	
+	pvariables { 
+    		  		
+    		  		
+		//Length of the sidewalk (width is hardcoded as 2)
+		SIDEWALK-SIZE : { non-fluent, int, default = 3 };
+
+		//x position goal
+		GOAL(person) : { non-fluent, int, default = 0};
+    	   		  		
+		//coordinates of the people
+		xPos(person) : { state-fluent, int, default = 0};
+		yPos(person) : { state-fluent, int, default = 0};
+
+		//check if their step is out of bounds
+		outBoundsNext(person) :   { interm-fluent, bool, level = 1 };
+		
+		// Intermediate fluents: next x and y of people
+		nextXPos(person) : { interm-fluent, int, level = 2 };
+		nextYPos(person) : { interm-fluent, int, level = 2 };
+
+		//check if people trying to claim the same square
+		blocked(person, person) : { interm-fluent, bool, level = 3 };
+
+		//number of actions used (limit is 2)
+		numMoves(person) : { interm-fluent, int, level = 1 };      
+
+		//the walk action, takes a person argument and is set to a direction value
+		walk(person) : { action-fluent, direction, default = @none}; 
+		
+
+		
+	};
+  
+	
+	cdfs {
+
+		//count the number of moves executed
+		numMoves(?p) =  (~(walk(?p) == @none));
+
+		//check if a person is going outside the boundaries
+		//note: could use a switch statement for enums in place of if-else here
+		outBoundsNext(?p) =
+				    if(walk(?p) == @left) then xPos(?p) - 1 < 0
+				    else if (walk(?p) == @right) then xPos(?p) + 1 >= SIDEWALK-SIZE
+				    else if (walk(?p) == @down) then yPos(?p) - 1 < 0
+				    else if (walk(?p) == @up) then yPos(?p) + 1 >= 2
+				    else false;
+
+		//next x position of a person (unless they went  out of bounds, then it stays the same)
+		nextXPos(?p) = if(numMoves(?p) == 1 ^ ~outBoundsNext(?p))
+					then [if(walk(?p) == @left) 
+						then xPos(?p) -1
+						else if(walk(?p) == @right)
+						then xPos(?p) +1
+					      else xPos(?p)]
+				else xPos(?p);
+
+		//next y position of a person (unless they went  out of bounds, then it stays the same)
+		nextYPos(?p) = if(numMoves(?p) == 1 ^ ~outBoundsNext(?p))
+					then [if(walk(?p) == @down) 
+						then yPos(?p) -1
+						else if(walk(?p) == @up) 
+						then yPos(?p) +1
+					      else yPos(?p)]
+				else yPos(?p);
+
+		//check if there is conflict on the next locations
+		blocked(?x, ?y) = (?x ~= ?y) ^ (nextXPos(?x) == nextXPos(?y)) ^ (nextYPos(?x) == nextYPos(?y));
+		  
+		//update xpos unless there was a conflict (stays the same)
+		xPos'(?p) = if(exists_{?x : person} (blocked(?p, ?x)))
+				then xPos(?p)
+			    else
+				nextXPos(?p);
+
+		//update ypos unless there was a conflict (stays the same)
+		yPos'(?p) =  if(exists_{?x : person} (blocked(?p, ?x)))
+				then yPos(?p)
+			    else
+				nextYPos(?p);
+
+
+	};
+  
+
+	//reward for every player that has reached their x goal.  	
+	reward = [sum_{?p : person} xPos(?p) == GOAL(?p)];
+	
+
+
+	state-action-constraints {
+
+		//person can only have one move
+		forall_{?p : person} (numMoves(?p) <= 1);
+		
+		//people can't stand on the same square
+		forall_{?p : person} forall_{?q : person} ((~(?p == ?q)) => ((~(xPos(?p) == xPos(?q))) | (~(yPos(?p) == yPos(?q))))); 
+		
+		//can't go out of bounds
+		forall_{?p : person} (xPos(?p) >= 0 ^ yPos(?p) >=0 ^ xPos(?p) < SIDEWALK-SIZE ^ yPos(?p) < 2);
+	};
+}
+        
+
+non-fluents path2 {
+
+	domain = sidewalk;
+	
+	//two people
+	objects { 
+		person : {p1, p2};
+	};
+  
+	// Sidewalk size and x-goals
+	non-fluents { 
+		SIDEWALK-SIZE = 3; 
+		GOAL(p1) = 0;
+		GOAL(p2) = 2;
+	};
+}
+
+non-fluents path4 {
+
+	domain = sidewalk;
+	
+	//two people
+	objects { 
+		person : {p1, p2, p3, p4};
+	};
+  
+	// Sidewalk size and x-goals
+	non-fluents { 
+		SIDEWALK-SIZE = 3; 
+		GOAL(p1) = 0;
+		GOAL(p2) = 2;
+		GOAL(p3) = 1;
+		GOAL(p4) = 1;
+	};
+}
+
+instance zs2 {
+
+	domain = sidewalk;
+	
+	non-fluents = path2;
+  
+	//initialize at different ends of the sidewalk
+	init-state { 
+		xPos(p1) = 2; 
+		xPos(p2) = 0;
+		yPos(p1) = 0;
+		yPos(p2) = 0; 		
+	};
+  
+	//really would like a min as well
+	max-nondef-actions = 2;
+  
+	//for now
+	horizon  = 20;
+	discount = 0.9;
+}
+
+instance is4 {
+
+	domain = sidewalk;
+	
+	non-fluents = path4;
+  
+	//initialize at different ends of the sidewalk
+	init-state { 
+		xPos(p1) = 2; 
+		xPos(p2) = 0;
+		yPos(p1) = 0;
+		yPos(p2) = 0; 
+		xPos(p3) = 2; 
+		xPos(p4) = 1;
+		yPos(p3) = 1;
+		yPos(p4) = 1; 
+		
+	};
+  
+	//really would like a min as well
+	max-nondef-actions = 2;
+  
+	//for now
+	horizon  = 20;
+	discount = 0.9;
+}

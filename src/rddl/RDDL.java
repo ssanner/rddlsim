@@ -676,6 +676,12 @@ public class RDDL {
 				throws EvalException {
 			return this;
 		}
+		
+		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<String> gfluents) 
+			throws EvalException {
+			// Nothing to collect
+		}
+
 	}
 
 	// Immutable... making public to avoid unnecessary
@@ -731,6 +737,8 @@ public class RDDL {
 		Boolean _bDet  = null;    // deterministic?  (if not, then stochastic)
 		
 		public abstract Object sample(HashMap<LVAR,LCONST> subs, State s, Random r) throws EvalException;
+		
+		public abstract void collectGFluents(HashMap<LVAR,LCONST> subs, State s, HashSet<String> gfluents) throws EvalException;
 	}
 	
 	//////////////////////////////////////////////////////////
@@ -753,6 +761,11 @@ public class RDDL {
 				throw new EvalException("RDDL: DiracDelta only applies to real-valued data.\n" + this);
 			return o;
 		}
+
+		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<String> gfluents) 
+			throws EvalException {
+			_exprRealValue.collectGFluents(subs, s, gfluents);
+		}
 	}
 	
 	public static class KronDelta extends EXPR {
@@ -773,6 +786,12 @@ public class RDDL {
 				throw new EvalException("RDDL: KronDelta only applies to integer/boolean data, not " + (o == null ? null : o.getClass()) + ".\n" + this);
 			return o;
 		}
+		
+		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<String> gfluents) 
+			throws EvalException {
+			_exprIntValue.collectGFluents(subs, s, gfluents);
+		}
+
 	}
 	
 	public static class Uniform extends EXPR {
@@ -800,6 +819,12 @@ public class RDDL {
 			} catch (Exception e) {
 				throw new EvalException("RDDL: Uniform only applies to real (or castable to real) data.\n" + e + "\n" + this);
 			}
+		}
+		
+		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<String> gfluents) 
+		throws EvalException {
+			_exprLowerReal.collectGFluents(subs, s, gfluents);
+			_exprUpperReal.collectGFluents(subs, s, gfluents);
 		}
 	}
 
@@ -830,6 +855,12 @@ public class RDDL {
 				throw new EvalException("RDDL: Normal only applies to real (or castable to real) mean and variance.\n" + e + "\n" + this);
 			}
 		}
+		
+		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<String> gfluents) 
+			throws EvalException {
+			_normalMeanReal.collectGFluents(subs, s, gfluents);
+			_normalVarReal.collectGFluents(subs, s, gfluents);
+		}
 	}
 	
 	public static class Exponential extends EXPR {
@@ -847,6 +878,12 @@ public class RDDL {
 		public Object sample(HashMap<LVAR,LCONST> subs, State s, Random r) throws EvalException {
 			throw new EvalException("RDDL: Sampling from Exponential not yet implemented");
 		}
+		
+		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<String> gfluents) 
+			throws EvalException {
+			_exprLambdaReal.collectGFluents(subs, s, gfluents);
+		}
+	
 	}
 	
 	public static class Discrete extends EXPR {
@@ -856,8 +893,8 @@ public class RDDL {
 			_exprProbs = (ArrayList<EXPR>)probs;
 		}
 		
-		public TYPE_NAME _sEnumType;
-		public ArrayList _exprProbs = null; // At runtime, check these sum to 1
+		public TYPE_NAME       _sEnumType;
+		public ArrayList<EXPR> _exprProbs = null; // At runtime, check these sum to 1
 		
 		public String toString() {
 			StringBuilder sb = new StringBuilder();
@@ -897,6 +934,12 @@ public class RDDL {
 				throw new EvalException("RDDL: Discrete only applies to real (or castable to real) values that sum to one.\n" + e + "\n" + this);
 			}
 		}
+		
+		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<String> gfluents) 
+			throws EvalException {
+			for (EXPR e : _exprProbs)
+				e.collectGFluents(subs, s, gfluents);
+		}
 	}
 	
 	public static class Geometric extends EXPR {
@@ -914,6 +957,12 @@ public class RDDL {
 		public Object sample(HashMap<LVAR,LCONST> subs, State s, Random r) throws EvalException {
 			throw new EvalException("RDDL: Sampling from Geometric not yet implemented");
 		}
+		
+		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<String> gfluents) 
+			throws EvalException {
+			_exprProb.collectGFluents(subs, s, gfluents);
+		}
+
 	}
 	
 	public static class Poisson extends EXPR {
@@ -930,6 +979,11 @@ public class RDDL {
 		
 		public Object sample(HashMap<LVAR,LCONST> subs, State s, Random r) throws EvalException {
 			throw new EvalException("RDDL: Sampling from Poisson not yet implemented");
+		}
+		
+		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<String> gfluents) 
+			throws EvalException {
+			_exprLambda.collectGFluents(subs, s, gfluents);
 		}
 	}
 	
@@ -954,6 +1008,12 @@ public class RDDL {
 			else 
 				return FALSE;
 		}
+		
+		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<String> gfluents) 
+			throws EvalException {
+			_exprProb.collectGFluents(subs, s, gfluents);
+		}
+
 	}
 	
 	//////////////////////////////////////////////////////////
@@ -974,6 +1034,12 @@ public class RDDL {
 		public Object sample(HashMap<LVAR,LCONST> subs, State s, Random r) throws EvalException {
 			return _nValue;
 		}
+		
+		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<String> gfluents) 
+			throws EvalException {
+			// Nothing to collect
+		}
+
 	}
 
 	public static class REAL_CONST_EXPR extends EXPR {
@@ -992,6 +1058,12 @@ public class RDDL {
 		public Object sample(HashMap<LVAR,LCONST> subs, State s, Random r) throws EvalException {
 			return _dValue;
 		}
+
+		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<String> gfluents) 
+			throws EvalException {
+			// Nothing to collect
+		}
+	
 	}
 
 	public static class OPER_EXPR extends EXPR {
@@ -1026,6 +1098,13 @@ public class RDDL {
 				throw new EvalException(e + "\n" + this);
 			}
 		}
+		
+		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<String> gfluents) 
+			throws EvalException {
+			_e1.collectGFluents(subs, s, gfluents);
+			_e2.collectGFluents(subs, s, gfluents);
+		}
+
 	}
 
 	public static Object ComputeArithmeticResult(Object o1, Object o2, String op) throws EvalException {
@@ -1118,6 +1197,27 @@ public class RDDL {
 			return result;
 		}
 		
+		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<String> gfluents) 
+			throws EvalException {
+			
+			ArrayList<ArrayList<LCONST>> possible_subs = s.generateAtoms(_alVariables);
+			Object result = null;
+			
+			// Evaluate all possible substitutions
+			for (ArrayList<LCONST> sub_inst : possible_subs) {
+				for (int i = 0; i < _alVariables.size(); i++) {
+					subs.put(_alVariables.get(i)._sVarName, sub_inst.get(i));
+				}
+				
+				_e.collectGFluents(subs, s, gfluents);
+			}
+		
+			// Clear all substitutions
+			for (int i = 0; i < _alVariables.size(); i++) {
+				subs.remove(_alVariables.get(i)._sVarName);
+			}
+		}
+		
 	}
 	
 	// TODO: Need a way to ensure that only boolean pvars go under forall
@@ -1172,6 +1272,33 @@ public class RDDL {
 						_sName + _subTerms + "'" + (_subTerms.size() == 0 ? "\n... did you intend an enum value @" + _sName+ "?" : "") + "");
 			return ret_val;
 		}
+		
+		
+		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<String> gfluents) 
+			throws EvalException {
+			
+			// Skip non-fluents
+			PVARIABLE_DEF pvar_def = s._hmPVariables.get(_sName);
+			if (pvar_def instanceof PVARIABLE_STATE_DEF && ((PVARIABLE_STATE_DEF)pvar_def)._bNonFluent)
+				return;
+			
+			_subTerms.clear();
+			for (int i = 0; i < _alTerms.size(); i++) {
+				LTERM t = _alTerms.get(i);
+				if (t instanceof LCONST)
+					_subTerms.add((LCONST)t);
+				else if (t instanceof LVAR) {
+					LCONST sub = subs.get((LVAR)t);
+					if (sub == null)
+						throw new EvalException("RDDL.PVAR_EXPR: No substitution in " + subs + " for " + t + "\n" + this);
+					_subTerms.add(sub);
+				} else
+					throw new EvalException("RDDL.PVAR_EXPR: Unrecognized term " + t + "\n" + this);
+			}
+			
+			gfluents.add(_sName + _subTerms.toString());
+		}
+
 	}
 	
 	public static class IF_EXPR extends EXPR {
@@ -1199,6 +1326,14 @@ public class RDDL {
 			else
 				return _falseBranch.sample(subs, s, r);
 		}
+				
+		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<String> gfluents) 
+			throws EvalException {
+			_test.collectGFluents(subs, s, gfluents);
+			_trueBranch.collectGFluents(subs, s, gfluents);
+			_falseBranch.collectGFluents(subs, s, gfluents);
+		}
+
 	}
 
 	public static class CASE {
@@ -1214,7 +1349,7 @@ public class RDDL {
 		public String toString() {
 			return "case " + _sEnumValue + " : " + _expr;
 		}
-		
+
 	}
 	
 	public static class SWITCH_EXPR extends EXPR {
@@ -1264,6 +1399,13 @@ public class RDDL {
 				throw new EvalException("RDDL: Switch requires enumerated variable type.\n" + e + "\n" + this);
 			}
 
+		}
+		
+		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<String> gfluents) 
+			throws EvalException {
+			_enumVar.collectGFluents(subs, s, gfluents);
+			for (CASE c : _cases)
+				c._expr.collectGFluents(subs, s, gfluents);
 		}
 	}
 
@@ -1351,6 +1493,32 @@ public class RDDL {
 			
 			return result;
 		}
+		
+		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<String> gfluents) 
+			throws EvalException {
+
+			//System.out.println("VARS: " + _alVariables);
+			ArrayList<ArrayList<LCONST>> possible_subs = s.generateAtoms(_alVariables);
+			//System.out.println(possible_subs);
+			Boolean result = null;
+			
+			// Evaluate all possible substitutions
+			for (ArrayList<LCONST> sub_inst : possible_subs) {
+				for (int i = 0; i < _alVariables.size(); i++) {
+					subs.put(_alVariables.get(i)._sVarName, sub_inst.get(i));
+				}
+				
+				// Update result
+				_expr.collectGFluents(subs, s, gfluents);
+
+			}
+		
+			// Clear all substitutions
+			for (int i = 0; i < _alVariables.size(); i++) {
+				subs.remove(_alVariables.get(i)._sVarName);
+			}
+		}
+
 	}
 
 	public static class CONN_EXPR extends BOOL_EXPR {
@@ -1414,6 +1582,13 @@ public class RDDL {
 			}
 			return result;
 		}
+		
+		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<String> gfluents) 
+			throws EvalException {
+			for (BOOL_EXPR b : _alSubNodes)
+				b.collectGFluents(subs, s, gfluents);
+		}
+
 	}
 	
 	public static class NEG_EXPR extends BOOL_EXPR {
@@ -1431,6 +1606,11 @@ public class RDDL {
 		public Object sample(HashMap<LVAR,LCONST> subs, State s, Random r) throws EvalException {
 			Boolean b = (Boolean)_subnode.sample(subs, s, r);
 			return !b;
+		}
+		
+		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<String> gfluents) 
+			throws EvalException {
+			_subnode.collectGFluents(subs, s, gfluents);
 		}
 	}
 	
@@ -1450,6 +1630,12 @@ public class RDDL {
 		public Object sample(HashMap<LVAR,LCONST> subs, State s, Random r) throws EvalException {
 			return _bValue;
 		}
+
+		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<String> gfluents) 
+			throws EvalException {
+			// Nothing to collect
+		}
+	
 	}
 
 	public static class COMP_EXPR extends BOOL_EXPR {
@@ -1519,6 +1705,13 @@ public class RDDL {
 				throw new EvalException("RDDL.COMP_EXPR: Illegal comparison operator: " + _comp + "\n" + this);
 
 		}
+				
+		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<String> gfluents) 
+			throws EvalException {
+			_e1.collectGFluents(subs, s, gfluents);
+			_e2.collectGFluents(subs, s, gfluents);
+		}
+
 	}
 
 	public static class OBJ_COMP_EXPR extends BOOL_EXPR {
@@ -1553,6 +1746,11 @@ public class RDDL {
 			if (!(_comp == NEQ || _comp == EQUAL))
 				throw new EvalException("RDDL.COMP_EXPR: can only compare objects with == or ~=: " + _comp + "\n" + this);
 			return (_comp == EQUAL) ? o1.equals(o2) : !o1.equals(o2);
+		}
+		
+		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<String> gfluents) 
+			throws EvalException {
+			// Nothing to collect
 		}
 	}
 
