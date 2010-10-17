@@ -172,7 +172,7 @@ non-fluents path4 {
 	};
 }
 
-instance zs2 {
+instance is2 {
 
 	domain = sidewalk;
 	
