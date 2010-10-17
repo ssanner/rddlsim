@@ -50,18 +50,18 @@ the following RDDLSim command line utilities:
         rddl.parser.parser [filename]
         (e.g., files/rddl/test/sysadmin.rddl for filename)
 
-    Running the RDDL Simulator Standalone
+    Running the RDDL Simulator Standalone:
 
         rddl.sim.Simulator
         (see main() method for examples)
 
-    Running the RDDL Server and Client
+    Running the RDDL Server and Client:
 
         rddl.competition.Client
         rddl.competition.Server
         (see main() methods for parameters)
 
-    Visualizing the RDDL DBN
+    Visualizing the RDDL DBN:
 
         rddl.viz.RDDL2Graph
         (see main() method for examples)
