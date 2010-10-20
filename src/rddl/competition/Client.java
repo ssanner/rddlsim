@@ -74,6 +74,15 @@ public class Client {
 		reward = 0;
 		id = 0;
 	}
+	
+	/**
+	 * 
+	 * @param args
+	 * 1. rddl description file name with RDDL syntax, with complete path (sysadmin.rddl)
+	 * 2. host name (local host)
+	 * 3. client name (for record keeping purpose on server side. identify yourself with name.
+	 * 4. (optional) port number
+	 */
 	public static void main(String[] args) {
 		RDDL rddl;
 		/** Define a host server */
