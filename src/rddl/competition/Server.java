@@ -115,6 +115,12 @@ public class Server implements Runnable {
 	public DOMAIN     domain;
 	public StateViz   stateViz;
 	
+	/**
+	 * 
+	 * @param args
+	 * 1. rddl description file name, in RDDL format, with complete path
+	 * 2. (optional) port number
+	 */
 	public static void main(String[] args) {
 		RDDL rddl;
 		int port = PORT_NUMBER;
