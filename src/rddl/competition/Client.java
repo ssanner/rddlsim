@@ -10,7 +10,6 @@ package rddl.competition;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -46,7 +45,7 @@ import rddl.RDDL.PVAR_NAME;
 import rddl.State;
 import rddl.parser.parser;
 import rddl.policy.Policy;
-import rddl.policy.RandomBoolPolicy;
+import rddl.policy.RandomEnumPolicy;
 import rddl.viz.StateViz;
 /** The SocketClient class is a simple example of a TCP/IP Socket Client.
  *
@@ -115,7 +114,8 @@ public class Client {
 			state = new State();
 			// just pick the first
 			String problemInstance = rddl._tmInstanceNodes.firstKey();
-			Policy policy = new RandomBoolPolicy(problemInstance);
+//			Policy policy = new RandomBoolPolicy(problemInstance);
+			Policy policy = new RandomEnumPolicy(problemInstance);
 			
 			instance = rddl._tmInstanceNodes.get(problemInstance);
 			if (instance._sNonFluents != null) {
@@ -186,7 +186,7 @@ public class Client {
 				System.out.println(instance._nHorizon);
 				for(; h < instance._nHorizon; h++ ) {
 					isrc = Server.readOneMessage(isr);
-					ArrayList<PVAR_INST_DEF> obs = processXMLTurn(p,isrc);
+					ArrayList<PVAR_INST_DEF> obs = processXMLTurn(p,isrc,state);
 					if ( obs == null ) {
 					} else  {
 						state.setPVariables(state._state, obs);
@@ -319,18 +319,22 @@ public class Client {
 			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 			DocumentBuilder db = dbf.newDocumentBuilder();
 			Document dom = db.newDocument();
-			Element action = dom.createElement("action");
+			Element action = dom.createElement(Server.ACTION);
 			dom.appendChild(action);
-			Element name = dom.createElement("name");
+			Element name = dom.createElement(Server.ACTION_NAME);
 			action.appendChild(name);
 			Text textName = dom.createTextNode(d._sPredName.toString());
 			name.appendChild(textName);
 			for( LCONST lc : d._alTerms ) {
-				Element arg = dom.createElement("arg");
+				Element arg = dom.createElement(Server.ACTION_ARG);
 				Text textArg = dom.createTextNode(lc.toString());
 				arg.appendChild(textArg);
 				action.appendChild(arg);
 			}
+			Element value = dom.createElement(Server.ACTION_VALUE);
+			Text textValue = dom.createTextNode(d._oValue.toString());
+			value.appendChild(textValue);
+			action.appendChild(value);
 			return serialize(dom);
 		} catch (EvalException e) {
 			// TODO Auto-generated catch block
@@ -380,7 +384,8 @@ public class Client {
 		return Double.valueOf(r.get(0));
 	}
 	
-	static ArrayList<PVAR_INST_DEF> processXMLTurn (DOMParser p, InputSource isrc) throws RDDLXMLException {
+	static ArrayList<PVAR_INST_DEF> processXMLTurn (DOMParser p, InputSource isrc,
+			State state) throws RDDLXMLException {
 		try {
 			p.parse(isrc);
 		} catch (SAXException e1) {
@@ -406,7 +411,8 @@ public class Client {
 						lcArgs.add(new LCONST(arg));
 					}
 					String value = Server.getTextValue(el, Server.FLUENT_VALUE).get(0);
-					PVAR_INST_DEF d = new PVAR_INST_DEF(name, Double.valueOf(value), lcArgs);
+					Object r = Server.getValue(name, value, state);
+					PVAR_INST_DEF d = new PVAR_INST_DEF(name, r, lcArgs);
 					ds.add(d);
 				}
 				return ds;
