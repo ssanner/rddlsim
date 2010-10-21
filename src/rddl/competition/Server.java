@@ -36,12 +36,15 @@ import org.xml.sax.SAXException;
 
 import rddl.RDDL;
 import rddl.RDDL.DOMAIN;
+import rddl.RDDL.ENUM_TYPE_DEF;
+import rddl.RDDL.ENUM_VAL;
 import rddl.RDDL.INSTANCE;
 import rddl.RDDL.LCONST;
 import rddl.RDDL.LVAR;
 import rddl.RDDL.NONFLUENTS;
 import rddl.RDDL.PVAR_INST_DEF;
 import rddl.RDDL.PVAR_NAME;
+import rddl.RDDL.TYPE_NAME;
 import rddl.State;
 import rddl.parser.parser;
 import rddl.policy.Policy;
@@ -87,6 +90,7 @@ public class Server implements Runnable {
 	public static final String ACTION = "action";
 	public static final String ACTION_NAME = "action-name";
 	public static final String ACTION_ARG = "action-arg";
+	public static final String ACTION_VALUE = "action-value";
 	public static final String DONE = "done";
 	public static final String NOOP = "noop";
 	
@@ -200,12 +204,10 @@ public class Server implements Runnable {
 				double cur_discount = 1.0d;
 				int h = 0;
 				for( ; h < instance._nHorizon; h++ ) {
-					
 					msg = createXMLTurn(state, h+1, domain);
 					sendOneMessage(osw,msg);
-
 					isrc = readOneMessage(isr);		
-					PVAR_INST_DEF d = processXMLAction(p,isrc);
+					PVAR_INST_DEF d = processXMLAction(p,isrc,state);
 					System.out.println(d);
 					if ( d == null ) {
 						break;
@@ -258,6 +260,7 @@ public class Server implements Runnable {
 	void initializeState (String requestedInstance) {
 		state = new State();
 		instance = rddl._tmInstanceNodes.get(requestedInstance);
+		nonFluents = null;
 		if (instance._sNonFluents != null) {
 			nonFluents = rddl._tmNonFluentNodes.get(instance._sNonFluents);
 		}
@@ -279,18 +282,56 @@ public class Server implements Runnable {
 				instance._alInitState, nonFluents == null ? null : nonFluents._alNonFluents);
 	}
 	
-	static PVAR_INST_DEF processXMLAction(DOMParser p, InputSource isrc) {
+	static Object getValue(String pname, String pvalue, State state) {
+		TYPE_NAME tname = state._hmPVariables.get(new PVAR_NAME(pname))._sRange;
+		
+		if ( tname.toString().equals("int")) {
+			return Integer.valueOf(pvalue);
+		}
+		
+		if ( tname.toString().equals("bool")) {
+			return Boolean.valueOf(pvalue);
+		}
+		
+		if ( tname.toString().equals("real")) {
+			return Double.valueOf(pvalue);
+		}	
+		if ( state._hmObject2Consts.containsKey(tname)) {
+			for( LCONST lc : state._hmObject2Consts.get(tname)) {
+				if ( lc.toString().equals(pvalue)) {
+					return lc;
+				}
+			}
+		}
+		if ( state._hmTypes.containsKey(tname)) {
+			if ( state._hmTypes.get(tname) instanceof ENUM_TYPE_DEF ) {
+				ENUM_TYPE_DEF etype = (ENUM_TYPE_DEF)state._hmTypes.get(tname);
+				for ( ENUM_VAL ev : etype._alPossibleValues) {
+					if ( ev.toString().equals(pvalue)) {
+						return ev;
+					}
+				}
+			}
+		}
+		
+		return null;
+	}
+	
+	static PVAR_INST_DEF processXMLAction(DOMParser p, InputSource isrc,
+			State state) {
 		try {
 			p.parse(isrc);
 			Element e = p.getDocument().getDocumentElement();
-			if ( e.getNodeName().equals("action") ) {
-				String name = getTextValue(e, "name").get(0);
-				ArrayList<String> args = getTextValue(e, "arg");
+			if ( e.getNodeName().equals(ACTION) ) {
+				String name = getTextValue(e, ACTION_NAME).get(0);
+				ArrayList<String> args = getTextValue(e, ACTION_ARG);
 				ArrayList<LCONST> lcArgs = new ArrayList<LCONST>();
 				for( String arg : args ) {
 					lcArgs.add(new LCONST(arg));
 				}
-				PVAR_INST_DEF d = new PVAR_INST_DEF(name, new Boolean(true), lcArgs);
+				String pvalue = getTextValue(e, ACTION_VALUE).get(0);
+				Object value = getValue(name, pvalue, state);
+				PVAR_INST_DEF d = new PVAR_INST_DEF(name, value, lcArgs);
 				return d;
 			}
 		} catch (SAXException e1) {
@@ -410,7 +451,8 @@ public class Server implements Runnable {
 			
 			for ( PVAR_NAME pn :  domain._bPartiallyObserved? state._observ.keySet() 
 					: state._state.keySet() ) {
-				for ( ArrayList<LCONST> lcs : state._observ.get(pn).keySet() ) {
+				for ( ArrayList<LCONST> lcs : domain._bPartiallyObserved?
+						state._observ.get(pn).keySet() : state._state.get(pn).keySet()) {
 					Element ofEle = dom.createElement(OBSERVED_FLUENT);
 					rootEle.appendChild(ofEle);
 
@@ -425,7 +467,9 @@ public class Server implements Runnable {
 						ofEle.appendChild(pArg);
 					}
 					Element pValue = dom.createElement(FLUENT_VALUE);
-					Text pTextValue = dom.createTextNode(state._observ.get(pn).get(lcs).toString());
+					Text pTextValue = dom.createTextNode(
+							domain._bPartiallyObserved? state._observ.get(pn).get(lcs).toString()
+									: state._state.get(pn).get(lcs).toString());
 					pValue.appendChild(pTextValue);
 					ofEle.appendChild(pValue);
 				}
