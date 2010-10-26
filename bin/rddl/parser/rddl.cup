@@ -321,6 +321,34 @@ INSTANCE_BLOCK ::= INSTANCE IDENT:name LCURLY
                            HORIZON ASSIGN_EQUAL INTEGER:h SEMI 
                            DISCOUNT ASSIGN_EQUAL DOUBLE:d SEMI RCURLY
 			{: RESULT = new RDDL.INSTANCE(name,domain,null,null,state_list,a,h,d); :} 
+		| INSTANCE IDENT:name LCURLY 
+                           DOMAIN ASSIGN_EQUAL IDENT:domain SEMI
+                           NON_FLUENTS ASSIGN_EQUAL IDENT:nonfluents SEMI 
+                           OBJECTS LCURLY OBJECTS_LIST:objects RCURLY SEMI 
+                           MAX_NONDEF_ACTIONS ASSIGN_EQUAL INT_TYPE:a SEMI
+                           HORIZON ASSIGN_EQUAL INTEGER:h SEMI 
+                           DISCOUNT ASSIGN_EQUAL DOUBLE:d SEMI RCURLY
+			{: RESULT = new RDDL.INSTANCE(name,domain,nonfluents,objects,new ArrayList(),a,h,d); :} 
+		| INSTANCE IDENT:name LCURLY 
+                           DOMAIN ASSIGN_EQUAL IDENT:domain SEMI
+                           OBJECTS LCURLY OBJECTS_LIST:objects RCURLY SEMI 
+                           MAX_NONDEF_ACTIONS ASSIGN_EQUAL INT_TYPE:a SEMI
+                           HORIZON ASSIGN_EQUAL INTEGER:h SEMI 
+                           DISCOUNT ASSIGN_EQUAL DOUBLE:d SEMI RCURLY
+			{: RESULT = new RDDL.INSTANCE(name,domain,null,objects,new ArrayList(),a,h,d); :} 
+		| INSTANCE IDENT:name LCURLY 
+                           DOMAIN ASSIGN_EQUAL IDENT:domain SEMI
+                           NON_FLUENTS ASSIGN_EQUAL IDENT:nonfluents SEMI 
+                           MAX_NONDEF_ACTIONS ASSIGN_EQUAL INT_TYPE:a SEMI
+                           HORIZON ASSIGN_EQUAL INTEGER:h SEMI 
+                           DISCOUNT ASSIGN_EQUAL DOUBLE:d SEMI RCURLY
+			{: RESULT = new RDDL.INSTANCE(name,domain,nonfluents,null,new ArrayList(),a,h,d); :} 
+		| INSTANCE IDENT:name LCURLY 
+                           DOMAIN ASSIGN_EQUAL IDENT:domain SEMI
+                           MAX_NONDEF_ACTIONS ASSIGN_EQUAL INT_TYPE:a SEMI
+                           HORIZON ASSIGN_EQUAL INTEGER:h SEMI 
+                           DISCOUNT ASSIGN_EQUAL DOUBLE:d SEMI RCURLY
+			{: RESULT = new RDDL.INSTANCE(name,domain,null,null,new ArrayList(),a,h,d); :} 
 		;
 
 /* For simplicity in the NONFLUENT_BLOCK grammar, order matters. */
@@ -357,12 +385,16 @@ PVAR_INST_DEF ::= IDENT:i LPAREN LCONST_LIST:list RPAREN SEMI   {: RESULT = new 
 		| IDENT:i ASSIGN_EQUAL ANY_TYPE:val SEMI   {: RESULT = new RDDL.PVAR_INST_DEF(i, val, new ArrayList()); :}
 		;
 
-LCONST_LIST ::= IDENT:i                  {: RESULT = new ArrayList(Arrays.asList(new Object[] {new RDDL.LCONST(i)})); :} 
-		| IDENT:i COMMA LCONST_LIST:list {: list.add(0,new RDDL.LCONST(i)); RESULT = list; :} 
+LCONST_LIST ::= IDENT:i                  {: RESULT = new ArrayList(Arrays.asList(new Object[] {new RDDL.OBJECT_VAL(i)})); :} 
+		| IDENT:i COMMA LCONST_LIST:list {: list.add(0,new RDDL.OBJECT_VAL(i)); RESULT = list; :} 
+		| ENUM_VAL:e               		 {: RESULT = new ArrayList(Arrays.asList(new Object[] {new RDDL.ENUM_VAL(e)})); :} 
+		| ENUM_VAL:e COMMA LCONST_LIST:list {: list.add(0,new RDDL.ENUM_VAL(e)); RESULT = list; :} 
 		;
 
-TERM ::= IDENT:i  {: RESULT = new RDDL.LCONST(i); :}
-		| VAR:v  {: RESULT = new RDDL.LVAR(v); :}
+TERM ::= IDENT:i  {: RESULT = new RDDL.OBJECT_VAL(i); :}
+		| VAR:v   {: RESULT = new RDDL.LVAR(v); :}
+		| PVAR_EXPR:p  {: RESULT = new RDDL.TVAR_EXPR(p); :}
+		| ENUM_VAL:e   {: RESULT = new RDDL.ENUM_VAL(e); :}
 		;
 
 PVAR_EXPR ::= IDENT:i LPAREN TERM_LIST:l RPAREN {: RESULT = new RDDL.PVAR_EXPR(i, l); :}
@@ -419,7 +451,7 @@ BOOL_EXPR ::= PVAR_EXPR:p  {: RESULT = p; :} /* we don't actually know the type 
 		;
 
 EXPR ::= BOOL_EXPR:b   {: RESULT = b; :} /* Treat boolean expressions as true=1, false=0 */
-		| ENUM_VAL:e   {: RESULT = new RDDL.ENUM_VAL(e); :} /* we don't actually know the type yet*/
+		| ENUM_VAL:e   {: RESULT = new RDDL.ENUM_VAL(e); :} /* both parameters and pvariable values, we don't actually know the type yet*/
 		| INTEGER:i    {: RESULT = new RDDL.INT_CONST_EXPR(i); :}
 		| DOUBLE:d     {: RESULT = new RDDL.REAL_CONST_EXPR(d); :}
 		| LBRACK EXPR:e RBRACK    {: RESULT = e; :}

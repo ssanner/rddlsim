@@ -1108,6 +1108,7 @@ public class Graph {
 		g.addUniLink("a", "f");
 		g.addSameRank(Arrays.asList(new String[] {"f", "e", "c"}));
 		g.setSuppressRank(false);
+		g.genDotFile("graph_test.dot");
 		g.launchViewer();
 
 		System.out.println(g.format());
