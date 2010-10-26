@@ -1,0 +1,206 @@
+////////////////////////////////////////////////////////////////////
+// A simple binary version of the cell transition model (CTM) for 
+// modeling traffic.  Based on the original CTM Tech Report and its 
+// specification as a factored MDP in the following papers:
+//
+//   The Cell Transition Model: Network Traffic.  Daganzo; 
+//   Tech Report Berkeley Institute of Transport Studies, 1994.
+//
+//   Efficient Solutions to Factored MDPs with Imprecise Transition 
+//   Probabilities.  Delgado, Sanner, de Barros, Cozman; ICAPS, 2009.
+//
+// Author: Scott Sanner (ssanner [at] gmail.com)
+////////////////////////////////////////////////////////////////////
+domain traffic_binary_ctm {
+  
+	requirements = { 
+		multivalued, // this domain uses enumerated pvariables 
+		reward-deterministic, // this domain does not use a stochastic reward
+		intermediate-nodes,   // this domain uses intermediate pvariable nodes
+		constrained-state,    // this domain uses state constraints
+		concurrent            // this domain does not permit multiple non-default actions
+		//integer-valued      // use in a better CTM model with velocities
+		//cpf-deterministic   // this domain uses stochastic conditional probability functions
+	};
+
+	types {
+  		cell : object;
+		intersection : object;
+		signal-phase : {@A, @B, @C, @D, @E, @F, @G, @H, @I, @J}; // enum type
+	};
+ 	
+	pvariables { 
+
+		// Specify which cells are perimeter input cells and their input rates
+		PERIMETER-INPUT-CELL(cell) :  { non-fluent, bool, default = false };
+		PERIMETER-INPUT-RATE(cell) :  { non-fluent, real, default = 1.0 };
+
+		// Specify which cells are exit cells
+		PERIMETER-EXIT-CELL(cell) :   { non-fluent, bool, default = false };
+
+		// Specify which cells flow into other cells
+		FLOWS-INTO-CELL(cell, cell) : { non-fluent, bool, default = false }; 
+
+		// Specify which cells flow into intersections
+		FLOWS-INTO-INTERSECTION(cell, intersection) : { non-fluent, bool, default = false }; 
+
+		// Specify which cells can pass into intersection on a signal phase
+		ENTERS-ON-PHASE(cell, intersection, signal-phase) : { non-fluent, bool, default = false }; 
+
+		// Terminal phase of signal
+		TERMINAL-PHASE(intersection, signal-phase) : { non-fluent, bool, default = false };
+
+		// Specify which intersections are in which phase
+		at-phase(intersection) : { state-fluent, signal-phase, default = @A };
+
+		// Binary CTM: cell is either occupied or not
+		occupied(cell) : { state-fluent, bool, default = false };
+
+		// Specify whether a cell had a car enter the intersection
+		cell-enters-intersection(cell) : { interm-fluent, bool, level = 1 };
+
+		// Do we advance this signal for an intersection to its next sequence?
+		advance(intersection) : { action-fluent, bool, default = false }; 
+	};
+  
+	cpfs {
+  
+  		// In future will modify this to handle turning cars
+  		cell-enters-intersection(?c) = if (exists_{?i : intersection} FLOWS-INTO-INTERSECTION(?c, ?i))
+  											then KronDelta(occupied(?c) ^ exists_{?i : intersection, ?c2 : cell} [FLOWS-INTO-CELL(?c, ?c2) ^ ENTERS-ON-PHASE(?c,?i,at-phase(?i)) ^ ~occupied(?c2)] ) // 
+  											else KronDelta(false); // Not an intersection cell
+  
+  		// Check to see whether to advance signal phases at each intersection  
+  		at-phase'(?i) = if (advance(?i))
+  						then KronDelta(switch (at-phase(?i)) {
+									case @A : @B, // Have to have at least two phases
+									case @B : if (TERMINAL-PHASE(?i,@B)) then @A else @C,
+									case @C : if (TERMINAL-PHASE(?i,@C)) then @A else @D,
+									case @D : if (TERMINAL-PHASE(?i,@D)) then @A else @E,
+									case @E : if (TERMINAL-PHASE(?i,@E)) then @A else @F,
+									case @F : if (TERMINAL-PHASE(?i,@F)) then @A else @G,
+									case @G : if (TERMINAL-PHASE(?i,@G)) then @A else @H,
+									case @H : if (TERMINAL-PHASE(?i,@H)) then @A else @I,
+									case @I : if (TERMINAL-PHASE(?i,@I)) then @A else @J,
+									case @J : @A // Must be terminal phase if get here
+							})
+						else KronDelta(at-phase(?i));
+  		
+  		// Update a cell's occupied status
+  		occupied'(?c) = // Check for perimeter cell
+  						if (PERIMETER-INPUT-CELL(?c))
+  						then [if (~occupied(?c))
+  								then Bernoulli(	PERIMETER-INPUT-RATE(?c) ) // Empty
+  							else if (exists_{?c2 : cell} [FLOWS-INTO-CELL(?c, ?c2) ^ ~occupied(?c2)])
+  								then KronDelta(	false ) // Vacated  
+  							else KronDelta( true )] // Stopped
+  							
+  						// Check for cell entering intersection
+  						else if (exists_{?i : intersection} FLOWS-INTO-INTERSECTION(?c, ?i))
+						then [if (~occupied(?c))
+  							then KronDelta( exists_{?c2 : cell} [FLOWS-INTO-CELL(?c2, ?c) ^ occupied(?c2)] )
+  							else KronDelta( ~cell-enters-intersection(?c) )] // Vacated if cell enters intersection
+								
+						// Check for cell in intersection
+						else if ( exists_{?c2 : cell, ?i : intersection} FLOWS-INTO-INTERSECTION(?c2, ?i) ^ FLOWS-INTO-CELL(?c2, ?c) )
+						then [if (occupied(?c))
+							then KronDelta( ~exists_{?c2 : cell} FLOWS-INTO-CELL(?c, ?c2) ^ ~occupied(?c2) ) // Can car go forward?
+							else KronDelta( exists_{?c2 : cell} FLOWS-INTO-CELL(?c2, ?c) ^ cell-enters-intersection(?c2) )] // Did it get a car entering?
+								
+						// Must be a normal cell - normal transition rules apply
+						else if (occupied(?c)) // Does it empty?
+						then KronDelta ( ~PERIMETER-EXIT-CELL(?c) ^ ~exists_{?c2 : cell} [FLOWS-INTO-CELL(?c, ?c2) ^ ~occupied(?c2)])
+						else // Does it fill?
+  							KronDelta ( exists_{?c2 : cell} [FLOWS-INTO-CELL(?c2, ?c) ^ occupied(?c2)] );
+  
+	};
+
+	// Maximize flow: get +1 for every cell that is unoccupied  
+	reward = [sum_{?c : cell} ~occupied(?c)];
+
+	state-action-constraints {
+		// Make sure probabilities are in correct range
+		forall_{?c : cell} (PERIMETER-INPUT-RATE(?c) >= 0.0); 
+		forall_{?c : cell} (PERIMETER-INPUT-RATE(?c) <= 1.0); 
+	};
+}
+        
+// Define non-fluents here.
+non-fluents traffic_2lanes_2intersections {
+
+	domain = traffic_binary_ctm;
+	
+	objects { 
+		intersection : {i1, i2};
+		cell : { c_2_1, c_2_2, c_2_3, c_2_4, c_2_5, c_2_6, c_2_7, c_2_8, c_2_9, c_2_10, c_2_11,
+		         c_3_11, c_3_10, c_3_9, c_3_8, c_3_7, c_3_6, c_3_5, c_3_4, c_3_3, c_3_2, c_3_1 };
+	};
+  
+	// Only need to specify non-default values
+	//
+	//   1  2  3  4  5  6  7  8  9 10 11 12 13
+	// 1                       
+	// 2 >  *  *  I  *  *  *  I  *  *  >
+	// 3 <  *  *  I  *  *  *  I  *  *  <
+	// 4                       
+	non-fluents { 
+		PERIMETER-INPUT-CELL(c_2_1);
+		PERIMETER-INPUT-CELL(c_3_11);
+		
+		PERIMETER-INPUT-RATE(c_2_1)  = 1.0;
+		PERIMETER-INPUT-RATE(c_3_11) = 0.5;
+		
+		PERIMETER-EXIT-CELL(c_2_11);
+		PERIMETER-EXIT-CELL(c_3_1);
+		
+		// Note that intersection cells are just like any other, this is
+		// the only part that indicates entry points to the intersection
+		FLOWS-INTO-INTERSECTION(c_2_3, i1);
+		FLOWS-INTO-INTERSECTION(c_3_5, i1);
+		FLOWS-INTO-INTERSECTION(c_2_7, i2);
+		FLOWS-INTO-INTERSECTION(c_3_9, i2);
+		
+		TERMINAL-PHASE(i1, @D);
+		TERMINAL-PHASE(i2, @D);
+		
+		ENTERS-ON-PHASE(c_2_3, i1, @A);
+		ENTERS-ON-PHASE(c_3_5, i1, @C);
+		ENTERS-ON-PHASE(c_2_7, i2, @A);
+		ENTERS-ON-PHASE(c_3_9, i2, @C);
+		
+		FLOWS-INTO-CELL(c_2_1, c_2_2);
+		FLOWS-INTO-CELL(c_2_2, c_2_3);
+		FLOWS-INTO-CELL(c_2_3, c_2_4);
+		FLOWS-INTO-CELL(c_2_4, c_2_5);
+		FLOWS-INTO-CELL(c_2_5, c_2_6);
+		FLOWS-INTO-CELL(c_2_6, c_2_7);
+		FLOWS-INTO-CELL(c_2_7, c_2_8);
+		FLOWS-INTO-CELL(c_2_8, c_2_9);
+		FLOWS-INTO-CELL(c_2_9, c_2_10);
+		FLOWS-INTO-CELL(c_2_10, c_2_11);
+		FLOWS-INTO-CELL(c_3_11, c_3_10);
+		FLOWS-INTO-CELL(c_3_10, c_3_9);
+		FLOWS-INTO-CELL(c_3_9, c_3_8);
+		FLOWS-INTO-CELL(c_3_8, c_3_7);
+		FLOWS-INTO-CELL(c_3_7, c_3_6);
+		FLOWS-INTO-CELL(c_3_6, c_3_5);
+		FLOWS-INTO-CELL(c_3_5, c_3_4);
+		FLOWS-INTO-CELL(c_3_4, c_3_3);
+		FLOWS-INTO-CELL(c_3_3, c_3_2);
+		FLOWS-INTO-CELL(c_3_2, c_3_1);
+	};
+}
+
+// Specify an actual problem instance (full object specification, initial state, 
+// and objective).
+instance is1 {
+
+	domain = traffic_binary_ctm;
+	
+	non-fluents = traffic_2lanes_2intersections;
+  
+	max-nondef-actions = 2;
+  
+	horizon  = 100;
+	discount = 1.0;
+}

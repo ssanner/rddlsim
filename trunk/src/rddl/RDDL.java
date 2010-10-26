@@ -525,9 +525,18 @@ public class RDDL {
 		
 	//////////////////////////////////////////////////////////
 
-	public static abstract class LTERM { 
-		public abstract Object getTermSub(HashMap<LVAR, LCONST> subs, State s, Random r)
-			throws EvalException;
+	// TODO: To enable object fluents, remove TVAR_EXPR and modify parser 
+	//       to nest PVAR_EXPRs as LTERMs and cast output to LCONST rather
+	//       than just ENUM_VAL to allow for a type of "object-fluent"; 
+	//       or can let TVAR_EXPR remain (although a little redundant and 
+	//       just directly modify to return general LCONST and allow an 
+	//       "object fluent" expression type.  Note: still want to separate 
+	//       objects/enums from general arithmetic expressions.
+	public static abstract class LTERM extends EXPR { 
+		public Object getTermSub(HashMap<LVAR, LCONST> subs, State s, Random r)
+		throws EvalException {
+			return sample(subs, s, r);
+		}
 	}
 			
 	public static class LVAR extends LTERM {
@@ -554,8 +563,13 @@ public class RDDL {
 			return _sVarName;
 		}
 
-		public Object getTermSub(HashMap<LVAR, LCONST> subs, State s, Random r)
-				throws EvalException {
+		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<String> gfluents) 
+			throws EvalException {
+			// Nothing to collect
+		}
+
+		public Object sample(HashMap<LVAR, LCONST> subs, State s, Random r)
+		throws EvalException {
 			LCONST sub = subs.get(this);
 			if (sub == null)
 				throw new EvalException("RDDL.PVAR_EXPR: No substitution in " + subs + " for " + this + "\n" + this);
@@ -577,18 +591,24 @@ public class RDDL {
 			return _sVarName + " : " + _sType;
 		}
 
-		public Object getTermSub(HashMap<LVAR, LCONST> subs, State s, Random r)
-				throws EvalException {
+		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<String> gfluents) 
+			throws EvalException {
+			// Nothing to collect
+		}
+
+		public Object sample(HashMap<LVAR, LCONST> subs, State s, Random r)
+		throws EvalException {
 			LCONST sub = subs.get(this);
 			if (sub == null)
 				throw new EvalException("RDDL.PVAR_EXPR: No substitution in " + subs + " for " + this + "\n" + this);
 			return sub;
 		}
+
 	}
 	
 	// Immutable... making public to avoid unnecessary
 	// method calls, relying on user to respect immutability
-	public static class LCONST extends LTERM {
+	public abstract static class LCONST extends LTERM {
 		
 		public LCONST(String const_value) {
 			_sConstValue = const_value.intern();
@@ -612,10 +632,108 @@ public class RDDL {
 			return _sConstValue == ((LCONST)o)._sConstValue; 
 		}
 
-		public Object getTermSub(HashMap<LVAR, LCONST> subs, State s, Random r)
-				throws EvalException {
+		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<String> gfluents) 
+			throws EvalException {
+			// Nothing to collect
+		}
+		
+		public Object sample(HashMap<LVAR, LCONST> subs, State s, Random r)
+			throws EvalException {
 			return this;
 		}
+
+	}
+
+	public static class TVAR_EXPR extends LTERM {
+		
+		public TVAR_EXPR(String s, ArrayList terms) {
+			_sName = new PVAR_NAME(s);
+			_alTerms = (ArrayList<LTERM>)terms;
+		}
+		
+		public TVAR_EXPR(PVAR_EXPR p) {
+			_sName = p._sName;
+			_alTerms = p._alTerms;
+		}
+		
+		public PVAR_NAME _sName;
+		public ArrayList<LTERM>  _alTerms  = null;
+		public ArrayList<LCONST> _subTerms = new ArrayList<LCONST>();
+		
+		public String toString() {
+			StringBuilder sb = new StringBuilder();
+			sb.append(_sName);
+			if (_alTerms.size() > 0) {
+				boolean first = true;
+				sb.append("(");
+				for (LTERM term : _alTerms) {
+					sb.append((first ? "" : ", ") + term);
+					first = false;
+				}
+				sb.append(")");
+			}			
+			return sb.toString();
+		}
+		
+		public Object sample(HashMap<LVAR,LCONST> subs, State s, Random r) throws EvalException {
+			
+			_subTerms.clear();
+			for (int i = 0; i < _alTerms.size(); i++) {
+				LTERM t = _alTerms.get(i);
+				if (t instanceof LCONST)
+					_subTerms.add((LCONST)t);
+				else if (t instanceof LVAR) {
+					LCONST sub = subs.get((LVAR)t);
+					if (sub == null)
+						throw new EvalException("RDDL.PVAR_EXPR: No substitution in " + subs + " for " + t + "\n" + this);
+					_subTerms.add(sub);
+				} else if (t instanceof ENUM_VAL) {
+					_subTerms.add((ENUM_VAL)t);
+				} else if (t instanceof TVAR_EXPR) {
+					TVAR_EXPR tvar = (TVAR_EXPR)t;
+					_subTerms.add((ENUM_VAL)tvar.sample(subs, s, r));
+				} else
+					throw new EvalException("RDDL.PVAR_EXPR: Unrecognized term " + t + "\n" + this);
+			}
+			
+			ENUM_VAL ret_val = (ENUM_VAL)s.getPVariableAssign(_sName, _subTerms);
+			if (ret_val == null)
+				throw new EvalException("RDDL.PVAR_EXPR: No value assigned to pvariable '" + 
+						_sName + _subTerms + "'" + (_subTerms.size() == 0 ? "\n... did you intend an enum value @" + _sName+ "?" : "") + "");
+			return ret_val;
+		}
+
+		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<String> gfluents) 
+			throws EvalException {
+			
+			// Skip non-fluents
+			PVARIABLE_DEF pvar_def = s._hmPVariables.get(_sName);
+			if (pvar_def instanceof PVARIABLE_STATE_DEF && ((PVARIABLE_STATE_DEF)pvar_def)._bNonFluent)
+				return;
+			
+			_subTerms.clear();
+			for (int i = 0; i < _alTerms.size(); i++) {
+				LTERM t = _alTerms.get(i);
+				if (t instanceof LCONST)
+					_subTerms.add((LCONST)t);
+				else if (t instanceof LVAR) {
+					LCONST sub = subs.get((LVAR)t);
+					if (sub == null)
+						throw new EvalException("RDDL.PVAR_EXPR: No substitution in " + subs + " for " + t + "\n" + this);
+					_subTerms.add(sub);
+				} else if (t instanceof ENUM_VAL) {
+					_subTerms.add((ENUM_VAL)t);
+				} else if (t instanceof TVAR_EXPR) {
+					TVAR_EXPR tvar = (TVAR_EXPR)t;
+					tvar.collectGFluents(subs, s, gfluents);
+					_subTerms.add((ENUM_VAL)tvar.sample(subs, s, null));
+				} else
+					throw new EvalException("RDDL.PVAR_EXPR: Unrecognized term " + t + "\n" + this);
+			}
+			
+			gfluents.add(_sName + _subTerms.toString());
+		}
+		
 	}
 	
 	// Immutable... making public to avoid unnecessary
@@ -644,44 +762,21 @@ public class RDDL {
 			return _STypeName == ((TYPE_NAME)o)._STypeName; 
 		}
 	}
-	
+		
+	// Immutable... making public to avoid unnecessary
+	// method calls, relying on user to respect immutability
+	public static class ENUM_VAL extends LCONST {
+		public ENUM_VAL(String enum_name) {
+			super(enum_name);
+		}
+	}
 	
 	// Immutable... making public to avoid unnecessary
 	// method calls, relying on user to respect immutability
-	public static class ENUM_VAL extends EXPR {
-		
-		public ENUM_VAL(String enum_name) {
-			_sEnumName = enum_name.intern();
-			_nHashCode = enum_name.hashCode();
+	public static class OBJECT_VAL extends LCONST {
+		public OBJECT_VAL(String enum_name) {
+			super(enum_name);
 		}
-		
-		public String _sEnumName;
-		public int    _nHashCode;
-		
-		public String toString() {
-			return _sEnumName;
-		}
-		
-		// Precomputed
-		public int hashCode() {
-			return _nHashCode;
-		}
-		
-		// Name was interned so can check reference equality
-		public boolean equals(Object o) {
-			return _sEnumName == ((ENUM_VAL)o)._sEnumName; 
-		}
-
-		public Object sample(HashMap<LVAR, LCONST> subs, State s, Random r)
-				throws EvalException {
-			return this;
-		}
-		
-		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<String> gfluents) 
-			throws EvalException {
-			// Nothing to collect
-		}
-
 	}
 
 	// Immutable... making public to avoid unnecessary
@@ -937,8 +1032,9 @@ public class RDDL {
 		
 		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<String> gfluents) 
 			throws EvalException {
-			for (EXPR e : _exprProbs)
-				e.collectGFluents(subs, s, gfluents);
+			for (Object o : _exprProbs) 
+				if (o instanceof EXPR)
+					((EXPR)o).collectGFluents(subs, s, gfluents);
 		}
 	}
 	
@@ -1262,6 +1358,11 @@ public class RDDL {
 					if (sub == null)
 						throw new EvalException("RDDL.PVAR_EXPR: No substitution in " + subs + " for " + t + "\n" + this);
 					_subTerms.add(sub);
+				} else if (t instanceof ENUM_VAL) {
+					_subTerms.add((ENUM_VAL)t);
+				} else if (t instanceof TVAR_EXPR) {
+					TVAR_EXPR tvar = (TVAR_EXPR)t;
+					_subTerms.add((ENUM_VAL)tvar.sample(subs, s, r));
 				} else
 					throw new EvalException("RDDL.PVAR_EXPR: Unrecognized term " + t + "\n" + this);
 			}
@@ -1292,6 +1393,12 @@ public class RDDL {
 					if (sub == null)
 						throw new EvalException("RDDL.PVAR_EXPR: No substitution in " + subs + " for " + t + "\n" + this);
 					_subTerms.add(sub);
+				} else if (t instanceof ENUM_VAL) {
+					_subTerms.add((ENUM_VAL)t);
+				} else if (t instanceof TVAR_EXPR) {
+					TVAR_EXPR tvar = (TVAR_EXPR)t;
+					tvar.collectGFluents(subs, s, gfluents);
+					_subTerms.add((ENUM_VAL)tvar.sample(subs, s, null));
 				} else
 					throw new EvalException("RDDL.PVAR_EXPR: Unrecognized term " + t + "\n" + this);
 			}

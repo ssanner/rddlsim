@@ -78,7 +78,7 @@ domain sysadmin {
 		// State fluent: is a given computer running or not?
 		running(computer) : { state-fluent, bool, default = false };
       
-		// Intemediate fluent: are all computers in the current state crashed?
+		// Intermediate fluent: are all computers in the current state crashed?
 		all-computers-crashed : { interm-fluent, bool, level = 1 };
       
 		// Intermediate fluent: will encode the percent of computers running.

@@ -70,6 +70,15 @@ public class State {
 		if (instance_objects != null)
 			for (OBJECTS_DEF obj_def : instance_objects.values())
 				_hmObject2Consts.put(obj_def._sObjectClass, obj_def._alObjects);
+		for (Map.Entry<TYPE_NAME,TYPE_DEF> e : typedefs.entrySet()) {
+			if (e.getValue() instanceof ENUM_TYPE_DEF) {
+				ENUM_TYPE_DEF etd = (ENUM_TYPE_DEF)e.getValue();
+				ArrayList<LCONST> values = new ArrayList<LCONST>();
+				for (ENUM_VAL v : etd._alPossibleValues)
+					values.add(v);
+				_hmObject2Consts.put(etd._sName, values);
+			}
+		}
 
 		// Initialize assignments (missing means default)
 		_state      = new HashMap<PVAR_NAME,HashMap<ArrayList<LCONST>,Object>>();
@@ -299,6 +308,10 @@ public class State {
 		ArrayList<ArrayList<LCONST>> list = new ArrayList<ArrayList<LCONST>>();
 		PVARIABLE_DEF pvar_def = _hmPVariables.get(p);
 		//System.out.print("Generating pvars for " + pvar_def + ": ");
+		if (pvar_def == null) {
+			System.out.println("Error, could not generate atoms for unknown variable name.");
+			new Exception().printStackTrace();
+		}
 		generateAtoms(pvar_def, 0, new ArrayList<LCONST>(), list);
 		//System.out.println(list);
 		return list;
@@ -336,6 +349,10 @@ public class State {
 			// Get the object list for this index
 			TYPE_NAME type = tvar_list.get(index)._sType;
 			ArrayList<LCONST> objects = _hmObject2Consts.get(type);
+			if (objects == null) {
+				System.out.println("Object type '" + type + "' did not have any objects or enumerated values defined.");
+			}
+			//System.out.println(type + " : " + objects);
 			for (LCONST obj : objects) {
 				ArrayList<LCONST> new_assign = (ArrayList<LCONST>)cur_assign.clone();
 				new_assign.add(obj);

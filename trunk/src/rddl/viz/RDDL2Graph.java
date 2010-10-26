@@ -379,14 +379,16 @@ public class RDDL2Graph {
 		//RDDL rddl = parser.parse(new File("files/rddl/test/sysadmin.rddl"));
 		//RDDL rddl = parser.parse(new File("files/rddl/test/sysadmin_test.rddl"));
 		//RDDL rddl = parser.parse(new File("files/rddl/test/game_of_life.rddl"));
-		RDDL rddl = parser.parse(new File("files/rddl/test/sidewalk.rddl"));
-		//RDDL rddl = parser.parse(new File("files/rddl/test/dbn_prop.rddl"));
+		//RDDL rddl = parser.parse(new File("files/rddl/test/sidewalk.rddl"));
+		RDDL rddl = parser.parse(new File("files/rddl/test/dbn_prop.rddl"));
+		//RDDL rddl = parser.parse(new File("files/rddl/test/sysadmin.rddl"));
+		//RDDL rddl = parser.parse(new File("files/rddl/test/traffic_binary_ctm.rddl"));
 		
 		// Get first instance name in file and create a simulator
 		String instance_name = rddl._tmInstanceNodes.firstKey();
 		RDDL2Graph r2g = new RDDL2Graph(rddl, instance_name, 
-//				/*strict levels*/false, /*strict grouping*/false);
-				/*strict levels*/true, /*strict grouping*/true);
+				/*strict levels*/false, /*strict grouping*/false);
+//				/*strict levels*/true, /*strict grouping*/true);
 		
 		// Reset, pass a policy, a visualization interface, a random seed, and simulate!
 		r2g.launchViewer(1024, 768);
