@@ -327,7 +327,10 @@ public class Server implements Runnable {
 				ArrayList<String> args = getTextValue(e, ACTION_ARG);
 				ArrayList<LCONST> lcArgs = new ArrayList<LCONST>();
 				for( String arg : args ) {
-					lcArgs.add(new LCONST(arg));
+					if (arg.startsWith("@"))
+						lcArgs.add(new RDDL.ENUM_VAL(arg));
+					else 
+						lcArgs.add(new RDDL.OBJECT_VAL(arg));
 				}
 				String pvalue = getTextValue(e, ACTION_VALUE).get(0);
 				Object value = getValue(name, pvalue, state);
