@@ -45,7 +45,7 @@ import rddl.RDDL.PVAR_NAME;
 import rddl.State;
 import rddl.parser.parser;
 import rddl.policy.Policy;
-import rddl.policy.RandomEnumPolicy;
+import rddl.policy.RandomBoolPolicy;
 import rddl.viz.StateViz;
 /** The SocketClient class is a simple example of a TCP/IP Socket Client.
  *
@@ -109,13 +109,13 @@ public class Client {
 		try {
 			rddl = parser.parse(new File(args[0]));
 			if ( args.length > 3 ) {
-				port = Integer.valueOf(args[1]);
+				port = Integer.valueOf(args[3]);
 			}
 			state = new State();
 			// just pick the first
 			String problemInstance = rddl._tmInstanceNodes.firstKey();
-//			Policy policy = new RandomBoolPolicy(problemInstance);
-			Policy policy = new RandomEnumPolicy(problemInstance);
+			Policy policy = new RandomBoolPolicy(problemInstance);
+//			Policy policy = new RandomEnumPolicy(problemInstance);
 			
 			instance = rddl._tmInstanceNodes.get(problemInstance);
 			if (instance._sNonFluents != null) {
