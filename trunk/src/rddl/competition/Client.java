@@ -46,6 +46,7 @@ import rddl.State;
 import rddl.parser.parser;
 import rddl.policy.Policy;
 import rddl.policy.RandomBoolPolicy;
+import rddl.policy.RandomEnumPolicy;
 import rddl.viz.StateViz;
 /** The SocketClient class is a simple example of a TCP/IP Socket Client.
  *
@@ -99,22 +100,26 @@ public class Client {
 		StringBuffer instr = new StringBuffer();
 		String TimeStamp;
 		
-		if ( args.length < 3 ) {
-			System.out.println("usage: rddlfilename hostname clientname (optional) portnumber");
+		if ( args.length < 4 ) {
+			System.out.println("usage: rddlfilename hostname clientname policyclassname " +
+					"(optional) portnumber");
 			System.exit(1);
 		}
 		host = args[1];
 		clientName = args[2];
+		
 		double timeLeft = 0;
 		try {
+			Class c = Class.forName("rddl.policy." + args[3]);  
 			rddl = parser.parse(new File(args[0]));
-			if ( args.length > 3 ) {
-				port = Integer.valueOf(args[3]);
+			if ( args.length > 4 ) {
+				port = Integer.valueOf(args[4]);
 			}
 			state = new State();
 			// just pick the first
 			String problemInstance = rddl._tmInstanceNodes.firstKey();
-			Policy policy = new RandomBoolPolicy(problemInstance);
+			Policy policy = (Policy)c.newInstance();
+			policy._sInstanceName = problemInstance;
 //			Policy policy = new RandomEnumPolicy(problemInstance);
 			
 			instance = rddl._tmInstanceNodes.get(problemInstance);
