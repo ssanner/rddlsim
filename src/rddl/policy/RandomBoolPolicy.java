@@ -16,6 +16,10 @@ import rddl.RDDL.*;
 
 public class RandomBoolPolicy extends Policy {
 	
+	public RandomBoolPolicy () {
+		
+	}
+	
 	public RandomBoolPolicy(String instance_name) {
 		super(instance_name);
 	}
