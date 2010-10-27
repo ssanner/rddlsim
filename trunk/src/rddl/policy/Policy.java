@@ -15,6 +15,9 @@ import rddl.RDDL.*;
 
 public abstract class Policy {
 	
+	public Policy() {
+		
+	}
 	public Policy(String instance_name) {
 		_sInstanceName = instance_name;
 	}

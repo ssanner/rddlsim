@@ -16,6 +16,10 @@ import rddl.RDDL.*;
 
 public class RandomEnumPolicy extends Policy {
 	
+	public RandomEnumPolicy () {
+		
+	}
+	
 	public RandomEnumPolicy(String instance_name) {
 		super(instance_name);
 	}

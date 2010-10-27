@@ -16,6 +16,10 @@ import rddl.RDDL.*;
 
 public class FixedBoolPolicy extends Policy {
 	
+	public FixedBoolPolicy () {
+		
+	}
+	
 	public FixedBoolPolicy(String instance_name) {
 		super(instance_name);
 	}
