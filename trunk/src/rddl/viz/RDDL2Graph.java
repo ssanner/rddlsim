@@ -140,7 +140,7 @@ public class RDDL2Graph {
 				
 				String interm_name = CleanFluentName(p + gfluent.toString());
 				g.addNode(interm_name, 1, "sandybrown", "ellipse", "filled");
-				m.putValue("Intermediate @ " + level, interm_name);
+				m.putValue("Intermediate @ Level " + level, interm_name);
 				
 				parents.clear();
 				cpf._exprEquals.collectGFluents(subs, _state, parents);
@@ -149,7 +149,7 @@ public class RDDL2Graph {
 				
 				_hmName2Dependents.put(interm_name, CleanFluentName(parents.toString()));
 				_hmName2Formula.put(interm_name, cpf._exprEquals.toString());
-				_hmName2Type.put(interm_name, "Intermediate @ " + level);
+				_hmName2Type.put(interm_name, "Intermediate @ Level " + level);
 				_hmName2ParamName.put(
 						interm_name, CleanFluentName("" + p + cpf._exprVarName._alTerms)); 
 				
@@ -323,9 +323,9 @@ public class RDDL2Graph {
 			String prev_level = "Current State and Actions";
 			for (Integer level : levels) {
 				if (_bStrictLevels) 
-					g.addUniLink(prev_level, "Intermediate @ " + level, "black", "invis", "");
-				g.addNode("Intermediate @ " + level, 1, "white", "plaintext", "bold");
-				prev_level = "Intermediate @ " + level;
+					g.addUniLink(prev_level, "Intermediate @ Level " + level, "black", "invis", "");
+				g.addNode("Intermediate @ Level " + level, 1, "white", "plaintext", "bold");
+				prev_level = "Intermediate @ Level " + level;
 			}
 			if (observations.size() > 1) { // will always contain default "Observations" node
 				g.addNode("Observations", 1, "white", "plaintext", "bold");		
@@ -356,6 +356,7 @@ public class RDDL2Graph {
 		_graph.genFormatDotFile(VIEWER_FILE);
 		DotViewer dv = new DotViewer() {
 			public void nodeClicked(String name) {
+				System.out.println("Lookup: '" + name + "'");
 				String dependents = _hmName2Dependents.get(name);
 				String formula    = _hmName2Formula.get(name);
 				String type       = _hmName2Type.get(name);
@@ -379,16 +380,19 @@ public class RDDL2Graph {
 		//RDDL rddl = parser.parse(new File("files/rddl/test/sysadmin.rddl"));
 		//RDDL rddl = parser.parse(new File("files/rddl/test/sysadmin_test.rddl"));
 		//RDDL rddl = parser.parse(new File("files/rddl/test/game_of_life.rddl"));
+		RDDL rddl = parser.parse(new File("files/rddl/test/game_of_life_stoch.rddl"));
 		//RDDL rddl = parser.parse(new File("files/rddl/test/sidewalk.rddl"));
-		RDDL rddl = parser.parse(new File("files/rddl/test/dbn_prop.rddl"));
+		//RDDL rddl = parser.parse(new File("files/rddl/test/dbn_prop.rddl"));
+		//RDDL rddl = parser.parse(new File("files/rddl/test/dbn_types_interm_po.rddl"));
 		//RDDL rddl = parser.parse(new File("files/rddl/test/sysadmin.rddl"));
 		//RDDL rddl = parser.parse(new File("files/rddl/test/traffic_binary_ctm.rddl"));
 		
 		// Get first instance name in file and create a simulator
 		String instance_name = rddl._tmInstanceNodes.firstKey();
 		RDDL2Graph r2g = new RDDL2Graph(rddl, instance_name, 
-				/*strict levels*/false, /*strict grouping*/false);
+//				/*strict levels*/false, /*strict grouping*/false);
 //				/*strict levels*/true, /*strict grouping*/true);
+				/*strict levels*/false, /*strict grouping*/true);
 		
 		// Reset, pass a policy, a visualization interface, a random seed, and simulate!
 		r2g.launchViewer(1024, 768);

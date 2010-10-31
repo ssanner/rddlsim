@@ -1,0 +1,84 @@
+////////////////////////////////////////////////////////////////////////
+// A simple 2-slice DBN (variables are not parameterized) exhibiting 
+// use of bools, ints, reals, enumerated types, intermediate variables,
+// and observation variables.
+//
+// Author: Scott Sanner (ssanner [at] gmail.com)
+////////////////////////////////////////////////////////////////////////
+domain prop_dbn2 {
+  	
+	requirements = { 
+		reward-deterministic, // Reward is a deterministic function
+		integer-valued,       // Uses integer variables
+		continuous,           // Uses continuous variables
+		multivalued,          // Uses enumerated variables
+		intermediate-nodes,   // Uses intermediate nodes
+		partially-observed    // Uses observation nodes 
+	};
+      	
+	// User-defined types
+	types {
+		enum_level : {@low, @medium, @high}; // An enumerated type
+	};
+
+	pvariables { 
+		p : { state-fluent,  bool, default = false };
+		q : { state-fluent,  bool, default = false };
+		r : { state-fluent,  bool, default = false };
+		 
+		i1 : { interm-fluent, int,        level = 1 };
+		i2 : { interm-fluent, enum_level, level = 2 };
+		
+		o1 : { observ-fluent, bool };
+		o2 : { observ-fluent, real };
+		
+		a : { action-fluent, bool, default = false }; 
+	};
+  
+	cpfs {
+		// Some standard Bernoulli conditional probability tables
+		p' = if (p ^ r) then Bernoulli(.9) else Bernoulli(.3);
+						
+		q' = if (q ^ r) then Bernoulli(.9) 
+						else if (a) then Bernoulli(.3) else Bernoulli(.8);
+
+		// KronDelta is like a DiracDelta, but for discrete data (boolean or int)
+		r' = if (~q) then KronDelta(r) else KronDelta(r <=> q);
+		
+		// Just set i1 to a count of true state variables
+		i1 = KronDelta(p + q + r); 
+		
+		// Choose a level with following probabilities
+		i2 = Discrete(enum_level, 
+						@low : if (i1 >= 2) then 0.5 else 0.2,
+						@medium : if (i1 >= 2) then 0.2 else 0.5,
+						@high : 0.3
+					);							
+		
+		// Note: parameter is in [0,1]
+		o1 = Bernoulli( (p + q + r)/3.0 ); 
+		
+		// Conditional linear stochastic equation
+		o2 = if (i2 == @high) 
+				then i1 + 3.0 + Normal(0.0, i1*i1)
+				else i1 + 1.0 + Normal(0.0, i1*i1/2.0);
+		
+	};
+    	
+    // A boolean functions as a 0/1 integer when a numerical value is needed
+	reward = p + q - r; 
+}
+        
+instance inst_dbn {
+
+	domain = prop_dbn2;	
+	init-state { 
+		p = true;  // could also just say 'p' by itself 
+		q = false; // default so unnecessary, could also say '~q' by itself
+		r;         // same as r = true
+	};
+  
+	max-nondef-actions = 1;
+	horizon  = 20;
+	discount = 0.9;
+}
