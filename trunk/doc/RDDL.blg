@@ -1,0 +1,45 @@
+This is BibTeX, Version 0.99c (Web2C 7.5.4)
+The top-level auxiliary file: RDDL.aux
+The style file: unsrt.bst
+Database file #1: RDDL.bib
+You've used 22 entries,
+            1791 wiz_defined-function locations,
+            566 strings with 6992 characters,
+and the built_in function-call counts, 4757 in all, are:
+= -- 425
+> -- 202
+< -- 5
++ -- 76
+- -- 54
+* -- 250
+:= -- 746
+add.period$ -- 65
+call.type$ -- 22
+change.case$ -- 26
+chr.to.int$ -- 0
+cite$ -- 22
+duplicate$ -- 235
+empty$ -- 490
+format.name$ -- 54
+if$ -- 1101
+int.to.chr$ -- 0
+int.to.str$ -- 22
+missing$ -- 12
+newline$ -- 109
+num.names$ -- 26
+pop$ -- 94
+preamble$ -- 1
+purify$ -- 0
+quote$ -- 0
+skip$ -- 123
+stack$ -- 0
+substring$ -- 224
+swap$ -- 65
+text.length$ -- 5
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 0
+warning$ -- 0
+while$ -- 43
+width$ -- 24
+write$ -- 236

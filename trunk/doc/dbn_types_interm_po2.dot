@@ -1,0 +1,211 @@
+digraph G {
+  graph [
+    ranksep = "2.00",
+    rankdir = LR,
+    bb = "0,0,1112,528",
+    ratio = auto,
+    fontsize = 16,
+    fontname = Helvetica,
+    size = "7.5,10"
+  ];
+
+  node [
+    fontsize = 16
+  ];
+
+  {
+    graph [
+      rank = same
+    ];
+
+    "Reward Function" [
+      shape = diamond,
+      fillcolor = firebrick1,
+      width = "3.3889",
+      style = filled,
+      pos = "442,256"
+    ];
+    "r'" [
+      fillcolor = gold,
+      style = filled,
+      pos = "442,310"
+    ];
+    "Next State and Reward" [
+      shape = plaintext,
+      fontstyle = bold,
+      fillcolor = white,
+      width = "2.1944",
+      style = "",
+      pos = "442,510"
+    ];
+    "p'" [
+      fillcolor = gold,
+      style = filled,
+      pos = "442,110"
+    ];
+    "q'" [
+      fillcolor = gold,
+      style = filled,
+      pos = "442,364"
+    ];
+  }
+  {
+    graph [
+      rank = same
+    ];
+
+    a [
+      shape = box,
+      fillcolor = olivedrab1,
+      style = filled,
+      pos = "88,364"
+    ];
+    "Current State and Actions" [
+      shape = plaintext,
+      fontstyle = bold,
+      fillcolor = white,
+      width = "2.4444",
+      style = "",
+      pos = "88,418"
+    ];
+    r [
+      fillcolor = lightblue,
+      style = filled,
+      pos = "88,229"
+    ];
+    q [
+      fillcolor = lightblue,
+      style = filled,
+      pos = "88,310"
+    ];
+    p [
+      fillcolor = lightblue,
+      style = filled,
+      pos = "88,142"
+    ];
+  }
+  {
+    graph [
+      rank = same
+    ];
+
+    o2 [
+      fillcolor = orangered,
+      style = filled,
+      pos = "1063,291"
+    ];
+    o1 [
+      fillcolor = orangered,
+      style = filled,
+      pos = "1063,156"
+    ];
+    Observations [
+      shape = plaintext,
+      fontstyle = bold,
+      fillcolor = white,
+      width = "1.3611",
+      style = "",
+      pos = "1063,345"
+    ];
+  }
+  {
+    graph [
+      rank = same
+    ];
+
+    "Intermediate @ Level 2" [
+      shape = plaintext,
+      fontstyle = bold,
+      fillcolor = white,
+      width = "2.25",
+      style = "",
+      pos = "789,18"
+    ];
+    i2 [
+      fillcolor = sandybrown,
+      style = filled,
+      pos = "789,456"
+    ];
+  }
+  {
+    graph [
+      rank = same
+    ];
+
+    "Intermediate @ Level 1" [
+      shape = plaintext,
+      fontstyle = bold,
+      fillcolor = white,
+      width = "2.25",
+      style = "",
+      pos = "442,456"
+    ];
+    i1 [
+      fillcolor = sandybrown,
+      style = filled,
+      pos = "442,202"
+    ];
+  }
+  p -> "p'" [
+    pos = "e,415.14,112.43 114.9,139.57 177.51,133.91 333.13,119.84 404.79,113.36"
+  ];
+  r -> o1 [
+    style = dashed,
+    pos = "e,1035.9,154.72 112.76,221.48 154.86,209.1 243.29,184.8 320,175 588.8,140.64 916.59,149.87 1025.7,154.29"
+  ];
+  r -> "p'" [
+    pos = "e,416.08,115.98 111.1,219.44 152.51,202.5 242.31,166.68 320,142 348.67,132.89 381.7,124.34 406.16,118.38"
+  ];
+  p -> i1 [
+    pos = "e,415.51,197.51 114.32,146.46 176.78,157.05 334.09,183.71 405.6,195.83"
+  ];
+  r -> i1 [
+    pos = "e,415.14,204.05 114.9,226.95 177.51,222.17 333.13,210.3 404.79,204.84"
+  ];
+  i2 -> o2 [
+    style = dashed,
+    pos = "e,1041.2,302.23 813.49,448.19 829.95,442.49 851.88,434.03 870,424 939.53,385.52 947.06,360.82 1014,318 1019.8,314.27 1026.2,310.53 1032.4,307.07"
+  ];
+  a -> "q'" [
+    pos = "e,414.72,364 115.19,364 177.87,364 332.6,364 404.35,364"
+  ];
+  r -> "Reward Function" [
+    pos = "e,361.39,249.85 114.9,231.05 164.54,234.84 272.65,243.08 351.02,249.06"
+  ];
+  q -> i1 [
+    pos = "e,415.6,206.91 111.42,300.79 152.95,284.69 242.44,251.04 320,229 348.48,220.91 381.28,213.77 405.69,208.87"
+  ];
+  r -> "q'" [
+    pos = "e,415.37,359.83 108.79,240.57 148.64,262.32 239,309.55 320,337 348.04,346.5 380.87,353.55 405.4,358.06"
+  ];
+  p -> "Reward Function" [
+    pos = "e,388.44,245.85 111.01,151.87 152.27,169.29 241.85,205.82 320,229 338.78,234.57 359.48,239.57 378.42,243.7"
+  ];
+  p -> o1 [
+    style = dashed,
+    pos = "e,1037.6,149.41 112.33,133.67 154.17,119.83 242.68,92.678 320,83 591.65,49 920.82,120.8 1027.7,146.96"
+  ];
+  i1 -> o2 [
+    style = dashed,
+    pos = "e,1036.4,287.19 468.68,205.82 567.51,219.99 912.87,269.48 1026.5,285.76"
+  ];
+  q -> "Reward Function" [
+    pos = "e,381.98,265.16 114.61,305.94 168.62,297.7 292.69,278.78 371.63,266.73"
+  ];
+  q -> o1 [
+    style = dashed,
+    pos = "e,1043.7,168.99 112.79,317.16 130.49,322.39 154.82,329.79 176,337 240.7,359.03 252.74,378.8 320,391 426.7,410.35 458.17,414.67 564,391 756.23,348 961.72,222.38 1035,174.67"
+  ];
+  q -> "q'" [
+    pos = "e,415.57,359.97 114.61,314.06 177.29,323.62 334.31,347.57 405.68,358.46"
+  ];
+  q -> "r'" [
+    pos = "e,414.72,310 115.19,310 177.87,310 332.6,310 404.35,310"
+  ];
+  i1 -> i2 [
+    pos = "e,777.85,439.41 469.24,203.61 495.05,206.13 534.17,212.56 564,229 657.81,280.72 738.09,383.53 771.9,430.96"
+  ];
+  r -> "r'" [
+    pos = "e,416.28,304.39 113.73,235.08 156.51,245.18 244.99,265.97 320,283 349.06,289.6 382.06,296.89 406.41,302.23"
+  ];
+}

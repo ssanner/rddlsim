@@ -1,0 +1,121 @@
+digraph G {
+  graph [
+    ranksep = "2.00",
+    rankdir = LR,
+    bb = "0,0,564,252",
+    ratio = auto,
+    fontsize = 16,
+    fontname = Helvetica,
+    size = "7.5,10"
+  ];
+
+  node [
+    fontsize = 16
+  ];
+
+  {
+    graph [
+      rank = same
+    ];
+
+    "Reward Function" [
+      shape = diamond,
+      fillcolor = firebrick1,
+      width = "3.3889",
+      style = filled,
+      pos = "442,126"
+    ];
+    "r'" [
+      fillcolor = gold,
+      style = filled,
+      pos = "442,180"
+    ];
+    "Next State and Reward" [
+      shape = plaintext,
+      fontstyle = bold,
+      fillcolor = white,
+      width = "2.1944",
+      style = "",
+      pos = "442,18"
+    ];
+    "p'" [
+      fillcolor = gold,
+      style = filled,
+      pos = "442,72"
+    ];
+    "q'" [
+      fillcolor = gold,
+      style = filled,
+      pos = "442,234"
+    ];
+  }
+  {
+    graph [
+      rank = same
+    ];
+
+    a [
+      shape = box,
+      fillcolor = olivedrab1,
+      style = filled,
+      pos = "88,234"
+    ];
+    "Current State and Actions" [
+      shape = plaintext,
+      fontstyle = bold,
+      fillcolor = white,
+      width = "2.4444",
+      style = "",
+      pos = "88,18"
+    ];
+    r [
+      fillcolor = lightblue,
+      style = filled,
+      pos = "88,126"
+    ];
+    q [
+      fillcolor = lightblue,
+      style = filled,
+      pos = "88,180"
+    ];
+    p [
+      fillcolor = lightblue,
+      style = filled,
+      pos = "88,72"
+    ];
+  }
+  a -> "q'" [
+    pos = "e,414.72,234 115.19,234 177.87,234 332.6,234 404.35,234"
+  ];
+  q -> "Reward Function" [
+    pos = "e,381.98,135.16 114.61,175.94 168.62,167.7 292.69,148.78 371.63,136.73"
+  ];
+  p -> "Reward Function" [
+    pos = "e,381.98,116.84 114.61,76.059 168.62,84.298 292.69,103.22 371.63,115.27"
+  ];
+  r -> "Reward Function" [
+    pos = "e,320.05,126 115.19,126 156.71,126 238.62,126 310.05,126"
+  ];
+  r -> "r'" [
+    pos = "e,415.57,175.97 114.61,130.06 177.29,139.62 334.31,163.57 405.68,174.46"
+  ];
+  q -> "q'" [
+    pos = "e,415.57,229.97 114.61,184.06 177.29,193.62 334.31,217.57 405.68,228.46"
+  ];
+  p -> "p'" [
+    pos = "e,414.72,72 115.19,72 177.87,72 332.6,72 404.35,72"
+  ];
+  r -> "q'" [
+    pos = "e,415.55,229.26 112.79,133.16 130.49,138.39 154.82,145.79 176,153 240.7,175.03 254.47,187.57 320,207 348.39,215.42 381.19,222.54 405.63,227.35"
+  ];
+  r -> "p'" [
+    pos = "e,415.57,76.032 114.61,121.94 177.29,112.38 334.31,88.427 405.68,77.54"
+  ];
+  q -> "r'" [
+    pos = "e,414.72,180 115.19,180 177.87,180 332.6,180 404.35,180"
+  ];
+  "Current State and Actions" -> "Next State and Reward" [
+    style = invis,
+    pos = "e,362.85,18 176.42,18 230.19,18 298.66,18 352.61,18"
+  ];
+}
