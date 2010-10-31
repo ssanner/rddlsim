@@ -59,14 +59,14 @@ domain prop_dbn2 {
 		o1 = Bernoulli( (p + q + r)/3.0 ); 
 		
 		// Conditional linear stochastic equation
-		o2 = if (i2 == @high) 
-				then i1 + 3.0 + Normal(0.0, i1*i1)
-				else i1 + 1.0 + Normal(0.0, i1*i1/2.0);
-		
+		o2 = switch (i2) {
+				case @low    : i1 + 1.0 + Normal(0.0, i1*i1),  
+				case @medium : i1 + 2.0 + Normal(0.0, i1*i1/2.0), 
+				case @high   : i1 + 3.0 + Normal(0.0, i1*i1/4.0) };
 	};
     	
     // A boolean functions as a 0/1 integer when a numerical value is needed
-	reward = p + q - r; 
+	reward = p + q - r + 5*(i2 == @high); 
 }
         
 instance inst_dbn {
