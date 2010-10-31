@@ -104,9 +104,11 @@ public class Simulator {
 		//RDDL rddl = parser.parse(new File("files/rddl/test/sysadmin.rddl"));
 		//RDDL rddl = parser.parse(new File("files/rddl/test/sysadmin_test.rddl"));
 		//RDDL rddl = parser.parse(new File("files/rddl/test/game_of_life.rddl"));
+		RDDL rddl = parser.parse(new File("files/rddl/test/game_of_life_stoch.rddl"));
 		//RDDL rddl = parser.parse(new File("files/rddl/test/sidewalk.rddl"));
 		//RDDL rddl = parser.parse(new File("files/rddl/test/dbn_prop.rddl"));
-		RDDL rddl = parser.parse(new File("files/rddl/test/traffic_binary_ctm.rddl"));
+		//RDDL rddl = parser.parse(new File("files/rddl/test/dbn_types_interm_po.rddl"));
+		//RDDL rddl = parser.parse(new File("files/rddl/test/traffic_binary_ctm.rddl"));
 	
 		// Get first instance name in file and create a simulator
 		String instance_name = rddl._tmInstanceNodes.firstKey();
@@ -119,9 +121,9 @@ public class Simulator {
 //				new FixedBoolPolicy(instance_name), 
 //				new GameOfLifeScreenDisplay(true),
 //				new SidewalkGraphicsDisplay(200),
-//				new GenericScreenDisplay(true),
+				new GenericScreenDisplay(true),
 //				new SysAdminScreenDisplay(true),
-				new TrafficDisplay(300),
+//				new TrafficDisplay(300),
 				123456);
 		System.out.println("==> " + r);
 	}

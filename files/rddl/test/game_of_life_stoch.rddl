@@ -1,13 +1,13 @@
 ////////////////////////////////////////////////////////////////////
 // A simple DBN to encode Conway's cellular automata "game of life" 
-// on a grid.  One gets a reward for generating patterns that keep 
-// the most cells alive.
+// on a grid with some additional rules.  One gets a reward for 
+// generating patterns that keep the most cells alive.
 //
 // Author: Scott Sanner (ssanner [at] gmail.com)
 ////////////////////////////////////////////////////////////////////
 domain game_of_life {
   	
-	requirements = { cpf-deterministic, reward-deterministic };
+	requirements = { reward-deterministic };
 
 	types { 
 		x_pos : object;
@@ -15,32 +15,55 @@ domain game_of_life {
 	};
       	
 	pvariables { 
+		// Probability cell topology non-fluents (unchanging)
+		PROB_REGENERATE                   : { non-fluent, real, default = 0.5 };
 		NEIGHBOR(x_pos,y_pos,x_pos,y_pos) : { non-fluent, bool, default = false };
-		alive(x_pos,y_pos) : { state-fluent,  bool, default = false };
-		count-neighbors(x_pos,y_pos) : { interm-fluent, int, level = 1 }; 
-		set(x_pos,y_pos)   : { action-fluent, bool, default = false };
+		
+		// State, intermediate and action fluents
+		alive(x_pos,y_pos)                : { state-fluent,  bool, default = false };
+		count-neighbors(x_pos,y_pos)      : { interm-fluent, int, level = 1 }; 
+		set(x_pos,y_pos)                  : { action-fluent, bool, default = false };
 	};
   
-	cdfs {
+	cpfs {
 		// Conway's game of life rules (from Wikipedia):
 		// 1. Any live cell with fewer than two live neighbors dies, as if caused by under-population.
    		// 2. Any live cell with more than three live neighbors dies, as if by overcrowding.
    		// 3. Any live cell with two or three live neighbors lives on to the next generation.
    		// 4. Any dead cell with exactly three live neighbors becomes a live cell, as if by reproduction.
    		//
-   		// For interactivity: we allow an agent to explicitly set different cells.
+   		// Scott's additional rules for RDDL:
+   		// 1. To make stochastic: we'll make the above rules hold with PROB_REGENERATE certainty
+   		// 2. To add complexity:  if all cells at same x-value are dead, a cell randomly regenerates
+   		// 3. For interactivity:  we allow an agent to explicitly set different cells (concurrently)
 		
-		count-neighbors(?x,?y) = [sum_{?x2 : x_pos, ?y2 : y_pos} NEIGHBOR(?x,?y,?x2,?y2) ^ alive(?x2,?y2)];
+		// It's useful to compute the alive-neighbor count for each cell and store it in an intermediate variable
+		count-neighbors(?x,?y) = KronDelta(sum_{?x2 : x_pos, ?y2 : y_pos} [NEIGHBOR(?x,?y,?x2,?y2) ^ alive(?x2,?y2)]);
 
-		alive'(?x,?y) = [alive(?x,?y) ^ (count-neighbors(?x,?y) >= 2) ^ (count-neighbors(?x,?y) <= 3)]
-						| [~alive(?x,?y) ^ (count-neighbors(?x,?y) == 3)]
-						| set(?x,?y);  		
+		// Stochastically determine whether cell (?x,?y) is alive in next state
+		alive'(?x,?y) = if (forall_{?y2 : y_pos} ~alive(?x,?y2))
+							then Bernoulli(PROB_REGENERATE) // If all cells dead with same ?x, randomly regenerate board
+
+						else if ([alive(?x,?y) ^ (count-neighbors(?x,?y) >= 2) ^ (count-neighbors(?x,?y) <= 3)]
+						    | [~alive(?x,?y) ^ (count-neighbors(?x,?y) == 3)]
+						    | set(?x,?y))
+						then Bernoulli(PROB_REGENERATE)
+						else Bernoulli(1.0 - PROB_REGENERATE);
 	};
-    	
+    
+    // Reward is number of alive cells
 	reward = sum_{?x : x_pos, ?y : y_pos} alive(?x,?y);
+	
+	state-action-constraints {
+		// Assertion: ensure PROB_REGENERATE is a valid probability
+		PROB_REGENERATE >= 0.0 ^ PROB_REGENERATE <= 1; 
+		
+		// Precondition: let's say we should not set a cell if it is already alive
+		forall_{?x : x_pos, ?y : y_pos} alive(?x,?y) => ~set(?x,?y);
+	};
 }
    
-non-fluents game2 {
+non-fluents game2x2 {
 
 	domain = game_of_life;
 	
@@ -50,6 +73,8 @@ non-fluents game2 {
 	};
   
 	non-fluents { 
+		PROB_REGENERATE = 0.9;
+		
 		NEIGHBOR(x1,y1,x1,y2);
 		NEIGHBOR(x1,y1,x2,y1);
 		NEIGHBOR(x1,y1,x2,y2);
@@ -68,7 +93,7 @@ non-fluents game2 {
 	};
 }
         
-non-fluents game3 {
+non-fluents game3x3 {
 
 	domain = game_of_life;
 	
@@ -132,13 +157,11 @@ non-fluents game3 {
 instance is1 {
 
 	domain = game_of_life;	
-	non-fluents = game2;
+	non-fluents = game2x2;
+	
 	init-state { 
 		alive(x1,y1); 
-		alive(x1,y3); 
 		alive(x2,y2); 
-		alive(x3,y1); 
-		alive(x3,y3); 
 	};
   
 	max-nondef-actions = 1;
