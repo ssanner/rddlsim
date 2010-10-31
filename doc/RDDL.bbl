@@ -1,0 +1,131 @@
+\begin{thebibliography}{10}
+
+\bibitem{dbn}
+Thomas Dean and Keiji Kanazawa.
+\newblock A model for reasoning about persistence and causation.
+\newblock {\em Computational Intelligence}, 5(3):142--150, 1989.
+
+\bibitem{influence_diagrams}
+Ronald~A. Howard and James~E. Matheson.
+\newblock Influence diagrams.
+\newblock In Ronald~A. Howard and James~E. Matheson, editors, {\em Readings on
+  the Principles and Applications of Decision Analysis}. Strategic Decision
+  Group, Menlo Park, CA, 1984.
+
+\bibitem{pddl_family}
+Malte Helmert.
+\newblock {PDDL} resources:
+  \url{http://www.cs.cmu.edu/~lorens/papers/ppddl.pdf}, 2009.
+
+\bibitem{ppddl}
+Hakan Younes and Michael Littman.
+\newblock {PPDDL}: {T}he probabilistic planning domain definition language:
+  \url{http://www.cs.cmu.edu/~lorens/papers/ppddl.pdf}, 2004.
+
+\bibitem{ctm}
+Carlos Daganzo.
+\newblock The cell transmission model: Network traffic.
+\newblock Institute of transportation studies, research reports, working
+  papers, proceedings, Institute of Transportation Studies, UC Berkeley, 1994.
+
+\bibitem{pddl21}
+Maria Fox and Derek Long.
+\newblock {PDDL2.1}: An extension to {PDDL} for expressing temporal planning
+  domains.
+\newblock {\em Journal of Artificial Intelligence Research}, 20(1):61--124,
+  2003.
+
+\bibitem{stochastic_programs}
+D.~Koller, D.~McAllester, and A.~Pfeffer.
+\newblock Effective {B}ayesian inference for stochastic programs.
+\newblock In {\em Proceedings of the 14th National Conference on Artificial
+  Intelligence (AAAI)}, pages 740--747, 1997.
+
+\bibitem{spudd}
+Jesse Hoey, Robert St-Aubin, Alan Hu, and Craig Boutilier.
+\newblock {SPUDD}: Stochastic planning using decision diagrams.
+\newblock In {\em Uncertainty in Artificial Intelligence ({UAI-99})}, pages
+  279--288, Stockholm, 1999.
+
+\bibitem{pascal_thesis}
+Pascal Poupart.
+\newblock {\em Exploiting Structure to Efficiently Solve Large Scale Partially
+  Observable Markov Decision Processes}.
+\newblock PhD thesis, Department of Computer Science, University of Toronto,
+  Toronto, Canada, 2005.
+
+\bibitem{sym_perseus_code}
+Pascal Poupart.
+\newblock Symbolic perseus code repository, 2005.
+
+\bibitem{fopi03}
+David Poole.
+\newblock First-order probabilistic inference.
+\newblock In {\em IJCAI}, pages 985--991, 2003.
+
+\bibitem{fomdp}
+Craig Boutilier, Ray Reiter, and Bob Price.
+\newblock Symbolic dynamic programming for first-order {MDPs}.
+\newblock In {\em {IJCAI-01}}, pages 690--697, Seattle, 2001.
+
+\bibitem{ffomdp}
+Scott Sanner and Craig Boutilier.
+\newblock Approximate solution techniques for factored first-order {MDP}s.
+\newblock In {\em Proceedings of the Seventeenth International Conference on
+  Automated Planning and Scheduling ({ICAPS} 07)}, 2007.
+
+\bibitem{fo_pomdp}
+Scott Sanner and Kristian Kersting.
+\newblock Symbolic dynamic programming for first-order po{MDP}s.
+\newblock In {\em In Proceedings of the 24th AAAI Conference on Artificial
+  Intelligence ({AAAI-10})}, Atlanta, Georgia, July 19-23 2010. AAAI Press.
+
+\bibitem{pddl12}
+Drew McDermott, Malik Ghallab, Adele Howe, Craig Knoblock, Ashwin Ram, Manuela
+  Veloso, Daniel Weld, and David Wilkins.
+\newblock {PDDL} -- the planning domain definition language -- version 1.2.
+\newblock Technical report, Yale Center for Computational Vision and Control,
+  October 1998.
+
+\bibitem{pddl22}
+Stefan Edelkamp and J\"{o}rg Hoffmann.
+\newblock {PDDL2.2}: The language for the classical part of {IPC}-4.
+\newblock Technical report, Albert-Ludwigs-Universität Freiburg, Institut für
+  Informatik, January 2004.
+
+\bibitem{pddl3}
+Alfonso Gerevini and Derek Long.
+\newblock Plan constraints and preferences in {PDDL}3.
+\newblock Technical report, Dipartimento di Elettronica per l'Automazione,
+  Università degli Studi di Brescia, August 2005.
+
+\bibitem{sutton_options}
+Richard~S. Sutton, Doina Precup, and Satinder~P. Singh.
+\newblock Between mdps and semi-mdps: A framework for temporal abstraction in
+  reinforcement learning.
+\newblock {\em Artificial Intelligence}, 112(1-2):181--211, 1999.
+
+\bibitem{gdl}
+Nathaniel Love, Timothy Hinrichs, David Haley, Eric Schkufza, and Michael
+  Genesereth.
+\newblock General game playing: {Game Description Language} specification.
+\newblock Technical report, Stanford University Logic Group, March 2008.
+
+\bibitem{functional_strips}
+Héctor Geffner.
+\newblock Functional strips: A more flexible language for planning and problem
+  solving.
+\newblock In Jack Minker, editor, {\em Logic-based Artificial Intelligence},
+  pages 188--209. Kluwer, 2000.
+
+\bibitem{rddlsim}
+Scott Sanner and Sungwook Yoon.
+\newblock rddlsim {RDDL} simulator: \url{http://code.google.com/p/rddlsim/},
+  2010.
+
+\bibitem{game_of_life}
+M.~Gardner.
+\newblock Column: Mathematical games.
+\newblock {\em Scientific American}, October 1970.
+
+\end{thebibliography}
