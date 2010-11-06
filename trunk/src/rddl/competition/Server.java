@@ -279,7 +279,8 @@ public class Server implements Runnable {
 	void resetState () {
 		state.init(nonFluents != null ? nonFluents._hmObjects : null, instance._hmObjects, 
 				domain._hmTypes, domain._hmPVariables, domain._hmCPF,
-				instance._alInitState, nonFluents == null ? null : nonFluents._alNonFluents);
+				instance._alInitState, nonFluents == null ? null : nonFluents._alNonFluents,
+				domain._alStateConstraints, instance._nNonDefActions);
 	}
 	
 	static Object getValue(String pname, String pvalue, State state) {

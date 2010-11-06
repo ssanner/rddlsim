@@ -13,6 +13,7 @@ import java.util.*;
 
 import rddl.*;
 import rddl.RDDL.*;
+import util.Permutation;
 
 public class RandomBoolPolicy extends Policy {
 	
@@ -31,12 +32,44 @@ public class RandomBoolPolicy extends Policy {
 		
 		// Get term instantations for that action and select *one*
 		ArrayList<ArrayList<LCONST>> inst = s.generateAtoms(p);
-		ArrayList<LCONST> terms = inst.get(new Random().nextInt(inst.size()));
+		int[] index_permutation = Permutation.permute(inst.size(), _random);
+		ArrayList<PVAR_INST_DEF> actions = new ArrayList<PVAR_INST_DEF>();
+
+		boolean passed_constraints = false;
+		for (int i = 0; i < index_permutation.length; i++) {
+			ArrayList<LCONST> terms = inst.get(index_permutation[i]);
+			actions.clear();
+			actions.add(new PVAR_INST_DEF(p._sPVarName, new Boolean(true), terms));
+			passed_constraints = true;
+			try {
+				s.checkStateActionConstraints(actions);
+			} catch (EvalException e) {
+				passed_constraints = false;
+				System.out.println(actions + " : " + e);
+			}
+			if (passed_constraints)
+				break;
+		}
+		
+		// Check if no single action passed constraint
+		if (!passed_constraints) {
+			// Try empty action
+			actions.clear();
+			try {
+				s.checkStateActionConstraints(actions);
+			} catch (EvalException e) {
+				System.out.println(actions + " : " + e);
+				throw new EvalException("No actions (even empty) satisfied state constraints!");
+			}
+		}
+		
+		// Test maxNondefActions by setting all actions to true
+		//actions.clear();
+		//for (int i = 0; i < inst.size(); i++) {
+		//	actions.add(new PVAR_INST_DEF(p._sPVarName, new Boolean(true), inst.get(i)));
+		//}
 		
 		// Generate the action list
-		PVAR_INST_DEF d = new PVAR_INST_DEF(p._sPVarName, new Boolean(true), terms);
-		ArrayList<PVAR_INST_DEF> actions = new ArrayList<PVAR_INST_DEF>();
-		actions.add(d);
 		return actions;
 	}
 

@@ -42,29 +42,54 @@ You can pass up to 10 arguments to these scripts as required.
 Basic RDDLSim Usage
 ===================
 
-At the current time, users of RDDLSim will probably want to use
-the following RDDLSim command line utilities:
+We currently provide the following rddlsim command line utilities:
 
     Validating RDDL Syntax: 
 
-        rddl.parser.parser [filename]
+        rddl.parser.parser filename
+        
         (e.g., files/rddl/test/sysadmin.rddl for filename)
 
     Running the RDDL Simulator Standalone:
 
-        rddl.sim.Simulator
-        (see main() method for examples)
-
-    Running the RDDL Server and Client:
-
-        rddl.competition.Client
-        rddl.competition.Server
-        (see main() methods for parameters)
+        rddl.sim.Simulator RDDL-file policy-class-name instance-name [state-viz-class-name]
+        
+        (n.b., rddl.viz.GenericScreenDisplay is default for state-viz-class-name)
 
     Visualizing the RDDL DBN:
 
-        rddl.viz.RDDL2Graph
-        (see main() method for examples)
+        rddl.viz.RDDL2Graph RDDL-file instance-name
+        
+        (n.b., requires GraphViz, installation details at end of this file)
+
+    Running the RDDL Server and Client: [command line parameters subject to change]
+    
+        rddl.competition.Server RDDL-file [port-number]
+        rddl.competition.Client RDDL-file host-name client-name policy-class-name [port-number]
+        
+        n.b., (1) default port number is 2323
+        	  (2) policy-class-name:
+        	       ...examples: rddl.policy.RandomBoolPolicy or rddl.policy.RandomEnumPolicy 
+        	       ...any policy which derives from rddl.Policy, including any classes *you* write
+        	       ...for *your* client, you need only provide a policy derived from rddl.Policy
+        
+	Examples (run from rddlsim directory, ./run for UNIX/Cygwin, run.bat for Windows):
+		
+		./run rddl.parser.parser files/rddl/test/sysadmin.rddl 
+		./run rddl.parser.parser files/rddl/test/game_of_life.rddl 
+	
+		./run rddl.sim.Simulator files/rddl/test/dbn_prop.rddl rddl.policy.RandomBoolPolicy inst_dbn
+		./run rddl.sim.Simulator files/rddl/test/game_of_life.rddl rddl.policy.RandomBoolPolicy is1 rddl.viz.GameOfLifeScreenDisplay
+		./run rddl.sim.Simulator files/rddl/test/sysadmin.rddl rddl.policy.RandomBoolPolicy is1 rddl.viz.SysAdminScreenDisplay
+		./run rddl.sim.Simulator files/rddl/test/sidewalk.rddl rddl.policy.RandomEnumPolicy is2 rddl.viz.SidewalkGraphicsDisplay
+		./run rddl.sim.Simulator files/rddl/test/traffic_binary_ctm.rddl rddl.policy.RandomBoolPolicy is1 rddl.viz.TrafficDisplay
+
+		./run rddl.viz.RDDL2Graph files/rddl/test/dbn_prop.rddl inst_dbn
+		./run rddl.viz.RDDL2Graph files/rddl/test/dbn_types_interm_po.rddl inst_dbn
+		./run rddl.viz.RDDL2Graph files/rddl/test/game_of_life.rddl is1
+
+		./run rddl.competition.Server files/rddl/test/game_of_life.rddl
+		./run rddl.competition.Client files/rddl/test/game_of_life.rddl localhost MyClientName rddl.policy.RandomBoolPolicy
 
 
 Modifying the RDDL Language

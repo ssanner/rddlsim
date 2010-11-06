@@ -132,7 +132,7 @@ non-fluents game3 {
 instance is1 {
 
 	domain = game_of_life;	
-	non-fluents = game2;
+	non-fluents = game3;
 	init-state { 
 		alive(x1,y1); 
 		alive(x1,y3); 

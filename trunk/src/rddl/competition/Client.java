@@ -110,7 +110,8 @@ public class Client {
 		
 		double timeLeft = 0;
 		try {
-			Class c = Class.forName("rddl.policy." + args[3]);  
+			// Cannot assume always in rddl.policy
+			Class c = Class.forName(args[3]);  
 			rddl = parser.parse(new File(args[0]));
 			if ( args.length > 4 ) {
 				port = Integer.valueOf(args[4]);
@@ -138,7 +139,8 @@ public class Client {
 			}
 			state.init(nonFluents != null ? nonFluents._hmObjects : null, instance._hmObjects,
 					domain._hmTypes, domain._hmPVariables, domain._hmCPF,
-					instance._alInitState, nonFluents == null ? null : nonFluents._alNonFluents);
+					instance._alInitState, nonFluents == null ? null : nonFluents._alNonFluents,
+					domain._alStateConstraints, instance._nNonDefActions);
 			
 			/** Obtain an address object of the server */
 			InetAddress address = InetAddress.getByName(host);
@@ -179,7 +181,8 @@ public class Client {
 											   (double) RUNTIME.totalMemory())) + " ]\n");
 				state.init(nonFluents != null ? nonFluents._hmObjects : null, instance._hmObjects,
 						domain._hmTypes, domain._hmPVariables, domain._hmCPF,
-						instance._alInitState, nonFluents == null ? null : nonFluents._alNonFluents);
+						instance._alInitState, nonFluents == null ? null : nonFluents._alNonFluents,
+						domain._alStateConstraints, instance._nNonDefActions);
 				msg = createXMLRoundRequest();
 				Server.sendOneMessage(osw, msg);
 				isrc = Server.readOneMessage(isr);

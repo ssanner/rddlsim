@@ -21,6 +21,10 @@ import rddl.RDDL.TYPE_NAME;
 
 public class TrafficDisplay extends StateViz {
 
+	public TrafficDisplay() {
+		_nTimeDelay = 200; // in milliseconds
+	}
+
 	public TrafficDisplay(int time_delay_per_frame) {
 		_nTimeDelay = time_delay_per_frame; // in milliseconds
 	}

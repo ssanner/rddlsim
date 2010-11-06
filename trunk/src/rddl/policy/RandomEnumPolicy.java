@@ -24,6 +24,8 @@ public class RandomEnumPolicy extends Policy {
 		super(instance_name);
 	}
 
+	// TODO: does not necessarily respect state constraints, so may generate
+	//       illegal actions, should fix in future
 	public ArrayList<PVAR_INST_DEF> getActions(State s) throws EvalException {
 		
 		// Get an action (assuming all actions are enum type)

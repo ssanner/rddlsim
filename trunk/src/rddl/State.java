@@ -1,6 +1,7 @@
 /**
  * RDDL: Main state representation and transition function 
- *       computation methods
+ *       computation methods; this class requires everything
+ *       to simulate a RDDL domain instance.
  * 
  * @author Scott Sanner (ssanner@gmail.com)
  * @version 10/10/10
@@ -47,6 +48,10 @@ public class State {
 	public HashMap<PVAR_NAME,HashMap<ArrayList<LCONST>,Object>> _interm;
 	public HashMap<PVAR_NAME,HashMap<ArrayList<LCONST>,Object>> _observ;
 
+	// Constraints
+	public ArrayList<BOOL_EXPR> _alConstraints;
+	public int _nMaxNondefActions = -1;
+	
 	// Temporarily holds next state while it is being computed
 	public HashMap<PVAR_NAME,HashMap<ArrayList<LCONST>,Object>> _nextState;
 
@@ -56,11 +61,15 @@ public class State {
 					 HashMap<PVAR_NAME,PVARIABLE_DEF> pvariables,
 					 HashMap<PVAR_NAME,CPF_DEF> cpfs,
 					 ArrayList<PVAR_INST_DEF> init_state,
-					 ArrayList<PVAR_INST_DEF> nonfluents) {
+					 ArrayList<PVAR_INST_DEF> nonfluents,
+					 ArrayList<BOOL_EXPR> state_action_constraints,
+					 int max_nondef_actions) {
 		
 		_hmPVariables = pvariables;
 		_hmTypes = typedefs;
 		_hmCPFs = cpfs;
+		_alConstraints = state_action_constraints;
+		_nMaxNondefActions = max_nondef_actions;
 		
 		// Map object class name to list
 		_hmObject2Consts = new HashMap<TYPE_NAME,ArrayList<LCONST>>();
@@ -123,10 +132,32 @@ public class State {
 			setPVariables(_nonfluents, nonfluents);
 	}
 
+	public void checkStateActionConstraints(ArrayList<PVAR_INST_DEF> actions)  
+		throws EvalException {
+		
+		// Clear then set the actions
+		for (PVAR_NAME p : _actions.keySet())
+			_actions.get(p).clear();
+		int non_def = setPVariables(_actions, actions);
+
+		// Check max-nondef actions
+		if (non_def > _nMaxNondefActions)
+			throw new EvalException("Number of non-default actions (" + non_def + 
+					") exceeds limit (" + _nMaxNondefActions + ")");
+		
+		// Check state-action constraints
+		HashMap<LVAR,LCONST> subs = new HashMap<LVAR,LCONST>();
+		for (BOOL_EXPR constraint : _alConstraints) {
+			// satisfied must be true if get here
+			if (! (Boolean)constraint.sample(subs, this, null) )
+				throw new EvalException("Violated state-action constraint: " + constraint);
+		}
+	}
+		
 	public void computeNextState(ArrayList<PVAR_INST_DEF> actions, Random r) 
 		throws EvalException {
 
-		// Set the actions
+		// Clear then set the actions
 		for (PVAR_NAME p : _actions.keySet())
 			_actions.get(p).clear();
 		setPVariables(_actions, actions);
@@ -233,7 +264,7 @@ public class State {
 		}
 	}
 	
-	public void advanceNextState() {
+	public void advanceNextState() throws EvalException {
 		HashMap<PVAR_NAME,HashMap<ArrayList<LCONST>,Object>> temp = _state;
 		_state = _nextState;
 		_nextState = temp;
@@ -247,9 +278,10 @@ public class State {
 			_observ.get(p).clear();
 	}
 	
-	public void setPVariables(HashMap<PVAR_NAME,HashMap<ArrayList<LCONST>,Object>> assign, 
+	public int setPVariables(HashMap<PVAR_NAME,HashMap<ArrayList<LCONST>,Object>> assign, 
 							  ArrayList<PVAR_INST_DEF> src) {
 
+		int non_def = 0;
 		for (PVAR_INST_DEF def : src) {
 			
 			// Get the assignments for this PVAR
@@ -264,9 +296,13 @@ public class State {
 				def_value = ((PVARIABLE_ACTION_DEF)pvar_def)._oDefValue;
 			
 			// Set value if non-default
-			if (!def_value.equals(def._oValue))
+			if (!def_value.equals(def._oValue)) {
 				pred_assign.put(def._alTerms, def._oValue);
+				++non_def;
+			}
 		}
+		
+		return non_def;
 	}
 	
 	public Object getPVariableAssign(PVAR_NAME p, ArrayList<LCONST> terms) {

@@ -32,6 +32,9 @@ public class Simulator {
 
 		// Set up instance, nonfluent, and domain information
 		_i = rddl._tmInstanceNodes.get(instance_name);
+		if (_i == null)
+			throw new Exception("Instance '" + instance_name + 
+					"' not found, choices are " + rddl._tmInstanceNodes.keySet());
 		_n = null;
 		if (_i._sNonFluents != null)
 			_n = rddl._tmNonFluentNodes.get(_i._sNonFluents);
@@ -50,7 +53,8 @@ public class Simulator {
 		//		"\n  NonFluents: " + _n._alNonFluents);
 		_state.init(_n != null ? _n._hmObjects : null, _i._hmObjects,  
 				_d._hmTypes, _d._hmPVariables, _d._hmCPF,
-				_i._alInitState, _n == null ? null : _n._alNonFluents);
+				_i._alInitState, _n == null ? null : _n._alNonFluents,
+				_d._alStateConstraints, _i._nNonDefActions);
 	}
 	
 	//////////////////////////////////////////////////////////////////////////////
@@ -73,6 +77,9 @@ public class Simulator {
 			
 			// Get action from policy
 			ArrayList<PVAR_INST_DEF> action_list = p.getActions(_state);
+			
+			// Check state-action constraints
+			_state.checkStateActionConstraints(action_list);
 			
 			// Compute next state (and all intermediate / observation variables)
 			_state.computeNextState(action_list, _rand);
@@ -97,34 +104,52 @@ public class Simulator {
 	
 	//////////////////////////////////////////////////////////////////////////////
 	
-	/** Test on SysAdmin **/
 	public static void main(String[] args) throws Exception {
 		
-		// Parse file
-		//RDDL rddl = parser.parse(new File("files/rddl/test/sysadmin.rddl"));
-		//RDDL rddl = parser.parse(new File("files/rddl/test/sysadmin_test.rddl"));
-		//RDDL rddl = parser.parse(new File("files/rddl/test/game_of_life.rddl"));
-		//RDDL rddl = parser.parse(new File("files/rddl/test/game_of_life_stoch.rddl"));
-		//RDDL rddl = parser.parse(new File("files/rddl/test/sidewalk.rddl"));
-		//RDDL rddl = parser.parse(new File("files/rddl/test/dbn_prop.rddl"));
-		RDDL rddl = parser.parse(new File("files/rddl/test/dbn_types_interm_po.rddl"));
-		//RDDL rddl = parser.parse(new File("files/rddl/test/traffic_binary_ctm.rddl"));
-	
-		// Get first instance name in file and create a simulator
-		String instance_name = rddl._tmInstanceNodes.firstKey();
-		Simulator s = new Simulator(rddl, instance_name);
+		//try {	
+			if (args.length < 3 || args.length > 4) {
+				System.out.println("usage: RDDL-file policy-class-name instance-name [state-viz-class-name]");
+				System.exit(1);
+			}
+			String rddl_file = args[0];
+			String policy_class_name = args[1];
+			String instance_name = args[2];
+			String state_viz_class_name = "rddl.viz.GenericScreenDisplay";
+			if (args.length == 4)
+				state_viz_class_name = args[3];
+			
+			RDDL rddl = parser.parse(new File(rddl_file));
+			Simulator sim = new Simulator(rddl, instance_name);
+			Policy pol = (Policy)Class.forName(policy_class_name).newInstance();
+			StateViz viz = (StateViz)Class.forName(state_viz_class_name).newInstance();
 		
-		// Reset, pass a policy, a visualization interface, a random seed, and simulate!
-		Result r = s.run(
-				new RandomBoolPolicy(instance_name),
+			// Parse file
+			//RDDL rddl = parser.parse(new File("files/rddl/test/sysadmin.rddl"));
+			//RDDL rddl = parser.parse(new File("files/rddl/test/sysadmin_test.rddl"));
+			//RDDL rddl = parser.parse(new File("files/rddl/test/game_of_life.rddl"));
+			//RDDL rddl = parser.parse(new File("files/rddl/test/game_of_life_stoch.rddl"));
+			//RDDL rddl = parser.parse(new File("files/rddl/test/sidewalk.rddl"));
+			//RDDL rddl = parser.parse(new File("files/rddl/test/dbn_prop.rddl"));
+			//RDDL rddl = parser.parse(new File("files/rddl/test/dbn_types_interm_po.rddl"));
+			//RDDL rddl = parser.parse(new File("files/rddl/test/traffic_binary_ctm.rddl"));
+		
+			// Get first instance name in file and create a simulator
+			//String instance_name = rddl._tmInstanceNodes.firstKey();
+			
+			// Reset, pass a policy, a visualization interface, a random seed, and simulate!
+			Result r = sim.run(pol, viz, /*rand seed*/ 123456);
+//				new RandomBoolPolicy(instance_name),
 //				new RandomEnumPolicy(instance_name),
 //				new FixedBoolPolicy(instance_name), 
 //				new GameOfLifeScreenDisplay(true),
 //				new SidewalkGraphicsDisplay(200),
-				new GenericScreenDisplay(true),
+//				new GenericScreenDisplay(true),
 //				new SysAdminScreenDisplay(true),
 //				new TrafficDisplay(300),
-				123456);
-		System.out.println("==> " + r);
+//				123456);
+			System.out.println("==> " + r);
+		//} catch (EvalException e) {
+		//	System.err.println(e);
+		//}
 	}
 }

@@ -18,6 +18,10 @@ import rddl.RDDL.TYPE_NAME;
 
 public class GameOfLifeScreenDisplay extends StateViz {
 
+	public GameOfLifeScreenDisplay() {
+		_bSuppressNonFluents = true;
+	}
+	
 	public GameOfLifeScreenDisplay(boolean suppress_nonfluents) {
 		_bSuppressNonFluents = suppress_nonfluents;
 	}
