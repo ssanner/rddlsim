@@ -43,7 +43,7 @@ showtabs=false,                         % Dont make tabls visible
 showstringspaces=false,
 %columns=flexible,                       % Column format
 morecomment=[l]{//},
-morekeywords={domain, types, bool, int, real, default, state, action, interm, observ, fluent, requirements, reward, deterministic, continuous, multivalued, intermediate, nodes, constrained, partially, observed, concurrent, integer, valued, pvariables, cpfs, cdfs, if, then, else, Bernoulli, Normal, KronDelta, Discrete, reward, instance, init, state, true, false, max, nondef, actions, horizon, discount, objects, non, fluents}
+morekeywords={domain, types, bool, int, real, default, state, action, interm, observ, fluent, requirements, reward, deterministic, continuous, multivalued, intermediate, nodes, constrained, partially, observed, concurrent, integer, valued, pvariables, cpfs, cdfs, if, then, else, Bernoulli, Normal, KronDelta, Discrete, reward, instance, init, state, true, false, max, nondef, actions, horizon, discount, objects, non, fluents, constraints}
 }
 
 %\COMMENT begins comment
@@ -67,21 +67,28 @@ NICTA and the Australian National University
 
 \maketitle
 
+\vspace{-5mm}
+
 \begin{abstract}
-The Relational Dynamic Influence Diagram Language
-(RDDL) is a uniform language where states, actions, and observations
-are parameterized variables and the evolution of a fully or partially
-observed (stochastic) process is specified via (stochastic) functions
-over next state variables conditioned on the current state.
-Parameterized variables are simply templates for ground variables that
-can be obtained when given a particular problem instance defining
-possible domain objects.  
-Semantically, RDDL is simply a dynamic Bayes net (DBN)~\cite{dbn}
-extended with a simple influence diagram
+The Relational Dynamic Influence Diagram Language (RDDL) is a uniform
+language where states, actions, and observations (whether discrete or
+continuous) are parameterized variables (\emph{pvariables}) and the
+evolution of a fully or partially observed (stochastic) process is
+specified via (stochastic) functions over next state pvariables
+conditioned on current state pvariables and action pvariable(s) (n.b.,
+concurrency is allowed).  Pvariables are simply templates
+for ground variables that can be obtained when given a particular
+problem instance defining possible domain objects.  Semantically, RDDL
+is simply a dynamic Bayes net (DBN)~\cite{dbn} (with potentially many
+intermediate layers) extended with a simple influence diagram
 (ID)~\cite{influence_diagrams} utility node representing immediate
 reward.  An objective function specifies how these immediate rewards
-should be optimized over time for the purpose of optimal control.
+should be optimized over time for optimal control.  For a ground
+instance, RDDL is just a factored MDP (or POMDP, if partially
+observed).
 \end{abstract}
+
+\vspace{-3mm}
 
 \setcounter{tocdepth}{2}
 \tableofcontents
@@ -135,18 +142,21 @@ Many other domains are difficult to formalize in PPDDL.
 Multi-elevator control with independent random arrivals, logistics
 domains with independently moving vehicles and noise, and UAVs with
 sensors for partially observed state are all important domains that
-cannot be specified in PPDDL.  The obvious solution might 
-simply be to
+cannot be specified in PPDDL.  The obvious solution might simply be to
 extend PPDDL, as PDDL has been extended numerous
-times~\cite{pddl_family}.  However, stochastic effects and 
-concurrency
-are difficult to jointly reconcile in an effects-based language
-because concurrent actions are typically assumed to be
-non-interfering~\cite{pddl21}.  Should actions whose effects
-stochastically interfere only 1\% of the time be disallowed from
-running concurrently?  Rather than add a layer of stochastic conflict
-resolution to PPDDL, a dynamic Bayes net (DBN)~\cite{dbn} transition
-formalism offers a simple solution, hence RDDL.
+times~\cite{pddl_family}.  However, stochastic effects and concurrency
+are difficult to jointly reconcile in an effects-based language.  If we
+take the approach that concurrent actions that possibly conflict
+(c.f., \emph{probabilistic mutex}~\cite{pgraphplan}) are disallowed
+--- similar to the way concurrency is handled in PDDL
+2.1~\cite{pddl21} --- then we end up with a restrictive definition of
+concurrency that prevents concurrent actions that may only conflict
+1\% of the time.  Instead we opt for \emph{unrestricted
+concurrency}~\cite{paragraph}, for which it appears there is no 
+well-defined PDDL-style transition semantics.  Rather than add a layer of
+stochastic conflict resolution to PPDDL, a dynamic Bayes net
+(DBN)~\cite{dbn} transition formalism offers a simple solution --- hence
+the motivation for RDDL.
 
 \section{Principles of RDDL}
 
@@ -224,7 +234,7 @@ language features:
   \item Durative actions / options / semi-(PO)MDPs (c.f., PDDL2.1~\cite{pddl21}, also \emph{options}~\cite{sutton_options})
   \item Temporal state/action goals or preferences (c.f., PDDL3.0~\cite{pddl3})
   \item Non-determinism or strict uncertainty  (c.f., \texttt{oneof} construct in PPDDL~\cite{ppddl})
-  \item Multiagent or game-theoretic constructs (c.f., Game Description Language (GDL)~\cite{gdl})
+  \item Game-theoretic constructs (c.f., Game Description Language (GDL)~\cite{gdl})
   \item Object fluents (c.f., PPDDL3.1/functional STRIPS~\cite{functional_strips}; enumerated types can substitute when the number of enumerated type values is fixed for all instances)
 \end{itemize}
 
@@ -311,13 +321,12 @@ package~\cite{rddlsim}.}
 \end{figure}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Before getting into minor details of this domain definition, we note
+Before getting into details of this domain definition, we note
 that it can be simply represented by a DBN~\cite{dbn} and 
 influence diagram~\cite{influence_diagrams}
 as provided in Figure~\ref{fig:rddl1}.
 
-The domain listing should be mostly self-explanatory, here we discuss
-a few details:
+Following is a line-by-line discussion of the domain description:
 \begin{itemize}  
 \item All domains need an identifying name (here \texttt{prop\_dbn})
 provided on line 6.
@@ -736,11 +745,12 @@ crucial for understanding that the \emph{semantics of RDDL} is simply
 Perhaps the most {\bf confusing issue for those familiar with PPDDL}
 will be the {\bf semantics of parameterized actions in RDDL}.  For
 this we again refer to Figure~\ref{fig:rddl3} where we note that there
-are four ground action fluents denoted by green rectangles.  We note
-that \emph{each} of these ground fluents is a \emph{separate variable}
-taking on a distinct value determined by the user.  And the cpf for
-\texttt{alive} in the Game of Life domain description conditions on
-each of these ground action fluent truth values as needed.
+are \emph{four ground action fluents} denoted by green rectangles.  We
+note that \emph{each} of these ground fluents is a \emph{separate
+variable} taking on a distinct value determined by the user, and if we
+examine line 54 of the cpf for \texttt{alive}, we see that it
+conditions on \emph{all} of these ground action fluent truth value 
+assignments as needed.
 
 This is in contrast to the PPDDL view of actions where all of the
 action information is given in the action name and parameters.  Here
@@ -807,25 +817,26 @@ according to the non-fluent \texttt{PROB\_REGENERATE}.
 a sum over alive cells (again, this sum scales with the number
 of cells in a particular domain instance).
 \item Lines 62--68 demonstrate \texttt{state-action} constraints,
-which have not been used previously.  These constraints are used
-in two cases:
+which have not been used previously.  \texttt{state-action} constraints
+serve the following two purposes:
 \begin{itemize}
-\item \texttt{state-action} constraints can be viewed as logical
-assertions on all states that can be reached from any legal initial
-state.  For example, line 64 ensures that the
+\item \emph{Logical assertions} on all states that can be reached from
+any legal initial state.  For example, line 64 ensures that the
 \texttt{PROB\_REGENERATE} pvariable is a valid probability in $[0,1]$.
-Such a constraint could also apply to any logical expression
-over fluents.  
-\item \texttt{state-action} constraints can be viewed as logical
-preconditions on actions.  Because preconditions in concurrent domains
+Such a constraint could also apply to any (quantified)
+logical expression over fluents.
+\item \emph{Action preconditions} for local and global precondition
+checks.  Because preconditions in concurrent domains
 must be checked globally --- two or more actions may mutually constain
-each other --- all action preconditions are specified in the
+each other --- we adopt the uniform approach of specifying
+all action preconditions in the
 \texttt{state-action} constraints section, whether concurrent or not.
-An example of a simple action precondition is given in line 67.
+An example of a simple \emph{local}
+action precondition is given in line 67.
 \end{itemize}
 Any joint state and action that violate a \texttt{state-action}
 constraint during a trial should cause the RDDL trial simulator
-to abort in error --- there was either an error in the domain
+to abort in error since there was either an error in the domain
 description leading to an illegal state, or the agent made an
 error in the policy and tried to execute an illegal action.
 \emph{Implicitly, if the agent only executes legal actions, then all
@@ -1013,6 +1024,11 @@ containing logical expressions that can be evaluated to true or false
 (so no unbound variables) over the current state of any
 \texttt{non-fluent}, \texttt{state-fluent}, or \texttt{action-fluent}
 pvariables.
+
+Note that intermediate variables \emph{cannot} be
+referenced in the state-action constraints as this would correspond to
+checking the (partial) outcome of an action, rather than its
+preconditions.
 
 A violation of any \texttt{state-action} constraint should
 lead to termination of the current RDDL simulator trial with

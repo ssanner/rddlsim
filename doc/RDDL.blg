@@ -2,44 +2,44 @@ This is BibTeX, Version 0.99c (Web2C 7.5.4)
 The top-level auxiliary file: RDDL.aux
 The style file: unsrt.bst
 Database file #1: RDDL.bib
-You've used 22 entries,
+You've used 24 entries,
             1791 wiz_defined-function locations,
-            566 strings with 6992 characters,
-and the built_in function-call counts, 4757 in all, are:
-= -- 425
-> -- 202
-< -- 5
-+ -- 76
-- -- 54
-* -- 250
-:= -- 746
-add.period$ -- 65
-call.type$ -- 22
-change.case$ -- 26
+            579 strings with 7268 characters,
+and the built_in function-call counts, 5480 in all, are:
+= -- 502
+> -- 218
+< -- 7
++ -- 82
+- -- 58
+* -- 285
+:= -- 836
+add.period$ -- 72
+call.type$ -- 24
+change.case$ -- 28
 chr.to.int$ -- 0
-cite$ -- 22
-duplicate$ -- 235
-empty$ -- 490
-format.name$ -- 54
-if$ -- 1101
+cite$ -- 24
+duplicate$ -- 277
+empty$ -- 564
+format.name$ -- 58
+if$ -- 1287
 int.to.chr$ -- 0
-int.to.str$ -- 22
-missing$ -- 12
-newline$ -- 109
-num.names$ -- 26
-pop$ -- 94
+int.to.str$ -- 24
+missing$ -- 14
+newline$ -- 119
+num.names$ -- 28
+pop$ -- 105
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 123
+skip$ -- 154
 stack$ -- 0
-substring$ -- 224
-swap$ -- 65
-text.length$ -- 5
+substring$ -- 284
+swap$ -- 86
+text.length$ -- 7
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
 warning$ -- 0
-while$ -- 43
-width$ -- 24
-write$ -- 236
+while$ -- 50
+width$ -- 26
+write$ -- 260
