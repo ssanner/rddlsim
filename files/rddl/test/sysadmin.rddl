@@ -215,8 +215,6 @@ domain sysadmin {
 		// forall_{?c : computer} (reboot(?c) => ~running(?c)); 
 
 		// Examples of other constraints
-		net-status-real >= 0.0; // Must be true by definition but never hurts to check
-		net-status-real <= 1.0;
 		forall_{?c : computer} (running(?c) | ~running(?c)); // A tautology 
 	};
 }

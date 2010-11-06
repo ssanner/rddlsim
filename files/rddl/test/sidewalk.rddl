@@ -124,14 +124,11 @@ domain sidewalk {
 
 	state-action-constraints {
 
-		//person can only have one move
-		forall_{?p : person} (numMoves(?p) <= 1);
-		
 		//people can't stand on the same square
 		forall_{?p : person} forall_{?q : person} ((~(?p == ?q)) => ((~(xPos(?p) == xPos(?q))) | (~(yPos(?p) == yPos(?q))))); 
 		
 		//can't go out of bounds
-		forall_{?p : person} (xPos(?p) >= 0 ^ yPos(?p) >=0 ^ xPos(?p) < SIDEWALK-SIZE ^ yPos(?p) < 2);
+		forall_{?p : person} [(xPos(?p) >= 0) ^ (yPos(?p) >=0) ^ (xPos(?p) < SIDEWALK-SIZE) ^ (yPos(?p) < 2)];
 	};
 }
         

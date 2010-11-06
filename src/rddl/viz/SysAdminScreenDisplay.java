@@ -18,6 +18,10 @@ import rddl.RDDL.PVAR_NAME;
 
 public class SysAdminScreenDisplay extends StateViz {
 
+	public SysAdminScreenDisplay() {
+		_bSuppressNonFluents = true;
+	}
+
 	public SysAdminScreenDisplay(boolean suppress_nonfluents) {
 		_bSuppressNonFluents = suppress_nonfluents;
 	}

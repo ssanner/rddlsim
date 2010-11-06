@@ -14,6 +14,7 @@ package rddl.viz;
 import rddl.State;
 
 public abstract class StateViz {
+	public StateViz() { }
 	public abstract void display(State s, int time);
 	public void close() { }
 }

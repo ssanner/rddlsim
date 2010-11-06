@@ -19,6 +19,10 @@ import rddl.RDDL.PVAR_NAME;
 
 public class GenericScreenDisplay extends StateViz {
 
+	public GenericScreenDisplay() {
+		_bSuppressNonFluents = true;
+	}
+
 	public GenericScreenDisplay(boolean suppress_nonfluents) {
 		_bSuppressNonFluents = suppress_nonfluents;
 	}

@@ -18,6 +18,10 @@ import rddl.RDDL.PVAR_NAME;
 
 public class NullScreenDisplay extends StateViz {
 
+	public NullScreenDisplay() {
+		_bShowTime = false;
+	}
+
 	public NullScreenDisplay(boolean show_time) {
 		_bShowTime = show_time;
 	}

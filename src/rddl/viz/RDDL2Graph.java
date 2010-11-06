@@ -51,6 +51,10 @@ public class RDDL2Graph {
 
 		// Set up instance, nonfluent, and domain information
 		_i = rddl._tmInstanceNodes.get(instance_name);
+		if (_i == null)
+			throw new Exception("Instance '" + instance_name + 
+					"' not found, choices are " + rddl._tmInstanceNodes.keySet());
+
 		_n = null;
 		if (_i._sNonFluents != null)
 			_n = rddl._tmNonFluentNodes.get(_i._sNonFluents);
@@ -65,7 +69,8 @@ public class RDDL2Graph {
 		_bStrictGrouping = strict_grouping;
 		_state.init(_n != null ? _n._hmObjects : null, _i._hmObjects,  
 				_d._hmTypes, _d._hmPVariables, _d._hmCPF,
-				_i._alInitState, _n == null ? null : _n._alNonFluents);
+				_i._alInitState, _n == null ? null : _n._alNonFluents, 
+				_d._alStateConstraints, _i._nNonDefActions);
 		
 		// Build the graph
 		_graph = rddl2graph();
@@ -380,15 +385,24 @@ public class RDDL2Graph {
 		//RDDL rddl = parser.parse(new File("files/rddl/test/sysadmin.rddl"));
 		//RDDL rddl = parser.parse(new File("files/rddl/test/sysadmin_test.rddl"));
 		//RDDL rddl = parser.parse(new File("files/rddl/test/game_of_life.rddl"));
-		RDDL rddl = parser.parse(new File("files/rddl/test/game_of_life_stoch.rddl"));
+		//RDDL rddl = parser.parse(new File("files/rddl/test/game_of_life_stoch.rddl"));
 		//RDDL rddl = parser.parse(new File("files/rddl/test/sidewalk.rddl"));
 		//RDDL rddl = parser.parse(new File("files/rddl/test/dbn_prop.rddl"));
 		//RDDL rddl = parser.parse(new File("files/rddl/test/dbn_types_interm_po.rddl"));
 		//RDDL rddl = parser.parse(new File("files/rddl/test/sysadmin.rddl"));
 		//RDDL rddl = parser.parse(new File("files/rddl/test/traffic_binary_ctm.rddl"));
-		
+
 		// Get first instance name in file and create a simulator
-		String instance_name = rddl._tmInstanceNodes.firstKey();
+		//String instance_name = rddl._tmInstanceNodes.firstKey();
+	
+		if (args.length != 2) {
+			System.out.println("usage: RDDL-file instance-name");
+			System.exit(1);
+		}
+		String rddl_file = args[0];
+		String instance_name = args[1];
+		RDDL rddl = parser.parse(new File(rddl_file));
+		
 		RDDL2Graph r2g = new RDDL2Graph(rddl, instance_name, 
 //				/*strict levels*/false, /*strict grouping*/false);
 //				/*strict levels*/true, /*strict grouping*/true);

@@ -56,7 +56,7 @@ domain game_of_life {
 	
 	state-action-constraints {
 		// Assertion: ensure PROB_REGENERATE is a valid probability
-		PROB_REGENERATE >= 0.0 ^ PROB_REGENERATE <= 1; 
+		(PROB_REGENERATE >= 0.0) ^ (PROB_REGENERATE <= 1.0); 
 		
 		// Precondition: let's say we should not set a cell if it is already alive
 		forall_{?x : x_pos, ?y : y_pos} alive(?x,?y) => ~set(?x,?y);
