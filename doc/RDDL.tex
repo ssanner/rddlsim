@@ -72,11 +72,11 @@ NICTA and the Australian National University
 \begin{abstract}
 The Relational Dynamic Influence Diagram Language (RDDL) is a uniform
 language where states, actions, and observations (whether discrete or
-continuous) are parameterized variables (\emph{pvariables}) and the
+continuous) are parameterized variables and the
 evolution of a fully or partially observed (stochastic) process is
-specified via (stochastic) functions over next state pvariables
-conditioned on current state pvariables and action pvariable(s) (n.b.,
-concurrency is allowed).  Pvariables are simply templates
+specified via (stochastic) functions over next state variables
+conditioned on current state and action variables (n.b.,
+concurrency is allowed).  Parameterized variables are simply templates
 for ground variables that can be obtained when given a particular
 problem instance defining possible domain objects.  Semantically, RDDL
 is simply a dynamic Bayes net (DBN)~\cite{dbn} (with potentially many
@@ -195,11 +195,11 @@ RDDL is based on the following principles:
   \begin{itemize}
     \item Supports factored state and observations
     \item Supports factored actions, hence concurrency (and never conflicts!)
-    \item Supports intermediate state fluents
+    \item Supports intermediate state fluents for multi-layered DBNs
        \begin{itemize}
           \item Express (stochastic) derived predicates (c.f., PDDL 1.2~\cite{pddl12} and 2.2~\cite{pddl22})
           \item Express correlated effects
-          \item Stratification enforces a well-defined relational DBN
+          \item Stratification by levels enforces a well-defined relational multi-layer DBN
        \end{itemize}
     \item Naturally supports independent exogenous events
   \end{itemize}
