@@ -15,7 +15,7 @@ Ronald~A. Howard and James~E. Matheson.
 \bibitem{pddl_family}
 Malte Helmert.
 \newblock {PDDL} resources:
-  \url{http://www.cs.cmu.edu/~lorens/papers/ppddl.pdf}, 2009.
+  \url{http://ipc.informatik.uni-freiburg.de/PddlResources}, 2009.
 
 \bibitem{ppddl}
 Hakan Younes and Michael Littman.
@@ -28,12 +28,23 @@ Carlos Daganzo.
 \newblock Institute of transportation studies, research reports, working
   papers, proceedings, Institute of Transportation Studies, UC Berkeley, 1994.
 
+\bibitem{pgraphplan}
+Avrim Blum and John Langford.
+\newblock Probabilistic planning in the graphplan framework.
+\newblock In {\em 5th European Conference on Planning ({ECP})}, pages 319--332,
+  London, UK, 2000.
+
 \bibitem{pddl21}
 Maria Fox and Derek Long.
 \newblock {PDDL2.1}: An extension to {PDDL} for expressing temporal planning
   domains.
 \newblock {\em Journal of Artificial Intelligence Research}, 20(1):61--124,
   2003.
+
+\bibitem{paragraph}
+Iain Little and Sylvie Thiebaux.
+\newblock Concurrent probabilistic planning in the graphplan framework.
+\newblock In {\em ICAPS}, pages 263--273. AAAI, 2006.
 
 \bibitem{stochastic_programs}
 D.~Koller, D.~McAllester, and A.~Pfeffer.
