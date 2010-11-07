@@ -1,0 +1,239 @@
+////////////////////////////////////////////////////////////////////
+// A logistics problem extended from the standard ``Box-Truck'' World 
+//
+// Author: Tom Walsh (thomasjwalsh [at] gmail.com)
+////////////////////////////////////////////////////////////////////
+domain logistics {
+  
+	requirements = { 
+		continuous,  // this domain uses real-valued parameterized variables (pvariables)
+		multivalued, 
+		concurrent,  
+		reward-deterministic, // this domain does not use a stochastic reward
+		intermediate-nodes,   // this domain uses intermediate pvariable nodes
+		constrained-state,    // this domain uses state constraints
+		integer-valued
+	};
+
+	types {
+  		truck : object;
+ 		city :  object;
+		box : object;
+		crowdlevel : {@low, @med, @high};
+	};
+      
+	
+	pvariables { 
+    		  		
+		  		
+		MAX-DOCKED(city) : { non-fluent, int, default = 1 };
+    	   	CAPACITY(truck) : { non-fluent, int, default = 1 };	  		
+		DESTINATION(box, city) : { non-fluent, bool, default = false };	  						
+		PROB_LOAD : {non-fluent, real, default = 1.0};  //actually, this would be interesting if per-truck
+		PROB_UNLOAD : {non-fluent, real, default = 1.0};
+		BIG_CROWD_PROB : {non-fluent, real, default = 0.0};
+		MED_CROWD_PROB : {non-fluent, real, default = 0.5};
+		LOW_CROWD_PROB : {non-fluent, real, default = 1.0};
+
+		// State fluents
+		truckAt(truck, city) : { state-fluent, bool, default = false };
+		atDepot(truck,city) : { state-fluent, bool, default = false };
+		boxInTruck(box, truck) :  { state-fluent, bool, default = false };
+      		boxInCity(box, city) :  { state-fluent, bool, default = false };
+
+		// Intemediate fluents
+		// numFreeBoxesCity(truck) : { interm-fluent, int, level = 1 };
+		
+		numTrucksCity(city) : { interm-fluent, int, level = 1 };
+      		numDocked(city) : { interm-fluent, int, level = 1 };
+		boxFree(box) : { interm-fluent, bool, level = 1 };
+
+		numTryingDock(city) : { interm-fluent, int, level = 2};
+		cityStatusEnum(city) : { interm-fluent, crowdlevel, level = 2};
+		//cityStatusTravel(city) : { interm-fluent, crowdlevel, level = 2};
+	
+		truckStatusFrom(truck, city) : {interm-fluent, crowdlevel, level = 3};
+		truckStatusTo(truck, city) : {interm-fluent, crowdlevel, level = 3};	
+		dockSum(city) : { interm-fluent, int, level = 3};
+
+		makesNext(truck, city) : { interm-fluent, bool, level = 4};
+		dockStatus(city) : { interm-fluent, crowdlevel, level = 4};
+
+		nextCity(truck, city) : { interm-fluent, bool, level = 5};
+
+		// Action variables
+		
+		drive(truck, city) : { action-fluent, bool, default = false }; 
+      		doDockAt(truck, city) : { action-fluent, bool, default = false }; 
+		unload(truck, box) : { action-fluent, bool, default = false }; 				 
+		load(truck, box)  : { action-fluent, bool, default = false };
+		undock(truck, city) : { action-fluent, bool, default = false }; 
+
+		// NOTE: Multiple actions variables...
+		//
+		// What if a domain had multiple actions like load(box,truck) and
+		// drive(truck,city) in the BoxWorld logistics domain?  We would simply
+		// define multiple boolean action variables with a default value of
+		// false.  Then in the instance description (below), if only one of 
+		// these actions could be executed at a time, we would specify 
+		// max-nondef-actions = 1 (meaning all action variables would be
+		// false in a state except for one).  If we let max-nondef-actions > 1, 
+		// we could allow for concurrent actions (assuming that the cpfs were 
+		// defined appropriately to handle action conflicts).
+	};
+  
+	
+	cpfs {
+
+		
+  
+		//numFreeBoxesCity(?c) = sum_{?b: box}[boxInCity(?b, ?c) ^ (forall_{?t : truck} (~boxInTruck(?b, ?t)) )]	
+		
+		numTrucksCity(?c) = sum_{?t: truck}[truckAt(?t, ?c)];
+		numDocked(?c) = sum_{?t: truck}[truckAt(?t, ?c) ^ atDepot(?t, ?c)];
+		//numTraveling(?c1, ?c2) = sum_{?t: truck}[truckAt(?t, ?c1) ^ drive(?t, ?c2)];
+		boxFree(?b) = forall_{?t : truck}[~boxInTruck(?b, ?t)];		
+
+		
+		cityStatusEnum(?c) = if (numTrucksCity(?c) > 3) then @high else if(numTrucksCity(?c) >= 2) then @med else @low;
+		numTryingDock(?c) = sum_{?t : truck}[truckAt(?t, ?c) ^ ((atDepot(?t, ?c) ^ ~undock(?t, ?c)) | doDockAt(?t, ?c))];	
+//		cityStatusTravel(?c) = sum_{?t: truck} [drive(?t,?c)]; 
+
+		truckStatusFrom(?t, ?c) = if(truckAt(?t, ?c)) then cityStatusEnum(?c) else @low;
+
+		truckStatusTo(?t, ?c) = if(drive(?t, ?c)) then [
+						 cityStatusEnum(?c)
+						]
+					else @low;
+  
+		dockSum(?c) = numTryingDock(?c) + numDocked(?c);
+
+		makesNext(?t, ?c) = if((truckStatusTo(?t, ?c) == @high) | (truckStatusFrom(?t, ?c) == @high)) then Bernoulli(BIG_CROWD_PROB)
+				    else if ((truckStatusTo(?t, ?c)) == @med | (truckStatusFrom(?t, ?c) == @med)) then Bernoulli(MED_CROWD_PROB)
+				    else Bernoulli(LOW_CROWD_PROB);
+
+		
+
+		nextCity(?t, ?c) = if(~drive(?t, ?c) ^  truckAt(?t, ?c)) then true
+				   else if(~drive(?t, ?c)) then false 
+				   else if(makesNext(?t, ?c)) then true //drive is on
+				   else truckAt(?t, ?c);  //but didn't get there
+		
+
+		
+
+		dockStatus(?c) = if (dockSum(?c) > 3) then @high else if(dockSum(?c) >= 2) then @med else @low;
+
+		truckAt'(?t, ?c) = nextCity(?t, ?c);	
+		
+		//probability of docking or undocking is contingent on number docked or trying to dock
+		atDepot'(?t,?c) = 
+					if(atDepot(?t, ?c) ^ ~undock(?t, ?c)) then true
+					else if (atDepot(?t, ?c) ^ (undock(?t, ?c))) then
+						switch(dockStatus(?c)){
+							case @high : ~Bernoulli(BIG_CROWD_PROB),
+							case @med : ~Bernoulli(MED_CROWD_PROB),
+							case @low : ~Bernoulli(LOW_CROWD_PROB)
+						}   
+					else if(~atDepot(?t, ?c) ^  doDockAt(?t, ?c)) then
+						switch(dockStatus(?c)){
+							case @high : Bernoulli(BIG_CROWD_PROB),
+							case @med :Bernoulli(MED_CROWD_PROB),
+							case @low :Bernoulli(LOW_CROWD_PROB)
+						}
+					else false;
+		
+		boxInTruck'(?b, ?t) = ((boxInTruck(?b, ?t) ^ ~unload(?t, ?b))  |
+					(unload(?t, ?b) ^ boxInTruck(?b, ?t) ^ ~Bernoulli(PROB_UNLOAD)) | 
+					(load(?t, ?b) ^ Bernoulli(PROB_LOAD) ) ); 
+		boxInCity'(?b, ?c) = ((boxInCity(?b, ?c) ^ boxFree(?b)) | ~boxFree(?b) ^ (forall_{?t : truck}[ boxInTruck(?b, ?t) => nextCity(?t, ?c)]));
+	};
+  
+	// This following is a deterministic reward as defined in the requirements.
+	// It conditions on both state and action variables: +1 is given for every
+	// computer running and a cost of -1 is given for every computer rebooted.
+  	
+	reward = [sum_{?b : box} sum_{?c : city} [boxInCity(?b,?c) ^ DESTINATION(?b,?c) ^ boxFree(?b)]];
+
+	state-action-constraints {
+		forall_{?c : city} [(sum_{?t : truck} doDockAt(?t,?c)) + (sum_{?t : truck} atDepot(?t,?c)) <= MAX-DOCKED(?c)];  //note with this you can't dock and undock 2 trucks in an otherwise full loading dock on the same turn
+		forall_{?c : city} [forall_{?t : truck} undock(?t, ?c) => atDepot(?t, ?c)];
+		forall_{?t : truck } [forall_{?b : box} [load(?t, ?b) => forall_{?c : city}[truckAt(?t, ?c) => (boxInCity(?b, ?c) ^ boxFree(?b) ^ atDepot(?t))]]];
+		forall_{?t : truck } [forall_{?b : box} [unload(?t, ?b) => (boxInTruck(?b, ?t) ^ forall_{?c : city}[truckAt(?t, ?c) => atDepot(?t, ?c)])]];
+        	forall_{?b : box} [sum_{?t : truck}load(?t,?b)] <= 1;
+		forall_{?t: truck} [sum_{?b: box} [boxInTruck(?b, ?t) + load(?t, ?b)]] <= CAPACITY(?t);
+		forall_{?t : truck } [sum_{?c : city} [sum_{?b : box} drive(?t, ?c) + doDockAt(?t, ?c) + load(?t, ?b) + unload(?t, ?b) + undock(?t, ?c)]] < 2;
+	};
+}
+        
+// Define non-fluents here.
+non-fluents trucks1 {
+
+	domain = logistics;
+	
+	objects { 
+		box : {b1, b2, b3, b4};
+		city : {c1, c2, c3, c4};
+		truck : {t1, t2, t3, t4};
+	};
+  
+	// Only need to specify non-default values
+	non-fluents { 
+		MAX-DOCKED(c1) = 2;
+		MAX-DOCKED(c2) = 2;
+		MAX-DOCKED(c3) = 2;
+		MAX-DOCKED(c4) = 2;
+		DESTINATION(b1, c2) = true;
+		DESTINATION(b2, c3) = true;
+		DESTINATION(b3, c4) = true;
+		DESTINATION(b4, c1) = true;
+		PROB_LOAD  = 0.9; 
+		PROB_UNLOAD = 0.9;
+	};
+}
+
+// Specify an actual problem instance (full object specification, initial state, 
+// and objective).
+instance is1 {
+
+	domain = logistics;
+	
+	non-fluents = trucks1;
+  
+	// If there were any object classes that were not needed in the
+	// non-fluents definition and were not specified there then they should
+	// be specified here.  For example, if in SysAdmin there were another
+	// object class for people, since knowing these objects was not needed above
+	// to specify REBOOT-PROB and CONNECTED, the objects could be defined here.
+	// This would make more sense in a domain like Elevator control where you
+	// might want to specify the number of elevators and floors as non-fluents,
+	// but the number of people might change from instance to instance.
+	
+
+	// Only need to specify non-default values for initial state, but here we'll
+	// show that even default values can be specified, i.e., ~running(c2).
+	init-state { 
+		truckAt(t1, c1); 
+		truckAt(t2, c2);
+		truckAt(t3, c3);
+		truckAt(t4, c4);
+		
+		boxInCity(b1, c1);
+		boxInCity(b2, c2);
+		boxInCity(b3, c3);
+		boxInCity(b4, c4);
+		 
+	};
+  
+	// For easy and compact translation to PPDDL, max-nondef-actions should be 1.
+	// max-nondef-actions > 1 implies that multiple actions can be executed
+	// concurrently, but care must be taken in the cpf definitions to ensure
+	// that action conflicts are resolved in a reasonable way.
+	max-nondef-actions = 3;
+  
+	// We assume the objective is expected discounted reward over a fixed horizon
+	// length.  Indefinite horizon and average reward objectives are not being 
+	// considered in this first draft.
+	horizon  = 20;
+	discount = 0.9;
+}
