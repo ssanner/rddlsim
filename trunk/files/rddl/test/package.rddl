@@ -186,8 +186,7 @@ domain package {
 		//exchangers can only have one move, disruptors can have none
 		forall_{?p : person} (EXCHANGER(?p) => (((~(walk(?p)==@none)) + (sum_{?a: package} [drop(?p, ?a)]) + (sum_{?a: package} sum_{?p2: person } handOver(?p, ?a, ?p2))) <= 1));
 		
-		// THIS ONE SEEMS TO BE HARD TO SATISFY WITH A RANDOM POLICY
-		//forall_{?p : person} (DISRUPTOR(?p) => (((~(walk(?p)==@none)) + (sum_{?a: package} [drop(?p, ?a)]) + (sum_{?a: package} sum_{?p2: person } handOver(?p, ?a, ?p2))) == 1));
+		forall_{?p : person} (DISRUPTOR(?p) => (((~(walk(?p)==@none)) + (sum_{?a: package} [drop(?p, ?a)]) + (sum_{?a: package} sum_{?p2: person } handOver(?p, ?a, ?p2))) == 0));
 		
 		//can only exchange in same location and if have the package
 		forall_{?a : person} forall_{?p : package} forall_{?b : person} [handOver(?a, ?p, ?b) => [(xPos(?a) == xPos(?b)) ^ (yPos(?a) == yPos(?b)) ^ hasPackage(?a, ?b)]];
