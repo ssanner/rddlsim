@@ -1,0 +1,257 @@
+////////////////////////////////////////////////////////////////////
+// An example RDDL description for people attempting to exchange packages
+// without having them stolen by random disruptors
+//
+// Author: Tom Walsh thomasjwalsh@gmail.com
+////////////////////////////////////////////////////////////////////
+domain package {
+  
+	
+	requirements = { 
+		concurrent,
+		integer-valued,  
+		multivalued, // this domain uses enumerated pvariables 
+		reward-deterministic, // this domain does not use a stochastic reward
+		intermediate-nodes,   // this domain uses intermediate pvariable nodes
+		constrained-state    // this domain uses state constraints
+	};
+
+	////////////////////////////////////////////////////////////////////////////
+	// User-defined object and enumeration (multivalued) types.
+	////////////////////////////////////////////////////////////////////////////
+	
+	types {
+  		person : object;  //either an excanger or a disruptor (disruptors canno be acted upon)
+		direction : {@up, @down, @left, @right, @none};
+		package : object;
+	};
+      
+	////////////////////////////////////////////////////////////////////////////
+	// Provide name[(parameter types)] followed by type, range, etc...
+	// note that variable parameters *must* be object types.
+	////////////////////////////////////////////////////////////////////////////
+	
+	pvariables { 
+    		  		
+    		  		
+		//Length of the sidewalk (width is hardcoded as 2)
+		GRID-SIZE-X : { non-fluent, int, default = 3 };
+		GRID-SIZE-Y : { non-fluent, int, default = 3 };
+		EXCHANGER(person) : { non-fluent, int, default = false };
+		DISRUPTOR(person) : { non-fluent, int, default = false };
+		SLIP-PROB(person) : {non-fluent, real, default = 0.0};		
+		GOAL-HOLDER(person, package) : { non-fluent, bool, default = false };
+
+		//coordinates of the people
+		xPos(person) : { state-fluent, int, default = 0};
+		yPos(person) : { state-fluent, int, default = 0};
+
+		xPosPackage(package) : { state-fluent, int, default = 0};
+		yPosPackage(package) : { state-fluent, int, default = 0};
+
+		hasPackage(person, package) : { state-fluent, bool, default = false};
+
+		packageHeld(package) : {interm-fluent, bool, level =1};
+
+		personMove(person) : {interm-fluent, direction, level = 1};  //puts in the random one for disruptors
+	
+		slipped(person) : {interm-fluent, bool, level =1};
+		
+		losingPackage(person, package) :{interm-fluent, bool, level =2};
+
+		gainingPackage(person, package) :{interm-fluent, bool, level =2};
+
+		moveOutcome(person) : {interm-fluent, direction, level = 2};
+
+		
+		//check if their step is out of bounds
+		outBoundsNext(person) :   { interm-fluent, bool, level = 3 };
+	
+
+		// Intermediate fluents: next x and y of people
+		nextXPos(person) : { interm-fluent, int, level = 4 };
+		nextYPos(person) : { interm-fluent, int, level = 4 };
+	
+
+		nextXPosPackage(package) : { interm-fluent, int, level = 5 };
+		nextYPosPackage(package) : { interm-fluent, int, level = 5 };
+		
+		disruptorPickup(person, package) : { interm-fluent, int, level = 6 };
+
+		//number of actions used (limit is 1 for exchanger, 0 for disruptor)
+		numMoves(person) : { interm-fluent, int, level = 1 };      
+
+		//the walk action, takes a person argument and is set to a direction value
+		walk(person) : { action-fluent, direction, default = @none}; 
+
+		drop(person, package) : { action-fluent, bool, default = false}; 
+
+ 		pickup(person, package) : { action-fluent, bool, default = false}; 
+
+		handOver(person, package, person) : { action-fluent, bool, default = false};
+
+		
+	};
+  
+	
+	cpfs {
+
+		//count the number of moves executed
+		numMoves(?p) =  ((~(walk(?p)==@none)) + (sum_{?a: package} [drop(?p, ?a)]) + (sum_{?a: package} sum_{?p2: person } handOver(?p, ?a, ?p2)));
+
+
+		personMove(?p) = if(EXCHANGER(?p)) then walk(?p)
+				else  Discrete(direction,
+						@left : 0.2,
+						@right : 0.2,
+						@up : 0.2,
+						@down : 0.2,
+						@none : 0.2
+						);
+
+		packageHeld(?p) = ( (sum_{?a : person} hasPackage(?a, ?p)) > 0);
+
+		losingPackage(?a, ?p) = (hasPackage(?a, ?p) ^ (drop(?a, ?p) | exists_{?b : person}[handOver(?a, ?p, ?b)])); 
+
+		gainingPackage(?a, ?p) = (pickup(?a, ?p) | exists_{?b : person}[handOver(?a, ?p, ?b)]);  //remmeber to add precons to these actions in constraints
+
+
+		slipped(?p) = Bernoulli(SLIP-PROB(?p));
+
+		moveOutcome(?p)= if(~slipped(?p)) then personMove(?p) 
+				else if((personMove(?p) == (@left)) | (personMove(?p) == (@right))) then  Discrete(direction, @up : 0.5, @down : 0.5)
+				else   Discrete(direction, @left : 0.5, @right : 0.5);
+
+		//check if a person is going outside the boundaries
+		//note: could use a switch statement for enums in place of if-else here
+		outBoundsNext(?p) =
+				    if(moveOutcome(?p) == @left) then xPos(?p) - 1 < 0
+				    else if (moveOutcome(?p) == @right) then xPos(?p) + 1 >= GRID-SIZE-X
+				    else if (moveOutcome(?p) == @down) then yPos(?p) - 1 < 0
+				    else if (moveOutcome(?p) == @up) then yPos(?p) + 1 >= GRID-SIZE-Y
+				    else false;
+
+		//next x position of a person (unless they went  out of bounds, then it stays the same)
+		nextXPos(?p) = if(numMoves(?p) == 1 ^ ~outBoundsNext(?p))
+					then [if(moveOutcome(?p) == @left) 
+						then xPos(?p) -1
+						else if(moveOutcome(?p) == @right)
+						then xPos(?p) +1
+					      else xPos(?p)]
+				else xPos(?p);
+
+		//next y position of a person (unless they went  out of bounds, then it stays the same)
+		nextYPos(?p) = if(numMoves(?p) == 1 ^ ~outBoundsNext(?p))
+					then [if(moveOutcome(?p) == @down) 
+						then yPos(?p) -1
+						else if(moveOutcome(?p) == @up) 
+						then yPos(?p) +1
+					      else yPos(?p)]
+				else yPos(?p);
+
+		nextXPosPackage(?p) = if(exists_{?a : person} hasPackage(?a, ?p) ^ ~losingPackage(?a, ?p)) then nextXPos(?a) //relies on only one person holding it 
+					else xPosPackage(?p);
+		nextYPosPackage(?p)= if(exists_{?a : person} hasPackage(?a, ?p) ^ ~losingPackage(?a, ?p)) then nextYPos(?a)
+					else yPosPackage(?p);
+
+		disruptorPickup(?a, ?p) = DISRUPTOR(?a) ^ (nextXPos(?a) == nextXPosPackage(?p)) ^ (nextXPos(?a) == nextXPosPackage(?p));  //it's ok to steal from an exchanger
+
+		  
+		//update xpos unless there was a conflict (stays the same)
+		xPos'(?p) = nextXPos(?p);
+
+		//update ypos unless there was a conflict (stays the same)
+		yPos'(?p) =  nextYPos(?p);
+
+
+
+		xPosPackage'(?p) = nextXPosPackage(?p);
+		yPosPackage'(?p) = nextYPosPackage(?p);
+
+		hasPackage'(?a, ?p) = if(exists_{?b: person} [disruptorPickup(?b, ?p)] ^  EXCHANGER(?a)) then false 
+			else if (disruptorPickup(?a, ?p)) then true 
+					else (hasPackage(?a, ?p) ^ ~(losingPackage(?a, ?p))) | (gainingPackage(?a, ?p));
+
+
+	};
+  
+
+	//reward for every player that has reached their x goal.  	
+	reward = [sum_{?a : agent} sum_{?p : package}  [GOAL-HOLDER(?a, ?p) ^ hasPackage(?a, ?p)]];
+	
+
+
+	state-action-constraints {
+
+		//exchangers can only have one move, disruptors can have none
+		forall_{?p : person} (EXCHANGER(?p) => (((~(walk(?p)==@none)) + (sum_{?a: package} [drop(?p, ?a)]) + (sum_{?a: package} sum_{?p2: person } handOver(?p, ?a, ?p2))) <= 1));
+		forall_{?p : person} (DISRUPTOR(?p) => (((~(walk(?p)==@none)) + (sum_{?a: package} [drop(?p, ?a)]) + (sum_{?a: package} sum_{?p2: person } handOver(?p, ?a, ?p2))) == 1));
+		
+		//can only exchange in same location and if have the package
+		forall_{?a : person} forall_{?p : package} forall_{?b : person} [handOver(?a, ?p, ?b) => [(xPos(?a) == xPos(?b)) ^ (yPos(?a) == yPos(?b)) ^ hasPackage(?a, ?b)]];
+
+		//can only drop a package you have
+		forall_{?a : person} forall_{?p : package} [drop(?a, ?p) => hasPackage(?a,?p)];
+
+		//can only pickup if the package is in same location as you and no one is holding it
+		forall_{?a : person} forall_{?p : package} pickup(?a, ?p) => [(xPos(?a) == xPos(?p)) ^ (yPos(?a) == yPos(?p)) ^ ~(exists_{?b : person} hasPackage(?b, ?p))];
+
+		//only one person can hold a package at the same time
+		forall_{?p : package} ( sum_{?a : person} [hasPackage(?a, ?p) ]) <= 1;
+		
+		//can't go out of bounds
+		forall_{?p : person} [xPos(?p) >= 0 ^ yPos(?p) >=0 ^ xPos(?p) < GRID-SIZE-X ^ yPos(?p) < GRID-SIZE-Y];
+	};
+}
+        
+
+non-fluents simplePackage {
+
+	domain = package;
+	
+	//two people and one disruptor
+	objects { 
+		person : {e1, e2, d1};
+		package : {p1, p2};
+	};
+  
+	// Sidewalk size and x-goals
+	non-fluents { 
+		GRID-SIZE-X = 5;
+		GRID-SIZE-Y = 5;
+		EXCHANGER(e1);
+		EXCHANGER(e2);
+		DISRUPTOR(d1);
+		SLIP-PROB = 0.1;
+		GOAL-HOLDER(p1, e2);
+		GOAL-HOLDER(p2, e1);
+	};
+}
+
+instance ip1 {
+
+	domain = package;
+	
+	non-fluents = simplePackage;
+  
+	//initialize at different ends of the sidewalk
+	init-state { 
+		xPos(e1) = 4; 
+		xPos(e2) = 0;
+		yPos(e1) = 4;
+		yPos(e2) = 0; 
+		xPos(d1) = 2;
+		yPos(d1) = 3;
+		xPosPackage(p1) = 4;
+		yPosPackage(p1) = 4;
+		xPosPackage(p2) = 0;
+		yPosPackage(p2) = 0;
+		hasPackage(e1,p1);		
+		hasPackage(e2,p2);
+	};
+  
+	max-nondef-actions = 2;
+  
+	horizon  = 20;
+	discount = 0.9;
+}
