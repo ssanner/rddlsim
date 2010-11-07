@@ -34,6 +34,7 @@ import org.w3c.dom.Text;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import rddl.EvalException;
 import rddl.RDDL;
 import rddl.RDDL.DOMAIN;
 import rddl.RDDL.ENUM_TYPE_DEF;
@@ -96,6 +97,7 @@ public class Server implements Runnable {
 	
 	public static final int PORT_NUMBER = 2323;
 	public static final String HOST_NAME = "localhost";
+	public static final int DEFAULT_SEED = 0;
 
 	public static final boolean SHOW_MEMORY_USAGE = true;
 	public static final Runtime RUNTIME = Runtime.getRuntime();
@@ -104,14 +106,14 @@ public class Server implements Runnable {
 	
 	private Socket connection;
 	private String TimeStamp;
-	private RDDL rddl = null;
+	private ArrayList<RDDL> rddls = null;
 	private static int ID = 0;
 	private static int DEFAULT_NUM_ROUNDS = 30;
 	private static double DEFAULT_TIME_ALLOWED = 30;
 	public int id;
 	public String clientName = null;
 	public String requestedInstance = null;
-	public static Random rand = new Random(1);
+	public static Random rand;
 	
 	public State      state;
 	public INSTANCE   instance;
@@ -122,40 +124,82 @@ public class Server implements Runnable {
 	/**
 	 * 
 	 * @param args
-	 * 1. rddl description file name, in RDDL format, with complete path
+	 * 1. rddl description file name (can be directory), in RDDL format, with complete path
 	 * 2. (optional) port number
+	 * 3. (optional) random seed
 	 */
 	public static void main(String[] args) {
-		RDDL rddl;
+		ArrayList<RDDL> rddls = new ArrayList<RDDL>();
 		int port = PORT_NUMBER;
 		if ( args.length < 1 ) {
-			System.out.println("usage: rddlfilename (optional) portnumber");
+			System.out.println("usage: rddlfilename (optional) portnumber random-seed");
+			System.out.println("example: Server rddlfilename 2323 0");
 			System.exit(1);
 		}
+		File inputFile = new File(args[0]);
+		if ( !inputFile.exists() ) {
+			System.out.println("the input file does not exists");
+			System.exit(1);
+		}
+		String [] inputFileNames = null;
+		if ( inputFile.isDirectory() ) {
+			System.out.println("input file is directory");
+			inputFileNames = inputFile.list();
+			if (inputFileNames.length < 1) {
+				System.out.println("no files in the directory, exiting");
+				System.exit(1);
+			}
+		}
+		if ( inputFileNames != null ) {
+			for( int i= 0; i< inputFileNames.length; i++) {
+				inputFileNames[i] = 
+					inputFile + System.getProperty("file.separator") + inputFileNames[i];
+			}
+		} else {
+			inputFileNames = new String [1];
+			inputFileNames[0] = inputFile.toString();
+		}
+		for( int i=0; i< inputFileNames.length; i++) {
+			System.out.println(inputFileNames[i]);
+		}
+		
 		try {
-			rddl = parser.parse(new File(args[0]));
+			for( int i= 0; i< inputFileNames.length; i++) {
+				File f = new File(inputFileNames[i]);
+				if ( f.isDirectory() ) {
+					continue;
+				}
+				if ( f.exists() ) {
+					RDDL rddl = parser.parse(f);
+					rddls.add(rddl);
+				}
+			}
 			// Get first instance name in file and create a simulator
 			if ( args.length > 1) {
 				port = Integer.valueOf(args[1]);
 			}
 			ServerSocket socket1 = new ServerSocket(port);
+			if ( args.length > 2) {
+				Server.rand = new Random(Integer.valueOf(args[2]));
+			} else {
+				Server.rand = new Random(DEFAULT_SEED);
+			}
 			System.out.println("RDDL Test Server Initialized");
 			while (true) {
 				Socket connection = socket1.accept();
-				Runnable runnable = new Server(connection, ++ID, rddl);
+				Runnable runnable = new Server(connection, ++ID, rddls);
 				Thread thread = new Thread(runnable);
 				thread.start();
 			}
-		}
-		catch (Exception e1) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			e.printStackTrace();
 		}
 	}
-	Server (Socket s, int i, RDDL rddl) {
+	Server (Socket s, int i, ArrayList<RDDL> rddls) {
 		this.connection = s;
 		this.id = i;
-		this.rddl = rddl;
+		this.rddls = rddls;
 	}
 	public void run() {
 		DOMParser p = new DOMParser();
@@ -171,12 +215,16 @@ public class Server implements Runnable {
 			processXMLSessionRequest(p, isrc, this);
 			System.out.println(requestedInstance);
 	
+			RDDL rddl = getRequestedInstanceRddl(requestedInstance);
+			if ( rddl == null ) {
+				System.exit(1);
+			}
 			BufferedOutputStream os = new BufferedOutputStream(connection.getOutputStream());
 			OutputStreamWriter osw = new OutputStreamWriter(os, "US-ASCII");
 			String msg = createXMLSessionInit(numRounds, timeAllowed, this);
 			sendOneMessage(osw,msg);			
 
-			initializeState(requestedInstance);
+			initializeState(rddl, requestedInstance);
 			stateViz = new NullScreenDisplay(false); // GenericScreenDisplay(true)
 			
 			double accum_total_reward = 0;
@@ -215,7 +263,11 @@ public class Server implements Runnable {
 					ArrayList<PVAR_INST_DEF> ds = new ArrayList<PVAR_INST_DEF>();
 					ds.add(d);
 //					ds = policy.getActions(state);
-					state.computeNextState(ds, rand);
+					try {
+						state.computeNextState(ds, rand);
+					} catch (EvalException ee) {
+						break;
+					}
 					// Calculate reward / objective and store
 					double reward = ((Number)domain._exprReward.sample(new HashMap<LVAR,LCONST>(), 
 							state, rand)).doubleValue();
@@ -257,7 +309,16 @@ public class Server implements Runnable {
 		}
 	}
 	
-	void initializeState (String requestedInstance) {
+	RDDL getRequestedInstanceRddl(String requestedInstance) {
+		for( RDDL rddl : rddls) {
+			if (rddl._tmInstanceNodes.containsKey(requestedInstance)) {
+				return rddl;
+			}
+		}
+		return null;
+	}
+	
+	void initializeState (RDDL rddl, String requestedInstance) {
 		state = new State();
 		instance = rddl._tmInstanceNodes.get(requestedInstance);
 		nonFluents = null;

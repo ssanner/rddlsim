@@ -56,6 +56,7 @@ public class Client {
 	
 	public static final boolean SHOW_MEMORY_USAGE = true;
 	public static final Runtime RUNTIME = Runtime.getRuntime();
+	public static final int DEFAULT_RANDOM_SEED = 0;
 	private static DecimalFormat _df = new DecimalFormat("0.##");	
 	enum XMLType {
 		ROUND,TURN,ROUND_END,END_TEST,NONAME
@@ -79,9 +80,11 @@ public class Client {
 	 * 
 	 * @param args
 	 * 1. rddl description file name with RDDL syntax, with complete path (sysadmin.rddl)
-	 * 2. host name (local host)
-	 * 3. client name (for record keeping purpose on server side. identify yourself with name.
-	 * 4. (optional) port number
+	 * 2. instance name in rddl
+	 * 3. host name (local host)
+	 * 4. client name (for record keeping purpose on server side. identify yourself with name.
+	 * 5. (optional) port number
+	 * 6. (optional) random seed
 	 */
 	public static void main(String[] args) {
 		RDDL rddl;
@@ -90,6 +93,8 @@ public class Client {
 		/** Define a port */
 		int port = Server.PORT_NUMBER;
 		String clientName = "random";
+		String instanceName = null;
+		int randomSeed = DEFAULT_RANDOM_SEED;
 		
 		State      state;
 		INSTANCE   instance;
@@ -102,7 +107,7 @@ public class Client {
 		
 		if ( args.length < 4 ) {
 			System.out.println("usage: rddlfilename hostname clientname policyclassname " +
-					"(optional) portnumber");
+					"(optional) portnumber randomSeed instanceName");
 			System.exit(1);
 		}
 		host = args[1];
@@ -116,12 +121,30 @@ public class Client {
 			if ( args.length > 4 ) {
 				port = Integer.valueOf(args[4]);
 			}
+			if ( args.length > 5) {
+				randomSeed = Integer.valueOf(args[5]);
+			}
+			if ( args.length > 6) {
+				instanceName = args[6];
+			}
+			if ( instanceName != null &&
+					!rddl._tmInstanceNodes.containsKey(instanceName)) {
+				System.out.println("No Such Instance Name: " + instanceName);
+				System.out.println("going to use the first instance");
+				instanceName = null;
+			}
 			state = new State();
 			// just pick the first
-			String problemInstance = rddl._tmInstanceNodes.firstKey();
+			String problemInstance = null;
+			if ( instanceName == null ) {
+				problemInstance = rddl._tmInstanceNodes.firstKey();	
+			} else {
+				problemInstance = instanceName;
+			}
+			
 			Policy policy = (Policy)c.newInstance();
 			policy._sInstanceName = problemInstance;
-//			Policy policy = new RandomEnumPolicy(problemInstance);
+			policy.setRandSeed(randomSeed);
 			
 			instance = rddl._tmInstanceNodes.get(problemInstance);
 			if (instance._sNonFluents != null) {
