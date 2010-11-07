@@ -149,8 +149,16 @@ public class State {
 		HashMap<LVAR,LCONST> subs = new HashMap<LVAR,LCONST>();
 		for (BOOL_EXPR constraint : _alConstraints) {
 			// satisfied must be true if get here
-			if (! (Boolean)constraint.sample(subs, this, null) )
-				throw new EvalException("Violated state-action constraint: " + constraint);
+			try {
+				if (! (Boolean)constraint.sample(subs, this, null) )
+					throw new EvalException("Violated state-action constraint: " + constraint);
+			} catch (NullPointerException e) {
+				System.out.println("\n***SIMULATOR ERROR EVALUATING: " + constraint);
+				throw e;
+			} catch (ClassCastException e) {
+				System.out.println("\n***SIMULATOR ERROR EVALUATING: " + constraint);
+				throw e;
+			}
 		}
 	}
 		

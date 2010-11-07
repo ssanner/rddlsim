@@ -740,6 +740,10 @@ public class RDDL {
 	// method calls, relying on user to respect immutability
 	public static class TYPE_NAME {
 		
+		public final static TYPE_NAME BOOL_TYPE = new TYPE_NAME("bool");
+		public final static TYPE_NAME INT_TYPE  = new TYPE_NAME("int");
+		public final static TYPE_NAME REAL_TYPE = new TYPE_NAME("real");
+		
 		public TYPE_NAME(String obj_name) {
 			_STypeName = obj_name.intern();
 			_nHashCode = obj_name.hashCode();
