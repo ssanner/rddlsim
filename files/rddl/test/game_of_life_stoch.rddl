@@ -42,16 +42,17 @@ domain game_of_life {
 
 		// Stochastically determine whether cell (?x,?y) is alive in next state
 		alive'(?x,?y) = if (forall_{?y2 : y_pos} ~alive(?x,?y2))
-							then Bernoulli(PROB_REGENERATE) // If all cells dead with same ?x, randomly regenerate board
+						then Bernoulli(PROB_REGENERATE) // Rule 6
 
-						else if ([alive(?x,?y) ^ (count-neighbors(?x,?y) >= 2) ^ (count-neighbors(?x,?y) <= 3)]
+						else if ([alive(?x,?y) ^ (count-neighbors(?x,?y) >= 2) 
+								^ (count-neighbors(?x,?y) <= 3)]
 						    | [~alive(?x,?y) ^ (count-neighbors(?x,?y) == 3)]
 						    | set(?x,?y))
 						then Bernoulli(PROB_REGENERATE)
 						else Bernoulli(1.0 - PROB_REGENERATE);
 	};
     
-    // Reward is number of alive cells
+	// Reward is number of alive cells
 	reward = sum_{?x : x_pos, ?y : y_pos} alive(?x,?y);
 	
 	state-action-constraints {
