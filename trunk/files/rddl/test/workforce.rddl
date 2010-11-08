@@ -16,6 +16,8 @@ domain workforce {
 		SERVICEREWARD(lvl) : {non-fluent, real, default = 0.0};
 		SEASONALPEAK(lvl) : {non-fluent, real, default = 0.0};
 		SEASONFREQ : {non-fluent, int, default = 3};
+		ATTRITIONAMOUNT(lvl) : {non-fluent, int, default = 1};
+		rif(lvl) : {interm-fluent, bool, level = 1};
 		labor(lvl) : { state-fluent, int, default = 0};
 		demand(lvl) : { state-fluent, real, default = 0.0};
 		training(lvl) : { state-fluent, int, default = 0};
@@ -23,7 +25,8 @@ domain workforce {
 		month(lvl) : { state-fluent, int, default = 0}; 
 	};
 	cpfs {
-		labor(?l) = labor(?l) - labor(?l) * ATTRITION(?l) + training(?l);
+		rif(?l) = Bernoulli(ATTRIION(?l));
+		labor(?l) = labor(?l) + training(?l) - rif(?l) * ATTRITIONAMOUNT(?l);
 		demand(?l) = 0.95 * demand(?l) + Normal(0.05*demand(?l), 0.1*demand(?l))
 					+ (month(?l) == 0) * SEASONALPEAK(?l);
 		training(?l) = train(?l);
@@ -48,6 +51,8 @@ non-fluents simpleWorkforce {
 		SEASONFREQ = 3; 
 		SEASONEALPEAK(simple) = 10;
 		SEASONEALPEAK(hard) = 5;
+		ATTRITIONAMOUNT(simple) = 2;
+		ATTRITIONAMOUNT(hard) = 1;
 	};
 }
 
