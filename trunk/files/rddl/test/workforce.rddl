@@ -1,0 +1,75 @@
+domain workforce {
+	requirements = { 
+		concurrent,
+		integer-valued,  
+		multivalued, // this domain uses enumerated pvariables 
+		reward-deterministic
+	};
+	
+	types {
+		lvl : object;
+	};
+	
+	pvariables {
+		ATTRITION(lvl) : {non-fluent, real, default = 0.0};	
+		LABORCOST(lvl) : {non-fluent, real, default = 0.0};
+		SERVICEREWARD(lvl) : {non-fluent, real, default = 0.0};
+		SEASONALPEAK(lvl) : {non-fluent, real, default = 0.0};
+		SEASONFREQ : {non-fluent, int, default = 3};
+		labor(lvl) : { state-fluent, int, default = 0};
+		demand(lvl) : { state-fluent, real, default = 0.0};
+		training(lvl) : { state-fluent, int, default = 0};
+		train(lvl) : { action-fluent, int, default = 0};
+		month(lvl) : { state-fluent, int, default = 0}; 
+	};
+	cpfs {
+		labor(?l) = labor(?l) - labor(?l) * ATTRITION(?l) + training(?l);
+		demand(?l) = 0.95 * demand(?l) + Normal(0.05*demand(?l), 0.1*demand(?l))
+					+ (month(?l) == 0) * SEASONALPEAK(?l);
+		training(?l) = train(?l);
+		month(?l) = if ( month(?l) == 0 ) then SEASONFREQ -1 else month(?l) -1;
+	};
+	reward = (sum_{?l : lvl} (labor(?l) >= demand(?l)) * SERVICEREWARD(?l))-
+			(sum_{?l :lvl} LABORCOST(?l) * (labor(?l) + training(?l)));
+	
+}
+
+non-fluents simpleWorkforce {
+
+	domain = workforce;
+	objects { 
+		lvl : {simple, hard};
+	};
+	non-fluents {
+		ATTRITION(simple) = 0.1;
+		ATTRITION(hard) = 0.02;
+		SERVICEREWARD(simple) = 100;
+		SERVICEREWARD(hard) = 200;
+		SEASONFREQ = 3; 
+		SEASONEALPEAK(simple) = 10;
+		SEASONEALPEAK(hard) = 5;
+	};
+}
+
+instance ip1 {
+
+	domain = workforce;
+	
+	non-fluents = simpleWorkforce;
+  
+	init-state { 
+		month(simple) = 1;
+		month(hard) = 0;
+		labor(simple) = 10;
+		labor(hard) = 5;
+		demand(simple) = 12.0;
+		demand(hard) = 5.0;
+		training(simple) = 0;
+		training(hard) = 0;
+	};
+  
+	max-nondef-actions = 2;
+  
+	horizon  = 20;
+	discount = 0.9;
+}
