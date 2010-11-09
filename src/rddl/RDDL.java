@@ -13,6 +13,8 @@ import java.util.*;
 
 public class RDDL {
 
+	public final static boolean DEBUG_EXPR_EVAL = false;
+	
 	public RDDL() { }
 
 	public RDDL(RDDL rddl) { 
@@ -1282,6 +1284,9 @@ public class RDDL {
 				}
 				
 				Object interm_result = _e.sample(subs, s, r);
+				if (DEBUG_EXPR_EVAL)
+					System.out.println(" - " + subs + " : " + interm_result);
+
 				if (result == null)
 					result = interm_result;
 				else 
@@ -1582,7 +1587,9 @@ public class RDDL {
 				// Update result
 				Boolean interm_result = (Boolean)_expr.sample(subs, s, r);
 				//System.out.println("Quant " + _sQuantType + " [" + subs + "]" + result + "/" + interm_result); 
-
+				if (DEBUG_EXPR_EVAL)
+					System.out.println(subs + " : " + interm_result);
+				
 				if (result == null)
 					result = interm_result;
 				else 

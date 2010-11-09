@@ -59,7 +59,7 @@ public class GenericScreenDisplay extends StateViz {
 								s.getPVariableAssign(p, gfluent) + "\n");
 						
 				} catch (EvalException ex) {
-					sb.append("- could not retrieve assignment" + s + " for " + p + "\n");
+					sb.append("- could not retrieve assignment " + s + " for " + p + "\n");
 				}
 		}
 				
