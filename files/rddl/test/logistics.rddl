@@ -161,8 +161,9 @@ domain logistics {
 		forall_{?t : truck } [forall_{?b : box} [load(?t, ?b) => forall_{?c : city}[truckAt(?t, ?c) => (boxInCity(?b, ?c) ^ boxFree(?b) ^ atDepot(?t))]]];
 		forall_{?t : truck } [forall_{?b : box} [unload(?t, ?b) => (boxInTruck(?b, ?t) ^ forall_{?c : city}[truckAt(?t, ?c) => atDepot(?t, ?c)])]];
         	forall_{?b : box} [sum_{?t : truck}load(?t,?b)] <= 1;
-		forall_{?t: truck} [sum_{?b: box} [boxInTruck(?b, ?t) + load(?t, ?b)]] <= CAPACITY(?t);
-		forall_{?t : truck } [sum_{?c : city} [sum_{?b : box} drive(?t, ?c) + doDockAt(?t, ?c) + load(?t, ?b) + unload(?t, ?b) + undock(?t, ?c)]] < 2;
+		forall_{?t: truck} [(sum_{?b: box} [boxInTruck(?b, ?t) + load(?t, ?b)]) <= CAPACITY(?t)];
+  		forall_{?t : truck} [(sum_{?c : city, ?b : box} [drive(?t, ?c) + doDockAt(?t, ?c) + load(?t, ?b) + unload(?t, ?b) + undock(?t, ?c)])<2];
+	
 	};
 }
         
