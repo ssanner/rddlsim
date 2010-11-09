@@ -13,7 +13,7 @@ import java.util.*;
 
 public class RDDL {
 
-	public final static boolean DEBUG_EXPR_EVAL = false;
+	public final static boolean DEBUG_EXPR_EVAL = true;
 	
 	public RDDL() { }
 
