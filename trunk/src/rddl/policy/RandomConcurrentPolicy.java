@@ -90,6 +90,8 @@ public class RandomConcurrentPolicy extends Policy {
 					// Got an eval exception, constraint violated
 					passed_constraints = false;
 					//System.out.println(actions + " : " + e);
+					//System.out.println(s);
+					//System.exit(1);
 				} catch (Exception e) { 
 					// Got a real exception, something is wrong
 					System.out.println("\nERROR evaluating constraint on action set: " + 
@@ -116,11 +118,12 @@ public class RandomConcurrentPolicy extends Policy {
 			} catch (EvalException e) {
 				passed_constraints = false;
 				System.out.println(actions + " : " + e);
-				throw new EvalException("No actions (even all default) satisfied state constraints!");
+				throw new EvalException("No actions (even a) satisfied state constraints!");
 			}
 		}
 				
 		// Return the action list
+		//System.out.println("**Action: " + actions);
 		return actions;
 	}
 
