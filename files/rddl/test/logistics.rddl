@@ -108,16 +108,17 @@ domain logistics {
   
 		dockSum(?c) = numTryingDock(?c) + numDocked(?c);
 
-		makesNext(?t, ?c) = if((truckStatusTo(?t, ?c) == @high) | (truckStatusFrom(?t, ?c) == @high)) then Bernoulli(BIG_CROWD_PROB)
+		makesNext(?t, ?c) = if(~drive(?t, ?c)) then false 
+				    else if((truckStatusTo(?t, ?c) == @high) | (truckStatusFrom(?t, ?c) == @high)) then Bernoulli(BIG_CROWD_PROB)
 				    else if ((truckStatusTo(?t, ?c)) == @med | (truckStatusFrom(?t, ?c) == @med)) then Bernoulli(MED_CROWD_PROB)
 				    else Bernoulli(LOW_CROWD_PROB);
 
 		
 
-		nextCity(?t, ?c) = if(~drive(?t, ?c) ^  truckAt(?t, ?c)) then true
-				   else if(~drive(?t, ?c)) then false 
+		nextCity(?t, ?c) = if(forall_{?c2 : city}[~drive(?t, ?c2)]) then truckAt(?t, ?c)
 				   else if(makesNext(?t, ?c)) then true //drive is on
-				   else truckAt(?t, ?c);  //but didn't get there
+				   else if(forall_{?c2: city}[~makesNext(?t, ?c2)]) then truckAt(?t, ?c)
+				   else false;  //made it somewhere
 		
 
 		
@@ -156,13 +157,20 @@ domain logistics {
 	reward = [sum_{?b : box} sum_{?c : city} [boxInCity(?b,?c) ^ DESTINATION(?b,?c) ^ boxFree(?b)]];
 
 	state-action-constraints {
+		forall_{?t: truck} [(sum_{?c : city} truckAt(?t,?c)) < 2];
+		forall_{?t: truck} forall_{?c : city} [atDepot(?t,?c) => truckAt(?t, ?c)];
+		forall_{?t: truck} [(sum_{?c : city} atDepot(?t,?c)) < 2];
+
+		forall_{?t: truck} forall_{?c : city}[drive(?t, ?c) => forall_{?c2 : city}[~atDepot(?t, ?c2)]];
+
 		forall_{?c : city} [(sum_{?t : truck} doDockAt(?t,?c)) + (sum_{?t : truck} atDepot(?t,?c)) <= MAX-DOCKED(?c)];  //note with this you can't dock and undock 2 trucks in an otherwise full loading dock on the same turn
 		forall_{?c : city} [forall_{?t : truck} undock(?t, ?c) => atDepot(?t, ?c)];
-		forall_{?t : truck } [forall_{?b : box} [load(?t, ?b) => forall_{?c : city}[truckAt(?t, ?c) => (boxInCity(?b, ?c) ^ boxFree(?b) ^ atDepot(?t))]]];
+		forall_{?t : truck} forall_{?c : city} [doDockAt(?t, ?c) => truckAt(?t, ?c)];
+		forall_{?t : truck } [forall_{?b : box} [load(?t, ?b) => forall_{?c : city}[truckAt(?t, ?c) => (boxInCity(?b, ?c) ^  forall_{?t2 : truck}[~boxInTruck(?b, ?t2)] ^ atDepot(?t, ?c))]]];
 		forall_{?t : truck } [forall_{?b : box} [unload(?t, ?b) => (boxInTruck(?b, ?t) ^ forall_{?c : city}[truckAt(?t, ?c) => atDepot(?t, ?c)])]];
-        	forall_{?b : box} [sum_{?t : truck}load(?t,?b)] <= 1;
+        	forall_{?b : box} [(sum_{?t : truck}load(?t,?b)) < 2];
 		forall_{?t: truck} [(sum_{?b: box} [boxInTruck(?b, ?t) + load(?t, ?b)]) <= CAPACITY(?t)];
-  		forall_{?t : truck} [(sum_{?c : city, ?b : box} [drive(?t, ?c) + doDockAt(?t, ?c) + load(?t, ?b) + unload(?t, ?b) + undock(?t, ?c)])<2];
+  		forall_{?t : truck} [(sum_{?c : city}  drive(?t, ?c) + doDockAt(?t, ?c) + undock(?t, ?c)) +  (sum_{?b : box} [load(?t, ?b) + unload(?t, ?b) ])<2];
 	
 	};
 }
@@ -195,7 +203,7 @@ non-fluents trucks1 {
 
 // Specify an actual problem instance (full object specification, initial state, 
 // and objective).
-instance is1 {
+instance il1 {
 
 	domain = logistics;
 	
@@ -235,6 +243,6 @@ instance is1 {
 	// We assume the objective is expected discounted reward over a fixed horizon
 	// length.  Indefinite horizon and average reward objectives are not being 
 	// considered in this first draft.
-	horizon  = 20;
+	horizon  = 50;
 	discount = 0.9;
 }
