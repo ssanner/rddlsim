@@ -113,7 +113,7 @@ domain package {
 
 		losingPackage(?a, ?p) = (hasPackage(?a, ?p) ^ (drop(?a, ?p) | exists_{?b : person}[handOver(?a, ?p, ?b)])); 
 
-		gainingPackage(?a, ?p) = (pickup(?a, ?p) | exists_{?b : person}[handOver(?a, ?p, ?b)]);  //remmeber to add precons to these actions in constraints
+		gainingPackage(?a, ?p) = (pickup(?a, ?p) | exists_{?b : person}[handOver(?b, ?p, ?a)]);  //remmeber to add precons to these actions in constraints
 
 
 		slipped(?p) = Bernoulli(SLIP-PROB(?p));
@@ -132,7 +132,7 @@ domain package {
 				    else false;
 
 		//next x position of a person (unless they went  out of bounds, then it stays the same)
-		nextXPos(?p) = if(numMoves(?p) == 1 ^ ~outBoundsNext(?p))
+		nextXPos(?p) = if(~outBoundsNext(?p))
 					then [if(moveOutcome(?p) == @left) 
 						then xPos(?p) -1
 						else if(moveOutcome(?p) == @right)
@@ -141,7 +141,7 @@ domain package {
 				else xPos(?p);
 
 		//next y position of a person (unless they went  out of bounds, then it stays the same)
-		nextYPos(?p) = if(numMoves(?p) == 1 ^ ~outBoundsNext(?p))
+		nextYPos(?p) = if(~outBoundsNext(?p))
 					then [if(moveOutcome(?p) == @down) 
 						then yPos(?p) -1
 						else if(moveOutcome(?p) == @up) 
@@ -154,7 +154,7 @@ domain package {
 		nextYPosPackage(?p)= if(exists_{?a : person} hasPackage(?a, ?p) ^ ~losingPackage(?a, ?p)) then nextYPos(?a)
 					else yPosPackage(?p);
 
-		disruptorPickup(?a, ?p) = DISRUPTOR(?a) ^ (nextXPos(?a) == nextXPosPackage(?p)) ^ (nextXPos(?a) == nextXPosPackage(?p));  //it's ok to steal from an exchanger
+		disruptorPickup(?a, ?p) = DISRUPTOR(?a) ^ (nextXPos(?a) == nextXPosPackage(?p)) ^ (nextYPos(?a) == nextYPosPackage(?p));  //it's ok to steal from an exchanger
 
 		  
 		//update xpos unless there was a conflict (stays the same)
@@ -176,8 +176,8 @@ domain package {
 	};
   
 
-	//reward for every player that has reached their x goal.  	
-	reward = [sum_{?a : person} sum_{?p : package}  [GOAL-HOLDER(?a, ?p) ^ hasPackage(?a, ?p)]];
+	//reward for every player that has the right package  	
+	reward = [sum_{?a : person} [sum_{?p : package}  [GOAL-HOLDER(?a, ?p) ^ hasPackage(?a, ?p)]]];
 	
 
 
@@ -188,18 +188,24 @@ domain package {
 		
 		forall_{?p : person} (DISRUPTOR(?p) => (((~(walk(?p)==@none)) + (sum_{?a: package} [drop(?p, ?a)]) + (sum_{?a: package} sum_{?p2: person } handOver(?p, ?a, ?p2))) == 0));
 		
-		//can only exchange in same location and if have the package
-		forall_{?a : person} forall_{?p : package} forall_{?b : person} [handOver(?a, ?p, ?b) => [(xPos(?a) == xPos(?b)) ^ (yPos(?a) == yPos(?b)) ^ hasPackage(?a, ?b)]];
+		//can only exchange in same location and if have the package and the other person isn't moving (it's ok if they want to pickup or drop apackage though)
+		forall_{?a : person} forall_{?p : package} forall_{?b : person} [handOver(?a, ?p, ?b) => [(xPos(?a) == xPos(?b)) ^ (yPos(?a) == yPos(?b)) ^ hasPackage(?a, ?p) ^ (walk(?b) == @none)]];
 
 		//can only drop a package you have
 		forall_{?a : person} forall_{?p : package} [drop(?a, ?p) => hasPackage(?a,?p)];
 
 		//can only pickup if the package is in same location as you and no one is holding it
-		forall_{?a : person} forall_{?p : package} pickup(?a, ?p) => [(xPos(?a) == xPos(?p)) ^ (yPos(?a) == yPos(?p)) ^ ~(exists_{?b : person} hasPackage(?b, ?p))];
+		forall_{?a : person} [forall_{?p : package} [pickup(?a, ?p) => ((xPos(?a) == xPosPackage(?p)) ^ (yPos(?a) == yPosPackage(?p)) ^ ~(exists_{?b : person} hasPackage(?b, ?p)))]];
+
+		//can't both pickup the same package
+		forall_{?b : package}[(sum_{?p : person} pickup(?p, ?b)) <= 1];
 
 		//only one person can hold a package at the same time
-		forall_{?p : package} ( sum_{?a : person} [hasPackage(?a, ?p) ]) <= 1;
-		
+		forall_{?p : package} [( sum_{?a : person} [hasPackage(?a, ?p) ]) <= 1];
+	
+		//exchangers can only hold one package? --not sure for now
+		//forall_{?p : person} [EXCHANGER(?p) => [(sum_{?b: package} hasPackage(?p, ?b)) <= 1]];
+
 		//can't go out of bounds
 		forall_{?p : person} [(xPos(?p) >= 0) ^ (yPos(?p) >=0) ^ (xPos(?p) < GRID-SIZE-X) ^ (yPos(?p) < GRID-SIZE-Y)];
 	};
@@ -212,7 +218,7 @@ non-fluents simplePackage {
 	
 	//two people and one disruptor
 	objects { 
-		person : {e1, e2, d1};
+		person : {e1, e2}; //, d1};
 		package : {p1, p2};
 	};
   
@@ -224,8 +230,8 @@ non-fluents simplePackage {
 		EXCHANGER(e2);
 		DISRUPTOR(d1);
 		SLIP-PROB = 0.1;
-		GOAL-HOLDER(p1, e2);
-		GOAL-HOLDER(p2, e1);
+		GOAL-HOLDER(e2,p1);
+		GOAL-HOLDER(e1,p2);
 	};
 }
 
@@ -253,6 +259,6 @@ instance ip1 {
   
 	max-nondef-actions = 2;
   
-	horizon  = 20;
+	horizon  = 100;
 	discount = 0.9;
 }
