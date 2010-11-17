@@ -1,0 +1,208 @@
+////////////////////////////////////////////////////////////////////
+// A pizza delivery task 
+//
+// Author: Tom Walsh (thomasjwalsh [at] gmail.com)
+////////////////////////////////////////////////////////////////////
+domain pizza {
+  
+	requirements = { 
+		continuous,  // this domain uses real-valued parameterized variables (pvariables)
+		concurrent,  
+		reward-deterministic, // this domain does not use a stochastic reward
+		intermediate-nodes,   // this domain uses intermediate pvariable nodes
+		constrained-state,    // this domain uses state constraints
+		integer-valued
+	};
+
+	types {
+  		location : object;
+ 		truck :  object;
+		pizza : object;
+	};
+      
+	
+	pvariables { 
+    		  		
+    	   	CAPACITY(truck) : { non-fluent, int, default = 3 };	  		
+		ORDERS(location) : { non-fluent, int, default = 0 };	  						
+		CONNECTED(location, location) : {non-fluent, bool, default = false};
+		DRIVEPROB(truck) : {non-fluent, real, default=0.9}; //probability truck goes nowhere this step		
+		SHOP(location) : {non-fluent, bool, default=false};
+		
+		// State fluents
+		truckAt(truck, location) : { state-fluent, bool, default = false };
+		delivered(pizza,location) : { state-fluent, bool, default = false };
+		pizzaInTruck(pizza, truck) :  { state-fluent, bool, default = false };
+		hot(pizza) : {state-fluent, bool, default=true};
+		disposed(pizza) : {state-fluent, bool, default=false};
+
+		// Intemediate fluents
+
+		
+		numPizzasInTruck(truck) : { interm-fluent, int, level = 1 };
+		pizzaFree(pizza) : { interm-fluent, bool, level = 1 };
+		blocked(truck) : { interm-fluent, bool, level = 1 };
+		makesNext(truck, location) : { interm-fluent, bool, level = 2};
+		hotPizzasTogether(pizza) :{ interm-fluent, int, level = 2};
+
+
+		// Action variables
+		
+		drive(truck, location) : { action-fluent, bool, default = false }; 
+      		deliver(truck, pizza, location) : { action-fluent, bool, default = false }; 
+		load(truck, pizza)  : { action-fluent, bool, default = false };
+		dispose(truck, pizza) : { action-fluent, bool, default = false };
+
+	};
+  
+	
+	cpfs {
+
+		
+		pizzaFree(?b) = forall_{?t : truck}[~pizzaInTruck(?b, ?t)];		
+
+
+		numPizzasInTruck(?t) = sum_{?p : pizza}[pizzaInTruck(?p, ?t)];	
+		blocked(?t) = exists_{?l : location, ?t2 : truck}[(?t ~= ?t2)^ truckAt(?t, ?l) ^ truckAt(?t2, ?l) ^ exists_{?l: location}[drive(?t,?l) ^ drive(?t2, ?l)]];
+
+		makesNext(?t, ?c) = if(~drive(?t, ?c)) then false 
+				    else if(blocked(?t)) then false
+				    else Bernoulli(DRIVEPROB(?t));
+
+	
+		//keeping cold pizzas in the truck does not help keep pizzas warm
+		hotPizzasTogether(?p) = sum_{?t : truck}[sum_{?p2: pizza}[pizzaInTruck(?p, ?t) ^ pizzaInTruck(?p2, ?t) ^ hot(?p2)]];
+
+
+		truckAt'(?t, ?c) = (truckAt(?t, ?c) ^ forall_{?l: location}[~drive(?t, ?l)]) | makesNext(?t, ?c) | (truckAt(?t, ?c) ^ forall_{?l: location}[~makesNext(?t, ?l)]);
+		
+		delivered'(?p, ?l) = delivered(?p, ?l) | exists_{?t: truck}[pizzaInTruck(?p, ?t) ^ deliver(?t, ?p,?l)];
+
+		pizzaInTruck'(?p, ?t) = ((pizzaInTruck(?p, ?t) ^ forall_{?l: location}[~deliver(?t, ?p, ?l) ^ ~dispose(?t, ?p)]) | load(?t, ?p));
+
+		disposed'(?p) = disposed(?p) | exists_{?t: truck} dispose(?t, ?p);
+
+		hot'(?p) = if(~hot(?p)) then false
+			  else if(exists_{?l:location}[delivered(?p, ?l)]) then true
+			  else if(pizzaFree(?p)) then true //has to be at the shop and not cold (should the shop be able to warm them up?)
+			  else Bernoulli(hotPizzasTogether(?p)/(hotPizzasTogether(?p) + 1));
+
+	};
+  
+	reward =  sum_{?l : location} [ (ORDERS(?l) > 0)  * ((sum_{?p: pizza} [delivered(?p, ?l)]) <= ORDERS(?l)) * (sum_{?p: pizza} [delivered(?p, ?l) ^ hot(?p)]) - ORDERS(?l)];
+
+
+
+
+
+
+
+//Note you can pickup or deliver multiple pizzas at once 
+
+
+	state-action-constraints {
+		forall_{?t: truck} [(sum_{?l : location} truckAt(?t,?l)) == 1];
+		forall_{?b : pizza} [(sum_{?t : truck}load(?t,?b)) < 2];  //2 trucks can't load the same pizza
+		forall_{?t: truck} [(sum_{?b: pizza} [pizzaInTruck(?b, ?t) + load(?t, ?b)]) <= CAPACITY(?t)];
+
+		//can't deliver a cold pizza
+		forall_{?p :pizza, ?t: truck, ?l: location} [deliver(?t, ?p, ?l) => (hot(?p) ^ truckAt(?t, ?l) ^ pizzaInTruck(?p, ?t))]; 
+
+		//pickup needs to happen at the shop and pizza must be free and at the shop and can't be disposed
+		forall_{?t: truck, ?p : pizza}[load(?t, ?p) => (forall_{?t2: truck}[~pizzaInTruck(?p, ?t2)] ^ forall_{?l: location}[~delivered(?p, ?l) ^ (truckAt(?t, ?l) => SHOP(?l))] ^ ~disposed(?p))];
+
+		
+		//can only dispose of a pizza you have and only at the shop.
+		forall_{?t: truck, ?p : pizza}[dispose(?t, ?p) => (pizzaInTruck(?p, ?t) ^ forall_{?l: location}[truckAt(?t, ?l) => SHOP(?l)])];
+
+		//can only drive one place per turn? 
+ 		forall_{?t : truck} [(sum_{?c : location}  drive(?t, ?c)) <= 1];
+
+		//if you drive, can't do other actions
+		forall_{?t : truck, ?l : location}[drive(?t, ?l) => (sum_{?l2: location, ?p:pizza}[load(?t, ?p) + deliver(?t,?p,?l2) + dispose(?t, ?p)]) == 0];	
+		forall_{?t : truck, ?l : location}[drive(?t, ?l) => exists_{?l2: location}[truckAt(?t, ?l2) ^ CONNECTED(?l2, ?l)]];
+		
+
+	};
+}
+        
+// Define non-fluents here.
+non-fluents pizza1 {
+
+	domain = pizza;
+	
+	objects { 
+		pizza : {p1, p2, p3, p4};
+		location : {s1, c1, c2, c3, c4};
+		truck : {t1, t2};
+	};
+  
+	// Only need to specify non-default values
+	non-fluents { 
+		CAPACITY(t1) = 2;
+		CAPACITY(t2) = 3;
+		SHOP(s1) = true;
+		CONNECTED(s1, c1) = true;
+		CONNECTED(c1, c2) = true;
+		CONNECTED(c2, c3) = true;
+		CONNECTED(s1, c4) = true;
+		CONNECTED(c4, c5) = true;
+		CONNECTED(c5, c2) = true;
+		CONNECTED(c3, s1) = true;
+
+		ORDERS(c4) =2;
+		ORDERS(c2) =1;
+		
+	};
+}
+
+non-fluents smallPizza {
+
+	domain = pizza;
+	
+	objects { 
+		pizza : {p1, p2, p3, p4};
+		location : {s1, c1, c2};
+		truck : {t1, t2};
+	};
+  
+	// Only need to specify non-default values
+	non-fluents { 
+		CAPACITY(t1) = 2;
+		CAPACITY(t2) = 3;
+		SHOP(s1) = true;
+		CONNECTED(s1, c1) = true;
+		CONNECTED(s1, c2) = true;
+		CONNECTED(c2, c1) = true;
+		CONNECTED(c1, c2) = true;
+		CONNECTED(c1, s1) = true;
+		CONNECTED(c2, s1) = true;
+
+
+		ORDERS(c4) =2;
+		ORDERS(c2) =1;
+	};
+}
+
+
+// Specify an actual problem instance (full object specification, initial state, 
+// and objective).
+instance ip1 {
+
+	domain = pizza;
+	
+	non-fluents = pizza1;
+  
+	init-state { 
+		truckAt(t1, s1); 
+		truckAt(t2, s1);		 
+	};
+  
+	max-nondef-actions = 4;
+  
+	// We assume the objective is expected discounted reward over a fixed horizon
+	// length.  Indefinite horizon and average reward objectives are not being 
+	// considered in this first draft.
+	horizon  = 40;
+	discount = 0.9;
+}
