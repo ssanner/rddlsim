@@ -107,16 +107,19 @@ public class Simulator {
 	public static void main(String[] args) throws Exception {
 		
 		//try {	
-			if (args.length < 3 || args.length > 4) {
-				System.out.println("usage: RDDL-file policy-class-name instance-name [state-viz-class-name]");
+			if (args.length < 3 || args.length > 5) {
+				System.out.println("usage: RDDL-file policy-class-name instance-name [state-viz-class-name] [rand seed]");
 				System.exit(1);
 			}
 			String rddl_file = args[0];
 			String policy_class_name = args[1];
 			String instance_name = args[2];
 			String state_viz_class_name = "rddl.viz.GenericScreenDisplay";
+			int rand_seed = 123456;
 			if (args.length == 4)
 				state_viz_class_name = args[3];
+			if (args.length == 5)
+				rand_seed = new Integer(args[4]);
 			
 			RDDL rddl = parser.parse(new File(rddl_file));
 			Simulator sim = new Simulator(rddl, instance_name);
@@ -137,7 +140,7 @@ public class Simulator {
 			//String instance_name = rddl._tmInstanceNodes.firstKey();
 			
 			// Reset, pass a policy, a visualization interface, a random seed, and simulate!
-			Result r = sim.run(pol, viz, /*rand seed*/ 123456);
+			Result r = sim.run(pol, viz, rand_seed);
 //				new RandomBoolPolicy(instance_name),
 //				new RandomEnumPolicy(instance_name),
 //				new FixedBoolPolicy(instance_name), 
