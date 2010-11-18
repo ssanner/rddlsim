@@ -68,8 +68,8 @@ domain simple_mars_rover {
 		time' = if (snapPicture)
 				then DiracDelta(time + 0.25)
 				else DiracDelta(time + 
-								[if (xMove > 0) then xMove else -xMove] + 
-								[if (yMove > 0) then yMove else -yMove]);
+					[if (xMove > 0) then xMove else -xMove] + 
+					[if (yMove > 0) then yMove else -yMove]);
 
 	};
   
