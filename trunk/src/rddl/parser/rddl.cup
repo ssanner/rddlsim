@@ -223,11 +223,13 @@ BOOL_TYPE ::= TRUE     {: RESULT = new Boolean(true); :}
 		;
 
 DOUBLE_TYPE ::= DOUBLE:d {: RESULT = d; :}
+		| MINUS DOUBLE:d {: RESULT = new Double(-d.doubleValue()); :}
 		| POS_INF      {: RESULT = new Double(Double.POSITIVE_INFINITY); :}
 		| NEG_INF      {: RESULT = new Double(Double.NEGATIVE_INFINITY); :}
 		;
 
 INT_TYPE ::= INTEGER:i {: RESULT = i; :}
+		| MINUS INTEGER:i {: RESULT = new Integer(-i.intValue()); :}
 		| POS_INF      {: RESULT = new Integer(Integer.MAX_VALUE); :}
 		| NEG_INF      {: RESULT = new Integer(Integer.MIN_VALUE); :}
 		;
