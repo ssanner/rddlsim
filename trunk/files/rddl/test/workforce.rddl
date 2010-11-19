@@ -1,3 +1,26 @@
+//////////////////////////////////////////////////////////////////////////////////////////
+// Workforce Domain by Sungwook Yoon
+//
+// Running a call center is not an easy task
+// One of the biggest problem is maintaining the right amount of workforce. 
+// Call center workers quit easily (a.k.a. attrition) 
+//  and the call volume varies a lot by the month,
+// by the day, by the hour or even by the minute.
+// The problem gets more complex as there are multiple skill levels involved.
+// Some calls are handled by "sales" handlers and the others are handled by "service" handlers.
+// These call center workforce also need to be trained before they can be put into the work.
+// 
+// This domain represents this problem.
+// Each instance has ATTRITION rate for each skill lvl.
+// Each skill lvl is associated with LABORCOST,
+// SERVICEREWARD, and SERVICE PEAK.
+// SERVICEREWARD is fixed reward if the current labor(lvl) meets the call volume or demand(lvl)
+// In this representation, call volume variation is modelled as SEASONALPEAK, the highest volume 
+// that happens periodically.
+// SEASONFREQ models the frequency of such peaks.
+// The time unit here is one month and training is done in a month for all skill levels.
+// 
+
 domain workforce {
 	requirements = { 
 		concurrent,
@@ -12,28 +35,69 @@ domain workforce {
 	
 	pvariables {
 		ATTRITION(lvl) : {non-fluent, real, default = 0.0};	
+		// workforce quitting probability, what portion of the workforce
+		// will quit?
+
 		LABORCOST(lvl) : {non-fluent, real, default = 0.0};
+		// salary for each skill lvl
+
 		SERVICEREWARD(lvl) : {non-fluent, real, default = 0.0};
+		// reward for the skill lvl, if the workforce meets call volume
+
 		SEASONALPEAK(lvl) : {non-fluent, real, default = 0.0};
+		// seasonal burst of calls
+
 		SEASONFREQ : {non-fluent, int, default = 3};
+		// frequency of the burst happening
+
 		ATTRITIONAMOUNT(lvl) : {non-fluent, int, default = 1};
+		// fixed attrition amount to compute exact attrition
+
 		rif(lvl) : {interm-fluent, bool, level = 1};
+		// intermediate variable for attrition calculation
+
+		//above two variables are kludge to compute attrition.
+		//need better work
+
 		labor(lvl) : { state-fluent, int, default = 0};
+		// current workforce for each skill level
+
 		demand(lvl) : { state-fluent, real, default = 0.0};
+		// call volume for each skill level 
+
 		training(lvl) : { state-fluent, int, default = 0};
+		// currently being trained workforce
+		// wish to have different training period for each skill
+		// workinng on it
+
 		train(lvl) : { action-fluent, int, default = 0};
+		// ACTION to train each skill level, how many
+
 		month(lvl) : { state-fluent, int, default = 0}; 
+		// current month or time for each skill
+		// Just to have different phase for each skill, induced by SEASONALPEAK
 	};
 	cpfs {
 		rif(?l) = Bernoulli(ATTRITION(?l));
 		labor'(?l) = labor(?l) + training(?l) - rif(?l) * ATTRITIONAMOUNT(?l);
+		// above two lines are to compute workforce for each skill lvl
+		// again rif and ATTRITIONAMOUNT is kludge to have integer values..
+
 		demand'(?l) = 0.95 * demand(?l) + Normal(0.05*demand(?l), 0.1*demand(?l))
 					+ (month(?l) == 0) * SEASONALPEAK(?l);
+		// modeling call valume as simple AR model.
+		// with unusual seasonal noise
+
 		training'(?l) = train(?l);
+		// putting next workforce in the queue
+
 		month'(?l) = if ( month(?l) == 0 ) then SEASONFREQ -1 else month(?l) -1;
+		// rotating month for each skill
 	};
 	reward = (sum_{?l : lvl} (labor(?l) >= demand(?l)) * SERVICEREWARD(?l))-
 			(sum_{?l :lvl} LABORCOST(?l) * (labor(?l) + training(?l)));
+	// reward happens only when workforce for each skill lvl exceeds the call volume (demand)
+	// cost always happens
 	
 }
 
