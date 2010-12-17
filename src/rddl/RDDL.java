@@ -11,6 +11,8 @@ package rddl;
 
 import java.util.*;
 
+import util.Pair;
+
 public class RDDL {
 
 	public final static boolean DEBUG_EXPR_EVAL = false;
@@ -565,7 +567,7 @@ public class RDDL {
 			return _sVarName;
 		}
 
-		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<String> gfluents) 
+		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<Pair> gfluents) 
 			throws EvalException {
 			// Nothing to collect
 		}
@@ -577,6 +579,11 @@ public class RDDL {
 				throw new EvalException("RDDL.PVAR_EXPR: No substitution in " + subs + " for " + this + "\n" + this);
 			return sub;
 		}
+		
+		public EXPR getDist(HashMap<LVAR,LCONST> subs, State s) throws EvalException {
+			throw new EvalException("LVAR.getDist: Not a distribution.");
+		}
+
 	}
 	
 	public static class LTYPED_VAR extends LTERM {
@@ -593,7 +600,7 @@ public class RDDL {
 			return _sVarName + " : " + _sType;
 		}
 
-		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<String> gfluents) 
+		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<Pair> gfluents) 
 			throws EvalException {
 			// Nothing to collect
 		}
@@ -604,6 +611,10 @@ public class RDDL {
 			if (sub == null)
 				throw new EvalException("RDDL.PVAR_EXPR: No substitution in " + subs + " for " + this + "\n" + this);
 			return sub;
+		}
+
+		public EXPR getDist(HashMap<LVAR,LCONST> subs, State s) throws EvalException {
+			throw new EvalException("LTYPED_VAR.getDist: Not a distribution.");
 		}
 
 	}
@@ -634,7 +645,7 @@ public class RDDL {
 			return _sConstValue == ((LCONST)o)._sConstValue; 
 		}
 
-		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<String> gfluents) 
+		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<Pair> gfluents) 
 			throws EvalException {
 			// Nothing to collect
 		}
@@ -642,6 +653,10 @@ public class RDDL {
 		public Object sample(HashMap<LVAR, LCONST> subs, State s, Random r)
 			throws EvalException {
 			return this;
+		}
+		
+		public EXPR getDist(HashMap<LVAR,LCONST> subs, State s) throws EvalException {
+			throw new EvalException("LCONST.getDist: Not a distribution.");
 		}
 
 	}
@@ -705,7 +720,7 @@ public class RDDL {
 			return ret_val;
 		}
 
-		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<String> gfluents) 
+		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<Pair> gfluents) 
 			throws EvalException {
 			
 			// Skip non-fluents
@@ -733,9 +748,13 @@ public class RDDL {
 					throw new EvalException("RDDL.PVAR_EXPR: Unrecognized term " + t + "\n" + this);
 			}
 			
-			gfluents.add(_sName + _subTerms.toString());
+			gfluents.add(new Pair(_sName, _subTerms.clone()));
 		}
 		
+		public EXPR getDist(HashMap<LVAR,LCONST> subs, State s) throws EvalException {
+			throw new EvalException("TVAR_EXPR.getDist: Not a distribution.");
+		}
+
 	}
 	
 	// Immutable... making public to avoid unnecessary
@@ -839,11 +858,17 @@ public class RDDL {
 		
 		public abstract Object sample(HashMap<LVAR,LCONST> subs, State s, Random r) throws EvalException;
 		
-		public abstract void collectGFluents(HashMap<LVAR,LCONST> subs, State s, HashSet<String> gfluents) throws EvalException;
+		public abstract void collectGFluents(HashMap<LVAR,LCONST> subs, State s, HashSet<Pair> gfluents) throws EvalException;
+
+		// Can support a prefix notation if requested
+		//public abstract String toPrefix();
+		
+		// Recurses until distribution then samples parameters (assuming deterministic)
+		public abstract EXPR getDist(HashMap<LVAR,LCONST> subs, State s) throws EvalException;
 	}
 	
-	//////////////////////////////////////////////////////////
-
+	////////////////////////////////////////////////////////// 
+	
 	public static class DiracDelta extends EXPR {
 		
 		public DiracDelta(EXPR expr) {
@@ -863,7 +888,12 @@ public class RDDL {
 			return o;
 		}
 
-		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<String> gfluents) 
+		public EXPR getDist(HashMap<LVAR,LCONST> subs, State s) throws EvalException {
+			Double d = ((Number)_exprRealValue.sample(subs, s, null)).doubleValue();
+			return new DiracDelta(new REAL_CONST_EXPR(d));
+		}
+		
+		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<Pair> gfluents) 
 			throws EvalException {
 			_exprRealValue.collectGFluents(subs, s, gfluents);
 		}
@@ -887,8 +917,18 @@ public class RDDL {
 				throw new EvalException("RDDL: KronDelta only applies to integer/boolean data, not " + (o == null ? null : o.getClass()) + ".\n" + this);
 			return o;
 		}
+
+		public EXPR getDist(HashMap<LVAR,LCONST> subs, State s) throws EvalException {
+			Object o = _exprIntValue.sample(subs, s, null);
+			if (o instanceof Integer) 
+				return new KronDelta(new INT_CONST_EXPR((Integer)o));
+			if (o instanceof Boolean)
+				return new KronDelta(new BOOL_CONST_EXPR((Boolean)o));
+
+			return null;
+		}
 		
-		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<String> gfluents) 
+		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<Pair> gfluents) 
 			throws EvalException {
 			_exprIntValue.collectGFluents(subs, s, gfluents);
 		}
@@ -922,11 +962,27 @@ public class RDDL {
 			}
 		}
 		
-		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<String> gfluents) 
+
+		public EXPR getDist(HashMap<LVAR,LCONST> subs, State s) throws EvalException {
+
+			try {
+				double l = ((Number)_exprLowerReal.sample(subs, s, null)).doubleValue();
+				double u = ((Number)_exprUpperReal.sample(subs, s, null)).doubleValue();
+				if (l > u)
+					throw new EvalException("RDDL: Uniform upper bound '" + 
+							u + "' must be greater than lower bound '" + l + "'");
+				return new Uniform(new REAL_CONST_EXPR(l), new REAL_CONST_EXPR(u)); 
+			} catch (Exception e) {
+				throw new EvalException("RDDL: Uniform only applies to real (or castable to real) data.\n" + e + "\n" + this);
+			}
+		}
+
+		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<Pair> gfluents) 
 		throws EvalException {
 			_exprLowerReal.collectGFluents(subs, s, gfluents);
 			_exprUpperReal.collectGFluents(subs, s, gfluents);
 		}
+		
 	}
 
 	public static class Normal extends EXPR {
@@ -957,7 +1013,17 @@ public class RDDL {
 			}
 		}
 		
-		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<String> gfluents) 
+		public EXPR getDist(HashMap<LVAR,LCONST> subs, State s) throws EvalException {
+			double mean = ((Number)_normalMeanReal.sample(subs, s, null)).doubleValue();
+			double var  = ((Number)_normalVarReal.sample(subs, s, null)).doubleValue();
+			if (var < 0)
+				throw new EvalException("RDDL: Normal variance '" + var +  
+						"' must be greater 0");
+			// x ~ N(mean,sigma^2) is equivalent to x ~ sigma*N(0,1) + mean
+			return new Normal(new REAL_CONST_EXPR(mean), new REAL_CONST_EXPR(var)); 
+		}
+		
+		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<Pair> gfluents) 
 			throws EvalException {
 			_normalMeanReal.collectGFluents(subs, s, gfluents);
 			_normalVarReal.collectGFluents(subs, s, gfluents);
@@ -980,7 +1046,12 @@ public class RDDL {
 			throw new EvalException("RDDL: Sampling from Exponential not yet implemented");
 		}
 		
-		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<String> gfluents) 
+		public EXPR getDist(HashMap<LVAR,LCONST> subs, State s) throws EvalException {
+			double lambda = ((Number)_exprLambdaReal.sample(subs, s, null)).doubleValue();
+			return new Exponential(new REAL_CONST_EXPR(lambda));
+		}
+		
+		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<Pair> gfluents) 
 			throws EvalException {
 			_exprLambdaReal.collectGFluents(subs, s, gfluents);
 		}
@@ -1017,7 +1088,7 @@ public class RDDL {
 					enum_probs.add(((Number)((EXPR)_exprProbs.get(i+1)).sample(subs, s, r)).doubleValue());
 					total += enum_probs.get(i/2);
 				}
-				if (Math.abs(1.0 - total) > 1.0e-3)
+				if (Math.abs(1.0 - total) > 1.0e-6)
 					throw new EvalException("Discrete probabilities did not sum to 1.0: " + total + " : " + enum_probs);
 				if (!new HashSet<ENUM_VAL>(enum_label).equals(new HashSet<ENUM_VAL>(etd._alPossibleValues)))
 					throw new EvalException("Expected enum values: " + etd._alPossibleValues + ", but got " + enum_label);
@@ -1036,7 +1107,13 @@ public class RDDL {
 			}
 		}
 		
-		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<String> gfluents) 
+		public EXPR getDist(HashMap<LVAR,LCONST> subs, State s) throws EvalException {
+
+			throw new EvalException("Not implemented");
+			//return null;
+		}
+		
+		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<Pair> gfluents) 
 			throws EvalException {
 			for (Object o : _exprProbs) 
 				if (o instanceof EXPR)
@@ -1060,7 +1137,12 @@ public class RDDL {
 			throw new EvalException("RDDL: Sampling from Geometric not yet implemented");
 		}
 		
-		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<String> gfluents) 
+		public EXPR getDist(HashMap<LVAR,LCONST> subs, State s) throws EvalException {
+			double prob = ((Number)_exprProb.sample(subs, s, null)).doubleValue();
+			return new Geometric(new REAL_CONST_EXPR(prob));
+		}
+	
+		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<Pair> gfluents) 
 			throws EvalException {
 			_exprProb.collectGFluents(subs, s, gfluents);
 		}
@@ -1083,7 +1165,12 @@ public class RDDL {
 			throw new EvalException("RDDL: Sampling from Poisson not yet implemented");
 		}
 		
-		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<String> gfluents) 
+		public EXPR getDist(HashMap<LVAR,LCONST> subs, State s) throws EvalException {
+			double lambda = ((Number)_exprLambda.sample(subs, s, null)).doubleValue();
+			return new Geometric(new REAL_CONST_EXPR(lambda));
+		}
+
+		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<Pair> gfluents) 
 			throws EvalException {
 			_exprLambda.collectGFluents(subs, s, gfluents);
 		}
@@ -1111,7 +1198,12 @@ public class RDDL {
 				return FALSE;
 		}
 		
-		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<String> gfluents) 
+		public EXPR getDist(HashMap<LVAR,LCONST> subs, State s) throws EvalException {
+			double prob = ((Number)_exprProb.sample(subs, s, null)).doubleValue();
+			return new Bernoulli(new REAL_CONST_EXPR(prob));
+		}
+
+		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<Pair> gfluents) 
 			throws EvalException {
 			_exprProb.collectGFluents(subs, s, gfluents);
 		}
@@ -1137,7 +1229,11 @@ public class RDDL {
 			return _nValue;
 		}
 		
-		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<String> gfluents) 
+		public EXPR getDist(HashMap<LVAR,LCONST> subs, State s) throws EvalException {
+			throw new EvalException("INT_CONST_EXPR.getDist: Not a distribution.");
+		}
+		
+		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<Pair> gfluents) 
 			throws EvalException {
 			// Nothing to collect
 		}
@@ -1160,8 +1256,12 @@ public class RDDL {
 		public Object sample(HashMap<LVAR,LCONST> subs, State s, Random r) throws EvalException {
 			return _dValue;
 		}
+		
+		public EXPR getDist(HashMap<LVAR,LCONST> subs, State s) throws EvalException {
+			throw new EvalException("REAL_CONST_EXPR.getDist: Not a distribution.");
+		}
 
-		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<String> gfluents) 
+		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<Pair> gfluents) 
 			throws EvalException {
 			// Nothing to collect
 		}
@@ -1201,7 +1301,11 @@ public class RDDL {
 			}
 		}
 		
-		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<String> gfluents) 
+		public EXPR getDist(HashMap<LVAR,LCONST> subs, State s) throws EvalException {
+			throw new EvalException("OPER_EXPR.getDist: Not a distribution.");
+		}
+
+		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<Pair> gfluents) 
 			throws EvalException {
 			_e1.collectGFluents(subs, s, gfluents);
 			_e2.collectGFluents(subs, s, gfluents);
@@ -1301,8 +1405,12 @@ public class RDDL {
 			
 			return result;
 		}
-		
-		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<String> gfluents) 
+
+		public EXPR getDist(HashMap<LVAR,LCONST> subs, State s) throws EvalException {
+			throw new EvalException("AGG_EXPR.getDist: Not a distribution.");
+		}
+
+		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<Pair> gfluents) 
 			throws EvalException {
 			
 			ArrayList<ArrayList<LCONST>> possible_subs = s.generateAtoms(_alVariables);
@@ -1383,8 +1491,11 @@ public class RDDL {
 			return ret_val;
 		}
 		
-		
-		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<String> gfluents) 
+		public EXPR getDist(HashMap<LVAR,LCONST> subs, State s) throws EvalException {
+			throw new EvalException("PVAR_EXPR.getDist: Not a distribution.");
+		}
+
+		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<Pair> gfluents) 
 			throws EvalException {
 			
 			// Skip non-fluents
@@ -1412,11 +1523,14 @@ public class RDDL {
 					throw new EvalException("RDDL.PVAR_EXPR: Unrecognized term " + t + "\n" + this);
 			}
 			
-			gfluents.add(_sName + _subTerms.toString());
+			gfluents.add(new Pair(_sName, _subTerms.clone()));
 		}
 
 	}
 	
+	// TODO: should never put a random variable as an if test expression,
+	//       a random sample should always be referenced by an intermediate
+	//       variable so that it is consistent over repeated evaluations.
 	public static class IF_EXPR extends EXPR {
 
 		public IF_EXPR(BOOL_EXPR test, EXPR true_branch, EXPR false_branch) {
@@ -1442,8 +1556,18 @@ public class RDDL {
 			else
 				return _falseBranch.sample(subs, s, r);
 		}
-				
-		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<String> gfluents) 
+
+		public EXPR getDist(HashMap<LVAR,LCONST> subs, State s) throws EvalException {
+			Object test = _test.sample(subs, s, null);
+			if (!(test instanceof Boolean))
+				throw new EvalException("RDDL.IF_EXPR: test " + _test + " did not evaluate to boolean: " + test+ "\n" + this);
+			if (((Boolean)test).booleanValue())
+				return _trueBranch.getDist(subs, s);
+			else
+				return _falseBranch.getDist(subs, s);
+		}
+
+		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<Pair> gfluents) 
 			throws EvalException {
 			_test.collectGFluents(subs, s, gfluents);
 			_trueBranch.collectGFluents(subs, s, gfluents);
@@ -1468,6 +1592,9 @@ public class RDDL {
 
 	}
 	
+	// TODO: should never put a random variable as a switch test expression,
+	//       a random sample should always be referenced by an intermediate
+	//       variable so that it is consistent over repeated evaluations.
 	public static class SWITCH_EXPR extends EXPR {
 		
 		public SWITCH_EXPR(PVAR_EXPR enum_var, ArrayList cases) {
@@ -1516,8 +1643,35 @@ public class RDDL {
 			}
 
 		}
-		
-		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<String> gfluents) 
+
+		public EXPR getDist(HashMap<LVAR,LCONST> subs, State s) throws EvalException {
+
+			try {
+				PVARIABLE_DEF pvd = s._hmPVariables.get(_enumVar._sName);
+				ENUM_TYPE_DEF etd = (ENUM_TYPE_DEF)s._hmTypes.get(pvd._sRange);
+				if (etd == null)
+					throw new EvalException("Enumerated variable " + _enumVar._sName + " is not defined.");
+				ENUM_VAL seval = (ENUM_VAL)_enumVar.sample(subs, s, null);
+				
+				// A little inefficient, could store possible values as HashSet
+				if (!etd._alPossibleValues.contains(seval)) 
+					throw new EvalException("Expression result '" + seval + "' not contained in " + etd._alPossibleValues);
+				
+				// A little inefficient, could use HashMap
+				for (CASE c : _cases)
+					if (seval.equals(c._sEnumValue))
+						return c._expr.getDist(subs, s);
+				
+				throw new EvalException("No case for '" + seval + "' in " + _cases);
+				
+			} catch (Exception e) {
+				e.printStackTrace(System.err);
+				throw new EvalException("RDDL: Switch requires enumerated variable type.\n" + e + "\n" + this);
+			}
+
+		}
+
+		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<Pair> gfluents) 
 			throws EvalException {
 			_enumVar.collectGFluents(subs, s, gfluents);
 			for (CASE c : _cases)
@@ -1541,6 +1695,9 @@ public class RDDL {
 		public static final Boolean FALSE = new Boolean(false);
 	}
 
+	// TODO: should never put a random variable directly under a quantifier,
+	//       a random sample should always be referenced by an intermediate
+	//       variable so that it is consistent over repeated evaluations.
 	public static class QUANT_EXPR extends BOOL_EXPR {
 		
 		public final static String EXISTS = "exists".intern();
@@ -1611,8 +1768,12 @@ public class RDDL {
 			
 			return result;
 		}
-		
-		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<String> gfluents) 
+
+		public EXPR getDist(HashMap<LVAR,LCONST> subs, State s) throws EvalException {
+			throw new EvalException("QUANT_EXPR.getDist: Cannot get distribution for a quantifier.");
+		}
+
+		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<Pair> gfluents) 
 			throws EvalException {
 
 			//System.out.println("VARS: " + _alVariables);
@@ -1639,6 +1800,9 @@ public class RDDL {
 
 	}
 
+	// TODO: should never put a random variable directly under a connective,
+	//       a random sample should always be referenced by an intermediate
+	//       variable so that it is consistent over repeated evaluations.
 	public static class CONN_EXPR extends BOOL_EXPR {
 
 		public static final String IMPLY = "=>".intern();
@@ -1700,8 +1864,12 @@ public class RDDL {
 			}
 			return result;
 		}
+
+		public EXPR getDist(HashMap<LVAR,LCONST> subs, State s) throws EvalException {
+			throw new EvalException("CONN_EXPR.getDist: Cannot get distribution for a connective.");
+		}
 		
-		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<String> gfluents) 
+		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<Pair> gfluents) 
 			throws EvalException {
 			for (BOOL_EXPR b : _alSubNodes)
 				b.collectGFluents(subs, s, gfluents);
@@ -1709,6 +1877,9 @@ public class RDDL {
 
 	}
 	
+	// TODO: should never put a random variable directly under a negation,
+	//       a random sample should always be referenced by an intermediate
+	//       variable so that it is consistent over repeated evaluations.
 	public static class NEG_EXPR extends BOOL_EXPR {
 
 		public NEG_EXPR(BOOL_EXPR b) {
@@ -1725,8 +1896,12 @@ public class RDDL {
 			Boolean b = (Boolean)_subnode.sample(subs, s, r);
 			return !b;
 		}
-		
-		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<String> gfluents) 
+
+		public EXPR getDist(HashMap<LVAR,LCONST> subs, State s) throws EvalException {
+			throw new EvalException("NEG_EXPR.getDist: Cannot get distribution under a negation.");
+		}
+
+		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<Pair> gfluents) 
 			throws EvalException {
 			_subnode.collectGFluents(subs, s, gfluents);
 		}
@@ -1749,7 +1924,11 @@ public class RDDL {
 			return _bValue;
 		}
 
-		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<String> gfluents) 
+		public EXPR getDist(HashMap<LVAR,LCONST> subs, State s) throws EvalException {
+			throw new EvalException("BOOL_CONST_EXPR.getDist: Not a distribution.");
+		}
+
+		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<Pair> gfluents) 
 			throws EvalException {
 			// Nothing to collect
 		}
@@ -1823,8 +2002,12 @@ public class RDDL {
 				throw new EvalException("RDDL.COMP_EXPR: Illegal comparison operator: " + _comp + "\n" + this);
 
 		}
-				
-		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<String> gfluents) 
+
+		public EXPR getDist(HashMap<LVAR,LCONST> subs, State s) throws EvalException {
+			throw new EvalException("COMP_EXPR.getDist: Not a distribution.");
+		}
+	
+		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<Pair> gfluents) 
 			throws EvalException {
 			_e1.collectGFluents(subs, s, gfluents);
 			_e2.collectGFluents(subs, s, gfluents);
@@ -1865,8 +2048,12 @@ public class RDDL {
 				throw new EvalException("RDDL.COMP_EXPR: can only compare objects with == or ~=: " + _comp + "\n" + this);
 			return (_comp == EQUAL) ? o1.equals(o2) : !o1.equals(o2);
 		}
-		
-		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<String> gfluents) 
+
+		public EXPR getDist(HashMap<LVAR,LCONST> subs, State s) throws EvalException {
+			throw new EvalException("COMP_EXPR.getDist: Not a distribution.");
+		}
+
+		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<Pair> gfluents) 
 			throws EvalException {
 			// Nothing to collect
 		}

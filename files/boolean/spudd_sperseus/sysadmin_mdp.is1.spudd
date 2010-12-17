@@ -1,0 +1,291 @@
+// Automatically produced by rddl.translate.RDDL2Format
+// SPUDD / Symbolic Perseus Format for 'sysadmin_mdp.is1'
+
+(variables 
+	(running__c1 true false)
+	(running__c2 true false)
+	(running__c3 true false)
+	(running__c4 true false)
+)
+
+init [*
+	(running__c1 (true (1.0)) (false (0.0)))
+	(running__c2 (true (0.0)) (false (1.0)))
+	(running__c3 (true (0.0)) (false (1.0)))
+	(running__c4 (true (0.0)) (false (1.0)))
+]
+
+action noop
+	running__c1
+		(running__c1 
+			(true (running__c4 
+				(true (running__c1' 
+					(true (1))
+					(false (0))))
+				(false (0.5))))
+			(false (running__c1' 
+				(true (0.05))
+				(false (0.95)))))
+	running__c2
+		(running__c1 
+			(true (running__c2 
+				(true (running__c2' 
+					(true (1))
+					(false (0))))
+				(false (running__c2' 
+					(true (0.05))
+					(false (0.95))))))
+			(false (running__c2 
+				(true (0.5))
+				(false (running__c2' 
+					(true (0.05))
+					(false (0.95)))))))
+	running__c3
+		(running__c2 
+			(true (running__c3 
+				(true (running__c3' 
+					(true (1))
+					(false (0))))
+				(false (running__c3' 
+					(true (0.05))
+					(false (0.95))))))
+			(false (running__c3 
+				(true (0.5))
+				(false (running__c3' 
+					(true (0.05))
+					(false (0.95)))))))
+	running__c4
+		(running__c3 
+			(true (running__c4 
+				(true (running__c4' 
+					(true (1))
+					(false (0))))
+				(false (running__c4' 
+					(true (0.05))
+					(false (0.95))))))
+			(false (running__c4 
+				(true (0.5))
+				(false (running__c4' 
+					(true (0.05))
+					(false (0.95)))))))
+endaction
+
+action reboot__c1
+	running__c1
+		(running__c1' 
+			(true (1))
+			(false (0)))
+	running__c2
+		(running__c1 
+			(true (running__c2 
+				(true (running__c2' 
+					(true (1))
+					(false (0))))
+				(false (running__c2' 
+					(true (0.05))
+					(false (0.95))))))
+			(false (running__c2 
+				(true (0.5))
+				(false (running__c2' 
+					(true (0.05))
+					(false (0.95)))))))
+	running__c3
+		(running__c2 
+			(true (running__c3 
+				(true (running__c3' 
+					(true (1))
+					(false (0))))
+				(false (running__c3' 
+					(true (0.05))
+					(false (0.95))))))
+			(false (running__c3 
+				(true (0.5))
+				(false (running__c3' 
+					(true (0.05))
+					(false (0.95)))))))
+	running__c4
+		(running__c3 
+			(true (running__c4 
+				(true (running__c4' 
+					(true (1))
+					(false (0))))
+				(false (running__c4' 
+					(true (0.05))
+					(false (0.95))))))
+			(false (running__c4 
+				(true (0.5))
+				(false (running__c4' 
+					(true (0.05))
+					(false (0.95)))))))
+endaction
+
+action reboot__c2
+	running__c1
+		(running__c1 
+			(true (running__c4 
+				(true (running__c1' 
+					(true (1))
+					(false (0))))
+				(false (0.5))))
+			(false (running__c1' 
+				(true (0.05))
+				(false (0.95)))))
+	running__c2
+		(running__c2' 
+			(true (1))
+			(false (0)))
+	running__c3
+		(running__c2 
+			(true (running__c3 
+				(true (running__c3' 
+					(true (1))
+					(false (0))))
+				(false (running__c3' 
+					(true (0.05))
+					(false (0.95))))))
+			(false (running__c3 
+				(true (0.5))
+				(false (running__c3' 
+					(true (0.05))
+					(false (0.95)))))))
+	running__c4
+		(running__c3 
+			(true (running__c4 
+				(true (running__c4' 
+					(true (1))
+					(false (0))))
+				(false (running__c4' 
+					(true (0.05))
+					(false (0.95))))))
+			(false (running__c4 
+				(true (0.5))
+				(false (running__c4' 
+					(true (0.05))
+					(false (0.95)))))))
+endaction
+
+action reboot__c3
+	running__c1
+		(running__c1 
+			(true (running__c4 
+				(true (running__c1' 
+					(true (1))
+					(false (0))))
+				(false (0.5))))
+			(false (running__c1' 
+				(true (0.05))
+				(false (0.95)))))
+	running__c2
+		(running__c1 
+			(true (running__c2 
+				(true (running__c2' 
+					(true (1))
+					(false (0))))
+				(false (running__c2' 
+					(true (0.05))
+					(false (0.95))))))
+			(false (running__c2 
+				(true (0.5))
+				(false (running__c2' 
+					(true (0.05))
+					(false (0.95)))))))
+	running__c3
+		(running__c3' 
+			(true (1))
+			(false (0)))
+	running__c4
+		(running__c3 
+			(true (running__c4 
+				(true (running__c4' 
+					(true (1))
+					(false (0))))
+				(false (running__c4' 
+					(true (0.05))
+					(false (0.95))))))
+			(false (running__c4 
+				(true (0.5))
+				(false (running__c4' 
+					(true (0.05))
+					(false (0.95)))))))
+endaction
+
+action reboot__c4
+	running__c1
+		(running__c1 
+			(true (running__c4 
+				(true (running__c1' 
+					(true (1))
+					(false (0))))
+				(false (0.5))))
+			(false (running__c1' 
+				(true (0.05))
+				(false (0.95)))))
+	running__c2
+		(running__c1 
+			(true (running__c2 
+				(true (running__c2' 
+					(true (1))
+					(false (0))))
+				(false (running__c2' 
+					(true (0.05))
+					(false (0.95))))))
+			(false (running__c2 
+				(true (0.5))
+				(false (running__c2' 
+					(true (0.05))
+					(false (0.95)))))))
+	running__c3
+		(running__c2 
+			(true (running__c3 
+				(true (running__c3' 
+					(true (1))
+					(false (0))))
+				(false (running__c3' 
+					(true (0.05))
+					(false (0.95))))))
+			(false (running__c3 
+				(true (0.5))
+				(false (running__c3' 
+					(true (0.05))
+					(false (0.95)))))))
+	running__c4
+		(running__c4' 
+			(true (1))
+			(false (0)))
+endaction
+
+reward
+	(running__c1 
+		(true (running__c2 
+			(true (running__c3 
+				(true (running__c4 
+					(true (4))
+					(false (3))))
+				(false (running__c4 
+					(true (3))
+					(false (2))))))
+			(false (running__c3 
+				(true (running__c4 
+					(true (3))
+					(false (2))))
+				(false (running__c4 
+					(true (2))
+					(false (1))))))))
+		(false (running__c2 
+			(true (running__c3 
+				(true (running__c4 
+					(true (3))
+					(false (2))))
+				(false (running__c4 
+					(true (2))
+					(false (1))))))
+			(false (running__c3 
+				(true (running__c4 
+					(true (2))
+					(false (1))))
+				(false (running__c4 
+					(true (1))
+					(false (0)))))))))
+
+discount 0.9
+tolerance 0.00001

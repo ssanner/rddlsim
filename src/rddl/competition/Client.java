@@ -163,7 +163,7 @@ public class Client {
 			state.init(nonFluents != null ? nonFluents._hmObjects : null, instance._hmObjects,
 					domain._hmTypes, domain._hmPVariables, domain._hmCPF,
 					instance._alInitState, nonFluents == null ? null : nonFluents._alNonFluents,
-					domain._alStateConstraints, instance._nNonDefActions);
+					domain._alStateConstraints, domain._exprReward, instance._nNonDefActions);
 			
 			/** Obtain an address object of the server */
 			InetAddress address = InetAddress.getByName(host);
@@ -205,7 +205,7 @@ public class Client {
 				state.init(nonFluents != null ? nonFluents._hmObjects : null, instance._hmObjects,
 						domain._hmTypes, domain._hmPVariables, domain._hmCPF,
 						instance._alInitState, nonFluents == null ? null : nonFluents._alNonFluents,
-						domain._alStateConstraints, instance._nNonDefActions);
+						domain._alStateConstraints, domain._exprReward, instance._nNonDefActions);
 				msg = createXMLRoundRequest();
 				Server.sendOneMessage(osw, msg);
 				isrc = Server.readOneMessage(isr);

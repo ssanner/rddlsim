@@ -50,6 +50,10 @@ We currently provide the following rddlsim command line utilities:
         
         (e.g., files/rddl/test/sysadmin.rddl for filename)
 
+	Translating Restricted RDDL Syntax to SPUDD / Symbolic Perseus Format:
+	
+		rddl.translate.RDDL2Format rddl-file-or-directory output-directory
+
     Running the RDDL Simulator Standalone:
 
         rddl.sim.Simulator RDDL-file policy-class-name instance-name [state-viz-class-name]
@@ -77,6 +81,8 @@ We currently provide the following rddlsim command line utilities:
 		
 		./run rddl.parser.parser files/rddl/test/sysadmin.rddl 
 		./run rddl.parser.parser files/rddl/test/game_of_life.rddl 
+	
+		./run rddl.translate.RDDL2Format files/boolean/rddl files/boolean/spudd_sperseus
 	
 		./run rddl.sim.Simulator files/rddl/test/dbn_prop.rddl rddl.policy.RandomBoolPolicy inst_dbn
 		./run rddl.sim.Simulator files/rddl/test/game_of_life.rddl rddl.policy.RandomBoolPolicy is1 rddl.viz.GameOfLifeScreenDisplay

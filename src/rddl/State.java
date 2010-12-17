@@ -19,6 +19,13 @@ public class State {
 
 	public final static boolean DISPLAY_UPDATES = false;
 	
+	public final static int UNDEFINED = 0;
+	public final static int STATE     = 1;
+	public final static int NONFLUENT = 2;
+	public final static int ACTION    = 3;
+	public final static int INTERM    = 4;
+	public final static int OBSERV    = 5;
+	
 	// PVariable definitions
 	public HashMap<PVAR_NAME,PVARIABLE_DEF> _hmPVariables;
 	
@@ -50,6 +57,7 @@ public class State {
 
 	// Constraints
 	public ArrayList<BOOL_EXPR> _alConstraints;
+	public EXPR _reward;
 	public int _nMaxNondefActions = -1;
 	
 	// Temporarily holds next state while it is being computed
@@ -63,12 +71,14 @@ public class State {
 					 ArrayList<PVAR_INST_DEF> init_state,
 					 ArrayList<PVAR_INST_DEF> nonfluents,
 					 ArrayList<BOOL_EXPR> state_action_constraints,
+					 EXPR reward, 
 					 int max_nondef_actions) {
 		
 		_hmPVariables = pvariables;
 		_hmTypes = typedefs;
 		_hmCPFs = cpfs;
 		_alConstraints = state_action_constraints;
+		_reward = reward;
 		_nMaxNondefActions = max_nondef_actions;
 		
 		// Map object class name to list
@@ -312,6 +322,37 @@ public class State {
 		
 		return non_def;
 	}
+
+	/////////////////////////////////////////////////////////////////////////////
+	//             Methods for Querying and Setting Fluent Values
+	/////////////////////////////////////////////////////////////////////////////
+	
+	public Object getPVariableDefault(PVAR_NAME p) {
+		PVARIABLE_DEF pvar_def = _hmPVariables.get(p);
+		if (pvar_def instanceof PVARIABLE_STATE_DEF) // state & non_fluents
+			return ((PVARIABLE_STATE_DEF) pvar_def)._oDefValue;
+		else if (pvar_def instanceof RDDL.PVARIABLE_ACTION_DEF) // actions
+			return ((PVARIABLE_ACTION_DEF) pvar_def)._oDefValue;
+		return null;
+	}
+	
+	public int getPVariableType(PVAR_NAME p) {
+		
+		PVARIABLE_DEF pvar_def = _hmPVariables.get(p);
+
+		if (pvar_def instanceof PVARIABLE_STATE_DEF && ((PVARIABLE_STATE_DEF)pvar_def)._bNonFluent)
+			return NONFLUENT;
+		else if (pvar_def instanceof PVARIABLE_STATE_DEF && !((PVARIABLE_STATE_DEF)pvar_def)._bNonFluent)
+			return STATE;
+		else if (pvar_def instanceof PVARIABLE_ACTION_DEF)
+			return ACTION;
+		else if (pvar_def instanceof PVARIABLE_INTERM_DEF)
+			return INTERM;
+		else if (pvar_def instanceof PVARIABLE_OBS_DEF)
+			return OBSERV;
+		
+		return UNDEFINED;
+	}
 	
 	public Object getPVariableAssign(PVAR_NAME p, ArrayList<LCONST> terms) {
 
@@ -346,6 +387,42 @@ public class State {
 		return ret;
 	}	
 		
+	public boolean setPVariableAssign(PVAR_NAME p, ArrayList<LCONST> terms, 
+			Object value) {
+		
+		// Get default value if it exists
+		Object def_value = null;
+		PVARIABLE_DEF pvar_def = _hmPVariables.get(p);
+		if (pvar_def instanceof PVARIABLE_STATE_DEF) // state & non_fluents
+			def_value = ((PVARIABLE_STATE_DEF) pvar_def)._oDefValue;
+		else if (pvar_def instanceof RDDL.PVARIABLE_ACTION_DEF) // actions
+			def_value = ((PVARIABLE_ACTION_DEF) pvar_def)._oDefValue;
+
+		// Get correct variable assignments
+		HashMap<ArrayList<LCONST>,Object> var_src = null;
+		if (pvar_def instanceof PVARIABLE_STATE_DEF && ((PVARIABLE_STATE_DEF)pvar_def)._bNonFluent)
+			var_src = _nonfluents.get(p);
+		else if (pvar_def instanceof PVARIABLE_STATE_DEF && !((PVARIABLE_STATE_DEF)pvar_def)._bNonFluent)
+			var_src = _state.get(p);
+		else if (pvar_def instanceof PVARIABLE_ACTION_DEF)
+			var_src = _actions.get(p);
+		else if (pvar_def instanceof PVARIABLE_INTERM_DEF)
+			var_src = _interm.get(p);
+		else if (pvar_def instanceof PVARIABLE_OBS_DEF)
+			var_src = _observ.get(p);
+		
+		if (var_src == null)
+			return false;
+
+		// Set value (or remove if default)
+		if (def_value.equals(value)) {
+			var_src.remove(terms);			
+		} else {
+			var_src.put(terms, value);
+		}
+		return true;
+	}
+			
 	//////////////////////////////////////////////////////////////////////
 	
 	public ArrayList<ArrayList<LCONST>> generateAtoms(PVAR_NAME p) throws EvalException {

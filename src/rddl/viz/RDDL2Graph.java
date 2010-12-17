@@ -70,7 +70,7 @@ public class RDDL2Graph {
 		_state.init(_n != null ? _n._hmObjects : null, _i._hmObjects,  
 				_d._hmTypes, _d._hmPVariables, _d._hmCPF,
 				_i._alInitState, _n == null ? null : _n._alNonFluents, 
-				_d._alStateConstraints, _i._nNonDefActions);
+				_d._alStateConstraints, _d._exprReward, _i._nNonDefActions);
 		
 		// Build the graph
 		_graph = rddl2graph();
@@ -95,7 +95,7 @@ public class RDDL2Graph {
 		//System.out.println("Starting nonfluents: " + _nonfluents + "\n");
 		
 		// Store node parents temporarily
-		HashSet<String> parents = new HashSet<String>();
+		HashSet<Pair> parents = new HashSet<Pair>();
 				
 		// Go through all action types
 		// Go through all variable types (state, interm, observ, action, nonfluent)
@@ -149,8 +149,8 @@ public class RDDL2Graph {
 				
 				parents.clear();
 				cpf._exprEquals.collectGFluents(subs, _state, parents);
-				for (String par : parents)
-					g.addUniLink(CleanFluentName(par), interm_name);
+				for (Pair par : parents)
+					g.addUniLink(CleanFluentName(par._o1.toString() + par._o2.toString()), interm_name);
 				
 				_hmName2Dependents.put(interm_name, CleanFluentName(parents.toString()));
 				_hmName2Formula.put(interm_name, cpf._exprEquals.toString());
@@ -199,8 +199,8 @@ public class RDDL2Graph {
 				
 				parents.clear();
 				cpf._exprEquals.collectGFluents(subs, _state, parents);
-				for (String par : parents)
-					g.addUniLink(CleanFluentName(par), observ_name, "black", "dashed", null);
+				for (Pair par : parents)
+					g.addUniLink(CleanFluentName(par._o1.toString() + par._o2.toString()), observ_name, "black", "dashed", null);
 
 				_hmName2Dependents.put(observ_name, CleanFluentName(parents.toString()));
 				_hmName2Formula.put(observ_name, cpf._exprEquals.toString());
@@ -259,8 +259,8 @@ public class RDDL2Graph {
 				
 				parents.clear();
 				cpf._exprEquals.collectGFluents(subs, _state, parents);
-				for (String par : parents)
-					g.addUniLink(CleanFluentName(par), primed_name);
+				for (Pair par : parents)
+					g.addUniLink(CleanFluentName(par._o1.toString() + par._o2.toString()), primed_name);
 
 				_hmName2Dependents.put(unprimed_name, "None");
 				_hmName2Formula.put(unprimed_name, "fully observed");
@@ -300,8 +300,8 @@ public class RDDL2Graph {
 		parents.clear();
 		subs.clear();
 		_d._exprReward.collectGFluents(subs, _state, parents);
-		for (String par : parents)
-			g.addUniLink(CleanFluentName(par), "Reward Function");
+		for (Pair par : parents)
+			g.addUniLink(CleanFluentName(par._o1.toString() + par._o2.toString()), "Reward Function");
 		_hmName2Dependents.put("Reward Function", CleanFluentName(parents.toString()));
 		_hmName2Formula.put("Reward Function", _d._exprReward.toString());
 		_hmName2Type.put("Reward Function", "Reward");

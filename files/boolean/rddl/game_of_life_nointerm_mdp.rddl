@@ -1,0 +1,162 @@
+////////////////////////////////////////////////////////////////////
+// Game of Life Boolean POMDP
+//
+// A simple DBN to encode Conway's cellular automata "game of life" 
+// on a grid.  One gets a reward for generating patterns that keep 
+// the most cells alive.
+//
+// Author: Scott Sanner (ssanner [at] gmail.com)
+////////////////////////////////////////////////////////////////////
+domain game_of_life_mdp {
+  	
+	requirements = { reward-deterministic };
+
+	types { 
+		x_pos : object;
+		y_pos : object; 
+	};
+      	
+	pvariables { 
+		NEIGHBOR(x_pos,y_pos,x_pos,y_pos) : { non-fluent, bool, default = false };
+		alive(x_pos,y_pos) : { state-fluent,  bool, default = false };
+		set(x_pos,y_pos)   : { action-fluent, bool, default = false };
+	};
+  
+	cpfs {
+		// Conway's game of life rules (from Wikipedia):
+		// 1. Any live cell with fewer than two live neighbors dies, as if caused by under-population.
+   		// 2. Any live cell with more than three live neighbors dies, as if by overcrowding.
+   		// 3. Any live cell with two or three live neighbors lives on to the next generation.
+   		// 4. Any dead cell with exactly three live neighbors becomes a live cell, as if by reproduction.
+   		//
+   		// For interactivity: we allow an agent to explicitly set different cells.
+		
+		alive'(?x,?y) = 
+			  KronDelta([alive(?x,?y) ^ ([sum_{?x2 : x_pos, ?y2 : y_pos} NEIGHBOR(?x,?y,?x2,?y2) ^ alive(?x2,?y2)] >= 2) 
+							^ ([sum_{?x2 : x_pos, ?y2 : y_pos} NEIGHBOR(?x,?y,?x2,?y2) ^ alive(?x2,?y2)] <= 3)]
+						| [~alive(?x,?y) ^ ([sum_{?x2 : x_pos, ?y2 : y_pos} NEIGHBOR(?x,?y,?x2,?y2) ^ alive(?x2,?y2)] == 3)]
+						| set(?x,?y));  		
+	};
+    	
+	reward = [sum_{?x : x_pos, ?y : y_pos} alive(?x,?y)] - [sum_{?x : x_pos, ?y : y_pos} set(?x,?y)];
+}
+   
+non-fluents game2 {
+
+	domain = game_of_life_mdp;
+	
+	objects { 
+		x_pos : {x1,x2};
+		y_pos : {y1,y2};
+	};
+  
+	non-fluents { 
+		NEIGHBOR(x1,y1,x1,y2);
+		NEIGHBOR(x1,y1,x2,y1);
+		NEIGHBOR(x1,y1,x2,y2);
+		
+		NEIGHBOR(x1,y2,x1,y1);
+		NEIGHBOR(x1,y2,x2,y1);
+		NEIGHBOR(x1,y2,x2,y2);
+		
+		NEIGHBOR(x2,y1,x1,y1);
+		NEIGHBOR(x2,y1,x1,y2);
+		NEIGHBOR(x2,y1,x2,y2);
+
+		NEIGHBOR(x2,y2,x1,y1);
+		NEIGHBOR(x2,y2,x1,y2);
+		NEIGHBOR(x2,y2,x2,y1);
+	};
+}
+        
+non-fluents game3 {
+
+	domain = game_of_life_mdp;
+	
+	objects { 
+		x_pos : {x1,x2,x3};
+		y_pos : {y1,y2,y3};
+	};
+  
+	non-fluents { 
+		NEIGHBOR(x1,y1,x1,y2);
+		NEIGHBOR(x1,y1,x2,y1);
+		NEIGHBOR(x1,y1,x2,y2);
+		
+		NEIGHBOR(x1,y2,x1,y1);
+		NEIGHBOR(x1,y2,x2,y1);
+		NEIGHBOR(x1,y2,x2,y2);
+		NEIGHBOR(x1,y2,x2,y3);
+		NEIGHBOR(x1,y2,x1,y3);
+
+		NEIGHBOR(x1,y3,x1,y2);
+		NEIGHBOR(x1,y3,x2,y2);
+		NEIGHBOR(x1,y3,x2,y3);
+		
+		NEIGHBOR(x2,y1,x1,y1);
+		NEIGHBOR(x2,y1,x1,y2);
+		NEIGHBOR(x2,y1,x2,y2);
+		NEIGHBOR(x2,y1,x3,y2);
+		NEIGHBOR(x2,y1,x3,y1);
+
+		NEIGHBOR(x2,y2,x1,y1);
+		NEIGHBOR(x2,y2,x1,y2);
+		NEIGHBOR(x2,y2,x1,y3);
+		NEIGHBOR(x2,y2,x2,y1);
+		NEIGHBOR(x2,y2,x2,y3);
+		NEIGHBOR(x2,y2,x3,y1);
+		NEIGHBOR(x2,y2,x3,y2);
+		NEIGHBOR(x2,y2,x3,y3);
+		
+		NEIGHBOR(x2,y3,x1,y3);
+		NEIGHBOR(x2,y3,x1,y2);
+		NEIGHBOR(x2,y3,x2,y2);
+		NEIGHBOR(x2,y3,x3,y2);
+		NEIGHBOR(x2,y3,x3,y3);
+
+		NEIGHBOR(x3,y1,x2,y1);
+		NEIGHBOR(x3,y1,x2,y2);
+		NEIGHBOR(x3,y1,x3,y2);
+
+		NEIGHBOR(x3,y2,x3,y1);
+		NEIGHBOR(x3,y2,x2,y1);
+		NEIGHBOR(x3,y2,x2,y2);
+		NEIGHBOR(x3,y2,x2,y3);
+		NEIGHBOR(x3,y2,x3,y3);
+		
+		NEIGHBOR(x3,y3,x2,y3);
+		NEIGHBOR(x3,y3,x2,y2);
+		NEIGHBOR(x3,y3,x3,y2);
+	};
+}
+
+instance is1 {
+
+	domain = game_of_life_mdp;	
+	non-fluents = game2;
+	init-state { 
+		alive(x1,y1); 
+		alive(x2,y2); 
+	};
+  
+	max-nondef-actions = 1;
+	horizon  = 20;
+	discount = 0.9;
+}
+
+instance is2 {
+
+	domain = game_of_life_mdp;	
+	non-fluents = game3;
+	init-state { 
+		alive(x1,y1); 
+		alive(x1,y3); 
+		alive(x2,y2); 
+		alive(x3,y1); 
+		alive(x3,y3); 
+	};
+  
+	max-nondef-actions = 1;
+	horizon  = 20;
+	discount = 0.9;
+}
