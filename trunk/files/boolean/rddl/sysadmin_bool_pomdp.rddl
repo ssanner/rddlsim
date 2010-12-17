@@ -1,0 +1,126 @@
+////////////////////////////////////////////////////////////////////
+// SysAdmin Boolean POMDP 
+//
+// An example RDDL description for the well-known SysAdmin problem
+// (Guestrin, Koller, Parr, IJCAI-01) with a number of enhancements
+// to demonstrate the expressivity of RDDL.
+//
+// Author: Scott Sanner (ssanner [at] gmail.com)
+////////////////////////////////////////////////////////////////////
+domain sysadmin_pomdp {
+  
+	requirements = { 
+		reward-deterministic,
+		partially-observed
+	};
+	
+	types {
+  		computer : object;
+	};
+      
+	pvariables { 
+    		  		    		  		
+		REBOOT-PROB : { non-fluent, real, default = 0.1 };
+		OBSERV-PROB : { non-fluent, real, default = 0.9 };
+
+		CONNECTED(computer, computer) : { non-fluent, bool, default = false };
+
+		running(computer) : { state-fluent, bool, default = false };
+
+		running-obs(computer) : { observ-fluent, bool };
+      
+		reboot(computer) : { action-fluent, bool, default = false }; 
+	};
+	
+	cpfs {
+  
+		running'(?x) = if (reboot(?x))
+						then KronDelta(true)  // if computer is rebooted then must be running 
+						else if (running(?x)) // otherwise outcome depends on network properties
+							then Bernoulli(.5 + .5*[sum_{?y : computer} CONNECTED(?y,?x) ^ running(?y)] 
+													/ [sum_{?y : computer} CONNECTED(?y,?x)])
+							else Bernoulli(REBOOT-PROB); 
+            	
+		running-obs(?x) = if (running(?x)) 
+							then Bernoulli(.8) 
+							else Bernoulli(.2);
+	};
+  
+	reward = [sum_{?c : computer} running(?c)] - [sum_{?c : computer} reboot(?c)];
+}
+        
+        
+// Define non-fluents here.
+non-fluents ring4 {
+
+	domain = sysadmin_pomdp;
+	
+	objects { 
+		computer : {c1, c2, c3, c4 };
+	};
+  
+	// Only need to specify non-default values
+	non-fluents { 
+		REBOOT-PROB = 0.05; 
+		CONNECTED(c1,c2);
+		CONNECTED(c2,c3);
+		CONNECTED(c3,c4);
+		CONNECTED(c4,c1);
+	};
+}
+        
+// Define non-fluents here.
+non-fluents ring8 {
+
+	domain = sysadmin_pomdp;
+	
+	objects { 
+		computer : {c1, c2, c3, c4, c5, c6, c7, c8 };
+	};
+  
+	// Only need to specify non-default values
+	non-fluents { 
+		REBOOT-PROB = 0.05; 
+		CONNECTED(c1,c2);
+		CONNECTED(c2,c3);
+		CONNECTED(c3,c4);
+		CONNECTED(c4,c5);
+		CONNECTED(c5,c6);
+		CONNECTED(c6,c7);
+		CONNECTED(c7,c8);
+		CONNECTED(c8,c1);
+	};
+}
+
+// Specify an actual problem instance 
+instance is1 {
+
+	domain = sysadmin_pomdp;
+	
+	non-fluents = ring4;
+
+	init-state { 
+		running(c1); 
+		~running(c2); 
+	};
+  
+	max-nondef-actions = 1;
+ 	horizon  = 20;
+	discount = 0.9;
+}
+
+// Specify an actual problem instance 
+instance is2 {
+
+	domain = sysadmin_pomdp;
+	
+	non-fluents = ring8;
+
+	init-state { 
+		running(c1); 
+	};
+  
+	max-nondef-actions = 1;
+ 	horizon  = 20;
+	discount = 0.9;
+}

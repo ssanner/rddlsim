@@ -1,5 +1,5 @@
 /**
- * RDDL: Implements a fixed policy for a domain with a single boolean action.
+ * RDDL: Implements a random policy for a domain with a single boolean action.
  *       The action selected to be true is the first ground instance.
  * 
  * @author Scott Sanner (ssanner@gmail.com)

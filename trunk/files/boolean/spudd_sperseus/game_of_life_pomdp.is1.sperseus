@@ -1,0 +1,1230 @@
+// Automatically produced by rddl.translate.RDDL2Format
+// SPUDD / Symbolic Perseus Format for 'game_of_life_pomdp.is1'
+
+(variables 
+	(alive__x1_y1 true false)
+	(alive__x1_y2 true false)
+	(alive__x2_y1 true false)
+	(alive__x2_y2 true false)
+)
+
+(observations 
+	(surround_obs__x1_y1' true false)
+	(surround_obs__x1_y2' true false)
+	(surround_obs__x2_y1' true false)
+	(surround_obs__x2_y2' true false)
+)
+
+init [*
+	(alive__x1_y1 (true (1.0)) (false (0.0)))
+	(alive__x1_y2 (true (0.0)) (false (1.0)))
+	(alive__x2_y1 (true (0.0)) (false (1.0)))
+	(alive__x2_y2 (true (1.0)) (false (0.0)))
+]
+
+action noop
+	alive__x1_y1
+		(alive__x1_y1 
+			(true (alive__x1_y2 
+				(true (alive__x2_y1 
+					(true (alive__x1_y1' 
+						(true (1))
+						(false (0))))
+					(false (alive__x2_y2 
+						(true (alive__x1_y1' 
+							(true (1))
+							(false (0))))
+						(false (alive__x1_y1' 
+							(true (0))
+							(false (1))))))))
+				(false (alive__x2_y1 
+					(true (alive__x2_y2 
+						(true (alive__x1_y1' 
+							(true (1))
+							(false (0))))
+						(false (alive__x1_y1' 
+							(true (0))
+							(false (1))))))
+					(false (alive__x1_y1' 
+						(true (0))
+						(false (1))))))))
+			(false (alive__x1_y2 
+				(true (alive__x2_y1 
+					(true (alive__x2_y2 
+						(true (alive__x1_y1' 
+							(true (1))
+							(false (0))))
+						(false (alive__x1_y1' 
+							(true (0))
+							(false (1))))))
+					(false (alive__x1_y1' 
+						(true (0))
+						(false (1))))))
+				(false (alive__x1_y1' 
+					(true (0))
+					(false (1)))))))
+	alive__x1_y2
+		(alive__x1_y1 
+			(true (alive__x1_y2 
+				(true (alive__x2_y1 
+					(true (alive__x1_y2' 
+						(true (1))
+						(false (0))))
+					(false (alive__x2_y2 
+						(true (alive__x1_y2' 
+							(true (1))
+							(false (0))))
+						(false (alive__x1_y2' 
+							(true (0))
+							(false (1))))))))
+				(false (alive__x2_y1 
+					(true (alive__x2_y2 
+						(true (alive__x1_y2' 
+							(true (1))
+							(false (0))))
+						(false (alive__x1_y2' 
+							(true (0))
+							(false (1))))))
+					(false (alive__x1_y2' 
+						(true (0))
+						(false (1))))))))
+			(false (alive__x1_y2 
+				(true (alive__x2_y1 
+					(true (alive__x2_y2 
+						(true (alive__x1_y2' 
+							(true (1))
+							(false (0))))
+						(false (alive__x1_y2' 
+							(true (0))
+							(false (1))))))
+					(false (alive__x1_y2' 
+						(true (0))
+						(false (1))))))
+				(false (alive__x1_y2' 
+					(true (0))
+					(false (1)))))))
+	alive__x2_y1
+		(alive__x1_y1 
+			(true (alive__x1_y2 
+				(true (alive__x2_y1 
+					(true (alive__x2_y1' 
+						(true (1))
+						(false (0))))
+					(false (alive__x2_y2 
+						(true (alive__x2_y1' 
+							(true (1))
+							(false (0))))
+						(false (alive__x2_y1' 
+							(true (0))
+							(false (1))))))))
+				(false (alive__x2_y1 
+					(true (alive__x2_y2 
+						(true (alive__x2_y1' 
+							(true (1))
+							(false (0))))
+						(false (alive__x2_y1' 
+							(true (0))
+							(false (1))))))
+					(false (alive__x2_y1' 
+						(true (0))
+						(false (1))))))))
+			(false (alive__x1_y2 
+				(true (alive__x2_y1 
+					(true (alive__x2_y2 
+						(true (alive__x2_y1' 
+							(true (1))
+							(false (0))))
+						(false (alive__x2_y1' 
+							(true (0))
+							(false (1))))))
+					(false (alive__x2_y1' 
+						(true (0))
+						(false (1))))))
+				(false (alive__x2_y1' 
+					(true (0))
+					(false (1)))))))
+	alive__x2_y2
+		(alive__x1_y1 
+			(true (alive__x1_y2 
+				(true (alive__x2_y1 
+					(true (alive__x2_y2' 
+						(true (1))
+						(false (0))))
+					(false (alive__x2_y2 
+						(true (alive__x2_y2' 
+							(true (1))
+							(false (0))))
+						(false (alive__x2_y2' 
+							(true (0))
+							(false (1))))))))
+				(false (alive__x2_y1 
+					(true (alive__x2_y2 
+						(true (alive__x2_y2' 
+							(true (1))
+							(false (0))))
+						(false (alive__x2_y2' 
+							(true (0))
+							(false (1))))))
+					(false (alive__x2_y2' 
+						(true (0))
+						(false (1))))))))
+			(false (alive__x1_y2 
+				(true (alive__x2_y1 
+					(true (alive__x2_y2 
+						(true (alive__x2_y2' 
+							(true (1))
+							(false (0))))
+						(false (alive__x2_y2' 
+							(true (0))
+							(false (1))))))
+					(false (alive__x2_y2' 
+						(true (0))
+						(false (1))))))
+				(false (alive__x2_y2' 
+					(true (0))
+					(false (1)))))))
+	observe 
+		surround_obs__x1_y1
+			(alive__x1_y2 
+				(true (alive__x2_y1 
+					(true (surround_obs__x1_y1' 
+						(true (0.8))
+						(false (0.2))))
+					(false (alive__x2_y2 
+						(true (surround_obs__x1_y1' 
+							(true (0.8))
+							(false (0.2))))
+						(false (surround_obs__x1_y1' 
+							(true (0.2))
+							(false (0.8))))))))
+				(false (alive__x2_y1 
+					(true (alive__x2_y2 
+						(true (surround_obs__x1_y1' 
+							(true (0.8))
+							(false (0.2))))
+						(false (surround_obs__x1_y1' 
+							(true (0.2))
+							(false (0.8))))))
+					(false (surround_obs__x1_y1' 
+						(true (0.2))
+						(false (0.8)))))))
+		surround_obs__x1_y2
+			(alive__x1_y1 
+				(true (alive__x2_y1 
+					(true (surround_obs__x1_y2' 
+						(true (0.8))
+						(false (0.2))))
+					(false (alive__x2_y2 
+						(true (surround_obs__x1_y2' 
+							(true (0.8))
+							(false (0.2))))
+						(false (surround_obs__x1_y2' 
+							(true (0.2))
+							(false (0.8))))))))
+				(false (alive__x2_y1 
+					(true (alive__x2_y2 
+						(true (surround_obs__x1_y2' 
+							(true (0.8))
+							(false (0.2))))
+						(false (surround_obs__x1_y2' 
+							(true (0.2))
+							(false (0.8))))))
+					(false (surround_obs__x1_y2' 
+						(true (0.2))
+						(false (0.8)))))))
+		surround_obs__x2_y1
+			(alive__x1_y1 
+				(true (alive__x1_y2 
+					(true (surround_obs__x2_y1' 
+						(true (0.8))
+						(false (0.2))))
+					(false (alive__x2_y2 
+						(true (surround_obs__x2_y1' 
+							(true (0.8))
+							(false (0.2))))
+						(false (surround_obs__x2_y1' 
+							(true (0.2))
+							(false (0.8))))))))
+				(false (alive__x1_y2 
+					(true (alive__x2_y2 
+						(true (surround_obs__x2_y1' 
+							(true (0.8))
+							(false (0.2))))
+						(false (surround_obs__x2_y1' 
+							(true (0.2))
+							(false (0.8))))))
+					(false (surround_obs__x2_y1' 
+						(true (0.2))
+						(false (0.8)))))))
+		surround_obs__x2_y2
+			(alive__x1_y1 
+				(true (alive__x1_y2 
+					(true (surround_obs__x2_y2' 
+						(true (0.8))
+						(false (0.2))))
+					(false (alive__x2_y1 
+						(true (surround_obs__x2_y2' 
+							(true (0.8))
+							(false (0.2))))
+						(false (surround_obs__x2_y2' 
+							(true (0.2))
+							(false (0.8))))))))
+				(false (alive__x1_y2 
+					(true (alive__x2_y1 
+						(true (surround_obs__x2_y2' 
+							(true (0.8))
+							(false (0.2))))
+						(false (surround_obs__x2_y2' 
+							(true (0.2))
+							(false (0.8))))))
+					(false (surround_obs__x2_y2' 
+						(true (0.2))
+						(false (0.8)))))))
+	endobserve
+	cost 
+		(0)
+endaction
+
+action set__x1_y1
+	alive__x1_y1
+		(alive__x1_y1' 
+			(true (1))
+			(false (0)))
+	alive__x1_y2
+		(alive__x1_y1 
+			(true (alive__x1_y2 
+				(true (alive__x2_y1 
+					(true (alive__x1_y2' 
+						(true (1))
+						(false (0))))
+					(false (alive__x2_y2 
+						(true (alive__x1_y2' 
+							(true (1))
+							(false (0))))
+						(false (alive__x1_y2' 
+							(true (0))
+							(false (1))))))))
+				(false (alive__x2_y1 
+					(true (alive__x2_y2 
+						(true (alive__x1_y2' 
+							(true (1))
+							(false (0))))
+						(false (alive__x1_y2' 
+							(true (0))
+							(false (1))))))
+					(false (alive__x1_y2' 
+						(true (0))
+						(false (1))))))))
+			(false (alive__x1_y2 
+				(true (alive__x2_y1 
+					(true (alive__x2_y2 
+						(true (alive__x1_y2' 
+							(true (1))
+							(false (0))))
+						(false (alive__x1_y2' 
+							(true (0))
+							(false (1))))))
+					(false (alive__x1_y2' 
+						(true (0))
+						(false (1))))))
+				(false (alive__x1_y2' 
+					(true (0))
+					(false (1)))))))
+	alive__x2_y1
+		(alive__x1_y1 
+			(true (alive__x1_y2 
+				(true (alive__x2_y1 
+					(true (alive__x2_y1' 
+						(true (1))
+						(false (0))))
+					(false (alive__x2_y2 
+						(true (alive__x2_y1' 
+							(true (1))
+							(false (0))))
+						(false (alive__x2_y1' 
+							(true (0))
+							(false (1))))))))
+				(false (alive__x2_y1 
+					(true (alive__x2_y2 
+						(true (alive__x2_y1' 
+							(true (1))
+							(false (0))))
+						(false (alive__x2_y1' 
+							(true (0))
+							(false (1))))))
+					(false (alive__x2_y1' 
+						(true (0))
+						(false (1))))))))
+			(false (alive__x1_y2 
+				(true (alive__x2_y1 
+					(true (alive__x2_y2 
+						(true (alive__x2_y1' 
+							(true (1))
+							(false (0))))
+						(false (alive__x2_y1' 
+							(true (0))
+							(false (1))))))
+					(false (alive__x2_y1' 
+						(true (0))
+						(false (1))))))
+				(false (alive__x2_y1' 
+					(true (0))
+					(false (1)))))))
+	alive__x2_y2
+		(alive__x1_y1 
+			(true (alive__x1_y2 
+				(true (alive__x2_y1 
+					(true (alive__x2_y2' 
+						(true (1))
+						(false (0))))
+					(false (alive__x2_y2 
+						(true (alive__x2_y2' 
+							(true (1))
+							(false (0))))
+						(false (alive__x2_y2' 
+							(true (0))
+							(false (1))))))))
+				(false (alive__x2_y1 
+					(true (alive__x2_y2 
+						(true (alive__x2_y2' 
+							(true (1))
+							(false (0))))
+						(false (alive__x2_y2' 
+							(true (0))
+							(false (1))))))
+					(false (alive__x2_y2' 
+						(true (0))
+						(false (1))))))))
+			(false (alive__x1_y2 
+				(true (alive__x2_y1 
+					(true (alive__x2_y2 
+						(true (alive__x2_y2' 
+							(true (1))
+							(false (0))))
+						(false (alive__x2_y2' 
+							(true (0))
+							(false (1))))))
+					(false (alive__x2_y2' 
+						(true (0))
+						(false (1))))))
+				(false (alive__x2_y2' 
+					(true (0))
+					(false (1)))))))
+	observe 
+		surround_obs__x1_y1
+			(alive__x1_y2 
+				(true (alive__x2_y1 
+					(true (surround_obs__x1_y1' 
+						(true (0.8))
+						(false (0.2))))
+					(false (alive__x2_y2 
+						(true (surround_obs__x1_y1' 
+							(true (0.8))
+							(false (0.2))))
+						(false (surround_obs__x1_y1' 
+							(true (0.2))
+							(false (0.8))))))))
+				(false (alive__x2_y1 
+					(true (alive__x2_y2 
+						(true (surround_obs__x1_y1' 
+							(true (0.8))
+							(false (0.2))))
+						(false (surround_obs__x1_y1' 
+							(true (0.2))
+							(false (0.8))))))
+					(false (surround_obs__x1_y1' 
+						(true (0.2))
+						(false (0.8)))))))
+		surround_obs__x1_y2
+			(alive__x1_y1 
+				(true (alive__x2_y1 
+					(true (surround_obs__x1_y2' 
+						(true (0.8))
+						(false (0.2))))
+					(false (alive__x2_y2 
+						(true (surround_obs__x1_y2' 
+							(true (0.8))
+							(false (0.2))))
+						(false (surround_obs__x1_y2' 
+							(true (0.2))
+							(false (0.8))))))))
+				(false (alive__x2_y1 
+					(true (alive__x2_y2 
+						(true (surround_obs__x1_y2' 
+							(true (0.8))
+							(false (0.2))))
+						(false (surround_obs__x1_y2' 
+							(true (0.2))
+							(false (0.8))))))
+					(false (surround_obs__x1_y2' 
+						(true (0.2))
+						(false (0.8)))))))
+		surround_obs__x2_y1
+			(alive__x1_y1 
+				(true (alive__x1_y2 
+					(true (surround_obs__x2_y1' 
+						(true (0.8))
+						(false (0.2))))
+					(false (alive__x2_y2 
+						(true (surround_obs__x2_y1' 
+							(true (0.8))
+							(false (0.2))))
+						(false (surround_obs__x2_y1' 
+							(true (0.2))
+							(false (0.8))))))))
+				(false (alive__x1_y2 
+					(true (alive__x2_y2 
+						(true (surround_obs__x2_y1' 
+							(true (0.8))
+							(false (0.2))))
+						(false (surround_obs__x2_y1' 
+							(true (0.2))
+							(false (0.8))))))
+					(false (surround_obs__x2_y1' 
+						(true (0.2))
+						(false (0.8)))))))
+		surround_obs__x2_y2
+			(alive__x1_y1 
+				(true (alive__x1_y2 
+					(true (surround_obs__x2_y2' 
+						(true (0.8))
+						(false (0.2))))
+					(false (alive__x2_y1 
+						(true (surround_obs__x2_y2' 
+							(true (0.8))
+							(false (0.2))))
+						(false (surround_obs__x2_y2' 
+							(true (0.2))
+							(false (0.8))))))))
+				(false (alive__x1_y2 
+					(true (alive__x2_y1 
+						(true (surround_obs__x2_y2' 
+							(true (0.8))
+							(false (0.2))))
+						(false (surround_obs__x2_y2' 
+							(true (0.2))
+							(false (0.8))))))
+					(false (surround_obs__x2_y2' 
+						(true (0.2))
+						(false (0.8)))))))
+	endobserve
+	cost 
+		(1)
+endaction
+
+action set__x1_y2
+	alive__x1_y1
+		(alive__x1_y1 
+			(true (alive__x1_y2 
+				(true (alive__x2_y1 
+					(true (alive__x1_y1' 
+						(true (1))
+						(false (0))))
+					(false (alive__x2_y2 
+						(true (alive__x1_y1' 
+							(true (1))
+							(false (0))))
+						(false (alive__x1_y1' 
+							(true (0))
+							(false (1))))))))
+				(false (alive__x2_y1 
+					(true (alive__x2_y2 
+						(true (alive__x1_y1' 
+							(true (1))
+							(false (0))))
+						(false (alive__x1_y1' 
+							(true (0))
+							(false (1))))))
+					(false (alive__x1_y1' 
+						(true (0))
+						(false (1))))))))
+			(false (alive__x1_y2 
+				(true (alive__x2_y1 
+					(true (alive__x2_y2 
+						(true (alive__x1_y1' 
+							(true (1))
+							(false (0))))
+						(false (alive__x1_y1' 
+							(true (0))
+							(false (1))))))
+					(false (alive__x1_y1' 
+						(true (0))
+						(false (1))))))
+				(false (alive__x1_y1' 
+					(true (0))
+					(false (1)))))))
+	alive__x1_y2
+		(alive__x1_y2' 
+			(true (1))
+			(false (0)))
+	alive__x2_y1
+		(alive__x1_y1 
+			(true (alive__x1_y2 
+				(true (alive__x2_y1 
+					(true (alive__x2_y1' 
+						(true (1))
+						(false (0))))
+					(false (alive__x2_y2 
+						(true (alive__x2_y1' 
+							(true (1))
+							(false (0))))
+						(false (alive__x2_y1' 
+							(true (0))
+							(false (1))))))))
+				(false (alive__x2_y1 
+					(true (alive__x2_y2 
+						(true (alive__x2_y1' 
+							(true (1))
+							(false (0))))
+						(false (alive__x2_y1' 
+							(true (0))
+							(false (1))))))
+					(false (alive__x2_y1' 
+						(true (0))
+						(false (1))))))))
+			(false (alive__x1_y2 
+				(true (alive__x2_y1 
+					(true (alive__x2_y2 
+						(true (alive__x2_y1' 
+							(true (1))
+							(false (0))))
+						(false (alive__x2_y1' 
+							(true (0))
+							(false (1))))))
+					(false (alive__x2_y1' 
+						(true (0))
+						(false (1))))))
+				(false (alive__x2_y1' 
+					(true (0))
+					(false (1)))))))
+	alive__x2_y2
+		(alive__x1_y1 
+			(true (alive__x1_y2 
+				(true (alive__x2_y1 
+					(true (alive__x2_y2' 
+						(true (1))
+						(false (0))))
+					(false (alive__x2_y2 
+						(true (alive__x2_y2' 
+							(true (1))
+							(false (0))))
+						(false (alive__x2_y2' 
+							(true (0))
+							(false (1))))))))
+				(false (alive__x2_y1 
+					(true (alive__x2_y2 
+						(true (alive__x2_y2' 
+							(true (1))
+							(false (0))))
+						(false (alive__x2_y2' 
+							(true (0))
+							(false (1))))))
+					(false (alive__x2_y2' 
+						(true (0))
+						(false (1))))))))
+			(false (alive__x1_y2 
+				(true (alive__x2_y1 
+					(true (alive__x2_y2 
+						(true (alive__x2_y2' 
+							(true (1))
+							(false (0))))
+						(false (alive__x2_y2' 
+							(true (0))
+							(false (1))))))
+					(false (alive__x2_y2' 
+						(true (0))
+						(false (1))))))
+				(false (alive__x2_y2' 
+					(true (0))
+					(false (1)))))))
+	observe 
+		surround_obs__x1_y1
+			(alive__x1_y2 
+				(true (alive__x2_y1 
+					(true (surround_obs__x1_y1' 
+						(true (0.8))
+						(false (0.2))))
+					(false (alive__x2_y2 
+						(true (surround_obs__x1_y1' 
+							(true (0.8))
+							(false (0.2))))
+						(false (surround_obs__x1_y1' 
+							(true (0.2))
+							(false (0.8))))))))
+				(false (alive__x2_y1 
+					(true (alive__x2_y2 
+						(true (surround_obs__x1_y1' 
+							(true (0.8))
+							(false (0.2))))
+						(false (surround_obs__x1_y1' 
+							(true (0.2))
+							(false (0.8))))))
+					(false (surround_obs__x1_y1' 
+						(true (0.2))
+						(false (0.8)))))))
+		surround_obs__x1_y2
+			(alive__x1_y1 
+				(true (alive__x2_y1 
+					(true (surround_obs__x1_y2' 
+						(true (0.8))
+						(false (0.2))))
+					(false (alive__x2_y2 
+						(true (surround_obs__x1_y2' 
+							(true (0.8))
+							(false (0.2))))
+						(false (surround_obs__x1_y2' 
+							(true (0.2))
+							(false (0.8))))))))
+				(false (alive__x2_y1 
+					(true (alive__x2_y2 
+						(true (surround_obs__x1_y2' 
+							(true (0.8))
+							(false (0.2))))
+						(false (surround_obs__x1_y2' 
+							(true (0.2))
+							(false (0.8))))))
+					(false (surround_obs__x1_y2' 
+						(true (0.2))
+						(false (0.8)))))))
+		surround_obs__x2_y1
+			(alive__x1_y1 
+				(true (alive__x1_y2 
+					(true (surround_obs__x2_y1' 
+						(true (0.8))
+						(false (0.2))))
+					(false (alive__x2_y2 
+						(true (surround_obs__x2_y1' 
+							(true (0.8))
+							(false (0.2))))
+						(false (surround_obs__x2_y1' 
+							(true (0.2))
+							(false (0.8))))))))
+				(false (alive__x1_y2 
+					(true (alive__x2_y2 
+						(true (surround_obs__x2_y1' 
+							(true (0.8))
+							(false (0.2))))
+						(false (surround_obs__x2_y1' 
+							(true (0.2))
+							(false (0.8))))))
+					(false (surround_obs__x2_y1' 
+						(true (0.2))
+						(false (0.8)))))))
+		surround_obs__x2_y2
+			(alive__x1_y1 
+				(true (alive__x1_y2 
+					(true (surround_obs__x2_y2' 
+						(true (0.8))
+						(false (0.2))))
+					(false (alive__x2_y1 
+						(true (surround_obs__x2_y2' 
+							(true (0.8))
+							(false (0.2))))
+						(false (surround_obs__x2_y2' 
+							(true (0.2))
+							(false (0.8))))))))
+				(false (alive__x1_y2 
+					(true (alive__x2_y1 
+						(true (surround_obs__x2_y2' 
+							(true (0.8))
+							(false (0.2))))
+						(false (surround_obs__x2_y2' 
+							(true (0.2))
+							(false (0.8))))))
+					(false (surround_obs__x2_y2' 
+						(true (0.2))
+						(false (0.8)))))))
+	endobserve
+	cost 
+		(1)
+endaction
+
+action set__x2_y1
+	alive__x1_y1
+		(alive__x1_y1 
+			(true (alive__x1_y2 
+				(true (alive__x2_y1 
+					(true (alive__x1_y1' 
+						(true (1))
+						(false (0))))
+					(false (alive__x2_y2 
+						(true (alive__x1_y1' 
+							(true (1))
+							(false (0))))
+						(false (alive__x1_y1' 
+							(true (0))
+							(false (1))))))))
+				(false (alive__x2_y1 
+					(true (alive__x2_y2 
+						(true (alive__x1_y1' 
+							(true (1))
+							(false (0))))
+						(false (alive__x1_y1' 
+							(true (0))
+							(false (1))))))
+					(false (alive__x1_y1' 
+						(true (0))
+						(false (1))))))))
+			(false (alive__x1_y2 
+				(true (alive__x2_y1 
+					(true (alive__x2_y2 
+						(true (alive__x1_y1' 
+							(true (1))
+							(false (0))))
+						(false (alive__x1_y1' 
+							(true (0))
+							(false (1))))))
+					(false (alive__x1_y1' 
+						(true (0))
+						(false (1))))))
+				(false (alive__x1_y1' 
+					(true (0))
+					(false (1)))))))
+	alive__x1_y2
+		(alive__x1_y1 
+			(true (alive__x1_y2 
+				(true (alive__x2_y1 
+					(true (alive__x1_y2' 
+						(true (1))
+						(false (0))))
+					(false (alive__x2_y2 
+						(true (alive__x1_y2' 
+							(true (1))
+							(false (0))))
+						(false (alive__x1_y2' 
+							(true (0))
+							(false (1))))))))
+				(false (alive__x2_y1 
+					(true (alive__x2_y2 
+						(true (alive__x1_y2' 
+							(true (1))
+							(false (0))))
+						(false (alive__x1_y2' 
+							(true (0))
+							(false (1))))))
+					(false (alive__x1_y2' 
+						(true (0))
+						(false (1))))))))
+			(false (alive__x1_y2 
+				(true (alive__x2_y1 
+					(true (alive__x2_y2 
+						(true (alive__x1_y2' 
+							(true (1))
+							(false (0))))
+						(false (alive__x1_y2' 
+							(true (0))
+							(false (1))))))
+					(false (alive__x1_y2' 
+						(true (0))
+						(false (1))))))
+				(false (alive__x1_y2' 
+					(true (0))
+					(false (1)))))))
+	alive__x2_y1
+		(alive__x2_y1' 
+			(true (1))
+			(false (0)))
+	alive__x2_y2
+		(alive__x1_y1 
+			(true (alive__x1_y2 
+				(true (alive__x2_y1 
+					(true (alive__x2_y2' 
+						(true (1))
+						(false (0))))
+					(false (alive__x2_y2 
+						(true (alive__x2_y2' 
+							(true (1))
+							(false (0))))
+						(false (alive__x2_y2' 
+							(true (0))
+							(false (1))))))))
+				(false (alive__x2_y1 
+					(true (alive__x2_y2 
+						(true (alive__x2_y2' 
+							(true (1))
+							(false (0))))
+						(false (alive__x2_y2' 
+							(true (0))
+							(false (1))))))
+					(false (alive__x2_y2' 
+						(true (0))
+						(false (1))))))))
+			(false (alive__x1_y2 
+				(true (alive__x2_y1 
+					(true (alive__x2_y2 
+						(true (alive__x2_y2' 
+							(true (1))
+							(false (0))))
+						(false (alive__x2_y2' 
+							(true (0))
+							(false (1))))))
+					(false (alive__x2_y2' 
+						(true (0))
+						(false (1))))))
+				(false (alive__x2_y2' 
+					(true (0))
+					(false (1)))))))
+	observe 
+		surround_obs__x1_y1
+			(alive__x1_y2 
+				(true (alive__x2_y1 
+					(true (surround_obs__x1_y1' 
+						(true (0.8))
+						(false (0.2))))
+					(false (alive__x2_y2 
+						(true (surround_obs__x1_y1' 
+							(true (0.8))
+							(false (0.2))))
+						(false (surround_obs__x1_y1' 
+							(true (0.2))
+							(false (0.8))))))))
+				(false (alive__x2_y1 
+					(true (alive__x2_y2 
+						(true (surround_obs__x1_y1' 
+							(true (0.8))
+							(false (0.2))))
+						(false (surround_obs__x1_y1' 
+							(true (0.2))
+							(false (0.8))))))
+					(false (surround_obs__x1_y1' 
+						(true (0.2))
+						(false (0.8)))))))
+		surround_obs__x1_y2
+			(alive__x1_y1 
+				(true (alive__x2_y1 
+					(true (surround_obs__x1_y2' 
+						(true (0.8))
+						(false (0.2))))
+					(false (alive__x2_y2 
+						(true (surround_obs__x1_y2' 
+							(true (0.8))
+							(false (0.2))))
+						(false (surround_obs__x1_y2' 
+							(true (0.2))
+							(false (0.8))))))))
+				(false (alive__x2_y1 
+					(true (alive__x2_y2 
+						(true (surround_obs__x1_y2' 
+							(true (0.8))
+							(false (0.2))))
+						(false (surround_obs__x1_y2' 
+							(true (0.2))
+							(false (0.8))))))
+					(false (surround_obs__x1_y2' 
+						(true (0.2))
+						(false (0.8)))))))
+		surround_obs__x2_y1
+			(alive__x1_y1 
+				(true (alive__x1_y2 
+					(true (surround_obs__x2_y1' 
+						(true (0.8))
+						(false (0.2))))
+					(false (alive__x2_y2 
+						(true (surround_obs__x2_y1' 
+							(true (0.8))
+							(false (0.2))))
+						(false (surround_obs__x2_y1' 
+							(true (0.2))
+							(false (0.8))))))))
+				(false (alive__x1_y2 
+					(true (alive__x2_y2 
+						(true (surround_obs__x2_y1' 
+							(true (0.8))
+							(false (0.2))))
+						(false (surround_obs__x2_y1' 
+							(true (0.2))
+							(false (0.8))))))
+					(false (surround_obs__x2_y1' 
+						(true (0.2))
+						(false (0.8)))))))
+		surround_obs__x2_y2
+			(alive__x1_y1 
+				(true (alive__x1_y2 
+					(true (surround_obs__x2_y2' 
+						(true (0.8))
+						(false (0.2))))
+					(false (alive__x2_y1 
+						(true (surround_obs__x2_y2' 
+							(true (0.8))
+							(false (0.2))))
+						(false (surround_obs__x2_y2' 
+							(true (0.2))
+							(false (0.8))))))))
+				(false (alive__x1_y2 
+					(true (alive__x2_y1 
+						(true (surround_obs__x2_y2' 
+							(true (0.8))
+							(false (0.2))))
+						(false (surround_obs__x2_y2' 
+							(true (0.2))
+							(false (0.8))))))
+					(false (surround_obs__x2_y2' 
+						(true (0.2))
+						(false (0.8)))))))
+	endobserve
+	cost 
+		(1)
+endaction
+
+action set__x2_y2
+	alive__x1_y1
+		(alive__x1_y1 
+			(true (alive__x1_y2 
+				(true (alive__x2_y1 
+					(true (alive__x1_y1' 
+						(true (1))
+						(false (0))))
+					(false (alive__x2_y2 
+						(true (alive__x1_y1' 
+							(true (1))
+							(false (0))))
+						(false (alive__x1_y1' 
+							(true (0))
+							(false (1))))))))
+				(false (alive__x2_y1 
+					(true (alive__x2_y2 
+						(true (alive__x1_y1' 
+							(true (1))
+							(false (0))))
+						(false (alive__x1_y1' 
+							(true (0))
+							(false (1))))))
+					(false (alive__x1_y1' 
+						(true (0))
+						(false (1))))))))
+			(false (alive__x1_y2 
+				(true (alive__x2_y1 
+					(true (alive__x2_y2 
+						(true (alive__x1_y1' 
+							(true (1))
+							(false (0))))
+						(false (alive__x1_y1' 
+							(true (0))
+							(false (1))))))
+					(false (alive__x1_y1' 
+						(true (0))
+						(false (1))))))
+				(false (alive__x1_y1' 
+					(true (0))
+					(false (1)))))))
+	alive__x1_y2
+		(alive__x1_y1 
+			(true (alive__x1_y2 
+				(true (alive__x2_y1 
+					(true (alive__x1_y2' 
+						(true (1))
+						(false (0))))
+					(false (alive__x2_y2 
+						(true (alive__x1_y2' 
+							(true (1))
+							(false (0))))
+						(false (alive__x1_y2' 
+							(true (0))
+							(false (1))))))))
+				(false (alive__x2_y1 
+					(true (alive__x2_y2 
+						(true (alive__x1_y2' 
+							(true (1))
+							(false (0))))
+						(false (alive__x1_y2' 
+							(true (0))
+							(false (1))))))
+					(false (alive__x1_y2' 
+						(true (0))
+						(false (1))))))))
+			(false (alive__x1_y2 
+				(true (alive__x2_y1 
+					(true (alive__x2_y2 
+						(true (alive__x1_y2' 
+							(true (1))
+							(false (0))))
+						(false (alive__x1_y2' 
+							(true (0))
+							(false (1))))))
+					(false (alive__x1_y2' 
+						(true (0))
+						(false (1))))))
+				(false (alive__x1_y2' 
+					(true (0))
+					(false (1)))))))
+	alive__x2_y1
+		(alive__x1_y1 
+			(true (alive__x1_y2 
+				(true (alive__x2_y1 
+					(true (alive__x2_y1' 
+						(true (1))
+						(false (0))))
+					(false (alive__x2_y2 
+						(true (alive__x2_y1' 
+							(true (1))
+							(false (0))))
+						(false (alive__x2_y1' 
+							(true (0))
+							(false (1))))))))
+				(false (alive__x2_y1 
+					(true (alive__x2_y2 
+						(true (alive__x2_y1' 
+							(true (1))
+							(false (0))))
+						(false (alive__x2_y1' 
+							(true (0))
+							(false (1))))))
+					(false (alive__x2_y1' 
+						(true (0))
+						(false (1))))))))
+			(false (alive__x1_y2 
+				(true (alive__x2_y1 
+					(true (alive__x2_y2 
+						(true (alive__x2_y1' 
+							(true (1))
+							(false (0))))
+						(false (alive__x2_y1' 
+							(true (0))
+							(false (1))))))
+					(false (alive__x2_y1' 
+						(true (0))
+						(false (1))))))
+				(false (alive__x2_y1' 
+					(true (0))
+					(false (1)))))))
+	alive__x2_y2
+		(alive__x2_y2' 
+			(true (1))
+			(false (0)))
+	observe 
+		surround_obs__x1_y1
+			(alive__x1_y2 
+				(true (alive__x2_y1 
+					(true (surround_obs__x1_y1' 
+						(true (0.8))
+						(false (0.2))))
+					(false (alive__x2_y2 
+						(true (surround_obs__x1_y1' 
+							(true (0.8))
+							(false (0.2))))
+						(false (surround_obs__x1_y1' 
+							(true (0.2))
+							(false (0.8))))))))
+				(false (alive__x2_y1 
+					(true (alive__x2_y2 
+						(true (surround_obs__x1_y1' 
+							(true (0.8))
+							(false (0.2))))
+						(false (surround_obs__x1_y1' 
+							(true (0.2))
+							(false (0.8))))))
+					(false (surround_obs__x1_y1' 
+						(true (0.2))
+						(false (0.8)))))))
+		surround_obs__x1_y2
+			(alive__x1_y1 
+				(true (alive__x2_y1 
+					(true (surround_obs__x1_y2' 
+						(true (0.8))
+						(false (0.2))))
+					(false (alive__x2_y2 
+						(true (surround_obs__x1_y2' 
+							(true (0.8))
+							(false (0.2))))
+						(false (surround_obs__x1_y2' 
+							(true (0.2))
+							(false (0.8))))))))
+				(false (alive__x2_y1 
+					(true (alive__x2_y2 
+						(true (surround_obs__x1_y2' 
+							(true (0.8))
+							(false (0.2))))
+						(false (surround_obs__x1_y2' 
+							(true (0.2))
+							(false (0.8))))))
+					(false (surround_obs__x1_y2' 
+						(true (0.2))
+						(false (0.8)))))))
+		surround_obs__x2_y1
+			(alive__x1_y1 
+				(true (alive__x1_y2 
+					(true (surround_obs__x2_y1' 
+						(true (0.8))
+						(false (0.2))))
+					(false (alive__x2_y2 
+						(true (surround_obs__x2_y1' 
+							(true (0.8))
+							(false (0.2))))
+						(false (surround_obs__x2_y1' 
+							(true (0.2))
+							(false (0.8))))))))
+				(false (alive__x1_y2 
+					(true (alive__x2_y2 
+						(true (surround_obs__x2_y1' 
+							(true (0.8))
+							(false (0.2))))
+						(false (surround_obs__x2_y1' 
+							(true (0.2))
+							(false (0.8))))))
+					(false (surround_obs__x2_y1' 
+						(true (0.2))
+						(false (0.8)))))))
+		surround_obs__x2_y2
+			(alive__x1_y1 
+				(true (alive__x1_y2 
+					(true (surround_obs__x2_y2' 
+						(true (0.8))
+						(false (0.2))))
+					(false (alive__x2_y1 
+						(true (surround_obs__x2_y2' 
+							(true (0.8))
+							(false (0.2))))
+						(false (surround_obs__x2_y2' 
+							(true (0.2))
+							(false (0.8))))))))
+				(false (alive__x1_y2 
+					(true (alive__x2_y1 
+						(true (surround_obs__x2_y2' 
+							(true (0.8))
+							(false (0.2))))
+						(false (surround_obs__x2_y2' 
+							(true (0.2))
+							(false (0.8))))))
+					(false (surround_obs__x2_y2' 
+						(true (0.2))
+						(false (0.8)))))))
+	endobserve
+	cost 
+		(1)
+endaction
+
+reward
+	(alive__x1_y1 
+		(true (alive__x1_y2 
+			(true (alive__x2_y1 
+				(true (alive__x2_y2 
+					(true (4))
+					(false (3))))
+				(false (alive__x2_y2 
+					(true (3))
+					(false (2))))))
+			(false (alive__x2_y1 
+				(true (alive__x2_y2 
+					(true (3))
+					(false (2))))
+				(false (alive__x2_y2 
+					(true (2))
+					(false (1))))))))
+		(false (alive__x1_y2 
+			(true (alive__x2_y1 
+				(true (alive__x2_y2 
+					(true (3))
+					(false (2))))
+				(false (alive__x2_y2 
+					(true (2))
+					(false (1))))))
+			(false (alive__x2_y1 
+				(true (alive__x2_y2 
+					(true (2))
+					(false (1))))
+				(false (alive__x2_y2 
+					(true (1))
+					(false (0)))))))))
+
+discount 0.9
+tolerance 0.00001

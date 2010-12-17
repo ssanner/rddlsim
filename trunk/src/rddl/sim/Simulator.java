@@ -54,7 +54,7 @@ public class Simulator {
 		_state.init(_n != null ? _n._hmObjects : null, _i._hmObjects,  
 				_d._hmTypes, _d._hmPVariables, _d._hmCPF,
 				_i._alInitState, _n == null ? null : _n._alNonFluents,
-				_d._alStateConstraints, _i._nNonDefActions);
+				_d._alStateConstraints, _d._exprReward, _i._nNonDefActions);
 	}
 	
 	//////////////////////////////////////////////////////////////////////////////
@@ -85,7 +85,7 @@ public class Simulator {
 			_state.computeNextState(action_list, _rand);
 			
 			// Calculate reward / objective and store
-			double reward = ((Number)_d._exprReward.sample(new HashMap<LVAR,LCONST>(), _state, _rand)).doubleValue();
+			double reward = ((Number)_state._reward.sample(new HashMap<LVAR,LCONST>(), _state, _rand)).doubleValue();
 			rewards.add(reward);
 			accum_reward += cur_discount * reward;
 			cur_discount *= _i._dDiscount;
