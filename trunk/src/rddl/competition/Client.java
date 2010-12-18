@@ -254,7 +254,7 @@ public class Client {
 					// NOTE: make sure only to call policy.getActions(state) once
 					//       since this invokes the client policy and could be an
 					//       expensive call.
-					msg = createXMLAction(state, policy, 0);
+					msg = createXMLAction(state, policy);
 					Server.sendOneMessage(osw, msg);
 				}
 				if ( h < instance._nHorizon ) {
@@ -372,14 +372,17 @@ public class Client {
 	}
 	
 	
-	static String createXMLAction(State state, Policy policy, int nth) {
+	static String createXMLAction(State state, Policy policy) {
 		try {
-			PVAR_INST_DEF d = policy.getActions(state).get(nth);  
+			ArrayList<PVAR_INST_DEF> ds = policy.getActions(state);  
 			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 			DocumentBuilder db = dbf.newDocumentBuilder();
 			Document dom = db.newDocument();
+			Element actions = dom.createElement(Server.ACTIONS);
+			dom.appendChild(actions);
+			for ( PVAR_INST_DEF d : ds ) {
 			Element action = dom.createElement(Server.ACTION);
-			dom.appendChild(action);
+			actions.appendChild(action);
 			Element name = dom.createElement(Server.ACTION_NAME);
 			action.appendChild(name);
 			Text textName = dom.createTextNode(d._sPredName.toString());
@@ -394,6 +397,7 @@ public class Client {
 			Text textValue = dom.createTextNode(d._oValue.toString());
 			value.appendChild(textValue);
 			action.appendChild(value);
+			}
 			return serialize(dom);
 		} catch (EvalException e) {
 			// TODO Auto-generated catch block

@@ -83,6 +83,7 @@ public class Server implements Runnable {
 	public static final String FLUENT_ARG = "fluent-arg";
 	public static final String FLUENT_VALUE = "fluent-value";
 	
+	public static final String ACTIONS = "actions";
 	public static final String ACTION = "action";
 	public static final String ACTION_NAME = "action-name";
 	public static final String ACTION_ARG = "action-arg";
@@ -226,14 +227,11 @@ public class Server implements Runnable {
 					isrc = readOneMessage(isr);	
 					// Sungwook: need to handle multiple actions here.  See my
 					//           note in Client.java  -Scott
-					PVAR_INST_DEF d = processXMLAction(p,isrc,state);
-					System.out.println(d);
-					if ( d == null ) {
+					ArrayList<PVAR_INST_DEF> ds = processXMLAction(p,isrc,state);
+					if ( ds == null ) {
 						break;
 					}
-					ArrayList<PVAR_INST_DEF> ds = new ArrayList<PVAR_INST_DEF>();
-					ds.add(d);
-//					ds = policy.getActions(state);
+	
 					try {
 						state.computeNextState(ds, rand);
 					} catch (EvalException ee) {
@@ -314,15 +312,15 @@ public class Server implements Runnable {
 		
 		// TYPE_NAMES are interned so that equality can be tested directly
 		// (also helps enforce better type safety)
-		if ( tname == TYPE_NAME.INT_TYPE) {
+		if ( TYPE_NAME.INT_TYPE.equals(tname)) {
 			return Integer.valueOf(pvalue);
 		}
 		
-		if ( tname == TYPE_NAME.BOOL_TYPE) {
+		if ( TYPE_NAME.BOOL_TYPE.equals(tname)) {
 			return Boolean.valueOf(pvalue);
 		}
 		
-		if ( tname == TYPE_NAME.REAL_TYPE) {
+		if ( TYPE_NAME.REAL_TYPE.equals(tname)) {
 			return Double.valueOf(pvalue);
 		}	
 		
@@ -350,25 +348,35 @@ public class Server implements Runnable {
 		return null;
 	}
 	
-	static PVAR_INST_DEF processXMLAction(DOMParser p, InputSource isrc,
+	static ArrayList<PVAR_INST_DEF> processXMLAction(DOMParser p, InputSource isrc,
 			State state) {
 		try {
 			p.parse(isrc);
 			Element e = p.getDocument().getDocumentElement();
-			if ( e.getNodeName().equals(ACTION) ) {
-				String name = getTextValue(e, ACTION_NAME).get(0);
-				ArrayList<String> args = getTextValue(e, ACTION_ARG);
-				ArrayList<LCONST> lcArgs = new ArrayList<LCONST>();
-				for( String arg : args ) {
-					if (arg.startsWith("@"))
-						lcArgs.add(new RDDL.ENUM_VAL(arg));
-					else 
-						lcArgs.add(new RDDL.OBJECT_VAL(arg));
+			if ( !e.getNodeName().equals(ACTIONS) ) {
+				return null;
+			}
+			NodeList nl = e.getElementsByTagName(ACTION);
+//			System.out.println(nl);
+			if(nl != null && nl.getLength() > 0) {
+				ArrayList<PVAR_INST_DEF> ds = new ArrayList<PVAR_INST_DEF>();
+				for(int i = 0 ; i < nl.getLength();i++) {
+					Element el = (Element)nl.item(i);
+					String name = getTextValue(el, ACTION_NAME).get(0);
+					ArrayList<String> args = getTextValue(el, ACTION_ARG);
+					ArrayList<LCONST> lcArgs = new ArrayList<LCONST>();
+					for( String arg : args ) {
+						if (arg.startsWith("@"))
+							lcArgs.add(new RDDL.ENUM_VAL(arg));
+						else 
+							lcArgs.add(new RDDL.OBJECT_VAL(arg));
+					}
+					String pvalue = getTextValue(el, ACTION_VALUE).get(0);
+					Object value = getValue(name, pvalue, state);
+					PVAR_INST_DEF d = new PVAR_INST_DEF(name, value, lcArgs);
+					ds.add(d);
 				}
-				String pvalue = getTextValue(e, ACTION_VALUE).get(0);
-				Object value = getValue(name, pvalue, state);
-				PVAR_INST_DEF d = new PVAR_INST_DEF(name, value, lcArgs);
-				return d;
+				return ds;
 			}
 		} catch (SAXException e1) {
 			// TODO Auto-generated catch block
@@ -392,6 +400,7 @@ public class Server implements Runnable {
 			while((character = isr.read()) != (char)3) {
 				message.append((char)character);
 			}
+//			System.out.println(message);
 			ByteArrayInputStream bais = new ByteArrayInputStream(message.toString().getBytes());
 			InputSource isrc = new InputSource();
 			isrc.setByteStream(bais);
@@ -461,6 +470,8 @@ public class Server implements Runnable {
 	
 	public static ArrayList<String> getTextValue(Element ele, String tagName) {
 		ArrayList<String> returnVal = new ArrayList<String>();
+//		NodeList nll = ele.getElementsByTagName("*");
+		
 		NodeList nl = ele.getElementsByTagName(tagName);
 		if(nl != null && nl.getLength() > 0) {
 			for ( int i= 0; i < nl.getLength(); i++ ) {
@@ -488,15 +499,14 @@ public class Server implements Runnable {
 					(domain._bPartiallyObserved 
 						? state._observ.keySet() 
 						: state._state.keySet()) ) {
-				
+				System.out.println(pn +" : "+ domain._bPartiallyObserved);
 				for ( Map.Entry<ArrayList<LCONST>,Object> gfluent : 
 						(domain._bPartiallyObserved
 							? state._observ.get(pn).entrySet() 
 							: state._state.get(pn).entrySet())) {
-					
+					System.out.println(gfluent.getKey());
 					Element ofEle = dom.createElement(OBSERVED_FLUENT);
 					rootEle.appendChild(ofEle);
-
 					Element pName = dom.createElement(FLUENT_NAME);
 					Text pTextName = dom.createTextNode(pn.toString());
 					pName.appendChild(pTextName);
