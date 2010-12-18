@@ -1,5 +1,5 @@
 // Automatically produced by rddl.translate.RDDL2Format
-// SPUDD / Symbolic Perseus Format for 'sysadmin_mdp.is1'
+// SPUDD / Symbolic Perseus Format for 'sysadmin_mdp.sysm1'
 
 (variables 
 	(running__c1 true false)

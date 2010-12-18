@@ -1,5 +1,5 @@
 // Automatically produced by rddl.translate.RDDL2Format
-// SPUDD / Symbolic Perseus Format for 'game_of_life_pomdp.is2'
+// SPUDD / Symbolic Perseus Format for 'game_of_life_pomdp.glp2'
 
 (variables 
 	(alive__x1_y1 true false)

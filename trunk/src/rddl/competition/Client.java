@@ -61,7 +61,9 @@ public class Client {
 	enum XMLType {
 		ROUND,TURN,ROUND_END,END_TEST,NONAME
 	}
-	
+
+	private static RDDL rddl = new RDDL();
+
 	int numRounds;
 	double timeAllowed;
 	int curRound;
@@ -87,7 +89,7 @@ public class Client {
 	 * 6. (optional) random seed
 	 */
 	public static void main(String[] args) {
-		RDDL rddl;
+
 		/** Define a host server */
 		String host = Server.HOST_NAME;
 		/** Define a port */
@@ -116,8 +118,19 @@ public class Client {
 		double timeLeft = 0;
 		try {
 			// Cannot assume always in rddl.policy
-			Class c = Class.forName(args[3]);  
-			rddl = parser.parse(new File(args[0]));
+			Class c = Class.forName(args[3]);
+			
+			// Load RDDL files
+			File f = new File(args[0]);
+			if (f.isDirectory()) {
+				for (File f2 : f.listFiles())
+					if (f2.getName().endsWith(".rddl")) {
+						System.out.println("Loading: " + f2);
+						rddl.addOtherRDDL(parser.parse(f2));
+					}
+			} else
+				rddl.addOtherRDDL(parser.parse(f));
+			
 			if ( args.length > 4 ) {
 				port = Integer.valueOf(args[4]);
 			}
@@ -127,26 +140,17 @@ public class Client {
 			if ( args.length > 6) {
 				instanceName = args[6];
 			}
-			if ( instanceName != null &&
-					!rddl._tmInstanceNodes.containsKey(instanceName)) {
-				System.out.println("No Such Instance Name: " + instanceName);
-				System.out.println("going to use the first instance");
-				instanceName = null;
+			if (!rddl._tmInstanceNodes.containsKey(instanceName)) {
+				System.out.println("Instance name '" + instanceName + "' not found in " + args[0]);
+				System.exit(1);
 			}
 			state = new State();
-			// just pick the first
-			String problemInstance = null;
-			if ( instanceName == null ) {
-				problemInstance = rddl._tmInstanceNodes.firstKey();	
-			} else {
-				problemInstance = instanceName;
-			}
 			
 			Policy policy = (Policy)c.newInstance();
-			policy._sInstanceName = problemInstance;
+			policy._sInstanceName = instanceName;
 			policy.setRandSeed(randomSeed);
 			
-			instance = rddl._tmInstanceNodes.get(problemInstance);
+			instance = rddl._tmInstanceNodes.get(instanceName);
 			if (instance._sNonFluents != null) {
 				nonFluents = rddl._tmNonFluentNodes.get(instance._sNonFluents);
 			}
@@ -165,6 +169,11 @@ public class Client {
 					instance._alInitState, nonFluents == null ? null : nonFluents._alNonFluents,
 					domain._alStateConstraints, domain._exprReward, instance._nNonDefActions);
 			
+			if (domain._bPartiallyObserved && state._alObservNames.size() == 0) {
+				System.err.println("Domain '" + domain._sDomainName + "' partially observed, but no observations found.");
+				System.exit(1);
+			}
+			
 			/** Obtain an address object of the server */
 			InetAddress address = InetAddress.getByName(host);
 			/** Establish a socket connetion */
@@ -179,7 +188,7 @@ public class Client {
 			 */
 			OutputStreamWriter osw = new OutputStreamWriter(bos, "US-ASCII");
 			/** Write across the socket connection and flush the buffer */
-			String msg = createXMLSessionRequest(problemInstance, clientName);
+			String msg = createXMLSessionRequest(instanceName, clientName);
 			Server.sendOneMessage(osw, msg);
 			BufferedInputStream bis = new BufferedInputStream(connection.
 					getInputStream());
@@ -219,9 +228,32 @@ public class Client {
 					isrc = Server.readOneMessage(isr);
 					ArrayList<PVAR_INST_DEF> obs = processXMLTurn(p,isrc,state);
 					if ( obs == null ) {
-					} else  {
+						System.err.println("No state/observations received.");
+					} else if (domain._bPartiallyObserved) {
+						state.clearPVariables(state._observ);
+						state.setPVariables(state._observ, obs);
+					} else {
+						state.clearPVariables(state._state);
 						state.setPVariables(state._state, obs);
 					}
+					// Sungwook: in RDDL, an action consists of assignments
+					//           to all action variables (where default assignments
+					//           don't need to be explicitly set).  Consequently
+					//           it does not make sense just to get the first (0th)
+					//           action here... the action is the joint assignment
+					//           to all action variables, so all need non-default
+					//           actions need to be sent... this could be 0 ground
+					//           fluents or 100+ ground fluents.  -Scott
+					//
+					//
+					// ArrayList<PVAR_INST_DEF> actions = policy.getActions(state);
+					// for (PVAR_INST_DEF nondef_action : actions) {
+					//     ** create an XML node for this ground action fluent and assignment 
+					// }
+					//
+					// NOTE: make sure only to call policy.getActions(state) once
+					//       since this invokes the client policy and could be an
+					//       expensive call.
 					msg = createXMLAction(state, policy, 0);
 					Server.sendOneMessage(osw, msg);
 				}
@@ -238,11 +270,9 @@ public class Client {
 			connection.close();
 			System.out.println(instr);
 		}
-		catch (IOException f) {
-			System.out.println("IOException: " + f);
-		}
 		catch (Exception g) {
 			System.out.println("Exception: " + g);
+			g.printStackTrace();
 		}
 	}
 	
@@ -343,8 +373,6 @@ public class Client {
 	
 	
 	static String createXMLAction(State state, Policy policy, int nth) {
-		PVAR_NAME p = state._alActionNames.get(0);
-		ArrayList<ArrayList<LCONST>> inst;
 		try {
 			PVAR_INST_DEF d = policy.getActions(state).get(nth);  
 			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();

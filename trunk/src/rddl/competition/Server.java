@@ -21,6 +21,7 @@ import java.net.Socket;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -36,24 +37,18 @@ import org.xml.sax.SAXException;
 
 import rddl.EvalException;
 import rddl.RDDL;
-import rddl.RDDL.DOMAIN;
-import rddl.RDDL.ENUM_TYPE_DEF;
-import rddl.RDDL.ENUM_VAL;
-import rddl.RDDL.INSTANCE;
-import rddl.RDDL.LCONST;
-import rddl.RDDL.LVAR;
-import rddl.RDDL.NONFLUENTS;
-import rddl.RDDL.PVAR_INST_DEF;
-import rddl.RDDL.PVAR_NAME;
-import rddl.RDDL.TYPE_NAME;
+import rddl.RDDL.*;
 import rddl.State;
 import rddl.parser.parser;
 import rddl.policy.Policy;
 import rddl.policy.RandomBoolPolicy;
+import rddl.viz.GenericScreenDisplay;
 import rddl.viz.NullScreenDisplay;
 import rddl.viz.StateViz;
 
 public class Server implements Runnable {
+	
+	public static final boolean SHOW_STATE = true;
 	
 	private static final String LOG_FILE = "rddl.log";
 	/**
@@ -106,7 +101,7 @@ public class Server implements Runnable {
 	
 	private Socket connection;
 	private String TimeStamp;
-	private ArrayList<RDDL> rddls = null;
+	private RDDL rddl = null;
 	private static int ID = 0;
 	private static int DEFAULT_NUM_ROUNDS = 30;
 	private static double DEFAULT_TIME_ALLOWED = 30;
@@ -136,45 +131,20 @@ public class Server implements Runnable {
 			System.out.println("example: Server rddlfilename 2323 0");
 			System.exit(1);
 		}
-		File inputFile = new File(args[0]);
-		if ( !inputFile.exists() ) {
-			System.out.println("the input file does not exists");
-			System.exit(1);
-		}
-		String [] inputFileNames = null;
-		if ( inputFile.isDirectory() ) {
-			System.out.println("input file is directory");
-			inputFileNames = inputFile.list();
-			if (inputFileNames.length < 1) {
-				System.out.println("no files in the directory, exiting");
-				System.exit(1);
-			}
-		}
-		if ( inputFileNames != null ) {
-			for( int i= 0; i< inputFileNames.length; i++) {
-				inputFileNames[i] = 
-					inputFile + System.getProperty("file.separator") + inputFileNames[i];
-			}
-		} else {
-			inputFileNames = new String [1];
-			inputFileNames[0] = inputFile.toString();
-		}
-		for( int i=0; i< inputFileNames.length; i++) {
-			System.out.println(inputFileNames[i]);
-		}
-		
+				
 		try {
-			for( int i= 0; i< inputFileNames.length; i++) {
-				File f = new File(inputFileNames[i]);
-				if ( f.isDirectory() ) {
-					continue;
-				}
-				if ( f.exists() ) {
-					RDDL rddl = parser.parse(f);
-					rddls.add(rddl);
-				}
-			}
-			// Get first instance name in file and create a simulator
+			// Load RDDL files
+			RDDL rddl = new RDDL();
+			File f = new File(args[0]);
+			if (f.isDirectory()) {
+				for (File f2 : f.listFiles())
+					if (f2.getName().endsWith(".rddl")) {
+						System.out.println("Loading: " + f2);
+						rddl.addOtherRDDL(parser.parse(f2));
+					}
+			} else
+				rddl.addOtherRDDL(parser.parse(f));
+
 			if ( args.length > 1) {
 				port = Integer.valueOf(args[1]);
 			}
@@ -184,48 +154,49 @@ public class Server implements Runnable {
 			} else {
 				Server.rand = new Random(DEFAULT_SEED);
 			}
-			System.out.println("RDDL Test Server Initialized");
+			System.out.println("RDDL Server Initialized");
 			while (true) {
 				Socket connection = socket1.accept();
-				Runnable runnable = new Server(connection, ++ID, rddls);
+				Runnable runnable = new Server(connection, ++ID, rddl);
 				Thread thread = new Thread(runnable);
 				thread.start();
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
+			System.out.println(e);
 			e.printStackTrace();
 		}
 	}
-	Server (Socket s, int i, ArrayList<RDDL> rddls) {
+	Server (Socket s, int i, RDDL rddl) {
 		this.connection = s;
 		this.id = i;
-		this.rddls = rddls;
+		this.rddl = rddl;
 	}
 	public void run() {
 		DOMParser p = new DOMParser();
-		Policy policy = new RandomBoolPolicy("");
 		int numRounds = DEFAULT_NUM_ROUNDS;
 		double timeAllowed = DEFAULT_TIME_ALLOWED;
 		double timeUsed = 0;
-		int sessionId = 0;
 		try {
 			BufferedInputStream is = new BufferedInputStream(connection.getInputStream());
 			InputStreamReader isr = new InputStreamReader(is);
 			InputSource isrc = readOneMessage(isr);
+			requestedInstance = null;
 			processXMLSessionRequest(p, isrc, this);
 			System.out.println(requestedInstance);
 	
-			RDDL rddl = getRequestedInstanceRddl(requestedInstance);
-			if ( rddl == null ) {
-				System.exit(1);
+			if (!rddl._tmInstanceNodes.containsKey(requestedInstance)) {
+				System.out.println("Instance name '" + requestedInstance + "' not found.");
+				return;
 			}
+
 			BufferedOutputStream os = new BufferedOutputStream(connection.getOutputStream());
 			OutputStreamWriter osw = new OutputStreamWriter(os, "US-ASCII");
 			String msg = createXMLSessionInit(numRounds, timeAllowed, this);
 			sendOneMessage(osw,msg);			
 
 			initializeState(rddl, requestedInstance);
-			stateViz = new NullScreenDisplay(false); // GenericScreenDisplay(true)
+			stateViz = SHOW_STATE ? new GenericScreenDisplay(true) : new NullScreenDisplay(false);
 			
 			double accum_total_reward = 0;
 			ArrayList<Double> rewards = new ArrayList<Double>(DEFAULT_NUM_ROUNDS * instance._nHorizon);
@@ -246,15 +217,15 @@ public class Server implements Runnable {
 							" = " + _df.format(((double) (RUNTIME.totalMemory() - RUNTIME.freeMemory()) / 
 											   (double) RUNTIME.totalMemory())) + " ]\n");
 				
-				// NOTE: should pre-initialize arrays when constantly adding to them
-				
 				double accum_reward = 0.0d;
 				double cur_discount = 1.0d;
 				int h = 0;
 				for( ; h < instance._nHorizon; h++ ) {
 					msg = createXMLTurn(state, h+1, domain);
 					sendOneMessage(osw,msg);
-					isrc = readOneMessage(isr);		
+					isrc = readOneMessage(isr);	
+					// Sungwook: need to handle multiple actions here.  See my
+					//           note in Client.java  -Scott
 					PVAR_INST_DEF d = processXMLAction(p,isrc,state);
 					System.out.println(d);
 					if ( d == null ) {
@@ -309,15 +280,6 @@ public class Server implements Runnable {
 		}
 	}
 	
-	RDDL getRequestedInstanceRddl(String requestedInstance) {
-		for( RDDL rddl : rddls) {
-			if (rddl._tmInstanceNodes.containsKey(requestedInstance)) {
-				return rddl;
-			}
-		}
-		return null;
-	}
-	
 	void initializeState (RDDL rddl, String requestedInstance) {
 		state = new State();
 		instance = rddl._tmInstanceNodes.get(requestedInstance);
@@ -342,38 +304,47 @@ public class Server implements Runnable {
 				domain._hmTypes, domain._hmPVariables, domain._hmCPF,
 				instance._alInitState, nonFluents == null ? null : nonFluents._alNonFluents,
 				domain._alStateConstraints, domain._exprReward, instance._nNonDefActions);
+		
+		if (domain._bPartiallyObserved && state._alObservNames.size() == 0)
+			System.err.println("Domain '" + domain._sDomainName + "' partially observed, but no observations found.");
 	}
 	
 	static Object getValue(String pname, String pvalue, State state) {
 		TYPE_NAME tname = state._hmPVariables.get(new PVAR_NAME(pname))._sRange;
 		
-		if ( tname.toString().equals("int")) {
+		// TYPE_NAMES are interned so that equality can be tested directly
+		// (also helps enforce better type safety)
+		if ( tname == TYPE_NAME.INT_TYPE) {
 			return Integer.valueOf(pvalue);
 		}
 		
-		if ( tname.toString().equals("bool")) {
+		if ( tname == TYPE_NAME.BOOL_TYPE) {
 			return Boolean.valueOf(pvalue);
 		}
 		
-		if ( tname.toString().equals("real")) {
+		if ( tname == TYPE_NAME.REAL_TYPE) {
 			return Double.valueOf(pvalue);
 		}	
+		
 		if ( state._hmObject2Consts.containsKey(tname)) {
-			for( LCONST lc : state._hmObject2Consts.get(tname)) {
-				if ( lc.toString().equals(pvalue)) {
-					return lc;
-				}
-			}
+			return new OBJECT_VAL(pvalue);
+			//for( LCONST lc : state._hmObject2Consts.get(tname)) {
+			//	if ( lc.toString().equals(pvalue)) {
+			//		return lc;
+			//	}
+			//}
 		}
+		
 		if ( state._hmTypes.containsKey(tname)) {
-			if ( state._hmTypes.get(tname) instanceof ENUM_TYPE_DEF ) {
-				ENUM_TYPE_DEF etype = (ENUM_TYPE_DEF)state._hmTypes.get(tname);
-				for ( ENUM_VAL ev : etype._alPossibleValues) {
-					if ( ev.toString().equals(pvalue)) {
-						return ev;
-					}
-				}
-			}
+			return new ENUM_VAL(pvalue);
+			//if ( state._hmTypes.get(tname) instanceof ENUM_TYPE_DEF ) {
+			//	ENUM_TYPE_DEF etype = (ENUM_TYPE_DEF)state._hmTypes.get(tname);
+			//	for ( ENUM_VAL ev : etype._alPossibleValues) {
+			//		if ( ev.toString().equals(pvalue)) {
+			//			return ev;
+			//		}
+			//	}
+			//}
 		}
 		
 		return null;
@@ -512,12 +483,17 @@ public class Server implements Runnable {
 			Text textTurnNum = dom.createTextNode(turn + "");
 			turnNum.appendChild(textTurnNum);
 			rootEle.appendChild(turnNum);
-			
-			
-			for ( PVAR_NAME pn :  domain._bPartiallyObserved? state._observ.keySet() 
-					: state._state.keySet() ) {
-				for ( ArrayList<LCONST> lcs : domain._bPartiallyObserved?
-						state._observ.get(pn).keySet() : state._state.get(pn).keySet()) {
+
+			for ( PVAR_NAME pn : 
+					(domain._bPartiallyObserved 
+						? state._observ.keySet() 
+						: state._state.keySet()) ) {
+				
+				for ( Map.Entry<ArrayList<LCONST>,Object> gfluent : 
+						(domain._bPartiallyObserved
+							? state._observ.get(pn).entrySet() 
+							: state._state.get(pn).entrySet())) {
+					
 					Element ofEle = dom.createElement(OBSERVED_FLUENT);
 					rootEle.appendChild(ofEle);
 
@@ -525,16 +501,14 @@ public class Server implements Runnable {
 					Text pTextName = dom.createTextNode(pn.toString());
 					pName.appendChild(pTextName);
 					ofEle.appendChild(pName);
-					for ( LCONST lc : lcs ) {
+					for ( LCONST lc : gfluent.getKey() ) {
 						Element pArg = dom.createElement(FLUENT_ARG);
 						Text pTextArg = dom.createTextNode(lc.toString());
 						pArg.appendChild(pTextArg);
 						ofEle.appendChild(pArg);
 					}
 					Element pValue = dom.createElement(FLUENT_VALUE);
-					Text pTextValue = dom.createTextNode(
-							domain._bPartiallyObserved? state._observ.get(pn).get(lcs).toString()
-									: state._state.get(pn).get(lcs).toString());
+					Text pTextValue = dom.createTextNode(gfluent.getValue().toString());
 					pValue.appendChild(pTextValue);
 					ofEle.appendChild(pValue);
 				}

@@ -84,7 +84,7 @@ non-fluents ring8 {
 }
 
 // Specify an actual problem instance 
-instance is1 {
+instance sysm1 {
 
 	domain = sysadmin_mdp;
 	
@@ -101,7 +101,7 @@ instance is1 {
 }
 
 // Specify an actual problem instance 
-instance is2 {
+instance sysm2 {
 
 	domain = sysadmin_mdp;
 	

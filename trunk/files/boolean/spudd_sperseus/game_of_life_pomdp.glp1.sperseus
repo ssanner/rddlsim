@@ -1,11 +1,18 @@
 // Automatically produced by rddl.translate.RDDL2Format
-// SPUDD / Symbolic Perseus Format for 'game_of_life_mdp.is1'
+// SPUDD / Symbolic Perseus Format for 'game_of_life_pomdp.glp1'
 
 (variables 
 	(alive__x1_y1 true false)
 	(alive__x1_y2 true false)
 	(alive__x2_y1 true false)
 	(alive__x2_y2 true false)
+)
+
+(observations 
+	(surround_obs__x1_y1' true false)
+	(surround_obs__x1_y2' true false)
+	(surround_obs__x2_y1' true false)
+	(surround_obs__x2_y2' true false)
 )
 
 init [*
@@ -176,6 +183,106 @@ action noop
 				(false (alive__x2_y2' 
 					(true (0))
 					(false (1)))))))
+	observe 
+		surround_obs__x1_y1
+			(alive__x1_y2 
+				(true (alive__x2_y1 
+					(true (surround_obs__x1_y1' 
+						(true (0.8))
+						(false (0.2))))
+					(false (alive__x2_y2 
+						(true (surround_obs__x1_y1' 
+							(true (0.8))
+							(false (0.2))))
+						(false (surround_obs__x1_y1' 
+							(true (0.2))
+							(false (0.8))))))))
+				(false (alive__x2_y1 
+					(true (alive__x2_y2 
+						(true (surround_obs__x1_y1' 
+							(true (0.8))
+							(false (0.2))))
+						(false (surround_obs__x1_y1' 
+							(true (0.2))
+							(false (0.8))))))
+					(false (surround_obs__x1_y1' 
+						(true (0.2))
+						(false (0.8)))))))
+		surround_obs__x1_y2
+			(alive__x1_y1 
+				(true (alive__x2_y1 
+					(true (surround_obs__x1_y2' 
+						(true (0.8))
+						(false (0.2))))
+					(false (alive__x2_y2 
+						(true (surround_obs__x1_y2' 
+							(true (0.8))
+							(false (0.2))))
+						(false (surround_obs__x1_y2' 
+							(true (0.2))
+							(false (0.8))))))))
+				(false (alive__x2_y1 
+					(true (alive__x2_y2 
+						(true (surround_obs__x1_y2' 
+							(true (0.8))
+							(false (0.2))))
+						(false (surround_obs__x1_y2' 
+							(true (0.2))
+							(false (0.8))))))
+					(false (surround_obs__x1_y2' 
+						(true (0.2))
+						(false (0.8)))))))
+		surround_obs__x2_y1
+			(alive__x1_y1 
+				(true (alive__x1_y2 
+					(true (surround_obs__x2_y1' 
+						(true (0.8))
+						(false (0.2))))
+					(false (alive__x2_y2 
+						(true (surround_obs__x2_y1' 
+							(true (0.8))
+							(false (0.2))))
+						(false (surround_obs__x2_y1' 
+							(true (0.2))
+							(false (0.8))))))))
+				(false (alive__x1_y2 
+					(true (alive__x2_y2 
+						(true (surround_obs__x2_y1' 
+							(true (0.8))
+							(false (0.2))))
+						(false (surround_obs__x2_y1' 
+							(true (0.2))
+							(false (0.8))))))
+					(false (surround_obs__x2_y1' 
+						(true (0.2))
+						(false (0.8)))))))
+		surround_obs__x2_y2
+			(alive__x1_y1 
+				(true (alive__x1_y2 
+					(true (surround_obs__x2_y2' 
+						(true (0.8))
+						(false (0.2))))
+					(false (alive__x2_y1 
+						(true (surround_obs__x2_y2' 
+							(true (0.8))
+							(false (0.2))))
+						(false (surround_obs__x2_y2' 
+							(true (0.2))
+							(false (0.8))))))))
+				(false (alive__x1_y2 
+					(true (alive__x2_y1 
+						(true (surround_obs__x2_y2' 
+							(true (0.8))
+							(false (0.2))))
+						(false (surround_obs__x2_y2' 
+							(true (0.2))
+							(false (0.8))))))
+					(false (surround_obs__x2_y2' 
+						(true (0.2))
+						(false (0.8)))))))
+	endobserve
+	cost 
+		(0)
 endaction
 
 action set__x1_y1
@@ -303,6 +410,106 @@ action set__x1_y1
 				(false (alive__x2_y2' 
 					(true (0))
 					(false (1)))))))
+	observe 
+		surround_obs__x1_y1
+			(alive__x1_y2 
+				(true (alive__x2_y1 
+					(true (surround_obs__x1_y1' 
+						(true (0.8))
+						(false (0.2))))
+					(false (alive__x2_y2 
+						(true (surround_obs__x1_y1' 
+							(true (0.8))
+							(false (0.2))))
+						(false (surround_obs__x1_y1' 
+							(true (0.2))
+							(false (0.8))))))))
+				(false (alive__x2_y1 
+					(true (alive__x2_y2 
+						(true (surround_obs__x1_y1' 
+							(true (0.8))
+							(false (0.2))))
+						(false (surround_obs__x1_y1' 
+							(true (0.2))
+							(false (0.8))))))
+					(false (surround_obs__x1_y1' 
+						(true (0.2))
+						(false (0.8)))))))
+		surround_obs__x1_y2
+			(alive__x1_y1 
+				(true (alive__x2_y1 
+					(true (surround_obs__x1_y2' 
+						(true (0.8))
+						(false (0.2))))
+					(false (alive__x2_y2 
+						(true (surround_obs__x1_y2' 
+							(true (0.8))
+							(false (0.2))))
+						(false (surround_obs__x1_y2' 
+							(true (0.2))
+							(false (0.8))))))))
+				(false (alive__x2_y1 
+					(true (alive__x2_y2 
+						(true (surround_obs__x1_y2' 
+							(true (0.8))
+							(false (0.2))))
+						(false (surround_obs__x1_y2' 
+							(true (0.2))
+							(false (0.8))))))
+					(false (surround_obs__x1_y2' 
+						(true (0.2))
+						(false (0.8)))))))
+		surround_obs__x2_y1
+			(alive__x1_y1 
+				(true (alive__x1_y2 
+					(true (surround_obs__x2_y1' 
+						(true (0.8))
+						(false (0.2))))
+					(false (alive__x2_y2 
+						(true (surround_obs__x2_y1' 
+							(true (0.8))
+							(false (0.2))))
+						(false (surround_obs__x2_y1' 
+							(true (0.2))
+							(false (0.8))))))))
+				(false (alive__x1_y2 
+					(true (alive__x2_y2 
+						(true (surround_obs__x2_y1' 
+							(true (0.8))
+							(false (0.2))))
+						(false (surround_obs__x2_y1' 
+							(true (0.2))
+							(false (0.8))))))
+					(false (surround_obs__x2_y1' 
+						(true (0.2))
+						(false (0.8)))))))
+		surround_obs__x2_y2
+			(alive__x1_y1 
+				(true (alive__x1_y2 
+					(true (surround_obs__x2_y2' 
+						(true (0.8))
+						(false (0.2))))
+					(false (alive__x2_y1 
+						(true (surround_obs__x2_y2' 
+							(true (0.8))
+							(false (0.2))))
+						(false (surround_obs__x2_y2' 
+							(true (0.2))
+							(false (0.8))))))))
+				(false (alive__x1_y2 
+					(true (alive__x2_y1 
+						(true (surround_obs__x2_y2' 
+							(true (0.8))
+							(false (0.2))))
+						(false (surround_obs__x2_y2' 
+							(true (0.2))
+							(false (0.8))))))
+					(false (surround_obs__x2_y2' 
+						(true (0.2))
+						(false (0.8)))))))
+	endobserve
+	cost 
+		(1)
 endaction
 
 action set__x1_y2
@@ -430,6 +637,106 @@ action set__x1_y2
 				(false (alive__x2_y2' 
 					(true (0))
 					(false (1)))))))
+	observe 
+		surround_obs__x1_y1
+			(alive__x1_y2 
+				(true (alive__x2_y1 
+					(true (surround_obs__x1_y1' 
+						(true (0.8))
+						(false (0.2))))
+					(false (alive__x2_y2 
+						(true (surround_obs__x1_y1' 
+							(true (0.8))
+							(false (0.2))))
+						(false (surround_obs__x1_y1' 
+							(true (0.2))
+							(false (0.8))))))))
+				(false (alive__x2_y1 
+					(true (alive__x2_y2 
+						(true (surround_obs__x1_y1' 
+							(true (0.8))
+							(false (0.2))))
+						(false (surround_obs__x1_y1' 
+							(true (0.2))
+							(false (0.8))))))
+					(false (surround_obs__x1_y1' 
+						(true (0.2))
+						(false (0.8)))))))
+		surround_obs__x1_y2
+			(alive__x1_y1 
+				(true (alive__x2_y1 
+					(true (surround_obs__x1_y2' 
+						(true (0.8))
+						(false (0.2))))
+					(false (alive__x2_y2 
+						(true (surround_obs__x1_y2' 
+							(true (0.8))
+							(false (0.2))))
+						(false (surround_obs__x1_y2' 
+							(true (0.2))
+							(false (0.8))))))))
+				(false (alive__x2_y1 
+					(true (alive__x2_y2 
+						(true (surround_obs__x1_y2' 
+							(true (0.8))
+							(false (0.2))))
+						(false (surround_obs__x1_y2' 
+							(true (0.2))
+							(false (0.8))))))
+					(false (surround_obs__x1_y2' 
+						(true (0.2))
+						(false (0.8)))))))
+		surround_obs__x2_y1
+			(alive__x1_y1 
+				(true (alive__x1_y2 
+					(true (surround_obs__x2_y1' 
+						(true (0.8))
+						(false (0.2))))
+					(false (alive__x2_y2 
+						(true (surround_obs__x2_y1' 
+							(true (0.8))
+							(false (0.2))))
+						(false (surround_obs__x2_y1' 
+							(true (0.2))
+							(false (0.8))))))))
+				(false (alive__x1_y2 
+					(true (alive__x2_y2 
+						(true (surround_obs__x2_y1' 
+							(true (0.8))
+							(false (0.2))))
+						(false (surround_obs__x2_y1' 
+							(true (0.2))
+							(false (0.8))))))
+					(false (surround_obs__x2_y1' 
+						(true (0.2))
+						(false (0.8)))))))
+		surround_obs__x2_y2
+			(alive__x1_y1 
+				(true (alive__x1_y2 
+					(true (surround_obs__x2_y2' 
+						(true (0.8))
+						(false (0.2))))
+					(false (alive__x2_y1 
+						(true (surround_obs__x2_y2' 
+							(true (0.8))
+							(false (0.2))))
+						(false (surround_obs__x2_y2' 
+							(true (0.2))
+							(false (0.8))))))))
+				(false (alive__x1_y2 
+					(true (alive__x2_y1 
+						(true (surround_obs__x2_y2' 
+							(true (0.8))
+							(false (0.2))))
+						(false (surround_obs__x2_y2' 
+							(true (0.2))
+							(false (0.8))))))
+					(false (surround_obs__x2_y2' 
+						(true (0.2))
+						(false (0.8)))))))
+	endobserve
+	cost 
+		(1)
 endaction
 
 action set__x2_y1
@@ -557,6 +864,106 @@ action set__x2_y1
 				(false (alive__x2_y2' 
 					(true (0))
 					(false (1)))))))
+	observe 
+		surround_obs__x1_y1
+			(alive__x1_y2 
+				(true (alive__x2_y1 
+					(true (surround_obs__x1_y1' 
+						(true (0.8))
+						(false (0.2))))
+					(false (alive__x2_y2 
+						(true (surround_obs__x1_y1' 
+							(true (0.8))
+							(false (0.2))))
+						(false (surround_obs__x1_y1' 
+							(true (0.2))
+							(false (0.8))))))))
+				(false (alive__x2_y1 
+					(true (alive__x2_y2 
+						(true (surround_obs__x1_y1' 
+							(true (0.8))
+							(false (0.2))))
+						(false (surround_obs__x1_y1' 
+							(true (0.2))
+							(false (0.8))))))
+					(false (surround_obs__x1_y1' 
+						(true (0.2))
+						(false (0.8)))))))
+		surround_obs__x1_y2
+			(alive__x1_y1 
+				(true (alive__x2_y1 
+					(true (surround_obs__x1_y2' 
+						(true (0.8))
+						(false (0.2))))
+					(false (alive__x2_y2 
+						(true (surround_obs__x1_y2' 
+							(true (0.8))
+							(false (0.2))))
+						(false (surround_obs__x1_y2' 
+							(true (0.2))
+							(false (0.8))))))))
+				(false (alive__x2_y1 
+					(true (alive__x2_y2 
+						(true (surround_obs__x1_y2' 
+							(true (0.8))
+							(false (0.2))))
+						(false (surround_obs__x1_y2' 
+							(true (0.2))
+							(false (0.8))))))
+					(false (surround_obs__x1_y2' 
+						(true (0.2))
+						(false (0.8)))))))
+		surround_obs__x2_y1
+			(alive__x1_y1 
+				(true (alive__x1_y2 
+					(true (surround_obs__x2_y1' 
+						(true (0.8))
+						(false (0.2))))
+					(false (alive__x2_y2 
+						(true (surround_obs__x2_y1' 
+							(true (0.8))
+							(false (0.2))))
+						(false (surround_obs__x2_y1' 
+							(true (0.2))
+							(false (0.8))))))))
+				(false (alive__x1_y2 
+					(true (alive__x2_y2 
+						(true (surround_obs__x2_y1' 
+							(true (0.8))
+							(false (0.2))))
+						(false (surround_obs__x2_y1' 
+							(true (0.2))
+							(false (0.8))))))
+					(false (surround_obs__x2_y1' 
+						(true (0.2))
+						(false (0.8)))))))
+		surround_obs__x2_y2
+			(alive__x1_y1 
+				(true (alive__x1_y2 
+					(true (surround_obs__x2_y2' 
+						(true (0.8))
+						(false (0.2))))
+					(false (alive__x2_y1 
+						(true (surround_obs__x2_y2' 
+							(true (0.8))
+							(false (0.2))))
+						(false (surround_obs__x2_y2' 
+							(true (0.2))
+							(false (0.8))))))))
+				(false (alive__x1_y2 
+					(true (alive__x2_y1 
+						(true (surround_obs__x2_y2' 
+							(true (0.8))
+							(false (0.2))))
+						(false (surround_obs__x2_y2' 
+							(true (0.2))
+							(false (0.8))))))
+					(false (surround_obs__x2_y2' 
+						(true (0.2))
+						(false (0.8)))))))
+	endobserve
+	cost 
+		(1)
 endaction
 
 action set__x2_y2
@@ -684,6 +1091,106 @@ action set__x2_y2
 		(alive__x2_y2' 
 			(true (1))
 			(false (0)))
+	observe 
+		surround_obs__x1_y1
+			(alive__x1_y2 
+				(true (alive__x2_y1 
+					(true (surround_obs__x1_y1' 
+						(true (0.8))
+						(false (0.2))))
+					(false (alive__x2_y2 
+						(true (surround_obs__x1_y1' 
+							(true (0.8))
+							(false (0.2))))
+						(false (surround_obs__x1_y1' 
+							(true (0.2))
+							(false (0.8))))))))
+				(false (alive__x2_y1 
+					(true (alive__x2_y2 
+						(true (surround_obs__x1_y1' 
+							(true (0.8))
+							(false (0.2))))
+						(false (surround_obs__x1_y1' 
+							(true (0.2))
+							(false (0.8))))))
+					(false (surround_obs__x1_y1' 
+						(true (0.2))
+						(false (0.8)))))))
+		surround_obs__x1_y2
+			(alive__x1_y1 
+				(true (alive__x2_y1 
+					(true (surround_obs__x1_y2' 
+						(true (0.8))
+						(false (0.2))))
+					(false (alive__x2_y2 
+						(true (surround_obs__x1_y2' 
+							(true (0.8))
+							(false (0.2))))
+						(false (surround_obs__x1_y2' 
+							(true (0.2))
+							(false (0.8))))))))
+				(false (alive__x2_y1 
+					(true (alive__x2_y2 
+						(true (surround_obs__x1_y2' 
+							(true (0.8))
+							(false (0.2))))
+						(false (surround_obs__x1_y2' 
+							(true (0.2))
+							(false (0.8))))))
+					(false (surround_obs__x1_y2' 
+						(true (0.2))
+						(false (0.8)))))))
+		surround_obs__x2_y1
+			(alive__x1_y1 
+				(true (alive__x1_y2 
+					(true (surround_obs__x2_y1' 
+						(true (0.8))
+						(false (0.2))))
+					(false (alive__x2_y2 
+						(true (surround_obs__x2_y1' 
+							(true (0.8))
+							(false (0.2))))
+						(false (surround_obs__x2_y1' 
+							(true (0.2))
+							(false (0.8))))))))
+				(false (alive__x1_y2 
+					(true (alive__x2_y2 
+						(true (surround_obs__x2_y1' 
+							(true (0.8))
+							(false (0.2))))
+						(false (surround_obs__x2_y1' 
+							(true (0.2))
+							(false (0.8))))))
+					(false (surround_obs__x2_y1' 
+						(true (0.2))
+						(false (0.8)))))))
+		surround_obs__x2_y2
+			(alive__x1_y1 
+				(true (alive__x1_y2 
+					(true (surround_obs__x2_y2' 
+						(true (0.8))
+						(false (0.2))))
+					(false (alive__x2_y1 
+						(true (surround_obs__x2_y2' 
+							(true (0.8))
+							(false (0.2))))
+						(false (surround_obs__x2_y2' 
+							(true (0.2))
+							(false (0.8))))))))
+				(false (alive__x1_y2 
+					(true (alive__x2_y1 
+						(true (surround_obs__x2_y2' 
+							(true (0.8))
+							(false (0.2))))
+						(false (surround_obs__x2_y2' 
+							(true (0.2))
+							(false (0.8))))))
+					(false (surround_obs__x2_y2' 
+						(true (0.2))
+						(false (0.8)))))))
+	endobserve
+	cost 
+		(1)
 endaction
 
 reward
