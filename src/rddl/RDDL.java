@@ -36,6 +36,12 @@ public class RDDL {
 	public void addNonFluents(NONFLUENTS n) {
 		_tmNonFluentNodes.put(n._sName, n);		
 	}
+	
+	public void addOtherRDDL(RDDL rddl) {
+		_tmDomainNodes.putAll(rddl._tmDomainNodes);
+		_tmInstanceNodes.putAll(rddl._tmInstanceNodes);	
+		_tmNonFluentNodes.putAll(rddl._tmNonFluentNodes);
+	}
 
 	public String toString() {
 		StringBuilder sb = new StringBuilder();

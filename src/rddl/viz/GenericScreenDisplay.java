@@ -40,7 +40,7 @@ public class GenericScreenDisplay extends StateViz {
 	//////////////////////////////////////////////////////////////////////
 
 	public String getStateDescription(State s) {
-		StringBuilder sb = new StringBuilder();
+		StringBuilder sb = new StringBuilder("===\n");
 		
 		// Go through all variable types (state, interm, observ, action, nonfluent)
 		for (Map.Entry<String,ArrayList<PVAR_NAME>> e : s._hmTypeMap.entrySet()) {
@@ -49,7 +49,8 @@ public class GenericScreenDisplay extends StateViz {
 				continue;
 			
 			// Go through all variable names p for a variable type
-			for (PVAR_NAME p : e.getValue()) 
+			for (PVAR_NAME p : e.getValue()) {
+				sb.append(p + "\n");
 				try {
 					// Go through all term groundings for variable p
 					ArrayList<ArrayList<LCONST>> gfluents = s.generateAtoms(p);										
@@ -61,6 +62,7 @@ public class GenericScreenDisplay extends StateViz {
 				} catch (EvalException ex) {
 					sb.append("- could not retrieve assignment " + s + " for " + p + "\n");
 				}
+			}
 		}
 				
 		return sb.toString();

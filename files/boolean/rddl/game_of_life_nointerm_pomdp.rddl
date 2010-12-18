@@ -135,7 +135,7 @@ non-fluents game3 {
 	};
 }
 
-instance is1 {
+instance glp1 {
 
 	domain = game_of_life_pomdp;	
 	non-fluents = game2;
@@ -149,7 +149,7 @@ instance is1 {
 	discount = 0.9;
 }
 
-instance is2 {
+instance glp2 {
 
 	domain = game_of_life_pomdp;	
 	non-fluents = game3;

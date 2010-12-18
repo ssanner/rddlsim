@@ -47,8 +47,8 @@ domain simple_mars_rover {
 
 		// Rover actions -- constraints enforce that a rover cannot snap a picture
 		//                  and move simultaneously
-		xMove       : { action-fluent, real, default = 1.0 };
-		yMove       : { action-fluent, real, default = 1.0 };
+		xMove       : { action-fluent, real, default = 0.0 };
+		yMove       : { action-fluent, real, default = 0.0 };
 		snapPicture : { action-fluent, bool, default = false };
 		
 	};

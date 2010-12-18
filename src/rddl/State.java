@@ -108,6 +108,11 @@ public class State {
 		_nonfluents = new HashMap<PVAR_NAME,HashMap<ArrayList<LCONST>,Object>>();
 
 		// Initialize variable lists
+		_alStateNames.clear();
+		_alNonFluentNames.clear();
+		_alActionNames.clear();
+		_alObservNames.clear();
+		_alIntermNames.clear();
 		for (Map.Entry<PVAR_NAME,PVARIABLE_DEF> e : _hmPVariables.entrySet()) {
 			PVAR_NAME pname   = e.getKey();
 			PVARIABLE_DEF def = e.getValue();
@@ -294,6 +299,11 @@ public class State {
 			_interm.get(p).clear();
 		for (PVAR_NAME p : _observ.keySet())
 			_observ.get(p).clear();
+	}
+	
+	public void clearPVariables(HashMap<PVAR_NAME,HashMap<ArrayList<LCONST>,Object>> assign) {
+		for (HashMap<ArrayList<LCONST>,Object> pred_assign : assign.values())
+			pred_assign.clear();
 	}
 	
 	public int setPVariables(HashMap<PVAR_NAME,HashMap<ArrayList<LCONST>,Object>> assign, 

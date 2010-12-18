@@ -97,6 +97,8 @@ We currently provide the following rddlsim command line utilities:
 		./run rddl.competition.Server files/rddl/test/game_of_life.rddl
 		./run rddl.competition.Client files/rddl/test/game_of_life.rddl localhost MyClientName rddl.policy.RandomBoolPolicy
 
+		./run rddl.competition.Server files/boolean/rddl/
+		./run rddl.competition.Client files/boolean/rddl localhost MyClientName rddl.policy.SPerseusSPUDDPolicy 2323 123456 glm1
 
 Modifying the RDDL Language
 ===========================
