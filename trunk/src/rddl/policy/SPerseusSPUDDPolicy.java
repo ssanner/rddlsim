@@ -24,10 +24,10 @@ import rddl.translate.RDDL2Format;
 
 public class SPerseusSPUDDPolicy extends Policy {
 	
-	public final static boolean SHOW_STATE   = true;
-	public final static boolean SHOW_ACTIONS = true;
-	public final static boolean SHOW_ACTION_TAKEN = true;
-	public final static boolean ALLOW_NOOP   = false;
+	public final static boolean SHOW_STATE   = false;
+	public final static boolean SHOW_ACTIONS = false;
+	public final static boolean SHOW_ACTION_TAKEN = false;
+	public final static boolean ALLOW_NOOP   = true;
 	
 	// Just use the default random seed
 	public Random _rand = new Random();
@@ -71,11 +71,16 @@ public class SPerseusSPUDDPolicy extends Policy {
 				System.out.println(" - " + action_name);
 		}
 		
+		if (ALLOW_NOOP && true_vars.size() == 0) {
+			return action_map.get("noop");
+		}
+		
 		// Return a random action selection
 		ArrayList<String> actions = new ArrayList<String>(action_map.keySet());
 		String action_taken = actions.get(_rand.nextInt(actions.size()));
 		if (SHOW_ACTION_TAKEN)
 			System.out.println("\n--> Action taken: " + action_taken);
+		
 		
 		return action_map.get(action_taken);
 	}
