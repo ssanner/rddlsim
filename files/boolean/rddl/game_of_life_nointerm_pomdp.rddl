@@ -9,7 +9,7 @@
 ////////////////////////////////////////////////////////////////////
 domain game_of_life_pomdp {
   	
-	requirements = { reward-deterministic };
+	requirements = { reward-deterministic,partially-observed };
 
 	types { 
 		x_pos : object;
@@ -46,7 +46,7 @@ domain game_of_life_pomdp {
 	reward = [sum_{?x : x_pos, ?y : y_pos} alive(?x,?y)] - [sum_{?x : x_pos, ?y : y_pos} set(?x,?y)];
 }
    
-non-fluents game2 {
+non-fluents game2p {
 
 	domain = game_of_life_pomdp;
 	
@@ -74,7 +74,7 @@ non-fluents game2 {
 	};
 }
         
-non-fluents game3 {
+non-fluents game3p {
 
 	domain = game_of_life_pomdp;
 	
@@ -138,7 +138,7 @@ non-fluents game3 {
 instance glp1 {
 
 	domain = game_of_life_pomdp;	
-	non-fluents = game2;
+	non-fluents = game2p;
 	init-state { 
 		alive(x1,y1); 
 		alive(x2,y2); 
@@ -152,7 +152,7 @@ instance glp1 {
 instance glp2 {
 
 	domain = game_of_life_pomdp;	
-	non-fluents = game3;
+	non-fluents = game3p;
 	init-state { 
 		alive(x1,y1); 
 		alive(x1,y3); 
