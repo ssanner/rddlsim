@@ -236,24 +236,7 @@ public class Client {
 						state.clearPVariables(state._state);
 						state.setPVariables(state._state, obs);
 					}
-					// Sungwook: in RDDL, an action consists of assignments
-					//           to all action variables (where default assignments
-					//           don't need to be explicitly set).  Consequently
-					//           it does not make sense just to get the first (0th)
-					//           action here... the action is the joint assignment
-					//           to all action variables, so all need non-default
-					//           actions need to be sent... this could be 0 ground
-					//           fluents or 100+ ground fluents.  -Scott
-					//
-					//
-					// ArrayList<PVAR_INST_DEF> actions = policy.getActions(state);
-					// for (PVAR_INST_DEF nondef_action : actions) {
-					//     ** create an XML node for this ground action fluent and assignment 
-					// }
-					//
-					// NOTE: make sure only to call policy.getActions(state) once
-					//       since this invokes the client policy and could be an
-					//       expensive call.
+					
 					msg = createXMLAction(state, policy);
 					Server.sendOneMessage(osw, msg);
 				}
@@ -381,23 +364,28 @@ public class Client {
 			Element actions = dom.createElement(Server.ACTIONS);
 			dom.appendChild(actions);
 			for ( PVAR_INST_DEF d : ds ) {
-			Element action = dom.createElement(Server.ACTION);
-			actions.appendChild(action);
-			Element name = dom.createElement(Server.ACTION_NAME);
-			action.appendChild(name);
-			Text textName = dom.createTextNode(d._sPredName.toString());
-			name.appendChild(textName);
-			for( LCONST lc : d._alTerms ) {
-				Element arg = dom.createElement(Server.ACTION_ARG);
-				Text textArg = dom.createTextNode(lc.toString());
-				arg.appendChild(textArg);
-				action.appendChild(arg);
+				Element action = dom.createElement(Server.ACTION);
+				actions.appendChild(action);
+				Element name = dom.createElement(Server.ACTION_NAME);
+				action.appendChild(name);
+				Text textName = dom.createTextNode(d._sPredName.toString());
+				name.appendChild(textName);
+				for( LCONST lc : d._alTerms ) {
+					Element arg = dom.createElement(Server.ACTION_ARG);
+					Text textArg = dom.createTextNode(lc.toString());
+					arg.appendChild(textArg);
+					action.appendChild(arg);
+				}
+				Element value = dom.createElement(Server.ACTION_VALUE);
+				Text textValue = dom.createTextNode(d._oValue.toString());
+				value.appendChild(textValue);
+				action.appendChild(value);
 			}
-			Element value = dom.createElement(Server.ACTION_VALUE);
-			Text textValue = dom.createTextNode(d._oValue.toString());
-			value.appendChild(textValue);
-			action.appendChild(value);
+			if ( ds.size() == 0) {
+				Element noop = dom.createElement(Server.NOOP);
+				actions.appendChild(noop);
 			}
+			
 			return serialize(dom);
 		} catch (EvalException e) {
 			// TODO Auto-generated catch block
