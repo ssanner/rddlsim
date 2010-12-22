@@ -221,8 +221,17 @@ public class Server implements Runnable {
 				double accum_reward = 0.0d;
 				double cur_discount = 1.0d;
 				int h = 0;
+				HashMap<PVAR_NAME, HashMap<ArrayList<LCONST>, Object>> observStore =null;
 				for( ; h < instance._nHorizon; h++ ) {
-					msg = createXMLTurn(state, h+1, domain);
+					if ( observStore != null) {
+						for ( PVAR_NAME pn : observStore.keySet() ) {
+							System.out.println("check3 " + pn);
+							for( ArrayList<LCONST> aa : observStore.get(pn).keySet()) {
+								System.out.println("check3 :" + aa + ": " + observStore.get(pn).get(aa));
+							}
+						}
+					}
+					msg = createXMLTurn(state, h+1, domain, observStore);
 					sendOneMessage(osw,msg);
 					isrc = readOneMessage(isr);	
 					// Sungwook: need to handle multiple actions here.  See my
@@ -231,12 +240,22 @@ public class Server implements Runnable {
 					if ( ds == null ) {
 						break;
 					}
-	
+					if ( h== 0 && domain._bPartiallyObserved && ds.size() != 0) {
+						System.err.println("the first action for partial observable domain should be noop");
+					}
 					try {
 						state.computeNextState(ds, rand);
 					} catch (EvalException ee) {
 						break;
 					}
+					for ( PVAR_NAME pn : state._observ.keySet() ) {
+						System.out.println("check1 " + pn);
+						for( ArrayList<LCONST> aa : state._observ.get(pn).keySet()) {
+							System.out.println("check1 :" + aa + ": " + state._observ.get(pn).get(aa));
+						}
+					}
+					observStore = copyObserv(state._observ);
+					
 					// Calculate reward / objective and store
 					double reward = ((Number)domain._exprReward.sample(new HashMap<LVAR,LCONST>(), 
 							state, rand)).doubleValue();
@@ -276,6 +295,26 @@ public class Server implements Runnable {
 			}
 			catch (IOException e){}
 		}
+	}
+	
+	HashMap<PVAR_NAME, HashMap<ArrayList<LCONST>, Object>> copyObserv(
+			HashMap<PVAR_NAME, HashMap<ArrayList<LCONST>, Object>> observ) {
+		HashMap<PVAR_NAME, HashMap<ArrayList<LCONST>, Object>> r = new
+		HashMap<PVAR_NAME, HashMap<ArrayList<LCONST>, Object>>();
+	
+		for ( PVAR_NAME pn : observ.keySet() ) {
+			HashMap<ArrayList<LCONST>, Object> v = 
+				new HashMap<ArrayList<LCONST>, Object>();
+			for ( ArrayList<LCONST> aa : observ.get(pn).keySet()) {
+				ArrayList<LCONST> raa = new ArrayList<LCONST>();
+				for( LCONST lc : aa ) {
+					raa.add(lc);
+				}
+				v.put(raa, observ.get(pn).get(aa));
+			}
+			r.put(pn, v);
+		}
+		return r;
 	}
 	
 	void initializeState (RDDL rddl, String requestedInstance) {
@@ -377,6 +416,12 @@ public class Server implements Runnable {
 					ds.add(d);
 				}
 				return ds;
+			} else {
+				nl = e.getElementsByTagName(NOOP);
+				if ( nl != null && nl.getLength() > 0) {
+					ArrayList<PVAR_INST_DEF> ds = new ArrayList<PVAR_INST_DEF>();
+					return ds;
+				}
 			}
 		} catch (SAXException e1) {
 			// TODO Auto-generated catch block
@@ -483,7 +528,8 @@ public class Server implements Runnable {
 		return null;
 	}
 	
-	static String createXMLTurn (State state, int turn, DOMAIN domain) {
+	static String createXMLTurn (State state, int turn, DOMAIN domain,
+			HashMap<PVAR_NAME, HashMap<ArrayList<LCONST>, Object>> observStore) {
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		try {
 			DocumentBuilder db = dbf.newDocumentBuilder();
@@ -495,32 +541,38 @@ public class Server implements Runnable {
 			turnNum.appendChild(textTurnNum);
 			rootEle.appendChild(turnNum);
 
-			for ( PVAR_NAME pn : 
+			if( !domain._bPartiallyObserved || observStore != null) {
+				for ( PVAR_NAME pn : 
 					(domain._bPartiallyObserved 
-						? state._observ.keySet() 
-						: state._state.keySet()) ) {
-				System.out.println(pn +" : "+ domain._bPartiallyObserved);
-				for ( Map.Entry<ArrayList<LCONST>,Object> gfluent : 
+							? observStore.keySet() 
+									: state._state.keySet()) ) {
+					System.out.println(turn + " check2 Partial Observ " + pn +" : "+ domain._bPartiallyObserved);
+					for ( Map.Entry<ArrayList<LCONST>,Object> gfluent : 
 						(domain._bPartiallyObserved
-							? state._observ.get(pn).entrySet() 
-							: state._state.get(pn).entrySet())) {
-					System.out.println(gfluent.getKey());
-					Element ofEle = dom.createElement(OBSERVED_FLUENT);
-					rootEle.appendChild(ofEle);
-					Element pName = dom.createElement(FLUENT_NAME);
-					Text pTextName = dom.createTextNode(pn.toString());
-					pName.appendChild(pTextName);
-					ofEle.appendChild(pName);
-					for ( LCONST lc : gfluent.getKey() ) {
-						Element pArg = dom.createElement(FLUENT_ARG);
-						Text pTextArg = dom.createTextNode(lc.toString());
-						pArg.appendChild(pTextArg);
-						ofEle.appendChild(pArg);
+								? observStore.get(pn).entrySet() 
+										: state._state.get(pn).entrySet())) {
+//						if ( gfluent.getValue().toString().equals("false") ) {
+//							System.out.println("Passing");
+//							continue;
+//						}
+						System.out.println(gfluent.getKey());
+						Element ofEle = dom.createElement(OBSERVED_FLUENT);
+						rootEle.appendChild(ofEle);
+						Element pName = dom.createElement(FLUENT_NAME);
+						Text pTextName = dom.createTextNode(pn.toString());
+						pName.appendChild(pTextName);
+						ofEle.appendChild(pName);
+						for ( LCONST lc : gfluent.getKey() ) {
+							Element pArg = dom.createElement(FLUENT_ARG);
+							Text pTextArg = dom.createTextNode(lc.toString());
+							pArg.appendChild(pTextArg);
+							ofEle.appendChild(pArg);
+						}
+						Element pValue = dom.createElement(FLUENT_VALUE);
+						Text pTextValue = dom.createTextNode(gfluent.getValue().toString());
+						pValue.appendChild(pTextValue);
+						ofEle.appendChild(pValue);
 					}
-					Element pValue = dom.createElement(FLUENT_VALUE);
-					Text pTextValue = dom.createTextNode(gfluent.getValue().toString());
-					pValue.appendChild(pTextValue);
-					ofEle.appendChild(pValue);
 				}
 			}
 			return(Client.serialize(dom));
