@@ -10,9 +10,30 @@
 
 package rddl;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
+import java.util.TreeMap;
 
-import rddl.RDDL.*;
+import rddl.RDDL.BOOL_EXPR;
+import rddl.RDDL.CPF_DEF;
+import rddl.RDDL.ENUM_TYPE_DEF;
+import rddl.RDDL.ENUM_VAL;
+import rddl.RDDL.EXPR;
+import rddl.RDDL.LCONST;
+import rddl.RDDL.LTYPED_VAR;
+import rddl.RDDL.LVAR;
+import rddl.RDDL.OBJECTS_DEF;
+import rddl.RDDL.PVARIABLE_ACTION_DEF;
+import rddl.RDDL.PVARIABLE_DEF;
+import rddl.RDDL.PVARIABLE_INTERM_DEF;
+import rddl.RDDL.PVARIABLE_OBS_DEF;
+import rddl.RDDL.PVARIABLE_STATE_DEF;
+import rddl.RDDL.PVAR_INST_DEF;
+import rddl.RDDL.PVAR_NAME;
+import rddl.RDDL.TYPE_DEF;
+import rddl.RDDL.TYPE_NAME;
 import util.Pair;
 
 public class State {
@@ -324,9 +345,11 @@ public class State {
 				def_value = ((PVARIABLE_ACTION_DEF)pvar_def)._oDefValue;
 			
 			// Set value if non-default
-			if (!def_value.equals(def._oValue)) {
+			if (def_value != null && !def_value.equals(def._oValue)) {
 				pred_assign.put(def._alTerms, def._oValue);
 				++non_def;
+			} else if ( pvar_def instanceof PVARIABLE_OBS_DEF ) {
+				pred_assign.put(def._alTerms, def._oValue);
 			}
 		}
 		
