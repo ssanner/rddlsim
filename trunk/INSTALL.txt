@@ -73,7 +73,7 @@ We currently provide the following rddlsim command line utilities:
         
         n.b., (1) default port number is 2323
         	  (2) policy-class-name:
-        	       ...examples: rddl.policy.RandomBoolPolicy or rddl.policy.RandomEnumPolicy 
+        	       ...best example with comments: rddl.policy.SPerseusSPUDDPolicy 
         	       ...any policy which derives from rddl.Policy, including any classes *you* write
         	       ...for *your* client, you need only provide a policy derived from rddl.Policy
         
@@ -94,11 +94,13 @@ We currently provide the following rddlsim command line utilities:
 		./run rddl.viz.RDDL2Graph files/rddl/test/dbn_types_interm_po.rddl inst_dbn
 		./run rddl.viz.RDDL2Graph files/rddl/test/game_of_life.rddl is1
 
-		./run rddl.competition.Server files/rddl/test/game_of_life.rddl
-		./run rddl.competition.Client files/rddl/test/game_of_life.rddl localhost MyClientName rddl.policy.RandomBoolPolicy
-
 		./run rddl.competition.Server files/boolean/rddl/
 		./run rddl.competition.Client files/boolean/rddl localhost MyClientName rddl.policy.SPerseusSPUDDPolicy 2323 123456 glm1
+		./run rddl.competition.Client files/boolean/rddl localhost MyClientName rddl.policy.SPerseusSPUDDPolicy 2323 123456 glp1
+
+	Note: If you're looking for an example from which to write your own policy class
+	      check out SPerseusSPUDDPolicy as used in the last two client examples (one
+	      MDP and one POMDP).
 
 Modifying the RDDL Language
 ===========================

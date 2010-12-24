@@ -24,10 +24,10 @@ import rddl.translate.RDDL2Format;
 
 public class SPerseusSPUDDPolicy extends Policy {
 	
-	public final static boolean SHOW_STATE   = false;
-	public final static boolean SHOW_ACTIONS = false;
-	public final static boolean SHOW_ACTION_TAKEN = false;
-	public final static boolean ALLOW_NOOP   = true;
+	public final static boolean SHOW_STATE   = true;
+	public final static boolean SHOW_ACTIONS = true;
+	public final static boolean SHOW_ACTION_TAKEN = true;
+	//public final static boolean ALLOW_NOOP   = false;
 	
 	// Just use the default random seed
 	public Random _rand = new Random();
@@ -48,17 +48,25 @@ public class SPerseusSPUDDPolicy extends Policy {
 
 	public ArrayList<PVAR_INST_DEF> getActions(State s) throws EvalException {
 
+		if (s == null) {
+			// This should only occur on the **first step** of a POMDP trial
+			// when no observations have been generated, for now, we just
+			// return a 'noop'
+			System.out.println("NO STATE/OBS: taking noop\n\n");
+			return new ArrayList<PVAR_INST_DEF>();
+		}
+		
 		// If the domain is partially observed, we only see observations,
 		// otherwise if it is fully observed, we see the state
 		String fluent_type = s._alObservNames.size() > 0 ? "observ" : "states";
 		
-		System.out.println("FULL STATE:\n\n" + getStateDescription(s));
+		//System.out.println("FULL STATE:\n\n" + getStateDescription(s));
 		
 		// Get a set of all true observation or state variables
 		TreeSet<String> true_vars = getTrueFluents(s, fluent_type);
 		if (SHOW_STATE) {
 			System.out.println("\n==============================================");
-			System.out.println("\nTrue state variables:");
+			System.out.println("\nTrue state/observation variables:");
 			for (String prop_var : true_vars)
 				System.out.println(" - " + prop_var);
 		}
@@ -71,16 +79,11 @@ public class SPerseusSPUDDPolicy extends Policy {
 				System.out.println(" - " + action_name);
 		}
 		
-		if (ALLOW_NOOP && true_vars.size() == 0) {
-			return action_map.get("noop");
-		}
-		
 		// Return a random action selection
 		ArrayList<String> actions = new ArrayList<String>(action_map.keySet());
 		String action_taken = actions.get(_rand.nextInt(actions.size()));
 		if (SHOW_ACTION_TAKEN)
 			System.out.println("\n--> Action taken: " + action_taken);
-		
 		
 		return action_map.get(action_taken);
 	}
@@ -99,9 +102,9 @@ public class SPerseusSPUDDPolicy extends Policy {
 		// Build a map from propositional action names to actions
 		// that can be returned from this policy.
 		TreeMap<String,ArrayList<PVAR_INST_DEF>> action_map = new TreeMap<String,ArrayList<PVAR_INST_DEF>>();
-		if (ALLOW_NOOP) {
-			action_map.put("noop", (ArrayList<PVAR_INST_DEF>)actions.clone());
-		}
+		//if (ALLOW_NOOP) {
+		action_map.put("noop", (ArrayList<PVAR_INST_DEF>)actions.clone());
+		//}
 		
 		for (PVAR_NAME p : s._alActionNames) {
 			
