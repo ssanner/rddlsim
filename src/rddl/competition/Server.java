@@ -28,10 +28,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.xerces.parsers.DOMParser;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.Text;
+import org.w3c.dom.*;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -48,7 +45,9 @@ import rddl.viz.StateViz;
 
 public class Server implements Runnable {
 	
-	public static final boolean SHOW_STATE = true;
+	public static final boolean SHOW_STATE   = false;	
+	public final static boolean SHOW_ACTIONS = false;
+
 	
 	private static final String LOG_FILE = "rddl.log";
 	/**
@@ -79,6 +78,7 @@ public class Server implements Runnable {
 	public static final String TURN = "turn";
 	public static final String TURN_NUM = "turn-num";
 	public static final String OBSERVED_FLUENT = "observed-fluent";
+	public static final String NULL_OBSERVATIONS = "no-observed-fluents";
 	public static final String FLUENT_NAME = "fluent-name";
 	public static final String FLUENT_ARG = "fluent-arg";
 	public static final String FLUENT_VALUE = "fluent-value";
@@ -89,7 +89,6 @@ public class Server implements Runnable {
 	public static final String ACTION_ARG = "action-arg";
 	public static final String ACTION_VALUE = "action-value";
 	public static final String DONE = "done";
-	public static final String NOOP = "noop";
 	
 	public static final int PORT_NUMBER = 2323;
 	public static final String HOST_NAME = "localhost";
@@ -211,6 +210,7 @@ public class Server implements Runnable {
 				msg = createXMLRoundInit(r+1, numRounds, timeUsed, timeAllowed);
 				sendOneMessage(osw,msg);
 				
+				System.out.println("Round " + (r+1) + " / " + numRounds);
 				if (SHOW_MEMORY_USAGE)
 					System.out.print("[ Memory usage: " + 
 							_df.format((RUNTIME.totalMemory() - RUNTIME.freeMemory())/1e6d) + "Mb / " + 
@@ -223,37 +223,40 @@ public class Server implements Runnable {
 				int h = 0;
 				HashMap<PVAR_NAME, HashMap<ArrayList<LCONST>, Object>> observStore =null;
 				for( ; h < instance._nHorizon; h++ ) {
-					if ( observStore != null) {
-						for ( PVAR_NAME pn : observStore.keySet() ) {
-							System.out.println("check3 " + pn);
-							for( ArrayList<LCONST> aa : observStore.get(pn).keySet()) {
-								System.out.println("check3 :" + aa + ": " + observStore.get(pn).get(aa));
-							}
-						}
-					}
+					
+					//if ( observStore != null) {
+					//	for ( PVAR_NAME pn : observStore.keySet() ) {
+					//		System.out.println("check3 " + pn);
+					//		for( ArrayList<LCONST> aa : observStore.get(pn).keySet()) {
+					//			System.out.println("check3 :" + aa + ": " + observStore.get(pn).get(aa));
+					//		}
+					//	}
+					//}
 					msg = createXMLTurn(state, h+1, domain, observStore);
 					sendOneMessage(osw,msg);
 					isrc = readOneMessage(isr);	
-					// Sungwook: need to handle multiple actions here.  See my
-					//           note in Client.java  -Scott
 					ArrayList<PVAR_INST_DEF> ds = processXMLAction(p,isrc,state);
 					if ( ds == null ) {
 						break;
 					}
-					if ( h== 0 && domain._bPartiallyObserved && ds.size() != 0) {
-						System.err.println("the first action for partial observable domain should be noop");
-					}
+					//Sungwook: this is not required.  -Scott
+					//if ( h== 0 && domain._bPartiallyObserved && ds.size() != 0) {
+					//	System.err.println("the first action for partial observable domain should be noop");
+					//}
+					if (SHOW_ACTIONS)
+						System.out.println("** Actions received: " + ds);
+					
 					try {
 						state.computeNextState(ds, rand);
 					} catch (EvalException ee) {
 						break;
 					}
-					for ( PVAR_NAME pn : state._observ.keySet() ) {
-						System.out.println("check1 " + pn);
-						for( ArrayList<LCONST> aa : state._observ.get(pn).keySet()) {
-							System.out.println("check1 :" + aa + ": " + state._observ.get(pn).get(aa));
-						}
-					}
+					//for ( PVAR_NAME pn : state._observ.keySet() ) {
+					//	System.out.println("check1 " + pn);
+					//	for( ArrayList<LCONST> aa : state._observ.get(pn).keySet()) {
+					//		System.out.println("check1 :" + aa + ": " + state._observ.get(pn).get(aa));
+					//	}
+					//}
 					observStore = copyObserv(state._observ);
 					
 					// Calculate reward / objective and store
@@ -342,8 +345,11 @@ public class Server implements Runnable {
 				instance._alInitState, nonFluents == null ? null : nonFluents._alNonFluents,
 				domain._alStateConstraints, domain._exprReward, instance._nNonDefActions);
 		
-		if (domain._bPartiallyObserved && state._alObservNames.size() == 0)
-			System.err.println("Domain '" + domain._sDomainName + "' partially observed, but no observations found.");
+		if ((domain._bPartiallyObserved && state._alObservNames.size() == 0)
+				|| (!domain._bPartiallyObserved && state._alObservNames.size() > 0))
+			System.err.println("Domain '" + domain._sDomainName
+							+ "' partially observed flag and presence of observations mismatched.");
+
 	}
 	
 	static Object getValue(String pname, String pvalue, State state) {
@@ -393,11 +399,13 @@ public class Server implements Runnable {
 			p.parse(isrc);
 			Element e = p.getDocument().getDocumentElement();
 			if ( !e.getNodeName().equals(ACTIONS) ) {
+				System.out.println("ERROR: NO ACTIONS NODE");
+				System.exit(1);
 				return null;
 			}
 			NodeList nl = e.getElementsByTagName(ACTION);
 //			System.out.println(nl);
-			if(nl != null && nl.getLength() > 0) {
+			if(nl != null) { // && nl.getLength() > 0) { // TODO: Scott
 				ArrayList<PVAR_INST_DEF> ds = new ArrayList<PVAR_INST_DEF>();
 				for(int i = 0 ; i < nl.getLength();i++) {
 					Element el = (Element)nl.item(i);
@@ -416,13 +424,15 @@ public class Server implements Runnable {
 					ds.add(d);
 				}
 				return ds;
-			} else {
-				nl = e.getElementsByTagName(NOOP);
-				if ( nl != null && nl.getLength() > 0) {
-					ArrayList<PVAR_INST_DEF> ds = new ArrayList<PVAR_INST_DEF>();
-					return ds;
-				}
-			}
+			} else
+				return new ArrayList<PVAR_INST_DEF>();
+			//} else { // TODO: Removed by Scott, NOOP should not be handled differently
+			//	nl = e.getElementsByTagName(NOOP);
+			//	if ( nl != null && nl.getLength() > 0) {
+			//		ArrayList<PVAR_INST_DEF> ds = new ArrayList<PVAR_INST_DEF>();
+			//		return ds;
+			//	}
+			//}
 		} catch (SAXException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -546,7 +556,7 @@ public class Server implements Runnable {
 					(domain._bPartiallyObserved 
 							? observStore.keySet() 
 									: state._state.keySet()) ) {
-					System.out.println(turn + " check2 Partial Observ " + pn +" : "+ domain._bPartiallyObserved);
+					//System.out.println(turn + " check2 Partial Observ " + pn +" : "+ domain._bPartiallyObserved);
 					for ( Map.Entry<ArrayList<LCONST>,Object> gfluent : 
 						(domain._bPartiallyObserved
 								? observStore.get(pn).entrySet() 
@@ -555,7 +565,7 @@ public class Server implements Runnable {
 //							System.out.println("Passing");
 //							continue;
 //						}
-						System.out.println(gfluent.getKey());
+						//System.out.println(gfluent.getKey());
 						Element ofEle = dom.createElement(OBSERVED_FLUENT);
 						rootEle.appendChild(ofEle);
 						Element pName = dom.createElement(FLUENT_NAME);
@@ -574,6 +584,10 @@ public class Server implements Runnable {
 						ofEle.appendChild(pValue);
 					}
 				}
+			} else {
+				// No observations (first turn of POMDP)
+				Element ofEle = dom.createElement(NULL_OBSERVATIONS);
+				rootEle.appendChild(ofEle);
 			}
 			return(Client.serialize(dom));
 			
@@ -649,6 +663,42 @@ public class Server implements Runnable {
 			System.out.println(e);
 			return null;
 		}
+	}
+	
+	
+	public static void printXMLNode(Node n) {
+		printXMLNode(n, "", 0);
+	}
+	public static void printXMLNode(Node n, String prefix, int depth) {
+		
+		try {			
+			System.out.print("\n" + Pad(depth) + "[" + n.getNodeName());
+			NamedNodeMap m = n.getAttributes();
+			for (int i = 0; m != null && i < m.getLength(); i++) {
+				Node item = m.item(i);
+				System.out.print(" " + item.getNodeName() + "=" + item.getNodeValue());
+			}
+			System.out.print("] ");
+			
+			NodeList cn = n.getChildNodes();
+			
+			for (int i = 0; cn != null && i < cn.getLength(); i++) {
+				Node item = cn.item(i);
+				if (item.getNodeType() == Node.TEXT_NODE) {
+					String val = item.getNodeValue().trim();
+					if (val.length() > 0) System.out.print(" \"" + item.getNodeValue().trim() + "\"");
+				} else
+					printXMLNode(item, prefix, depth+2);
+			}
+		} catch (Exception e) {
+			System.out.println(Pad(depth) + "Exception e: ");
+		}
+	}
+	public static StringBuffer Pad(int depth) {
+		StringBuffer sb = new StringBuffer();
+		for (int i = 0; i < depth; i++)
+			sb.append("  ");
+		return sb;
 	}
 }
 

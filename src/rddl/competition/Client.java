@@ -82,7 +82,7 @@ public class Client {
 	 * 
 	 * @param args
 	 * 1. rddl description file name with RDDL syntax, with complete path (sysadmin.rddl)
-	 * 2. instance name in rddl
+	 * 2. instance name in rddl / directory of rddl files
 	 * 3. host name (local host)
 	 * 4. client name (for record keeping purpose on server side. identify yourself with name.
 	 * 5. (optional) port number
@@ -109,7 +109,7 @@ public class Client {
 		
 		if ( args.length < 4 ) {
 			System.out.println("usage: rddlfilename hostname clientname policyclassname " +
-					"(optional) portnumber randomSeed instanceName");
+					"(optional) portnumber randomSeed instanceName/directory");
 			System.exit(1);
 		}
 		host = args[1];
@@ -169,9 +169,9 @@ public class Client {
 					instance._alInitState, nonFluents == null ? null : nonFluents._alNonFluents,
 					domain._alStateConstraints, domain._exprReward, instance._nNonDefActions);
 			
-			if (domain._bPartiallyObserved && state._alObservNames.size() == 0) {
-				System.err.println("Domain '" + domain._sDomainName + "' partially observed, but no observations found.");
-				System.exit(1);
+			if ((domain._bPartiallyObserved && state._alObservNames.size() == 0)
+					|| (!domain._bPartiallyObserved && state._alObservNames.size() > 0)) {
+				System.err.println("Domain '" + domain._sDomainName + "' partially observed flag and presence of observations mismatched.");
 			}
 			
 			/** Obtain an address object of the server */
@@ -219,16 +219,20 @@ public class Client {
 				Server.sendOneMessage(osw, msg);
 				isrc = Server.readOneMessage(isr);
 				timeLeft = processXMLRoundInit(p, isrc, r+1);
+				System.out.println("\n********************************************");
+				System.out.println(">>> ROUND INIT; time = " + timeLeft + ", horizon = " + instance._nHorizon);
+				System.out.println("********************************************");
 				if ( timeLeft < 0 ) {
 					break;
-				}
+				} // TODO
 				int h =0;
-				System.out.println(instance._nHorizon);
+				//System.out.println(instance._nHorizon);
 				for(; h < instance._nHorizon; h++ ) {
 					isrc = Server.readOneMessage(isr);
 					ArrayList<PVAR_INST_DEF> obs = processXMLTurn(p,isrc,state);
 					if ( obs == null ) {
 						System.err.println("No state/observations received.");
+						Server.printXMLNode(p.getDocument()); // DEBUG
 					} else if (domain._bPartiallyObserved) {
 						state.clearPVariables(state._observ);
 						state.setPVariables(state._observ, obs);
@@ -237,7 +241,9 @@ public class Client {
 						state.setPVariables(state._state, obs);
 					}
 					
-					msg = createXMLAction(state, policy);
+					ArrayList<PVAR_INST_DEF> actions = 
+						policy.getActions(obs == null ? null : state);
+					msg = createXMLAction(actions);
 					Server.sendOneMessage(osw, msg);
 				}
 				if ( h < instance._nHorizon ) {
@@ -354,10 +360,9 @@ public class Client {
 		return c;
 	}
 	
-	
-	static String createXMLAction(State state, Policy policy) {
-		try {
-			ArrayList<PVAR_INST_DEF> ds = policy.getActions(state);  
+	static String createXMLAction(ArrayList<PVAR_INST_DEF> ds) {
+	//static String createXMLAction(State state, Policy policy) {
+		try {  
 			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 			DocumentBuilder db = dbf.newDocumentBuilder();
 			Document dom = db.newDocument();
@@ -381,15 +386,14 @@ public class Client {
 				value.appendChild(textValue);
 				action.appendChild(value);
 			}
-			if ( ds.size() == 0) {
-				Element noop = dom.createElement(Server.NOOP);
-				actions.appendChild(noop);
-			}
+			// Sungwook: a noop is just an all-default action, not a special
+			// action.  -Scott
+			//if ( ds.size() == 0) {
+			//	Element noop = dom.createElement(Server.NOOP);
+			//	actions.appendChild(noop);
+			//}
 			
 			return serialize(dom);
-		} catch (EvalException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		} catch (ParserConfigurationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -450,6 +454,14 @@ public class Client {
 		}
 		Element e = p.getDocument().getDocumentElement();
 		if ( e.getNodeName().equals(Server.TURN) ) {
+			
+			// We need to be able to distinguish no observations from
+			// all default observations.  -Scott
+			if (e.getElementsByTagName(Server.NULL_OBSERVATIONS).getLength() > 0) {
+				return null;
+			}
+			
+			// I think this is never null.  -Scott
 			NodeList nl = e.getElementsByTagName(Server.OBSERVED_FLUENT);
 			if(nl != null && nl.getLength() > 0) {
 				ArrayList<PVAR_INST_DEF> ds = new ArrayList<PVAR_INST_DEF>();
@@ -470,8 +482,8 @@ public class Client {
 					ds.add(d);
 				}
 				return ds;
-			}
-			return null;
+			} else
+				return new ArrayList<PVAR_INST_DEF>();
 		}
 		return null;
 	}
