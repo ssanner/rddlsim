@@ -60,6 +60,10 @@ We currently provide the following rddlsim command line utilities:
         
         (n.b., rddl.viz.GenericScreenDisplay is default for state-viz-class-name)
 
+    Converting the RDDL DBN to SPUDD/Symbolic Perseus Format:
+
+        rddl.viz.RDDL2Graph RDDL-file/directory output-dir
+
     Visualizing the RDDL DBN:
 
         rddl.viz.RDDL2Graph RDDL-file instance-name
@@ -102,6 +106,30 @@ We currently provide the following rddlsim command line utilities:
 	      check out SPerseusSPUDDPolicy as used in the last two client examples (one
 	      MDP and one POMDP).
 
+
+GraphViz RDDL Visualization
+===========================
+
+Although not required to run the basic RDDL simulator facilities, some
+additional GraphViz visualization tools are provided.  
+
+To enable Java Graphviz visualization:
+
+- Download and install GraphViz on your system:
+ 
+  http://www.graphviz.org/
+
+- Make sure "dot" and "neato" (including ".exe" if running on Windows)
+  are in your PATH, i.e., you can execute them from any home directory
+
+Run graph.Graph.main() and verify that a cleanly formatted Java window
+displaying a graph appears.
+
+Run rddl.viz.RDDL2Graph.main() to convert RDDL files to interactively
+view DBNs for RDDL instances in a Java viewer and export GraphViz 
+graph specifications for publication. 
+
+
 Modifying the RDDL Language
 ===========================
 
@@ -141,26 +169,3 @@ substantial.  See the parser rule in the Makefile for this parameter.
 These commands only produce the Java files in the 
 rddlsim/src/rddl/parser/ directory, they must be compiled
 by javac (this is usually automatic if you are using Eclipse).
-
-
-GraphViz RDDL Visualization
-===========================
-
-Although not required to run the basic RDDL simulator facilities, some
-additional GraphViz visualization tools are provided.  
-
-To enable Java Graphviz visualization:
-
-- Download and install GraphViz on your system:
- 
-  http://www.graphviz.org/
-
-- Make sure "dot" and "neato" (including ".exe" if running on Windows)
-  are in your PATH, i.e., you can execute them from any home directory
-
-Run graph.Graph.main() and verify that a cleanly formatted Java window
-displaying a graph appears.
-
-Run rddl.viz.RDDL2Graph.main() to convert RDDL files to interactively
-view DBNs for RDDL instances in a Java viewer and export GraphViz 
-graph specifications for publication. 
