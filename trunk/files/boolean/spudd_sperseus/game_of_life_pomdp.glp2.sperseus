@@ -14,15 +14,15 @@
 )
 
 (observations 
-	(surround_obs__x1_y1' true false)
-	(surround_obs__x1_y2' true false)
-	(surround_obs__x1_y3' true false)
-	(surround_obs__x2_y1' true false)
-	(surround_obs__x2_y2' true false)
-	(surround_obs__x2_y3' true false)
-	(surround_obs__x3_y1' true false)
-	(surround_obs__x3_y2' true false)
-	(surround_obs__x3_y3' true false)
+	(surround_obs__x1_y1 true false)
+	(surround_obs__x1_y2 true false)
+	(surround_obs__x1_y3 true false)
+	(surround_obs__x2_y1 true false)
+	(surround_obs__x2_y2 true false)
+	(surround_obs__x2_y3 true false)
+	(surround_obs__x3_y1 true false)
+	(surround_obs__x3_y2 true false)
+	(surround_obs__x3_y3 true false)
 )
 
 init [*

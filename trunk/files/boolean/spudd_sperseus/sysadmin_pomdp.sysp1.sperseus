@@ -9,10 +9,10 @@
 )
 
 (observations 
-	(running_obs__c1' true false)
-	(running_obs__c2' true false)
-	(running_obs__c3' true false)
-	(running_obs__c4' true false)
+	(running_obs__c1 true false)
+	(running_obs__c2 true false)
+	(running_obs__c3 true false)
+	(running_obs__c4 true false)
 )
 
 init [*

@@ -9,10 +9,10 @@
 )
 
 (observations 
-	(surround_obs__x1_y1' true false)
-	(surround_obs__x1_y2' true false)
-	(surround_obs__x2_y1' true false)
-	(surround_obs__x2_y2' true false)
+	(surround_obs__x1_y1 true false)
+	(surround_obs__x1_y2 true false)
+	(surround_obs__x2_y1 true false)
+	(surround_obs__x2_y2 true false)
 )
 
 init [*

@@ -13,14 +13,14 @@
 )
 
 (observations 
-	(running_obs__c1' true false)
-	(running_obs__c2' true false)
-	(running_obs__c3' true false)
-	(running_obs__c4' true false)
-	(running_obs__c5' true false)
-	(running_obs__c6' true false)
-	(running_obs__c7' true false)
-	(running_obs__c8' true false)
+	(running_obs__c1 true false)
+	(running_obs__c2 true false)
+	(running_obs__c3 true false)
+	(running_obs__c4 true false)
+	(running_obs__c5 true false)
+	(running_obs__c6 true false)
+	(running_obs__c7 true false)
+	(running_obs__c8 true false)
 )
 
 init [*
