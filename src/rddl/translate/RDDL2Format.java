@@ -147,7 +147,7 @@ public class RDDL2Format {
 			
 			pw.println("\n(observations ");
 			for (String s : _alObservVars)
-				pw.println("\t(" + s + " true false)");
+				pw.println("\t(" + s.substring(0,s.length()-1) + " true false)");
 			pw.println(")");
 		}
 
