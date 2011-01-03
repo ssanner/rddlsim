@@ -38,12 +38,11 @@ problem => "<problem-name>"  <WORD>  "</problem-name>"
 round-request => "<round-request/>"
 
 -action spec
-action spec => <act> | <noop> | <done>
+action spec => <act> | <done>
 act => "<action>"  <name><arg>*<value>  "</action>"
 name => "<action-name>"  <WORD>  "</action-name>
 arg => "<action-arg>"  <WORD>  "</action-arg>"
 value => "<action-value>" <WORD> "</action-value>"
-noop => "<noop/>"
 done => "<done/>"
 
 Server messages:
@@ -61,11 +60,12 @@ time-left => "<time-left>"  <WORD>  "</time-left>"
 rounds-left => "<rounds-left>"  <WORD>  "</rounds-left>"
 
 -Turn response
-turn response => <turn><observed-fluent>* </turn>| <end-round> | <end-session>
+turn response => <turn><observed-fluent>* </turn>| <turn><no-observed-fluents> </turn> |<end-round> | <end-session>
 observed-fluent => "<observed-fluent>" <fluent-name><fluent-arg>*<fluent-value> "</observed-fluent>"
 fluent-name => "<fluent-name>"  <WORD>  "</fluent-name>"
 fluent-arg => "<fluent-arg>"  <WORD>  "</fluent-arg>"
 fluent-value => "<fluent-value>"  <WORD> "</fluent-value>"
+no-observed-fluents => <no-observed-fluents/>
 
 -End round
 round-end => "<round-end>"<time-spent><turns-used>  "</round-end>"
