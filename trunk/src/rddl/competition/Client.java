@@ -13,6 +13,7 @@ import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.InetAddress;
@@ -54,6 +55,8 @@ import rddl.viz.StateViz;
 
 public class Client {
 	
+	public static final boolean SHOW_XML = false;
+	public static final boolean SHOW_MSG = false;
 	public static final boolean SHOW_MEMORY_USAGE = true;
 	public static final Runtime RUNTIME = Runtime.getRuntime();
 	public static final int DEFAULT_RANDOM_SEED = 0;
@@ -219,20 +222,22 @@ public class Client {
 				Server.sendOneMessage(osw, msg);
 				isrc = Server.readOneMessage(isr);
 				timeLeft = processXMLRoundInit(p, isrc, r+1);
-				System.out.println("\n********************************************");
-				System.out.println(">>> ROUND INIT; time = " + timeLeft + ", horizon = " + instance._nHorizon);
-				System.out.println("********************************************");
+				policy.roundInit(timeLeft, instance._nHorizon, r+1 /*round*/, client.numRounds);
 				if ( timeLeft < 0 ) {
 					break;
 				} // TODO
 				int h =0;
 				//System.out.println(instance._nHorizon);
 				for(; h < instance._nHorizon; h++ ) {
+					if (SHOW_MSG) System.out.println("Reading turn message");
 					isrc = Server.readOneMessage(isr);
+					if (SHOW_MSG) System.out.println("Done reading turn message");
 					ArrayList<PVAR_INST_DEF> obs = processXMLTurn(p,isrc,state);
+					if (SHOW_MSG) System.out.println("Done parsing turn message");
 					if ( obs == null ) {
 						System.err.println("No state/observations received.");
-						Server.printXMLNode(p.getDocument()); // DEBUG
+						if (SHOW_XML)
+							Server.printXMLNode(p.getDocument()); // DEBUG
 					} else if (domain._bPartiallyObserved) {
 						state.clearPVariables(state._observ);
 						state.setPVariables(state._observ, obs);
@@ -244,6 +249,8 @@ public class Client {
 					ArrayList<PVAR_INST_DEF> actions = 
 						policy.getActions(obs == null ? null : state);
 					msg = createXMLAction(actions);
+					if (SHOW_MSG)
+						System.out.println("Sending: " + msg);
 					Server.sendOneMessage(osw, msg);
 				}
 				if ( h < instance._nHorizon ) {
@@ -392,7 +399,13 @@ public class Client {
 			//	Element noop = dom.createElement(Server.NOOP);
 			//	actions.appendChild(noop);
 			//}
-			
+
+			if (SHOW_XML) {
+				Server.printXMLNode(dom);
+				System.out.println();
+				System.out.flush();
+			}
+
 			return serialize(dom);
 		} catch (ParserConfigurationException e) {
 			// TODO Auto-generated catch block
@@ -446,6 +459,8 @@ public class Client {
 		} catch (SAXException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
+			// Debug info to explain parse error
+			//Server.showInputSource(isrc);
 			throw new RDDLXMLException("sax exception");
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
@@ -461,7 +476,7 @@ public class Client {
 				return null;
 			}
 			
-			// I think this is never null.  -Scott
+			// FYI: I think nl is never null.  -Scott
 			NodeList nl = e.getElementsByTagName(Server.OBSERVED_FLUENT);
 			if(nl != null && nl.getLength() > 0) {
 				ArrayList<PVAR_INST_DEF> ds = new ArrayList<PVAR_INST_DEF>();

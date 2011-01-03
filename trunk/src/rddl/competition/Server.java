@@ -14,6 +14,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.ServerSocket;
@@ -46,8 +47,9 @@ import rddl.viz.StateViz;
 public class Server implements Runnable {
 	
 	public static final boolean SHOW_STATE   = false;	
-	public final static boolean SHOW_ACTIONS = false;
-
+	public final static boolean SHOW_ACTIONS = true;
+	public static final boolean SHOW_XML = false;
+	public static final boolean SHOW_MSG = false;
 	
 	private static final String LOG_FILE = "rddl.log";
 	/**
@@ -196,6 +198,7 @@ public class Server implements Runnable {
 			sendOneMessage(osw,msg);			
 
 			initializeState(rddl, requestedInstance);
+			//System.out.println("STATE:\n" + state);
 			stateViz = SHOW_STATE ? new GenericScreenDisplay(true) : new NullScreenDisplay(false);
 			
 			double accum_total_reward = 0;
@@ -233,7 +236,10 @@ public class Server implements Runnable {
 					//	}
 					//}
 					msg = createXMLTurn(state, h+1, domain, observStore);
+					if (SHOW_MSG)
+						System.out.println("Sending msg:\n" + msg);
 					sendOneMessage(osw,msg);
+					// TODO
 					isrc = readOneMessage(isr);	
 					ArrayList<PVAR_INST_DEF> ds = processXMLAction(p,isrc,state);
 					if ( ds == null ) {
@@ -248,8 +254,10 @@ public class Server implements Runnable {
 					
 					try {
 						state.computeNextState(ds, rand);
-					} catch (EvalException ee) {
-						break;
+					} catch (Exception ee) {
+						System.out.println("FATAL SERVER EXCEPTION:\n" + ee);
+						ee.printStackTrace();
+						System.exit(1);
 					}
 					//for ( PVAR_NAME pn : state._observ.keySet() ) {
 					//	System.out.println("check1 " + pn);
@@ -257,7 +265,8 @@ public class Server implements Runnable {
 					//		System.out.println("check1 :" + aa + ": " + state._observ.get(pn).get(aa));
 					//	}
 					//}
-					observStore = copyObserv(state._observ);
+					if (domain._bPartiallyObserved)
+						observStore = copyObserv(state._observ);
 					
 					// Calculate reward / objective and store
 					double reward = ((Number)domain._exprReward.sample(new HashMap<LVAR,LCONST>(), 
@@ -271,6 +280,8 @@ public class Server implements Runnable {
 				}
 				accum_total_reward += accum_reward;
 				msg = createXMLRoundEnd(r, accum_reward, h, 0);
+				if (SHOW_MSG)
+					System.out.println("Sending msg:\n" + msg);
 				sendOneMessage(osw, msg);
 			}
 			msg = createXMLSessionEnd(accum_total_reward, r, 0, this.clientName, this.id);
@@ -291,6 +302,7 @@ public class Server implements Runnable {
 		}
 		catch (Exception e) {
 			System.out.println(e);
+			e.printStackTrace();
 		}
 		finally {
 			try {
@@ -305,6 +317,7 @@ public class Server implements Runnable {
 		HashMap<PVAR_NAME, HashMap<ArrayList<LCONST>, Object>> r = new
 		HashMap<PVAR_NAME, HashMap<ArrayList<LCONST>, Object>>();
 	
+		//System.out.println("Observation pvars: " + observ);
 		for ( PVAR_NAME pn : observ.keySet() ) {
 			HashMap<ArrayList<LCONST>, Object> v = 
 				new HashMap<ArrayList<LCONST>, Object>();
@@ -396,8 +409,13 @@ public class Server implements Runnable {
 	static ArrayList<PVAR_INST_DEF> processXMLAction(DOMParser p, InputSource isrc,
 			State state) {
 		try {
+			//showInputSource(isrc); System.exit(1); // TODO
 			p.parse(isrc);
 			Element e = p.getDocument().getDocumentElement();
+			if (SHOW_XML) {
+				System.out.println("Received action msg:");
+				printXMLNode(e);
+			}
 			if ( !e.getNodeName().equals(ACTIONS) ) {
 				System.out.println("ERROR: NO ACTIONS NODE");
 				System.exit(1);
@@ -425,7 +443,7 @@ public class Server implements Runnable {
 				}
 				return ds;
 			} else
-				return new ArrayList<PVAR_INST_DEF>();
+				return new ArrayList<PVAR_INST_DEF>(); // FYI: May be unreachable. -Scott
 			//} else { // TODO: Removed by Scott, NOOP should not be handled differently
 			//	nl = e.getElementsByTagName(NOOP);
 			//	if ( nl != null && nl.getLength() > 0) {
@@ -433,12 +451,11 @@ public class Server implements Runnable {
 			//		return ds;
 			//	}
 			//}
-		} catch (SAXException e1) {
+		} catch (Throwable t) {
 			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			System.out.println("FATAL SERVER ERROR:\n" + t);
+			t.printStackTrace();
+			System.exit(1);
 		}
 		return null;
 	}
@@ -551,35 +568,44 @@ public class Server implements Runnable {
 			turnNum.appendChild(textTurnNum);
 			rootEle.appendChild(turnNum);
 
+			//System.out.println("PO: " + domain._bPartiallyObserved);
 			if( !domain._bPartiallyObserved || observStore != null) {
 				for ( PVAR_NAME pn : 
 					(domain._bPartiallyObserved 
 							? observStore.keySet() 
 									: state._state.keySet()) ) {
 					//System.out.println(turn + " check2 Partial Observ " + pn +" : "+ domain._bPartiallyObserved);
-					for ( Map.Entry<ArrayList<LCONST>,Object> gfluent : 
-						(domain._bPartiallyObserved
-								? observStore.get(pn).entrySet() 
-										: state._state.get(pn).entrySet())) {
-//						if ( gfluent.getValue().toString().equals("false") ) {
-//							System.out.println("Passing");
-//							continue;
-//						}
-						//System.out.println(gfluent.getKey());
+					
+					// No problem to overwrite observations, only ever read from
+					if (domain._bPartiallyObserved && observStore != null)
+						state._observ.put(pn, observStore.get(pn));
+					
+					ArrayList<ArrayList<LCONST>> gfluents = state.generateAtoms(pn);			
+					for (ArrayList<LCONST> gfluent : gfluents) { 
+					//for ( Map.Entry<ArrayList<LCONST>,Object> gfluent : 
+					//	(domain._bPartiallyObserved
+					//			? observStore.get(pn).entrySet() 
+					//					: state._state.get(pn).entrySet())) {
 						Element ofEle = dom.createElement(OBSERVED_FLUENT);
 						rootEle.appendChild(ofEle);
 						Element pName = dom.createElement(FLUENT_NAME);
 						Text pTextName = dom.createTextNode(pn.toString());
 						pName.appendChild(pTextName);
 						ofEle.appendChild(pName);
-						for ( LCONST lc : gfluent.getKey() ) {
+						for ( LCONST lc : gfluent ) {
 							Element pArg = dom.createElement(FLUENT_ARG);
 							Text pTextArg = dom.createTextNode(lc.toString());
 							pArg.appendChild(pTextArg);
 							ofEle.appendChild(pArg);
 						}
 						Element pValue = dom.createElement(FLUENT_VALUE);
-						Text pTextValue = dom.createTextNode(gfluent.getValue().toString());
+						Object value = state.getPVariableAssign(pn, gfluent);
+						if (value == null) {
+							System.out.println("STATE:\n" + state);
+							throw new Exception("ERROR: Could not retrieve value for " + pn + gfluent.toString());
+						}
+
+						Text pTextValue = dom.createTextNode(value.toString());
 						pValue.appendChild(pTextValue);
 						ofEle.appendChild(pValue);
 					}
@@ -589,10 +615,17 @@ public class Server implements Runnable {
 				Element ofEle = dom.createElement(NULL_OBSERVATIONS);
 				rootEle.appendChild(ofEle);
 			}
+			if (SHOW_XML) {
+				printXMLNode(dom);
+				System.out.println();
+				System.out.flush();
+			}
 			return(Client.serialize(dom));
 			
 		} catch (Exception e) {
-			System.out.println(e);
+			System.out.println("FATAL SERVER EXCEPTION: " + e);
+			e.printStackTrace();
+			System.exit(1);
 			return null;
 		}
 	}
@@ -665,6 +698,25 @@ public class Server implements Runnable {
 		}
 	}
 	
+	///////////////////////////////////////////////////////////////////////
+	//                              DEBUG
+	///////////////////////////////////////////////////////////////////////
+	
+	public static void showInputSource(InputSource isrc) {
+		InputStream is = isrc.getByteStream();
+		byte[] bytes;
+		try {
+			int size = is.available();
+			bytes = new byte[size];
+			is.read(bytes);
+			System.out.println("==BEGIN IS==");
+			System.out.write(bytes, 0, size);
+			System.out.println("\n==END IS==");
+		} catch (IOException e2) {
+			System.out.println(">>> Inputstream error");
+			e2.printStackTrace();
+		}
+	}
 	
 	public static void printXMLNode(Node n) {
 		printXMLNode(n, "", 0);
