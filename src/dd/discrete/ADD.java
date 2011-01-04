@@ -1258,6 +1258,46 @@ public class ADD extends DD {
 		return ret;
 	}
 
+	public static abstract class ADDLeafOperation {
+		public abstract void processADDLeaf(ArrayList<String> assign, double leaf_val);
+	}
+
+	public void enumeratePaths(int id, ADDLeafOperation leaf_op) {
+		enumeratePaths(id, leaf_op, new ArrayList<String>());
+	}
+		
+	public void enumeratePaths(int id, 
+			ADDLeafOperation leaf_op, ArrayList<String> assign) {
+
+		Boolean b;
+		ADDNode cur = getNode(id);
+
+		if (cur instanceof ADDINode) {
+			int level = ((Integer) _hmGVarToLevel.get(new Integer(
+					((ADDINode) cur)._nTestVarID))).intValue();
+			Integer var_id = (Integer)_alOrder.get(level);
+			String var = (String)_hmID2VarName.get(var_id);
+
+			ADDINode ni = (ADDINode) cur;
+			assign.add("~" + var);
+			enumeratePaths(ni._nLow, leaf_op, assign);
+			assign.set(assign.size() - 1, var);
+			enumeratePaths(ni._nHigh, leaf_op, assign);
+			assign.remove(assign.size() - 1);
+			return;
+		}
+			
+		// If get here, cur will be an ADDDNode, ADDBNode
+		double leaf_val = Double.NaN;
+		if (cur instanceof ADDDNode) {
+			leaf_val =  ((ADDDNode) cur)._dLower;
+		} else if (cur instanceof ADDBNode) {
+			leaf_val =  ((ADDBNode) cur)._bVal ? 1.0d : 0.0d;
+		} 
+		
+		leaf_op.processADDLeaf(assign, leaf_val);
+	}
+	
 	@Override
 	public double evaluate(int id, HashMap var2assign) {
 		ArrayList assign = new ArrayList();
