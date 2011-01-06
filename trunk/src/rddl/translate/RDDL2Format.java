@@ -42,6 +42,8 @@ public class RDDL2Format {
 	public final static String SPUDD_CONC      = "spudd_concurrent".intern();
 	public final static String SPUDD_CONT      = "spudd_continuous".intern();
 	public final static String SPUDD_CONT_CONC = "spudd_continuous_concurrent".intern();
+	
+	public final static String PPDDL = "ppddl".intern();
 		
 	public State      _state;
 	public INSTANCE   _i;
@@ -66,6 +68,11 @@ public class RDDL2Format {
 
 	public Integer _reward;
 	public String _sTranslationType = UNKNOWN;
+	
+	// painful introduction just to pass arguments to ADD
+	public static PrintWriter PW;
+	public static String S;
+	public static double rewardSum;
 	
 	public RDDL2Format(RDDL rddl, String instance_name,
 			String translation_type) throws Exception {
@@ -109,7 +116,11 @@ public class RDDL2Format {
 	public void export(String directory) throws Exception {
 		
 		String filename = directory + File.separator + _d._sDomainName + "." + _i._sName;
-		if (_var2observDD.size() == 0)
+		
+		if (_sTranslationType == PPDDL) {
+			filename = filename + ".ppddl";
+		}
+		else if (_var2observDD.size() == 0)
 			filename = filename + ".spudd";
 		else
 			filename = filename + ".sperseus";
@@ -123,9 +134,72 @@ public class RDDL2Format {
 			exportSPUDD(pw, true, false);
 		else if (_sTranslationType == SPUDD_CONC)
 			exportSPUDD(pw, false, true);
+		else if (_sTranslationType == PPDDL ) 
+			exportPPDDL(pw);
 		else
 			throw new Exception(_sTranslationType + " not currently supported.");
 		
+		pw.close();
+	}
+	
+	public void exportPPDDL(PrintWriter pw) {
+		// first write domain
+		pw.println("// Automatically produced by rddl.translate.RDDL2Format"/* + " using '" + _sTranslationType + "'"*/);
+		pw.println("(define (domain " + _d._sDomainName + ")");
+		pw.println("\t(:requirements :adl :probabilistic-effects :disjunctive-goals)");
+		pw.println("\t(predicates ");
+		for (String s : _alStateVars) {
+			pw.println("\t\t(" + s + ")");
+		}
+//		pw.println("\t\t(agoal)");
+		pw.println("\t)");
+		for (String action_name : _alActionVars) {		
+			exportAction(action_name, pw);
+		}
+//		pw.println("\t(:action achieve-goal :parameters () :precondition () :effect (agoal))");
+		pw.println(")");
+
+		// write problem
+		pw.println("(define (problem " + _i._sName +")");
+		pw.println("\t(domain " + _d._sDomainName +")");
+		pw.println("\t(:init ");
+		ArrayList<String> true_vars = new ArrayList<String>();
+		for (PVAR_INST_DEF def : _i._alInitState) {	
+			// Get the assignments for this PVAR
+			Boolean value = (Boolean)def._oValue;
+			if (value)
+				true_vars.add(CleanFluentName(def._sPredName.toString() + def._alTerms));
+		}
+		for (String s : _alStateVars) {
+			if (true_vars.contains(s))
+				pw.println("\t\t(" + s + ")");
+		}
+		pw.println("\t)");
+		pw.println("\t(:goal (or");
+		PW = pw;
+		rewardSum = 0;
+		_context.enumeratePaths(_reward, 
+				new ADD.ADDLeafOperation() {
+			public void processADDLeaf(ArrayList<String> assign,
+					double leaf_val) {
+				if ( leaf_val > 0 ) {
+					PW.print("\t\t(and ");
+					for ( String a : assign ) {
+						if ( a.startsWith("~")) {
+							PW.print(" (not (" + a.substring(1) + "))");
+						} else {
+							PW.print(" (" +a+")");
+						}
+					}
+					PW.println(")");
+				}
+				rewardSum += leaf_val;
+			}
+		});
+		pw.println("\t))");
+		pw.println("\t(:goal-reward " + rewardSum +")");
+		pw.println("\t(:metric maximize-goals-achieved)");
+		pw.println(")");
 		pw.close();
 	}
 	
@@ -185,6 +259,41 @@ public class RDDL2Format {
 		// Discount and tolerance
 		pw.println("\n\ndiscount " + _i._dDiscount);
 		pw.println("tolerance 0.00001");
+	}
+	
+	public void exportAction(String action_name, PrintWriter pw) {
+		pw.println("\t(:action " + action_name);
+		pw.println("\t\t(:parameters ())");
+		pw.println("\t\t(:precondition ())");
+		pw.println("\t\t(:effect (and ");
+
+		PW = pw;
+		for (String s : _alStateVars) {
+			S = s;
+			int dd = _var2transDD.get(new Pair(action_name, s));
+			_context.enumeratePaths(dd, 
+					new ADD.ADDLeafOperation() {
+				public void processADDLeaf(ArrayList<String> assign,
+						double leaf_val) {
+					if ( leaf_val > 0 ) {
+						PW.print("\t\t\t(when (and ");
+						for ( String a : assign ) {
+							if ( a.startsWith("~")) {
+								PW.print(" (not (" + a.substring(1) + "))");
+							} else {
+								PW.print(" (" +a+")");
+							}
+						}
+						PW.print(")");
+						PW.print(" (probabilistic " + leaf_val + " (" + S + ")" );
+						PW.println(" " + (1-leaf_val) + " (not " +"(" + S + ")"+ ")))");
+					}
+				}
+			});
+		}
+		
+		pw.println("\t\t))");
+		pw.println("\t)");
 	}
 	
 	public void exportAction(String action_name, boolean curr_format, PrintWriter pw) {
@@ -733,9 +842,19 @@ public class RDDL2Format {
 		//RDDL rddl = parser.parse(new File("files/boolean/rddl/sysadmin_bool_mdp.rddl"));
 		//RDDL rddl = parser.parse(new File("files/boolean/rddl/sysadmin_bool_pomdp.rddl"));
 
-		if (args.length != 2) {
-			System.out.println("usage: RDDL-file/directory output-dir");
+		if (args.length != 3) {
+			System.out.println("usage: RDDL-file/directory output-dir translate-target-language");
 			System.exit(1);
+		}
+		if ( args[2].intern() != SPUDD_CURR &&
+				args[2].intern() != SPUDD_CONC &&
+				args[2].intern() != PPDDL ) {
+			System.out.println("don't support the target language yet");
+			System.out.println("Supported languages are:");
+			System.out.println("spudd_orig");
+			System.out.println("spudd_current");
+			System.out.println("ppddl");
+			System.exit(2);
 		}
 		String rddl_file = args[0];
 		String output_dir = args[1];
@@ -758,8 +877,7 @@ public class RDDL2Format {
 				
 				for (String instance_name : rddl._tmInstanceNodes.keySet()) {
 					// Options are SPUDD_ORIG, SPUDD_CURR, SPUDD_CONC, SPUDD_CONT, SPUDD_CONT_CONC
-					RDDL2Format r2s = new RDDL2Format(rddl, instance_name, SPUDD_CURR);
-					//RDDL2Format r2s = new RDDL2Format(rddl, instance_name, SPUDD_CONC);
+					RDDL2Format r2s = new RDDL2Format(rddl, instance_name, args[2]);
 					r2s.export(output_dir);
 				}
 			} catch (Exception e) {
