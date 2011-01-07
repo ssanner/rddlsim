@@ -50,7 +50,7 @@ We currently provide the following rddlsim command line utilities:
         
         (e.g., files/rddl/test/sysadmin.rddl for filename)
 
-    Translating Restricted RDDL Syntax to SPUDD / Symbolic Perseus Format:
+    Translating Restricted RDDL Syntax to PPDDL / SPUDD / Symbolic Perseus Format:
 	
         rddl.translate.RDDL2Format rddl-file-or-directory output-directory file-format
         
