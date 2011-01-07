@@ -50,19 +50,17 @@ We currently provide the following rddlsim command line utilities:
         
         (e.g., files/rddl/test/sysadmin.rddl for filename)
 
-	Translating Restricted RDDL Syntax to SPUDD / Symbolic Perseus Format:
+    Translating Restricted RDDL Syntax to SPUDD / Symbolic Perseus Format:
 	
-		rddl.translate.RDDL2Format rddl-file-or-directory output-directory
+        rddl.translate.RDDL2Format rddl-file-or-directory output-directory file-format
+        
+        Popular currently supported file formats are 'spudd_sperseus' and 'ppddl'.
 
     Running the RDDL Simulator Standalone:
 
         rddl.sim.Simulator RDDL-file policy-class-name instance-name [state-viz-class-name]
         
         (n.b., rddl.viz.GenericScreenDisplay is default for state-viz-class-name)
-
-    Converting the RDDL DBN to SPUDD/Symbolic Perseus Format:
-
-        rddl.viz.RDDL2Graph RDDL-file/directory output-dir
 
     Visualizing the RDDL DBN:
 
