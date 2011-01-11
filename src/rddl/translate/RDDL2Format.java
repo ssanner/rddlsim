@@ -284,7 +284,7 @@ public class RDDL2Format {
 			// Sungwook: we are using :rewards not :disjunctive-goals.
 			//pw.println("\t(:requirements :adl :probabilistic-effects :disjunctive-goals)");
 			pw.println("\t(:requirements :adl :probabilistic-effects :rewards)");
-			pw.println("\t(predicates ");
+			pw.println("\t(:predicates ");
 			for (String s : _alStateVars) {
 				pw.println("\t\t(" + s + ")");
 			}
@@ -298,7 +298,7 @@ public class RDDL2Format {
 	
 			// write problem
 			pw.println("(define (problem " + _i._sName +")");
-			pw.println("\t(domain " + _d._sDomainName +")");
+			pw.println("\t(:domain " + _d._sDomainName +")");
 			pw.println("\t(:init ");
 			ArrayList<String> true_vars = new ArrayList<String>();
 			for (PVAR_INST_DEF def : _i._alInitState) {	
@@ -308,8 +308,12 @@ public class RDDL2Format {
 					true_vars.add(CleanFluentName(def._sPredName.toString() + def._alTerms));
 			}
 			for (String s : _alStateVars) {
-				if (true_vars.contains(s))
+				if (true_vars.contains(s)) {
+//					pw.println("\t\t(probabilistic 1.0 " + s + ")");
 					pw.println("\t\t(" + s + ")");
+				} else {
+//					pw.println("\t\t(probabilistic 0.0 " + s +")");
+				}
 			}
 			pw.println("\t)");
 			pw.println("\t(:metric maximize (reward))");
@@ -320,9 +324,9 @@ public class RDDL2Format {
 
 	public void exportPPDDLAction(String action_name, PrintWriter pw) {
 		pw.println("\t(:action " + action_name);
-		pw.println("\t\t(:parameters ())");
-		pw.println("\t\t(:precondition ())");
-		pw.println("\t\t(:effect (and ");
+//		pw.println("\t\t(:parameters ())");
+//		pw.println("\t\t(:precondition ())");
+		pw.println("\t\t:effect (and ");
 
 		PW = pw;
 		for (String s : _alStateVars) {
@@ -396,9 +400,7 @@ public class RDDL2Format {
 				PW.println("(increase (reward) " + leaf_val + "))");
 			}
 		});
-
-		// close (:effects (and ... ))
-		pw.println("\t\t))");
+		pw.println("\t\t)");
 		pw.println("\t)");
 	}
 	
