@@ -96,6 +96,8 @@ public class Server implements Runnable {
 	public static final String HOST_NAME = "localhost";
 	public static final int DEFAULT_SEED = 0;
 
+	public static final String NO_XML_HEADER = "no-header";
+	public static boolean NO_XML_HEADING = false;
 	public static final boolean SHOW_MEMORY_USAGE = true;
 	public static final Runtime RUNTIME = Runtime.getRuntime();
 	private static DecimalFormat _df = new DecimalFormat("0.##");
@@ -461,7 +463,13 @@ public class Server implements Runnable {
 	}
 	
 	public static void sendOneMessage (OutputStreamWriter osw, String msg) throws IOException {
-		osw.write(msg + (char)3);
+//		System.out.println(msg);
+		if (NO_XML_HEADING) {
+//			System.out.println(msg.substring(39));
+			osw.write(msg.substring(39));
+		} else {
+			osw.write(msg + '\0');
+		}
 		osw.flush();
 	}
 	
@@ -469,7 +477,7 @@ public class Server implements Runnable {
 		StringBuffer message = new StringBuffer();
 		int character;
 		try {
-			while((character = isr.read()) != (char)3) {
+			while((character = isr.read()) != '\0') {
 				message.append((char)character);
 			}
 //			System.out.println(message);
@@ -510,6 +518,10 @@ public class Server implements Runnable {
 			if ( e.getNodeName().equals(SESSION_REQUEST) ) {
 				server.requestedInstance = getTextValue(e, PROBLEM_NAME).get(0);
 				server.clientName = getTextValue(e,CLIENT_NAME).get(0);
+				NodeList nl = e.getElementsByTagName(NO_XML_HEADER);
+				if ( nl.getLength() > 0 ) {
+					NO_XML_HEADING = true;
+				}
 			}
 			return;
 		} catch (SAXException e1) {
