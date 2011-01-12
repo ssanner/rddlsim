@@ -1,0 +1,11 @@
+communicate with RDDL server with PPDDL mdpclient.
+change the name of the file rddlclient.cc to client.cc
+copy the files into mdpsim 
+compile and run 
+
+Here is the command I used for mdpclient
+mdpclient --verbose=-1 --host=localhost --port=2323 --horizon=20 game_of_life_mdp.glm1.ppddl
+What this command does is running a random client which reads a translated ppddl file and communicates with server that runs game_of_life_nointerm_mdp.rddl.
+
+Note that I gave horizon as parameter, this may subject to change.
+Also, I artificially parsed the action names like set__x1_y1 into set(x1,y1).
