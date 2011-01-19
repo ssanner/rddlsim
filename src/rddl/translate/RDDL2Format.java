@@ -213,7 +213,7 @@ public class RDDL2Format {
 			pw.print("\t" + s);
 			
 			// Build both halves of dual action diagram if curr_format
-			//System.out.println("Getting: " + action_name + ", " + s);
+			System.out.println("Getting: " + action_name + ", " + s);
 			int dd = _var2transDD.get(new Pair(action_name, s));
 			if (curr_format) {
 				
@@ -579,12 +579,12 @@ public class RDDL2Format {
 							_context.flushCaches(true);
 		
 							// Use the empty list as a sign of a NOOP
-							action_assignments.add(new ArrayList<LCONST>()); // Add the empty list
+							action_assignments.add(null /*new ArrayList<LCONST>()*/); // Add the empty list
 							action_assignments = (ArrayList<ArrayList<LCONST>>) action_assignments.clone();
 							for (ArrayList<LCONST> action_assign : action_assignments) {
 								
 								String action_instance;
-								if (action_assign.size() > 0) {
+								if (action_assign != null) {
 									action_instance = CleanFluentName(action_name.toString() + action_assign);
 									_state.setPVariableAssign(action_name, action_assign, RDDL.BOOL_CONST_EXPR.TRUE);
 								} else
@@ -626,7 +626,8 @@ public class RDDL2Format {
 									_var2observDD.put(new Pair(action_instance, cpt_var + "'"), cpt);
 								
 								// Undo so next action can be set
-								_state.setPVariableAssign(action_name, action_assign, RDDL.BOOL_CONST_EXPR.FALSE);
+								if (action_assign != null)
+									_state.setPVariableAssign(action_name, action_assign, RDDL.BOOL_CONST_EXPR.FALSE);
 							}
 						}
 					} else {
@@ -859,6 +860,14 @@ public class RDDL2Format {
 	//                               Testing Methods
 	////////////////////////////////////////////////////////////////////////////////
 
+	public static void ShowFileFormats() {
+		System.out.println("Supported languages are");
+		System.out.println("  spudd_sperseus");
+		System.out.println("  ppddl");
+		System.out.println("  spudd_orig (an older SPUDD format)");
+		System.out.println("  spudd_conc (SPUDD format supporting concurrency)");
+	}
+	
 	/**
 	 * @param args
 	 */
@@ -871,7 +880,8 @@ public class RDDL2Format {
 		//RDDL rddl = parser.parse(new File("files/boolean/rddl/sysadmin_bool_pomdp.rddl"));
 
 		if (args.length != 3) {
-			System.out.println("usage: RDDL-file/directory output-dir file-format");
+			System.out.println("\nusage: RDDL-file/directory output-dir file-format\n");
+			ShowFileFormats();
 			System.exit(1);
 		}
 		String arg2_intern = args[2].intern();
@@ -879,11 +889,8 @@ public class RDDL2Format {
 				arg2_intern != SPUDD_CURR &&
 				arg2_intern != SPUDD_CONC &&
 				arg2_intern != PPDDL ) {
-			System.out.println("File format '" + arg2_intern + "' not supported yet... supported languages are");
-			System.out.println("  spudd_sperseus");
-			System.out.println("  ppddl");
-			System.out.println("  spudd_orig (an older SPUDD format)");
-			System.out.println("  spudd_conc (SPUDD format supporting concurrency)");
+			System.out.println("\nFile format '" + arg2_intern + "' not supported yet.\n");
+			ShowFileFormats();
 			System.exit(2);
 		}
 		String rddl_file = args[0];
