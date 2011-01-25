@@ -149,7 +149,11 @@ public class Client {
 			}
 			state = new State();
 			
-			Policy policy = (Policy)c.newInstance();
+//			Policy policy = (Policy)c.newInstance();
+			//following line with the help from Alan Olsen(?)
+			Policy policy = (Policy)c.getConstructor(
+					new Class[]{Class.forName("java.lang.String")}).newInstance(
+					new Object[]{instanceName});
 			policy._sInstanceName = instanceName;
 			policy.setRandSeed(randomSeed);
 			
