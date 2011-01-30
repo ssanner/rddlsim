@@ -16,14 +16,11 @@ rddlsim/ provides the following subdirectories:
     files All supplementary files (.rddl files, etc.)
 
 Always ensure that all .jar files in lib/ are included in your
-CLASSPATH for both Java compilation and at Java runtime.  We highly
-recommend that you use Eclipse for Java development:
+CLASSPATH for both Java compilation and at Java runtime.  For
+a quick way to compile the code from a terminal, you can try:
 
-    http://www.eclipse.org/downloads/
-
-In Eclipse the CLASSPATH libraries can be set via 
-
-    Project -> Properties -> Java Build Path -> Libraries Tab
+    compile     For Windows/Cygwin and UNIX/Linux systems
+    compile.bat For the Windows CMD prompt
 
 For running RDDLSim from a terminal, we provide two scripts
 
@@ -37,6 +34,14 @@ directory with the class name as an argument, e.g.
     Windows CMD prompt:            .\run.bat rddl.sim.Simulator
 
 You can pass up to 10 arguments to these scripts as required.
+
+We highly recommend that you use Eclipse for Java development:
+
+    http://www.eclipse.org/downloads/
+
+In Eclipse the CLASSPATH libraries can be set via 
+
+    Project -> Properties -> Java Build Path -> Libraries Tab
 
 
 Basic RDDLSim Usage

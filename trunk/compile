@@ -1,0 +1,18 @@
+Home=.
+libDir=${Home}/lib
+CP=${Home}/src
+BINDIR=${Home}/bin
+CYGWIN_SEP=";"
+UNIX_SEP=":"
+
+# Choose separator as appropriate for shell system (Cygwin, otherwise UNIX)
+SEP=":" 
+if [[ $OSTYPE == "cygwin" ]] ; then
+    SEP=";" 
+fi
+
+for i in ${libDir}/*.jar ; do
+    CP="${CP}${SEP}$i"
+done
+
+javac -classpath $CP -d $BINDIR src/*/*.java src/*/*/*.java
