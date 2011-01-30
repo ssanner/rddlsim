@@ -1,6 +1,7 @@
 /*
  * Copyright 2003-2005 Carnegie Mellon University and Rutgers University
- * Copyright 2007 H�kan Younes
+ * Copyright 2007 Hakan Younes
+ * Copyright 2011 Sungwook Yoon, Scott Sanner (modified for RDDLSim)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,9 +15,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "config.h"
-#include "client.h"
+
+/***********************************************************************
+ * Note: the procedures in this file go from least important (top) to  *
+ * most important (bottom), so read in reverse to get a sense of       *
+ * control flow.                                                       *
+ ***********************************************************************/
+
+/***********************************************************************/
+/*                           INCLUDES / DEFS                           */
+/***********************************************************************/
+
+/* Comment out the following define if you get complaints with sstream */
+#define HAVE_SSTREAM 1
+
 #include "strxml.h"
+
+#include <string>
+#include <iostream>
+#include <cerrno>
+#include <cstdio>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netdb.h>
+#include <netinet/in.h>
+
 #if HAVE_SSTREAM
 #include <sstream>
 #else
@@ -27,6 +50,101 @@ typedef std::ostrstream ostringstream;
 #endif
 #include <unistd.h>
 
+/***********************************************************************/
+/*                RDDLSIM SERVER INTERACTION HELPER PROCS              */
+/***********************************************************************/
+
+/* Extracts a fluent from the given XML node. */
+static int getFluent(const XMLNode* atomNode, std::string& fluent) {
+
+  if (atomNode == 0 || atomNode->getName() != "observed-fluent") {
+    return -1;
+  }
+
+  // Get fluent name
+  if (!atomNode->dissect("fluent-name", fluent)) {
+    return -1;
+  }
+
+  // Get fluent arguments and value
+  fluent += "(";
+  int arg_count = 0;
+  bool value;
+  for (int i = 0; i < atomNode->size(); i++) {
+    const XMLNode* termNode = atomNode->getChild(i);
+    if (termNode == 0) {
+      continue;
+
+    } else if (termNode->getName() == "fluent-arg") {
+      if (arg_count++ > 0)
+	fluent += ",";
+      fluent += termNode->getText();
+
+    } else if ( termNode != 0 && termNode->getName() == "fluent-value") {
+      value = termNode->getText() == "true";
+    }
+  }
+  fluent += ")";
+
+  return (int)value; // Should be -1:error, 0:false, 1:true
+}
+
+/* Extracts a state (multiple fluents/values) from the given XML node. */
+static bool showState(const XMLNode* stateNode) {
+  if (stateNode == 0) {
+    return false;
+  }
+  if (stateNode->getName() != "turn") {
+    return false;
+  }
+
+  std::cout << "==============================================\n" << std::endl;
+
+  if (stateNode->size() == 2 && 
+      stateNode->getChild(1)->getName() == "no-observed-fluents") {
+
+    // The first turn for a POMDP will have this null observation
+    std::cout << "No state/observations received.\n" << std::endl;
+
+  } else {
+    
+    // Show all state or observation fluents for this turn
+    std::cout << "True state/observation variables:" << std::endl;
+    for (int i = 0; i < stateNode->size(); i++) {
+      const XMLNode* cn = stateNode->getChild(i);
+      if (cn->getName() == "observed-fluent") {
+	std::string fluent;
+	int val = getFluent(cn, fluent);
+
+	// Only display true fluents
+	if (val)
+	  std::cout << "- " << fluent << std::endl;
+      } 
+    }
+    std::cout << std::endl;
+  }
+
+  return true;
+}
+
+/* Sends an action on the given stream. */
+void sendAction(std::ostream& os) {
+
+  // A simple 'noop'
+  //std::cout << "--> Action taken: noop\n" << std::endl;
+  //os << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" 
+  //   << "<actions/>" << '\0';
+
+  // A more complex action example specific to 'SysAdmin'
+  int comp_num = (rand() % 4) + 1;
+  std::cout << "--> Action taken: reboot(c" << comp_num << ")\n" << std::endl;
+  os << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" 
+     << "<actions><action>"
+     << "<action-name>reboot</action-name>"
+     << "<action-arg>c" << comp_num << "</action-arg>"
+     << "<action-value>true</action-value>"
+     << "</action></actions>" << '\0';
+}
 
 /* Extracts session request information. */
 static bool sessionRequestInfo(const XMLNode* node,
@@ -50,220 +168,48 @@ static bool sessionRequestInfo(const XMLNode* node,
   return true;
 }
 
+/* helper connect function */
+int connectToServer(const char *hostname, int port)
+{
+  struct hostent *host = ::gethostbyname(hostname);
+  if (!host) {
+    perror("gethostbyname");
+    return -1;
+  }
 
-/* Extracts an action from the given XML node. */
-static void getAtom(const std::string& problem, const XMLNode* atomNode) {
+  int sock = ::socket(PF_INET, SOCK_STREAM, 0);
+  if (sock == -1) {
+    perror("socket");
+    return -1;
+  }
 
-//
-//  if (atomNode == 0 || atomNode->getName() != "observed-fluent") {
-//    return 0;
-//  }
-//  std::string predicate_name;
-//  if (!atomNode->dissect("fluent-name", predicate_name)) {
-//    return 0;
-//  }
-//
-////  const Predicate* p =
-////    problem.domain().predicates().find_predicate(predicate_name);
-////  if (p == 0) {
-////    return 0;
-////  }
-//
-//  predicate_name += "_";
-//  TermList terms;
-////  size_t argIndex = 0;
-//  bool value;
-//  for (int i = 0; i < atomNode->size(); i++) {
-//    const XMLNode* termNode = atomNode->getChild(i);
-//    if (termNode == 0 || termNode->getName() != "fluent-arg") {
-//    	if ( termNode != 0 && termNode->getName() == "fluent-value") {
-//    		value = termNode->getText() == "true";
-//    	}
-//      continue;
-//    }
-////    if (argIndex >= PredicateTable::parameters(*p).size()) {
-////      return 0;
-////    }
-////    Type correctType = PredicateTable::parameters(*p)[argIndex];
-////    argIndex++;
-////
-////    std::string term_name = termNode->getText();
-////    const Object* o = problem.terms().find_object(term_name);
-////    if (o != 0) {
-////      if (!TypeTable::subtype(TermTable::type(*o), correctType)) {
-////        return 0;
-////      }
-////    } else {
-////      o = problem.domain().terms().find_object(term_name);
-////      if (o == 0) {
-////        return 0;
-////      } else if (!TypeTable::subtype(TermTable::type(*o), correctType)) {
-////        return 0;
-////      }
-////    }
-////    terms.push_back(*o);
-//
-//    predicate_name += "_";
-//    predicate_name += termNode->getText();
-//
-//  }
-////  std::cout << predicate_name  << " value " << value << std::endl;
-//  const Predicate* p =
-//      problem.domain().predicates().find_predicate(predicate_name);
-//
-////  if (PredicateTable::parameters(*p).size() != terms.size()) {
-////    return 0;
-////  }
-//
-//  if ( p == 0 ) {
-//	  return 0;
-//  }
-//
-//  return &Atom::make(*p, terms);
-	return;
+  struct sockaddr_in addr;
+  addr.sin_family=AF_INET;
+  addr.sin_port=htons(port);
+  addr.sin_addr = *((struct in_addr *)host->h_addr);
+  memset(&(addr.sin_zero), '\0', 8);
+
+  if (::connect(sock, (struct sockaddr*)&addr, sizeof(addr)) == -1) {
+    perror("connect");
+    return -1;
+  }
+  return sock;
+  //remember to call close(sock) when you're done
 }
 
+/***********************************************************************/
+/*                     MAIN SERVER INTERACTION LOOP                    */
+/***********************************************************************/
 
-/* Extracts a fluent from the given XML node. */
-static void getFluent(const std::string& problem,
-                               const XMLNode* appNode) {
-//  if (appNode == 0 || appNode->getName() != "fluent") {
-//    return 0;
-//  }
-//
-//  std::string function_name;
-//  if (!appNode->dissect("function", function_name)) {
-//    return 0;
-//  }
-//  const Function* f =
-//    problem.domain().functions().find_function(function_name);
-//  if (f == 0) {
-//    return 0;
-//  }
-//
-//  TermList terms;
-//  size_t argIndex = 0;
-//  for (int i = 0; i<appNode->size(); i++) {
-//    const XMLNode* termNode = appNode->getChild(i);
-//    if (!termNode || termNode->getName() != "term") {
-//      continue;
-//    }
-//    if (argIndex >= FunctionTable::parameters(*f).size()) {
-//      return 0;
-//    }
-//    Type correctType = FunctionTable::parameters(*f)[argIndex];
-//    argIndex++;
-//
-//    std::string term_name = termNode->getText();
-//    const Object* o = problem.terms().find_object(term_name);
-//    if (o != 0) {
-//      if (!TypeTable::subtype(TermTable::type(*o), correctType)) {
-//        return 0;
-//      }
-//    } else {
-//      o = problem.domain().terms().find_object(term_name);
-//      if (o == 0) {
-//        return 0;
-//      }
-//      else if (!TypeTable::subtype(TermTable::type(*o), correctType)) {
-//        return 0;
-//      }
-//    }
-//
-//    terms.push_back(*o);
-//  }
-//
-//  if (FunctionTable::parameters(*f).size() != terms.size()) {
-//    return 0;
-//  }
-//
-//  return &Fluent::make(*f,terms);
-}
-
-
-/* Extracts a state from the given XML node. */
-static bool getState(const std::string& problem, const XMLNode* stateNode) {
-//  if (stateNode == 0) {
-//    return false;
-//  }
-//  if (stateNode->getName() != "turn") {
-//    return false;
-//  }
-//  for (int i = 0; i < stateNode->size(); i++) {
-//    const XMLNode* cn = stateNode->getChild(i);
-//    if (cn->getName() == "observed-fluent") {
-//      const Atom* atom = getAtom(problem, cn);
-//      if (atom != 0) {
-//        atoms.insert(atom);
-//        RCObject::ref(atom);
-//      }
-//    }
-//    else if (cn->getName() == "fluent") {
-//      const Fluent* fluent = getFluent(problem, cn);
-//      std::string value_str;
-//      if (!cn->dissect("value", value_str))
-//        return false;
-//      values.insert(std::make_pair(fluent, Rational(value_str.c_str())));
-//      RCObject::ref(fluent);
-//    }
-//  }
-
-  return true;
-}
-
-
-/* Sends an action on the given stream. */
-static void sendAction(std::ostream& os) {
-//  if (action == 0) {
-//    os << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" << "<done/>" << '\0';
-//  } else if (action->name() == "noop") {
-	  std::cout << "noop" << std::endl;
-	  os << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" << "<actions/>" << '\0';
-//  } else {
-////	    os << "<act>" << "<action><name>" << action->name() << "</name>";
-////	    for (ObjectList::const_iterator oi = action->arguments().begin();
-////	         oi != action->arguments().end(); oi++) {
-////	      os << "<term>" << *oi << "</term>";
-////	    }
-////	    os << "</action></act>";
-//	std::cout << action->name() << std::endl;
-//	std::string action_name;
-//	action_name = action->name();
-//	std::string::size_type position = action_name.find("__");
-//	if ( position < action_name.length( )) {
-//		os << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" << "<actions>" << "<action><action-name>" <<
-//				action_name.substr(0, position) << "</action-name>";
-//		position += 2;
-//		while(1) {
-//			std::string::size_type new_position = action_name.find("_", position);
-//			if ( new_position > action_name.length( )) {
-//				break;
-//			}
-//			os << "<action-arg>" << action_name.substr(position, (new_position - position)) << "</action-arg>";
-//			position = new_position +1;
-//		}
-//		if (position < action_name.length()) {
-//			os << "<action-arg>" << action_name.substr(position) << "</action-arg>";
-//		}
-//	} else {
-//		os << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" << "<actions>" << "<action><action-name>" << action_name << "</action-name>";
-//	}
-//	os << "<action-value>true</action-value></action></actions>" << '\0';
-//  }
-}
-
-
-/* ====================================================================== */
-/* XMLClient */
-
-/* Constructs an XML client */
-XMLClient::XMLClient(const std::string& problemName,
-                     const std::string& name, int fd, int horizon) {
+/* Constructs an XML client and actually runs all of the server interaction*/
+void doMainClientLoop(const std::string& instance_name,
+                      const std::string& client_name, 
+                      int fd) {
   std::ostringstream os;
   os.str("");
   os << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" << "<session-request>"
-	 <<  "<problem-name>" << problemName << "</problem-name>"
-     <<  "<client-name>" << name << "</client-name>"
+	 <<  "<problem-name>" << instance_name << "</problem-name>"
+     <<  "<client-name>" << client_name << "</client-name>"
      <<  "<no-header/>"
      << "</session-request>"
      << '\0';
@@ -274,9 +220,8 @@ XMLClient::XMLClient(const std::string& problemName,
 
   const XMLNode* sessionInitNode = read_node(fd);
 
-  int total_rounds, round_turns;
+  int total_rounds;
   long round_time;
-  round_turns = horizon;
   if (!sessionRequestInfo(sessionInitNode,
                           total_rounds, round_time)) {
     std::cerr << "Error in server's session-request response" << std::endl;
@@ -290,9 +235,14 @@ XMLClient::XMLClient(const std::string& problemName,
     delete sessionInitNode;
   }
 
-  int rounds_left = total_rounds;
-  while (rounds_left) {
-    rounds_left--;
+  // Do a round
+  int rounds_count = 0;
+  while (++rounds_count <= total_rounds) {
+
+    std::cout << "***********************************************" << std::endl;
+    std::cout << ">>> ROUND INIT " << rounds_count << "/" << total_rounds << "; time remaining = " << round_time << std::endl;
+    std::cout << "***********************************************" << std::endl;
+
     os.str("");
     os << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" <<  "<round-request/>" << '\0';
 #if !HAVE_SSTREAM
@@ -325,29 +275,29 @@ XMLClient::XMLClient(const std::string& problemName,
 
       if (response->getName() == "round-end"
           || response->getName() == "session-end") {
-        std::cout << response << std::endl;
+	
+	std::string s;
+	if (response->dissect("round-reward", s)) {
+	  float reward = atof(s.c_str());
+	  std::cout << "***********************************************" << std::endl;
+	  std::cout << ">>> END OF ROUND -- REWARD RECEIVED: " << reward << std::endl;
+	  std::cout << "***********************************************\n" << std::endl;
+	}
+
+        //std::cout << response << std::endl;
         break;
       }
 
+      // Display the state / observations
+      // TODO: Read this into your planner's internal representation
+      if (!showState(response)) {
+	std::cerr << "Invalid state response: " << response << std::endl;
+        delete response;
+        return;
+      }
 
-//      AtomSet atoms;
-//      ValueMap values;
-//      if (!getState(atoms, values, problem, response)) {
-//        std::cerr << "Invalid state response: " << response << std::endl;
-//        delete response;
-//        return;
-//      }
-//
-//      const Action *a = planner.decideAction(atoms, values);
-//      for (AtomSet::const_iterator ai = atoms.begin();
-//           ai != atoms.end(); ai++) {
-//        RCObject::destructive_deref(*ai);
-//      }
-//      for (ValueMap::const_iterator vi = values.begin();
-//           vi != values.end(); vi++) {
-//        RCObject::destructive_deref((*vi).first);
-//      }
-
+      // Send an action
+      // TODO: Based on the state above, your planner chooses the action
       os.str("");
       sendAction(os);
 #if !HAVE_SSTREAM
@@ -368,7 +318,54 @@ XMLClient::XMLClient(const std::string& problemName,
   const XMLNode* endSessionNode = read_node(fd);
 
   if (endSessionNode) {
-    std::cout << endSessionNode << std::endl;
+
+    std::string s;
+    if (endSessionNode->dissect("total-reward", s)) {
+      float reward = atof(s.c_str());
+      std::cout << "***********************************************" << std::endl;
+      std::cout << ">>> END OF SESSION -- OVERALL REWARD: " << reward << std::endl;
+      std::cout << "***********************************************\n" << std::endl;
+    }
+
+    //std::cout << endSessionNode << std::endl;
     delete endSessionNode;
   }
+}
+
+/***********************************************************************/
+/*                      MAIN ENTRY POINT TO CLIENT                     */
+/***********************************************************************/
+
+int main(int argc, char **argv)
+{
+  if (argc != 2) {
+    /* note: actions are currently hard-coded for SysAdmin */
+    std::cout << "\nusage: rddlclient [sysm1|sysm2|sysp1|sysp2]" << std::endl;
+    std::exit(1);
+  }
+  std::string instance_request = argv[1];
+
+  /* we hardcode most arguments, better to read from command line **/
+  std::string host("localhost");
+  std::string client_name("your-client-name");
+  int port = 2323;
+  try {
+
+    int socket = connectToServer(host.c_str(), port);
+    if (socket <= 0) {
+      std::cerr << "Could not connect to " << host << ':' << port << std::endl;
+      return 1;
+    }
+
+    doMainClientLoop(instance_request, client_name, socket);
+
+  } catch (const std::exception& e) {
+    std::cerr << std::endl << "mdpclient: " << e.what() << std::endl;
+    return 1;
+  } catch (...) {
+    std::cerr << "mdpclient: fatal error" << std::endl;
+    return -1;
+  }
+
+  return 0;
 }
