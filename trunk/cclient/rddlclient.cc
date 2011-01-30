@@ -26,9 +26,6 @@
 /*                           INCLUDES / DEFS                           */
 /***********************************************************************/
 
-/* Comment out the following define if you get complaints with sstream */
-#define HAVE_SSTREAM 1
-
 #include "strxml.h"
 
 #include <string>

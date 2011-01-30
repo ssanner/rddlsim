@@ -20,6 +20,9 @@
 #ifndef _STRXML_H
 #define _STRXML_H
 
+/* Comment out the following define if you get complaints with sstream */
+#define HAVE_SSTREAM 1
+
 #include <iostream>
 #include <map>
 #include <string>
