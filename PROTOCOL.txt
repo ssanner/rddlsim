@@ -38,12 +38,11 @@ problem => "<problem-name>"  <WORD>  "</problem-name>"
 round-request => "<round-request/>"
 
 -action spec
-action spec => <act> | <done>
+action spec => "<actions>" <act>* "</actions>"
 act => "<action>"  <name><arg>*<value>  "</action>"
 name => "<action-name>"  <WORD>  "</action-name>
 arg => "<action-arg>"  <WORD>  "</action-arg>"
 value => "<action-value>" <WORD> "</action-value>"
-done => "<done/>"
 
 Server messages:
 

@@ -15,4 +15,5 @@ for i in ${libDir}/*.jar ; do
     CP="${CP}${SEP}$i"
 done
 
+mkdir $BINDIR
 javac -classpath $CP -d $BINDIR src/*/*.java src/*/*/*.java
