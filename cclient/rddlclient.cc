@@ -28,6 +28,11 @@
 
 #include "strxml.h"
 
+/** Ubuntu wants the following two libraries **/
+#include <stdlib.h>
+#include <string.h>
+/**********************************************/
+
 #include <string>
 #include <iostream>
 #include <cerrno>
