@@ -343,7 +343,7 @@ int main(int argc, char **argv)
   if (argc != 2) {
     /* note: actions are currently hard-coded for SysAdmin */
     std::cout << "\nusage: rddlclient [sysm1|sysm2|sysp1|sysp2]" << std::endl;
-    std::exit(1);
+    exit(1);
   }
   std::string instance_request = argv[1];
 
