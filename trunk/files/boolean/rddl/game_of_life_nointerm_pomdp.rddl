@@ -38,12 +38,12 @@ domain game_of_life_pomdp {
 						| [~alive(?x,?y) ^ ([sum_{?x2 : x_pos, ?y2 : y_pos} NEIGHBOR(?x,?y,?x2,?y2) ^ alive(?x2,?y2)] == 3)]
 						| set(?x,?y));  
 						
-		surround-obs(?x,?y) = if ([sum_{?x2 : x_pos, ?y2 : y_pos} NEIGHBOR(?x,?y,?x2,?y2) ^ alive(?x2,?y2)] >= 2) 
+		surround-obs(?x,?y) = if ([sum_{?x2 : x_pos, ?y2 : y_pos} NEIGHBOR(?x,?y,?x2,?y2) ^ alive'(?x2,?y2)] >= 2) 
 							then Bernoulli(.8) 
 							else Bernoulli(.2);		
 	};
     	
-	reward = [sum_{?x : x_pos, ?y : y_pos} alive(?x,?y)] - [sum_{?x : x_pos, ?y : y_pos} set(?x,?y)];
+	reward = sum_{?x : x_pos, ?y : y_pos} [alive(?x,?y) - set(?x,?y)];
 }
    
 non-fluents game2p {
@@ -146,7 +146,7 @@ instance glp1 {
   
 	max-nondef-actions = 1;
 	horizon  = 20;
-	discount = 0.9;
+	discount = 1.0;
 }
 
 instance glp2 {
@@ -163,5 +163,5 @@ instance glp2 {
   
 	max-nondef-actions = 1;
 	horizon  = 20;
-	discount = 0.9;
+	discount = 1.0;
 }

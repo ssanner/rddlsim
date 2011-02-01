@@ -240,34 +240,6 @@ public class State {
 			}
 		}
 		
-		// Do same for observations
-		if (DISPLAY_UPDATES) System.out.println("Updating observations");
-		for (PVAR_NAME p : _alObservNames) {
-			
-			// Generate updates for each ground fluent
-			//System.out.println("Updating observation var " + p);
-			ArrayList<ArrayList<LCONST>> gfluents = generateAtoms(p);
-			
-			for (ArrayList<LCONST> gfluent : gfluents) {
-				if (DISPLAY_UPDATES) System.out.print("- " + p + gfluent + " := ");
-				CPF_DEF cpf = _hmCPFs.get(p);
-				
-				subs.clear();
-				for (int i = 0; i < cpf._exprVarName._alTerms.size(); i++) {
-					LVAR v = (LVAR)cpf._exprVarName._alTerms.get(i);
-					LCONST c = (LCONST)gfluent.get(i);
-					subs.put(v,c);
-				}
-				
-				Object value = cpf._exprEquals.sample(subs, this, r);
-				if (DISPLAY_UPDATES) System.out.println(value);
-				
-				// Update value
-				HashMap<ArrayList<LCONST>,Object> pred_assign = _observ.get(p);
-				pred_assign.put(gfluent, value);
-			}
-		}
-		
 		// Do same for next-state (keeping in mind primed variables)
 		if (DISPLAY_UPDATES) System.out.println("Updating next state");
 		for (PVAR_NAME p : _alStateNames) {
@@ -304,6 +276,36 @@ public class State {
 					HashMap<ArrayList<LCONST>,Object> pred_assign = _nextState.get(p);
 					pred_assign.put(gfluent, value);
 				}
+			}
+		}
+		
+		// Do same for observations... note that this occurs after the next state
+		// update because observations in a POMDP may be modeled on the current
+		// and next state, i.e., P(o|s,a,s').
+		if (DISPLAY_UPDATES) System.out.println("Updating observations");
+		for (PVAR_NAME p : _alObservNames) {
+			
+			// Generate updates for each ground fluent
+			//System.out.println("Updating observation var " + p);
+			ArrayList<ArrayList<LCONST>> gfluents = generateAtoms(p);
+			
+			for (ArrayList<LCONST> gfluent : gfluents) {
+				if (DISPLAY_UPDATES) System.out.print("- " + p + gfluent + " := ");
+				CPF_DEF cpf = _hmCPFs.get(p);
+				
+				subs.clear();
+				for (int i = 0; i < cpf._exprVarName._alTerms.size(); i++) {
+					LVAR v = (LVAR)cpf._exprVarName._alTerms.get(i);
+					LCONST c = (LCONST)gfluent.get(i);
+					subs.put(v,c);
+				}
+				
+				Object value = cpf._exprEquals.sample(subs, this, r);
+				if (DISPLAY_UPDATES) System.out.println(value);
+				
+				// Update value
+				HashMap<ArrayList<LCONST>,Object> pred_assign = _observ.get(p);
+				pred_assign.put(gfluent, value);
 			}
 		}
 	}
@@ -391,6 +393,8 @@ public class State {
 
 		// Get default value if it exists
 		Object def_value = null;
+		boolean primed = p._bPrimed;
+		p = new PVAR_NAME(p._sPVarName);
 		PVARIABLE_DEF pvar_def = _hmPVariables.get(p);
 		if (pvar_def instanceof PVARIABLE_STATE_DEF) // state & non_fluents
 			def_value = ((PVARIABLE_STATE_DEF) pvar_def)._oDefValue;
@@ -402,14 +406,16 @@ public class State {
 		if (pvar_def instanceof PVARIABLE_STATE_DEF && ((PVARIABLE_STATE_DEF)pvar_def)._bNonFluent)
 			var_src = _nonfluents.get(p);
 		else if (pvar_def instanceof PVARIABLE_STATE_DEF && !((PVARIABLE_STATE_DEF)pvar_def)._bNonFluent)
-			var_src = _state.get(p);
+			var_src = primed ? _nextState.get(p) : _state.get(p); // Note: (next) state index by non-primed pvar
 		else if (pvar_def instanceof PVARIABLE_ACTION_DEF)
 			var_src = _actions.get(p);
 		else if (pvar_def instanceof PVARIABLE_INTERM_DEF)
 			var_src = _interm.get(p);
 		else if (pvar_def instanceof PVARIABLE_OBS_DEF)
 			var_src = _observ.get(p);
-		
+		else
+			System.out.println("ERROR: getPVariableAssign, unhandled pvariable " + p + terms);
+			
 		if (var_src == null)
 			return null;
 		
@@ -425,6 +431,8 @@ public class State {
 		
 		// Get default value if it exists
 		Object def_value = null;
+		boolean primed = p._bPrimed;
+		p = new PVAR_NAME(p._sPVarName);
 		PVARIABLE_DEF pvar_def = _hmPVariables.get(p);
 		if (pvar_def instanceof PVARIABLE_STATE_DEF) // state & non_fluents
 			def_value = ((PVARIABLE_STATE_DEF) pvar_def)._oDefValue;
@@ -436,7 +444,7 @@ public class State {
 		if (pvar_def instanceof PVARIABLE_STATE_DEF && ((PVARIABLE_STATE_DEF)pvar_def)._bNonFluent)
 			var_src = _nonfluents.get(p);
 		else if (pvar_def instanceof PVARIABLE_STATE_DEF && !((PVARIABLE_STATE_DEF)pvar_def)._bNonFluent)
-			var_src = _state.get(p);
+			var_src = primed ? _nextState.get(p) : _state.get(p); // Note: (next) state index by non-primed pvar
 		else if (pvar_def instanceof PVARIABLE_ACTION_DEF)
 			var_src = _actions.get(p);
 		else if (pvar_def instanceof PVARIABLE_INTERM_DEF)
@@ -447,8 +455,8 @@ public class State {
 		if (var_src == null)
 			return false;
 
-		// Set value (or remove if default)
-		if (def_value.equals(value)) {
+		// Set value (or remove if default)... n.b., def_value could be null if not s,a,s'
+		if (value == null || value.equals(def_value)) {
 			var_src.remove(terms);			
 		} else {
 			var_src.put(terms, value);

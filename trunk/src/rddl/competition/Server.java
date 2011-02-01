@@ -241,8 +241,11 @@ public class Server implements Runnable {
 					if (SHOW_MSG)
 						System.out.println("Sending msg:\n" + msg);
 					sendOneMessage(osw,msg);
-					// TODO
+
 					isrc = readOneMessage(isr);	
+					if (isrc == null)
+						throw new Exception("FATAL SERVER EXCEPTION: EMPTY CLIENT MESSAGE");
+
 					ArrayList<PVAR_INST_DEF> ds = processXMLAction(p,isrc,state);
 					if ( ds == null ) {
 						break;
@@ -258,8 +261,9 @@ public class Server implements Runnable {
 						state.computeNextState(ds, rand);
 					} catch (Exception ee) {
 						System.out.println("FATAL SERVER EXCEPTION:\n" + ee);
-						ee.printStackTrace();
-						System.exit(1);
+						//ee.printStackTrace();
+						throw ee;
+						//System.exit(1);
 					}
 					//for ( PVAR_NAME pn : state._observ.keySet() ) {
 					//	System.out.println("check1 " + pn);
@@ -303,8 +307,8 @@ public class Server implements Runnable {
 //			String returnCode = "MultipleSocketServer repsonded at "+ TimeStamp + (char) 3;
 		}
 		catch (Exception e) {
-			System.out.println(e);
 			e.printStackTrace();
+			System.out.println("\n>> TERMINATING TRIAL.");
 		}
 		finally {
 			try {
@@ -409,7 +413,7 @@ public class Server implements Runnable {
 	}
 	
 	static ArrayList<PVAR_INST_DEF> processXMLAction(DOMParser p, InputSource isrc,
-			State state) {
+			State state) throws Exception {
 		try {
 			//showInputSource(isrc); System.exit(1); // TODO
 			p.parse(isrc);
@@ -453,13 +457,13 @@ public class Server implements Runnable {
 			//		return ds;
 			//	}
 			//}
-		} catch (Throwable t) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			System.out.println("FATAL SERVER ERROR:\n" + t);
-			t.printStackTrace();
-			System.exit(1);
+			System.out.println("FATAL SERVER ERROR:\n" + e);
+			//t.printStackTrace();
+			throw e;
+			//System.exit(1);
 		}
-		return null;
 	}
 	
 	public static void sendOneMessage (OutputStreamWriter osw, String msg) throws IOException {
@@ -568,7 +572,7 @@ public class Server implements Runnable {
 	}
 	
 	static String createXMLTurn (State state, int turn, DOMAIN domain,
-			HashMap<PVAR_NAME, HashMap<ArrayList<LCONST>, Object>> observStore) {
+			HashMap<PVAR_NAME, HashMap<ArrayList<LCONST>, Object>> observStore) throws Exception {
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		try {
 			DocumentBuilder db = dbf.newDocumentBuilder();
@@ -637,8 +641,9 @@ public class Server implements Runnable {
 		} catch (Exception e) {
 			System.out.println("FATAL SERVER EXCEPTION: " + e);
 			e.printStackTrace();
-			System.exit(1);
-			return null;
+			throw e;
+			//System.exit(1);
+			//return null;
 		}
 	}
 	

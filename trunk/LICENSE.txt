@@ -26,8 +26,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ==============================================
 
 For ease of end-user installation and execution, the following 3rd
-party libraries are redistributed in IPPC_2011/RDDLSim/lib/ and are
-available under the following licenses:
+party libraries are redistributed in rddlsim/lib/ and are available
+under the following licenses:
 
     grappa1_4.jar   CPL (Common Public License): http://www.graphviz.org/License.php  
     java_cup.jar    GPL compatible license, see IPPC_2011/GPLv3.txt
@@ -35,5 +35,13 @@ available under the following licenses:
     xercesImpl.jar  Apache License 2.0: http://www.apache.org/licenses/LICENSE-2.0
     xml-apis.jar    Apache License 2.0: http://www.apache.org/licenses/LICENSE-2.0
 
+The C++ code in subdirectory rddlsim/cclient/ modified from mdpsim 
+
+    http://www.tempastic.org/mdpsim/
+
+to produce a C client for rddlsim is released under the Apache 
+License 2.0: http://www.apache.org/licenses/LICENSE-2.0
+
 Where the above 3rd party licenses are not GPL compatible, these
-libraries are exempt from GPL license restrictions.
+libraries are exempt from GPL license restrictions.  They are simply
+redistributed here for user convenience.

@@ -145,7 +145,7 @@ action noop
 					(false (0.95)))))))
 	observe 
 		running_obs__c1
-			(running__c1 
+			(running__c1' 
 				(true (running_obs__c1' 
 					(true (0.8))
 					(false (0.2))))
@@ -153,7 +153,7 @@ action noop
 					(true (0.2))
 					(false (0.8)))))
 		running_obs__c2
-			(running__c2 
+			(running__c2' 
 				(true (running_obs__c2' 
 					(true (0.8))
 					(false (0.2))))
@@ -161,7 +161,7 @@ action noop
 					(true (0.2))
 					(false (0.8)))))
 		running_obs__c3
-			(running__c3 
+			(running__c3' 
 				(true (running_obs__c3' 
 					(true (0.8))
 					(false (0.2))))
@@ -169,7 +169,7 @@ action noop
 					(true (0.2))
 					(false (0.8)))))
 		running_obs__c4
-			(running__c4 
+			(running__c4' 
 				(true (running_obs__c4' 
 					(true (0.8))
 					(false (0.2))))
@@ -177,7 +177,7 @@ action noop
 					(true (0.2))
 					(false (0.8)))))
 		running_obs__c5
-			(running__c5 
+			(running__c5' 
 				(true (running_obs__c5' 
 					(true (0.8))
 					(false (0.2))))
@@ -185,7 +185,7 @@ action noop
 					(true (0.2))
 					(false (0.8)))))
 		running_obs__c6
-			(running__c6 
+			(running__c6' 
 				(true (running_obs__c6' 
 					(true (0.8))
 					(false (0.2))))
@@ -193,7 +193,7 @@ action noop
 					(true (0.2))
 					(false (0.8)))))
 		running_obs__c7
-			(running__c7 
+			(running__c7' 
 				(true (running_obs__c7' 
 					(true (0.8))
 					(false (0.2))))
@@ -201,7 +201,7 @@ action noop
 					(true (0.2))
 					(false (0.8)))))
 		running_obs__c8
-			(running__c8 
+			(running__c8' 
 				(true (running_obs__c8' 
 					(true (0.8))
 					(false (0.2))))
@@ -318,7 +318,7 @@ action reboot__c1
 					(false (0.95)))))))
 	observe 
 		running_obs__c1
-			(running__c1 
+			(running__c1' 
 				(true (running_obs__c1' 
 					(true (0.8))
 					(false (0.2))))
@@ -326,7 +326,7 @@ action reboot__c1
 					(true (0.2))
 					(false (0.8)))))
 		running_obs__c2
-			(running__c2 
+			(running__c2' 
 				(true (running_obs__c2' 
 					(true (0.8))
 					(false (0.2))))
@@ -334,7 +334,7 @@ action reboot__c1
 					(true (0.2))
 					(false (0.8)))))
 		running_obs__c3
-			(running__c3 
+			(running__c3' 
 				(true (running_obs__c3' 
 					(true (0.8))
 					(false (0.2))))
@@ -342,7 +342,7 @@ action reboot__c1
 					(true (0.2))
 					(false (0.8)))))
 		running_obs__c4
-			(running__c4 
+			(running__c4' 
 				(true (running_obs__c4' 
 					(true (0.8))
 					(false (0.2))))
@@ -350,7 +350,7 @@ action reboot__c1
 					(true (0.2))
 					(false (0.8)))))
 		running_obs__c5
-			(running__c5 
+			(running__c5' 
 				(true (running_obs__c5' 
 					(true (0.8))
 					(false (0.2))))
@@ -358,7 +358,7 @@ action reboot__c1
 					(true (0.2))
 					(false (0.8)))))
 		running_obs__c6
-			(running__c6 
+			(running__c6' 
 				(true (running_obs__c6' 
 					(true (0.8))
 					(false (0.2))))
@@ -366,7 +366,7 @@ action reboot__c1
 					(true (0.2))
 					(false (0.8)))))
 		running_obs__c7
-			(running__c7 
+			(running__c7' 
 				(true (running_obs__c7' 
 					(true (0.8))
 					(false (0.2))))
@@ -374,7 +374,7 @@ action reboot__c1
 					(true (0.2))
 					(false (0.8)))))
 		running_obs__c8
-			(running__c8 
+			(running__c8' 
 				(true (running_obs__c8' 
 					(true (0.8))
 					(false (0.2))))
@@ -487,7 +487,7 @@ action reboot__c2
 					(false (0.95)))))))
 	observe 
 		running_obs__c1
-			(running__c1 
+			(running__c1' 
 				(true (running_obs__c1' 
 					(true (0.8))
 					(false (0.2))))
@@ -495,7 +495,7 @@ action reboot__c2
 					(true (0.2))
 					(false (0.8)))))
 		running_obs__c2
-			(running__c2 
+			(running__c2' 
 				(true (running_obs__c2' 
 					(true (0.8))
 					(false (0.2))))
@@ -503,7 +503,7 @@ action reboot__c2
 					(true (0.2))
 					(false (0.8)))))
 		running_obs__c3
-			(running__c3 
+			(running__c3' 
 				(true (running_obs__c3' 
 					(true (0.8))
 					(false (0.2))))
@@ -511,7 +511,7 @@ action reboot__c2
 					(true (0.2))
 					(false (0.8)))))
 		running_obs__c4
-			(running__c4 
+			(running__c4' 
 				(true (running_obs__c4' 
 					(true (0.8))
 					(false (0.2))))
@@ -519,7 +519,7 @@ action reboot__c2
 					(true (0.2))
 					(false (0.8)))))
 		running_obs__c5
-			(running__c5 
+			(running__c5' 
 				(true (running_obs__c5' 
 					(true (0.8))
 					(false (0.2))))
@@ -527,7 +527,7 @@ action reboot__c2
 					(true (0.2))
 					(false (0.8)))))
 		running_obs__c6
-			(running__c6 
+			(running__c6' 
 				(true (running_obs__c6' 
 					(true (0.8))
 					(false (0.2))))
@@ -535,7 +535,7 @@ action reboot__c2
 					(true (0.2))
 					(false (0.8)))))
 		running_obs__c7
-			(running__c7 
+			(running__c7' 
 				(true (running_obs__c7' 
 					(true (0.8))
 					(false (0.2))))
@@ -543,7 +543,7 @@ action reboot__c2
 					(true (0.2))
 					(false (0.8)))))
 		running_obs__c8
-			(running__c8 
+			(running__c8' 
 				(true (running_obs__c8' 
 					(true (0.8))
 					(false (0.2))))
@@ -656,7 +656,7 @@ action reboot__c3
 					(false (0.95)))))))
 	observe 
 		running_obs__c1
-			(running__c1 
+			(running__c1' 
 				(true (running_obs__c1' 
 					(true (0.8))
 					(false (0.2))))
@@ -664,7 +664,7 @@ action reboot__c3
 					(true (0.2))
 					(false (0.8)))))
 		running_obs__c2
-			(running__c2 
+			(running__c2' 
 				(true (running_obs__c2' 
 					(true (0.8))
 					(false (0.2))))
@@ -672,7 +672,7 @@ action reboot__c3
 					(true (0.2))
 					(false (0.8)))))
 		running_obs__c3
-			(running__c3 
+			(running__c3' 
 				(true (running_obs__c3' 
 					(true (0.8))
 					(false (0.2))))
@@ -680,7 +680,7 @@ action reboot__c3
 					(true (0.2))
 					(false (0.8)))))
 		running_obs__c4
-			(running__c4 
+			(running__c4' 
 				(true (running_obs__c4' 
 					(true (0.8))
 					(false (0.2))))
@@ -688,7 +688,7 @@ action reboot__c3
 					(true (0.2))
 					(false (0.8)))))
 		running_obs__c5
-			(running__c5 
+			(running__c5' 
 				(true (running_obs__c5' 
 					(true (0.8))
 					(false (0.2))))
@@ -696,7 +696,7 @@ action reboot__c3
 					(true (0.2))
 					(false (0.8)))))
 		running_obs__c6
-			(running__c6 
+			(running__c6' 
 				(true (running_obs__c6' 
 					(true (0.8))
 					(false (0.2))))
@@ -704,7 +704,7 @@ action reboot__c3
 					(true (0.2))
 					(false (0.8)))))
 		running_obs__c7
-			(running__c7 
+			(running__c7' 
 				(true (running_obs__c7' 
 					(true (0.8))
 					(false (0.2))))
@@ -712,7 +712,7 @@ action reboot__c3
 					(true (0.2))
 					(false (0.8)))))
 		running_obs__c8
-			(running__c8 
+			(running__c8' 
 				(true (running_obs__c8' 
 					(true (0.8))
 					(false (0.2))))
@@ -825,7 +825,7 @@ action reboot__c4
 					(false (0.95)))))))
 	observe 
 		running_obs__c1
-			(running__c1 
+			(running__c1' 
 				(true (running_obs__c1' 
 					(true (0.8))
 					(false (0.2))))
@@ -833,7 +833,7 @@ action reboot__c4
 					(true (0.2))
 					(false (0.8)))))
 		running_obs__c2
-			(running__c2 
+			(running__c2' 
 				(true (running_obs__c2' 
 					(true (0.8))
 					(false (0.2))))
@@ -841,7 +841,7 @@ action reboot__c4
 					(true (0.2))
 					(false (0.8)))))
 		running_obs__c3
-			(running__c3 
+			(running__c3' 
 				(true (running_obs__c3' 
 					(true (0.8))
 					(false (0.2))))
@@ -849,7 +849,7 @@ action reboot__c4
 					(true (0.2))
 					(false (0.8)))))
 		running_obs__c4
-			(running__c4 
+			(running__c4' 
 				(true (running_obs__c4' 
 					(true (0.8))
 					(false (0.2))))
@@ -857,7 +857,7 @@ action reboot__c4
 					(true (0.2))
 					(false (0.8)))))
 		running_obs__c5
-			(running__c5 
+			(running__c5' 
 				(true (running_obs__c5' 
 					(true (0.8))
 					(false (0.2))))
@@ -865,7 +865,7 @@ action reboot__c4
 					(true (0.2))
 					(false (0.8)))))
 		running_obs__c6
-			(running__c6 
+			(running__c6' 
 				(true (running_obs__c6' 
 					(true (0.8))
 					(false (0.2))))
@@ -873,7 +873,7 @@ action reboot__c4
 					(true (0.2))
 					(false (0.8)))))
 		running_obs__c7
-			(running__c7 
+			(running__c7' 
 				(true (running_obs__c7' 
 					(true (0.8))
 					(false (0.2))))
@@ -881,7 +881,7 @@ action reboot__c4
 					(true (0.2))
 					(false (0.8)))))
 		running_obs__c8
-			(running__c8 
+			(running__c8' 
 				(true (running_obs__c8' 
 					(true (0.8))
 					(false (0.2))))
@@ -994,7 +994,7 @@ action reboot__c5
 					(false (0.95)))))))
 	observe 
 		running_obs__c1
-			(running__c1 
+			(running__c1' 
 				(true (running_obs__c1' 
 					(true (0.8))
 					(false (0.2))))
@@ -1002,7 +1002,7 @@ action reboot__c5
 					(true (0.2))
 					(false (0.8)))))
 		running_obs__c2
-			(running__c2 
+			(running__c2' 
 				(true (running_obs__c2' 
 					(true (0.8))
 					(false (0.2))))
@@ -1010,7 +1010,7 @@ action reboot__c5
 					(true (0.2))
 					(false (0.8)))))
 		running_obs__c3
-			(running__c3 
+			(running__c3' 
 				(true (running_obs__c3' 
 					(true (0.8))
 					(false (0.2))))
@@ -1018,7 +1018,7 @@ action reboot__c5
 					(true (0.2))
 					(false (0.8)))))
 		running_obs__c4
-			(running__c4 
+			(running__c4' 
 				(true (running_obs__c4' 
 					(true (0.8))
 					(false (0.2))))
@@ -1026,7 +1026,7 @@ action reboot__c5
 					(true (0.2))
 					(false (0.8)))))
 		running_obs__c5
-			(running__c5 
+			(running__c5' 
 				(true (running_obs__c5' 
 					(true (0.8))
 					(false (0.2))))
@@ -1034,7 +1034,7 @@ action reboot__c5
 					(true (0.2))
 					(false (0.8)))))
 		running_obs__c6
-			(running__c6 
+			(running__c6' 
 				(true (running_obs__c6' 
 					(true (0.8))
 					(false (0.2))))
@@ -1042,7 +1042,7 @@ action reboot__c5
 					(true (0.2))
 					(false (0.8)))))
 		running_obs__c7
-			(running__c7 
+			(running__c7' 
 				(true (running_obs__c7' 
 					(true (0.8))
 					(false (0.2))))
@@ -1050,7 +1050,7 @@ action reboot__c5
 					(true (0.2))
 					(false (0.8)))))
 		running_obs__c8
-			(running__c8 
+			(running__c8' 
 				(true (running_obs__c8' 
 					(true (0.8))
 					(false (0.2))))
@@ -1163,7 +1163,7 @@ action reboot__c6
 					(false (0.95)))))))
 	observe 
 		running_obs__c1
-			(running__c1 
+			(running__c1' 
 				(true (running_obs__c1' 
 					(true (0.8))
 					(false (0.2))))
@@ -1171,7 +1171,7 @@ action reboot__c6
 					(true (0.2))
 					(false (0.8)))))
 		running_obs__c2
-			(running__c2 
+			(running__c2' 
 				(true (running_obs__c2' 
 					(true (0.8))
 					(false (0.2))))
@@ -1179,7 +1179,7 @@ action reboot__c6
 					(true (0.2))
 					(false (0.8)))))
 		running_obs__c3
-			(running__c3 
+			(running__c3' 
 				(true (running_obs__c3' 
 					(true (0.8))
 					(false (0.2))))
@@ -1187,7 +1187,7 @@ action reboot__c6
 					(true (0.2))
 					(false (0.8)))))
 		running_obs__c4
-			(running__c4 
+			(running__c4' 
 				(true (running_obs__c4' 
 					(true (0.8))
 					(false (0.2))))
@@ -1195,7 +1195,7 @@ action reboot__c6
 					(true (0.2))
 					(false (0.8)))))
 		running_obs__c5
-			(running__c5 
+			(running__c5' 
 				(true (running_obs__c5' 
 					(true (0.8))
 					(false (0.2))))
@@ -1203,7 +1203,7 @@ action reboot__c6
 					(true (0.2))
 					(false (0.8)))))
 		running_obs__c6
-			(running__c6 
+			(running__c6' 
 				(true (running_obs__c6' 
 					(true (0.8))
 					(false (0.2))))
@@ -1211,7 +1211,7 @@ action reboot__c6
 					(true (0.2))
 					(false (0.8)))))
 		running_obs__c7
-			(running__c7 
+			(running__c7' 
 				(true (running_obs__c7' 
 					(true (0.8))
 					(false (0.2))))
@@ -1219,7 +1219,7 @@ action reboot__c6
 					(true (0.2))
 					(false (0.8)))))
 		running_obs__c8
-			(running__c8 
+			(running__c8' 
 				(true (running_obs__c8' 
 					(true (0.8))
 					(false (0.2))))
@@ -1332,7 +1332,7 @@ action reboot__c7
 					(false (0.95)))))))
 	observe 
 		running_obs__c1
-			(running__c1 
+			(running__c1' 
 				(true (running_obs__c1' 
 					(true (0.8))
 					(false (0.2))))
@@ -1340,7 +1340,7 @@ action reboot__c7
 					(true (0.2))
 					(false (0.8)))))
 		running_obs__c2
-			(running__c2 
+			(running__c2' 
 				(true (running_obs__c2' 
 					(true (0.8))
 					(false (0.2))))
@@ -1348,7 +1348,7 @@ action reboot__c7
 					(true (0.2))
 					(false (0.8)))))
 		running_obs__c3
-			(running__c3 
+			(running__c3' 
 				(true (running_obs__c3' 
 					(true (0.8))
 					(false (0.2))))
@@ -1356,7 +1356,7 @@ action reboot__c7
 					(true (0.2))
 					(false (0.8)))))
 		running_obs__c4
-			(running__c4 
+			(running__c4' 
 				(true (running_obs__c4' 
 					(true (0.8))
 					(false (0.2))))
@@ -1364,7 +1364,7 @@ action reboot__c7
 					(true (0.2))
 					(false (0.8)))))
 		running_obs__c5
-			(running__c5 
+			(running__c5' 
 				(true (running_obs__c5' 
 					(true (0.8))
 					(false (0.2))))
@@ -1372,7 +1372,7 @@ action reboot__c7
 					(true (0.2))
 					(false (0.8)))))
 		running_obs__c6
-			(running__c6 
+			(running__c6' 
 				(true (running_obs__c6' 
 					(true (0.8))
 					(false (0.2))))
@@ -1380,7 +1380,7 @@ action reboot__c7
 					(true (0.2))
 					(false (0.8)))))
 		running_obs__c7
-			(running__c7 
+			(running__c7' 
 				(true (running_obs__c7' 
 					(true (0.8))
 					(false (0.2))))
@@ -1388,7 +1388,7 @@ action reboot__c7
 					(true (0.2))
 					(false (0.8)))))
 		running_obs__c8
-			(running__c8 
+			(running__c8' 
 				(true (running_obs__c8' 
 					(true (0.8))
 					(false (0.2))))
@@ -1501,7 +1501,7 @@ action reboot__c8
 			(false (0)))
 	observe 
 		running_obs__c1
-			(running__c1 
+			(running__c1' 
 				(true (running_obs__c1' 
 					(true (0.8))
 					(false (0.2))))
@@ -1509,7 +1509,7 @@ action reboot__c8
 					(true (0.2))
 					(false (0.8)))))
 		running_obs__c2
-			(running__c2 
+			(running__c2' 
 				(true (running_obs__c2' 
 					(true (0.8))
 					(false (0.2))))
@@ -1517,7 +1517,7 @@ action reboot__c8
 					(true (0.2))
 					(false (0.8)))))
 		running_obs__c3
-			(running__c3 
+			(running__c3' 
 				(true (running_obs__c3' 
 					(true (0.8))
 					(false (0.2))))
@@ -1525,7 +1525,7 @@ action reboot__c8
 					(true (0.2))
 					(false (0.8)))))
 		running_obs__c4
-			(running__c4 
+			(running__c4' 
 				(true (running_obs__c4' 
 					(true (0.8))
 					(false (0.2))))
@@ -1533,7 +1533,7 @@ action reboot__c8
 					(true (0.2))
 					(false (0.8)))))
 		running_obs__c5
-			(running__c5 
+			(running__c5' 
 				(true (running_obs__c5' 
 					(true (0.8))
 					(false (0.2))))
@@ -1541,7 +1541,7 @@ action reboot__c8
 					(true (0.2))
 					(false (0.8)))))
 		running_obs__c6
-			(running__c6 
+			(running__c6' 
 				(true (running_obs__c6' 
 					(true (0.8))
 					(false (0.2))))
@@ -1549,7 +1549,7 @@ action reboot__c8
 					(true (0.2))
 					(false (0.8)))))
 		running_obs__c7
-			(running__c7 
+			(running__c7' 
 				(true (running_obs__c7' 
 					(true (0.8))
 					(false (0.2))))
@@ -1557,7 +1557,7 @@ action reboot__c8
 					(true (0.2))
 					(false (0.8)))))
 		running_obs__c8
-			(running__c8 
+			(running__c8' 
 				(true (running_obs__c8' 
 					(true (0.8))
 					(false (0.2))))
@@ -2082,5 +2082,6 @@ reward
 									(true (1))
 									(false (0)))))))))))))))))
 
-discount 0.9
+%% horizon 20
+discount 1.0
 tolerance 0.00001

@@ -3,6 +3,8 @@
  * 
  * Requires GraphViz to be installed and in path, see README.txt.
  * 
+ * TODO: Update to get dependencies from RDDL2Format.
+ * 
  * @author Scott Sanner (ssanner@gmail.com)
  * @version 10/16/10
  *

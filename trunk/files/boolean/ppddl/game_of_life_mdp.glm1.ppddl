@@ -1,16 +1,14 @@
 ;; Automatically produced by rddl.translate.RDDL2Format
 (define (domain game_of_life_mdp)
 	(:requirements :adl :probabilistic-effects :rewards)
-	(predicates 
+	(:predicates 
 		(alive__x1_y1)
 		(alive__x1_y2)
 		(alive__x2_y1)
 		(alive__x2_y2)
 	)
 	(:action noop
-		(:parameters ())
-		(:precondition ())
-		(:effect (and 
+		:effect (and 
 			(when (and  (not (alive__x1_y1)) (alive__x1_y2) (alive__x2_y1) (alive__x2_y2)) (probabilistic 1.0 (alive__x1_y1) ))
 			(when (and  (alive__x1_y1) (not (alive__x1_y2)) (not (alive__x2_y1))) (probabilistic 1.0 (not (alive__x1_y1))))
 			(when (and  (alive__x1_y1) (not (alive__x1_y2)) (alive__x2_y1) (not (alive__x2_y2))) (probabilistic 1.0 (not (alive__x1_y1))))
@@ -42,12 +40,10 @@
 			(when (and  (alive__x1_y1) (alive__x1_y2) (not (alive__x2_y1)) (alive__x2_y2)) (increase (reward) 3.0))
 			(when (and  (alive__x1_y1) (alive__x1_y2) (alive__x2_y1) (not (alive__x2_y2))) (increase (reward) 3.0))
 			(when (and  (alive__x1_y1) (alive__x1_y2) (alive__x2_y1) (alive__x2_y2)) (increase (reward) 4.0))
-		))
+		)
 	)
 	(:action set__x1_y1
-		(:parameters ())
-		(:precondition ())
-		(:effect (and 
+		:effect (and 
 			(probabilistic 1.0 (alive__x1_y1) )
 			(when (and  (not (alive__x1_y1)) (alive__x1_y2) (not (alive__x2_y1))) (probabilistic 1.0 (not (alive__x1_y2))))
 			(when (and  (not (alive__x1_y1)) (alive__x1_y2) (alive__x2_y1) (not (alive__x2_y2))) (probabilistic 1.0 (not (alive__x1_y2))))
@@ -76,12 +72,10 @@
 			(when (and  (alive__x1_y1) (alive__x1_y2) (not (alive__x2_y1)) (alive__x2_y2)) (increase (reward) 3.0))
 			(when (and  (alive__x1_y1) (alive__x1_y2) (alive__x2_y1) (not (alive__x2_y2))) (increase (reward) 3.0))
 			(when (and  (alive__x1_y1) (alive__x1_y2) (alive__x2_y1) (alive__x2_y2)) (increase (reward) 4.0))
-		))
+		)
 	)
 	(:action set__x1_y2
-		(:parameters ())
-		(:precondition ())
-		(:effect (and 
+		:effect (and 
 			(when (and  (not (alive__x1_y1)) (alive__x1_y2) (alive__x2_y1) (alive__x2_y2)) (probabilistic 1.0 (alive__x1_y1) ))
 			(when (and  (alive__x1_y1) (not (alive__x1_y2)) (not (alive__x2_y1))) (probabilistic 1.0 (not (alive__x1_y1))))
 			(when (and  (alive__x1_y1) (not (alive__x1_y2)) (alive__x2_y1) (not (alive__x2_y2))) (probabilistic 1.0 (not (alive__x1_y1))))
@@ -110,12 +104,10 @@
 			(when (and  (alive__x1_y1) (alive__x1_y2) (not (alive__x2_y1)) (alive__x2_y2)) (increase (reward) 3.0))
 			(when (and  (alive__x1_y1) (alive__x1_y2) (alive__x2_y1) (not (alive__x2_y2))) (increase (reward) 3.0))
 			(when (and  (alive__x1_y1) (alive__x1_y2) (alive__x2_y1) (alive__x2_y2)) (increase (reward) 4.0))
-		))
+		)
 	)
 	(:action set__x2_y1
-		(:parameters ())
-		(:precondition ())
-		(:effect (and 
+		:effect (and 
 			(when (and  (not (alive__x1_y1)) (alive__x1_y2) (alive__x2_y1) (alive__x2_y2)) (probabilistic 1.0 (alive__x1_y1) ))
 			(when (and  (alive__x1_y1) (not (alive__x1_y2)) (not (alive__x2_y1))) (probabilistic 1.0 (not (alive__x1_y1))))
 			(when (and  (alive__x1_y1) (not (alive__x1_y2)) (alive__x2_y1) (not (alive__x2_y2))) (probabilistic 1.0 (not (alive__x1_y1))))
@@ -144,12 +136,10 @@
 			(when (and  (alive__x1_y1) (alive__x1_y2) (not (alive__x2_y1)) (alive__x2_y2)) (increase (reward) 3.0))
 			(when (and  (alive__x1_y1) (alive__x1_y2) (alive__x2_y1) (not (alive__x2_y2))) (increase (reward) 3.0))
 			(when (and  (alive__x1_y1) (alive__x1_y2) (alive__x2_y1) (alive__x2_y2)) (increase (reward) 4.0))
-		))
+		)
 	)
 	(:action set__x2_y2
-		(:parameters ())
-		(:precondition ())
-		(:effect (and 
+		:effect (and 
 			(when (and  (not (alive__x1_y1)) (alive__x1_y2) (alive__x2_y1) (alive__x2_y2)) (probabilistic 1.0 (alive__x1_y1) ))
 			(when (and  (alive__x1_y1) (not (alive__x1_y2)) (not (alive__x2_y1))) (probabilistic 1.0 (not (alive__x1_y1))))
 			(when (and  (alive__x1_y1) (not (alive__x1_y2)) (alive__x2_y1) (not (alive__x2_y2))) (probabilistic 1.0 (not (alive__x1_y1))))
@@ -178,14 +168,16 @@
 			(when (and  (alive__x1_y1) (alive__x1_y2) (not (alive__x2_y1)) (alive__x2_y2)) (increase (reward) 3.0))
 			(when (and  (alive__x1_y1) (alive__x1_y2) (alive__x2_y1) (not (alive__x2_y2))) (increase (reward) 3.0))
 			(when (and  (alive__x1_y1) (alive__x1_y2) (alive__x2_y1) (alive__x2_y2)) (increase (reward) 4.0))
-		))
+		)
 	)
 )
 (define (problem glm1)
-	(domain game_of_life_mdp)
+	(:domain game_of_life_mdp)
 	(:init 
 		(alive__x1_y1)
 		(alive__x2_y2)
 	)
 	(:metric maximize (reward))
+	;; (:horizon 20)
+	;; (:discount 1.0)
 )

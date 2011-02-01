@@ -9,8 +9,6 @@ NOTE: This is a modified version of the PROTOCOL file from
 
 ===
 
-**THE FOLLOWING IS STILL IN DEVELOPMENT AND NOT ACCURATE AT THIS TIME.
-
 A session looks like this
 
 client: session request

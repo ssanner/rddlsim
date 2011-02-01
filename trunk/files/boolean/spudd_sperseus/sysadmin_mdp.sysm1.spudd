@@ -287,5 +287,6 @@ reward
 					(true (1))
 					(false (0)))))))))
 
-discount 0.9
+%% horizon 20
+discount 1.0
 tolerance 0.00001
