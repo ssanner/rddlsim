@@ -10,10 +10,11 @@ Basic RDDLSim Installation and Invocation
 
 rddlsim/ provides the following subdirectories:
 
-    src   All source code (.java files)
-    bin   All binaries (.class files)
-    lib   All 3rd party libraries (.jar files)
-    files All supplementary files (.rddl files, etc.)
+    src     All source code (.java files)
+    bin     All binaries (.class files)
+    lib     All 3rd party libraries (.jar files)
+    files   All supplementary files (.rddl files, etc.)
+    cclient A sample C++ client for the rddlsim server
 
 Always ensure that all .jar files in lib/ are included in your
 CLASSPATH for both Java compilation and at Java runtime.  For
@@ -79,13 +80,20 @@ We currently provide the following rddlsim command line utilities:
         rddl.competition.Client RDDL-file host-name client-name policy-class-name [port-number]
         
         n.b., (1) default port number is 2323
-        	  (2) policy-class-name:
-        	       ...best example with comments: rddl.policy.SPerseusSPUDDPolicy 
-        	       ...any policy which derives from rddl.Policy, including any classes *you* write
-        	       ...for *your* client, you need only provide a policy derived from rddl.Policy
+	      (2) policy-class-name:
+        	  ...best example with comments: rddl.policy.SPerseusSPUDDPolicy 
+		  ...otherwise, any policy class name which derives from rddl.Policy
+        	  ...for *your* client, just provide a policy derived from rddl.Policy
         
 	Examples (run from rddlsim directory, ./run for UNIX/Cygwin, run.bat for Windows):
-		
+
+		./run rddl.competition.Server files/boolean/rddl/
+		./run rddl.competition.Client files/boolean/rddl localhost MyClientName rddl.policy.SPerseusSPUDDPolicy 2323 123456 glm1
+		./run rddl.competition.Client files/boolean/rddl localhost MyClientName rddl.policy.SPerseusSPUDDPolicy 2323 123456 glp1
+
+                Note: see directory rddlsim/cclient for instructions
+                on how to build and run a C++ client.
+
 		./run rddl.parser.parser files/rddl/test/sysadmin.rddl 
 		./run rddl.parser.parser files/rddl/test/game_of_life.rddl 
 	
@@ -100,14 +108,6 @@ We currently provide the following rddlsim command line utilities:
 		./run rddl.viz.RDDL2Graph files/rddl/test/dbn_prop.rddl inst_dbn
 		./run rddl.viz.RDDL2Graph files/rddl/test/dbn_types_interm_po.rddl inst_dbn
 		./run rddl.viz.RDDL2Graph files/rddl/test/game_of_life.rddl is1
-
-		./run rddl.competition.Server files/boolean/rddl/
-		./run rddl.competition.Client files/boolean/rddl localhost MyClientName rddl.policy.SPerseusSPUDDPolicy 2323 123456 glm1
-		./run rddl.competition.Client files/boolean/rddl localhost MyClientName rddl.policy.SPerseusSPUDDPolicy 2323 123456 glp1
-
-	Note: If you're looking for an example from which to write your own policy class
-	      check out SPerseusSPUDDPolicy as used in the last two client examples (one
-	      MDP and one POMDP).
 
 
 GraphViz RDDL Visualization

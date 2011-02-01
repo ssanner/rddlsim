@@ -1,16 +1,14 @@
 ;; Automatically produced by rddl.translate.RDDL2Format
 (define (domain sysadmin_mdp)
 	(:requirements :adl :probabilistic-effects :rewards)
-	(predicates 
+	(:predicates 
 		(running__c1)
 		(running__c2)
 		(running__c3)
 		(running__c4)
 	)
 	(:action noop
-		(:parameters ())
-		(:precondition ())
-		(:effect (and 
+		:effect (and 
 			(when (and  (not (running__c1))) (probabilistic 0.05 (running__c1) ))
 			(when (and  (running__c1) (not (running__c4))) (probabilistic 0.5 (not (running__c1))))
 			(when (and  (not (running__c1)) (not (running__c2))) (probabilistic 0.05 (running__c2) ))
@@ -37,12 +35,10 @@
 			(when (and  (running__c1) (running__c2) (not (running__c3)) (running__c4)) (increase (reward) 3.0))
 			(when (and  (running__c1) (running__c2) (running__c3) (not (running__c4))) (increase (reward) 3.0))
 			(when (and  (running__c1) (running__c2) (running__c3) (running__c4)) (increase (reward) 4.0))
-		))
+		)
 	)
 	(:action reboot__c1
-		(:parameters ())
-		(:precondition ())
-		(:effect (and 
+		:effect (and 
 			(probabilistic 1.0 (running__c1) )
 			(when (and  (not (running__c1)) (not (running__c2))) (probabilistic 0.05 (running__c2) ))
 			(when (and  (not (running__c1)) (running__c2)) (probabilistic 0.5 (not (running__c2))))
@@ -68,12 +64,10 @@
 			(when (and  (running__c1) (running__c2) (not (running__c3)) (running__c4)) (increase (reward) 3.0))
 			(when (and  (running__c1) (running__c2) (running__c3) (not (running__c4))) (increase (reward) 3.0))
 			(when (and  (running__c1) (running__c2) (running__c3) (running__c4)) (increase (reward) 4.0))
-		))
+		)
 	)
 	(:action reboot__c2
-		(:parameters ())
-		(:precondition ())
-		(:effect (and 
+		:effect (and 
 			(when (and  (not (running__c1))) (probabilistic 0.05 (running__c1) ))
 			(when (and  (running__c1) (not (running__c4))) (probabilistic 0.5 (not (running__c1))))
 			(probabilistic 1.0 (running__c2) )
@@ -98,12 +92,10 @@
 			(when (and  (running__c1) (running__c2) (not (running__c3)) (running__c4)) (increase (reward) 3.0))
 			(when (and  (running__c1) (running__c2) (running__c3) (not (running__c4))) (increase (reward) 3.0))
 			(when (and  (running__c1) (running__c2) (running__c3) (running__c4)) (increase (reward) 4.0))
-		))
+		)
 	)
 	(:action reboot__c3
-		(:parameters ())
-		(:precondition ())
-		(:effect (and 
+		:effect (and 
 			(when (and  (not (running__c1))) (probabilistic 0.05 (running__c1) ))
 			(when (and  (running__c1) (not (running__c4))) (probabilistic 0.5 (not (running__c1))))
 			(when (and  (not (running__c1)) (not (running__c2))) (probabilistic 0.05 (running__c2) ))
@@ -128,12 +120,10 @@
 			(when (and  (running__c1) (running__c2) (not (running__c3)) (running__c4)) (increase (reward) 3.0))
 			(when (and  (running__c1) (running__c2) (running__c3) (not (running__c4))) (increase (reward) 3.0))
 			(when (and  (running__c1) (running__c2) (running__c3) (running__c4)) (increase (reward) 4.0))
-		))
+		)
 	)
 	(:action reboot__c4
-		(:parameters ())
-		(:precondition ())
-		(:effect (and 
+		:effect (and 
 			(when (and  (not (running__c1))) (probabilistic 0.05 (running__c1) ))
 			(when (and  (running__c1) (not (running__c4))) (probabilistic 0.5 (not (running__c1))))
 			(when (and  (not (running__c1)) (not (running__c2))) (probabilistic 0.05 (running__c2) ))
@@ -158,13 +148,15 @@
 			(when (and  (running__c1) (running__c2) (not (running__c3)) (running__c4)) (increase (reward) 3.0))
 			(when (and  (running__c1) (running__c2) (running__c3) (not (running__c4))) (increase (reward) 3.0))
 			(when (and  (running__c1) (running__c2) (running__c3) (running__c4)) (increase (reward) 4.0))
-		))
+		)
 	)
 )
 (define (problem sysm1)
-	(domain sysadmin_mdp)
+	(:domain sysadmin_mdp)
 	(:init 
 		(running__c1)
 	)
 	(:metric maximize (reward))
+	;; (:horizon 20)
+	;; (:discount 1.0)
 )

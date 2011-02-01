@@ -118,17 +118,23 @@ public class RDDL2Format {
 	//                   Export Methods for a Variety of Formats
 	////////////////////////////////////////////////////////////////////////////////
 
+	// TODO: Export PO-PPDDL (like SPUDD / Symbolic Perseus, first do detect)
 	public void export(String directory) throws Exception {
 		
-		String filename = directory + File.separator + _d._sDomainName + "." + _i._sName;
+		String separator = (directory.endsWith("\\") || directory.endsWith("/")) ? "" : File.separator;
+		String filename = directory + separator + _d._sDomainName + "." + _i._sName;
 		
 		if (_sTranslationType == PPDDL) {
-			filename = filename + ".ppddl";
+			if (_var2observDD.size() == 0)
+				filename = filename + ".ppddl";
+			else
+				filename = filename + ".po-ppddl";
+		} else {
+			if (_var2observDD.size() == 0)
+				filename = filename + ".spudd";
+			else
+				filename = filename + ".sperseus";
 		}
-		else if (_var2observDD.size() == 0)
-			filename = filename + ".spudd";
-		else
-			filename = filename + ".sperseus";
 		PrintWriter pw = new PrintWriter(new FileWriter(filename));
 		//PrintWriter pw = new PrintWriter(System.out);
 		
@@ -145,6 +151,7 @@ public class RDDL2Format {
 			throw new Exception(_sTranslationType + " not currently supported.");
 		
 		pw.close();
+		System.out.println("\n>> Exported: '" + filename + "'");
 	}
 	
 	public void exportSPUDD(PrintWriter pw, boolean curr_format, boolean allow_conc) {
@@ -201,7 +208,8 @@ public class RDDL2Format {
 		_context.exportTree(_reward, pw, curr_format, 1);
 		
 		// Discount and tolerance
-		pw.println("\n\ndiscount " + _i._dDiscount);
+		pw.println("\n\n%% horizon " + _i._nHorizon);
+		pw.println("discount " + _i._dDiscount);
 		pw.println("tolerance 0.00001");
 	}
 	
@@ -290,6 +298,14 @@ public class RDDL2Format {
 			}
 	//		pw.println("\t\t(agoal)");
 			pw.println("\t)");
+			if (_alObservVars.size() > 0) {
+				pw.println("\t(:observations ");
+				for (String s : _alObservVars) {
+					s = s.substring(0, s.length() - 1);
+					pw.println("\t\t(" + s + ")");
+				}
+				pw.println("\t)");
+			}
 			for (String action_name : _alActionVars) {		
 				exportPPDDLAction(action_name, pw);
 			}
@@ -317,6 +333,8 @@ public class RDDL2Format {
 			}
 			pw.println("\t)");
 			pw.println("\t(:metric maximize (reward))");
+			pw.println("\t;; (:horizon " + _i._nHorizon + ")");
+			pw.println("\t;; (:discount " + _i._dDiscount + ")");
 			pw.println(")");
 
 			pw.close();
@@ -371,7 +389,7 @@ public class RDDL2Format {
 			});
 			
 			// This is the action specific reward
-			int reward_dd = _act2rewardDD.get(action_name);
+			//int reward_dd = _act2rewardDD.get(action_name);
 		}
 		
 		// Now export the reward for this action
@@ -401,6 +419,55 @@ public class RDDL2Format {
 			}
 		});
 		pw.println("\t\t)");
+		
+		if (_alObservVars.size() > 0) {
+			pw.println("\t\t:observation (and ");
+			for (String s : _alObservVars) {
+				S = s.substring(0, s.length() - 1);
+				for (String o : _alObservVars) {
+					Integer dd = _var2observDD.get(new Pair(action_name, o));
+					_context.enumeratePaths(dd, 
+							new ADD.ADDLeafOperation() {
+						public void processADDLeaf(ArrayList<String> assign,
+								double leaf_val) {
+							// Sungwook: I've made a few changes to correct and 
+							//           simplify the effects produced.  -Scott
+							boolean print_true_effect = (!assign.contains(S) && (leaf_val > 0d));
+							boolean print_false_effect = (!assign.contains("~" + S) && (leaf_val < 1d));
+							if (!print_true_effect && !print_false_effect)
+								return;
+							
+							PW.print("\t\t\t");
+							boolean use_when = (assign.size() > 0);
+							if (use_when) {
+								PW.print("(when (and ");
+								for ( String a : assign ) {
+									if ( a.startsWith("~")) {
+										PW.print(" (not (" + a.substring(1) + "))");
+									} else {
+										PW.print(" (" +a+")");
+									}
+								}
+								PW.print(") ");
+							}
+							
+							PW.print("(probabilistic ");
+							if (print_true_effect)
+								PW.print(leaf_val + " (" + S + ") ");
+							if (print_false_effect)
+								PW.print((1d-leaf_val) + " (not " +"(" + S + ")"+ ")");
+							
+							if (use_when)
+								PW.println("))");
+							else
+								PW.println(")"); // Don't need to close when
+						}
+					});
+				}
+			}
+			pw.println("\t\t)");
+		} // End observations
+		
 		pw.println("\t)");
 	}
 	
@@ -578,7 +645,7 @@ public class RDDL2Format {
 								_context.addSpecialNode(n);
 							_context.flushCaches(true);
 		
-							// Use the empty list as a sign of a NOOP
+							// Use null as a sign of a NOOP
 							action_assignments.add(null /*new ArrayList<LCONST>()*/); // Add the empty list
 							action_assignments = (ArrayList<ArrayList<LCONST>>) action_assignments.clone();
 							for (ArrayList<LCONST> action_assign : action_assignments) {
@@ -780,7 +847,7 @@ public class RDDL2Format {
 		} else {
 			PVAR_NAME p = (PVAR_NAME)vars.get(index)._o1;
 			ArrayList<LCONST> terms = (ArrayList<LCONST>)vars.get(index)._o2;
-			String var_name = CleanFluentName(p.toString() + terms); 
+			String var_name = CleanFluentName(p._sPVarName + terms + (p._bPrimed ? "\'" : "")); 
 			//System.out.println(var_name);
 
 			// Set to true
@@ -913,7 +980,7 @@ public class RDDL2Format {
 				RDDL rddl = parser.parse(f);
 				
 				for (String instance_name : rddl._tmInstanceNodes.keySet()) {
-					RDDL2Format r2s = new RDDL2Format(rddl, instance_name, args[2]);
+					RDDL2Format r2s = new RDDL2Format(rddl, instance_name, arg2_intern);
 					r2s.export(output_dir);
 				}
 			} catch (Exception e) {

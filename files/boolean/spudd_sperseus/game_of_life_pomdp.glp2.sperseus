@@ -2032,20 +2032,20 @@ action noop
 					(false (1)))))))
 	observe 
 		surround_obs__x1_y1
-			(alive__x1_y2 
-				(true (alive__x2_y1 
+			(alive__x1_y2' 
+				(true (alive__x2_y1' 
 					(true (surround_obs__x1_y1' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x2_y2 
+					(false (alive__x2_y2' 
 						(true (surround_obs__x1_y1' 
 							(true (0.8))
 							(false (0.2))))
 						(false (surround_obs__x1_y1' 
 							(true (0.2))
 							(false (0.8))))))))
-				(false (alive__x2_y1 
-					(true (alive__x2_y2 
+				(false (alive__x2_y1' 
+					(true (alive__x2_y2' 
 						(true (surround_obs__x1_y1' 
 							(true (0.8))
 							(false (0.2))))
@@ -2056,56 +2056,56 @@ action noop
 						(true (0.2))
 						(false (0.8)))))))
 		surround_obs__x1_y2
-			(alive__x1_y1 
-				(true (alive__x1_y3 
+			(alive__x1_y1' 
+				(true (alive__x1_y3' 
 					(true (surround_obs__x1_y2' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x2_y1 
+					(false (alive__x2_y1' 
 						(true (surround_obs__x1_y2' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x2_y2 
+						(false (alive__x2_y2' 
 							(true (surround_obs__x1_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x2_y3 
+							(false (alive__x2_y3' 
 								(true (surround_obs__x1_y2' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x1_y2' 
 									(true (0.2))
 									(false (0.8))))))))))))
-				(false (alive__x1_y3 
-					(true (alive__x2_y1 
+				(false (alive__x1_y3' 
+					(true (alive__x2_y1' 
 						(true (surround_obs__x1_y2' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x2_y2 
+						(false (alive__x2_y2' 
 							(true (surround_obs__x1_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x2_y3 
+							(false (alive__x2_y3' 
 								(true (surround_obs__x1_y2' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x1_y2' 
 									(true (0.2))
 									(false (0.8))))))))))
-					(false (alive__x2_y1 
-						(true (alive__x2_y2 
+					(false (alive__x2_y1' 
+						(true (alive__x2_y2' 
 							(true (surround_obs__x1_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x2_y3 
+							(false (alive__x2_y3' 
 								(true (surround_obs__x1_y2' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x1_y2' 
 									(true (0.2))
 									(false (0.8))))))))
-						(false (alive__x2_y2 
-							(true (alive__x2_y3 
+						(false (alive__x2_y2' 
+							(true (alive__x2_y3' 
 								(true (surround_obs__x1_y2' 
 									(true (0.8))
 									(false (0.2))))
@@ -2116,20 +2116,20 @@ action noop
 								(true (0.2))
 								(false (0.8)))))))))))
 		surround_obs__x1_y3
-			(alive__x1_y2 
-				(true (alive__x2_y2 
+			(alive__x1_y2' 
+				(true (alive__x2_y2' 
 					(true (surround_obs__x1_y3' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x2_y3 
+					(false (alive__x2_y3' 
 						(true (surround_obs__x1_y3' 
 							(true (0.8))
 							(false (0.2))))
 						(false (surround_obs__x1_y3' 
 							(true (0.2))
 							(false (0.8))))))))
-				(false (alive__x2_y2 
-					(true (alive__x2_y3 
+				(false (alive__x2_y2' 
+					(true (alive__x2_y3' 
 						(true (surround_obs__x1_y3' 
 							(true (0.8))
 							(false (0.2))))
@@ -2140,56 +2140,56 @@ action noop
 						(true (0.2))
 						(false (0.8)))))))
 		surround_obs__x2_y1
-			(alive__x1_y1 
-				(true (alive__x1_y2 
+			(alive__x1_y1' 
+				(true (alive__x1_y2' 
 					(true (surround_obs__x2_y1' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x2_y2 
+					(false (alive__x2_y2' 
 						(true (surround_obs__x2_y1' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x3_y1 
+						(false (alive__x3_y1' 
 							(true (surround_obs__x2_y1' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y2 
+							(false (alive__x3_y2' 
 								(true (surround_obs__x2_y1' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x2_y1' 
 									(true (0.2))
 									(false (0.8))))))))))))
-				(false (alive__x1_y2 
-					(true (alive__x2_y2 
+				(false (alive__x1_y2' 
+					(true (alive__x2_y2' 
 						(true (surround_obs__x2_y1' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x3_y1 
+						(false (alive__x3_y1' 
 							(true (surround_obs__x2_y1' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y2 
+							(false (alive__x3_y2' 
 								(true (surround_obs__x2_y1' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x2_y1' 
 									(true (0.2))
 									(false (0.8))))))))))
-					(false (alive__x2_y2 
-						(true (alive__x3_y1 
+					(false (alive__x2_y2' 
+						(true (alive__x3_y1' 
 							(true (surround_obs__x2_y1' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y2 
+							(false (alive__x3_y2' 
 								(true (surround_obs__x2_y1' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x2_y1' 
 									(true (0.2))
 									(false (0.8))))))))
-						(false (alive__x3_y1 
-							(true (alive__x3_y2 
+						(false (alive__x3_y1' 
+							(true (alive__x3_y2' 
 								(true (surround_obs__x2_y1' 
 									(true (0.8))
 									(false (0.2))))
@@ -2200,140 +2200,140 @@ action noop
 								(true (0.2))
 								(false (0.8)))))))))))
 		surround_obs__x2_y2
-			(alive__x1_y1 
-				(true (alive__x1_y2 
+			(alive__x1_y1' 
+				(true (alive__x1_y2' 
 					(true (surround_obs__x2_y2' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x1_y3 
+					(false (alive__x1_y3' 
 						(true (surround_obs__x2_y2' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x2_y1 
+						(false (alive__x2_y1' 
 							(true (surround_obs__x2_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x2_y3 
+							(false (alive__x2_y3' 
 								(true (surround_obs__x2_y2' 
 									(true (0.8))
 									(false (0.2))))
-								(false (alive__x3_y1 
+								(false (alive__x3_y1' 
 									(true (surround_obs__x2_y2' 
 										(true (0.8))
 										(false (0.2))))
-									(false (alive__x3_y2 
+									(false (alive__x3_y2' 
 										(true (surround_obs__x2_y2' 
 											(true (0.8))
 											(false (0.2))))
-										(false (alive__x3_y3 
+										(false (alive__x3_y3' 
 											(true (surround_obs__x2_y2' 
 												(true (0.8))
 												(false (0.2))))
 											(false (surround_obs__x2_y2' 
 												(true (0.2))
 												(false (0.8))))))))))))))))))
-				(false (alive__x1_y2 
-					(true (alive__x1_y3 
+				(false (alive__x1_y2' 
+					(true (alive__x1_y3' 
 						(true (surround_obs__x2_y2' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x2_y1 
+						(false (alive__x2_y1' 
 							(true (surround_obs__x2_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x2_y3 
+							(false (alive__x2_y3' 
 								(true (surround_obs__x2_y2' 
 									(true (0.8))
 									(false (0.2))))
-								(false (alive__x3_y1 
+								(false (alive__x3_y1' 
 									(true (surround_obs__x2_y2' 
 										(true (0.8))
 										(false (0.2))))
-									(false (alive__x3_y2 
+									(false (alive__x3_y2' 
 										(true (surround_obs__x2_y2' 
 											(true (0.8))
 											(false (0.2))))
-										(false (alive__x3_y3 
+										(false (alive__x3_y3' 
 											(true (surround_obs__x2_y2' 
 												(true (0.8))
 												(false (0.2))))
 											(false (surround_obs__x2_y2' 
 												(true (0.2))
 												(false (0.8))))))))))))))))
-					(false (alive__x1_y3 
-						(true (alive__x2_y1 
+					(false (alive__x1_y3' 
+						(true (alive__x2_y1' 
 							(true (surround_obs__x2_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x2_y3 
+							(false (alive__x2_y3' 
 								(true (surround_obs__x2_y2' 
 									(true (0.8))
 									(false (0.2))))
-								(false (alive__x3_y1 
+								(false (alive__x3_y1' 
 									(true (surround_obs__x2_y2' 
 										(true (0.8))
 										(false (0.2))))
-									(false (alive__x3_y2 
+									(false (alive__x3_y2' 
 										(true (surround_obs__x2_y2' 
 											(true (0.8))
 											(false (0.2))))
-										(false (alive__x3_y3 
+										(false (alive__x3_y3' 
 											(true (surround_obs__x2_y2' 
 												(true (0.8))
 												(false (0.2))))
 											(false (surround_obs__x2_y2' 
 												(true (0.2))
 												(false (0.8))))))))))))))
-						(false (alive__x2_y1 
-							(true (alive__x2_y3 
+						(false (alive__x2_y1' 
+							(true (alive__x2_y3' 
 								(true (surround_obs__x2_y2' 
 									(true (0.8))
 									(false (0.2))))
-								(false (alive__x3_y1 
+								(false (alive__x3_y1' 
 									(true (surround_obs__x2_y2' 
 										(true (0.8))
 										(false (0.2))))
-									(false (alive__x3_y2 
+									(false (alive__x3_y2' 
 										(true (surround_obs__x2_y2' 
 											(true (0.8))
 											(false (0.2))))
-										(false (alive__x3_y3 
+										(false (alive__x3_y3' 
 											(true (surround_obs__x2_y2' 
 												(true (0.8))
 												(false (0.2))))
 											(false (surround_obs__x2_y2' 
 												(true (0.2))
 												(false (0.8))))))))))))
-							(false (alive__x2_y3 
-								(true (alive__x3_y1 
+							(false (alive__x2_y3' 
+								(true (alive__x3_y1' 
 									(true (surround_obs__x2_y2' 
 										(true (0.8))
 										(false (0.2))))
-									(false (alive__x3_y2 
+									(false (alive__x3_y2' 
 										(true (surround_obs__x2_y2' 
 											(true (0.8))
 											(false (0.2))))
-										(false (alive__x3_y3 
+										(false (alive__x3_y3' 
 											(true (surround_obs__x2_y2' 
 												(true (0.8))
 												(false (0.2))))
 											(false (surround_obs__x2_y2' 
 												(true (0.2))
 												(false (0.8))))))))))
-								(false (alive__x3_y1 
-									(true (alive__x3_y2 
+								(false (alive__x3_y1' 
+									(true (alive__x3_y2' 
 										(true (surround_obs__x2_y2' 
 											(true (0.8))
 											(false (0.2))))
-										(false (alive__x3_y3 
+										(false (alive__x3_y3' 
 											(true (surround_obs__x2_y2' 
 												(true (0.8))
 												(false (0.2))))
 											(false (surround_obs__x2_y2' 
 												(true (0.2))
 												(false (0.8))))))))
-									(false (alive__x3_y2 
-										(true (alive__x3_y3 
+									(false (alive__x3_y2' 
+										(true (alive__x3_y3' 
 											(true (surround_obs__x2_y2' 
 												(true (0.8))
 												(false (0.2))))
@@ -2344,56 +2344,56 @@ action noop
 											(true (0.2))
 											(false (0.8)))))))))))))))))
 		surround_obs__x2_y3
-			(alive__x1_y2 
-				(true (alive__x1_y3 
+			(alive__x1_y2' 
+				(true (alive__x1_y3' 
 					(true (surround_obs__x2_y3' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x2_y2 
+					(false (alive__x2_y2' 
 						(true (surround_obs__x2_y3' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x3_y2 
+						(false (alive__x3_y2' 
 							(true (surround_obs__x2_y3' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y3 
+							(false (alive__x3_y3' 
 								(true (surround_obs__x2_y3' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x2_y3' 
 									(true (0.2))
 									(false (0.8))))))))))))
-				(false (alive__x1_y3 
-					(true (alive__x2_y2 
+				(false (alive__x1_y3' 
+					(true (alive__x2_y2' 
 						(true (surround_obs__x2_y3' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x3_y2 
+						(false (alive__x3_y2' 
 							(true (surround_obs__x2_y3' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y3 
+							(false (alive__x3_y3' 
 								(true (surround_obs__x2_y3' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x2_y3' 
 									(true (0.2))
 									(false (0.8))))))))))
-					(false (alive__x2_y2 
-						(true (alive__x3_y2 
+					(false (alive__x2_y2' 
+						(true (alive__x3_y2' 
 							(true (surround_obs__x2_y3' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y3 
+							(false (alive__x3_y3' 
 								(true (surround_obs__x2_y3' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x2_y3' 
 									(true (0.2))
 									(false (0.8))))))))
-						(false (alive__x3_y2 
-							(true (alive__x3_y3 
+						(false (alive__x3_y2' 
+							(true (alive__x3_y3' 
 								(true (surround_obs__x2_y3' 
 									(true (0.8))
 									(false (0.2))))
@@ -2404,20 +2404,20 @@ action noop
 								(true (0.2))
 								(false (0.8)))))))))))
 		surround_obs__x3_y1
-			(alive__x2_y1 
-				(true (alive__x2_y2 
+			(alive__x2_y1' 
+				(true (alive__x2_y2' 
 					(true (surround_obs__x3_y1' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x3_y2 
+					(false (alive__x3_y2' 
 						(true (surround_obs__x3_y1' 
 							(true (0.8))
 							(false (0.2))))
 						(false (surround_obs__x3_y1' 
 							(true (0.2))
 							(false (0.8))))))))
-				(false (alive__x2_y2 
-					(true (alive__x3_y2 
+				(false (alive__x2_y2' 
+					(true (alive__x3_y2' 
 						(true (surround_obs__x3_y1' 
 							(true (0.8))
 							(false (0.2))))
@@ -2428,56 +2428,56 @@ action noop
 						(true (0.2))
 						(false (0.8)))))))
 		surround_obs__x3_y2
-			(alive__x2_y1 
-				(true (alive__x2_y2 
+			(alive__x2_y1' 
+				(true (alive__x2_y2' 
 					(true (surround_obs__x3_y2' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x2_y3 
+					(false (alive__x2_y3' 
 						(true (surround_obs__x3_y2' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x3_y1 
+						(false (alive__x3_y1' 
 							(true (surround_obs__x3_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y3 
+							(false (alive__x3_y3' 
 								(true (surround_obs__x3_y2' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x3_y2' 
 									(true (0.2))
 									(false (0.8))))))))))))
-				(false (alive__x2_y2 
-					(true (alive__x2_y3 
+				(false (alive__x2_y2' 
+					(true (alive__x2_y3' 
 						(true (surround_obs__x3_y2' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x3_y1 
+						(false (alive__x3_y1' 
 							(true (surround_obs__x3_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y3 
+							(false (alive__x3_y3' 
 								(true (surround_obs__x3_y2' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x3_y2' 
 									(true (0.2))
 									(false (0.8))))))))))
-					(false (alive__x2_y3 
-						(true (alive__x3_y1 
+					(false (alive__x2_y3' 
+						(true (alive__x3_y1' 
 							(true (surround_obs__x3_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y3 
+							(false (alive__x3_y3' 
 								(true (surround_obs__x3_y2' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x3_y2' 
 									(true (0.2))
 									(false (0.8))))))))
-						(false (alive__x3_y1 
-							(true (alive__x3_y3 
+						(false (alive__x3_y1' 
+							(true (alive__x3_y3' 
 								(true (surround_obs__x3_y2' 
 									(true (0.8))
 									(false (0.2))))
@@ -2488,20 +2488,20 @@ action noop
 								(true (0.2))
 								(false (0.8)))))))))))
 		surround_obs__x3_y3
-			(alive__x2_y2 
-				(true (alive__x2_y3 
+			(alive__x2_y2' 
+				(true (alive__x2_y3' 
 					(true (surround_obs__x3_y3' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x3_y2 
+					(false (alive__x3_y2' 
 						(true (surround_obs__x3_y3' 
 							(true (0.8))
 							(false (0.2))))
 						(false (surround_obs__x3_y3' 
 							(true (0.2))
 							(false (0.8))))))))
-				(false (alive__x2_y3 
-					(true (alive__x3_y2 
+				(false (alive__x2_y3' 
+					(true (alive__x3_y2' 
 						(true (surround_obs__x3_y3' 
 							(true (0.8))
 							(false (0.2))))
@@ -4475,20 +4475,20 @@ action set__x1_y1
 					(false (1)))))))
 	observe 
 		surround_obs__x1_y1
-			(alive__x1_y2 
-				(true (alive__x2_y1 
+			(alive__x1_y2' 
+				(true (alive__x2_y1' 
 					(true (surround_obs__x1_y1' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x2_y2 
+					(false (alive__x2_y2' 
 						(true (surround_obs__x1_y1' 
 							(true (0.8))
 							(false (0.2))))
 						(false (surround_obs__x1_y1' 
 							(true (0.2))
 							(false (0.8))))))))
-				(false (alive__x2_y1 
-					(true (alive__x2_y2 
+				(false (alive__x2_y1' 
+					(true (alive__x2_y2' 
 						(true (surround_obs__x1_y1' 
 							(true (0.8))
 							(false (0.2))))
@@ -4499,56 +4499,56 @@ action set__x1_y1
 						(true (0.2))
 						(false (0.8)))))))
 		surround_obs__x1_y2
-			(alive__x1_y1 
-				(true (alive__x1_y3 
+			(alive__x1_y1' 
+				(true (alive__x1_y3' 
 					(true (surround_obs__x1_y2' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x2_y1 
+					(false (alive__x2_y1' 
 						(true (surround_obs__x1_y2' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x2_y2 
+						(false (alive__x2_y2' 
 							(true (surround_obs__x1_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x2_y3 
+							(false (alive__x2_y3' 
 								(true (surround_obs__x1_y2' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x1_y2' 
 									(true (0.2))
 									(false (0.8))))))))))))
-				(false (alive__x1_y3 
-					(true (alive__x2_y1 
+				(false (alive__x1_y3' 
+					(true (alive__x2_y1' 
 						(true (surround_obs__x1_y2' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x2_y2 
+						(false (alive__x2_y2' 
 							(true (surround_obs__x1_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x2_y3 
+							(false (alive__x2_y3' 
 								(true (surround_obs__x1_y2' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x1_y2' 
 									(true (0.2))
 									(false (0.8))))))))))
-					(false (alive__x2_y1 
-						(true (alive__x2_y2 
+					(false (alive__x2_y1' 
+						(true (alive__x2_y2' 
 							(true (surround_obs__x1_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x2_y3 
+							(false (alive__x2_y3' 
 								(true (surround_obs__x1_y2' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x1_y2' 
 									(true (0.2))
 									(false (0.8))))))))
-						(false (alive__x2_y2 
-							(true (alive__x2_y3 
+						(false (alive__x2_y2' 
+							(true (alive__x2_y3' 
 								(true (surround_obs__x1_y2' 
 									(true (0.8))
 									(false (0.2))))
@@ -4559,20 +4559,20 @@ action set__x1_y1
 								(true (0.2))
 								(false (0.8)))))))))))
 		surround_obs__x1_y3
-			(alive__x1_y2 
-				(true (alive__x2_y2 
+			(alive__x1_y2' 
+				(true (alive__x2_y2' 
 					(true (surround_obs__x1_y3' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x2_y3 
+					(false (alive__x2_y3' 
 						(true (surround_obs__x1_y3' 
 							(true (0.8))
 							(false (0.2))))
 						(false (surround_obs__x1_y3' 
 							(true (0.2))
 							(false (0.8))))))))
-				(false (alive__x2_y2 
-					(true (alive__x2_y3 
+				(false (alive__x2_y2' 
+					(true (alive__x2_y3' 
 						(true (surround_obs__x1_y3' 
 							(true (0.8))
 							(false (0.2))))
@@ -4583,56 +4583,56 @@ action set__x1_y1
 						(true (0.2))
 						(false (0.8)))))))
 		surround_obs__x2_y1
-			(alive__x1_y1 
-				(true (alive__x1_y2 
+			(alive__x1_y1' 
+				(true (alive__x1_y2' 
 					(true (surround_obs__x2_y1' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x2_y2 
+					(false (alive__x2_y2' 
 						(true (surround_obs__x2_y1' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x3_y1 
+						(false (alive__x3_y1' 
 							(true (surround_obs__x2_y1' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y2 
+							(false (alive__x3_y2' 
 								(true (surround_obs__x2_y1' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x2_y1' 
 									(true (0.2))
 									(false (0.8))))))))))))
-				(false (alive__x1_y2 
-					(true (alive__x2_y2 
+				(false (alive__x1_y2' 
+					(true (alive__x2_y2' 
 						(true (surround_obs__x2_y1' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x3_y1 
+						(false (alive__x3_y1' 
 							(true (surround_obs__x2_y1' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y2 
+							(false (alive__x3_y2' 
 								(true (surround_obs__x2_y1' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x2_y1' 
 									(true (0.2))
 									(false (0.8))))))))))
-					(false (alive__x2_y2 
-						(true (alive__x3_y1 
+					(false (alive__x2_y2' 
+						(true (alive__x3_y1' 
 							(true (surround_obs__x2_y1' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y2 
+							(false (alive__x3_y2' 
 								(true (surround_obs__x2_y1' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x2_y1' 
 									(true (0.2))
 									(false (0.8))))))))
-						(false (alive__x3_y1 
-							(true (alive__x3_y2 
+						(false (alive__x3_y1' 
+							(true (alive__x3_y2' 
 								(true (surround_obs__x2_y1' 
 									(true (0.8))
 									(false (0.2))))
@@ -4643,140 +4643,140 @@ action set__x1_y1
 								(true (0.2))
 								(false (0.8)))))))))))
 		surround_obs__x2_y2
-			(alive__x1_y1 
-				(true (alive__x1_y2 
+			(alive__x1_y1' 
+				(true (alive__x1_y2' 
 					(true (surround_obs__x2_y2' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x1_y3 
+					(false (alive__x1_y3' 
 						(true (surround_obs__x2_y2' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x2_y1 
+						(false (alive__x2_y1' 
 							(true (surround_obs__x2_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x2_y3 
+							(false (alive__x2_y3' 
 								(true (surround_obs__x2_y2' 
 									(true (0.8))
 									(false (0.2))))
-								(false (alive__x3_y1 
+								(false (alive__x3_y1' 
 									(true (surround_obs__x2_y2' 
 										(true (0.8))
 										(false (0.2))))
-									(false (alive__x3_y2 
+									(false (alive__x3_y2' 
 										(true (surround_obs__x2_y2' 
 											(true (0.8))
 											(false (0.2))))
-										(false (alive__x3_y3 
+										(false (alive__x3_y3' 
 											(true (surround_obs__x2_y2' 
 												(true (0.8))
 												(false (0.2))))
 											(false (surround_obs__x2_y2' 
 												(true (0.2))
 												(false (0.8))))))))))))))))))
-				(false (alive__x1_y2 
-					(true (alive__x1_y3 
+				(false (alive__x1_y2' 
+					(true (alive__x1_y3' 
 						(true (surround_obs__x2_y2' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x2_y1 
+						(false (alive__x2_y1' 
 							(true (surround_obs__x2_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x2_y3 
+							(false (alive__x2_y3' 
 								(true (surround_obs__x2_y2' 
 									(true (0.8))
 									(false (0.2))))
-								(false (alive__x3_y1 
+								(false (alive__x3_y1' 
 									(true (surround_obs__x2_y2' 
 										(true (0.8))
 										(false (0.2))))
-									(false (alive__x3_y2 
+									(false (alive__x3_y2' 
 										(true (surround_obs__x2_y2' 
 											(true (0.8))
 											(false (0.2))))
-										(false (alive__x3_y3 
+										(false (alive__x3_y3' 
 											(true (surround_obs__x2_y2' 
 												(true (0.8))
 												(false (0.2))))
 											(false (surround_obs__x2_y2' 
 												(true (0.2))
 												(false (0.8))))))))))))))))
-					(false (alive__x1_y3 
-						(true (alive__x2_y1 
+					(false (alive__x1_y3' 
+						(true (alive__x2_y1' 
 							(true (surround_obs__x2_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x2_y3 
+							(false (alive__x2_y3' 
 								(true (surround_obs__x2_y2' 
 									(true (0.8))
 									(false (0.2))))
-								(false (alive__x3_y1 
+								(false (alive__x3_y1' 
 									(true (surround_obs__x2_y2' 
 										(true (0.8))
 										(false (0.2))))
-									(false (alive__x3_y2 
+									(false (alive__x3_y2' 
 										(true (surround_obs__x2_y2' 
 											(true (0.8))
 											(false (0.2))))
-										(false (alive__x3_y3 
+										(false (alive__x3_y3' 
 											(true (surround_obs__x2_y2' 
 												(true (0.8))
 												(false (0.2))))
 											(false (surround_obs__x2_y2' 
 												(true (0.2))
 												(false (0.8))))))))))))))
-						(false (alive__x2_y1 
-							(true (alive__x2_y3 
+						(false (alive__x2_y1' 
+							(true (alive__x2_y3' 
 								(true (surround_obs__x2_y2' 
 									(true (0.8))
 									(false (0.2))))
-								(false (alive__x3_y1 
+								(false (alive__x3_y1' 
 									(true (surround_obs__x2_y2' 
 										(true (0.8))
 										(false (0.2))))
-									(false (alive__x3_y2 
+									(false (alive__x3_y2' 
 										(true (surround_obs__x2_y2' 
 											(true (0.8))
 											(false (0.2))))
-										(false (alive__x3_y3 
+										(false (alive__x3_y3' 
 											(true (surround_obs__x2_y2' 
 												(true (0.8))
 												(false (0.2))))
 											(false (surround_obs__x2_y2' 
 												(true (0.2))
 												(false (0.8))))))))))))
-							(false (alive__x2_y3 
-								(true (alive__x3_y1 
+							(false (alive__x2_y3' 
+								(true (alive__x3_y1' 
 									(true (surround_obs__x2_y2' 
 										(true (0.8))
 										(false (0.2))))
-									(false (alive__x3_y2 
+									(false (alive__x3_y2' 
 										(true (surround_obs__x2_y2' 
 											(true (0.8))
 											(false (0.2))))
-										(false (alive__x3_y3 
+										(false (alive__x3_y3' 
 											(true (surround_obs__x2_y2' 
 												(true (0.8))
 												(false (0.2))))
 											(false (surround_obs__x2_y2' 
 												(true (0.2))
 												(false (0.8))))))))))
-								(false (alive__x3_y1 
-									(true (alive__x3_y2 
+								(false (alive__x3_y1' 
+									(true (alive__x3_y2' 
 										(true (surround_obs__x2_y2' 
 											(true (0.8))
 											(false (0.2))))
-										(false (alive__x3_y3 
+										(false (alive__x3_y3' 
 											(true (surround_obs__x2_y2' 
 												(true (0.8))
 												(false (0.2))))
 											(false (surround_obs__x2_y2' 
 												(true (0.2))
 												(false (0.8))))))))
-									(false (alive__x3_y2 
-										(true (alive__x3_y3 
+									(false (alive__x3_y2' 
+										(true (alive__x3_y3' 
 											(true (surround_obs__x2_y2' 
 												(true (0.8))
 												(false (0.2))))
@@ -4787,56 +4787,56 @@ action set__x1_y1
 											(true (0.2))
 											(false (0.8)))))))))))))))))
 		surround_obs__x2_y3
-			(alive__x1_y2 
-				(true (alive__x1_y3 
+			(alive__x1_y2' 
+				(true (alive__x1_y3' 
 					(true (surround_obs__x2_y3' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x2_y2 
+					(false (alive__x2_y2' 
 						(true (surround_obs__x2_y3' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x3_y2 
+						(false (alive__x3_y2' 
 							(true (surround_obs__x2_y3' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y3 
+							(false (alive__x3_y3' 
 								(true (surround_obs__x2_y3' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x2_y3' 
 									(true (0.2))
 									(false (0.8))))))))))))
-				(false (alive__x1_y3 
-					(true (alive__x2_y2 
+				(false (alive__x1_y3' 
+					(true (alive__x2_y2' 
 						(true (surround_obs__x2_y3' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x3_y2 
+						(false (alive__x3_y2' 
 							(true (surround_obs__x2_y3' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y3 
+							(false (alive__x3_y3' 
 								(true (surround_obs__x2_y3' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x2_y3' 
 									(true (0.2))
 									(false (0.8))))))))))
-					(false (alive__x2_y2 
-						(true (alive__x3_y2 
+					(false (alive__x2_y2' 
+						(true (alive__x3_y2' 
 							(true (surround_obs__x2_y3' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y3 
+							(false (alive__x3_y3' 
 								(true (surround_obs__x2_y3' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x2_y3' 
 									(true (0.2))
 									(false (0.8))))))))
-						(false (alive__x3_y2 
-							(true (alive__x3_y3 
+						(false (alive__x3_y2' 
+							(true (alive__x3_y3' 
 								(true (surround_obs__x2_y3' 
 									(true (0.8))
 									(false (0.2))))
@@ -4847,20 +4847,20 @@ action set__x1_y1
 								(true (0.2))
 								(false (0.8)))))))))))
 		surround_obs__x3_y1
-			(alive__x2_y1 
-				(true (alive__x2_y2 
+			(alive__x2_y1' 
+				(true (alive__x2_y2' 
 					(true (surround_obs__x3_y1' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x3_y2 
+					(false (alive__x3_y2' 
 						(true (surround_obs__x3_y1' 
 							(true (0.8))
 							(false (0.2))))
 						(false (surround_obs__x3_y1' 
 							(true (0.2))
 							(false (0.8))))))))
-				(false (alive__x2_y2 
-					(true (alive__x3_y2 
+				(false (alive__x2_y2' 
+					(true (alive__x3_y2' 
 						(true (surround_obs__x3_y1' 
 							(true (0.8))
 							(false (0.2))))
@@ -4871,56 +4871,56 @@ action set__x1_y1
 						(true (0.2))
 						(false (0.8)))))))
 		surround_obs__x3_y2
-			(alive__x2_y1 
-				(true (alive__x2_y2 
+			(alive__x2_y1' 
+				(true (alive__x2_y2' 
 					(true (surround_obs__x3_y2' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x2_y3 
+					(false (alive__x2_y3' 
 						(true (surround_obs__x3_y2' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x3_y1 
+						(false (alive__x3_y1' 
 							(true (surround_obs__x3_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y3 
+							(false (alive__x3_y3' 
 								(true (surround_obs__x3_y2' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x3_y2' 
 									(true (0.2))
 									(false (0.8))))))))))))
-				(false (alive__x2_y2 
-					(true (alive__x2_y3 
+				(false (alive__x2_y2' 
+					(true (alive__x2_y3' 
 						(true (surround_obs__x3_y2' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x3_y1 
+						(false (alive__x3_y1' 
 							(true (surround_obs__x3_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y3 
+							(false (alive__x3_y3' 
 								(true (surround_obs__x3_y2' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x3_y2' 
 									(true (0.2))
 									(false (0.8))))))))))
-					(false (alive__x2_y3 
-						(true (alive__x3_y1 
+					(false (alive__x2_y3' 
+						(true (alive__x3_y1' 
 							(true (surround_obs__x3_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y3 
+							(false (alive__x3_y3' 
 								(true (surround_obs__x3_y2' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x3_y2' 
 									(true (0.2))
 									(false (0.8))))))))
-						(false (alive__x3_y1 
-							(true (alive__x3_y3 
+						(false (alive__x3_y1' 
+							(true (alive__x3_y3' 
 								(true (surround_obs__x3_y2' 
 									(true (0.8))
 									(false (0.2))))
@@ -4931,20 +4931,20 @@ action set__x1_y1
 								(true (0.2))
 								(false (0.8)))))))))))
 		surround_obs__x3_y3
-			(alive__x2_y2 
-				(true (alive__x2_y3 
+			(alive__x2_y2' 
+				(true (alive__x2_y3' 
 					(true (surround_obs__x3_y3' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x3_y2 
+					(false (alive__x3_y2' 
 						(true (surround_obs__x3_y3' 
 							(true (0.8))
 							(false (0.2))))
 						(false (surround_obs__x3_y3' 
 							(true (0.2))
 							(false (0.8))))))))
-				(false (alive__x2_y3 
-					(true (alive__x3_y2 
+				(false (alive__x2_y3' 
+					(true (alive__x3_y2' 
 						(true (surround_obs__x3_y3' 
 							(true (0.8))
 							(false (0.2))))
@@ -6762,20 +6762,20 @@ action set__x1_y2
 					(false (1)))))))
 	observe 
 		surround_obs__x1_y1
-			(alive__x1_y2 
-				(true (alive__x2_y1 
+			(alive__x1_y2' 
+				(true (alive__x2_y1' 
 					(true (surround_obs__x1_y1' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x2_y2 
+					(false (alive__x2_y2' 
 						(true (surround_obs__x1_y1' 
 							(true (0.8))
 							(false (0.2))))
 						(false (surround_obs__x1_y1' 
 							(true (0.2))
 							(false (0.8))))))))
-				(false (alive__x2_y1 
-					(true (alive__x2_y2 
+				(false (alive__x2_y1' 
+					(true (alive__x2_y2' 
 						(true (surround_obs__x1_y1' 
 							(true (0.8))
 							(false (0.2))))
@@ -6786,56 +6786,56 @@ action set__x1_y2
 						(true (0.2))
 						(false (0.8)))))))
 		surround_obs__x1_y2
-			(alive__x1_y1 
-				(true (alive__x1_y3 
+			(alive__x1_y1' 
+				(true (alive__x1_y3' 
 					(true (surround_obs__x1_y2' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x2_y1 
+					(false (alive__x2_y1' 
 						(true (surround_obs__x1_y2' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x2_y2 
+						(false (alive__x2_y2' 
 							(true (surround_obs__x1_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x2_y3 
+							(false (alive__x2_y3' 
 								(true (surround_obs__x1_y2' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x1_y2' 
 									(true (0.2))
 									(false (0.8))))))))))))
-				(false (alive__x1_y3 
-					(true (alive__x2_y1 
+				(false (alive__x1_y3' 
+					(true (alive__x2_y1' 
 						(true (surround_obs__x1_y2' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x2_y2 
+						(false (alive__x2_y2' 
 							(true (surround_obs__x1_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x2_y3 
+							(false (alive__x2_y3' 
 								(true (surround_obs__x1_y2' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x1_y2' 
 									(true (0.2))
 									(false (0.8))))))))))
-					(false (alive__x2_y1 
-						(true (alive__x2_y2 
+					(false (alive__x2_y1' 
+						(true (alive__x2_y2' 
 							(true (surround_obs__x1_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x2_y3 
+							(false (alive__x2_y3' 
 								(true (surround_obs__x1_y2' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x1_y2' 
 									(true (0.2))
 									(false (0.8))))))))
-						(false (alive__x2_y2 
-							(true (alive__x2_y3 
+						(false (alive__x2_y2' 
+							(true (alive__x2_y3' 
 								(true (surround_obs__x1_y2' 
 									(true (0.8))
 									(false (0.2))))
@@ -6846,20 +6846,20 @@ action set__x1_y2
 								(true (0.2))
 								(false (0.8)))))))))))
 		surround_obs__x1_y3
-			(alive__x1_y2 
-				(true (alive__x2_y2 
+			(alive__x1_y2' 
+				(true (alive__x2_y2' 
 					(true (surround_obs__x1_y3' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x2_y3 
+					(false (alive__x2_y3' 
 						(true (surround_obs__x1_y3' 
 							(true (0.8))
 							(false (0.2))))
 						(false (surround_obs__x1_y3' 
 							(true (0.2))
 							(false (0.8))))))))
-				(false (alive__x2_y2 
-					(true (alive__x2_y3 
+				(false (alive__x2_y2' 
+					(true (alive__x2_y3' 
 						(true (surround_obs__x1_y3' 
 							(true (0.8))
 							(false (0.2))))
@@ -6870,56 +6870,56 @@ action set__x1_y2
 						(true (0.2))
 						(false (0.8)))))))
 		surround_obs__x2_y1
-			(alive__x1_y1 
-				(true (alive__x1_y2 
+			(alive__x1_y1' 
+				(true (alive__x1_y2' 
 					(true (surround_obs__x2_y1' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x2_y2 
+					(false (alive__x2_y2' 
 						(true (surround_obs__x2_y1' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x3_y1 
+						(false (alive__x3_y1' 
 							(true (surround_obs__x2_y1' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y2 
+							(false (alive__x3_y2' 
 								(true (surround_obs__x2_y1' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x2_y1' 
 									(true (0.2))
 									(false (0.8))))))))))))
-				(false (alive__x1_y2 
-					(true (alive__x2_y2 
+				(false (alive__x1_y2' 
+					(true (alive__x2_y2' 
 						(true (surround_obs__x2_y1' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x3_y1 
+						(false (alive__x3_y1' 
 							(true (surround_obs__x2_y1' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y2 
+							(false (alive__x3_y2' 
 								(true (surround_obs__x2_y1' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x2_y1' 
 									(true (0.2))
 									(false (0.8))))))))))
-					(false (alive__x2_y2 
-						(true (alive__x3_y1 
+					(false (alive__x2_y2' 
+						(true (alive__x3_y1' 
 							(true (surround_obs__x2_y1' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y2 
+							(false (alive__x3_y2' 
 								(true (surround_obs__x2_y1' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x2_y1' 
 									(true (0.2))
 									(false (0.8))))))))
-						(false (alive__x3_y1 
-							(true (alive__x3_y2 
+						(false (alive__x3_y1' 
+							(true (alive__x3_y2' 
 								(true (surround_obs__x2_y1' 
 									(true (0.8))
 									(false (0.2))))
@@ -6930,140 +6930,140 @@ action set__x1_y2
 								(true (0.2))
 								(false (0.8)))))))))))
 		surround_obs__x2_y2
-			(alive__x1_y1 
-				(true (alive__x1_y2 
+			(alive__x1_y1' 
+				(true (alive__x1_y2' 
 					(true (surround_obs__x2_y2' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x1_y3 
+					(false (alive__x1_y3' 
 						(true (surround_obs__x2_y2' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x2_y1 
+						(false (alive__x2_y1' 
 							(true (surround_obs__x2_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x2_y3 
+							(false (alive__x2_y3' 
 								(true (surround_obs__x2_y2' 
 									(true (0.8))
 									(false (0.2))))
-								(false (alive__x3_y1 
+								(false (alive__x3_y1' 
 									(true (surround_obs__x2_y2' 
 										(true (0.8))
 										(false (0.2))))
-									(false (alive__x3_y2 
+									(false (alive__x3_y2' 
 										(true (surround_obs__x2_y2' 
 											(true (0.8))
 											(false (0.2))))
-										(false (alive__x3_y3 
+										(false (alive__x3_y3' 
 											(true (surround_obs__x2_y2' 
 												(true (0.8))
 												(false (0.2))))
 											(false (surround_obs__x2_y2' 
 												(true (0.2))
 												(false (0.8))))))))))))))))))
-				(false (alive__x1_y2 
-					(true (alive__x1_y3 
+				(false (alive__x1_y2' 
+					(true (alive__x1_y3' 
 						(true (surround_obs__x2_y2' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x2_y1 
+						(false (alive__x2_y1' 
 							(true (surround_obs__x2_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x2_y3 
+							(false (alive__x2_y3' 
 								(true (surround_obs__x2_y2' 
 									(true (0.8))
 									(false (0.2))))
-								(false (alive__x3_y1 
+								(false (alive__x3_y1' 
 									(true (surround_obs__x2_y2' 
 										(true (0.8))
 										(false (0.2))))
-									(false (alive__x3_y2 
+									(false (alive__x3_y2' 
 										(true (surround_obs__x2_y2' 
 											(true (0.8))
 											(false (0.2))))
-										(false (alive__x3_y3 
+										(false (alive__x3_y3' 
 											(true (surround_obs__x2_y2' 
 												(true (0.8))
 												(false (0.2))))
 											(false (surround_obs__x2_y2' 
 												(true (0.2))
 												(false (0.8))))))))))))))))
-					(false (alive__x1_y3 
-						(true (alive__x2_y1 
+					(false (alive__x1_y3' 
+						(true (alive__x2_y1' 
 							(true (surround_obs__x2_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x2_y3 
+							(false (alive__x2_y3' 
 								(true (surround_obs__x2_y2' 
 									(true (0.8))
 									(false (0.2))))
-								(false (alive__x3_y1 
+								(false (alive__x3_y1' 
 									(true (surround_obs__x2_y2' 
 										(true (0.8))
 										(false (0.2))))
-									(false (alive__x3_y2 
+									(false (alive__x3_y2' 
 										(true (surround_obs__x2_y2' 
 											(true (0.8))
 											(false (0.2))))
-										(false (alive__x3_y3 
+										(false (alive__x3_y3' 
 											(true (surround_obs__x2_y2' 
 												(true (0.8))
 												(false (0.2))))
 											(false (surround_obs__x2_y2' 
 												(true (0.2))
 												(false (0.8))))))))))))))
-						(false (alive__x2_y1 
-							(true (alive__x2_y3 
+						(false (alive__x2_y1' 
+							(true (alive__x2_y3' 
 								(true (surround_obs__x2_y2' 
 									(true (0.8))
 									(false (0.2))))
-								(false (alive__x3_y1 
+								(false (alive__x3_y1' 
 									(true (surround_obs__x2_y2' 
 										(true (0.8))
 										(false (0.2))))
-									(false (alive__x3_y2 
+									(false (alive__x3_y2' 
 										(true (surround_obs__x2_y2' 
 											(true (0.8))
 											(false (0.2))))
-										(false (alive__x3_y3 
+										(false (alive__x3_y3' 
 											(true (surround_obs__x2_y2' 
 												(true (0.8))
 												(false (0.2))))
 											(false (surround_obs__x2_y2' 
 												(true (0.2))
 												(false (0.8))))))))))))
-							(false (alive__x2_y3 
-								(true (alive__x3_y1 
+							(false (alive__x2_y3' 
+								(true (alive__x3_y1' 
 									(true (surround_obs__x2_y2' 
 										(true (0.8))
 										(false (0.2))))
-									(false (alive__x3_y2 
+									(false (alive__x3_y2' 
 										(true (surround_obs__x2_y2' 
 											(true (0.8))
 											(false (0.2))))
-										(false (alive__x3_y3 
+										(false (alive__x3_y3' 
 											(true (surround_obs__x2_y2' 
 												(true (0.8))
 												(false (0.2))))
 											(false (surround_obs__x2_y2' 
 												(true (0.2))
 												(false (0.8))))))))))
-								(false (alive__x3_y1 
-									(true (alive__x3_y2 
+								(false (alive__x3_y1' 
+									(true (alive__x3_y2' 
 										(true (surround_obs__x2_y2' 
 											(true (0.8))
 											(false (0.2))))
-										(false (alive__x3_y3 
+										(false (alive__x3_y3' 
 											(true (surround_obs__x2_y2' 
 												(true (0.8))
 												(false (0.2))))
 											(false (surround_obs__x2_y2' 
 												(true (0.2))
 												(false (0.8))))))))
-									(false (alive__x3_y2 
-										(true (alive__x3_y3 
+									(false (alive__x3_y2' 
+										(true (alive__x3_y3' 
 											(true (surround_obs__x2_y2' 
 												(true (0.8))
 												(false (0.2))))
@@ -7074,56 +7074,56 @@ action set__x1_y2
 											(true (0.2))
 											(false (0.8)))))))))))))))))
 		surround_obs__x2_y3
-			(alive__x1_y2 
-				(true (alive__x1_y3 
+			(alive__x1_y2' 
+				(true (alive__x1_y3' 
 					(true (surround_obs__x2_y3' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x2_y2 
+					(false (alive__x2_y2' 
 						(true (surround_obs__x2_y3' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x3_y2 
+						(false (alive__x3_y2' 
 							(true (surround_obs__x2_y3' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y3 
+							(false (alive__x3_y3' 
 								(true (surround_obs__x2_y3' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x2_y3' 
 									(true (0.2))
 									(false (0.8))))))))))))
-				(false (alive__x1_y3 
-					(true (alive__x2_y2 
+				(false (alive__x1_y3' 
+					(true (alive__x2_y2' 
 						(true (surround_obs__x2_y3' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x3_y2 
+						(false (alive__x3_y2' 
 							(true (surround_obs__x2_y3' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y3 
+							(false (alive__x3_y3' 
 								(true (surround_obs__x2_y3' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x2_y3' 
 									(true (0.2))
 									(false (0.8))))))))))
-					(false (alive__x2_y2 
-						(true (alive__x3_y2 
+					(false (alive__x2_y2' 
+						(true (alive__x3_y2' 
 							(true (surround_obs__x2_y3' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y3 
+							(false (alive__x3_y3' 
 								(true (surround_obs__x2_y3' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x2_y3' 
 									(true (0.2))
 									(false (0.8))))))))
-						(false (alive__x3_y2 
-							(true (alive__x3_y3 
+						(false (alive__x3_y2' 
+							(true (alive__x3_y3' 
 								(true (surround_obs__x2_y3' 
 									(true (0.8))
 									(false (0.2))))
@@ -7134,20 +7134,20 @@ action set__x1_y2
 								(true (0.2))
 								(false (0.8)))))))))))
 		surround_obs__x3_y1
-			(alive__x2_y1 
-				(true (alive__x2_y2 
+			(alive__x2_y1' 
+				(true (alive__x2_y2' 
 					(true (surround_obs__x3_y1' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x3_y2 
+					(false (alive__x3_y2' 
 						(true (surround_obs__x3_y1' 
 							(true (0.8))
 							(false (0.2))))
 						(false (surround_obs__x3_y1' 
 							(true (0.2))
 							(false (0.8))))))))
-				(false (alive__x2_y2 
-					(true (alive__x3_y2 
+				(false (alive__x2_y2' 
+					(true (alive__x3_y2' 
 						(true (surround_obs__x3_y1' 
 							(true (0.8))
 							(false (0.2))))
@@ -7158,56 +7158,56 @@ action set__x1_y2
 						(true (0.2))
 						(false (0.8)))))))
 		surround_obs__x3_y2
-			(alive__x2_y1 
-				(true (alive__x2_y2 
+			(alive__x2_y1' 
+				(true (alive__x2_y2' 
 					(true (surround_obs__x3_y2' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x2_y3 
+					(false (alive__x2_y3' 
 						(true (surround_obs__x3_y2' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x3_y1 
+						(false (alive__x3_y1' 
 							(true (surround_obs__x3_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y3 
+							(false (alive__x3_y3' 
 								(true (surround_obs__x3_y2' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x3_y2' 
 									(true (0.2))
 									(false (0.8))))))))))))
-				(false (alive__x2_y2 
-					(true (alive__x2_y3 
+				(false (alive__x2_y2' 
+					(true (alive__x2_y3' 
 						(true (surround_obs__x3_y2' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x3_y1 
+						(false (alive__x3_y1' 
 							(true (surround_obs__x3_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y3 
+							(false (alive__x3_y3' 
 								(true (surround_obs__x3_y2' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x3_y2' 
 									(true (0.2))
 									(false (0.8))))))))))
-					(false (alive__x2_y3 
-						(true (alive__x3_y1 
+					(false (alive__x2_y3' 
+						(true (alive__x3_y1' 
 							(true (surround_obs__x3_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y3 
+							(false (alive__x3_y3' 
 								(true (surround_obs__x3_y2' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x3_y2' 
 									(true (0.2))
 									(false (0.8))))))))
-						(false (alive__x3_y1 
-							(true (alive__x3_y3 
+						(false (alive__x3_y1' 
+							(true (alive__x3_y3' 
 								(true (surround_obs__x3_y2' 
 									(true (0.8))
 									(false (0.2))))
@@ -7218,20 +7218,20 @@ action set__x1_y2
 								(true (0.2))
 								(false (0.8)))))))))))
 		surround_obs__x3_y3
-			(alive__x2_y2 
-				(true (alive__x2_y3 
+			(alive__x2_y2' 
+				(true (alive__x2_y3' 
 					(true (surround_obs__x3_y3' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x3_y2 
+					(false (alive__x3_y2' 
 						(true (surround_obs__x3_y3' 
 							(true (0.8))
 							(false (0.2))))
 						(false (surround_obs__x3_y3' 
 							(true (0.2))
 							(false (0.8))))))))
-				(false (alive__x2_y3 
-					(true (alive__x3_y2 
+				(false (alive__x2_y3' 
+					(true (alive__x3_y2' 
 						(true (surround_obs__x3_y3' 
 							(true (0.8))
 							(false (0.2))))
@@ -9205,20 +9205,20 @@ action set__x1_y3
 					(false (1)))))))
 	observe 
 		surround_obs__x1_y1
-			(alive__x1_y2 
-				(true (alive__x2_y1 
+			(alive__x1_y2' 
+				(true (alive__x2_y1' 
 					(true (surround_obs__x1_y1' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x2_y2 
+					(false (alive__x2_y2' 
 						(true (surround_obs__x1_y1' 
 							(true (0.8))
 							(false (0.2))))
 						(false (surround_obs__x1_y1' 
 							(true (0.2))
 							(false (0.8))))))))
-				(false (alive__x2_y1 
-					(true (alive__x2_y2 
+				(false (alive__x2_y1' 
+					(true (alive__x2_y2' 
 						(true (surround_obs__x1_y1' 
 							(true (0.8))
 							(false (0.2))))
@@ -9229,56 +9229,56 @@ action set__x1_y3
 						(true (0.2))
 						(false (0.8)))))))
 		surround_obs__x1_y2
-			(alive__x1_y1 
-				(true (alive__x1_y3 
+			(alive__x1_y1' 
+				(true (alive__x1_y3' 
 					(true (surround_obs__x1_y2' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x2_y1 
+					(false (alive__x2_y1' 
 						(true (surround_obs__x1_y2' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x2_y2 
+						(false (alive__x2_y2' 
 							(true (surround_obs__x1_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x2_y3 
+							(false (alive__x2_y3' 
 								(true (surround_obs__x1_y2' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x1_y2' 
 									(true (0.2))
 									(false (0.8))))))))))))
-				(false (alive__x1_y3 
-					(true (alive__x2_y1 
+				(false (alive__x1_y3' 
+					(true (alive__x2_y1' 
 						(true (surround_obs__x1_y2' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x2_y2 
+						(false (alive__x2_y2' 
 							(true (surround_obs__x1_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x2_y3 
+							(false (alive__x2_y3' 
 								(true (surround_obs__x1_y2' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x1_y2' 
 									(true (0.2))
 									(false (0.8))))))))))
-					(false (alive__x2_y1 
-						(true (alive__x2_y2 
+					(false (alive__x2_y1' 
+						(true (alive__x2_y2' 
 							(true (surround_obs__x1_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x2_y3 
+							(false (alive__x2_y3' 
 								(true (surround_obs__x1_y2' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x1_y2' 
 									(true (0.2))
 									(false (0.8))))))))
-						(false (alive__x2_y2 
-							(true (alive__x2_y3 
+						(false (alive__x2_y2' 
+							(true (alive__x2_y3' 
 								(true (surround_obs__x1_y2' 
 									(true (0.8))
 									(false (0.2))))
@@ -9289,20 +9289,20 @@ action set__x1_y3
 								(true (0.2))
 								(false (0.8)))))))))))
 		surround_obs__x1_y3
-			(alive__x1_y2 
-				(true (alive__x2_y2 
+			(alive__x1_y2' 
+				(true (alive__x2_y2' 
 					(true (surround_obs__x1_y3' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x2_y3 
+					(false (alive__x2_y3' 
 						(true (surround_obs__x1_y3' 
 							(true (0.8))
 							(false (0.2))))
 						(false (surround_obs__x1_y3' 
 							(true (0.2))
 							(false (0.8))))))))
-				(false (alive__x2_y2 
-					(true (alive__x2_y3 
+				(false (alive__x2_y2' 
+					(true (alive__x2_y3' 
 						(true (surround_obs__x1_y3' 
 							(true (0.8))
 							(false (0.2))))
@@ -9313,56 +9313,56 @@ action set__x1_y3
 						(true (0.2))
 						(false (0.8)))))))
 		surround_obs__x2_y1
-			(alive__x1_y1 
-				(true (alive__x1_y2 
+			(alive__x1_y1' 
+				(true (alive__x1_y2' 
 					(true (surround_obs__x2_y1' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x2_y2 
+					(false (alive__x2_y2' 
 						(true (surround_obs__x2_y1' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x3_y1 
+						(false (alive__x3_y1' 
 							(true (surround_obs__x2_y1' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y2 
+							(false (alive__x3_y2' 
 								(true (surround_obs__x2_y1' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x2_y1' 
 									(true (0.2))
 									(false (0.8))))))))))))
-				(false (alive__x1_y2 
-					(true (alive__x2_y2 
+				(false (alive__x1_y2' 
+					(true (alive__x2_y2' 
 						(true (surround_obs__x2_y1' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x3_y1 
+						(false (alive__x3_y1' 
 							(true (surround_obs__x2_y1' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y2 
+							(false (alive__x3_y2' 
 								(true (surround_obs__x2_y1' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x2_y1' 
 									(true (0.2))
 									(false (0.8))))))))))
-					(false (alive__x2_y2 
-						(true (alive__x3_y1 
+					(false (alive__x2_y2' 
+						(true (alive__x3_y1' 
 							(true (surround_obs__x2_y1' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y2 
+							(false (alive__x3_y2' 
 								(true (surround_obs__x2_y1' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x2_y1' 
 									(true (0.2))
 									(false (0.8))))))))
-						(false (alive__x3_y1 
-							(true (alive__x3_y2 
+						(false (alive__x3_y1' 
+							(true (alive__x3_y2' 
 								(true (surround_obs__x2_y1' 
 									(true (0.8))
 									(false (0.2))))
@@ -9373,140 +9373,140 @@ action set__x1_y3
 								(true (0.2))
 								(false (0.8)))))))))))
 		surround_obs__x2_y2
-			(alive__x1_y1 
-				(true (alive__x1_y2 
+			(alive__x1_y1' 
+				(true (alive__x1_y2' 
 					(true (surround_obs__x2_y2' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x1_y3 
+					(false (alive__x1_y3' 
 						(true (surround_obs__x2_y2' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x2_y1 
+						(false (alive__x2_y1' 
 							(true (surround_obs__x2_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x2_y3 
+							(false (alive__x2_y3' 
 								(true (surround_obs__x2_y2' 
 									(true (0.8))
 									(false (0.2))))
-								(false (alive__x3_y1 
+								(false (alive__x3_y1' 
 									(true (surround_obs__x2_y2' 
 										(true (0.8))
 										(false (0.2))))
-									(false (alive__x3_y2 
+									(false (alive__x3_y2' 
 										(true (surround_obs__x2_y2' 
 											(true (0.8))
 											(false (0.2))))
-										(false (alive__x3_y3 
+										(false (alive__x3_y3' 
 											(true (surround_obs__x2_y2' 
 												(true (0.8))
 												(false (0.2))))
 											(false (surround_obs__x2_y2' 
 												(true (0.2))
 												(false (0.8))))))))))))))))))
-				(false (alive__x1_y2 
-					(true (alive__x1_y3 
+				(false (alive__x1_y2' 
+					(true (alive__x1_y3' 
 						(true (surround_obs__x2_y2' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x2_y1 
+						(false (alive__x2_y1' 
 							(true (surround_obs__x2_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x2_y3 
+							(false (alive__x2_y3' 
 								(true (surround_obs__x2_y2' 
 									(true (0.8))
 									(false (0.2))))
-								(false (alive__x3_y1 
+								(false (alive__x3_y1' 
 									(true (surround_obs__x2_y2' 
 										(true (0.8))
 										(false (0.2))))
-									(false (alive__x3_y2 
+									(false (alive__x3_y2' 
 										(true (surround_obs__x2_y2' 
 											(true (0.8))
 											(false (0.2))))
-										(false (alive__x3_y3 
+										(false (alive__x3_y3' 
 											(true (surround_obs__x2_y2' 
 												(true (0.8))
 												(false (0.2))))
 											(false (surround_obs__x2_y2' 
 												(true (0.2))
 												(false (0.8))))))))))))))))
-					(false (alive__x1_y3 
-						(true (alive__x2_y1 
+					(false (alive__x1_y3' 
+						(true (alive__x2_y1' 
 							(true (surround_obs__x2_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x2_y3 
+							(false (alive__x2_y3' 
 								(true (surround_obs__x2_y2' 
 									(true (0.8))
 									(false (0.2))))
-								(false (alive__x3_y1 
+								(false (alive__x3_y1' 
 									(true (surround_obs__x2_y2' 
 										(true (0.8))
 										(false (0.2))))
-									(false (alive__x3_y2 
+									(false (alive__x3_y2' 
 										(true (surround_obs__x2_y2' 
 											(true (0.8))
 											(false (0.2))))
-										(false (alive__x3_y3 
+										(false (alive__x3_y3' 
 											(true (surround_obs__x2_y2' 
 												(true (0.8))
 												(false (0.2))))
 											(false (surround_obs__x2_y2' 
 												(true (0.2))
 												(false (0.8))))))))))))))
-						(false (alive__x2_y1 
-							(true (alive__x2_y3 
+						(false (alive__x2_y1' 
+							(true (alive__x2_y3' 
 								(true (surround_obs__x2_y2' 
 									(true (0.8))
 									(false (0.2))))
-								(false (alive__x3_y1 
+								(false (alive__x3_y1' 
 									(true (surround_obs__x2_y2' 
 										(true (0.8))
 										(false (0.2))))
-									(false (alive__x3_y2 
+									(false (alive__x3_y2' 
 										(true (surround_obs__x2_y2' 
 											(true (0.8))
 											(false (0.2))))
-										(false (alive__x3_y3 
+										(false (alive__x3_y3' 
 											(true (surround_obs__x2_y2' 
 												(true (0.8))
 												(false (0.2))))
 											(false (surround_obs__x2_y2' 
 												(true (0.2))
 												(false (0.8))))))))))))
-							(false (alive__x2_y3 
-								(true (alive__x3_y1 
+							(false (alive__x2_y3' 
+								(true (alive__x3_y1' 
 									(true (surround_obs__x2_y2' 
 										(true (0.8))
 										(false (0.2))))
-									(false (alive__x3_y2 
+									(false (alive__x3_y2' 
 										(true (surround_obs__x2_y2' 
 											(true (0.8))
 											(false (0.2))))
-										(false (alive__x3_y3 
+										(false (alive__x3_y3' 
 											(true (surround_obs__x2_y2' 
 												(true (0.8))
 												(false (0.2))))
 											(false (surround_obs__x2_y2' 
 												(true (0.2))
 												(false (0.8))))))))))
-								(false (alive__x3_y1 
-									(true (alive__x3_y2 
+								(false (alive__x3_y1' 
+									(true (alive__x3_y2' 
 										(true (surround_obs__x2_y2' 
 											(true (0.8))
 											(false (0.2))))
-										(false (alive__x3_y3 
+										(false (alive__x3_y3' 
 											(true (surround_obs__x2_y2' 
 												(true (0.8))
 												(false (0.2))))
 											(false (surround_obs__x2_y2' 
 												(true (0.2))
 												(false (0.8))))))))
-									(false (alive__x3_y2 
-										(true (alive__x3_y3 
+									(false (alive__x3_y2' 
+										(true (alive__x3_y3' 
 											(true (surround_obs__x2_y2' 
 												(true (0.8))
 												(false (0.2))))
@@ -9517,56 +9517,56 @@ action set__x1_y3
 											(true (0.2))
 											(false (0.8)))))))))))))))))
 		surround_obs__x2_y3
-			(alive__x1_y2 
-				(true (alive__x1_y3 
+			(alive__x1_y2' 
+				(true (alive__x1_y3' 
 					(true (surround_obs__x2_y3' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x2_y2 
+					(false (alive__x2_y2' 
 						(true (surround_obs__x2_y3' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x3_y2 
+						(false (alive__x3_y2' 
 							(true (surround_obs__x2_y3' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y3 
+							(false (alive__x3_y3' 
 								(true (surround_obs__x2_y3' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x2_y3' 
 									(true (0.2))
 									(false (0.8))))))))))))
-				(false (alive__x1_y3 
-					(true (alive__x2_y2 
+				(false (alive__x1_y3' 
+					(true (alive__x2_y2' 
 						(true (surround_obs__x2_y3' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x3_y2 
+						(false (alive__x3_y2' 
 							(true (surround_obs__x2_y3' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y3 
+							(false (alive__x3_y3' 
 								(true (surround_obs__x2_y3' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x2_y3' 
 									(true (0.2))
 									(false (0.8))))))))))
-					(false (alive__x2_y2 
-						(true (alive__x3_y2 
+					(false (alive__x2_y2' 
+						(true (alive__x3_y2' 
 							(true (surround_obs__x2_y3' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y3 
+							(false (alive__x3_y3' 
 								(true (surround_obs__x2_y3' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x2_y3' 
 									(true (0.2))
 									(false (0.8))))))))
-						(false (alive__x3_y2 
-							(true (alive__x3_y3 
+						(false (alive__x3_y2' 
+							(true (alive__x3_y3' 
 								(true (surround_obs__x2_y3' 
 									(true (0.8))
 									(false (0.2))))
@@ -9577,20 +9577,20 @@ action set__x1_y3
 								(true (0.2))
 								(false (0.8)))))))))))
 		surround_obs__x3_y1
-			(alive__x2_y1 
-				(true (alive__x2_y2 
+			(alive__x2_y1' 
+				(true (alive__x2_y2' 
 					(true (surround_obs__x3_y1' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x3_y2 
+					(false (alive__x3_y2' 
 						(true (surround_obs__x3_y1' 
 							(true (0.8))
 							(false (0.2))))
 						(false (surround_obs__x3_y1' 
 							(true (0.2))
 							(false (0.8))))))))
-				(false (alive__x2_y2 
-					(true (alive__x3_y2 
+				(false (alive__x2_y2' 
+					(true (alive__x3_y2' 
 						(true (surround_obs__x3_y1' 
 							(true (0.8))
 							(false (0.2))))
@@ -9601,56 +9601,56 @@ action set__x1_y3
 						(true (0.2))
 						(false (0.8)))))))
 		surround_obs__x3_y2
-			(alive__x2_y1 
-				(true (alive__x2_y2 
+			(alive__x2_y1' 
+				(true (alive__x2_y2' 
 					(true (surround_obs__x3_y2' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x2_y3 
+					(false (alive__x2_y3' 
 						(true (surround_obs__x3_y2' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x3_y1 
+						(false (alive__x3_y1' 
 							(true (surround_obs__x3_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y3 
+							(false (alive__x3_y3' 
 								(true (surround_obs__x3_y2' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x3_y2' 
 									(true (0.2))
 									(false (0.8))))))))))))
-				(false (alive__x2_y2 
-					(true (alive__x2_y3 
+				(false (alive__x2_y2' 
+					(true (alive__x2_y3' 
 						(true (surround_obs__x3_y2' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x3_y1 
+						(false (alive__x3_y1' 
 							(true (surround_obs__x3_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y3 
+							(false (alive__x3_y3' 
 								(true (surround_obs__x3_y2' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x3_y2' 
 									(true (0.2))
 									(false (0.8))))))))))
-					(false (alive__x2_y3 
-						(true (alive__x3_y1 
+					(false (alive__x2_y3' 
+						(true (alive__x3_y1' 
 							(true (surround_obs__x3_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y3 
+							(false (alive__x3_y3' 
 								(true (surround_obs__x3_y2' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x3_y2' 
 									(true (0.2))
 									(false (0.8))))))))
-						(false (alive__x3_y1 
-							(true (alive__x3_y3 
+						(false (alive__x3_y1' 
+							(true (alive__x3_y3' 
 								(true (surround_obs__x3_y2' 
 									(true (0.8))
 									(false (0.2))))
@@ -9661,20 +9661,20 @@ action set__x1_y3
 								(true (0.2))
 								(false (0.8)))))))))))
 		surround_obs__x3_y3
-			(alive__x2_y2 
-				(true (alive__x2_y3 
+			(alive__x2_y2' 
+				(true (alive__x2_y3' 
 					(true (surround_obs__x3_y3' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x3_y2 
+					(false (alive__x3_y2' 
 						(true (surround_obs__x3_y3' 
 							(true (0.8))
 							(false (0.2))))
 						(false (surround_obs__x3_y3' 
 							(true (0.2))
 							(false (0.8))))))))
-				(false (alive__x2_y3 
-					(true (alive__x3_y2 
+				(false (alive__x2_y3' 
+					(true (alive__x3_y2' 
 						(true (surround_obs__x3_y3' 
 							(true (0.8))
 							(false (0.2))))
@@ -11492,20 +11492,20 @@ action set__x2_y1
 					(false (1)))))))
 	observe 
 		surround_obs__x1_y1
-			(alive__x1_y2 
-				(true (alive__x2_y1 
+			(alive__x1_y2' 
+				(true (alive__x2_y1' 
 					(true (surround_obs__x1_y1' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x2_y2 
+					(false (alive__x2_y2' 
 						(true (surround_obs__x1_y1' 
 							(true (0.8))
 							(false (0.2))))
 						(false (surround_obs__x1_y1' 
 							(true (0.2))
 							(false (0.8))))))))
-				(false (alive__x2_y1 
-					(true (alive__x2_y2 
+				(false (alive__x2_y1' 
+					(true (alive__x2_y2' 
 						(true (surround_obs__x1_y1' 
 							(true (0.8))
 							(false (0.2))))
@@ -11516,56 +11516,56 @@ action set__x2_y1
 						(true (0.2))
 						(false (0.8)))))))
 		surround_obs__x1_y2
-			(alive__x1_y1 
-				(true (alive__x1_y3 
+			(alive__x1_y1' 
+				(true (alive__x1_y3' 
 					(true (surround_obs__x1_y2' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x2_y1 
+					(false (alive__x2_y1' 
 						(true (surround_obs__x1_y2' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x2_y2 
+						(false (alive__x2_y2' 
 							(true (surround_obs__x1_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x2_y3 
+							(false (alive__x2_y3' 
 								(true (surround_obs__x1_y2' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x1_y2' 
 									(true (0.2))
 									(false (0.8))))))))))))
-				(false (alive__x1_y3 
-					(true (alive__x2_y1 
+				(false (alive__x1_y3' 
+					(true (alive__x2_y1' 
 						(true (surround_obs__x1_y2' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x2_y2 
+						(false (alive__x2_y2' 
 							(true (surround_obs__x1_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x2_y3 
+							(false (alive__x2_y3' 
 								(true (surround_obs__x1_y2' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x1_y2' 
 									(true (0.2))
 									(false (0.8))))))))))
-					(false (alive__x2_y1 
-						(true (alive__x2_y2 
+					(false (alive__x2_y1' 
+						(true (alive__x2_y2' 
 							(true (surround_obs__x1_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x2_y3 
+							(false (alive__x2_y3' 
 								(true (surround_obs__x1_y2' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x1_y2' 
 									(true (0.2))
 									(false (0.8))))))))
-						(false (alive__x2_y2 
-							(true (alive__x2_y3 
+						(false (alive__x2_y2' 
+							(true (alive__x2_y3' 
 								(true (surround_obs__x1_y2' 
 									(true (0.8))
 									(false (0.2))))
@@ -11576,20 +11576,20 @@ action set__x2_y1
 								(true (0.2))
 								(false (0.8)))))))))))
 		surround_obs__x1_y3
-			(alive__x1_y2 
-				(true (alive__x2_y2 
+			(alive__x1_y2' 
+				(true (alive__x2_y2' 
 					(true (surround_obs__x1_y3' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x2_y3 
+					(false (alive__x2_y3' 
 						(true (surround_obs__x1_y3' 
 							(true (0.8))
 							(false (0.2))))
 						(false (surround_obs__x1_y3' 
 							(true (0.2))
 							(false (0.8))))))))
-				(false (alive__x2_y2 
-					(true (alive__x2_y3 
+				(false (alive__x2_y2' 
+					(true (alive__x2_y3' 
 						(true (surround_obs__x1_y3' 
 							(true (0.8))
 							(false (0.2))))
@@ -11600,56 +11600,56 @@ action set__x2_y1
 						(true (0.2))
 						(false (0.8)))))))
 		surround_obs__x2_y1
-			(alive__x1_y1 
-				(true (alive__x1_y2 
+			(alive__x1_y1' 
+				(true (alive__x1_y2' 
 					(true (surround_obs__x2_y1' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x2_y2 
+					(false (alive__x2_y2' 
 						(true (surround_obs__x2_y1' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x3_y1 
+						(false (alive__x3_y1' 
 							(true (surround_obs__x2_y1' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y2 
+							(false (alive__x3_y2' 
 								(true (surround_obs__x2_y1' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x2_y1' 
 									(true (0.2))
 									(false (0.8))))))))))))
-				(false (alive__x1_y2 
-					(true (alive__x2_y2 
+				(false (alive__x1_y2' 
+					(true (alive__x2_y2' 
 						(true (surround_obs__x2_y1' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x3_y1 
+						(false (alive__x3_y1' 
 							(true (surround_obs__x2_y1' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y2 
+							(false (alive__x3_y2' 
 								(true (surround_obs__x2_y1' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x2_y1' 
 									(true (0.2))
 									(false (0.8))))))))))
-					(false (alive__x2_y2 
-						(true (alive__x3_y1 
+					(false (alive__x2_y2' 
+						(true (alive__x3_y1' 
 							(true (surround_obs__x2_y1' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y2 
+							(false (alive__x3_y2' 
 								(true (surround_obs__x2_y1' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x2_y1' 
 									(true (0.2))
 									(false (0.8))))))))
-						(false (alive__x3_y1 
-							(true (alive__x3_y2 
+						(false (alive__x3_y1' 
+							(true (alive__x3_y2' 
 								(true (surround_obs__x2_y1' 
 									(true (0.8))
 									(false (0.2))))
@@ -11660,140 +11660,140 @@ action set__x2_y1
 								(true (0.2))
 								(false (0.8)))))))))))
 		surround_obs__x2_y2
-			(alive__x1_y1 
-				(true (alive__x1_y2 
+			(alive__x1_y1' 
+				(true (alive__x1_y2' 
 					(true (surround_obs__x2_y2' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x1_y3 
+					(false (alive__x1_y3' 
 						(true (surround_obs__x2_y2' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x2_y1 
+						(false (alive__x2_y1' 
 							(true (surround_obs__x2_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x2_y3 
+							(false (alive__x2_y3' 
 								(true (surround_obs__x2_y2' 
 									(true (0.8))
 									(false (0.2))))
-								(false (alive__x3_y1 
+								(false (alive__x3_y1' 
 									(true (surround_obs__x2_y2' 
 										(true (0.8))
 										(false (0.2))))
-									(false (alive__x3_y2 
+									(false (alive__x3_y2' 
 										(true (surround_obs__x2_y2' 
 											(true (0.8))
 											(false (0.2))))
-										(false (alive__x3_y3 
+										(false (alive__x3_y3' 
 											(true (surround_obs__x2_y2' 
 												(true (0.8))
 												(false (0.2))))
 											(false (surround_obs__x2_y2' 
 												(true (0.2))
 												(false (0.8))))))))))))))))))
-				(false (alive__x1_y2 
-					(true (alive__x1_y3 
+				(false (alive__x1_y2' 
+					(true (alive__x1_y3' 
 						(true (surround_obs__x2_y2' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x2_y1 
+						(false (alive__x2_y1' 
 							(true (surround_obs__x2_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x2_y3 
+							(false (alive__x2_y3' 
 								(true (surround_obs__x2_y2' 
 									(true (0.8))
 									(false (0.2))))
-								(false (alive__x3_y1 
+								(false (alive__x3_y1' 
 									(true (surround_obs__x2_y2' 
 										(true (0.8))
 										(false (0.2))))
-									(false (alive__x3_y2 
+									(false (alive__x3_y2' 
 										(true (surround_obs__x2_y2' 
 											(true (0.8))
 											(false (0.2))))
-										(false (alive__x3_y3 
+										(false (alive__x3_y3' 
 											(true (surround_obs__x2_y2' 
 												(true (0.8))
 												(false (0.2))))
 											(false (surround_obs__x2_y2' 
 												(true (0.2))
 												(false (0.8))))))))))))))))
-					(false (alive__x1_y3 
-						(true (alive__x2_y1 
+					(false (alive__x1_y3' 
+						(true (alive__x2_y1' 
 							(true (surround_obs__x2_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x2_y3 
+							(false (alive__x2_y3' 
 								(true (surround_obs__x2_y2' 
 									(true (0.8))
 									(false (0.2))))
-								(false (alive__x3_y1 
+								(false (alive__x3_y1' 
 									(true (surround_obs__x2_y2' 
 										(true (0.8))
 										(false (0.2))))
-									(false (alive__x3_y2 
+									(false (alive__x3_y2' 
 										(true (surround_obs__x2_y2' 
 											(true (0.8))
 											(false (0.2))))
-										(false (alive__x3_y3 
+										(false (alive__x3_y3' 
 											(true (surround_obs__x2_y2' 
 												(true (0.8))
 												(false (0.2))))
 											(false (surround_obs__x2_y2' 
 												(true (0.2))
 												(false (0.8))))))))))))))
-						(false (alive__x2_y1 
-							(true (alive__x2_y3 
+						(false (alive__x2_y1' 
+							(true (alive__x2_y3' 
 								(true (surround_obs__x2_y2' 
 									(true (0.8))
 									(false (0.2))))
-								(false (alive__x3_y1 
+								(false (alive__x3_y1' 
 									(true (surround_obs__x2_y2' 
 										(true (0.8))
 										(false (0.2))))
-									(false (alive__x3_y2 
+									(false (alive__x3_y2' 
 										(true (surround_obs__x2_y2' 
 											(true (0.8))
 											(false (0.2))))
-										(false (alive__x3_y3 
+										(false (alive__x3_y3' 
 											(true (surround_obs__x2_y2' 
 												(true (0.8))
 												(false (0.2))))
 											(false (surround_obs__x2_y2' 
 												(true (0.2))
 												(false (0.8))))))))))))
-							(false (alive__x2_y3 
-								(true (alive__x3_y1 
+							(false (alive__x2_y3' 
+								(true (alive__x3_y1' 
 									(true (surround_obs__x2_y2' 
 										(true (0.8))
 										(false (0.2))))
-									(false (alive__x3_y2 
+									(false (alive__x3_y2' 
 										(true (surround_obs__x2_y2' 
 											(true (0.8))
 											(false (0.2))))
-										(false (alive__x3_y3 
+										(false (alive__x3_y3' 
 											(true (surround_obs__x2_y2' 
 												(true (0.8))
 												(false (0.2))))
 											(false (surround_obs__x2_y2' 
 												(true (0.2))
 												(false (0.8))))))))))
-								(false (alive__x3_y1 
-									(true (alive__x3_y2 
+								(false (alive__x3_y1' 
+									(true (alive__x3_y2' 
 										(true (surround_obs__x2_y2' 
 											(true (0.8))
 											(false (0.2))))
-										(false (alive__x3_y3 
+										(false (alive__x3_y3' 
 											(true (surround_obs__x2_y2' 
 												(true (0.8))
 												(false (0.2))))
 											(false (surround_obs__x2_y2' 
 												(true (0.2))
 												(false (0.8))))))))
-									(false (alive__x3_y2 
-										(true (alive__x3_y3 
+									(false (alive__x3_y2' 
+										(true (alive__x3_y3' 
 											(true (surround_obs__x2_y2' 
 												(true (0.8))
 												(false (0.2))))
@@ -11804,56 +11804,56 @@ action set__x2_y1
 											(true (0.2))
 											(false (0.8)))))))))))))))))
 		surround_obs__x2_y3
-			(alive__x1_y2 
-				(true (alive__x1_y3 
+			(alive__x1_y2' 
+				(true (alive__x1_y3' 
 					(true (surround_obs__x2_y3' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x2_y2 
+					(false (alive__x2_y2' 
 						(true (surround_obs__x2_y3' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x3_y2 
+						(false (alive__x3_y2' 
 							(true (surround_obs__x2_y3' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y3 
+							(false (alive__x3_y3' 
 								(true (surround_obs__x2_y3' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x2_y3' 
 									(true (0.2))
 									(false (0.8))))))))))))
-				(false (alive__x1_y3 
-					(true (alive__x2_y2 
+				(false (alive__x1_y3' 
+					(true (alive__x2_y2' 
 						(true (surround_obs__x2_y3' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x3_y2 
+						(false (alive__x3_y2' 
 							(true (surround_obs__x2_y3' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y3 
+							(false (alive__x3_y3' 
 								(true (surround_obs__x2_y3' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x2_y3' 
 									(true (0.2))
 									(false (0.8))))))))))
-					(false (alive__x2_y2 
-						(true (alive__x3_y2 
+					(false (alive__x2_y2' 
+						(true (alive__x3_y2' 
 							(true (surround_obs__x2_y3' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y3 
+							(false (alive__x3_y3' 
 								(true (surround_obs__x2_y3' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x2_y3' 
 									(true (0.2))
 									(false (0.8))))))))
-						(false (alive__x3_y2 
-							(true (alive__x3_y3 
+						(false (alive__x3_y2' 
+							(true (alive__x3_y3' 
 								(true (surround_obs__x2_y3' 
 									(true (0.8))
 									(false (0.2))))
@@ -11864,20 +11864,20 @@ action set__x2_y1
 								(true (0.2))
 								(false (0.8)))))))))))
 		surround_obs__x3_y1
-			(alive__x2_y1 
-				(true (alive__x2_y2 
+			(alive__x2_y1' 
+				(true (alive__x2_y2' 
 					(true (surround_obs__x3_y1' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x3_y2 
+					(false (alive__x3_y2' 
 						(true (surround_obs__x3_y1' 
 							(true (0.8))
 							(false (0.2))))
 						(false (surround_obs__x3_y1' 
 							(true (0.2))
 							(false (0.8))))))))
-				(false (alive__x2_y2 
-					(true (alive__x3_y2 
+				(false (alive__x2_y2' 
+					(true (alive__x3_y2' 
 						(true (surround_obs__x3_y1' 
 							(true (0.8))
 							(false (0.2))))
@@ -11888,56 +11888,56 @@ action set__x2_y1
 						(true (0.2))
 						(false (0.8)))))))
 		surround_obs__x3_y2
-			(alive__x2_y1 
-				(true (alive__x2_y2 
+			(alive__x2_y1' 
+				(true (alive__x2_y2' 
 					(true (surround_obs__x3_y2' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x2_y3 
+					(false (alive__x2_y3' 
 						(true (surround_obs__x3_y2' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x3_y1 
+						(false (alive__x3_y1' 
 							(true (surround_obs__x3_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y3 
+							(false (alive__x3_y3' 
 								(true (surround_obs__x3_y2' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x3_y2' 
 									(true (0.2))
 									(false (0.8))))))))))))
-				(false (alive__x2_y2 
-					(true (alive__x2_y3 
+				(false (alive__x2_y2' 
+					(true (alive__x2_y3' 
 						(true (surround_obs__x3_y2' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x3_y1 
+						(false (alive__x3_y1' 
 							(true (surround_obs__x3_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y3 
+							(false (alive__x3_y3' 
 								(true (surround_obs__x3_y2' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x3_y2' 
 									(true (0.2))
 									(false (0.8))))))))))
-					(false (alive__x2_y3 
-						(true (alive__x3_y1 
+					(false (alive__x2_y3' 
+						(true (alive__x3_y1' 
 							(true (surround_obs__x3_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y3 
+							(false (alive__x3_y3' 
 								(true (surround_obs__x3_y2' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x3_y2' 
 									(true (0.2))
 									(false (0.8))))))))
-						(false (alive__x3_y1 
-							(true (alive__x3_y3 
+						(false (alive__x3_y1' 
+							(true (alive__x3_y3' 
 								(true (surround_obs__x3_y2' 
 									(true (0.8))
 									(false (0.2))))
@@ -11948,20 +11948,20 @@ action set__x2_y1
 								(true (0.2))
 								(false (0.8)))))))))))
 		surround_obs__x3_y3
-			(alive__x2_y2 
-				(true (alive__x2_y3 
+			(alive__x2_y2' 
+				(true (alive__x2_y3' 
 					(true (surround_obs__x3_y3' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x3_y2 
+					(false (alive__x3_y2' 
 						(true (surround_obs__x3_y3' 
 							(true (0.8))
 							(false (0.2))))
 						(false (surround_obs__x3_y3' 
 							(true (0.2))
 							(false (0.8))))))))
-				(false (alive__x2_y3 
-					(true (alive__x3_y2 
+				(false (alive__x2_y3' 
+					(true (alive__x3_y2' 
 						(true (surround_obs__x3_y3' 
 							(true (0.8))
 							(false (0.2))))
@@ -12879,20 +12879,20 @@ action set__x2_y2
 					(false (1)))))))
 	observe 
 		surround_obs__x1_y1
-			(alive__x1_y2 
-				(true (alive__x2_y1 
+			(alive__x1_y2' 
+				(true (alive__x2_y1' 
 					(true (surround_obs__x1_y1' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x2_y2 
+					(false (alive__x2_y2' 
 						(true (surround_obs__x1_y1' 
 							(true (0.8))
 							(false (0.2))))
 						(false (surround_obs__x1_y1' 
 							(true (0.2))
 							(false (0.8))))))))
-				(false (alive__x2_y1 
-					(true (alive__x2_y2 
+				(false (alive__x2_y1' 
+					(true (alive__x2_y2' 
 						(true (surround_obs__x1_y1' 
 							(true (0.8))
 							(false (0.2))))
@@ -12903,56 +12903,56 @@ action set__x2_y2
 						(true (0.2))
 						(false (0.8)))))))
 		surround_obs__x1_y2
-			(alive__x1_y1 
-				(true (alive__x1_y3 
+			(alive__x1_y1' 
+				(true (alive__x1_y3' 
 					(true (surround_obs__x1_y2' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x2_y1 
+					(false (alive__x2_y1' 
 						(true (surround_obs__x1_y2' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x2_y2 
+						(false (alive__x2_y2' 
 							(true (surround_obs__x1_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x2_y3 
+							(false (alive__x2_y3' 
 								(true (surround_obs__x1_y2' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x1_y2' 
 									(true (0.2))
 									(false (0.8))))))))))))
-				(false (alive__x1_y3 
-					(true (alive__x2_y1 
+				(false (alive__x1_y3' 
+					(true (alive__x2_y1' 
 						(true (surround_obs__x1_y2' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x2_y2 
+						(false (alive__x2_y2' 
 							(true (surround_obs__x1_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x2_y3 
+							(false (alive__x2_y3' 
 								(true (surround_obs__x1_y2' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x1_y2' 
 									(true (0.2))
 									(false (0.8))))))))))
-					(false (alive__x2_y1 
-						(true (alive__x2_y2 
+					(false (alive__x2_y1' 
+						(true (alive__x2_y2' 
 							(true (surround_obs__x1_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x2_y3 
+							(false (alive__x2_y3' 
 								(true (surround_obs__x1_y2' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x1_y2' 
 									(true (0.2))
 									(false (0.8))))))))
-						(false (alive__x2_y2 
-							(true (alive__x2_y3 
+						(false (alive__x2_y2' 
+							(true (alive__x2_y3' 
 								(true (surround_obs__x1_y2' 
 									(true (0.8))
 									(false (0.2))))
@@ -12963,20 +12963,20 @@ action set__x2_y2
 								(true (0.2))
 								(false (0.8)))))))))))
 		surround_obs__x1_y3
-			(alive__x1_y2 
-				(true (alive__x2_y2 
+			(alive__x1_y2' 
+				(true (alive__x2_y2' 
 					(true (surround_obs__x1_y3' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x2_y3 
+					(false (alive__x2_y3' 
 						(true (surround_obs__x1_y3' 
 							(true (0.8))
 							(false (0.2))))
 						(false (surround_obs__x1_y3' 
 							(true (0.2))
 							(false (0.8))))))))
-				(false (alive__x2_y2 
-					(true (alive__x2_y3 
+				(false (alive__x2_y2' 
+					(true (alive__x2_y3' 
 						(true (surround_obs__x1_y3' 
 							(true (0.8))
 							(false (0.2))))
@@ -12987,56 +12987,56 @@ action set__x2_y2
 						(true (0.2))
 						(false (0.8)))))))
 		surround_obs__x2_y1
-			(alive__x1_y1 
-				(true (alive__x1_y2 
+			(alive__x1_y1' 
+				(true (alive__x1_y2' 
 					(true (surround_obs__x2_y1' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x2_y2 
+					(false (alive__x2_y2' 
 						(true (surround_obs__x2_y1' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x3_y1 
+						(false (alive__x3_y1' 
 							(true (surround_obs__x2_y1' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y2 
+							(false (alive__x3_y2' 
 								(true (surround_obs__x2_y1' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x2_y1' 
 									(true (0.2))
 									(false (0.8))))))))))))
-				(false (alive__x1_y2 
-					(true (alive__x2_y2 
+				(false (alive__x1_y2' 
+					(true (alive__x2_y2' 
 						(true (surround_obs__x2_y1' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x3_y1 
+						(false (alive__x3_y1' 
 							(true (surround_obs__x2_y1' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y2 
+							(false (alive__x3_y2' 
 								(true (surround_obs__x2_y1' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x2_y1' 
 									(true (0.2))
 									(false (0.8))))))))))
-					(false (alive__x2_y2 
-						(true (alive__x3_y1 
+					(false (alive__x2_y2' 
+						(true (alive__x3_y1' 
 							(true (surround_obs__x2_y1' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y2 
+							(false (alive__x3_y2' 
 								(true (surround_obs__x2_y1' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x2_y1' 
 									(true (0.2))
 									(false (0.8))))))))
-						(false (alive__x3_y1 
-							(true (alive__x3_y2 
+						(false (alive__x3_y1' 
+							(true (alive__x3_y2' 
 								(true (surround_obs__x2_y1' 
 									(true (0.8))
 									(false (0.2))))
@@ -13047,140 +13047,140 @@ action set__x2_y2
 								(true (0.2))
 								(false (0.8)))))))))))
 		surround_obs__x2_y2
-			(alive__x1_y1 
-				(true (alive__x1_y2 
+			(alive__x1_y1' 
+				(true (alive__x1_y2' 
 					(true (surround_obs__x2_y2' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x1_y3 
+					(false (alive__x1_y3' 
 						(true (surround_obs__x2_y2' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x2_y1 
+						(false (alive__x2_y1' 
 							(true (surround_obs__x2_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x2_y3 
+							(false (alive__x2_y3' 
 								(true (surround_obs__x2_y2' 
 									(true (0.8))
 									(false (0.2))))
-								(false (alive__x3_y1 
+								(false (alive__x3_y1' 
 									(true (surround_obs__x2_y2' 
 										(true (0.8))
 										(false (0.2))))
-									(false (alive__x3_y2 
+									(false (alive__x3_y2' 
 										(true (surround_obs__x2_y2' 
 											(true (0.8))
 											(false (0.2))))
-										(false (alive__x3_y3 
+										(false (alive__x3_y3' 
 											(true (surround_obs__x2_y2' 
 												(true (0.8))
 												(false (0.2))))
 											(false (surround_obs__x2_y2' 
 												(true (0.2))
 												(false (0.8))))))))))))))))))
-				(false (alive__x1_y2 
-					(true (alive__x1_y3 
+				(false (alive__x1_y2' 
+					(true (alive__x1_y3' 
 						(true (surround_obs__x2_y2' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x2_y1 
+						(false (alive__x2_y1' 
 							(true (surround_obs__x2_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x2_y3 
+							(false (alive__x2_y3' 
 								(true (surround_obs__x2_y2' 
 									(true (0.8))
 									(false (0.2))))
-								(false (alive__x3_y1 
+								(false (alive__x3_y1' 
 									(true (surround_obs__x2_y2' 
 										(true (0.8))
 										(false (0.2))))
-									(false (alive__x3_y2 
+									(false (alive__x3_y2' 
 										(true (surround_obs__x2_y2' 
 											(true (0.8))
 											(false (0.2))))
-										(false (alive__x3_y3 
+										(false (alive__x3_y3' 
 											(true (surround_obs__x2_y2' 
 												(true (0.8))
 												(false (0.2))))
 											(false (surround_obs__x2_y2' 
 												(true (0.2))
 												(false (0.8))))))))))))))))
-					(false (alive__x1_y3 
-						(true (alive__x2_y1 
+					(false (alive__x1_y3' 
+						(true (alive__x2_y1' 
 							(true (surround_obs__x2_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x2_y3 
+							(false (alive__x2_y3' 
 								(true (surround_obs__x2_y2' 
 									(true (0.8))
 									(false (0.2))))
-								(false (alive__x3_y1 
+								(false (alive__x3_y1' 
 									(true (surround_obs__x2_y2' 
 										(true (0.8))
 										(false (0.2))))
-									(false (alive__x3_y2 
+									(false (alive__x3_y2' 
 										(true (surround_obs__x2_y2' 
 											(true (0.8))
 											(false (0.2))))
-										(false (alive__x3_y3 
+										(false (alive__x3_y3' 
 											(true (surround_obs__x2_y2' 
 												(true (0.8))
 												(false (0.2))))
 											(false (surround_obs__x2_y2' 
 												(true (0.2))
 												(false (0.8))))))))))))))
-						(false (alive__x2_y1 
-							(true (alive__x2_y3 
+						(false (alive__x2_y1' 
+							(true (alive__x2_y3' 
 								(true (surround_obs__x2_y2' 
 									(true (0.8))
 									(false (0.2))))
-								(false (alive__x3_y1 
+								(false (alive__x3_y1' 
 									(true (surround_obs__x2_y2' 
 										(true (0.8))
 										(false (0.2))))
-									(false (alive__x3_y2 
+									(false (alive__x3_y2' 
 										(true (surround_obs__x2_y2' 
 											(true (0.8))
 											(false (0.2))))
-										(false (alive__x3_y3 
+										(false (alive__x3_y3' 
 											(true (surround_obs__x2_y2' 
 												(true (0.8))
 												(false (0.2))))
 											(false (surround_obs__x2_y2' 
 												(true (0.2))
 												(false (0.8))))))))))))
-							(false (alive__x2_y3 
-								(true (alive__x3_y1 
+							(false (alive__x2_y3' 
+								(true (alive__x3_y1' 
 									(true (surround_obs__x2_y2' 
 										(true (0.8))
 										(false (0.2))))
-									(false (alive__x3_y2 
+									(false (alive__x3_y2' 
 										(true (surround_obs__x2_y2' 
 											(true (0.8))
 											(false (0.2))))
-										(false (alive__x3_y3 
+										(false (alive__x3_y3' 
 											(true (surround_obs__x2_y2' 
 												(true (0.8))
 												(false (0.2))))
 											(false (surround_obs__x2_y2' 
 												(true (0.2))
 												(false (0.8))))))))))
-								(false (alive__x3_y1 
-									(true (alive__x3_y2 
+								(false (alive__x3_y1' 
+									(true (alive__x3_y2' 
 										(true (surround_obs__x2_y2' 
 											(true (0.8))
 											(false (0.2))))
-										(false (alive__x3_y3 
+										(false (alive__x3_y3' 
 											(true (surround_obs__x2_y2' 
 												(true (0.8))
 												(false (0.2))))
 											(false (surround_obs__x2_y2' 
 												(true (0.2))
 												(false (0.8))))))))
-									(false (alive__x3_y2 
-										(true (alive__x3_y3 
+									(false (alive__x3_y2' 
+										(true (alive__x3_y3' 
 											(true (surround_obs__x2_y2' 
 												(true (0.8))
 												(false (0.2))))
@@ -13191,56 +13191,56 @@ action set__x2_y2
 											(true (0.2))
 											(false (0.8)))))))))))))))))
 		surround_obs__x2_y3
-			(alive__x1_y2 
-				(true (alive__x1_y3 
+			(alive__x1_y2' 
+				(true (alive__x1_y3' 
 					(true (surround_obs__x2_y3' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x2_y2 
+					(false (alive__x2_y2' 
 						(true (surround_obs__x2_y3' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x3_y2 
+						(false (alive__x3_y2' 
 							(true (surround_obs__x2_y3' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y3 
+							(false (alive__x3_y3' 
 								(true (surround_obs__x2_y3' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x2_y3' 
 									(true (0.2))
 									(false (0.8))))))))))))
-				(false (alive__x1_y3 
-					(true (alive__x2_y2 
+				(false (alive__x1_y3' 
+					(true (alive__x2_y2' 
 						(true (surround_obs__x2_y3' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x3_y2 
+						(false (alive__x3_y2' 
 							(true (surround_obs__x2_y3' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y3 
+							(false (alive__x3_y3' 
 								(true (surround_obs__x2_y3' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x2_y3' 
 									(true (0.2))
 									(false (0.8))))))))))
-					(false (alive__x2_y2 
-						(true (alive__x3_y2 
+					(false (alive__x2_y2' 
+						(true (alive__x3_y2' 
 							(true (surround_obs__x2_y3' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y3 
+							(false (alive__x3_y3' 
 								(true (surround_obs__x2_y3' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x2_y3' 
 									(true (0.2))
 									(false (0.8))))))))
-						(false (alive__x3_y2 
-							(true (alive__x3_y3 
+						(false (alive__x3_y2' 
+							(true (alive__x3_y3' 
 								(true (surround_obs__x2_y3' 
 									(true (0.8))
 									(false (0.2))))
@@ -13251,20 +13251,20 @@ action set__x2_y2
 								(true (0.2))
 								(false (0.8)))))))))))
 		surround_obs__x3_y1
-			(alive__x2_y1 
-				(true (alive__x2_y2 
+			(alive__x2_y1' 
+				(true (alive__x2_y2' 
 					(true (surround_obs__x3_y1' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x3_y2 
+					(false (alive__x3_y2' 
 						(true (surround_obs__x3_y1' 
 							(true (0.8))
 							(false (0.2))))
 						(false (surround_obs__x3_y1' 
 							(true (0.2))
 							(false (0.8))))))))
-				(false (alive__x2_y2 
-					(true (alive__x3_y2 
+				(false (alive__x2_y2' 
+					(true (alive__x3_y2' 
 						(true (surround_obs__x3_y1' 
 							(true (0.8))
 							(false (0.2))))
@@ -13275,56 +13275,56 @@ action set__x2_y2
 						(true (0.2))
 						(false (0.8)))))))
 		surround_obs__x3_y2
-			(alive__x2_y1 
-				(true (alive__x2_y2 
+			(alive__x2_y1' 
+				(true (alive__x2_y2' 
 					(true (surround_obs__x3_y2' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x2_y3 
+					(false (alive__x2_y3' 
 						(true (surround_obs__x3_y2' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x3_y1 
+						(false (alive__x3_y1' 
 							(true (surround_obs__x3_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y3 
+							(false (alive__x3_y3' 
 								(true (surround_obs__x3_y2' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x3_y2' 
 									(true (0.2))
 									(false (0.8))))))))))))
-				(false (alive__x2_y2 
-					(true (alive__x2_y3 
+				(false (alive__x2_y2' 
+					(true (alive__x2_y3' 
 						(true (surround_obs__x3_y2' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x3_y1 
+						(false (alive__x3_y1' 
 							(true (surround_obs__x3_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y3 
+							(false (alive__x3_y3' 
 								(true (surround_obs__x3_y2' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x3_y2' 
 									(true (0.2))
 									(false (0.8))))))))))
-					(false (alive__x2_y3 
-						(true (alive__x3_y1 
+					(false (alive__x2_y3' 
+						(true (alive__x3_y1' 
 							(true (surround_obs__x3_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y3 
+							(false (alive__x3_y3' 
 								(true (surround_obs__x3_y2' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x3_y2' 
 									(true (0.2))
 									(false (0.8))))))))
-						(false (alive__x3_y1 
-							(true (alive__x3_y3 
+						(false (alive__x3_y1' 
+							(true (alive__x3_y3' 
 								(true (surround_obs__x3_y2' 
 									(true (0.8))
 									(false (0.2))))
@@ -13335,20 +13335,20 @@ action set__x2_y2
 								(true (0.2))
 								(false (0.8)))))))))))
 		surround_obs__x3_y3
-			(alive__x2_y2 
-				(true (alive__x2_y3 
+			(alive__x2_y2' 
+				(true (alive__x2_y3' 
 					(true (surround_obs__x3_y3' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x3_y2 
+					(false (alive__x3_y2' 
 						(true (surround_obs__x3_y3' 
 							(true (0.8))
 							(false (0.2))))
 						(false (surround_obs__x3_y3' 
 							(true (0.2))
 							(false (0.8))))))))
-				(false (alive__x2_y3 
-					(true (alive__x3_y2 
+				(false (alive__x2_y3' 
+					(true (alive__x3_y2' 
 						(true (surround_obs__x3_y3' 
 							(true (0.8))
 							(false (0.2))))
@@ -15178,20 +15178,20 @@ action set__x2_y3
 					(false (1)))))))
 	observe 
 		surround_obs__x1_y1
-			(alive__x1_y2 
-				(true (alive__x2_y1 
+			(alive__x1_y2' 
+				(true (alive__x2_y1' 
 					(true (surround_obs__x1_y1' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x2_y2 
+					(false (alive__x2_y2' 
 						(true (surround_obs__x1_y1' 
 							(true (0.8))
 							(false (0.2))))
 						(false (surround_obs__x1_y1' 
 							(true (0.2))
 							(false (0.8))))))))
-				(false (alive__x2_y1 
-					(true (alive__x2_y2 
+				(false (alive__x2_y1' 
+					(true (alive__x2_y2' 
 						(true (surround_obs__x1_y1' 
 							(true (0.8))
 							(false (0.2))))
@@ -15202,56 +15202,56 @@ action set__x2_y3
 						(true (0.2))
 						(false (0.8)))))))
 		surround_obs__x1_y2
-			(alive__x1_y1 
-				(true (alive__x1_y3 
+			(alive__x1_y1' 
+				(true (alive__x1_y3' 
 					(true (surround_obs__x1_y2' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x2_y1 
+					(false (alive__x2_y1' 
 						(true (surround_obs__x1_y2' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x2_y2 
+						(false (alive__x2_y2' 
 							(true (surround_obs__x1_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x2_y3 
+							(false (alive__x2_y3' 
 								(true (surround_obs__x1_y2' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x1_y2' 
 									(true (0.2))
 									(false (0.8))))))))))))
-				(false (alive__x1_y3 
-					(true (alive__x2_y1 
+				(false (alive__x1_y3' 
+					(true (alive__x2_y1' 
 						(true (surround_obs__x1_y2' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x2_y2 
+						(false (alive__x2_y2' 
 							(true (surround_obs__x1_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x2_y3 
+							(false (alive__x2_y3' 
 								(true (surround_obs__x1_y2' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x1_y2' 
 									(true (0.2))
 									(false (0.8))))))))))
-					(false (alive__x2_y1 
-						(true (alive__x2_y2 
+					(false (alive__x2_y1' 
+						(true (alive__x2_y2' 
 							(true (surround_obs__x1_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x2_y3 
+							(false (alive__x2_y3' 
 								(true (surround_obs__x1_y2' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x1_y2' 
 									(true (0.2))
 									(false (0.8))))))))
-						(false (alive__x2_y2 
-							(true (alive__x2_y3 
+						(false (alive__x2_y2' 
+							(true (alive__x2_y3' 
 								(true (surround_obs__x1_y2' 
 									(true (0.8))
 									(false (0.2))))
@@ -15262,20 +15262,20 @@ action set__x2_y3
 								(true (0.2))
 								(false (0.8)))))))))))
 		surround_obs__x1_y3
-			(alive__x1_y2 
-				(true (alive__x2_y2 
+			(alive__x1_y2' 
+				(true (alive__x2_y2' 
 					(true (surround_obs__x1_y3' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x2_y3 
+					(false (alive__x2_y3' 
 						(true (surround_obs__x1_y3' 
 							(true (0.8))
 							(false (0.2))))
 						(false (surround_obs__x1_y3' 
 							(true (0.2))
 							(false (0.8))))))))
-				(false (alive__x2_y2 
-					(true (alive__x2_y3 
+				(false (alive__x2_y2' 
+					(true (alive__x2_y3' 
 						(true (surround_obs__x1_y3' 
 							(true (0.8))
 							(false (0.2))))
@@ -15286,56 +15286,56 @@ action set__x2_y3
 						(true (0.2))
 						(false (0.8)))))))
 		surround_obs__x2_y1
-			(alive__x1_y1 
-				(true (alive__x1_y2 
+			(alive__x1_y1' 
+				(true (alive__x1_y2' 
 					(true (surround_obs__x2_y1' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x2_y2 
+					(false (alive__x2_y2' 
 						(true (surround_obs__x2_y1' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x3_y1 
+						(false (alive__x3_y1' 
 							(true (surround_obs__x2_y1' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y2 
+							(false (alive__x3_y2' 
 								(true (surround_obs__x2_y1' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x2_y1' 
 									(true (0.2))
 									(false (0.8))))))))))))
-				(false (alive__x1_y2 
-					(true (alive__x2_y2 
+				(false (alive__x1_y2' 
+					(true (alive__x2_y2' 
 						(true (surround_obs__x2_y1' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x3_y1 
+						(false (alive__x3_y1' 
 							(true (surround_obs__x2_y1' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y2 
+							(false (alive__x3_y2' 
 								(true (surround_obs__x2_y1' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x2_y1' 
 									(true (0.2))
 									(false (0.8))))))))))
-					(false (alive__x2_y2 
-						(true (alive__x3_y1 
+					(false (alive__x2_y2' 
+						(true (alive__x3_y1' 
 							(true (surround_obs__x2_y1' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y2 
+							(false (alive__x3_y2' 
 								(true (surround_obs__x2_y1' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x2_y1' 
 									(true (0.2))
 									(false (0.8))))))))
-						(false (alive__x3_y1 
-							(true (alive__x3_y2 
+						(false (alive__x3_y1' 
+							(true (alive__x3_y2' 
 								(true (surround_obs__x2_y1' 
 									(true (0.8))
 									(false (0.2))))
@@ -15346,140 +15346,140 @@ action set__x2_y3
 								(true (0.2))
 								(false (0.8)))))))))))
 		surround_obs__x2_y2
-			(alive__x1_y1 
-				(true (alive__x1_y2 
+			(alive__x1_y1' 
+				(true (alive__x1_y2' 
 					(true (surround_obs__x2_y2' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x1_y3 
+					(false (alive__x1_y3' 
 						(true (surround_obs__x2_y2' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x2_y1 
+						(false (alive__x2_y1' 
 							(true (surround_obs__x2_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x2_y3 
+							(false (alive__x2_y3' 
 								(true (surround_obs__x2_y2' 
 									(true (0.8))
 									(false (0.2))))
-								(false (alive__x3_y1 
+								(false (alive__x3_y1' 
 									(true (surround_obs__x2_y2' 
 										(true (0.8))
 										(false (0.2))))
-									(false (alive__x3_y2 
+									(false (alive__x3_y2' 
 										(true (surround_obs__x2_y2' 
 											(true (0.8))
 											(false (0.2))))
-										(false (alive__x3_y3 
+										(false (alive__x3_y3' 
 											(true (surround_obs__x2_y2' 
 												(true (0.8))
 												(false (0.2))))
 											(false (surround_obs__x2_y2' 
 												(true (0.2))
 												(false (0.8))))))))))))))))))
-				(false (alive__x1_y2 
-					(true (alive__x1_y3 
+				(false (alive__x1_y2' 
+					(true (alive__x1_y3' 
 						(true (surround_obs__x2_y2' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x2_y1 
+						(false (alive__x2_y1' 
 							(true (surround_obs__x2_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x2_y3 
+							(false (alive__x2_y3' 
 								(true (surround_obs__x2_y2' 
 									(true (0.8))
 									(false (0.2))))
-								(false (alive__x3_y1 
+								(false (alive__x3_y1' 
 									(true (surround_obs__x2_y2' 
 										(true (0.8))
 										(false (0.2))))
-									(false (alive__x3_y2 
+									(false (alive__x3_y2' 
 										(true (surround_obs__x2_y2' 
 											(true (0.8))
 											(false (0.2))))
-										(false (alive__x3_y3 
+										(false (alive__x3_y3' 
 											(true (surround_obs__x2_y2' 
 												(true (0.8))
 												(false (0.2))))
 											(false (surround_obs__x2_y2' 
 												(true (0.2))
 												(false (0.8))))))))))))))))
-					(false (alive__x1_y3 
-						(true (alive__x2_y1 
+					(false (alive__x1_y3' 
+						(true (alive__x2_y1' 
 							(true (surround_obs__x2_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x2_y3 
+							(false (alive__x2_y3' 
 								(true (surround_obs__x2_y2' 
 									(true (0.8))
 									(false (0.2))))
-								(false (alive__x3_y1 
+								(false (alive__x3_y1' 
 									(true (surround_obs__x2_y2' 
 										(true (0.8))
 										(false (0.2))))
-									(false (alive__x3_y2 
+									(false (alive__x3_y2' 
 										(true (surround_obs__x2_y2' 
 											(true (0.8))
 											(false (0.2))))
-										(false (alive__x3_y3 
+										(false (alive__x3_y3' 
 											(true (surround_obs__x2_y2' 
 												(true (0.8))
 												(false (0.2))))
 											(false (surround_obs__x2_y2' 
 												(true (0.2))
 												(false (0.8))))))))))))))
-						(false (alive__x2_y1 
-							(true (alive__x2_y3 
+						(false (alive__x2_y1' 
+							(true (alive__x2_y3' 
 								(true (surround_obs__x2_y2' 
 									(true (0.8))
 									(false (0.2))))
-								(false (alive__x3_y1 
+								(false (alive__x3_y1' 
 									(true (surround_obs__x2_y2' 
 										(true (0.8))
 										(false (0.2))))
-									(false (alive__x3_y2 
+									(false (alive__x3_y2' 
 										(true (surround_obs__x2_y2' 
 											(true (0.8))
 											(false (0.2))))
-										(false (alive__x3_y3 
+										(false (alive__x3_y3' 
 											(true (surround_obs__x2_y2' 
 												(true (0.8))
 												(false (0.2))))
 											(false (surround_obs__x2_y2' 
 												(true (0.2))
 												(false (0.8))))))))))))
-							(false (alive__x2_y3 
-								(true (alive__x3_y1 
+							(false (alive__x2_y3' 
+								(true (alive__x3_y1' 
 									(true (surround_obs__x2_y2' 
 										(true (0.8))
 										(false (0.2))))
-									(false (alive__x3_y2 
+									(false (alive__x3_y2' 
 										(true (surround_obs__x2_y2' 
 											(true (0.8))
 											(false (0.2))))
-										(false (alive__x3_y3 
+										(false (alive__x3_y3' 
 											(true (surround_obs__x2_y2' 
 												(true (0.8))
 												(false (0.2))))
 											(false (surround_obs__x2_y2' 
 												(true (0.2))
 												(false (0.8))))))))))
-								(false (alive__x3_y1 
-									(true (alive__x3_y2 
+								(false (alive__x3_y1' 
+									(true (alive__x3_y2' 
 										(true (surround_obs__x2_y2' 
 											(true (0.8))
 											(false (0.2))))
-										(false (alive__x3_y3 
+										(false (alive__x3_y3' 
 											(true (surround_obs__x2_y2' 
 												(true (0.8))
 												(false (0.2))))
 											(false (surround_obs__x2_y2' 
 												(true (0.2))
 												(false (0.8))))))))
-									(false (alive__x3_y2 
-										(true (alive__x3_y3 
+									(false (alive__x3_y2' 
+										(true (alive__x3_y3' 
 											(true (surround_obs__x2_y2' 
 												(true (0.8))
 												(false (0.2))))
@@ -15490,56 +15490,56 @@ action set__x2_y3
 											(true (0.2))
 											(false (0.8)))))))))))))))))
 		surround_obs__x2_y3
-			(alive__x1_y2 
-				(true (alive__x1_y3 
+			(alive__x1_y2' 
+				(true (alive__x1_y3' 
 					(true (surround_obs__x2_y3' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x2_y2 
+					(false (alive__x2_y2' 
 						(true (surround_obs__x2_y3' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x3_y2 
+						(false (alive__x3_y2' 
 							(true (surround_obs__x2_y3' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y3 
+							(false (alive__x3_y3' 
 								(true (surround_obs__x2_y3' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x2_y3' 
 									(true (0.2))
 									(false (0.8))))))))))))
-				(false (alive__x1_y3 
-					(true (alive__x2_y2 
+				(false (alive__x1_y3' 
+					(true (alive__x2_y2' 
 						(true (surround_obs__x2_y3' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x3_y2 
+						(false (alive__x3_y2' 
 							(true (surround_obs__x2_y3' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y3 
+							(false (alive__x3_y3' 
 								(true (surround_obs__x2_y3' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x2_y3' 
 									(true (0.2))
 									(false (0.8))))))))))
-					(false (alive__x2_y2 
-						(true (alive__x3_y2 
+					(false (alive__x2_y2' 
+						(true (alive__x3_y2' 
 							(true (surround_obs__x2_y3' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y3 
+							(false (alive__x3_y3' 
 								(true (surround_obs__x2_y3' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x2_y3' 
 									(true (0.2))
 									(false (0.8))))))))
-						(false (alive__x3_y2 
-							(true (alive__x3_y3 
+						(false (alive__x3_y2' 
+							(true (alive__x3_y3' 
 								(true (surround_obs__x2_y3' 
 									(true (0.8))
 									(false (0.2))))
@@ -15550,20 +15550,20 @@ action set__x2_y3
 								(true (0.2))
 								(false (0.8)))))))))))
 		surround_obs__x3_y1
-			(alive__x2_y1 
-				(true (alive__x2_y2 
+			(alive__x2_y1' 
+				(true (alive__x2_y2' 
 					(true (surround_obs__x3_y1' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x3_y2 
+					(false (alive__x3_y2' 
 						(true (surround_obs__x3_y1' 
 							(true (0.8))
 							(false (0.2))))
 						(false (surround_obs__x3_y1' 
 							(true (0.2))
 							(false (0.8))))))))
-				(false (alive__x2_y2 
-					(true (alive__x3_y2 
+				(false (alive__x2_y2' 
+					(true (alive__x3_y2' 
 						(true (surround_obs__x3_y1' 
 							(true (0.8))
 							(false (0.2))))
@@ -15574,56 +15574,56 @@ action set__x2_y3
 						(true (0.2))
 						(false (0.8)))))))
 		surround_obs__x3_y2
-			(alive__x2_y1 
-				(true (alive__x2_y2 
+			(alive__x2_y1' 
+				(true (alive__x2_y2' 
 					(true (surround_obs__x3_y2' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x2_y3 
+					(false (alive__x2_y3' 
 						(true (surround_obs__x3_y2' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x3_y1 
+						(false (alive__x3_y1' 
 							(true (surround_obs__x3_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y3 
+							(false (alive__x3_y3' 
 								(true (surround_obs__x3_y2' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x3_y2' 
 									(true (0.2))
 									(false (0.8))))))))))))
-				(false (alive__x2_y2 
-					(true (alive__x2_y3 
+				(false (alive__x2_y2' 
+					(true (alive__x2_y3' 
 						(true (surround_obs__x3_y2' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x3_y1 
+						(false (alive__x3_y1' 
 							(true (surround_obs__x3_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y3 
+							(false (alive__x3_y3' 
 								(true (surround_obs__x3_y2' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x3_y2' 
 									(true (0.2))
 									(false (0.8))))))))))
-					(false (alive__x2_y3 
-						(true (alive__x3_y1 
+					(false (alive__x2_y3' 
+						(true (alive__x3_y1' 
 							(true (surround_obs__x3_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y3 
+							(false (alive__x3_y3' 
 								(true (surround_obs__x3_y2' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x3_y2' 
 									(true (0.2))
 									(false (0.8))))))))
-						(false (alive__x3_y1 
-							(true (alive__x3_y3 
+						(false (alive__x3_y1' 
+							(true (alive__x3_y3' 
 								(true (surround_obs__x3_y2' 
 									(true (0.8))
 									(false (0.2))))
@@ -15634,20 +15634,20 @@ action set__x2_y3
 								(true (0.2))
 								(false (0.8)))))))))))
 		surround_obs__x3_y3
-			(alive__x2_y2 
-				(true (alive__x2_y3 
+			(alive__x2_y2' 
+				(true (alive__x2_y3' 
 					(true (surround_obs__x3_y3' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x3_y2 
+					(false (alive__x3_y2' 
 						(true (surround_obs__x3_y3' 
 							(true (0.8))
 							(false (0.2))))
 						(false (surround_obs__x3_y3' 
 							(true (0.2))
 							(false (0.8))))))))
-				(false (alive__x2_y3 
-					(true (alive__x3_y2 
+				(false (alive__x2_y3' 
+					(true (alive__x3_y2' 
 						(true (surround_obs__x3_y3' 
 							(true (0.8))
 							(false (0.2))))
@@ -17621,20 +17621,20 @@ action set__x3_y1
 					(false (1)))))))
 	observe 
 		surround_obs__x1_y1
-			(alive__x1_y2 
-				(true (alive__x2_y1 
+			(alive__x1_y2' 
+				(true (alive__x2_y1' 
 					(true (surround_obs__x1_y1' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x2_y2 
+					(false (alive__x2_y2' 
 						(true (surround_obs__x1_y1' 
 							(true (0.8))
 							(false (0.2))))
 						(false (surround_obs__x1_y1' 
 							(true (0.2))
 							(false (0.8))))))))
-				(false (alive__x2_y1 
-					(true (alive__x2_y2 
+				(false (alive__x2_y1' 
+					(true (alive__x2_y2' 
 						(true (surround_obs__x1_y1' 
 							(true (0.8))
 							(false (0.2))))
@@ -17645,56 +17645,56 @@ action set__x3_y1
 						(true (0.2))
 						(false (0.8)))))))
 		surround_obs__x1_y2
-			(alive__x1_y1 
-				(true (alive__x1_y3 
+			(alive__x1_y1' 
+				(true (alive__x1_y3' 
 					(true (surround_obs__x1_y2' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x2_y1 
+					(false (alive__x2_y1' 
 						(true (surround_obs__x1_y2' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x2_y2 
+						(false (alive__x2_y2' 
 							(true (surround_obs__x1_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x2_y3 
+							(false (alive__x2_y3' 
 								(true (surround_obs__x1_y2' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x1_y2' 
 									(true (0.2))
 									(false (0.8))))))))))))
-				(false (alive__x1_y3 
-					(true (alive__x2_y1 
+				(false (alive__x1_y3' 
+					(true (alive__x2_y1' 
 						(true (surround_obs__x1_y2' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x2_y2 
+						(false (alive__x2_y2' 
 							(true (surround_obs__x1_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x2_y3 
+							(false (alive__x2_y3' 
 								(true (surround_obs__x1_y2' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x1_y2' 
 									(true (0.2))
 									(false (0.8))))))))))
-					(false (alive__x2_y1 
-						(true (alive__x2_y2 
+					(false (alive__x2_y1' 
+						(true (alive__x2_y2' 
 							(true (surround_obs__x1_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x2_y3 
+							(false (alive__x2_y3' 
 								(true (surround_obs__x1_y2' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x1_y2' 
 									(true (0.2))
 									(false (0.8))))))))
-						(false (alive__x2_y2 
-							(true (alive__x2_y3 
+						(false (alive__x2_y2' 
+							(true (alive__x2_y3' 
 								(true (surround_obs__x1_y2' 
 									(true (0.8))
 									(false (0.2))))
@@ -17705,20 +17705,20 @@ action set__x3_y1
 								(true (0.2))
 								(false (0.8)))))))))))
 		surround_obs__x1_y3
-			(alive__x1_y2 
-				(true (alive__x2_y2 
+			(alive__x1_y2' 
+				(true (alive__x2_y2' 
 					(true (surround_obs__x1_y3' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x2_y3 
+					(false (alive__x2_y3' 
 						(true (surround_obs__x1_y3' 
 							(true (0.8))
 							(false (0.2))))
 						(false (surround_obs__x1_y3' 
 							(true (0.2))
 							(false (0.8))))))))
-				(false (alive__x2_y2 
-					(true (alive__x2_y3 
+				(false (alive__x2_y2' 
+					(true (alive__x2_y3' 
 						(true (surround_obs__x1_y3' 
 							(true (0.8))
 							(false (0.2))))
@@ -17729,56 +17729,56 @@ action set__x3_y1
 						(true (0.2))
 						(false (0.8)))))))
 		surround_obs__x2_y1
-			(alive__x1_y1 
-				(true (alive__x1_y2 
+			(alive__x1_y1' 
+				(true (alive__x1_y2' 
 					(true (surround_obs__x2_y1' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x2_y2 
+					(false (alive__x2_y2' 
 						(true (surround_obs__x2_y1' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x3_y1 
+						(false (alive__x3_y1' 
 							(true (surround_obs__x2_y1' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y2 
+							(false (alive__x3_y2' 
 								(true (surround_obs__x2_y1' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x2_y1' 
 									(true (0.2))
 									(false (0.8))))))))))))
-				(false (alive__x1_y2 
-					(true (alive__x2_y2 
+				(false (alive__x1_y2' 
+					(true (alive__x2_y2' 
 						(true (surround_obs__x2_y1' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x3_y1 
+						(false (alive__x3_y1' 
 							(true (surround_obs__x2_y1' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y2 
+							(false (alive__x3_y2' 
 								(true (surround_obs__x2_y1' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x2_y1' 
 									(true (0.2))
 									(false (0.8))))))))))
-					(false (alive__x2_y2 
-						(true (alive__x3_y1 
+					(false (alive__x2_y2' 
+						(true (alive__x3_y1' 
 							(true (surround_obs__x2_y1' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y2 
+							(false (alive__x3_y2' 
 								(true (surround_obs__x2_y1' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x2_y1' 
 									(true (0.2))
 									(false (0.8))))))))
-						(false (alive__x3_y1 
-							(true (alive__x3_y2 
+						(false (alive__x3_y1' 
+							(true (alive__x3_y2' 
 								(true (surround_obs__x2_y1' 
 									(true (0.8))
 									(false (0.2))))
@@ -17789,140 +17789,140 @@ action set__x3_y1
 								(true (0.2))
 								(false (0.8)))))))))))
 		surround_obs__x2_y2
-			(alive__x1_y1 
-				(true (alive__x1_y2 
+			(alive__x1_y1' 
+				(true (alive__x1_y2' 
 					(true (surround_obs__x2_y2' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x1_y3 
+					(false (alive__x1_y3' 
 						(true (surround_obs__x2_y2' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x2_y1 
+						(false (alive__x2_y1' 
 							(true (surround_obs__x2_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x2_y3 
+							(false (alive__x2_y3' 
 								(true (surround_obs__x2_y2' 
 									(true (0.8))
 									(false (0.2))))
-								(false (alive__x3_y1 
+								(false (alive__x3_y1' 
 									(true (surround_obs__x2_y2' 
 										(true (0.8))
 										(false (0.2))))
-									(false (alive__x3_y2 
+									(false (alive__x3_y2' 
 										(true (surround_obs__x2_y2' 
 											(true (0.8))
 											(false (0.2))))
-										(false (alive__x3_y3 
+										(false (alive__x3_y3' 
 											(true (surround_obs__x2_y2' 
 												(true (0.8))
 												(false (0.2))))
 											(false (surround_obs__x2_y2' 
 												(true (0.2))
 												(false (0.8))))))))))))))))))
-				(false (alive__x1_y2 
-					(true (alive__x1_y3 
+				(false (alive__x1_y2' 
+					(true (alive__x1_y3' 
 						(true (surround_obs__x2_y2' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x2_y1 
+						(false (alive__x2_y1' 
 							(true (surround_obs__x2_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x2_y3 
+							(false (alive__x2_y3' 
 								(true (surround_obs__x2_y2' 
 									(true (0.8))
 									(false (0.2))))
-								(false (alive__x3_y1 
+								(false (alive__x3_y1' 
 									(true (surround_obs__x2_y2' 
 										(true (0.8))
 										(false (0.2))))
-									(false (alive__x3_y2 
+									(false (alive__x3_y2' 
 										(true (surround_obs__x2_y2' 
 											(true (0.8))
 											(false (0.2))))
-										(false (alive__x3_y3 
+										(false (alive__x3_y3' 
 											(true (surround_obs__x2_y2' 
 												(true (0.8))
 												(false (0.2))))
 											(false (surround_obs__x2_y2' 
 												(true (0.2))
 												(false (0.8))))))))))))))))
-					(false (alive__x1_y3 
-						(true (alive__x2_y1 
+					(false (alive__x1_y3' 
+						(true (alive__x2_y1' 
 							(true (surround_obs__x2_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x2_y3 
+							(false (alive__x2_y3' 
 								(true (surround_obs__x2_y2' 
 									(true (0.8))
 									(false (0.2))))
-								(false (alive__x3_y1 
+								(false (alive__x3_y1' 
 									(true (surround_obs__x2_y2' 
 										(true (0.8))
 										(false (0.2))))
-									(false (alive__x3_y2 
+									(false (alive__x3_y2' 
 										(true (surround_obs__x2_y2' 
 											(true (0.8))
 											(false (0.2))))
-										(false (alive__x3_y3 
+										(false (alive__x3_y3' 
 											(true (surround_obs__x2_y2' 
 												(true (0.8))
 												(false (0.2))))
 											(false (surround_obs__x2_y2' 
 												(true (0.2))
 												(false (0.8))))))))))))))
-						(false (alive__x2_y1 
-							(true (alive__x2_y3 
+						(false (alive__x2_y1' 
+							(true (alive__x2_y3' 
 								(true (surround_obs__x2_y2' 
 									(true (0.8))
 									(false (0.2))))
-								(false (alive__x3_y1 
+								(false (alive__x3_y1' 
 									(true (surround_obs__x2_y2' 
 										(true (0.8))
 										(false (0.2))))
-									(false (alive__x3_y2 
+									(false (alive__x3_y2' 
 										(true (surround_obs__x2_y2' 
 											(true (0.8))
 											(false (0.2))))
-										(false (alive__x3_y3 
+										(false (alive__x3_y3' 
 											(true (surround_obs__x2_y2' 
 												(true (0.8))
 												(false (0.2))))
 											(false (surround_obs__x2_y2' 
 												(true (0.2))
 												(false (0.8))))))))))))
-							(false (alive__x2_y3 
-								(true (alive__x3_y1 
+							(false (alive__x2_y3' 
+								(true (alive__x3_y1' 
 									(true (surround_obs__x2_y2' 
 										(true (0.8))
 										(false (0.2))))
-									(false (alive__x3_y2 
+									(false (alive__x3_y2' 
 										(true (surround_obs__x2_y2' 
 											(true (0.8))
 											(false (0.2))))
-										(false (alive__x3_y3 
+										(false (alive__x3_y3' 
 											(true (surround_obs__x2_y2' 
 												(true (0.8))
 												(false (0.2))))
 											(false (surround_obs__x2_y2' 
 												(true (0.2))
 												(false (0.8))))))))))
-								(false (alive__x3_y1 
-									(true (alive__x3_y2 
+								(false (alive__x3_y1' 
+									(true (alive__x3_y2' 
 										(true (surround_obs__x2_y2' 
 											(true (0.8))
 											(false (0.2))))
-										(false (alive__x3_y3 
+										(false (alive__x3_y3' 
 											(true (surround_obs__x2_y2' 
 												(true (0.8))
 												(false (0.2))))
 											(false (surround_obs__x2_y2' 
 												(true (0.2))
 												(false (0.8))))))))
-									(false (alive__x3_y2 
-										(true (alive__x3_y3 
+									(false (alive__x3_y2' 
+										(true (alive__x3_y3' 
 											(true (surround_obs__x2_y2' 
 												(true (0.8))
 												(false (0.2))))
@@ -17933,56 +17933,56 @@ action set__x3_y1
 											(true (0.2))
 											(false (0.8)))))))))))))))))
 		surround_obs__x2_y3
-			(alive__x1_y2 
-				(true (alive__x1_y3 
+			(alive__x1_y2' 
+				(true (alive__x1_y3' 
 					(true (surround_obs__x2_y3' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x2_y2 
+					(false (alive__x2_y2' 
 						(true (surround_obs__x2_y3' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x3_y2 
+						(false (alive__x3_y2' 
 							(true (surround_obs__x2_y3' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y3 
+							(false (alive__x3_y3' 
 								(true (surround_obs__x2_y3' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x2_y3' 
 									(true (0.2))
 									(false (0.8))))))))))))
-				(false (alive__x1_y3 
-					(true (alive__x2_y2 
+				(false (alive__x1_y3' 
+					(true (alive__x2_y2' 
 						(true (surround_obs__x2_y3' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x3_y2 
+						(false (alive__x3_y2' 
 							(true (surround_obs__x2_y3' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y3 
+							(false (alive__x3_y3' 
 								(true (surround_obs__x2_y3' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x2_y3' 
 									(true (0.2))
 									(false (0.8))))))))))
-					(false (alive__x2_y2 
-						(true (alive__x3_y2 
+					(false (alive__x2_y2' 
+						(true (alive__x3_y2' 
 							(true (surround_obs__x2_y3' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y3 
+							(false (alive__x3_y3' 
 								(true (surround_obs__x2_y3' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x2_y3' 
 									(true (0.2))
 									(false (0.8))))))))
-						(false (alive__x3_y2 
-							(true (alive__x3_y3 
+						(false (alive__x3_y2' 
+							(true (alive__x3_y3' 
 								(true (surround_obs__x2_y3' 
 									(true (0.8))
 									(false (0.2))))
@@ -17993,20 +17993,20 @@ action set__x3_y1
 								(true (0.2))
 								(false (0.8)))))))))))
 		surround_obs__x3_y1
-			(alive__x2_y1 
-				(true (alive__x2_y2 
+			(alive__x2_y1' 
+				(true (alive__x2_y2' 
 					(true (surround_obs__x3_y1' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x3_y2 
+					(false (alive__x3_y2' 
 						(true (surround_obs__x3_y1' 
 							(true (0.8))
 							(false (0.2))))
 						(false (surround_obs__x3_y1' 
 							(true (0.2))
 							(false (0.8))))))))
-				(false (alive__x2_y2 
-					(true (alive__x3_y2 
+				(false (alive__x2_y2' 
+					(true (alive__x3_y2' 
 						(true (surround_obs__x3_y1' 
 							(true (0.8))
 							(false (0.2))))
@@ -18017,56 +18017,56 @@ action set__x3_y1
 						(true (0.2))
 						(false (0.8)))))))
 		surround_obs__x3_y2
-			(alive__x2_y1 
-				(true (alive__x2_y2 
+			(alive__x2_y1' 
+				(true (alive__x2_y2' 
 					(true (surround_obs__x3_y2' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x2_y3 
+					(false (alive__x2_y3' 
 						(true (surround_obs__x3_y2' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x3_y1 
+						(false (alive__x3_y1' 
 							(true (surround_obs__x3_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y3 
+							(false (alive__x3_y3' 
 								(true (surround_obs__x3_y2' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x3_y2' 
 									(true (0.2))
 									(false (0.8))))))))))))
-				(false (alive__x2_y2 
-					(true (alive__x2_y3 
+				(false (alive__x2_y2' 
+					(true (alive__x2_y3' 
 						(true (surround_obs__x3_y2' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x3_y1 
+						(false (alive__x3_y1' 
 							(true (surround_obs__x3_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y3 
+							(false (alive__x3_y3' 
 								(true (surround_obs__x3_y2' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x3_y2' 
 									(true (0.2))
 									(false (0.8))))))))))
-					(false (alive__x2_y3 
-						(true (alive__x3_y1 
+					(false (alive__x2_y3' 
+						(true (alive__x3_y1' 
 							(true (surround_obs__x3_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y3 
+							(false (alive__x3_y3' 
 								(true (surround_obs__x3_y2' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x3_y2' 
 									(true (0.2))
 									(false (0.8))))))))
-						(false (alive__x3_y1 
-							(true (alive__x3_y3 
+						(false (alive__x3_y1' 
+							(true (alive__x3_y3' 
 								(true (surround_obs__x3_y2' 
 									(true (0.8))
 									(false (0.2))))
@@ -18077,20 +18077,20 @@ action set__x3_y1
 								(true (0.2))
 								(false (0.8)))))))))))
 		surround_obs__x3_y3
-			(alive__x2_y2 
-				(true (alive__x2_y3 
+			(alive__x2_y2' 
+				(true (alive__x2_y3' 
 					(true (surround_obs__x3_y3' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x3_y2 
+					(false (alive__x3_y2' 
 						(true (surround_obs__x3_y3' 
 							(true (0.8))
 							(false (0.2))))
 						(false (surround_obs__x3_y3' 
 							(true (0.2))
 							(false (0.8))))))))
-				(false (alive__x2_y3 
-					(true (alive__x3_y2 
+				(false (alive__x2_y3' 
+					(true (alive__x3_y2' 
 						(true (surround_obs__x3_y3' 
 							(true (0.8))
 							(false (0.2))))
@@ -19944,20 +19944,20 @@ action set__x3_y2
 					(false (1)))))))
 	observe 
 		surround_obs__x1_y1
-			(alive__x1_y2 
-				(true (alive__x2_y1 
+			(alive__x1_y2' 
+				(true (alive__x2_y1' 
 					(true (surround_obs__x1_y1' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x2_y2 
+					(false (alive__x2_y2' 
 						(true (surround_obs__x1_y1' 
 							(true (0.8))
 							(false (0.2))))
 						(false (surround_obs__x1_y1' 
 							(true (0.2))
 							(false (0.8))))))))
-				(false (alive__x2_y1 
-					(true (alive__x2_y2 
+				(false (alive__x2_y1' 
+					(true (alive__x2_y2' 
 						(true (surround_obs__x1_y1' 
 							(true (0.8))
 							(false (0.2))))
@@ -19968,56 +19968,56 @@ action set__x3_y2
 						(true (0.2))
 						(false (0.8)))))))
 		surround_obs__x1_y2
-			(alive__x1_y1 
-				(true (alive__x1_y3 
+			(alive__x1_y1' 
+				(true (alive__x1_y3' 
 					(true (surround_obs__x1_y2' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x2_y1 
+					(false (alive__x2_y1' 
 						(true (surround_obs__x1_y2' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x2_y2 
+						(false (alive__x2_y2' 
 							(true (surround_obs__x1_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x2_y3 
+							(false (alive__x2_y3' 
 								(true (surround_obs__x1_y2' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x1_y2' 
 									(true (0.2))
 									(false (0.8))))))))))))
-				(false (alive__x1_y3 
-					(true (alive__x2_y1 
+				(false (alive__x1_y3' 
+					(true (alive__x2_y1' 
 						(true (surround_obs__x1_y2' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x2_y2 
+						(false (alive__x2_y2' 
 							(true (surround_obs__x1_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x2_y3 
+							(false (alive__x2_y3' 
 								(true (surround_obs__x1_y2' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x1_y2' 
 									(true (0.2))
 									(false (0.8))))))))))
-					(false (alive__x2_y1 
-						(true (alive__x2_y2 
+					(false (alive__x2_y1' 
+						(true (alive__x2_y2' 
 							(true (surround_obs__x1_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x2_y3 
+							(false (alive__x2_y3' 
 								(true (surround_obs__x1_y2' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x1_y2' 
 									(true (0.2))
 									(false (0.8))))))))
-						(false (alive__x2_y2 
-							(true (alive__x2_y3 
+						(false (alive__x2_y2' 
+							(true (alive__x2_y3' 
 								(true (surround_obs__x1_y2' 
 									(true (0.8))
 									(false (0.2))))
@@ -20028,20 +20028,20 @@ action set__x3_y2
 								(true (0.2))
 								(false (0.8)))))))))))
 		surround_obs__x1_y3
-			(alive__x1_y2 
-				(true (alive__x2_y2 
+			(alive__x1_y2' 
+				(true (alive__x2_y2' 
 					(true (surround_obs__x1_y3' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x2_y3 
+					(false (alive__x2_y3' 
 						(true (surround_obs__x1_y3' 
 							(true (0.8))
 							(false (0.2))))
 						(false (surround_obs__x1_y3' 
 							(true (0.2))
 							(false (0.8))))))))
-				(false (alive__x2_y2 
-					(true (alive__x2_y3 
+				(false (alive__x2_y2' 
+					(true (alive__x2_y3' 
 						(true (surround_obs__x1_y3' 
 							(true (0.8))
 							(false (0.2))))
@@ -20052,56 +20052,56 @@ action set__x3_y2
 						(true (0.2))
 						(false (0.8)))))))
 		surround_obs__x2_y1
-			(alive__x1_y1 
-				(true (alive__x1_y2 
+			(alive__x1_y1' 
+				(true (alive__x1_y2' 
 					(true (surround_obs__x2_y1' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x2_y2 
+					(false (alive__x2_y2' 
 						(true (surround_obs__x2_y1' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x3_y1 
+						(false (alive__x3_y1' 
 							(true (surround_obs__x2_y1' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y2 
+							(false (alive__x3_y2' 
 								(true (surround_obs__x2_y1' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x2_y1' 
 									(true (0.2))
 									(false (0.8))))))))))))
-				(false (alive__x1_y2 
-					(true (alive__x2_y2 
+				(false (alive__x1_y2' 
+					(true (alive__x2_y2' 
 						(true (surround_obs__x2_y1' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x3_y1 
+						(false (alive__x3_y1' 
 							(true (surround_obs__x2_y1' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y2 
+							(false (alive__x3_y2' 
 								(true (surround_obs__x2_y1' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x2_y1' 
 									(true (0.2))
 									(false (0.8))))))))))
-					(false (alive__x2_y2 
-						(true (alive__x3_y1 
+					(false (alive__x2_y2' 
+						(true (alive__x3_y1' 
 							(true (surround_obs__x2_y1' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y2 
+							(false (alive__x3_y2' 
 								(true (surround_obs__x2_y1' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x2_y1' 
 									(true (0.2))
 									(false (0.8))))))))
-						(false (alive__x3_y1 
-							(true (alive__x3_y2 
+						(false (alive__x3_y1' 
+							(true (alive__x3_y2' 
 								(true (surround_obs__x2_y1' 
 									(true (0.8))
 									(false (0.2))))
@@ -20112,140 +20112,140 @@ action set__x3_y2
 								(true (0.2))
 								(false (0.8)))))))))))
 		surround_obs__x2_y2
-			(alive__x1_y1 
-				(true (alive__x1_y2 
+			(alive__x1_y1' 
+				(true (alive__x1_y2' 
 					(true (surround_obs__x2_y2' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x1_y3 
+					(false (alive__x1_y3' 
 						(true (surround_obs__x2_y2' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x2_y1 
+						(false (alive__x2_y1' 
 							(true (surround_obs__x2_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x2_y3 
+							(false (alive__x2_y3' 
 								(true (surround_obs__x2_y2' 
 									(true (0.8))
 									(false (0.2))))
-								(false (alive__x3_y1 
+								(false (alive__x3_y1' 
 									(true (surround_obs__x2_y2' 
 										(true (0.8))
 										(false (0.2))))
-									(false (alive__x3_y2 
+									(false (alive__x3_y2' 
 										(true (surround_obs__x2_y2' 
 											(true (0.8))
 											(false (0.2))))
-										(false (alive__x3_y3 
+										(false (alive__x3_y3' 
 											(true (surround_obs__x2_y2' 
 												(true (0.8))
 												(false (0.2))))
 											(false (surround_obs__x2_y2' 
 												(true (0.2))
 												(false (0.8))))))))))))))))))
-				(false (alive__x1_y2 
-					(true (alive__x1_y3 
+				(false (alive__x1_y2' 
+					(true (alive__x1_y3' 
 						(true (surround_obs__x2_y2' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x2_y1 
+						(false (alive__x2_y1' 
 							(true (surround_obs__x2_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x2_y3 
+							(false (alive__x2_y3' 
 								(true (surround_obs__x2_y2' 
 									(true (0.8))
 									(false (0.2))))
-								(false (alive__x3_y1 
+								(false (alive__x3_y1' 
 									(true (surround_obs__x2_y2' 
 										(true (0.8))
 										(false (0.2))))
-									(false (alive__x3_y2 
+									(false (alive__x3_y2' 
 										(true (surround_obs__x2_y2' 
 											(true (0.8))
 											(false (0.2))))
-										(false (alive__x3_y3 
+										(false (alive__x3_y3' 
 											(true (surround_obs__x2_y2' 
 												(true (0.8))
 												(false (0.2))))
 											(false (surround_obs__x2_y2' 
 												(true (0.2))
 												(false (0.8))))))))))))))))
-					(false (alive__x1_y3 
-						(true (alive__x2_y1 
+					(false (alive__x1_y3' 
+						(true (alive__x2_y1' 
 							(true (surround_obs__x2_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x2_y3 
+							(false (alive__x2_y3' 
 								(true (surround_obs__x2_y2' 
 									(true (0.8))
 									(false (0.2))))
-								(false (alive__x3_y1 
+								(false (alive__x3_y1' 
 									(true (surround_obs__x2_y2' 
 										(true (0.8))
 										(false (0.2))))
-									(false (alive__x3_y2 
+									(false (alive__x3_y2' 
 										(true (surround_obs__x2_y2' 
 											(true (0.8))
 											(false (0.2))))
-										(false (alive__x3_y3 
+										(false (alive__x3_y3' 
 											(true (surround_obs__x2_y2' 
 												(true (0.8))
 												(false (0.2))))
 											(false (surround_obs__x2_y2' 
 												(true (0.2))
 												(false (0.8))))))))))))))
-						(false (alive__x2_y1 
-							(true (alive__x2_y3 
+						(false (alive__x2_y1' 
+							(true (alive__x2_y3' 
 								(true (surround_obs__x2_y2' 
 									(true (0.8))
 									(false (0.2))))
-								(false (alive__x3_y1 
+								(false (alive__x3_y1' 
 									(true (surround_obs__x2_y2' 
 										(true (0.8))
 										(false (0.2))))
-									(false (alive__x3_y2 
+									(false (alive__x3_y2' 
 										(true (surround_obs__x2_y2' 
 											(true (0.8))
 											(false (0.2))))
-										(false (alive__x3_y3 
+										(false (alive__x3_y3' 
 											(true (surround_obs__x2_y2' 
 												(true (0.8))
 												(false (0.2))))
 											(false (surround_obs__x2_y2' 
 												(true (0.2))
 												(false (0.8))))))))))))
-							(false (alive__x2_y3 
-								(true (alive__x3_y1 
+							(false (alive__x2_y3' 
+								(true (alive__x3_y1' 
 									(true (surround_obs__x2_y2' 
 										(true (0.8))
 										(false (0.2))))
-									(false (alive__x3_y2 
+									(false (alive__x3_y2' 
 										(true (surround_obs__x2_y2' 
 											(true (0.8))
 											(false (0.2))))
-										(false (alive__x3_y3 
+										(false (alive__x3_y3' 
 											(true (surround_obs__x2_y2' 
 												(true (0.8))
 												(false (0.2))))
 											(false (surround_obs__x2_y2' 
 												(true (0.2))
 												(false (0.8))))))))))
-								(false (alive__x3_y1 
-									(true (alive__x3_y2 
+								(false (alive__x3_y1' 
+									(true (alive__x3_y2' 
 										(true (surround_obs__x2_y2' 
 											(true (0.8))
 											(false (0.2))))
-										(false (alive__x3_y3 
+										(false (alive__x3_y3' 
 											(true (surround_obs__x2_y2' 
 												(true (0.8))
 												(false (0.2))))
 											(false (surround_obs__x2_y2' 
 												(true (0.2))
 												(false (0.8))))))))
-									(false (alive__x3_y2 
-										(true (alive__x3_y3 
+									(false (alive__x3_y2' 
+										(true (alive__x3_y3' 
 											(true (surround_obs__x2_y2' 
 												(true (0.8))
 												(false (0.2))))
@@ -20256,56 +20256,56 @@ action set__x3_y2
 											(true (0.2))
 											(false (0.8)))))))))))))))))
 		surround_obs__x2_y3
-			(alive__x1_y2 
-				(true (alive__x1_y3 
+			(alive__x1_y2' 
+				(true (alive__x1_y3' 
 					(true (surround_obs__x2_y3' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x2_y2 
+					(false (alive__x2_y2' 
 						(true (surround_obs__x2_y3' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x3_y2 
+						(false (alive__x3_y2' 
 							(true (surround_obs__x2_y3' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y3 
+							(false (alive__x3_y3' 
 								(true (surround_obs__x2_y3' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x2_y3' 
 									(true (0.2))
 									(false (0.8))))))))))))
-				(false (alive__x1_y3 
-					(true (alive__x2_y2 
+				(false (alive__x1_y3' 
+					(true (alive__x2_y2' 
 						(true (surround_obs__x2_y3' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x3_y2 
+						(false (alive__x3_y2' 
 							(true (surround_obs__x2_y3' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y3 
+							(false (alive__x3_y3' 
 								(true (surround_obs__x2_y3' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x2_y3' 
 									(true (0.2))
 									(false (0.8))))))))))
-					(false (alive__x2_y2 
-						(true (alive__x3_y2 
+					(false (alive__x2_y2' 
+						(true (alive__x3_y2' 
 							(true (surround_obs__x2_y3' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y3 
+							(false (alive__x3_y3' 
 								(true (surround_obs__x2_y3' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x2_y3' 
 									(true (0.2))
 									(false (0.8))))))))
-						(false (alive__x3_y2 
-							(true (alive__x3_y3 
+						(false (alive__x3_y2' 
+							(true (alive__x3_y3' 
 								(true (surround_obs__x2_y3' 
 									(true (0.8))
 									(false (0.2))))
@@ -20316,20 +20316,20 @@ action set__x3_y2
 								(true (0.2))
 								(false (0.8)))))))))))
 		surround_obs__x3_y1
-			(alive__x2_y1 
-				(true (alive__x2_y2 
+			(alive__x2_y1' 
+				(true (alive__x2_y2' 
 					(true (surround_obs__x3_y1' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x3_y2 
+					(false (alive__x3_y2' 
 						(true (surround_obs__x3_y1' 
 							(true (0.8))
 							(false (0.2))))
 						(false (surround_obs__x3_y1' 
 							(true (0.2))
 							(false (0.8))))))))
-				(false (alive__x2_y2 
-					(true (alive__x3_y2 
+				(false (alive__x2_y2' 
+					(true (alive__x3_y2' 
 						(true (surround_obs__x3_y1' 
 							(true (0.8))
 							(false (0.2))))
@@ -20340,56 +20340,56 @@ action set__x3_y2
 						(true (0.2))
 						(false (0.8)))))))
 		surround_obs__x3_y2
-			(alive__x2_y1 
-				(true (alive__x2_y2 
+			(alive__x2_y1' 
+				(true (alive__x2_y2' 
 					(true (surround_obs__x3_y2' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x2_y3 
+					(false (alive__x2_y3' 
 						(true (surround_obs__x3_y2' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x3_y1 
+						(false (alive__x3_y1' 
 							(true (surround_obs__x3_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y3 
+							(false (alive__x3_y3' 
 								(true (surround_obs__x3_y2' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x3_y2' 
 									(true (0.2))
 									(false (0.8))))))))))))
-				(false (alive__x2_y2 
-					(true (alive__x2_y3 
+				(false (alive__x2_y2' 
+					(true (alive__x2_y3' 
 						(true (surround_obs__x3_y2' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x3_y1 
+						(false (alive__x3_y1' 
 							(true (surround_obs__x3_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y3 
+							(false (alive__x3_y3' 
 								(true (surround_obs__x3_y2' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x3_y2' 
 									(true (0.2))
 									(false (0.8))))))))))
-					(false (alive__x2_y3 
-						(true (alive__x3_y1 
+					(false (alive__x2_y3' 
+						(true (alive__x3_y1' 
 							(true (surround_obs__x3_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y3 
+							(false (alive__x3_y3' 
 								(true (surround_obs__x3_y2' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x3_y2' 
 									(true (0.2))
 									(false (0.8))))))))
-						(false (alive__x3_y1 
-							(true (alive__x3_y3 
+						(false (alive__x3_y1' 
+							(true (alive__x3_y3' 
 								(true (surround_obs__x3_y2' 
 									(true (0.8))
 									(false (0.2))))
@@ -20400,20 +20400,20 @@ action set__x3_y2
 								(true (0.2))
 								(false (0.8)))))))))))
 		surround_obs__x3_y3
-			(alive__x2_y2 
-				(true (alive__x2_y3 
+			(alive__x2_y2' 
+				(true (alive__x2_y3' 
 					(true (surround_obs__x3_y3' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x3_y2 
+					(false (alive__x3_y2' 
 						(true (surround_obs__x3_y3' 
 							(true (0.8))
 							(false (0.2))))
 						(false (surround_obs__x3_y3' 
 							(true (0.2))
 							(false (0.8))))))))
-				(false (alive__x2_y3 
-					(true (alive__x3_y2 
+				(false (alive__x2_y3' 
+					(true (alive__x3_y2' 
 						(true (surround_obs__x3_y3' 
 							(true (0.8))
 							(false (0.2))))
@@ -22387,20 +22387,20 @@ action set__x3_y3
 			(false (0)))
 	observe 
 		surround_obs__x1_y1
-			(alive__x1_y2 
-				(true (alive__x2_y1 
+			(alive__x1_y2' 
+				(true (alive__x2_y1' 
 					(true (surround_obs__x1_y1' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x2_y2 
+					(false (alive__x2_y2' 
 						(true (surround_obs__x1_y1' 
 							(true (0.8))
 							(false (0.2))))
 						(false (surround_obs__x1_y1' 
 							(true (0.2))
 							(false (0.8))))))))
-				(false (alive__x2_y1 
-					(true (alive__x2_y2 
+				(false (alive__x2_y1' 
+					(true (alive__x2_y2' 
 						(true (surround_obs__x1_y1' 
 							(true (0.8))
 							(false (0.2))))
@@ -22411,56 +22411,56 @@ action set__x3_y3
 						(true (0.2))
 						(false (0.8)))))))
 		surround_obs__x1_y2
-			(alive__x1_y1 
-				(true (alive__x1_y3 
+			(alive__x1_y1' 
+				(true (alive__x1_y3' 
 					(true (surround_obs__x1_y2' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x2_y1 
+					(false (alive__x2_y1' 
 						(true (surround_obs__x1_y2' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x2_y2 
+						(false (alive__x2_y2' 
 							(true (surround_obs__x1_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x2_y3 
+							(false (alive__x2_y3' 
 								(true (surround_obs__x1_y2' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x1_y2' 
 									(true (0.2))
 									(false (0.8))))))))))))
-				(false (alive__x1_y3 
-					(true (alive__x2_y1 
+				(false (alive__x1_y3' 
+					(true (alive__x2_y1' 
 						(true (surround_obs__x1_y2' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x2_y2 
+						(false (alive__x2_y2' 
 							(true (surround_obs__x1_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x2_y3 
+							(false (alive__x2_y3' 
 								(true (surround_obs__x1_y2' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x1_y2' 
 									(true (0.2))
 									(false (0.8))))))))))
-					(false (alive__x2_y1 
-						(true (alive__x2_y2 
+					(false (alive__x2_y1' 
+						(true (alive__x2_y2' 
 							(true (surround_obs__x1_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x2_y3 
+							(false (alive__x2_y3' 
 								(true (surround_obs__x1_y2' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x1_y2' 
 									(true (0.2))
 									(false (0.8))))))))
-						(false (alive__x2_y2 
-							(true (alive__x2_y3 
+						(false (alive__x2_y2' 
+							(true (alive__x2_y3' 
 								(true (surround_obs__x1_y2' 
 									(true (0.8))
 									(false (0.2))))
@@ -22471,20 +22471,20 @@ action set__x3_y3
 								(true (0.2))
 								(false (0.8)))))))))))
 		surround_obs__x1_y3
-			(alive__x1_y2 
-				(true (alive__x2_y2 
+			(alive__x1_y2' 
+				(true (alive__x2_y2' 
 					(true (surround_obs__x1_y3' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x2_y3 
+					(false (alive__x2_y3' 
 						(true (surround_obs__x1_y3' 
 							(true (0.8))
 							(false (0.2))))
 						(false (surround_obs__x1_y3' 
 							(true (0.2))
 							(false (0.8))))))))
-				(false (alive__x2_y2 
-					(true (alive__x2_y3 
+				(false (alive__x2_y2' 
+					(true (alive__x2_y3' 
 						(true (surround_obs__x1_y3' 
 							(true (0.8))
 							(false (0.2))))
@@ -22495,56 +22495,56 @@ action set__x3_y3
 						(true (0.2))
 						(false (0.8)))))))
 		surround_obs__x2_y1
-			(alive__x1_y1 
-				(true (alive__x1_y2 
+			(alive__x1_y1' 
+				(true (alive__x1_y2' 
 					(true (surround_obs__x2_y1' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x2_y2 
+					(false (alive__x2_y2' 
 						(true (surround_obs__x2_y1' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x3_y1 
+						(false (alive__x3_y1' 
 							(true (surround_obs__x2_y1' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y2 
+							(false (alive__x3_y2' 
 								(true (surround_obs__x2_y1' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x2_y1' 
 									(true (0.2))
 									(false (0.8))))))))))))
-				(false (alive__x1_y2 
-					(true (alive__x2_y2 
+				(false (alive__x1_y2' 
+					(true (alive__x2_y2' 
 						(true (surround_obs__x2_y1' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x3_y1 
+						(false (alive__x3_y1' 
 							(true (surround_obs__x2_y1' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y2 
+							(false (alive__x3_y2' 
 								(true (surround_obs__x2_y1' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x2_y1' 
 									(true (0.2))
 									(false (0.8))))))))))
-					(false (alive__x2_y2 
-						(true (alive__x3_y1 
+					(false (alive__x2_y2' 
+						(true (alive__x3_y1' 
 							(true (surround_obs__x2_y1' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y2 
+							(false (alive__x3_y2' 
 								(true (surround_obs__x2_y1' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x2_y1' 
 									(true (0.2))
 									(false (0.8))))))))
-						(false (alive__x3_y1 
-							(true (alive__x3_y2 
+						(false (alive__x3_y1' 
+							(true (alive__x3_y2' 
 								(true (surround_obs__x2_y1' 
 									(true (0.8))
 									(false (0.2))))
@@ -22555,140 +22555,140 @@ action set__x3_y3
 								(true (0.2))
 								(false (0.8)))))))))))
 		surround_obs__x2_y2
-			(alive__x1_y1 
-				(true (alive__x1_y2 
+			(alive__x1_y1' 
+				(true (alive__x1_y2' 
 					(true (surround_obs__x2_y2' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x1_y3 
+					(false (alive__x1_y3' 
 						(true (surround_obs__x2_y2' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x2_y1 
+						(false (alive__x2_y1' 
 							(true (surround_obs__x2_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x2_y3 
+							(false (alive__x2_y3' 
 								(true (surround_obs__x2_y2' 
 									(true (0.8))
 									(false (0.2))))
-								(false (alive__x3_y1 
+								(false (alive__x3_y1' 
 									(true (surround_obs__x2_y2' 
 										(true (0.8))
 										(false (0.2))))
-									(false (alive__x3_y2 
+									(false (alive__x3_y2' 
 										(true (surround_obs__x2_y2' 
 											(true (0.8))
 											(false (0.2))))
-										(false (alive__x3_y3 
+										(false (alive__x3_y3' 
 											(true (surround_obs__x2_y2' 
 												(true (0.8))
 												(false (0.2))))
 											(false (surround_obs__x2_y2' 
 												(true (0.2))
 												(false (0.8))))))))))))))))))
-				(false (alive__x1_y2 
-					(true (alive__x1_y3 
+				(false (alive__x1_y2' 
+					(true (alive__x1_y3' 
 						(true (surround_obs__x2_y2' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x2_y1 
+						(false (alive__x2_y1' 
 							(true (surround_obs__x2_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x2_y3 
+							(false (alive__x2_y3' 
 								(true (surround_obs__x2_y2' 
 									(true (0.8))
 									(false (0.2))))
-								(false (alive__x3_y1 
+								(false (alive__x3_y1' 
 									(true (surround_obs__x2_y2' 
 										(true (0.8))
 										(false (0.2))))
-									(false (alive__x3_y2 
+									(false (alive__x3_y2' 
 										(true (surround_obs__x2_y2' 
 											(true (0.8))
 											(false (0.2))))
-										(false (alive__x3_y3 
+										(false (alive__x3_y3' 
 											(true (surround_obs__x2_y2' 
 												(true (0.8))
 												(false (0.2))))
 											(false (surround_obs__x2_y2' 
 												(true (0.2))
 												(false (0.8))))))))))))))))
-					(false (alive__x1_y3 
-						(true (alive__x2_y1 
+					(false (alive__x1_y3' 
+						(true (alive__x2_y1' 
 							(true (surround_obs__x2_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x2_y3 
+							(false (alive__x2_y3' 
 								(true (surround_obs__x2_y2' 
 									(true (0.8))
 									(false (0.2))))
-								(false (alive__x3_y1 
+								(false (alive__x3_y1' 
 									(true (surround_obs__x2_y2' 
 										(true (0.8))
 										(false (0.2))))
-									(false (alive__x3_y2 
+									(false (alive__x3_y2' 
 										(true (surround_obs__x2_y2' 
 											(true (0.8))
 											(false (0.2))))
-										(false (alive__x3_y3 
+										(false (alive__x3_y3' 
 											(true (surround_obs__x2_y2' 
 												(true (0.8))
 												(false (0.2))))
 											(false (surround_obs__x2_y2' 
 												(true (0.2))
 												(false (0.8))))))))))))))
-						(false (alive__x2_y1 
-							(true (alive__x2_y3 
+						(false (alive__x2_y1' 
+							(true (alive__x2_y3' 
 								(true (surround_obs__x2_y2' 
 									(true (0.8))
 									(false (0.2))))
-								(false (alive__x3_y1 
+								(false (alive__x3_y1' 
 									(true (surround_obs__x2_y2' 
 										(true (0.8))
 										(false (0.2))))
-									(false (alive__x3_y2 
+									(false (alive__x3_y2' 
 										(true (surround_obs__x2_y2' 
 											(true (0.8))
 											(false (0.2))))
-										(false (alive__x3_y3 
+										(false (alive__x3_y3' 
 											(true (surround_obs__x2_y2' 
 												(true (0.8))
 												(false (0.2))))
 											(false (surround_obs__x2_y2' 
 												(true (0.2))
 												(false (0.8))))))))))))
-							(false (alive__x2_y3 
-								(true (alive__x3_y1 
+							(false (alive__x2_y3' 
+								(true (alive__x3_y1' 
 									(true (surround_obs__x2_y2' 
 										(true (0.8))
 										(false (0.2))))
-									(false (alive__x3_y2 
+									(false (alive__x3_y2' 
 										(true (surround_obs__x2_y2' 
 											(true (0.8))
 											(false (0.2))))
-										(false (alive__x3_y3 
+										(false (alive__x3_y3' 
 											(true (surround_obs__x2_y2' 
 												(true (0.8))
 												(false (0.2))))
 											(false (surround_obs__x2_y2' 
 												(true (0.2))
 												(false (0.8))))))))))
-								(false (alive__x3_y1 
-									(true (alive__x3_y2 
+								(false (alive__x3_y1' 
+									(true (alive__x3_y2' 
 										(true (surround_obs__x2_y2' 
 											(true (0.8))
 											(false (0.2))))
-										(false (alive__x3_y3 
+										(false (alive__x3_y3' 
 											(true (surround_obs__x2_y2' 
 												(true (0.8))
 												(false (0.2))))
 											(false (surround_obs__x2_y2' 
 												(true (0.2))
 												(false (0.8))))))))
-									(false (alive__x3_y2 
-										(true (alive__x3_y3 
+									(false (alive__x3_y2' 
+										(true (alive__x3_y3' 
 											(true (surround_obs__x2_y2' 
 												(true (0.8))
 												(false (0.2))))
@@ -22699,56 +22699,56 @@ action set__x3_y3
 											(true (0.2))
 											(false (0.8)))))))))))))))))
 		surround_obs__x2_y3
-			(alive__x1_y2 
-				(true (alive__x1_y3 
+			(alive__x1_y2' 
+				(true (alive__x1_y3' 
 					(true (surround_obs__x2_y3' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x2_y2 
+					(false (alive__x2_y2' 
 						(true (surround_obs__x2_y3' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x3_y2 
+						(false (alive__x3_y2' 
 							(true (surround_obs__x2_y3' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y3 
+							(false (alive__x3_y3' 
 								(true (surround_obs__x2_y3' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x2_y3' 
 									(true (0.2))
 									(false (0.8))))))))))))
-				(false (alive__x1_y3 
-					(true (alive__x2_y2 
+				(false (alive__x1_y3' 
+					(true (alive__x2_y2' 
 						(true (surround_obs__x2_y3' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x3_y2 
+						(false (alive__x3_y2' 
 							(true (surround_obs__x2_y3' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y3 
+							(false (alive__x3_y3' 
 								(true (surround_obs__x2_y3' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x2_y3' 
 									(true (0.2))
 									(false (0.8))))))))))
-					(false (alive__x2_y2 
-						(true (alive__x3_y2 
+					(false (alive__x2_y2' 
+						(true (alive__x3_y2' 
 							(true (surround_obs__x2_y3' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y3 
+							(false (alive__x3_y3' 
 								(true (surround_obs__x2_y3' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x2_y3' 
 									(true (0.2))
 									(false (0.8))))))))
-						(false (alive__x3_y2 
-							(true (alive__x3_y3 
+						(false (alive__x3_y2' 
+							(true (alive__x3_y3' 
 								(true (surround_obs__x2_y3' 
 									(true (0.8))
 									(false (0.2))))
@@ -22759,20 +22759,20 @@ action set__x3_y3
 								(true (0.2))
 								(false (0.8)))))))))))
 		surround_obs__x3_y1
-			(alive__x2_y1 
-				(true (alive__x2_y2 
+			(alive__x2_y1' 
+				(true (alive__x2_y2' 
 					(true (surround_obs__x3_y1' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x3_y2 
+					(false (alive__x3_y2' 
 						(true (surround_obs__x3_y1' 
 							(true (0.8))
 							(false (0.2))))
 						(false (surround_obs__x3_y1' 
 							(true (0.2))
 							(false (0.8))))))))
-				(false (alive__x2_y2 
-					(true (alive__x3_y2 
+				(false (alive__x2_y2' 
+					(true (alive__x3_y2' 
 						(true (surround_obs__x3_y1' 
 							(true (0.8))
 							(false (0.2))))
@@ -22783,56 +22783,56 @@ action set__x3_y3
 						(true (0.2))
 						(false (0.8)))))))
 		surround_obs__x3_y2
-			(alive__x2_y1 
-				(true (alive__x2_y2 
+			(alive__x2_y1' 
+				(true (alive__x2_y2' 
 					(true (surround_obs__x3_y2' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x2_y3 
+					(false (alive__x2_y3' 
 						(true (surround_obs__x3_y2' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x3_y1 
+						(false (alive__x3_y1' 
 							(true (surround_obs__x3_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y3 
+							(false (alive__x3_y3' 
 								(true (surround_obs__x3_y2' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x3_y2' 
 									(true (0.2))
 									(false (0.8))))))))))))
-				(false (alive__x2_y2 
-					(true (alive__x2_y3 
+				(false (alive__x2_y2' 
+					(true (alive__x2_y3' 
 						(true (surround_obs__x3_y2' 
 							(true (0.8))
 							(false (0.2))))
-						(false (alive__x3_y1 
+						(false (alive__x3_y1' 
 							(true (surround_obs__x3_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y3 
+							(false (alive__x3_y3' 
 								(true (surround_obs__x3_y2' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x3_y2' 
 									(true (0.2))
 									(false (0.8))))))))))
-					(false (alive__x2_y3 
-						(true (alive__x3_y1 
+					(false (alive__x2_y3' 
+						(true (alive__x3_y1' 
 							(true (surround_obs__x3_y2' 
 								(true (0.8))
 								(false (0.2))))
-							(false (alive__x3_y3 
+							(false (alive__x3_y3' 
 								(true (surround_obs__x3_y2' 
 									(true (0.8))
 									(false (0.2))))
 								(false (surround_obs__x3_y2' 
 									(true (0.2))
 									(false (0.8))))))))
-						(false (alive__x3_y1 
-							(true (alive__x3_y3 
+						(false (alive__x3_y1' 
+							(true (alive__x3_y3' 
 								(true (surround_obs__x3_y2' 
 									(true (0.8))
 									(false (0.2))))
@@ -22843,20 +22843,20 @@ action set__x3_y3
 								(true (0.2))
 								(false (0.8)))))))))))
 		surround_obs__x3_y3
-			(alive__x2_y2 
-				(true (alive__x2_y3 
+			(alive__x2_y2' 
+				(true (alive__x2_y3' 
 					(true (surround_obs__x3_y3' 
 						(true (0.8))
 						(false (0.2))))
-					(false (alive__x3_y2 
+					(false (alive__x3_y2' 
 						(true (surround_obs__x3_y3' 
 							(true (0.8))
 							(false (0.2))))
 						(false (surround_obs__x3_y3' 
 							(true (0.2))
 							(false (0.8))))))))
-				(false (alive__x2_y3 
-					(true (alive__x3_y2 
+				(false (alive__x2_y3' 
+					(true (alive__x3_y2' 
 						(true (surround_obs__x3_y3' 
 							(true (0.8))
 							(false (0.2))))
@@ -23896,5 +23896,6 @@ reward
 										(true (1))
 										(false (0)))))))))))))))))))
 
-discount 0.9
+%% horizon 20
+discount 1.0
 tolerance 0.00001

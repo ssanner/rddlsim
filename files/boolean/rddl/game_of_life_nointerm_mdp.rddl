@@ -38,7 +38,7 @@ domain game_of_life_mdp {
 						| set(?x,?y));  		
 	};
     	
-	reward = [sum_{?x : x_pos, ?y : y_pos} alive(?x,?y)] - [sum_{?x : x_pos, ?y : y_pos} set(?x,?y)];
+	reward = sum_{?x : x_pos, ?y : y_pos} [alive(?x,?y) - set(?x,?y)];
 }
    
 non-fluents game2 {
@@ -141,7 +141,7 @@ instance glm1 {
   
 	max-nondef-actions = 1;
 	horizon  = 20;
-	discount = 0.9;
+	discount = 1.0;
 }
 
 instance glm2 {
@@ -158,5 +158,5 @@ instance glm2 {
   
 	max-nondef-actions = 1;
 	horizon  = 20;
-	discount = 0.9;
+	discount = 1.0;
 }

@@ -38,7 +38,7 @@ domain sysadmin_mdp {
 							else Bernoulli(REBOOT-PROB); 
 	};
   
-	reward = [sum_{?c : computer} running(?c)] - [sum_{?c : computer} reboot(?c)];
+	reward = sum_{?c : computer} [running(?c) - reboot(?c)];
 }
         
 // Define non-fluents here.
@@ -97,7 +97,7 @@ instance sysm1 {
   
 	max-nondef-actions = 1;
  	horizon  = 20;
-	discount = 0.9;
+	discount = 1.0;
 }
 
 // Specify an actual problem instance 
@@ -113,5 +113,5 @@ instance sysm2 {
   
 	max-nondef-actions = 1;
  	horizon  = 20;
-	discount = 0.9;
+	discount = 1.0;
 }

@@ -41,12 +41,12 @@ domain sysadmin_pomdp {
 													/ [sum_{?y : computer} CONNECTED(?y,?x)])
 							else Bernoulli(REBOOT-PROB); 
             	
-		running-obs(?x) = if (running(?x)) 
+		running-obs(?x) = if (running'(?x)) 
 							then Bernoulli(.8) 
 							else Bernoulli(.2);
 	};
   
-	reward = [sum_{?c : computer} running(?c)] - [sum_{?c : computer} reboot(?c)];
+	reward = sum_{?c : computer} [running(?c) - reboot(?c)];
 }
         
         
@@ -106,7 +106,7 @@ instance sysp1 {
   
 	max-nondef-actions = 1;
  	horizon  = 20;
-	discount = 0.9;
+	discount = 1.0;
 }
 
 // Specify an actual problem instance 
@@ -122,5 +122,5 @@ instance sysp2 {
   
 	max-nondef-actions = 1;
  	horizon  = 20;
-	discount = 0.9;
+	discount = 1.0;
 }
