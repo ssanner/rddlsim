@@ -260,10 +260,13 @@ public class Client {
 					break;
 				}
 				isrc = Server.readOneMessage(isr);
-				processXMLRoundEnd(p, isrc);
+				double reward = processXMLRoundEnd(p, isrc);
+				policy.roundEnd(reward);
+				//System.out.println("Round reward: " + reward);
 			}
 			isrc = Server.readOneMessage(isr);
-			processXMLSessionEnd(p, isrc);
+			double total_reward = processXMLSessionEnd(p, isrc);
+			policy.sessionEnd(total_reward);
 			
 			/** Close the socket connection. */
 			connection.close();

@@ -279,6 +279,8 @@ public class Server implements Runnable {
 							state, rand)).doubleValue();
 					rewards.add(reward);
 					accum_reward += cur_discount * reward;
+					//System.out.println("Accum reward: " + accum_reward + ", instance._dDiscount: " + instance._dDiscount + 
+					//   " / " + (cur_discount * reward) + " / " + reward);
 					cur_discount *= instance._dDiscount;
 
 					stateViz.display(state, h);			
@@ -291,6 +293,8 @@ public class Server implements Runnable {
 				sendOneMessage(osw, msg);
 			}
 			msg = createXMLSessionEnd(accum_total_reward, r, 0, this.clientName, this.id);
+			if (SHOW_MSG)
+				System.out.println("Sending msg:\n" + msg);
 			sendOneMessage(osw, msg);
 
 			BufferedWriter bw = new BufferedWriter(new FileWriter(LOG_FILE, true));
