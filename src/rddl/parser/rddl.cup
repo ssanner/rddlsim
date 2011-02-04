@@ -15,13 +15,22 @@ parser code {:
 	
 	// Just a testing interface (loads formula from file)
 	public static void main(String args[]) throws Exception {
-	    if (args.length == 0) {
-	    	System.out.println("Must pass a RDDL file as the first command line argument");
-	    	System.exit(1);
+	    if (args.length == 0 || args.length > 2) 
+			usageAndExit();
+	    else if (args.length == 2 && args[1].equalsIgnoreCase("-prefix-output"))
+	    	RDDL.USE_PREFIX = true; // Set prefix output
+	    else if (args.length == 2) {
+	    	System.out.println("Unrecognized option: " + args[1]);
+	    	usageAndExit();
 	    }
 		RDDL rddl = parse(new File(args[0]));
 		System.out.println(rddl);
     }
+
+	public static void usageAndExit() {
+		System.out.println("Usage: RDDL-filename [-prefix-output]");
+	    System.exit(1);	
+	}
 
 	// The main runtime method to call
 	public static RDDL parse(String s) 
