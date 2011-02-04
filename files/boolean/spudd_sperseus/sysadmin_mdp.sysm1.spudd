@@ -68,6 +68,8 @@ action noop
 				(false (running__c4' 
 					(true (0.05))
 					(false (0.95)))))))
+	cost 
+		(0)
 endaction
 
 action reboot__c1
@@ -117,6 +119,8 @@ action reboot__c1
 				(false (running__c4' 
 					(true (0.05))
 					(false (0.95)))))))
+	cost 
+		(1)
 endaction
 
 action reboot__c2
@@ -162,6 +166,8 @@ action reboot__c2
 				(false (running__c4' 
 					(true (0.05))
 					(false (0.95)))))))
+	cost 
+		(1)
 endaction
 
 action reboot__c3
@@ -207,6 +213,8 @@ action reboot__c3
 				(false (running__c4' 
 					(true (0.05))
 					(false (0.95)))))))
+	cost 
+		(1)
 endaction
 
 action reboot__c4
@@ -252,6 +260,8 @@ action reboot__c4
 		(running__c4' 
 			(true (1))
 			(false (0)))
+	cost 
+		(1)
 endaction
 
 reward
