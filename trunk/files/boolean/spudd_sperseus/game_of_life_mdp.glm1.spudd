@@ -176,6 +176,8 @@ action noop
 				(false (alive__x2_y2' 
 					(true (0))
 					(false (1)))))))
+	cost 
+		(0)
 endaction
 
 action set__x1_y1
@@ -303,6 +305,8 @@ action set__x1_y1
 				(false (alive__x2_y2' 
 					(true (0))
 					(false (1)))))))
+	cost 
+		(1)
 endaction
 
 action set__x1_y2
@@ -430,6 +434,8 @@ action set__x1_y2
 				(false (alive__x2_y2' 
 					(true (0))
 					(false (1)))))))
+	cost 
+		(1)
 endaction
 
 action set__x2_y1
@@ -557,6 +563,8 @@ action set__x2_y1
 				(false (alive__x2_y2' 
 					(true (0))
 					(false (1)))))))
+	cost 
+		(1)
 endaction
 
 action set__x2_y2
@@ -684,6 +692,8 @@ action set__x2_y2
 		(alive__x2_y2' 
 			(true (1))
 			(false (0)))
+	cost 
+		(1)
 endaction
 
 reward

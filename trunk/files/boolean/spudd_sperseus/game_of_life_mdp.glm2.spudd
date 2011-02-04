@@ -2018,6 +2018,8 @@ action noop
 				(false (alive__x3_y3' 
 					(true (0))
 					(false (1)))))))
+	cost 
+		(0)
 endaction
 
 action set__x1_y1
@@ -3977,6 +3979,8 @@ action set__x1_y1
 				(false (alive__x3_y3' 
 					(true (0))
 					(false (1)))))))
+	cost 
+		(1)
 endaction
 
 action set__x1_y2
@@ -5780,6 +5784,8 @@ action set__x1_y2
 				(false (alive__x3_y3' 
 					(true (0))
 					(false (1)))))))
+	cost 
+		(1)
 endaction
 
 action set__x1_y3
@@ -7739,6 +7745,8 @@ action set__x1_y3
 				(false (alive__x3_y3' 
 					(true (0))
 					(false (1)))))))
+	cost 
+		(1)
 endaction
 
 action set__x2_y1
@@ -9542,6 +9550,8 @@ action set__x2_y1
 				(false (alive__x3_y3' 
 					(true (0))
 					(false (1)))))))
+	cost 
+		(1)
 endaction
 
 action set__x2_y2
@@ -10445,6 +10455,8 @@ action set__x2_y2
 				(false (alive__x3_y3' 
 					(true (0))
 					(false (1)))))))
+	cost 
+		(1)
 endaction
 
 action set__x2_y3
@@ -12260,6 +12272,8 @@ action set__x2_y3
 				(false (alive__x3_y3' 
 					(true (0))
 					(false (1)))))))
+	cost 
+		(1)
 endaction
 
 action set__x3_y1
@@ -14219,6 +14233,8 @@ action set__x3_y1
 				(false (alive__x3_y3' 
 					(true (0))
 					(false (1)))))))
+	cost 
+		(1)
 endaction
 
 action set__x3_y2
@@ -16058,6 +16074,8 @@ action set__x3_y2
 				(false (alive__x3_y3' 
 					(true (0))
 					(false (1)))))))
+	cost 
+		(1)
 endaction
 
 action set__x3_y3
@@ -18017,6 +18035,8 @@ action set__x3_y3
 		(alive__x3_y3' 
 			(true (1))
 			(false (0)))
+	cost 
+		(1)
 endaction
 
 reward

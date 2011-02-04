@@ -272,16 +272,17 @@ public class RDDL2Format {
 				pw.println();
 			}
 			pw.println("\tendobserve");
-			
-			// Always show action cost (can be zero)
-			int reward_dd = _act2rewardDD.get(action_name);
-			int cost_dd = _context.applyInt(_reward, reward_dd, DD.ARITH_MINUS);
-			//if (cost_dd != DD_ZERO) { // All functions are canonical 
-			pw.print("\tcost ");
-			_context.exportTree(cost_dd, pw, curr_format, 2);
-			pw.println();
-			//}
 		}
+			
+		// Always show action cost (can be zero)
+		int reward_dd = _act2rewardDD.get(action_name);
+		int cost_dd = _context.applyInt(_reward, reward_dd, DD.ARITH_MINUS);
+		//if (cost_dd != DD_ZERO) { // All functions are canonical 
+		pw.print("\tcost ");
+		_context.exportTree(cost_dd, pw, curr_format, 2);
+		pw.println();
+		//}
+
 		pw.println("endaction");	
 	}
 
@@ -394,7 +395,8 @@ public class RDDL2Format {
 		
 		// Now export the reward for this action
 		PW = pw;
-		_context.enumeratePaths(_reward, 
+		int reward_dd = _act2rewardDD.get(action_name);
+		_context.enumeratePaths(reward_dd, 
 				new ADD.ADDLeafOperation() {
 			public void processADDLeaf(ArrayList<String> assign,
 					double leaf_val) {
@@ -415,7 +417,8 @@ public class RDDL2Format {
 					}
 					PW.print(") ");
 				}	
-				PW.println("(increase (reward) " + leaf_val + "))");
+				String operation = leaf_val > 0d ? "increase" : "decrease";
+				PW.println("(" + operation + " (reward) " + Math.abs(leaf_val) + "))");
 			}
 		});
 		pw.println("\t\t)");
