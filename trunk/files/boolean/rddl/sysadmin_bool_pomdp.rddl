@@ -2,8 +2,7 @@
 // SysAdmin Boolean POMDP 
 //
 // An example RDDL description for the well-known SysAdmin problem
-// (Guestrin, Koller, Parr, IJCAI-01) with a number of enhancements
-// to demonstrate the expressivity of RDDL.
+// (Guestrin, Koller, Parr, IJCAI-01).
 //
 // Author: Scott Sanner (ssanner [at] gmail.com)
 ////////////////////////////////////////////////////////////////////
