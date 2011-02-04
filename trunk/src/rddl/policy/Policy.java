@@ -37,6 +37,20 @@ public abstract class Policy {
 		System.out.println(">>> ROUND INIT " + round_number + "/" + total_rounds + "; time remaining = " + time_left + ", horizon = " + horizon);
 		System.out.println("*********************************************************");
 	}
+	
+	// Override if needed
+	public void roundEnd(double reward) {
+		System.out.println("\n*********************************************************");
+		System.out.println(">>> ROUND END, reward = " + reward);
+		System.out.println("*********************************************************");
+	}
+	
+	// Override if needed
+	public void sessionEnd(double total_reward) {
+		System.out.println("\n*********************************************************");
+		System.out.println(">>> SESSION END, total reward = " + total_reward);
+		System.out.println("*********************************************************");
+	}
 
 	// Must override
 	public abstract ArrayList<PVAR_INST_DEF> getActions(State s) throws EvalException;
