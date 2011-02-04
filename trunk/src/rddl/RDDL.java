@@ -17,6 +17,8 @@ public class RDDL {
 
 	public final static boolean DEBUG_EXPR_EVAL = false;
 	
+	public static boolean USE_PREFIX = false;
+	
 	public RDDL() { }
 
 	public RDDL(RDDL rddl) { 
@@ -603,7 +605,10 @@ public class RDDL {
 		public TYPE_NAME _sType;
 		
 		public String toString() {
-			return _sVarName + " : " + _sType;
+			if (USE_PREFIX)
+				return "(" + _sVarName + " : " + _sType + ")";
+			else
+				return _sVarName + " : " + _sType;
 		}
 
 		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<Pair> gfluents) 
@@ -685,16 +690,23 @@ public class RDDL {
 		
 		public String toString() {
 			StringBuilder sb = new StringBuilder();
+			if (USE_PREFIX)
+				sb.append("(");
 			sb.append(_sName);
 			if (_alTerms.size() > 0) {
 				boolean first = true;
-				sb.append("(");
+				if (!USE_PREFIX) 
+					sb.append("(");
 				for (LTERM term : _alTerms) {
-					sb.append((first ? "" : ", ") + term);
+					if (USE_PREFIX)
+						sb.append(" " + term);
+					else
+						sb.append((first ? "" : ", ") + term);
 					first = false;
 				}
 				sb.append(")");
-			}			
+			} else if (USE_PREFIX) // Prefix always parenthesized
+				sb.append(")");	
 			return sb.toString();
 		}
 		
@@ -884,7 +896,10 @@ public class RDDL {
 		public EXPR _exprRealValue;
 		
 		public String toString() {
-			return "DiracDelta(" + _exprRealValue + ")";
+			if (USE_PREFIX) 
+				return "(DiracDelta " + _exprRealValue + ")";
+			else
+				return "DiracDelta(" + _exprRealValue + ")";
 		}
 		
 		public Object sample(HashMap<LVAR,LCONST> subs, State s, Random r) throws EvalException {
@@ -914,7 +929,10 @@ public class RDDL {
 		public EXPR _exprIntValue;
 		
 		public String toString() {
-			return "KronDelta(" + _exprIntValue + ")";
+			if (USE_PREFIX) 
+				return "(KronDelta " + _exprIntValue + ")";
+			else
+				return "KronDelta(" + _exprIntValue + ")";
 		}
 		
 		public Object sample(HashMap<LVAR,LCONST> subs, State s, Random r) throws EvalException {
@@ -952,7 +970,10 @@ public class RDDL {
 		public EXPR _exprUpperReal;
 		
 		public String toString() {
-			return "Uniform(" + _exprLowerReal + ", " + _exprUpperReal + ")";
+			if (USE_PREFIX) 
+				return "(Uniform " + _exprLowerReal + " " + _exprUpperReal + ")";
+			else
+				return "Uniform(" + _exprLowerReal + ", " + _exprUpperReal + ")";
 		}
 		
 		public Object sample(HashMap<LVAR,LCONST> subs, State s, Random r) throws EvalException {
@@ -1002,7 +1023,10 @@ public class RDDL {
 		public EXPR _normalVarReal;
 		
 		public String toString() {
-			return "Normal(" + _normalMeanReal + ", " + _normalVarReal + ")";
+			if (USE_PREFIX) 
+				return "(Normal " + _normalMeanReal + " " + _normalVarReal + ")";
+			else
+				return "Normal(" + _normalMeanReal + ", " + _normalVarReal + ")";
 		}
 		
 		public Object sample(HashMap<LVAR,LCONST> subs, State s, Random r) throws EvalException {
@@ -1045,7 +1069,7 @@ public class RDDL {
 		public EXPR _exprLambdaReal;
 		
 		public String toString() {
-			return "Exponential(" + _exprLambdaReal + ")";
+			return "(Exponential " + _exprLambdaReal + ")";
 		}
 		
 		public Object sample(HashMap<LVAR,LCONST> subs, State s, Random r) throws EvalException {
@@ -1076,9 +1100,16 @@ public class RDDL {
 		
 		public String toString() {
 			StringBuilder sb = new StringBuilder();
-			sb.append("Discrete(" + _sEnumType);
-			for (int i = 0; i < _exprProbs.size(); i+=2)
-				sb.append(", " + ((ENUM_VAL)_exprProbs.get(i)) + " : " + ((EXPR)_exprProbs.get(i+1)));
+			if (USE_PREFIX) {
+				sb.append("(Discrete " + _sEnumType + " ( ");
+				for (int i = 0; i < _exprProbs.size(); i+=2)
+					sb.append("(" + ((ENUM_VAL)_exprProbs.get(i)) + " : " + ((EXPR)_exprProbs.get(i+1)) + ") ");
+				sb.append(")");
+			} else {
+				sb.append("Discrete(" + _sEnumType);
+				for (int i = 0; i < _exprProbs.size(); i+=2)
+					sb.append(", " + ((ENUM_VAL)_exprProbs.get(i)) + " : " + ((EXPR)_exprProbs.get(i+1)));
+			}
 			sb.append(")");
 			return sb.toString();
 		}
@@ -1136,7 +1167,10 @@ public class RDDL {
 		public EXPR _exprProb;
 		
 		public String toString() {
-			return "Geometric(" + _exprProb + ")";
+			if (USE_PREFIX)
+				return "(Geometric " + _exprProb + ")";
+			else
+				return "Geometric(" + _exprProb + ")";
 		}
 		
 		public Object sample(HashMap<LVAR,LCONST> subs, State s, Random r) throws EvalException {
@@ -1164,7 +1198,10 @@ public class RDDL {
 		public EXPR _exprLambda;
 		
 		public String toString() {
-			return "Poisson(" + _exprLambda + ")";
+			if (USE_PREFIX)
+				return "(Poisson " + _exprLambda + ")";
+			else
+				return "Poisson(" + _exprLambda + ")";
 		}
 		
 		public Object sample(HashMap<LVAR,LCONST> subs, State s, Random r) throws EvalException {
@@ -1191,7 +1228,10 @@ public class RDDL {
 		public EXPR _exprProb;
 		
 		public String toString() {
-			return "Bernoulli(" + _exprProb + ")";
+			if (USE_PREFIX)
+				return "(Bernoulli " + _exprProb + ")";
+			else
+				return "Bernoulli(" + _exprProb + ")";
 		}
 		
 		public Object sample(HashMap<LVAR,LCONST> subs, State s, Random r) throws EvalException {
@@ -1294,7 +1334,10 @@ public class RDDL {
 		public String _op = UNKNOWN;
 		
 		public String toString() {
-			return "(" + _e1 + " " + _op + " " + _e2 + ")";
+			if (USE_PREFIX)
+				return "(" + _op + " " + _e1 + " " + _e2 + ")";
+			else
+				return "(" + _e1 + " " + _op + " " + _e2 + ")";
 		}
 		
 		public Object sample(HashMap<LVAR,LCONST> subs, State s, Random r) throws EvalException {
@@ -1371,14 +1414,21 @@ public class RDDL {
 		
 		public String toString() {
 			StringBuilder sb = new StringBuilder();
-			sb.append("[" + _op);
-			boolean first = true;
-			sb.append("_{");
-			for (LTYPED_VAR term : _alVariables) {
-				sb.append((first ? "" : ", ") + term);
-				first = false;
+			if (USE_PREFIX) {
+				sb.append("(" + _op + " ( ");
+				for (LTYPED_VAR term : _alVariables)
+					sb.append(term + " ");
+				sb.append(") " + _e + ")");			
+			} else {
+				sb.append("[" + _op);
+				boolean first = true;
+				sb.append("_{");
+				for (LTYPED_VAR term : _alVariables) {
+					sb.append((first ? "" : ", ") + term);
+					first = false;
+				}
+				sb.append("} " + _e + "]");
 			}
-			sb.append("} " + _e + "]");
 			return sb.toString();
 		}
 		
@@ -1456,16 +1506,23 @@ public class RDDL {
 		
 		public String toString() {
 			StringBuilder sb = new StringBuilder();
+			if (USE_PREFIX) 
+				sb.append("(");
 			sb.append(_sName);
 			if (_alTerms.size() > 0) {
 				boolean first = true;
-				sb.append("(");
+				if (!USE_PREFIX)
+					sb.append("(");
 				for (LTERM term : _alTerms) {
-					sb.append((first ? "" : ", ") + term);
+					if (USE_PREFIX)
+						sb.append(" " + term);
+					else
+						sb.append((first ? "" : ", ") + term);
 					first = false;
 				}
 				sb.append(")");
-			}			
+			} else if (USE_PREFIX) // Prefix always parenthesized
+				sb.append(")");				
 			return sb.toString();
 		}
 		
@@ -1537,7 +1594,7 @@ public class RDDL {
 	// TODO: should never put a random variable as an if test expression,
 	//       a random sample should always be referenced by an intermediate
 	//       variable so that it is consistent over repeated evaluations.
-	public static class IF_EXPR extends EXPR {
+	public static class IF_EXPR extends EXPR { 
 
 		public IF_EXPR(BOOL_EXPR test, EXPR true_branch, EXPR false_branch) {
 			_test = test;
@@ -1550,7 +1607,10 @@ public class RDDL {
 		public EXPR _falseBranch;
 		
 		public String toString() {
-			return "if (" + _test + ") then [" + _trueBranch + "] else [" + _falseBranch + "]";
+			if (USE_PREFIX)
+				return "(if " + _test + " then " + _trueBranch + " else " + _falseBranch + ")";
+			else
+				return "if (" + _test + ") then [" + _trueBranch + "] else [" + _falseBranch + "]";
 		}
 		
 		public Object sample(HashMap<LVAR,LCONST> subs, State s, Random r) throws EvalException {
@@ -1593,7 +1653,10 @@ public class RDDL {
 		public EXPR     _expr;
 		
 		public String toString() {
-			return "case " + _sEnumValue + " : " + _expr;
+			if (USE_PREFIX)
+				return "(case " + _sEnumValue + " : " + _expr + ")";
+			else
+				return "case " + _sEnumValue + " : " + _expr;
 		}
 
 	}
@@ -1613,13 +1676,20 @@ public class RDDL {
 		
 		public String toString() {
 			StringBuilder sb = new StringBuilder();
-			sb.append("switch (" + _enumVar + ") {");
-			boolean first = true;
-			for (CASE c : _cases) {
-				sb.append((first ? "" : ", ") + c);
-				first = false;
+			if (USE_PREFIX) {
+				sb.append("(switch " + _enumVar + " ( ");
+				for (CASE c : _cases)
+					sb.append(c + " ");
+				sb.append(") )");				
+			} else {
+				sb.append("switch (" + _enumVar + ") {");
+				boolean first = true;
+				for (CASE c : _cases) {
+					sb.append((first ? "" : ", ") + c);
+					first = false;
+				}
+				sb.append("}");
 			}
-			sb.append("}");
 			return sb.toString();
 		}
 		
@@ -1723,14 +1793,22 @@ public class RDDL {
 		
 		public String toString() {
 			StringBuilder sb = new StringBuilder();
-			sb.append("[" + _sQuantType);
-			boolean first = true;
-			sb.append("_{");
-			for (LTYPED_VAR term : _alVariables) {
-				sb.append((first ? "" : ", ") + term);
-				first = false;
+			if (USE_PREFIX) {
+				sb.append("(" + _sQuantType);
+				sb.append(" ( ");
+				for (LTYPED_VAR term : _alVariables)
+					sb.append(term + " ");
+				sb.append(") " + _expr + ")");			
+			} else {
+				sb.append("[" + _sQuantType);
+				boolean first = true;
+				sb.append("_{");
+				for (LTYPED_VAR term : _alVariables) {
+					sb.append((first ? "" : ", ") + term);
+					first = false;
+				}
+				sb.append("} " + _expr + "]");
 			}
-			sb.append("} " + _expr + "]");
 			return sb.toString();
 		}
 		
@@ -1830,10 +1908,16 @@ public class RDDL {
 		
 		public String toString() {
 			StringBuilder sb = new StringBuilder("(");
-			boolean first = true;
-			for (BOOL_EXPR b : _alSubNodes) {
-				sb.append((first ? "" : " " + _sConn + " ") + b);
-				first = false;
+			if (USE_PREFIX) {
+				sb.append(_sConn + " ");
+				for (BOOL_EXPR b : _alSubNodes)
+					sb.append(b + " ");
+			} else {
+				boolean first = true;
+				for (BOOL_EXPR b : _alSubNodes) {
+					sb.append((first ? "" : " " + _sConn + " ") + b);
+					first = false;
+				}
 			}
 			sb.append(")");
 			return sb.toString();
@@ -1895,7 +1979,10 @@ public class RDDL {
 		public BOOL_EXPR _subnode;
 		
 		public String toString() {
-			return "~" + _subnode;
+			if (USE_PREFIX)
+				return "(~ " + _subnode + ")";
+			else
+				return "~" + _subnode;
 		}
 		
 		public Object sample(HashMap<LVAR,LCONST> subs, State s, Random r) throws EvalException {
@@ -1965,7 +2052,10 @@ public class RDDL {
 		public String _comp = UNKNOWN;
 		
 		public String toString() {
-			return "(" + _e1 + " " + _comp + " " + _e2 + ")";
+			if (USE_PREFIX) 
+				return "(" + _comp + " " + _e1 + " " + _e2 + ")";
+			else
+				return "(" + _e1 + " " + _comp + " " + _e2 + ")";
 		}
 		
 		public Object sample(HashMap<LVAR,LCONST> subs, State s, Random r) throws EvalException {
@@ -2039,7 +2129,10 @@ public class RDDL {
 		public String _comp = UNKNOWN;
 		
 		public String toString() {
-			return "(" + _t1 + " " + _comp + " " + _t2 + ")";
+			if (USE_PREFIX)
+				return "(" + _comp + " " + _t1 + " " + _t2 + ")";
+			else
+				return "(" + _t1 + " " + _comp + " " + _t2 + ")";
 		}
 		
 		public Object sample(HashMap<LVAR,LCONST> subs, State s, Random r) throws EvalException {

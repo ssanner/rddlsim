@@ -52,9 +52,14 @@ We currently provide the following rddlsim command line utilities:
 
     Validating RDDL Syntax: 
 
-        rddl.parser.parser filename
+        rddl.parser.parser filename [-prefix-output]
         
         (e.g., files/rddl/test/sysadmin.rddl for filename)
+        
+        The output should be syntactically equivalent to the input.  The optional
+        "-prefix-output" flag is useful for exporting RDDL expressions (cpfs, reward, 
+        state-action-constraints) in prefix format for easier prefix parsing (in
+        case you are writing your own RDDL parser in another language).
 
     Translating Restricted RDDL Syntax to PPDDL / SPUDD / Symbolic Perseus Format:
 	
@@ -96,6 +101,13 @@ We currently provide the following rddlsim command line utilities:
 
 		./run rddl.parser.parser files/rddl/test/sysadmin.rddl 
 		./run rddl.parser.parser files/rddl/test/game_of_life.rddl 
+
+                Note: if you're building a parser for another language
+                use the following option to output RDDL expressions in
+                prefix format (rather than the current infix format):
+                
+		./run rddl.parser.parser files/rddl/test/sysadmin.rddl -prefix-output
+		./run rddl.parser.parser files/rddl/test/game_of_life.rddl -prefix-output
 	
 		./run rddl.translate.RDDL2Format files/boolean/rddl files/boolean/spudd_sperseus spudd_sperseus
 		./run rddl.translate.RDDL2Format files/boolean/rddl files/boolean/ppddl ppddl
