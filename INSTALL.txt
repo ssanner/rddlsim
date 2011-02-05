@@ -50,7 +50,7 @@ Basic RDDLSim Usage
 
 We currently provide the following rddlsim command line utilities:
 
-    Validating RDDL Syntax: 
+    Validating RDDL Syntax and Translating RDDL to LISP-like Prefix Format: 
 
         rddl.parser.parser filename [-prefix-output]
         
