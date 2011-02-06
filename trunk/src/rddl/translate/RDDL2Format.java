@@ -208,9 +208,9 @@ public class RDDL2Format {
 		_context.exportTree(_reward, pw, curr_format, 1);
 		
 		// Discount and tolerance
-		pw.println("\n\n%% horizon " + _i._nHorizon);
-		pw.println("discount " + _i._dDiscount);
-		pw.println("tolerance 0.00001");
+		pw.println("\n\ndiscount " + _i._dDiscount);
+		pw.println("horizon " + _i._nHorizon);
+		//pw.println("tolerance 0.00001");
 	}
 	
 	public void exportSPUDDAction(String action_name, boolean curr_format, PrintWriter pw) {
