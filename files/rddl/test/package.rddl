@@ -218,7 +218,7 @@ non-fluents simplePackage {
 	
 	//two people and one disruptor
 	objects { 
-		person : {e1, e2}; //, d1};
+		person : {e1, e2, d1};
 		package : {p1, p2};
 	};
   
