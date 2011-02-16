@@ -13,10 +13,12 @@ import java.util.*;
 
 import rddl.*;
 import rddl.RDDL.*;
-import util.Permutation;
+import rddl.translate.RDDL2Format;
 
 public class RandomBoolPolicy extends Policy {
 	
+	public Random _rand = new Random();
+
 	public RandomBoolPolicy () {
 		
 	}
@@ -27,17 +29,37 @@ public class RandomBoolPolicy extends Policy {
 
 	public ArrayList<PVAR_INST_DEF> getActions(State s) throws EvalException {
 		
-		// Get a random action
-		PVAR_NAME p = s._alActionNames.get(0);
+		// Get a map of { legal action names -> RDDL action definition }  
+		Map<String,ArrayList<PVAR_INST_DEF>> action_map = getLegalActionMap(s);
+		
+		// Return a random action selection
+		ArrayList<String> actions = new ArrayList<String>(action_map.keySet());
+		String action_taken = actions.get(_rand.nextInt(action_map.size()));
+		System.out.println("\n--> Action taken: " + action_taken);
+		
+		return action_map.get(action_taken);
+	}
+	
+	public TreeMap<String,ArrayList<PVAR_INST_DEF>> getLegalActionMap(State s) 
+		throws EvalException {
+
+	ArrayList<PVAR_INST_DEF> actions = new ArrayList<PVAR_INST_DEF>();
+
+	// Build a map from propositional action names to actions
+	// that can be returned from this policy.
+	TreeMap<String,ArrayList<PVAR_INST_DEF>> action_map = new TreeMap<String,ArrayList<PVAR_INST_DEF>>();
+	//if (ALLOW_NOOP) {
+	action_map.put("noop", (ArrayList<PVAR_INST_DEF>)actions.clone());
+	//}
+	
+	for (PVAR_NAME p : s._alActionNames) {
 		
 		// Get term instantations for that action and select *one*
 		ArrayList<ArrayList<LCONST>> inst = s.generateAtoms(p);
-		int[] index_permutation = Permutation.permute(inst.size(), _random);
-		ArrayList<PVAR_INST_DEF> actions = new ArrayList<PVAR_INST_DEF>();
-
+			
 		boolean passed_constraints = false;
-		for (int i = 0; i < index_permutation.length; i++) {
-			ArrayList<LCONST> terms = inst.get(index_permutation[i]);
+		for (int i = 0; i < inst.size(); i++) {
+			ArrayList<LCONST> terms = inst.get(i);
 			actions.clear();
 			actions.add(new PVAR_INST_DEF(p._sPVarName, new Boolean(true), terms));
 			passed_constraints = true;
@@ -45,32 +67,14 @@ public class RandomBoolPolicy extends Policy {
 				s.checkStateActionConstraints(actions);
 			} catch (EvalException e) {
 				passed_constraints = false;
-				System.out.println(actions + " : " + e);
 			}
 			if (passed_constraints)
-				break;
+				action_map.put(RDDL2Format.CleanFluentName(p._sPVarName + terms), 
+						(ArrayList<PVAR_INST_DEF>)actions.clone());
 		}
-		
-		// Check if no single action passed constraint
-		if (!passed_constraints) {
-			// Try empty action
-			actions.clear();
-			try {
-				s.checkStateActionConstraints(actions);
-			} catch (EvalException e) {
-				System.out.println(actions + " : " + e);
-				throw new EvalException("No actions (even empty) satisfied state constraints!");
-			}
-		}
-		
-		// Test maxNondefActions by setting all actions to true
-		//actions.clear();
-		//for (int i = 0; i < inst.size(); i++) {
-		//	actions.add(new PVAR_INST_DEF(p._sPVarName, new Boolean(true), inst.get(i)));
-		//}
-		
-		// Generate the action list
-		return actions;
 	}
+	
+	return action_map;
+}
 
 }

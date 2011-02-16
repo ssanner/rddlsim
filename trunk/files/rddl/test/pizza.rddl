@@ -133,7 +133,7 @@ non-fluents pizza1 {
 	
 	objects { 
 		pizza : {p1, p2, p3, p4};
-		location : {s1, c1, c2, c3, c4};
+		location : {s1, c1, c2, c3, c4, c5};
 		truck : {t1, t2};
 	};
   
@@ -179,7 +179,7 @@ non-fluents smallPizza {
 		CONNECTED(c2, s1) = true;
 
 
-		ORDERS(c4) =2;
+		ORDERS(c1) =2;
 		ORDERS(c2) =1;
 	};
 }

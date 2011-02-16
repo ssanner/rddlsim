@@ -46,7 +46,6 @@ import rddl.viz.StateViz;
 
 public class Server implements Runnable {
 	
-	public static final boolean SHOW_STATE   = false;	
 	public final static boolean SHOW_ACTIONS = true;
 	public static final boolean SHOW_XML = false;
 	public static final boolean SHOW_MSG = false;
@@ -128,11 +127,17 @@ public class Server implements Runnable {
 	 * 3. (optional) random seed
 	 */
 	public static void main(String[] args) {
+		
+		// StateViz state_viz = new GenericScreenDisplay(true); 
+		StateViz state_viz = new NullScreenDisplay(false);
+
 		ArrayList<RDDL> rddls = new ArrayList<RDDL>();
 		int port = PORT_NUMBER;
 		if ( args.length < 1 ) {
-			System.out.println("usage: rddlfilename (optional) portnumber random-seed");
-			System.out.println("example: Server rddlfilename 2323 0");
+			System.out.println("usage: rddlfilename (optional) portnumber random-seed state-viz-class-name");
+			System.out.println("\nexample 1: Server rddlfilename");
+			System.out.println("example 2: Server rddlfilename 2323");
+			System.out.println("example 3: Server rddlfilename 2323 0 rddl.viz.GenericScreenDisplay");
 			System.exit(1);
 		}
 				
@@ -158,10 +163,13 @@ public class Server implements Runnable {
 			} else {
 				Server.rand = new Random(DEFAULT_SEED);
 			}
+			if (args.length > 3) {
+				state_viz = (StateViz)Class.forName(args[3]).newInstance();
+			}
 			System.out.println("RDDL Server Initialized");
 			while (true) {
 				Socket connection = socket1.accept();
-				Runnable runnable = new Server(connection, ++ID, rddl);
+				Runnable runnable = new Server(connection, ++ID, rddl, state_viz);
 				Thread thread = new Thread(runnable);
 				thread.start();
 			}
@@ -172,9 +180,13 @@ public class Server implements Runnable {
 		}
 	}
 	Server (Socket s, int i, RDDL rddl) {
+		this(s, i, rddl, new NullScreenDisplay(false));
+	}
+	Server (Socket s, int i, RDDL rddl, StateViz state_viz) {
 		this.connection = s;
 		this.id = i;
 		this.rddl = rddl;
+		this.stateViz = state_viz;
 	}
 	public void run() {
 		DOMParser p = new DOMParser();
@@ -201,7 +213,6 @@ public class Server implements Runnable {
 
 			initializeState(rddl, requestedInstance);
 			//System.out.println("STATE:\n" + state);
-			stateViz = SHOW_STATE ? new GenericScreenDisplay(true) : new NullScreenDisplay(false);
 			
 			double accum_total_reward = 0;
 			ArrayList<Double> rewards = new ArrayList<Double>(DEFAULT_NUM_ROUNDS * instance._nHorizon);

@@ -136,7 +136,7 @@ instance glm1 {
 	non-fluents = game2;
 	init-state { 
 		alive(x1,y1); 
-		alive(x2,y2); 
+		alive(x1,y2); 
 	};
   
 	max-nondef-actions = 1;
