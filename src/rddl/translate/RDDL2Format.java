@@ -367,10 +367,23 @@ public class RDDL2Format {
 					if (use_when) {
 						PW.print("(when (and ");
 						for ( String a : assign ) {
-							if ( a.startsWith("~")) {
-								PW.print(" (not (" + a.substring(1) + "))");
-							} else {
-								PW.print(" (" +a+")");
+							if(_var2observDD.size() != 0){ //DB: No priming in POPDDL
+								boolean not = a.startsWith("~");
+								int beginIndex = (not) ? 1 : 0;
+								int endIndex = (a.endsWith("'")) ? (a.length() - 1) : a.length();
+								String prop = a.substring(beginIndex, endIndex);
+								if (not) {
+									PW.print(" (not (" + prop + "))");
+								} else {
+									PW.print(" (" + prop + ")");
+								}
+							}
+							else{ //PPDDL
+								if ( a.startsWith("~")) {
+									PW.print(" (not (" + a.substring(1) + "))");
+								} else {
+									PW.print(" (" +a+")");
+								}
 							}
 						}
 						PW.print(") ");
@@ -445,10 +458,14 @@ public class RDDL2Format {
 							if (use_when) {
 								PW.print("(when (and ");
 								for ( String a : assign ) {
-									if ( a.startsWith("~")) {
-										PW.print(" (not (" + a.substring(1) + "))");
+									boolean not = a.startsWith("~");
+									int beginIndex = (not) ? 1 : 0;
+									int endIndex = (a.endsWith("'")) ? (a.length() - 1) : a.length();
+									String prop = a.substring(beginIndex, endIndex);
+									if (not) {
+										PW.print(" (not (" + prop + "))");
 									} else {
-										PW.print(" (" +a+")");
+										PW.print(" (" + prop + ")");
 									}
 								}
 								PW.print(") ");
