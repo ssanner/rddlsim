@@ -653,7 +653,12 @@ public class RDDL2Format {
 					// Now go through all actions setting each one to be true in turn
 					if (_sTranslationType != SPUDD_CONC && _sTranslationType != SPUDD_CONT_CONC) {
 
-						// NON-CONCURRENT CASE, EXPLICITLY ENUMERATE ALL SINGLETON ACTIONS					
+						// NON-CONCURRENT CASE, EXPLICITLY ENUMERATE ALL SINGLETON ACTIONS	
+						// TODO: if concurrent (max-nondef-actions > 1) better to enumerate all joint
+						//       actions as a Map<name -> (Set Pair<PVAR_NAME action,ArrayList<LCONST> vars>)>
+						//       ... need a |A|^|max-nondef-actions| enumeration method that checks constraints
+						//       ... then this method goes through each set one-by-one setting it true then
+						//       back to false
 						for (Map.Entry<PVAR_NAME,ArrayList<ArrayList<LCONST>>> e2 : action_vars.entrySet()) {
 							
 							PVAR_NAME action_name = e2.getKey();
