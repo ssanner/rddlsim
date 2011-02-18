@@ -72,7 +72,9 @@ public class SPerseusSPUDDPolicy extends Policy {
 		}
 		
 		// Get a map of { legal action names -> RDDL action definition }  
-		Map<String,ArrayList<PVAR_INST_DEF>> action_map = getLegalActionMap(s);
+		Map<String,ArrayList<PVAR_INST_DEF>> action_map = 
+			ActionGenerator.getLegalActionMap(s);
+
 		if (SHOW_STATE) {
 			System.out.println("\nLegal action names:");
 			for (String action_name : action_map.keySet())
@@ -93,43 +95,6 @@ public class SPerseusSPUDDPolicy extends Policy {
 	//
 	// You likely won't need to understand the code below, only the above code.
 	///////////////////////////////////////////////////////////////////////////
-	
-	public TreeMap<String,ArrayList<PVAR_INST_DEF>> getLegalActionMap(State s) 
-		throws EvalException {
-
-		ArrayList<PVAR_INST_DEF> actions = new ArrayList<PVAR_INST_DEF>();
-
-		// Build a map from propositional action names to actions
-		// that can be returned from this policy.
-		TreeMap<String,ArrayList<PVAR_INST_DEF>> action_map = new TreeMap<String,ArrayList<PVAR_INST_DEF>>();
-		//if (ALLOW_NOOP) {
-		action_map.put("noop", (ArrayList<PVAR_INST_DEF>)actions.clone());
-		//}
-		
-		for (PVAR_NAME p : s._alActionNames) {
-			
-			// Get term instantations for that action and select *one*
-			ArrayList<ArrayList<LCONST>> inst = s.generateAtoms(p);
-				
-			boolean passed_constraints = false;
-			for (int i = 0; i < inst.size(); i++) {
-				ArrayList<LCONST> terms = inst.get(i);
-				actions.clear();
-				actions.add(new PVAR_INST_DEF(p._sPVarName, new Boolean(true), terms));
-				passed_constraints = true;
-				try {
-					s.checkStateActionConstraints(actions);
-				} catch (EvalException e) {
-					passed_constraints = false;
-				}
-				if (passed_constraints)
-					action_map.put(RDDL2Format.CleanFluentName(p._sPVarName + terms), 
-							(ArrayList<PVAR_INST_DEF>)actions.clone());
-			}
-		}
-		
-		return action_map;
-	}
 	
 	public TreeSet<String> getTrueFluents(State s, String fluent_type) {
 				

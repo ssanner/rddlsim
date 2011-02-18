@@ -2198,6 +2198,13 @@ public class RDDL {
 		public Object _oValue;
 		public ArrayList<LCONST> _alTerms = null;
 
+		public boolean equals(Object o) {
+			PVAR_INST_DEF pid = (PVAR_INST_DEF)o;
+			return _sPredName.equals(pid._sPredName)
+				&& _oValue.equals(pid._oValue)
+				&& _alTerms.equals(pid._alTerms);
+		}
+		
 		public String toString() {
 			StringBuilder sb = new StringBuilder();
 			if (_oValue instanceof Boolean) {

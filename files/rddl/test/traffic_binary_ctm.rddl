@@ -18,7 +18,7 @@ domain traffic_binary_ctm {
 		reward-deterministic, // this domain does not use a stochastic reward
 		intermediate-nodes,   // this domain uses intermediate pvariable nodes
 		constrained-state,    // this domain uses state constraints
-		concurrent            // this domain does not permit multiple non-default actions
+		concurrent            // this domain permits multiple non-default actions
 		//integer-valued      // use in a better CTM model with velocities
 		//cpf-deterministic   // this domain uses stochastic conditional probability functions
 	};
