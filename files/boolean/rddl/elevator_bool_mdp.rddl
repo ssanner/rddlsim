@@ -257,7 +257,7 @@ non-fluents fl5 {
 	};
 }
 
-instance el4 {
+instance elm4 {
 
 	domain = elevators;
 	
@@ -274,7 +274,7 @@ instance el4 {
 	discount = 1.0;
 }
 
-instance el5 {
+instance elm5 {
 
 	domain = elevators;
 	

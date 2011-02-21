@@ -707,7 +707,7 @@
 		)
 	)
 )
-(define (problem el4)
+(define (problem elm4)
 	(:domain elevators)
 	(:init 
 		(elevator_at_floor__e1_f1)

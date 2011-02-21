@@ -1,5 +1,5 @@
 // Automatically produced by rddl.translate.RDDL2Format
-// SPUDD / Symbolic Perseus Format for 'traffic_binary_ctm.tr1'
+// SPUDD / Symbolic Perseus Format for 'traffic_binary_ctm.trm1'
 
 (variables 
 	(light_signal1__i_2_4 true false)
