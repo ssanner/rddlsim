@@ -176,8 +176,20 @@ action noop
 				(false (alive__x2_y2' 
 					(true (0))
 					(false (1)))))))
-	cost 
-		(0)
+	cost [+ 
+		(alive__x1_y1 
+			(true (-1))
+			(false (0)))
+		(alive__x1_y2 
+			(true (-1))
+			(false (0)))
+		(alive__x2_y1 
+			(true (-1))
+			(false (0)))
+		(alive__x2_y2 
+			(true (-1))
+			(false (0)))
+	]
 endaction
 
 action set__x1_y1
@@ -305,8 +317,20 @@ action set__x1_y1
 				(false (alive__x2_y2' 
 					(true (0))
 					(false (1)))))))
-	cost 
-		(1)
+	cost [+ 
+		(alive__x1_y1 
+			(true (0))
+			(false (1)))
+		(alive__x1_y2 
+			(true (-1))
+			(false (0)))
+		(alive__x2_y1 
+			(true (-1))
+			(false (0)))
+		(alive__x2_y2 
+			(true (-1))
+			(false (0)))
+	]
 endaction
 
 action set__x1_y2
@@ -434,8 +458,20 @@ action set__x1_y2
 				(false (alive__x2_y2' 
 					(true (0))
 					(false (1)))))))
-	cost 
-		(1)
+	cost [+ 
+		(alive__x1_y1 
+			(true (-1))
+			(false (0)))
+		(alive__x1_y2 
+			(true (0))
+			(false (1)))
+		(alive__x2_y1 
+			(true (-1))
+			(false (0)))
+		(alive__x2_y2 
+			(true (-1))
+			(false (0)))
+	]
 endaction
 
 action set__x2_y1
@@ -563,8 +599,20 @@ action set__x2_y1
 				(false (alive__x2_y2' 
 					(true (0))
 					(false (1)))))))
-	cost 
-		(1)
+	cost [+ 
+		(alive__x1_y1 
+			(true (-1))
+			(false (0)))
+		(alive__x1_y2 
+			(true (-1))
+			(false (0)))
+		(alive__x2_y1 
+			(true (0))
+			(false (1)))
+		(alive__x2_y2 
+			(true (-1))
+			(false (0)))
+	]
 endaction
 
 action set__x2_y2
@@ -692,42 +740,24 @@ action set__x2_y2
 		(alive__x2_y2' 
 			(true (1))
 			(false (0)))
-	cost 
-		(1)
+	cost [+ 
+		(alive__x1_y1 
+			(true (-1))
+			(false (0)))
+		(alive__x1_y2 
+			(true (-1))
+			(false (0)))
+		(alive__x2_y1 
+			(true (-1))
+			(false (0)))
+		(alive__x2_y2 
+			(true (0))
+			(false (1)))
+	]
 endaction
 
 reward
-	(alive__x1_y1 
-		(true (alive__x1_y2 
-			(true (alive__x2_y1 
-				(true (alive__x2_y2 
-					(true (4))
-					(false (3))))
-				(false (alive__x2_y2 
-					(true (3))
-					(false (2))))))
-			(false (alive__x2_y1 
-				(true (alive__x2_y2 
-					(true (3))
-					(false (2))))
-				(false (alive__x2_y2 
-					(true (2))
-					(false (1))))))))
-		(false (alive__x1_y2 
-			(true (alive__x2_y1 
-				(true (alive__x2_y2 
-					(true (3))
-					(false (2))))
-				(false (alive__x2_y2 
-					(true (2))
-					(false (1))))))
-			(false (alive__x2_y1 
-				(true (alive__x2_y2 
-					(true (2))
-					(false (1))))
-				(false (alive__x2_y2 
-					(true (1))
-					(false (0)))))))))
+	(0)
 
 discount 1.0
 horizon 20

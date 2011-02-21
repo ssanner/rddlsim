@@ -73,7 +73,7 @@ public class SPerseusSPUDDPolicy extends Policy {
 		
 		// Get a map of { legal action names -> RDDL action definition }  
 		Map<String,ArrayList<PVAR_INST_DEF>> action_map = 
-			ActionGenerator.getLegalActionMap(s);
+			ActionGenerator.getLegalBoolActionMap(s);
 
 		if (SHOW_STATE) {
 			System.out.println("\nLegal action names:");

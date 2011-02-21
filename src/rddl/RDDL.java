@@ -1635,9 +1635,13 @@ public class RDDL {
 
 		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<Pair> gfluents) 
 			throws EvalException {
+			//System.out.println("\nGfluents before " + "[" + gfluents.size() + "] " + _test + ": " + gfluents);
 			_test.collectGFluents(subs, s, gfluents);
+			//System.out.println("\nGfluents after " + "[" + gfluents.size() + "] " + _test + ": " + gfluents);
 			_trueBranch.collectGFluents(subs, s, gfluents);
+			//System.out.println("\nGfluents after true branch " + "[" + gfluents.size() + "] " + _test + ": " + gfluents);
 			_falseBranch.collectGFluents(subs, s, gfluents);
+			//System.out.println("\nGfluents after false branch " + "[" + gfluents.size() + "] " + _test + ": " + gfluents);
 		}
 
 	}
@@ -1899,8 +1903,14 @@ public class RDDL {
 				!conn.equals(AND) && !conn.equals(OR))
 				throw new Exception("Unrecognized logical connective: " + conn);
 			_sConn = conn.intern();
-			_alSubNodes.add(b1);
-			_alSubNodes.add(b2);
+			if (b1 instanceof CONN_EXPR && ((CONN_EXPR)b1)._sConn == _sConn)
+				_alSubNodes.addAll(((CONN_EXPR)b1)._alSubNodes);
+			else
+				_alSubNodes.add(b1);
+			if (b2 instanceof CONN_EXPR && ((CONN_EXPR)b2)._sConn == _sConn)
+				_alSubNodes.addAll(((CONN_EXPR)b2)._alSubNodes);
+			else
+				_alSubNodes.add(b2);
 		}
 		
 		public String _sConn;
@@ -1961,6 +1971,26 @@ public class RDDL {
 		
 		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<Pair> gfluents) 
 			throws EvalException {
+			
+			// First go through and check for early termination in the case of AND / OR
+			if (_sConn == AND || _sConn == OR) {
+				for (BOOL_EXPR b : _alSubNodes) {
+					if (b instanceof PVAR_EXPR) {
+						PVAR_EXPR p = (PVAR_EXPR)b;
+						if (s.getPVariableType(p._sName) == State.NONFLUENT) {
+							boolean eval = (Boolean)p.sample(subs, s, null);
+							// If can determine truth value of connective from nonfluents
+							// then any other fluents are irrelevant
+							if ((_sConn == AND && !eval) || (_sConn == OR && eval)) {
+								//System.out.println("\n>> early termination on '" + subs + "'" + this);
+								return; // Terminate fluent collection
+							}
+						}
+					}
+				}
+			}
+			
+			// Otherwise collect subnodes
 			for (BOOL_EXPR b : _alSubNodes)
 				b.collectGFluents(subs, s, gfluents);
 		}

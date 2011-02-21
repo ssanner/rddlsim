@@ -17,7 +17,7 @@ public class ActionGenerator {
 	// You likely won't need to understand the code below, only the above code.
 	///////////////////////////////////////////////////////////////////////////
 	
-	public static TreeMap<String,ArrayList<PVAR_INST_DEF>> getLegalActionMap(State s) 
+	public static TreeMap<String,ArrayList<PVAR_INST_DEF>> getLegalBoolActionMap(State s) 
 		throws EvalException {
 	
 		ArrayList<PVAR_INST_DEF> actions = new ArrayList<PVAR_INST_DEF>();
@@ -31,12 +31,12 @@ public class ActionGenerator {
 		action_map.put("noop", (ArrayList<PVAR_INST_DEF>)actions.clone());
 		//}
 		
-		buildActionSet(s, s._nMaxNondefActions, actions, action_map);
+		buildBooleanActionSet(s, s._nMaxNondefActions, actions, action_map);
 		
 		return action_map;
 	}
 
-	public static void buildActionSet(State s, int actions_left, 
+	public static void buildBooleanActionSet(State s, int actions_left, 
 			ArrayList<PVAR_INST_DEF> action_list,
 			TreeMap<String,ArrayList<PVAR_INST_DEF>> action_map) {
 	
@@ -83,7 +83,7 @@ public class ActionGenerator {
 						passed_constraints = false;
 					}
 					if (passed_constraints) {
-						buildActionSet(s, actions_left, action_list, action_map);
+						buildBooleanActionSet(s, actions_left, action_list, action_map);
 					}
 					if (!action_already_added)
 						action_list.remove(action_list.size() - 1);

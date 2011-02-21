@@ -132,8 +132,32 @@ action noop
 				(false (running__c8' 
 					(true (0.05))
 					(false (0.95)))))))
-	cost 
-		(0)
+	cost [+ 
+		(running__c1 
+			(true (-1))
+			(false (0)))
+		(running__c2 
+			(true (-1))
+			(false (0)))
+		(running__c3 
+			(true (-1))
+			(false (0)))
+		(running__c4 
+			(true (-1))
+			(false (0)))
+		(running__c5 
+			(true (-1))
+			(false (0)))
+		(running__c6 
+			(true (-1))
+			(false (0)))
+		(running__c7 
+			(true (-1))
+			(false (0)))
+		(running__c8 
+			(true (-1))
+			(false (0)))
+	]
 endaction
 
 action reboot__c1
@@ -239,8 +263,32 @@ action reboot__c1
 				(false (running__c8' 
 					(true (0.05))
 					(false (0.95)))))))
-	cost 
-		(1)
+	cost [+ 
+		(running__c1 
+			(true (0))
+			(false (1)))
+		(running__c2 
+			(true (-1))
+			(false (0)))
+		(running__c3 
+			(true (-1))
+			(false (0)))
+		(running__c4 
+			(true (-1))
+			(false (0)))
+		(running__c5 
+			(true (-1))
+			(false (0)))
+		(running__c6 
+			(true (-1))
+			(false (0)))
+		(running__c7 
+			(true (-1))
+			(false (0)))
+		(running__c8 
+			(true (-1))
+			(false (0)))
+	]
 endaction
 
 action reboot__c2
@@ -342,8 +390,32 @@ action reboot__c2
 				(false (running__c8' 
 					(true (0.05))
 					(false (0.95)))))))
-	cost 
-		(1)
+	cost [+ 
+		(running__c1 
+			(true (-1))
+			(false (0)))
+		(running__c2 
+			(true (0))
+			(false (1)))
+		(running__c3 
+			(true (-1))
+			(false (0)))
+		(running__c4 
+			(true (-1))
+			(false (0)))
+		(running__c5 
+			(true (-1))
+			(false (0)))
+		(running__c6 
+			(true (-1))
+			(false (0)))
+		(running__c7 
+			(true (-1))
+			(false (0)))
+		(running__c8 
+			(true (-1))
+			(false (0)))
+	]
 endaction
 
 action reboot__c3
@@ -445,8 +517,32 @@ action reboot__c3
 				(false (running__c8' 
 					(true (0.05))
 					(false (0.95)))))))
-	cost 
-		(1)
+	cost [+ 
+		(running__c1 
+			(true (-1))
+			(false (0)))
+		(running__c2 
+			(true (-1))
+			(false (0)))
+		(running__c3 
+			(true (0))
+			(false (1)))
+		(running__c4 
+			(true (-1))
+			(false (0)))
+		(running__c5 
+			(true (-1))
+			(false (0)))
+		(running__c6 
+			(true (-1))
+			(false (0)))
+		(running__c7 
+			(true (-1))
+			(false (0)))
+		(running__c8 
+			(true (-1))
+			(false (0)))
+	]
 endaction
 
 action reboot__c4
@@ -548,8 +644,32 @@ action reboot__c4
 				(false (running__c8' 
 					(true (0.05))
 					(false (0.95)))))))
-	cost 
-		(1)
+	cost [+ 
+		(running__c1 
+			(true (-1))
+			(false (0)))
+		(running__c2 
+			(true (-1))
+			(false (0)))
+		(running__c3 
+			(true (-1))
+			(false (0)))
+		(running__c4 
+			(true (0))
+			(false (1)))
+		(running__c5 
+			(true (-1))
+			(false (0)))
+		(running__c6 
+			(true (-1))
+			(false (0)))
+		(running__c7 
+			(true (-1))
+			(false (0)))
+		(running__c8 
+			(true (-1))
+			(false (0)))
+	]
 endaction
 
 action reboot__c5
@@ -651,8 +771,32 @@ action reboot__c5
 				(false (running__c8' 
 					(true (0.05))
 					(false (0.95)))))))
-	cost 
-		(1)
+	cost [+ 
+		(running__c1 
+			(true (-1))
+			(false (0)))
+		(running__c2 
+			(true (-1))
+			(false (0)))
+		(running__c3 
+			(true (-1))
+			(false (0)))
+		(running__c4 
+			(true (-1))
+			(false (0)))
+		(running__c5 
+			(true (0))
+			(false (1)))
+		(running__c6 
+			(true (-1))
+			(false (0)))
+		(running__c7 
+			(true (-1))
+			(false (0)))
+		(running__c8 
+			(true (-1))
+			(false (0)))
+	]
 endaction
 
 action reboot__c6
@@ -754,8 +898,32 @@ action reboot__c6
 				(false (running__c8' 
 					(true (0.05))
 					(false (0.95)))))))
-	cost 
-		(1)
+	cost [+ 
+		(running__c1 
+			(true (-1))
+			(false (0)))
+		(running__c2 
+			(true (-1))
+			(false (0)))
+		(running__c3 
+			(true (-1))
+			(false (0)))
+		(running__c4 
+			(true (-1))
+			(false (0)))
+		(running__c5 
+			(true (-1))
+			(false (0)))
+		(running__c6 
+			(true (0))
+			(false (1)))
+		(running__c7 
+			(true (-1))
+			(false (0)))
+		(running__c8 
+			(true (-1))
+			(false (0)))
+	]
 endaction
 
 action reboot__c7
@@ -857,8 +1025,32 @@ action reboot__c7
 				(false (running__c8' 
 					(true (0.05))
 					(false (0.95)))))))
-	cost 
-		(1)
+	cost [+ 
+		(running__c1 
+			(true (-1))
+			(false (0)))
+		(running__c2 
+			(true (-1))
+			(false (0)))
+		(running__c3 
+			(true (-1))
+			(false (0)))
+		(running__c4 
+			(true (-1))
+			(false (0)))
+		(running__c5 
+			(true (-1))
+			(false (0)))
+		(running__c6 
+			(true (-1))
+			(false (0)))
+		(running__c7 
+			(true (0))
+			(false (1)))
+		(running__c8 
+			(true (-1))
+			(false (0)))
+	]
 endaction
 
 action reboot__c8
@@ -960,522 +1152,36 @@ action reboot__c8
 		(running__c8' 
 			(true (1))
 			(false (0)))
-	cost 
-		(1)
+	cost [+ 
+		(running__c1 
+			(true (-1))
+			(false (0)))
+		(running__c2 
+			(true (-1))
+			(false (0)))
+		(running__c3 
+			(true (-1))
+			(false (0)))
+		(running__c4 
+			(true (-1))
+			(false (0)))
+		(running__c5 
+			(true (-1))
+			(false (0)))
+		(running__c6 
+			(true (-1))
+			(false (0)))
+		(running__c7 
+			(true (-1))
+			(false (0)))
+		(running__c8 
+			(true (0))
+			(false (1)))
+	]
 endaction
 
 reward
-	(running__c1 
-		(true (running__c2 
-			(true (running__c3 
-				(true (running__c4 
-					(true (running__c5 
-						(true (running__c6 
-							(true (running__c7 
-								(true (running__c8 
-									(true (8))
-									(false (7))))
-								(false (running__c8 
-									(true (7))
-									(false (6))))))
-							(false (running__c7 
-								(true (running__c8 
-									(true (7))
-									(false (6))))
-								(false (running__c8 
-									(true (6))
-									(false (5))))))))
-						(false (running__c6 
-							(true (running__c7 
-								(true (running__c8 
-									(true (7))
-									(false (6))))
-								(false (running__c8 
-									(true (6))
-									(false (5))))))
-							(false (running__c7 
-								(true (running__c8 
-									(true (6))
-									(false (5))))
-								(false (running__c8 
-									(true (5))
-									(false (4))))))))))
-					(false (running__c5 
-						(true (running__c6 
-							(true (running__c7 
-								(true (running__c8 
-									(true (7))
-									(false (6))))
-								(false (running__c8 
-									(true (6))
-									(false (5))))))
-							(false (running__c7 
-								(true (running__c8 
-									(true (6))
-									(false (5))))
-								(false (running__c8 
-									(true (5))
-									(false (4))))))))
-						(false (running__c6 
-							(true (running__c7 
-								(true (running__c8 
-									(true (6))
-									(false (5))))
-								(false (running__c8 
-									(true (5))
-									(false (4))))))
-							(false (running__c7 
-								(true (running__c8 
-									(true (5))
-									(false (4))))
-								(false (running__c8 
-									(true (4))
-									(false (3))))))))))))
-				(false (running__c4 
-					(true (running__c5 
-						(true (running__c6 
-							(true (running__c7 
-								(true (running__c8 
-									(true (7))
-									(false (6))))
-								(false (running__c8 
-									(true (6))
-									(false (5))))))
-							(false (running__c7 
-								(true (running__c8 
-									(true (6))
-									(false (5))))
-								(false (running__c8 
-									(true (5))
-									(false (4))))))))
-						(false (running__c6 
-							(true (running__c7 
-								(true (running__c8 
-									(true (6))
-									(false (5))))
-								(false (running__c8 
-									(true (5))
-									(false (4))))))
-							(false (running__c7 
-								(true (running__c8 
-									(true (5))
-									(false (4))))
-								(false (running__c8 
-									(true (4))
-									(false (3))))))))))
-					(false (running__c5 
-						(true (running__c6 
-							(true (running__c7 
-								(true (running__c8 
-									(true (6))
-									(false (5))))
-								(false (running__c8 
-									(true (5))
-									(false (4))))))
-							(false (running__c7 
-								(true (running__c8 
-									(true (5))
-									(false (4))))
-								(false (running__c8 
-									(true (4))
-									(false (3))))))))
-						(false (running__c6 
-							(true (running__c7 
-								(true (running__c8 
-									(true (5))
-									(false (4))))
-								(false (running__c8 
-									(true (4))
-									(false (3))))))
-							(false (running__c7 
-								(true (running__c8 
-									(true (4))
-									(false (3))))
-								(false (running__c8 
-									(true (3))
-									(false (2))))))))))))))
-			(false (running__c3 
-				(true (running__c4 
-					(true (running__c5 
-						(true (running__c6 
-							(true (running__c7 
-								(true (running__c8 
-									(true (7))
-									(false (6))))
-								(false (running__c8 
-									(true (6))
-									(false (5))))))
-							(false (running__c7 
-								(true (running__c8 
-									(true (6))
-									(false (5))))
-								(false (running__c8 
-									(true (5))
-									(false (4))))))))
-						(false (running__c6 
-							(true (running__c7 
-								(true (running__c8 
-									(true (6))
-									(false (5))))
-								(false (running__c8 
-									(true (5))
-									(false (4))))))
-							(false (running__c7 
-								(true (running__c8 
-									(true (5))
-									(false (4))))
-								(false (running__c8 
-									(true (4))
-									(false (3))))))))))
-					(false (running__c5 
-						(true (running__c6 
-							(true (running__c7 
-								(true (running__c8 
-									(true (6))
-									(false (5))))
-								(false (running__c8 
-									(true (5))
-									(false (4))))))
-							(false (running__c7 
-								(true (running__c8 
-									(true (5))
-									(false (4))))
-								(false (running__c8 
-									(true (4))
-									(false (3))))))))
-						(false (running__c6 
-							(true (running__c7 
-								(true (running__c8 
-									(true (5))
-									(false (4))))
-								(false (running__c8 
-									(true (4))
-									(false (3))))))
-							(false (running__c7 
-								(true (running__c8 
-									(true (4))
-									(false (3))))
-								(false (running__c8 
-									(true (3))
-									(false (2))))))))))))
-				(false (running__c4 
-					(true (running__c5 
-						(true (running__c6 
-							(true (running__c7 
-								(true (running__c8 
-									(true (6))
-									(false (5))))
-								(false (running__c8 
-									(true (5))
-									(false (4))))))
-							(false (running__c7 
-								(true (running__c8 
-									(true (5))
-									(false (4))))
-								(false (running__c8 
-									(true (4))
-									(false (3))))))))
-						(false (running__c6 
-							(true (running__c7 
-								(true (running__c8 
-									(true (5))
-									(false (4))))
-								(false (running__c8 
-									(true (4))
-									(false (3))))))
-							(false (running__c7 
-								(true (running__c8 
-									(true (4))
-									(false (3))))
-								(false (running__c8 
-									(true (3))
-									(false (2))))))))))
-					(false (running__c5 
-						(true (running__c6 
-							(true (running__c7 
-								(true (running__c8 
-									(true (5))
-									(false (4))))
-								(false (running__c8 
-									(true (4))
-									(false (3))))))
-							(false (running__c7 
-								(true (running__c8 
-									(true (4))
-									(false (3))))
-								(false (running__c8 
-									(true (3))
-									(false (2))))))))
-						(false (running__c6 
-							(true (running__c7 
-								(true (running__c8 
-									(true (4))
-									(false (3))))
-								(false (running__c8 
-									(true (3))
-									(false (2))))))
-							(false (running__c7 
-								(true (running__c8 
-									(true (3))
-									(false (2))))
-								(false (running__c8 
-									(true (2))
-									(false (1))))))))))))))))
-		(false (running__c2 
-			(true (running__c3 
-				(true (running__c4 
-					(true (running__c5 
-						(true (running__c6 
-							(true (running__c7 
-								(true (running__c8 
-									(true (7))
-									(false (6))))
-								(false (running__c8 
-									(true (6))
-									(false (5))))))
-							(false (running__c7 
-								(true (running__c8 
-									(true (6))
-									(false (5))))
-								(false (running__c8 
-									(true (5))
-									(false (4))))))))
-						(false (running__c6 
-							(true (running__c7 
-								(true (running__c8 
-									(true (6))
-									(false (5))))
-								(false (running__c8 
-									(true (5))
-									(false (4))))))
-							(false (running__c7 
-								(true (running__c8 
-									(true (5))
-									(false (4))))
-								(false (running__c8 
-									(true (4))
-									(false (3))))))))))
-					(false (running__c5 
-						(true (running__c6 
-							(true (running__c7 
-								(true (running__c8 
-									(true (6))
-									(false (5))))
-								(false (running__c8 
-									(true (5))
-									(false (4))))))
-							(false (running__c7 
-								(true (running__c8 
-									(true (5))
-									(false (4))))
-								(false (running__c8 
-									(true (4))
-									(false (3))))))))
-						(false (running__c6 
-							(true (running__c7 
-								(true (running__c8 
-									(true (5))
-									(false (4))))
-								(false (running__c8 
-									(true (4))
-									(false (3))))))
-							(false (running__c7 
-								(true (running__c8 
-									(true (4))
-									(false (3))))
-								(false (running__c8 
-									(true (3))
-									(false (2))))))))))))
-				(false (running__c4 
-					(true (running__c5 
-						(true (running__c6 
-							(true (running__c7 
-								(true (running__c8 
-									(true (6))
-									(false (5))))
-								(false (running__c8 
-									(true (5))
-									(false (4))))))
-							(false (running__c7 
-								(true (running__c8 
-									(true (5))
-									(false (4))))
-								(false (running__c8 
-									(true (4))
-									(false (3))))))))
-						(false (running__c6 
-							(true (running__c7 
-								(true (running__c8 
-									(true (5))
-									(false (4))))
-								(false (running__c8 
-									(true (4))
-									(false (3))))))
-							(false (running__c7 
-								(true (running__c8 
-									(true (4))
-									(false (3))))
-								(false (running__c8 
-									(true (3))
-									(false (2))))))))))
-					(false (running__c5 
-						(true (running__c6 
-							(true (running__c7 
-								(true (running__c8 
-									(true (5))
-									(false (4))))
-								(false (running__c8 
-									(true (4))
-									(false (3))))))
-							(false (running__c7 
-								(true (running__c8 
-									(true (4))
-									(false (3))))
-								(false (running__c8 
-									(true (3))
-									(false (2))))))))
-						(false (running__c6 
-							(true (running__c7 
-								(true (running__c8 
-									(true (4))
-									(false (3))))
-								(false (running__c8 
-									(true (3))
-									(false (2))))))
-							(false (running__c7 
-								(true (running__c8 
-									(true (3))
-									(false (2))))
-								(false (running__c8 
-									(true (2))
-									(false (1))))))))))))))
-			(false (running__c3 
-				(true (running__c4 
-					(true (running__c5 
-						(true (running__c6 
-							(true (running__c7 
-								(true (running__c8 
-									(true (6))
-									(false (5))))
-								(false (running__c8 
-									(true (5))
-									(false (4))))))
-							(false (running__c7 
-								(true (running__c8 
-									(true (5))
-									(false (4))))
-								(false (running__c8 
-									(true (4))
-									(false (3))))))))
-						(false (running__c6 
-							(true (running__c7 
-								(true (running__c8 
-									(true (5))
-									(false (4))))
-								(false (running__c8 
-									(true (4))
-									(false (3))))))
-							(false (running__c7 
-								(true (running__c8 
-									(true (4))
-									(false (3))))
-								(false (running__c8 
-									(true (3))
-									(false (2))))))))))
-					(false (running__c5 
-						(true (running__c6 
-							(true (running__c7 
-								(true (running__c8 
-									(true (5))
-									(false (4))))
-								(false (running__c8 
-									(true (4))
-									(false (3))))))
-							(false (running__c7 
-								(true (running__c8 
-									(true (4))
-									(false (3))))
-								(false (running__c8 
-									(true (3))
-									(false (2))))))))
-						(false (running__c6 
-							(true (running__c7 
-								(true (running__c8 
-									(true (4))
-									(false (3))))
-								(false (running__c8 
-									(true (3))
-									(false (2))))))
-							(false (running__c7 
-								(true (running__c8 
-									(true (3))
-									(false (2))))
-								(false (running__c8 
-									(true (2))
-									(false (1))))))))))))
-				(false (running__c4 
-					(true (running__c5 
-						(true (running__c6 
-							(true (running__c7 
-								(true (running__c8 
-									(true (5))
-									(false (4))))
-								(false (running__c8 
-									(true (4))
-									(false (3))))))
-							(false (running__c7 
-								(true (running__c8 
-									(true (4))
-									(false (3))))
-								(false (running__c8 
-									(true (3))
-									(false (2))))))))
-						(false (running__c6 
-							(true (running__c7 
-								(true (running__c8 
-									(true (4))
-									(false (3))))
-								(false (running__c8 
-									(true (3))
-									(false (2))))))
-							(false (running__c7 
-								(true (running__c8 
-									(true (3))
-									(false (2))))
-								(false (running__c8 
-									(true (2))
-									(false (1))))))))))
-					(false (running__c5 
-						(true (running__c6 
-							(true (running__c7 
-								(true (running__c8 
-									(true (4))
-									(false (3))))
-								(false (running__c8 
-									(true (3))
-									(false (2))))))
-							(false (running__c7 
-								(true (running__c8 
-									(true (3))
-									(false (2))))
-								(false (running__c8 
-									(true (2))
-									(false (1))))))))
-						(false (running__c6 
-							(true (running__c7 
-								(true (running__c8 
-									(true (3))
-									(false (2))))
-								(false (running__c8 
-									(true (2))
-									(false (1))))))
-							(false (running__c7 
-								(true (running__c8 
-									(true (2))
-									(false (1))))
-								(false (running__c8 
-									(true (1))
-									(false (0)))))))))))))))))
+	(0)
 
 discount 1.0
 horizon 20
