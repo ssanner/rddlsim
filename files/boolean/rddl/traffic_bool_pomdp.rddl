@@ -168,10 +168,10 @@ non-fluents traffic_2lanes_2intersections_pomdp {
 	domain = traffic_binary_ctm_pomdp;
 	
 	objects { 
-		intersection : {i_2_4, i_2_8};
-		cell : { c_2_1, c_2_2, c_2_3, c_2_5, c_2_6, c_2_7, c_2_9, c_2_10, c_2_11,
-		         c_3_11, c_3_10, c_3_9, c_3_7, c_3_6, c_3_5, c_3_3, c_3_2, c_3_1,
-		         c_4_4, c_5_4, c_1_4, c_0_4, c_4_8, c_5_8, c_1_8, c_0_8 };
+		intersection : {ia2a4, ia2a8};
+		cell : { ca2a1, ca2a2, ca2a3, ca2a5, ca2a6, ca2a7, ca2a9, ca2a10, ca2a11,
+		         ca3a11, ca3a10, ca3a9, ca3a7, ca3a6, ca3a5, ca3a3, ca3a2, ca3a1,
+		         ca4a4, ca5a4, ca1a4, ca0a4, ca4a8, ca5a8, ca1a8, ca0a8 };
 	};
   
 	// Only need to specify non-default values
@@ -183,53 +183,53 @@ non-fluents traffic_2lanes_2intersections_pomdp {
 	// 4          ^           ^  
 	// 5          ^           ^
 	non-fluents { 
-		PERIMETER-INPUT-CELL(c_2_1);
-		PERIMETER-INPUT-CELL(c_3_11);
-		PERIMETER-INPUT-CELL(c_5_4);
-		PERIMETER-INPUT-CELL(c_5_8);
+		PERIMETER-INPUT-CELL(ca2a1);
+		PERIMETER-INPUT-CELL(ca3a11);
+		PERIMETER-INPUT-CELL(ca5a4);
+		PERIMETER-INPUT-CELL(ca5a8);
 		
-		PERIMETER-INPUT-RATE(c_2_1)  = 0.8;
-		PERIMETER-INPUT-RATE(c_3_11) = 0.3;
-		PERIMETER-INPUT-RATE(c_5_4)  = 0.3;
-		PERIMETER-INPUT-RATE(c_5_8)  = 0.3;
+		PERIMETER-INPUT-RATE(ca2a1)  = 0.8;
+		PERIMETER-INPUT-RATE(ca3a11) = 0.3;
+		PERIMETER-INPUT-RATE(ca5a4)  = 0.3;
+		PERIMETER-INPUT-RATE(ca5a8)  = 0.3;
 		
-		PERIMETER-EXIT-CELL(c_2_11);
-		PERIMETER-EXIT-CELL(c_3_1);
-		PERIMETER-EXIT-CELL(c_0_4);
-		PERIMETER-EXIT-CELL(c_0_8);
+		PERIMETER-EXIT-CELL(ca2a11);
+		PERIMETER-EXIT-CELL(ca3a1);
+		PERIMETER-EXIT-CELL(ca0a4);
+		PERIMETER-EXIT-CELL(ca0a8);
 		
 		// Note that intersection cells are just like any other, this is
 		// the only part that indicates entry points to the intersection
-		FLOWS-INTO-INTERSECTION-EW(c_2_3, i_2_4);
-		FLOWS-INTO-INTERSECTION-EW(c_3_5, i_2_4);
-		FLOWS-INTO-INTERSECTION-EW(c_2_7, i_2_8);
-		FLOWS-INTO-INTERSECTION-EW(c_3_9, i_2_8);
-		FLOWS-INTO-INTERSECTION-NS(c_4_4, i_2_4);
-		FLOWS-INTO-INTERSECTION-NS(c_4_8, i_2_8);
+		FLOWS-INTO-INTERSECTION-EW(ca2a3, ia2a4);
+		FLOWS-INTO-INTERSECTION-EW(ca3a5, ia2a4);
+		FLOWS-INTO-INTERSECTION-EW(ca2a7, ia2a8);
+		FLOWS-INTO-INTERSECTION-EW(ca3a9, ia2a8);
+		FLOWS-INTO-INTERSECTION-NS(ca4a4, ia2a4);
+		FLOWS-INTO-INTERSECTION-NS(ca4a8, ia2a8);
 
-		FLOWS-INTO-CELL(c_5_4, c_4_4);
-		FLOWS-INTO-CELL(c_4_4, c_1_4);
-		FLOWS-INTO-CELL(c_1_4, c_0_4);
-		FLOWS-INTO-CELL(c_5_8, c_4_8);
-		FLOWS-INTO-CELL(c_4_8, c_1_8);
-		FLOWS-INTO-CELL(c_1_8, c_0_8);
+		FLOWS-INTO-CELL(ca5a4, ca4a4);
+		FLOWS-INTO-CELL(ca4a4, ca1a4);
+		FLOWS-INTO-CELL(ca1a4, ca0a4);
+		FLOWS-INTO-CELL(ca5a8, ca4a8);
+		FLOWS-INTO-CELL(ca4a8, ca1a8);
+		FLOWS-INTO-CELL(ca1a8, ca0a8);
 		
-		FLOWS-INTO-CELL(c_2_1, c_2_2);
-		FLOWS-INTO-CELL(c_2_2, c_2_3);
-		FLOWS-INTO-CELL(c_2_3, c_2_5);
-		FLOWS-INTO-CELL(c_2_5, c_2_6);
-		FLOWS-INTO-CELL(c_2_6, c_2_7);
-		FLOWS-INTO-CELL(c_2_7, c_2_9);
-		FLOWS-INTO-CELL(c_2_9, c_2_10);
-		FLOWS-INTO-CELL(c_2_10, c_2_11);
-		FLOWS-INTO-CELL(c_3_11, c_3_10);
-		FLOWS-INTO-CELL(c_3_10, c_3_9);
-		FLOWS-INTO-CELL(c_3_9, c_3_7);
-		FLOWS-INTO-CELL(c_3_7, c_3_6);
-		FLOWS-INTO-CELL(c_3_6, c_3_5);
-		FLOWS-INTO-CELL(c_3_5, c_3_3);
-		FLOWS-INTO-CELL(c_3_3, c_3_2);
-		FLOWS-INTO-CELL(c_3_2, c_3_1);
+		FLOWS-INTO-CELL(ca2a1, ca2a2);
+		FLOWS-INTO-CELL(ca2a2, ca2a3);
+		FLOWS-INTO-CELL(ca2a3, ca2a5);
+		FLOWS-INTO-CELL(ca2a5, ca2a6);
+		FLOWS-INTO-CELL(ca2a6, ca2a7);
+		FLOWS-INTO-CELL(ca2a7, ca2a9);
+		FLOWS-INTO-CELL(ca2a9, ca2a10);
+		FLOWS-INTO-CELL(ca2a10, ca2a11);
+		FLOWS-INTO-CELL(ca3a11, ca3a10);
+		FLOWS-INTO-CELL(ca3a10, ca3a9);
+		FLOWS-INTO-CELL(ca3a9, ca3a7);
+		FLOWS-INTO-CELL(ca3a7, ca3a6);
+		FLOWS-INTO-CELL(ca3a6, ca3a5);
+		FLOWS-INTO-CELL(ca3a5, ca3a3);
+		FLOWS-INTO-CELL(ca3a3, ca3a2);
+		FLOWS-INTO-CELL(ca3a2, ca3a1);
 	};
 }
 
