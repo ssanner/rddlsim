@@ -117,8 +117,8 @@ We currently provide the following rddlsim command line utilities:
 		./run rddl.sim.Simulator files/rddl/test/sysadmin.rddl rddl.policy.RandomBoolPolicy is1 rddl.viz.SysAdminScreenDisplay
 		./run rddl.sim.Simulator files/rddl/test/sidewalk.rddl rddl.policy.RandomEnumPolicy is2 rddl.viz.SidewalkGraphicsDisplay
 		./run rddl.sim.Simulator files/rddl/test/traffic_binary_ctm.rddl rddl.policy.RandomBoolPolicy is1 rddl.viz.TrafficDisplay
-		./run rddl.sim.Simulator files/boolean/rddl/elevator_bool_mdp.rddl rddl.policy.RandomBoolPolicy el4 rddl.viz.ElevatorDisplay
-		./run rddl.sim.Simulator files/boolean/rddl/traffic_bool_mdp.rddl rddl.policy.RandomBoolPolicy tr1 rddl.viz.TrafficDisplay
+		./run rddl.sim.Simulator files/boolean/rddl/elevator_bool_mdp.rddl rddl.policy.RandomBoolPolicy elm4 rddl.viz.ElevatorDisplay
+		./run rddl.sim.Simulator files/boolean/rddl/traffic_bool_mdp.rddl rddl.policy.RandomBoolPolicy trm1 rddl.viz.TrafficDisplay
 
 		./run rddl.viz.RDDL2Graph files/rddl/test/dbn_prop.rddl inst_dbn
 		./run rddl.viz.RDDL2Graph files/rddl/test/dbn_types_interm_po.rddl inst_dbn
