@@ -20,7 +20,7 @@
 //
 // Author: Scott Sanner (ssanner [at] gmail.com)
 ////////////////////////////////////////////////////////////////////
-domain traffic_binary_ctm {
+domain traffic_binary_ctm_pomdp {
   
 	requirements = { 
 		reward-deterministic, // this domain does not use a stochastic reward
@@ -163,32 +163,40 @@ domain traffic_binary_ctm {
 }
         
 // Define non-fluents here.
-non-fluents traffic_2lanes_2intersections {
+non-fluents traffic_2lanes_2intersections_pomdp {
 
-	domain = traffic_binary_ctm;
+	domain = traffic_binary_ctm_pomdp;
 	
 	objects { 
 		intersection : {i_2_4, i_2_8};
 		cell : { c_2_1, c_2_2, c_2_3, c_2_5, c_2_6, c_2_7, c_2_9, c_2_10, c_2_11,
-		         c_3_11, c_3_10, c_3_9, c_3_7, c_3_6, c_3_5, c_3_3, c_3_2, c_3_1 };
+		         c_3_11, c_3_10, c_3_9, c_3_7, c_3_6, c_3_5, c_3_3, c_3_2, c_3_1,
+		         c_4_4, c_5_4, c_1_4, c_0_4, c_4_8, c_5_8, c_1_8, c_0_8 };
 	};
   
 	// Only need to specify non-default values
 	//
 	//   1  2  3  4  5  6  7  8  9 10 11 12 13
-	// 1                       
+	// 1          ^           ^
 	// 2 >  *  *  I  *  *  *  I  *  *  >
 	// 3 <  *  *  I  *  *  *  I  *  *  <
-	// 4                       
+	// 4          ^           ^  
+	// 5          ^           ^
 	non-fluents { 
 		PERIMETER-INPUT-CELL(c_2_1);
 		PERIMETER-INPUT-CELL(c_3_11);
+		PERIMETER-INPUT-CELL(c_5_4);
+		PERIMETER-INPUT-CELL(c_5_8);
 		
 		PERIMETER-INPUT-RATE(c_2_1)  = 0.8;
 		PERIMETER-INPUT-RATE(c_3_11) = 0.3;
+		PERIMETER-INPUT-RATE(c_5_4)  = 0.3;
+		PERIMETER-INPUT-RATE(c_5_8)  = 0.3;
 		
 		PERIMETER-EXIT-CELL(c_2_11);
 		PERIMETER-EXIT-CELL(c_3_1);
+		PERIMETER-EXIT-CELL(c_0_4);
+		PERIMETER-EXIT-CELL(c_0_8);
 		
 		// Note that intersection cells are just like any other, this is
 		// the only part that indicates entry points to the intersection
@@ -196,6 +204,15 @@ non-fluents traffic_2lanes_2intersections {
 		FLOWS-INTO-INTERSECTION-EW(c_3_5, i_2_4);
 		FLOWS-INTO-INTERSECTION-EW(c_2_7, i_2_8);
 		FLOWS-INTO-INTERSECTION-EW(c_3_9, i_2_8);
+		FLOWS-INTO-INTERSECTION-NS(c_4_4, i_2_4);
+		FLOWS-INTO-INTERSECTION-NS(c_4_8, i_2_8);
+
+		FLOWS-INTO-CELL(c_5_4, c_4_4);
+		FLOWS-INTO-CELL(c_4_4, c_1_4);
+		FLOWS-INTO-CELL(c_1_4, c_0_4);
+		FLOWS-INTO-CELL(c_5_8, c_4_8);
+		FLOWS-INTO-CELL(c_4_8, c_1_8);
+		FLOWS-INTO-CELL(c_1_8, c_0_8);
 		
 		FLOWS-INTO-CELL(c_2_1, c_2_2);
 		FLOWS-INTO-CELL(c_2_2, c_2_3);
@@ -220,9 +237,9 @@ non-fluents traffic_2lanes_2intersections {
 // and objective).  Only one example instance for this file.
 instance trp1 {
 
-	domain = traffic_binary_ctm;
+	domain = traffic_binary_ctm_pomdp;
 	
-	non-fluents = traffic_2lanes_2intersections;
+	non-fluents = traffic_2lanes_2intersections_pomdp;
   
 	max-nondef-actions = 2;
   

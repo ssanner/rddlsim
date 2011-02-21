@@ -1,5 +1,5 @@
 // Automatically produced by rddl.translate.RDDL2Format
-// SPUDD / Symbolic Perseus Format for 'elevators.elm5'
+// SPUDD / Symbolic Perseus Format for 'elevators_pomdp.elp5'
 
 (variables 
 	(person_in_elevator_going_up__e1 true false)
@@ -21,6 +21,16 @@
 	(elevator_at_floor__e1_f3 true false)
 	(elevator_at_floor__e1_f4 true false)
 	(elevator_at_floor__e1_f5 true false)
+)
+
+(observations 
+	(person_in_elevator_going_down_obs__e1 true false)
+	(person_waiting_obs__f1 true false)
+	(person_waiting_obs__f2 true false)
+	(person_waiting_obs__f3 true false)
+	(person_waiting_obs__f4 true false)
+	(person_waiting_obs__f5 true false)
+	(person_in_elevator_going_up_obs__e1 true false)
 )
 
 init [*
@@ -2010,6 +2020,84 @@ action close_door__e1
 			(false (elevator_at_floor__e1_f5' 
 				(true (0))
 				(false (1)))))
+	observe 
+		person_in_elevator_going_down_obs__e1
+			(person_in_elevator_going_down__e1' 
+				(true (person_in_elevator_going_down_obs__e1' 
+					(true (1))
+					(false (0))))
+				(false (person_in_elevator_going_down_obs__e1' 
+					(true (0))
+					(false (1)))))
+		person_waiting_obs__f1
+			(person_waiting_up__f1' 
+				(true (person_waiting_obs__f1' 
+					(true (1))
+					(false (0))))
+				(false (person_waiting_down__f1' 
+					(true (person_waiting_obs__f1' 
+						(true (1))
+						(false (0))))
+					(false (person_waiting_obs__f1' 
+						(true (0))
+						(false (1)))))))
+		person_waiting_obs__f2
+			(person_waiting_up__f2' 
+				(true (person_waiting_obs__f2' 
+					(true (1))
+					(false (0))))
+				(false (person_waiting_down__f2' 
+					(true (person_waiting_obs__f2' 
+						(true (1))
+						(false (0))))
+					(false (person_waiting_obs__f2' 
+						(true (0))
+						(false (1)))))))
+		person_waiting_obs__f3
+			(person_waiting_up__f3' 
+				(true (person_waiting_obs__f3' 
+					(true (1))
+					(false (0))))
+				(false (person_waiting_down__f3' 
+					(true (person_waiting_obs__f3' 
+						(true (1))
+						(false (0))))
+					(false (person_waiting_obs__f3' 
+						(true (0))
+						(false (1)))))))
+		person_waiting_obs__f4
+			(person_waiting_up__f4' 
+				(true (person_waiting_obs__f4' 
+					(true (1))
+					(false (0))))
+				(false (person_waiting_down__f4' 
+					(true (person_waiting_obs__f4' 
+						(true (1))
+						(false (0))))
+					(false (person_waiting_obs__f4' 
+						(true (0))
+						(false (1)))))))
+		person_waiting_obs__f5
+			(person_waiting_up__f5' 
+				(true (person_waiting_obs__f5' 
+					(true (1))
+					(false (0))))
+				(false (person_waiting_down__f5' 
+					(true (person_waiting_obs__f5' 
+						(true (1))
+						(false (0))))
+					(false (person_waiting_obs__f5' 
+						(true (0))
+						(false (1)))))))
+		person_in_elevator_going_up_obs__e1
+			(person_in_elevator_going_up__e1' 
+				(true (person_in_elevator_going_up_obs__e1' 
+					(true (1))
+					(false (0))))
+				(false (person_in_elevator_going_up_obs__e1' 
+					(true (0))
+					(false (1)))))
+	endobserve
 	cost [+ 
 		(person_in_elevator_going_up__e1 
 			(true (elevator_dir_up__e1 
@@ -4158,6 +4246,84 @@ action move_current_dir__e1
 					(false (elevator_at_floor__e1_f5' 
 						(true (0))
 						(false (1)))))))))
+	observe 
+		person_in_elevator_going_down_obs__e1
+			(person_in_elevator_going_down__e1' 
+				(true (person_in_elevator_going_down_obs__e1' 
+					(true (1))
+					(false (0))))
+				(false (person_in_elevator_going_down_obs__e1' 
+					(true (0))
+					(false (1)))))
+		person_waiting_obs__f1
+			(person_waiting_up__f1' 
+				(true (person_waiting_obs__f1' 
+					(true (1))
+					(false (0))))
+				(false (person_waiting_down__f1' 
+					(true (person_waiting_obs__f1' 
+						(true (1))
+						(false (0))))
+					(false (person_waiting_obs__f1' 
+						(true (0))
+						(false (1)))))))
+		person_waiting_obs__f2
+			(person_waiting_up__f2' 
+				(true (person_waiting_obs__f2' 
+					(true (1))
+					(false (0))))
+				(false (person_waiting_down__f2' 
+					(true (person_waiting_obs__f2' 
+						(true (1))
+						(false (0))))
+					(false (person_waiting_obs__f2' 
+						(true (0))
+						(false (1)))))))
+		person_waiting_obs__f3
+			(person_waiting_up__f3' 
+				(true (person_waiting_obs__f3' 
+					(true (1))
+					(false (0))))
+				(false (person_waiting_down__f3' 
+					(true (person_waiting_obs__f3' 
+						(true (1))
+						(false (0))))
+					(false (person_waiting_obs__f3' 
+						(true (0))
+						(false (1)))))))
+		person_waiting_obs__f4
+			(person_waiting_up__f4' 
+				(true (person_waiting_obs__f4' 
+					(true (1))
+					(false (0))))
+				(false (person_waiting_down__f4' 
+					(true (person_waiting_obs__f4' 
+						(true (1))
+						(false (0))))
+					(false (person_waiting_obs__f4' 
+						(true (0))
+						(false (1)))))))
+		person_waiting_obs__f5
+			(person_waiting_up__f5' 
+				(true (person_waiting_obs__f5' 
+					(true (1))
+					(false (0))))
+				(false (person_waiting_down__f5' 
+					(true (person_waiting_obs__f5' 
+						(true (1))
+						(false (0))))
+					(false (person_waiting_obs__f5' 
+						(true (0))
+						(false (1)))))))
+		person_in_elevator_going_up_obs__e1
+			(person_in_elevator_going_up__e1' 
+				(true (person_in_elevator_going_up_obs__e1' 
+					(true (1))
+					(false (0))))
+				(false (person_in_elevator_going_up_obs__e1' 
+					(true (0))
+					(false (1)))))
+	endobserve
 	cost [+ 
 		(person_in_elevator_going_up__e1 
 			(true (elevator_dir_up__e1 
@@ -6186,6 +6352,84 @@ action noop
 			(false (elevator_at_floor__e1_f5' 
 				(true (0))
 				(false (1)))))
+	observe 
+		person_in_elevator_going_down_obs__e1
+			(person_in_elevator_going_down__e1' 
+				(true (person_in_elevator_going_down_obs__e1' 
+					(true (1))
+					(false (0))))
+				(false (person_in_elevator_going_down_obs__e1' 
+					(true (0))
+					(false (1)))))
+		person_waiting_obs__f1
+			(person_waiting_up__f1' 
+				(true (person_waiting_obs__f1' 
+					(true (1))
+					(false (0))))
+				(false (person_waiting_down__f1' 
+					(true (person_waiting_obs__f1' 
+						(true (1))
+						(false (0))))
+					(false (person_waiting_obs__f1' 
+						(true (0))
+						(false (1)))))))
+		person_waiting_obs__f2
+			(person_waiting_up__f2' 
+				(true (person_waiting_obs__f2' 
+					(true (1))
+					(false (0))))
+				(false (person_waiting_down__f2' 
+					(true (person_waiting_obs__f2' 
+						(true (1))
+						(false (0))))
+					(false (person_waiting_obs__f2' 
+						(true (0))
+						(false (1)))))))
+		person_waiting_obs__f3
+			(person_waiting_up__f3' 
+				(true (person_waiting_obs__f3' 
+					(true (1))
+					(false (0))))
+				(false (person_waiting_down__f3' 
+					(true (person_waiting_obs__f3' 
+						(true (1))
+						(false (0))))
+					(false (person_waiting_obs__f3' 
+						(true (0))
+						(false (1)))))))
+		person_waiting_obs__f4
+			(person_waiting_up__f4' 
+				(true (person_waiting_obs__f4' 
+					(true (1))
+					(false (0))))
+				(false (person_waiting_down__f4' 
+					(true (person_waiting_obs__f4' 
+						(true (1))
+						(false (0))))
+					(false (person_waiting_obs__f4' 
+						(true (0))
+						(false (1)))))))
+		person_waiting_obs__f5
+			(person_waiting_up__f5' 
+				(true (person_waiting_obs__f5' 
+					(true (1))
+					(false (0))))
+				(false (person_waiting_down__f5' 
+					(true (person_waiting_obs__f5' 
+						(true (1))
+						(false (0))))
+					(false (person_waiting_obs__f5' 
+						(true (0))
+						(false (1)))))))
+		person_in_elevator_going_up_obs__e1
+			(person_in_elevator_going_up__e1' 
+				(true (person_in_elevator_going_up_obs__e1' 
+					(true (1))
+					(false (0))))
+				(false (person_in_elevator_going_up_obs__e1' 
+					(true (0))
+					(false (1)))))
+	endobserve
 	cost [+ 
 		(person_in_elevator_going_up__e1 
 			(true (elevator_dir_up__e1 
@@ -8206,6 +8450,84 @@ action open_door_going_down__e1
 			(false (elevator_at_floor__e1_f5' 
 				(true (0))
 				(false (1)))))
+	observe 
+		person_in_elevator_going_down_obs__e1
+			(person_in_elevator_going_down__e1' 
+				(true (person_in_elevator_going_down_obs__e1' 
+					(true (1))
+					(false (0))))
+				(false (person_in_elevator_going_down_obs__e1' 
+					(true (0))
+					(false (1)))))
+		person_waiting_obs__f1
+			(person_waiting_up__f1' 
+				(true (person_waiting_obs__f1' 
+					(true (1))
+					(false (0))))
+				(false (person_waiting_down__f1' 
+					(true (person_waiting_obs__f1' 
+						(true (1))
+						(false (0))))
+					(false (person_waiting_obs__f1' 
+						(true (0))
+						(false (1)))))))
+		person_waiting_obs__f2
+			(person_waiting_up__f2' 
+				(true (person_waiting_obs__f2' 
+					(true (1))
+					(false (0))))
+				(false (person_waiting_down__f2' 
+					(true (person_waiting_obs__f2' 
+						(true (1))
+						(false (0))))
+					(false (person_waiting_obs__f2' 
+						(true (0))
+						(false (1)))))))
+		person_waiting_obs__f3
+			(person_waiting_up__f3' 
+				(true (person_waiting_obs__f3' 
+					(true (1))
+					(false (0))))
+				(false (person_waiting_down__f3' 
+					(true (person_waiting_obs__f3' 
+						(true (1))
+						(false (0))))
+					(false (person_waiting_obs__f3' 
+						(true (0))
+						(false (1)))))))
+		person_waiting_obs__f4
+			(person_waiting_up__f4' 
+				(true (person_waiting_obs__f4' 
+					(true (1))
+					(false (0))))
+				(false (person_waiting_down__f4' 
+					(true (person_waiting_obs__f4' 
+						(true (1))
+						(false (0))))
+					(false (person_waiting_obs__f4' 
+						(true (0))
+						(false (1)))))))
+		person_waiting_obs__f5
+			(person_waiting_up__f5' 
+				(true (person_waiting_obs__f5' 
+					(true (1))
+					(false (0))))
+				(false (person_waiting_down__f5' 
+					(true (person_waiting_obs__f5' 
+						(true (1))
+						(false (0))))
+					(false (person_waiting_obs__f5' 
+						(true (0))
+						(false (1)))))))
+		person_in_elevator_going_up_obs__e1
+			(person_in_elevator_going_up__e1' 
+				(true (person_in_elevator_going_up_obs__e1' 
+					(true (1))
+					(false (0))))
+				(false (person_in_elevator_going_up_obs__e1' 
+					(true (0))
+					(false (1)))))
+	endobserve
 	cost [+ 
 		(person_in_elevator_going_up__e1 
 			(true (elevator_dir_up__e1 
@@ -10226,6 +10548,84 @@ action open_door_going_up__e1
 			(false (elevator_at_floor__e1_f5' 
 				(true (0))
 				(false (1)))))
+	observe 
+		person_in_elevator_going_down_obs__e1
+			(person_in_elevator_going_down__e1' 
+				(true (person_in_elevator_going_down_obs__e1' 
+					(true (1))
+					(false (0))))
+				(false (person_in_elevator_going_down_obs__e1' 
+					(true (0))
+					(false (1)))))
+		person_waiting_obs__f1
+			(person_waiting_up__f1' 
+				(true (person_waiting_obs__f1' 
+					(true (1))
+					(false (0))))
+				(false (person_waiting_down__f1' 
+					(true (person_waiting_obs__f1' 
+						(true (1))
+						(false (0))))
+					(false (person_waiting_obs__f1' 
+						(true (0))
+						(false (1)))))))
+		person_waiting_obs__f2
+			(person_waiting_up__f2' 
+				(true (person_waiting_obs__f2' 
+					(true (1))
+					(false (0))))
+				(false (person_waiting_down__f2' 
+					(true (person_waiting_obs__f2' 
+						(true (1))
+						(false (0))))
+					(false (person_waiting_obs__f2' 
+						(true (0))
+						(false (1)))))))
+		person_waiting_obs__f3
+			(person_waiting_up__f3' 
+				(true (person_waiting_obs__f3' 
+					(true (1))
+					(false (0))))
+				(false (person_waiting_down__f3' 
+					(true (person_waiting_obs__f3' 
+						(true (1))
+						(false (0))))
+					(false (person_waiting_obs__f3' 
+						(true (0))
+						(false (1)))))))
+		person_waiting_obs__f4
+			(person_waiting_up__f4' 
+				(true (person_waiting_obs__f4' 
+					(true (1))
+					(false (0))))
+				(false (person_waiting_down__f4' 
+					(true (person_waiting_obs__f4' 
+						(true (1))
+						(false (0))))
+					(false (person_waiting_obs__f4' 
+						(true (0))
+						(false (1)))))))
+		person_waiting_obs__f5
+			(person_waiting_up__f5' 
+				(true (person_waiting_obs__f5' 
+					(true (1))
+					(false (0))))
+				(false (person_waiting_down__f5' 
+					(true (person_waiting_obs__f5' 
+						(true (1))
+						(false (0))))
+					(false (person_waiting_obs__f5' 
+						(true (0))
+						(false (1)))))))
+		person_in_elevator_going_up_obs__e1
+			(person_in_elevator_going_up__e1' 
+				(true (person_in_elevator_going_up_obs__e1' 
+					(true (1))
+					(false (0))))
+				(false (person_in_elevator_going_up_obs__e1' 
+					(true (0))
+					(false (1)))))
+	endobserve
 	cost [+ 
 		(person_in_elevator_going_up__e1 
 			(true (elevator_dir_up__e1 

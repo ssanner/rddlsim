@@ -1,5 +1,5 @@
 ;; Automatically produced by rddl.translate.RDDL2Format
-(define (domain elevators)
+(define (domain elevators_pomdp)
 	(:requirements :adl :probabilistic-effects :rewards)
 	(:predicates 
 		(person_in_elevator_going_up__e1)
@@ -1206,7 +1206,7 @@
 	)
 )
 (define (problem elp4)
-	(:domain elevators)
+	(:domain elevators_pomdp)
 	(:init 
 		(elevator_at_floor__e1_f1)
 	)
