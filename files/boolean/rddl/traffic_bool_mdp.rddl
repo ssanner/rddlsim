@@ -20,7 +20,7 @@
 //
 // Author: Scott Sanner (ssanner [at] gmail.com)
 ////////////////////////////////////////////////////////////////////
-domain traffic_binary_ctm {
+domain traffic_binary_ctm_mdp {
   
 	requirements = { 
 		reward-deterministic, // this domain does not use a stochastic reward
@@ -150,9 +150,9 @@ domain traffic_binary_ctm {
 }
         
 // Define non-fluents here.
-non-fluents traffic_2lanes_2intersections {
+non-fluents traffic_2lanes_2intersections_mdp {
 
-	domain = traffic_binary_ctm;
+	domain = traffic_binary_ctm_mdp;
 	
 	objects { 
 		intersection : {i_2_4, i_2_8};
@@ -224,9 +224,9 @@ non-fluents traffic_2lanes_2intersections {
 // and objective).  Only one example instance for this file.
 instance trm1 {
 
-	domain = traffic_binary_ctm;
+	domain = traffic_binary_ctm_mdp;
 	
-	non-fluents = traffic_2lanes_2intersections;
+	non-fluents = traffic_2lanes_2intersections_mdp;
   
 	max-nondef-actions = 2;
   

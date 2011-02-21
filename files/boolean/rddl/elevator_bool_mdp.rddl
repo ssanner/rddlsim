@@ -27,7 +27,7 @@
 // in the IPPC 2011 competition.
 ////////////////////////////////////////////////////////////////////
 
-domain elevators {
+domain elevators_mdp {
 	
 	requirements = { 
 		reward-deterministic,
@@ -209,9 +209,9 @@ domain elevators {
 }
         
 // Define non-fluents here.
-non-fluents fl4 {
+non-fluents fl4_mdp {
 
-	domain = elevators;
+	domain = elevators_mdp;
 	
 	objects { 
 		elevator : {e1}; // ,e2};
@@ -232,9 +232,9 @@ non-fluents fl4 {
 	};
 }
 
-non-fluents fl5 {
+non-fluents fl5_mdp {
 
-	domain = elevators;
+	domain = elevators_mdp;
 	
 	objects { 
 		elevator : {e1}; // ,e2};
@@ -259,9 +259,9 @@ non-fluents fl5 {
 
 instance elm4 {
 
-	domain = elevators;
+	domain = elevators_mdp;
 	
-	non-fluents = fl4;
+	non-fluents = fl4_mdp;
   
 	init-state { 
 		elevator-at-floor(e1,f1);
@@ -276,9 +276,9 @@ instance elm4 {
 
 instance elm5 {
 
-	domain = elevators;
+	domain = elevators_mdp;
 	
-	non-fluents = fl5;
+	non-fluents = fl5_mdp;
   
 	init-state { 
 		elevator-at-floor(e1,f1); 

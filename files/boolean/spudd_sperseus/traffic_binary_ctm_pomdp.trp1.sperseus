@@ -1,5 +1,5 @@
 // Automatically produced by rddl.translate.RDDL2Format
-// SPUDD / Symbolic Perseus Format for 'traffic_binary_ctm.trm1'
+// SPUDD / Symbolic Perseus Format for 'traffic_binary_ctm_pomdp.trp1'
 
 (variables 
 	(light_signal1__i_2_4 true false)
@@ -32,6 +32,13 @@
 	(occupied__c_0_8 true false)
 	(light_signal2__i_2_4 true false)
 	(light_signal2__i_2_8 true false)
+)
+
+(observations 
+	(traffic_at_stopline_EW_obs__i_2_4 true false)
+	(traffic_at_stopline_EW_obs__i_2_8 true false)
+	(traffic_at_stopline_NS_obs__i_2_4 true false)
+	(traffic_at_stopline_NS_obs__i_2_8 true false)
 )
 
 init [*
@@ -780,6 +787,48 @@ action advance__i_2_4
 			(false (light_signal2__i_2_8' 
 				(true (1))
 				(false (0)))))
+	observe 
+		traffic_at_stopline_EW_obs__i_2_4
+			(occupied__c_2_3' 
+				(true (traffic_at_stopline_EW_obs__i_2_4' 
+					(true (1))
+					(false (0))))
+				(false (occupied__c_3_5' 
+					(true (traffic_at_stopline_EW_obs__i_2_4' 
+						(true (1))
+						(false (0))))
+					(false (traffic_at_stopline_EW_obs__i_2_4' 
+						(true (0))
+						(false (1)))))))
+		traffic_at_stopline_EW_obs__i_2_8
+			(occupied__c_2_7' 
+				(true (traffic_at_stopline_EW_obs__i_2_8' 
+					(true (1))
+					(false (0))))
+				(false (occupied__c_3_9' 
+					(true (traffic_at_stopline_EW_obs__i_2_8' 
+						(true (1))
+						(false (0))))
+					(false (traffic_at_stopline_EW_obs__i_2_8' 
+						(true (0))
+						(false (1)))))))
+		traffic_at_stopline_NS_obs__i_2_4
+			(occupied__c_4_4' 
+				(true (traffic_at_stopline_NS_obs__i_2_4' 
+					(true (1))
+					(false (0))))
+				(false (traffic_at_stopline_NS_obs__i_2_4' 
+					(true (0))
+					(false (1)))))
+		traffic_at_stopline_NS_obs__i_2_8
+			(occupied__c_4_8' 
+				(true (traffic_at_stopline_NS_obs__i_2_8' 
+					(true (1))
+					(false (0))))
+				(false (traffic_at_stopline_NS_obs__i_2_8' 
+					(true (0))
+					(false (1)))))
+	endobserve
 	cost [+ 
 		(occupied__c_2_1 
 			(true (1))
@@ -1575,6 +1624,48 @@ action advance__i_2_4___advance__i_2_8
 			(false (light_signal2__i_2_8' 
 				(true (1))
 				(false (0)))))
+	observe 
+		traffic_at_stopline_EW_obs__i_2_4
+			(occupied__c_2_3' 
+				(true (traffic_at_stopline_EW_obs__i_2_4' 
+					(true (1))
+					(false (0))))
+				(false (occupied__c_3_5' 
+					(true (traffic_at_stopline_EW_obs__i_2_4' 
+						(true (1))
+						(false (0))))
+					(false (traffic_at_stopline_EW_obs__i_2_4' 
+						(true (0))
+						(false (1)))))))
+		traffic_at_stopline_EW_obs__i_2_8
+			(occupied__c_2_7' 
+				(true (traffic_at_stopline_EW_obs__i_2_8' 
+					(true (1))
+					(false (0))))
+				(false (occupied__c_3_9' 
+					(true (traffic_at_stopline_EW_obs__i_2_8' 
+						(true (1))
+						(false (0))))
+					(false (traffic_at_stopline_EW_obs__i_2_8' 
+						(true (0))
+						(false (1)))))))
+		traffic_at_stopline_NS_obs__i_2_4
+			(occupied__c_4_4' 
+				(true (traffic_at_stopline_NS_obs__i_2_4' 
+					(true (1))
+					(false (0))))
+				(false (traffic_at_stopline_NS_obs__i_2_4' 
+					(true (0))
+					(false (1)))))
+		traffic_at_stopline_NS_obs__i_2_8
+			(occupied__c_4_8' 
+				(true (traffic_at_stopline_NS_obs__i_2_8' 
+					(true (1))
+					(false (0))))
+				(false (traffic_at_stopline_NS_obs__i_2_8' 
+					(true (0))
+					(false (1)))))
+	endobserve
 	cost [+ 
 		(occupied__c_2_1 
 			(true (1))
@@ -2370,6 +2461,48 @@ action advance__i_2_8
 			(false (light_signal2__i_2_8' 
 				(true (1))
 				(false (0)))))
+	observe 
+		traffic_at_stopline_EW_obs__i_2_4
+			(occupied__c_2_3' 
+				(true (traffic_at_stopline_EW_obs__i_2_4' 
+					(true (1))
+					(false (0))))
+				(false (occupied__c_3_5' 
+					(true (traffic_at_stopline_EW_obs__i_2_4' 
+						(true (1))
+						(false (0))))
+					(false (traffic_at_stopline_EW_obs__i_2_4' 
+						(true (0))
+						(false (1)))))))
+		traffic_at_stopline_EW_obs__i_2_8
+			(occupied__c_2_7' 
+				(true (traffic_at_stopline_EW_obs__i_2_8' 
+					(true (1))
+					(false (0))))
+				(false (occupied__c_3_9' 
+					(true (traffic_at_stopline_EW_obs__i_2_8' 
+						(true (1))
+						(false (0))))
+					(false (traffic_at_stopline_EW_obs__i_2_8' 
+						(true (0))
+						(false (1)))))))
+		traffic_at_stopline_NS_obs__i_2_4
+			(occupied__c_4_4' 
+				(true (traffic_at_stopline_NS_obs__i_2_4' 
+					(true (1))
+					(false (0))))
+				(false (traffic_at_stopline_NS_obs__i_2_4' 
+					(true (0))
+					(false (1)))))
+		traffic_at_stopline_NS_obs__i_2_8
+			(occupied__c_4_8' 
+				(true (traffic_at_stopline_NS_obs__i_2_8' 
+					(true (1))
+					(false (0))))
+				(false (traffic_at_stopline_NS_obs__i_2_8' 
+					(true (0))
+					(false (1)))))
+	endobserve
 	cost [+ 
 		(occupied__c_2_1 
 			(true (1))
@@ -3165,6 +3298,48 @@ action advance__i_2_8___advance__i_2_4
 			(false (light_signal2__i_2_8' 
 				(true (1))
 				(false (0)))))
+	observe 
+		traffic_at_stopline_EW_obs__i_2_4
+			(occupied__c_2_3' 
+				(true (traffic_at_stopline_EW_obs__i_2_4' 
+					(true (1))
+					(false (0))))
+				(false (occupied__c_3_5' 
+					(true (traffic_at_stopline_EW_obs__i_2_4' 
+						(true (1))
+						(false (0))))
+					(false (traffic_at_stopline_EW_obs__i_2_4' 
+						(true (0))
+						(false (1)))))))
+		traffic_at_stopline_EW_obs__i_2_8
+			(occupied__c_2_7' 
+				(true (traffic_at_stopline_EW_obs__i_2_8' 
+					(true (1))
+					(false (0))))
+				(false (occupied__c_3_9' 
+					(true (traffic_at_stopline_EW_obs__i_2_8' 
+						(true (1))
+						(false (0))))
+					(false (traffic_at_stopline_EW_obs__i_2_8' 
+						(true (0))
+						(false (1)))))))
+		traffic_at_stopline_NS_obs__i_2_4
+			(occupied__c_4_4' 
+				(true (traffic_at_stopline_NS_obs__i_2_4' 
+					(true (1))
+					(false (0))))
+				(false (traffic_at_stopline_NS_obs__i_2_4' 
+					(true (0))
+					(false (1)))))
+		traffic_at_stopline_NS_obs__i_2_8
+			(occupied__c_4_8' 
+				(true (traffic_at_stopline_NS_obs__i_2_8' 
+					(true (1))
+					(false (0))))
+				(false (traffic_at_stopline_NS_obs__i_2_8' 
+					(true (0))
+					(false (1)))))
+	endobserve
 	cost [+ 
 		(occupied__c_2_1 
 			(true (1))
@@ -3960,6 +4135,48 @@ action noop
 			(false (light_signal2__i_2_8' 
 				(true (1))
 				(false (0)))))
+	observe 
+		traffic_at_stopline_EW_obs__i_2_4
+			(occupied__c_2_3' 
+				(true (traffic_at_stopline_EW_obs__i_2_4' 
+					(true (1))
+					(false (0))))
+				(false (occupied__c_3_5' 
+					(true (traffic_at_stopline_EW_obs__i_2_4' 
+						(true (1))
+						(false (0))))
+					(false (traffic_at_stopline_EW_obs__i_2_4' 
+						(true (0))
+						(false (1)))))))
+		traffic_at_stopline_EW_obs__i_2_8
+			(occupied__c_2_7' 
+				(true (traffic_at_stopline_EW_obs__i_2_8' 
+					(true (1))
+					(false (0))))
+				(false (occupied__c_3_9' 
+					(true (traffic_at_stopline_EW_obs__i_2_8' 
+						(true (1))
+						(false (0))))
+					(false (traffic_at_stopline_EW_obs__i_2_8' 
+						(true (0))
+						(false (1)))))))
+		traffic_at_stopline_NS_obs__i_2_4
+			(occupied__c_4_4' 
+				(true (traffic_at_stopline_NS_obs__i_2_4' 
+					(true (1))
+					(false (0))))
+				(false (traffic_at_stopline_NS_obs__i_2_4' 
+					(true (0))
+					(false (1)))))
+		traffic_at_stopline_NS_obs__i_2_8
+			(occupied__c_4_8' 
+				(true (traffic_at_stopline_NS_obs__i_2_8' 
+					(true (1))
+					(false (0))))
+				(false (traffic_at_stopline_NS_obs__i_2_8' 
+					(true (0))
+					(false (1)))))
+	endobserve
 	cost [+ 
 		(occupied__c_2_1 
 			(true (1))

@@ -26,7 +26,7 @@
 // and may be used in either single or multi-elevator mode.
 ////////////////////////////////////////////////////////////////////
 
-domain elevators {
+domain elevators_pomdp {
 	
 	requirements = { 
 		reward-deterministic,
@@ -226,9 +226,9 @@ domain elevators {
 }
         
 // Define non-fluents here.
-non-fluents fl4 {
+non-fluents fl4_pomdp {
 
-	domain = elevators;
+	domain = elevators_pomdp;
 	
 	objects { 
 		elevator : {e1}; // ,e2};
@@ -249,9 +249,9 @@ non-fluents fl4 {
 	};
 }
 
-non-fluents fl5 {
+non-fluents fl5_pomdp {
 
-	domain = elevators;
+	domain = elevators_pomdp;
 	
 	objects { 
 		elevator : {e1}; // ,e2};
@@ -276,9 +276,9 @@ non-fluents fl5 {
 
 instance elp4 {
 
-	domain = elevators;
+	domain = elevators_pomdp;
 	
-	non-fluents = fl4;
+	non-fluents = fl4_pomdp;
   
 	init-state { 
 		elevator-at-floor(e1,f1);
@@ -293,9 +293,9 @@ instance elp4 {
 
 instance elp5 {
 
-	domain = elevators;
+	domain = elevators_pomdp;
 	
-	non-fluents = fl5;
+	non-fluents = fl5_pomdp;
   
 	init-state { 
 		elevator-at-floor(e1,f1); 
