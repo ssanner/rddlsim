@@ -1,5 +1,5 @@
 // Automatically produced by rddl.translate.RDDL2Format
-// SPUDD / Symbolic Perseus Format for 'elevators.el4'
+// SPUDD / Symbolic Perseus Format for 'elevators.elp4'
 
 (variables 
 	(person_in_elevator_going_up__e1 true false)

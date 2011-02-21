@@ -711,7 +711,7 @@
 		)
 	)
 )
-(define (problem tr1)
+(define (problem trm1)
 	(:domain traffic_binary_ctm)
 	(:init 
 	)
