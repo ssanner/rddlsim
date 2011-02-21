@@ -56,14 +56,14 @@ public class TrafficDisplay extends StateViz {
 			int max_row = -1;
 			int max_col = -1;
 			for (LCONST cell : cells) {
-				String[] split = cell.toString().split("_");
+				String[] split = cell.toString().split("[_a]");
 				int row = new Integer(split[1]);
 				int col = new Integer(split[2]);
 				if (row > max_row) max_row = row;
 				if (col > max_col) max_col = col;
 			}
 			for (LCONST intersection : intersections) {
-				String[] split = intersection.toString().split("_");
+				String[] split = intersection.toString().split("[_a]");
 				if (split.length != 3)
 					continue;
 
@@ -90,7 +90,7 @@ public class TrafficDisplay extends StateViz {
 			// Get state values
 			boolean occ = (Boolean)s.getPVariableAssign(occupied, params);
 			//System.out.println("'" + cell + "'");
-			String[] split = cell.toString().split("_");
+			String[] split = cell.toString().split("[_a]");
 			int row = new Integer(split[1]);
 			int col = new Integer(split[2]);
 			Color c = _bd._colors[row % _bd._colors.length];
@@ -101,7 +101,7 @@ public class TrafficDisplay extends StateViz {
 		
 		for (LCONST intersection : intersections) {
 			params.set(0, intersection);
-			String[] split = intersection.toString().split("_");
+			String[] split = intersection.toString().split("[_a]");
 			if (split.length != 3)
 				continue;
 			
