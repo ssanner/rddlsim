@@ -25,9 +25,10 @@ public class BlockDisplay extends JPanel implements ActionListener {
    
 	// Potential colors
 	public Color[] _colors = new Color[] { 
-							Color.red, Color.cyan, Color.pink, Color.orange,
+							Color.cyan, Color.pink, Color.orange,
 							Color.yellow, Color.magenta, Color.blue, Color.green,
-							Color.black, Color.gray, Color.darkGray, Color.white};
+							Color.black, Color.gray, Color.darkGray, Color.white,
+							Color.red};
 
     private static final int _nBlockSize = 15;
 
