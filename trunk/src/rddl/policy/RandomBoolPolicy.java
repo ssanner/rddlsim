@@ -30,7 +30,7 @@ public class RandomBoolPolicy extends Policy {
 		
 		// Get a map of { legal action names -> RDDL action definition }  
 		Map<String,ArrayList<PVAR_INST_DEF>> action_map = 
-			ActionGenerator.getLegalActionMap(s);
+			ActionGenerator.getLegalBoolActionMap(s);
 		
 		// Return a random action selection
 		ArrayList<String> actions = new ArrayList<String>(action_map.keySet());

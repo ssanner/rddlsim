@@ -45,8 +45,12 @@ public class TrafficDisplay extends StateViz {
 		TYPE_NAME cell_type = new TYPE_NAME("cell");
 		ArrayList<LCONST> cells = s._hmObject2Consts.get(cell_type);
 
+		TYPE_NAME intersection_type = new TYPE_NAME("intersection");
+		ArrayList<LCONST> intersections = s._hmObject2Consts.get(intersection_type);
+
 		PVAR_NAME occupied = new PVAR_NAME("occupied");
-		PVARIABLE_DEF occupied_def = s._hmPVariables.get(occupied);
+		PVAR_NAME light_signal1 = new PVAR_NAME("light-signal1");
+		PVAR_NAME light_signal2 = new PVAR_NAME("light-signal2");
 
 		if (_bd == null) {
 			int max_row = -1;
@@ -58,6 +62,17 @@ public class TrafficDisplay extends StateViz {
 				if (row > max_row) max_row = row;
 				if (col > max_col) max_col = col;
 			}
+			for (LCONST intersection : intersections) {
+				String[] split = intersection.toString().split("_");
+				if (split.length != 3)
+					continue;
+
+				int row = new Integer(split[1]);
+				int col = new Integer(split[2]);
+				if (row > max_row) max_row = row;
+				if (col > max_col) max_col = col;
+			}
+
 			_bd= new BlockDisplay("RDDL Traffic Simulation", "RDDL Traffic Simulation", max_row + 2, max_col + 2);	
 		}
 		
@@ -83,6 +98,30 @@ public class TrafficDisplay extends StateViz {
 
 			_bd.setCell(row, col, c, occ ? null : ".");
 		}
+		
+		for (LCONST intersection : intersections) {
+			params.set(0, intersection);
+			String[] split = intersection.toString().split("_");
+			if (split.length != 3)
+				continue;
+			
+			int row = new Integer(split[1]);
+			int col = new Integer(split[2]);
+			boolean b_ls1 = (Boolean)s.getPVariableAssign(light_signal1, params);
+			boolean b_ls2 = (Boolean)s.getPVariableAssign(light_signal2, params);
+			boolean red = (b_ls1 && b_ls2) || (!b_ls1 && !b_ls2);
+			if (red) {
+				_bd.setCell(row, col, Color.red, null);				
+				_bd.setCell(row+1, col, Color.red, null);				
+			} else {
+				boolean ns = (!b_ls1 && b_ls2);
+				_bd.setCell(row, col, Color.green, ns ? "||" : "--");
+				_bd.setCell(row+1, col, Color.green, ns ? "||" : "--");	
+			}
+			
+		}
+
+		
 		_bd.repaint();
 		
 		// Go through all variable types (state, interm, observ, action, nonfluent)

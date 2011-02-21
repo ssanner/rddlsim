@@ -23,8 +23,7 @@
 // arrive and coordinating multiple elevators for up and down passengers.
 //
 // This domain was designed to support extension to multiple elevators
-// (hence concurrency), but will only be used with a single elevator
-// in the IPPC 2011 competition.
+// and may be used in either single or multi-elevator mode.
 ////////////////////////////////////////////////////////////////////
 
 domain elevators {
@@ -194,21 +193,21 @@ domain elevators {
   
   	// Reward is a sum of waiting penalties for those in elevators and at floor
 	reward = 
-		sum_{?e: elevator} [
+		[sum_{?e: elevator} [
 			-ELEVATOR-PENALTY-RIGHT-DIR * (person-in-elevator-going-up(?e) ^ elevator-dir-up(?e))
-		] + 
-		sum_{?e: elevator} [
+		]] + 
+		[sum_{?e: elevator} [
 			-ELEVATOR-PENALTY-RIGHT-DIR * (person-in-elevator-going-down(?e) ^ ~elevator-dir-up(?e))
-		] + 
-		sum_{?e: elevator} [
+		]] + 
+		[sum_{?e: elevator} [
 			-ELEVATOR-PENALTY-WRONG-DIR * (person-in-elevator-going-up(?e) ^ ~elevator-dir-up(?e))
-		] + 
-		sum_{?e: elevator} [
+		]] + 
+		[sum_{?e: elevator} [
 			-ELEVATOR-PENALTY-WRONG-DIR * (person-in-elevator-going-down(?e) ^ elevator-dir-up(?e))
-		] + 
-		sum_{?f: floor} [
+		]] + 
+		[sum_{?f: floor} [
 			- person-waiting-up(?f) - person-waiting-down(?f)
-		];
+		]];
 
 	state-action-constraints {
 		// Can check uniqueness constraint in many ways, but for simulator easiest 

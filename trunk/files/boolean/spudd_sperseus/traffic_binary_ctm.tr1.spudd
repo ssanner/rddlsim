@@ -1,0 +1,4049 @@
+// Automatically produced by rddl.translate.RDDL2Format
+// SPUDD / Symbolic Perseus Format for 'traffic_binary_ctm.tr1'
+
+(variables 
+	(light_signal1__i_2_4 true false)
+	(light_signal1__i_2_8 true false)
+	(occupied__c_2_1 true false)
+	(occupied__c_2_2 true false)
+	(occupied__c_2_3 true false)
+	(occupied__c_2_5 true false)
+	(occupied__c_2_6 true false)
+	(occupied__c_2_7 true false)
+	(occupied__c_2_9 true false)
+	(occupied__c_2_10 true false)
+	(occupied__c_2_11 true false)
+	(occupied__c_3_11 true false)
+	(occupied__c_3_10 true false)
+	(occupied__c_3_9 true false)
+	(occupied__c_3_7 true false)
+	(occupied__c_3_6 true false)
+	(occupied__c_3_5 true false)
+	(occupied__c_3_3 true false)
+	(occupied__c_3_2 true false)
+	(occupied__c_3_1 true false)
+	(occupied__c_4_4 true false)
+	(occupied__c_5_4 true false)
+	(occupied__c_1_4 true false)
+	(occupied__c_0_4 true false)
+	(occupied__c_4_8 true false)
+	(occupied__c_5_8 true false)
+	(occupied__c_1_8 true false)
+	(occupied__c_0_8 true false)
+	(light_signal2__i_2_4 true false)
+	(light_signal2__i_2_8 true false)
+)
+
+init [*
+	(light_signal1__i_2_4 (true (0.0)) (false (1.0)))
+	(light_signal1__i_2_8 (true (0.0)) (false (1.0)))
+	(occupied__c_2_1 (true (0.0)) (false (1.0)))
+	(occupied__c_2_2 (true (0.0)) (false (1.0)))
+	(occupied__c_2_3 (true (0.0)) (false (1.0)))
+	(occupied__c_2_5 (true (0.0)) (false (1.0)))
+	(occupied__c_2_6 (true (0.0)) (false (1.0)))
+	(occupied__c_2_7 (true (0.0)) (false (1.0)))
+	(occupied__c_2_9 (true (0.0)) (false (1.0)))
+	(occupied__c_2_10 (true (0.0)) (false (1.0)))
+	(occupied__c_2_11 (true (0.0)) (false (1.0)))
+	(occupied__c_3_11 (true (0.0)) (false (1.0)))
+	(occupied__c_3_10 (true (0.0)) (false (1.0)))
+	(occupied__c_3_9 (true (0.0)) (false (1.0)))
+	(occupied__c_3_7 (true (0.0)) (false (1.0)))
+	(occupied__c_3_6 (true (0.0)) (false (1.0)))
+	(occupied__c_3_5 (true (0.0)) (false (1.0)))
+	(occupied__c_3_3 (true (0.0)) (false (1.0)))
+	(occupied__c_3_2 (true (0.0)) (false (1.0)))
+	(occupied__c_3_1 (true (0.0)) (false (1.0)))
+	(occupied__c_4_4 (true (0.0)) (false (1.0)))
+	(occupied__c_5_4 (true (0.0)) (false (1.0)))
+	(occupied__c_1_4 (true (0.0)) (false (1.0)))
+	(occupied__c_0_4 (true (0.0)) (false (1.0)))
+	(occupied__c_4_8 (true (0.0)) (false (1.0)))
+	(occupied__c_5_8 (true (0.0)) (false (1.0)))
+	(occupied__c_1_8 (true (0.0)) (false (1.0)))
+	(occupied__c_0_8 (true (0.0)) (false (1.0)))
+	(light_signal2__i_2_4 (true (0.0)) (false (1.0)))
+	(light_signal2__i_2_8 (true (0.0)) (false (1.0)))
+]
+
+action advance__i_2_4
+	light_signal1__i_2_4
+		(light_signal2__i_2_4 
+			(true (light_signal1__i_2_4' 
+				(true (1))
+				(false (0))))
+			(false (light_signal1__i_2_4' 
+				(true (0))
+				(false (1)))))
+	light_signal1__i_2_8
+		(light_signal1__i_2_8 
+			(true (light_signal1__i_2_8' 
+				(true (1))
+				(false (0))))
+			(false (light_signal1__i_2_8' 
+				(true (0))
+				(false (1)))))
+	occupied__c_2_1
+		(occupied__c_2_1 
+			(true (occupied__c_2_2 
+				(true (occupied__c_2_1' 
+					(true (1))
+					(false (0))))
+				(false (occupied__c_2_1' 
+					(true (0))
+					(false (1))))))
+			(false (occupied__c_2_1' 
+				(true (0.8))
+				(false (0.2)))))
+	occupied__c_2_2
+		(occupied__c_2_1 
+			(true (occupied__c_2_2 
+				(true (occupied__c_2_3 
+					(true (occupied__c_2_2' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_2_2' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_2_2' 
+					(true (1))
+					(false (0))))))
+			(false (occupied__c_2_2 
+				(true (occupied__c_2_3 
+					(true (occupied__c_2_2' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_2_2' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_2_2' 
+					(true (0))
+					(false (1)))))))
+	occupied__c_2_3
+		(light_signal1__i_2_4 
+			(true (occupied__c_2_2 
+				(true (occupied__c_2_3 
+					(true (occupied__c_2_5 
+						(true (occupied__c_2_3' 
+							(true (1))
+							(false (0))))
+						(false (light_signal2__i_2_4 
+							(true (occupied__c_2_3' 
+								(true (1))
+								(false (0))))
+							(false (occupied__c_2_3' 
+								(true (0))
+								(false (1))))))))
+					(false (occupied__c_2_3' 
+						(true (1))
+						(false (0))))))
+				(false (occupied__c_2_5 
+					(true (occupied__c_2_3' 
+						(true (1))
+						(false (0))))
+					(false (light_signal2__i_2_4 
+						(true (occupied__c_2_3' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_2_3' 
+							(true (0))
+							(false (1))))))))))
+			(false (occupied__c_2_3' 
+				(true (1))
+				(false (0)))))
+	occupied__c_2_5
+		(light_signal1__i_2_4 
+			(true (occupied__c_2_3 
+				(true (occupied__c_2_5 
+					(true (occupied__c_2_6 
+						(true (occupied__c_2_5' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_2_5' 
+							(true (0))
+							(false (1))))))
+					(false (light_signal2__i_2_4 
+						(true (occupied__c_2_5' 
+							(true (0))
+							(false (1))))
+						(false (occupied__c_2_5' 
+							(true (1))
+							(false (0))))))))
+				(false (occupied__c_2_5 
+					(true (occupied__c_2_6 
+						(true (occupied__c_2_5' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_2_5' 
+							(true (0))
+							(false (1))))))
+					(false (occupied__c_2_5' 
+						(true (0))
+						(false (1))))))))
+			(false (occupied__c_2_5 
+				(true (occupied__c_2_6 
+					(true (occupied__c_2_5' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_2_5' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_2_5' 
+					(true (0))
+					(false (1)))))))
+	occupied__c_2_6
+		(occupied__c_2_5 
+			(true (occupied__c_2_6 
+				(true (occupied__c_2_7 
+					(true (occupied__c_2_6' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_2_6' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_2_6' 
+					(true (1))
+					(false (0))))))
+			(false (occupied__c_2_6 
+				(true (occupied__c_2_7 
+					(true (occupied__c_2_6' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_2_6' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_2_6' 
+					(true (0))
+					(false (1)))))))
+	occupied__c_2_7
+		(light_signal1__i_2_8 
+			(true (occupied__c_2_6 
+				(true (occupied__c_2_7 
+					(true (occupied__c_2_9 
+						(true (occupied__c_2_7' 
+							(true (1))
+							(false (0))))
+						(false (light_signal2__i_2_8 
+							(true (occupied__c_2_7' 
+								(true (1))
+								(false (0))))
+							(false (occupied__c_2_7' 
+								(true (0))
+								(false (1))))))))
+					(false (occupied__c_2_7' 
+						(true (1))
+						(false (0))))))
+				(false (occupied__c_2_9 
+					(true (occupied__c_2_7' 
+						(true (1))
+						(false (0))))
+					(false (light_signal2__i_2_8 
+						(true (occupied__c_2_7' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_2_7' 
+							(true (0))
+							(false (1))))))))))
+			(false (occupied__c_2_7' 
+				(true (1))
+				(false (0)))))
+	occupied__c_2_9
+		(light_signal1__i_2_8 
+			(true (occupied__c_2_7 
+				(true (occupied__c_2_9 
+					(true (occupied__c_2_10 
+						(true (occupied__c_2_9' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_2_9' 
+							(true (0))
+							(false (1))))))
+					(false (light_signal2__i_2_8 
+						(true (occupied__c_2_9' 
+							(true (0))
+							(false (1))))
+						(false (occupied__c_2_9' 
+							(true (1))
+							(false (0))))))))
+				(false (occupied__c_2_9 
+					(true (occupied__c_2_10 
+						(true (occupied__c_2_9' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_2_9' 
+							(true (0))
+							(false (1))))))
+					(false (occupied__c_2_9' 
+						(true (0))
+						(false (1))))))))
+			(false (occupied__c_2_9 
+				(true (occupied__c_2_10 
+					(true (occupied__c_2_9' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_2_9' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_2_9' 
+					(true (0))
+					(false (1)))))))
+	occupied__c_2_10
+		(occupied__c_2_9 
+			(true (occupied__c_2_10 
+				(true (occupied__c_2_11 
+					(true (occupied__c_2_10' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_2_10' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_2_10' 
+					(true (1))
+					(false (0))))))
+			(false (occupied__c_2_10 
+				(true (occupied__c_2_11 
+					(true (occupied__c_2_10' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_2_10' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_2_10' 
+					(true (0))
+					(false (1)))))))
+	occupied__c_2_11
+		(occupied__c_2_10 
+			(true (occupied__c_2_11 
+				(true (occupied__c_2_11' 
+					(true (0))
+					(false (1))))
+				(false (occupied__c_2_11' 
+					(true (1))
+					(false (0))))))
+			(false (occupied__c_2_11' 
+				(true (0))
+				(false (1)))))
+	occupied__c_3_11
+		(occupied__c_3_11 
+			(true (occupied__c_3_10 
+				(true (occupied__c_3_11' 
+					(true (1))
+					(false (0))))
+				(false (occupied__c_3_11' 
+					(true (0))
+					(false (1))))))
+			(false (occupied__c_3_11' 
+				(true (0.3))
+				(false (0.7)))))
+	occupied__c_3_10
+		(occupied__c_3_11 
+			(true (occupied__c_3_10 
+				(true (occupied__c_3_9 
+					(true (occupied__c_3_10' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_3_10' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_3_10' 
+					(true (1))
+					(false (0))))))
+			(false (occupied__c_3_10 
+				(true (occupied__c_3_9 
+					(true (occupied__c_3_10' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_3_10' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_3_10' 
+					(true (0))
+					(false (1)))))))
+	occupied__c_3_9
+		(light_signal1__i_2_8 
+			(true (occupied__c_3_10 
+				(true (occupied__c_3_9 
+					(true (occupied__c_3_7 
+						(true (occupied__c_3_9' 
+							(true (1))
+							(false (0))))
+						(false (light_signal2__i_2_8 
+							(true (occupied__c_3_9' 
+								(true (1))
+								(false (0))))
+							(false (occupied__c_3_9' 
+								(true (0))
+								(false (1))))))))
+					(false (occupied__c_3_9' 
+						(true (1))
+						(false (0))))))
+				(false (occupied__c_3_7 
+					(true (occupied__c_3_9' 
+						(true (1))
+						(false (0))))
+					(false (light_signal2__i_2_8 
+						(true (occupied__c_3_9' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_3_9' 
+							(true (0))
+							(false (1))))))))))
+			(false (occupied__c_3_9' 
+				(true (1))
+				(false (0)))))
+	occupied__c_3_7
+		(light_signal1__i_2_8 
+			(true (occupied__c_3_9 
+				(true (occupied__c_3_7 
+					(true (occupied__c_3_6 
+						(true (occupied__c_3_7' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_3_7' 
+							(true (0))
+							(false (1))))))
+					(false (light_signal2__i_2_8 
+						(true (occupied__c_3_7' 
+							(true (0))
+							(false (1))))
+						(false (occupied__c_3_7' 
+							(true (1))
+							(false (0))))))))
+				(false (occupied__c_3_7 
+					(true (occupied__c_3_6 
+						(true (occupied__c_3_7' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_3_7' 
+							(true (0))
+							(false (1))))))
+					(false (occupied__c_3_7' 
+						(true (0))
+						(false (1))))))))
+			(false (occupied__c_3_7 
+				(true (occupied__c_3_6 
+					(true (occupied__c_3_7' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_3_7' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_3_7' 
+					(true (0))
+					(false (1)))))))
+	occupied__c_3_6
+		(occupied__c_3_7 
+			(true (occupied__c_3_6 
+				(true (occupied__c_3_5 
+					(true (occupied__c_3_6' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_3_6' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_3_6' 
+					(true (1))
+					(false (0))))))
+			(false (occupied__c_3_6 
+				(true (occupied__c_3_5 
+					(true (occupied__c_3_6' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_3_6' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_3_6' 
+					(true (0))
+					(false (1)))))))
+	occupied__c_3_5
+		(light_signal1__i_2_4 
+			(true (occupied__c_3_6 
+				(true (occupied__c_3_5 
+					(true (occupied__c_3_3 
+						(true (occupied__c_3_5' 
+							(true (1))
+							(false (0))))
+						(false (light_signal2__i_2_4 
+							(true (occupied__c_3_5' 
+								(true (1))
+								(false (0))))
+							(false (occupied__c_3_5' 
+								(true (0))
+								(false (1))))))))
+					(false (occupied__c_3_5' 
+						(true (1))
+						(false (0))))))
+				(false (occupied__c_3_3 
+					(true (occupied__c_3_5' 
+						(true (1))
+						(false (0))))
+					(false (light_signal2__i_2_4 
+						(true (occupied__c_3_5' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_3_5' 
+							(true (0))
+							(false (1))))))))))
+			(false (occupied__c_3_5' 
+				(true (1))
+				(false (0)))))
+	occupied__c_3_3
+		(light_signal1__i_2_4 
+			(true (occupied__c_3_5 
+				(true (occupied__c_3_3 
+					(true (occupied__c_3_2 
+						(true (occupied__c_3_3' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_3_3' 
+							(true (0))
+							(false (1))))))
+					(false (light_signal2__i_2_4 
+						(true (occupied__c_3_3' 
+							(true (0))
+							(false (1))))
+						(false (occupied__c_3_3' 
+							(true (1))
+							(false (0))))))))
+				(false (occupied__c_3_3 
+					(true (occupied__c_3_2 
+						(true (occupied__c_3_3' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_3_3' 
+							(true (0))
+							(false (1))))))
+					(false (occupied__c_3_3' 
+						(true (0))
+						(false (1))))))))
+			(false (occupied__c_3_3 
+				(true (occupied__c_3_2 
+					(true (occupied__c_3_3' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_3_3' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_3_3' 
+					(true (0))
+					(false (1)))))))
+	occupied__c_3_2
+		(occupied__c_3_3 
+			(true (occupied__c_3_2 
+				(true (occupied__c_3_1 
+					(true (occupied__c_3_2' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_3_2' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_3_2' 
+					(true (1))
+					(false (0))))))
+			(false (occupied__c_3_2 
+				(true (occupied__c_3_1 
+					(true (occupied__c_3_2' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_3_2' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_3_2' 
+					(true (0))
+					(false (1)))))))
+	occupied__c_3_1
+		(occupied__c_3_2 
+			(true (occupied__c_3_1 
+				(true (occupied__c_3_1' 
+					(true (0))
+					(false (1))))
+				(false (occupied__c_3_1' 
+					(true (1))
+					(false (0))))))
+			(false (occupied__c_3_1' 
+				(true (0))
+				(false (1)))))
+	occupied__c_4_4
+		(light_signal1__i_2_4 
+			(true (occupied__c_4_4' 
+				(true (1))
+				(false (0))))
+			(false (occupied__c_4_4 
+				(true (occupied__c_1_4 
+					(true (occupied__c_4_4' 
+						(true (1))
+						(false (0))))
+					(false (light_signal2__i_2_4 
+						(true (occupied__c_4_4' 
+							(true (0))
+							(false (1))))
+						(false (occupied__c_4_4' 
+							(true (1))
+							(false (0))))))))
+				(false (occupied__c_5_4 
+					(true (occupied__c_4_4' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_1_4 
+						(true (occupied__c_4_4' 
+							(true (1))
+							(false (0))))
+						(false (light_signal2__i_2_4 
+							(true (occupied__c_4_4' 
+								(true (0))
+								(false (1))))
+							(false (occupied__c_4_4' 
+								(true (1))
+								(false (0)))))))))))))
+	occupied__c_5_4
+		(occupied__c_4_4 
+			(true (occupied__c_5_4 
+				(true (occupied__c_5_4' 
+					(true (1))
+					(false (0))))
+				(false (occupied__c_5_4' 
+					(true (0.3))
+					(false (0.7))))))
+			(false (occupied__c_5_4 
+				(true (occupied__c_5_4' 
+					(true (0))
+					(false (1))))
+				(false (occupied__c_5_4' 
+					(true (0.3))
+					(false (0.7)))))))
+	occupied__c_1_4
+		(light_signal1__i_2_4 
+			(true (occupied__c_1_4 
+				(true (occupied__c_0_4 
+					(true (occupied__c_1_4' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_1_4' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_1_4' 
+					(true (0))
+					(false (1))))))
+			(false (occupied__c_4_4 
+				(true (occupied__c_1_4 
+					(true (occupied__c_0_4 
+						(true (occupied__c_1_4' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_1_4' 
+							(true (0))
+							(false (1))))))
+					(false (light_signal2__i_2_4 
+						(true (occupied__c_1_4' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_1_4' 
+							(true (0))
+							(false (1))))))))
+				(false (occupied__c_1_4 
+					(true (occupied__c_0_4 
+						(true (occupied__c_1_4' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_1_4' 
+							(true (0))
+							(false (1))))))
+					(false (occupied__c_1_4' 
+						(true (0))
+						(false (1)))))))))
+	occupied__c_0_4
+		(occupied__c_1_4 
+			(true (occupied__c_0_4 
+				(true (occupied__c_0_4' 
+					(true (0))
+					(false (1))))
+				(false (occupied__c_0_4' 
+					(true (1))
+					(false (0))))))
+			(false (occupied__c_0_4' 
+				(true (0))
+				(false (1)))))
+	occupied__c_4_8
+		(light_signal1__i_2_8 
+			(true (occupied__c_4_8' 
+				(true (1))
+				(false (0))))
+			(false (occupied__c_4_8 
+				(true (occupied__c_1_8 
+					(true (occupied__c_4_8' 
+						(true (1))
+						(false (0))))
+					(false (light_signal2__i_2_8 
+						(true (occupied__c_4_8' 
+							(true (0))
+							(false (1))))
+						(false (occupied__c_4_8' 
+							(true (1))
+							(false (0))))))))
+				(false (occupied__c_5_8 
+					(true (occupied__c_4_8' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_1_8 
+						(true (occupied__c_4_8' 
+							(true (1))
+							(false (0))))
+						(false (light_signal2__i_2_8 
+							(true (occupied__c_4_8' 
+								(true (0))
+								(false (1))))
+							(false (occupied__c_4_8' 
+								(true (1))
+								(false (0)))))))))))))
+	occupied__c_5_8
+		(occupied__c_4_8 
+			(true (occupied__c_5_8 
+				(true (occupied__c_5_8' 
+					(true (1))
+					(false (0))))
+				(false (occupied__c_5_8' 
+					(true (0.3))
+					(false (0.7))))))
+			(false (occupied__c_5_8 
+				(true (occupied__c_5_8' 
+					(true (0))
+					(false (1))))
+				(false (occupied__c_5_8' 
+					(true (0.3))
+					(false (0.7)))))))
+	occupied__c_1_8
+		(light_signal1__i_2_8 
+			(true (occupied__c_1_8 
+				(true (occupied__c_0_8 
+					(true (occupied__c_1_8' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_1_8' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_1_8' 
+					(true (0))
+					(false (1))))))
+			(false (occupied__c_4_8 
+				(true (occupied__c_1_8 
+					(true (occupied__c_0_8 
+						(true (occupied__c_1_8' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_1_8' 
+							(true (0))
+							(false (1))))))
+					(false (light_signal2__i_2_8 
+						(true (occupied__c_1_8' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_1_8' 
+							(true (0))
+							(false (1))))))))
+				(false (occupied__c_1_8 
+					(true (occupied__c_0_8 
+						(true (occupied__c_1_8' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_1_8' 
+							(true (0))
+							(false (1))))))
+					(false (occupied__c_1_8' 
+						(true (0))
+						(false (1)))))))))
+	occupied__c_0_8
+		(occupied__c_1_8 
+			(true (occupied__c_0_8 
+				(true (occupied__c_0_8' 
+					(true (0))
+					(false (1))))
+				(false (occupied__c_0_8' 
+					(true (1))
+					(false (0))))))
+			(false (occupied__c_0_8' 
+				(true (0))
+				(false (1)))))
+	light_signal2__i_2_4
+		(light_signal1__i_2_4 
+			(true (light_signal2__i_2_4' 
+				(true (0))
+				(false (1))))
+			(false (light_signal2__i_2_4' 
+				(true (1))
+				(false (0)))))
+	light_signal2__i_2_8
+		(light_signal1__i_2_8 
+			(true (light_signal2__i_2_8' 
+				(true (0))
+				(false (1))))
+			(false (light_signal2__i_2_8' 
+				(true (1))
+				(false (0)))))
+	cost [+ 
+		(occupied__c_2_1 
+			(true (1))
+			(false (0)))
+		(occupied__c_2_2 
+			(true (1))
+			(false (0)))
+		(occupied__c_2_3 
+			(true (1))
+			(false (0)))
+		(occupied__c_2_5 
+			(true (1))
+			(false (0)))
+		(occupied__c_2_6 
+			(true (1))
+			(false (0)))
+		(occupied__c_2_7 
+			(true (1))
+			(false (0)))
+		(occupied__c_2_9 
+			(true (1))
+			(false (0)))
+		(occupied__c_2_10 
+			(true (1))
+			(false (0)))
+		(occupied__c_2_11 
+			(true (1))
+			(false (0)))
+		(occupied__c_3_11 
+			(true (1))
+			(false (0)))
+		(occupied__c_3_10 
+			(true (1))
+			(false (0)))
+		(occupied__c_3_9 
+			(true (1))
+			(false (0)))
+		(occupied__c_3_7 
+			(true (1))
+			(false (0)))
+		(occupied__c_3_6 
+			(true (1))
+			(false (0)))
+		(occupied__c_3_5 
+			(true (1))
+			(false (0)))
+		(occupied__c_3_3 
+			(true (1))
+			(false (0)))
+		(occupied__c_3_2 
+			(true (1))
+			(false (0)))
+		(occupied__c_3_1 
+			(true (1))
+			(false (0)))
+		(occupied__c_4_4 
+			(true (1))
+			(false (0)))
+		(occupied__c_5_4 
+			(true (1))
+			(false (0)))
+		(occupied__c_1_4 
+			(true (1))
+			(false (0)))
+		(occupied__c_0_4 
+			(true (1))
+			(false (0)))
+		(occupied__c_4_8 
+			(true (1))
+			(false (0)))
+		(occupied__c_5_8 
+			(true (1))
+			(false (0)))
+		(occupied__c_1_8 
+			(true (1))
+			(false (0)))
+		(occupied__c_0_8 
+			(true (1))
+			(false (0)))
+	]
+endaction
+
+action advance__i_2_4___advance__i_2_8
+	light_signal1__i_2_4
+		(light_signal2__i_2_4 
+			(true (light_signal1__i_2_4' 
+				(true (1))
+				(false (0))))
+			(false (light_signal1__i_2_4' 
+				(true (0))
+				(false (1)))))
+	light_signal1__i_2_8
+		(light_signal2__i_2_8 
+			(true (light_signal1__i_2_8' 
+				(true (1))
+				(false (0))))
+			(false (light_signal1__i_2_8' 
+				(true (0))
+				(false (1)))))
+	occupied__c_2_1
+		(occupied__c_2_1 
+			(true (occupied__c_2_2 
+				(true (occupied__c_2_1' 
+					(true (1))
+					(false (0))))
+				(false (occupied__c_2_1' 
+					(true (0))
+					(false (1))))))
+			(false (occupied__c_2_1' 
+				(true (0.8))
+				(false (0.2)))))
+	occupied__c_2_2
+		(occupied__c_2_1 
+			(true (occupied__c_2_2 
+				(true (occupied__c_2_3 
+					(true (occupied__c_2_2' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_2_2' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_2_2' 
+					(true (1))
+					(false (0))))))
+			(false (occupied__c_2_2 
+				(true (occupied__c_2_3 
+					(true (occupied__c_2_2' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_2_2' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_2_2' 
+					(true (0))
+					(false (1)))))))
+	occupied__c_2_3
+		(light_signal1__i_2_4 
+			(true (occupied__c_2_2 
+				(true (occupied__c_2_3 
+					(true (occupied__c_2_5 
+						(true (occupied__c_2_3' 
+							(true (1))
+							(false (0))))
+						(false (light_signal2__i_2_4 
+							(true (occupied__c_2_3' 
+								(true (1))
+								(false (0))))
+							(false (occupied__c_2_3' 
+								(true (0))
+								(false (1))))))))
+					(false (occupied__c_2_3' 
+						(true (1))
+						(false (0))))))
+				(false (occupied__c_2_5 
+					(true (occupied__c_2_3' 
+						(true (1))
+						(false (0))))
+					(false (light_signal2__i_2_4 
+						(true (occupied__c_2_3' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_2_3' 
+							(true (0))
+							(false (1))))))))))
+			(false (occupied__c_2_3' 
+				(true (1))
+				(false (0)))))
+	occupied__c_2_5
+		(light_signal1__i_2_4 
+			(true (occupied__c_2_3 
+				(true (occupied__c_2_5 
+					(true (occupied__c_2_6 
+						(true (occupied__c_2_5' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_2_5' 
+							(true (0))
+							(false (1))))))
+					(false (light_signal2__i_2_4 
+						(true (occupied__c_2_5' 
+							(true (0))
+							(false (1))))
+						(false (occupied__c_2_5' 
+							(true (1))
+							(false (0))))))))
+				(false (occupied__c_2_5 
+					(true (occupied__c_2_6 
+						(true (occupied__c_2_5' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_2_5' 
+							(true (0))
+							(false (1))))))
+					(false (occupied__c_2_5' 
+						(true (0))
+						(false (1))))))))
+			(false (occupied__c_2_5 
+				(true (occupied__c_2_6 
+					(true (occupied__c_2_5' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_2_5' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_2_5' 
+					(true (0))
+					(false (1)))))))
+	occupied__c_2_6
+		(occupied__c_2_5 
+			(true (occupied__c_2_6 
+				(true (occupied__c_2_7 
+					(true (occupied__c_2_6' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_2_6' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_2_6' 
+					(true (1))
+					(false (0))))))
+			(false (occupied__c_2_6 
+				(true (occupied__c_2_7 
+					(true (occupied__c_2_6' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_2_6' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_2_6' 
+					(true (0))
+					(false (1)))))))
+	occupied__c_2_7
+		(light_signal1__i_2_8 
+			(true (occupied__c_2_6 
+				(true (occupied__c_2_7 
+					(true (occupied__c_2_9 
+						(true (occupied__c_2_7' 
+							(true (1))
+							(false (0))))
+						(false (light_signal2__i_2_8 
+							(true (occupied__c_2_7' 
+								(true (1))
+								(false (0))))
+							(false (occupied__c_2_7' 
+								(true (0))
+								(false (1))))))))
+					(false (occupied__c_2_7' 
+						(true (1))
+						(false (0))))))
+				(false (occupied__c_2_9 
+					(true (occupied__c_2_7' 
+						(true (1))
+						(false (0))))
+					(false (light_signal2__i_2_8 
+						(true (occupied__c_2_7' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_2_7' 
+							(true (0))
+							(false (1))))))))))
+			(false (occupied__c_2_7' 
+				(true (1))
+				(false (0)))))
+	occupied__c_2_9
+		(light_signal1__i_2_8 
+			(true (occupied__c_2_7 
+				(true (occupied__c_2_9 
+					(true (occupied__c_2_10 
+						(true (occupied__c_2_9' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_2_9' 
+							(true (0))
+							(false (1))))))
+					(false (light_signal2__i_2_8 
+						(true (occupied__c_2_9' 
+							(true (0))
+							(false (1))))
+						(false (occupied__c_2_9' 
+							(true (1))
+							(false (0))))))))
+				(false (occupied__c_2_9 
+					(true (occupied__c_2_10 
+						(true (occupied__c_2_9' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_2_9' 
+							(true (0))
+							(false (1))))))
+					(false (occupied__c_2_9' 
+						(true (0))
+						(false (1))))))))
+			(false (occupied__c_2_9 
+				(true (occupied__c_2_10 
+					(true (occupied__c_2_9' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_2_9' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_2_9' 
+					(true (0))
+					(false (1)))))))
+	occupied__c_2_10
+		(occupied__c_2_9 
+			(true (occupied__c_2_10 
+				(true (occupied__c_2_11 
+					(true (occupied__c_2_10' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_2_10' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_2_10' 
+					(true (1))
+					(false (0))))))
+			(false (occupied__c_2_10 
+				(true (occupied__c_2_11 
+					(true (occupied__c_2_10' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_2_10' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_2_10' 
+					(true (0))
+					(false (1)))))))
+	occupied__c_2_11
+		(occupied__c_2_10 
+			(true (occupied__c_2_11 
+				(true (occupied__c_2_11' 
+					(true (0))
+					(false (1))))
+				(false (occupied__c_2_11' 
+					(true (1))
+					(false (0))))))
+			(false (occupied__c_2_11' 
+				(true (0))
+				(false (1)))))
+	occupied__c_3_11
+		(occupied__c_3_11 
+			(true (occupied__c_3_10 
+				(true (occupied__c_3_11' 
+					(true (1))
+					(false (0))))
+				(false (occupied__c_3_11' 
+					(true (0))
+					(false (1))))))
+			(false (occupied__c_3_11' 
+				(true (0.3))
+				(false (0.7)))))
+	occupied__c_3_10
+		(occupied__c_3_11 
+			(true (occupied__c_3_10 
+				(true (occupied__c_3_9 
+					(true (occupied__c_3_10' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_3_10' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_3_10' 
+					(true (1))
+					(false (0))))))
+			(false (occupied__c_3_10 
+				(true (occupied__c_3_9 
+					(true (occupied__c_3_10' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_3_10' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_3_10' 
+					(true (0))
+					(false (1)))))))
+	occupied__c_3_9
+		(light_signal1__i_2_8 
+			(true (occupied__c_3_10 
+				(true (occupied__c_3_9 
+					(true (occupied__c_3_7 
+						(true (occupied__c_3_9' 
+							(true (1))
+							(false (0))))
+						(false (light_signal2__i_2_8 
+							(true (occupied__c_3_9' 
+								(true (1))
+								(false (0))))
+							(false (occupied__c_3_9' 
+								(true (0))
+								(false (1))))))))
+					(false (occupied__c_3_9' 
+						(true (1))
+						(false (0))))))
+				(false (occupied__c_3_7 
+					(true (occupied__c_3_9' 
+						(true (1))
+						(false (0))))
+					(false (light_signal2__i_2_8 
+						(true (occupied__c_3_9' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_3_9' 
+							(true (0))
+							(false (1))))))))))
+			(false (occupied__c_3_9' 
+				(true (1))
+				(false (0)))))
+	occupied__c_3_7
+		(light_signal1__i_2_8 
+			(true (occupied__c_3_9 
+				(true (occupied__c_3_7 
+					(true (occupied__c_3_6 
+						(true (occupied__c_3_7' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_3_7' 
+							(true (0))
+							(false (1))))))
+					(false (light_signal2__i_2_8 
+						(true (occupied__c_3_7' 
+							(true (0))
+							(false (1))))
+						(false (occupied__c_3_7' 
+							(true (1))
+							(false (0))))))))
+				(false (occupied__c_3_7 
+					(true (occupied__c_3_6 
+						(true (occupied__c_3_7' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_3_7' 
+							(true (0))
+							(false (1))))))
+					(false (occupied__c_3_7' 
+						(true (0))
+						(false (1))))))))
+			(false (occupied__c_3_7 
+				(true (occupied__c_3_6 
+					(true (occupied__c_3_7' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_3_7' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_3_7' 
+					(true (0))
+					(false (1)))))))
+	occupied__c_3_6
+		(occupied__c_3_7 
+			(true (occupied__c_3_6 
+				(true (occupied__c_3_5 
+					(true (occupied__c_3_6' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_3_6' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_3_6' 
+					(true (1))
+					(false (0))))))
+			(false (occupied__c_3_6 
+				(true (occupied__c_3_5 
+					(true (occupied__c_3_6' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_3_6' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_3_6' 
+					(true (0))
+					(false (1)))))))
+	occupied__c_3_5
+		(light_signal1__i_2_4 
+			(true (occupied__c_3_6 
+				(true (occupied__c_3_5 
+					(true (occupied__c_3_3 
+						(true (occupied__c_3_5' 
+							(true (1))
+							(false (0))))
+						(false (light_signal2__i_2_4 
+							(true (occupied__c_3_5' 
+								(true (1))
+								(false (0))))
+							(false (occupied__c_3_5' 
+								(true (0))
+								(false (1))))))))
+					(false (occupied__c_3_5' 
+						(true (1))
+						(false (0))))))
+				(false (occupied__c_3_3 
+					(true (occupied__c_3_5' 
+						(true (1))
+						(false (0))))
+					(false (light_signal2__i_2_4 
+						(true (occupied__c_3_5' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_3_5' 
+							(true (0))
+							(false (1))))))))))
+			(false (occupied__c_3_5' 
+				(true (1))
+				(false (0)))))
+	occupied__c_3_3
+		(light_signal1__i_2_4 
+			(true (occupied__c_3_5 
+				(true (occupied__c_3_3 
+					(true (occupied__c_3_2 
+						(true (occupied__c_3_3' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_3_3' 
+							(true (0))
+							(false (1))))))
+					(false (light_signal2__i_2_4 
+						(true (occupied__c_3_3' 
+							(true (0))
+							(false (1))))
+						(false (occupied__c_3_3' 
+							(true (1))
+							(false (0))))))))
+				(false (occupied__c_3_3 
+					(true (occupied__c_3_2 
+						(true (occupied__c_3_3' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_3_3' 
+							(true (0))
+							(false (1))))))
+					(false (occupied__c_3_3' 
+						(true (0))
+						(false (1))))))))
+			(false (occupied__c_3_3 
+				(true (occupied__c_3_2 
+					(true (occupied__c_3_3' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_3_3' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_3_3' 
+					(true (0))
+					(false (1)))))))
+	occupied__c_3_2
+		(occupied__c_3_3 
+			(true (occupied__c_3_2 
+				(true (occupied__c_3_1 
+					(true (occupied__c_3_2' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_3_2' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_3_2' 
+					(true (1))
+					(false (0))))))
+			(false (occupied__c_3_2 
+				(true (occupied__c_3_1 
+					(true (occupied__c_3_2' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_3_2' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_3_2' 
+					(true (0))
+					(false (1)))))))
+	occupied__c_3_1
+		(occupied__c_3_2 
+			(true (occupied__c_3_1 
+				(true (occupied__c_3_1' 
+					(true (0))
+					(false (1))))
+				(false (occupied__c_3_1' 
+					(true (1))
+					(false (0))))))
+			(false (occupied__c_3_1' 
+				(true (0))
+				(false (1)))))
+	occupied__c_4_4
+		(light_signal1__i_2_4 
+			(true (occupied__c_4_4' 
+				(true (1))
+				(false (0))))
+			(false (occupied__c_4_4 
+				(true (occupied__c_1_4 
+					(true (occupied__c_4_4' 
+						(true (1))
+						(false (0))))
+					(false (light_signal2__i_2_4 
+						(true (occupied__c_4_4' 
+							(true (0))
+							(false (1))))
+						(false (occupied__c_4_4' 
+							(true (1))
+							(false (0))))))))
+				(false (occupied__c_5_4 
+					(true (occupied__c_4_4' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_1_4 
+						(true (occupied__c_4_4' 
+							(true (1))
+							(false (0))))
+						(false (light_signal2__i_2_4 
+							(true (occupied__c_4_4' 
+								(true (0))
+								(false (1))))
+							(false (occupied__c_4_4' 
+								(true (1))
+								(false (0)))))))))))))
+	occupied__c_5_4
+		(occupied__c_4_4 
+			(true (occupied__c_5_4 
+				(true (occupied__c_5_4' 
+					(true (1))
+					(false (0))))
+				(false (occupied__c_5_4' 
+					(true (0.3))
+					(false (0.7))))))
+			(false (occupied__c_5_4 
+				(true (occupied__c_5_4' 
+					(true (0))
+					(false (1))))
+				(false (occupied__c_5_4' 
+					(true (0.3))
+					(false (0.7)))))))
+	occupied__c_1_4
+		(light_signal1__i_2_4 
+			(true (occupied__c_1_4 
+				(true (occupied__c_0_4 
+					(true (occupied__c_1_4' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_1_4' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_1_4' 
+					(true (0))
+					(false (1))))))
+			(false (occupied__c_4_4 
+				(true (occupied__c_1_4 
+					(true (occupied__c_0_4 
+						(true (occupied__c_1_4' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_1_4' 
+							(true (0))
+							(false (1))))))
+					(false (light_signal2__i_2_4 
+						(true (occupied__c_1_4' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_1_4' 
+							(true (0))
+							(false (1))))))))
+				(false (occupied__c_1_4 
+					(true (occupied__c_0_4 
+						(true (occupied__c_1_4' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_1_4' 
+							(true (0))
+							(false (1))))))
+					(false (occupied__c_1_4' 
+						(true (0))
+						(false (1)))))))))
+	occupied__c_0_4
+		(occupied__c_1_4 
+			(true (occupied__c_0_4 
+				(true (occupied__c_0_4' 
+					(true (0))
+					(false (1))))
+				(false (occupied__c_0_4' 
+					(true (1))
+					(false (0))))))
+			(false (occupied__c_0_4' 
+				(true (0))
+				(false (1)))))
+	occupied__c_4_8
+		(light_signal1__i_2_8 
+			(true (occupied__c_4_8' 
+				(true (1))
+				(false (0))))
+			(false (occupied__c_4_8 
+				(true (occupied__c_1_8 
+					(true (occupied__c_4_8' 
+						(true (1))
+						(false (0))))
+					(false (light_signal2__i_2_8 
+						(true (occupied__c_4_8' 
+							(true (0))
+							(false (1))))
+						(false (occupied__c_4_8' 
+							(true (1))
+							(false (0))))))))
+				(false (occupied__c_5_8 
+					(true (occupied__c_4_8' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_1_8 
+						(true (occupied__c_4_8' 
+							(true (1))
+							(false (0))))
+						(false (light_signal2__i_2_8 
+							(true (occupied__c_4_8' 
+								(true (0))
+								(false (1))))
+							(false (occupied__c_4_8' 
+								(true (1))
+								(false (0)))))))))))))
+	occupied__c_5_8
+		(occupied__c_4_8 
+			(true (occupied__c_5_8 
+				(true (occupied__c_5_8' 
+					(true (1))
+					(false (0))))
+				(false (occupied__c_5_8' 
+					(true (0.3))
+					(false (0.7))))))
+			(false (occupied__c_5_8 
+				(true (occupied__c_5_8' 
+					(true (0))
+					(false (1))))
+				(false (occupied__c_5_8' 
+					(true (0.3))
+					(false (0.7)))))))
+	occupied__c_1_8
+		(light_signal1__i_2_8 
+			(true (occupied__c_1_8 
+				(true (occupied__c_0_8 
+					(true (occupied__c_1_8' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_1_8' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_1_8' 
+					(true (0))
+					(false (1))))))
+			(false (occupied__c_4_8 
+				(true (occupied__c_1_8 
+					(true (occupied__c_0_8 
+						(true (occupied__c_1_8' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_1_8' 
+							(true (0))
+							(false (1))))))
+					(false (light_signal2__i_2_8 
+						(true (occupied__c_1_8' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_1_8' 
+							(true (0))
+							(false (1))))))))
+				(false (occupied__c_1_8 
+					(true (occupied__c_0_8 
+						(true (occupied__c_1_8' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_1_8' 
+							(true (0))
+							(false (1))))))
+					(false (occupied__c_1_8' 
+						(true (0))
+						(false (1)))))))))
+	occupied__c_0_8
+		(occupied__c_1_8 
+			(true (occupied__c_0_8 
+				(true (occupied__c_0_8' 
+					(true (0))
+					(false (1))))
+				(false (occupied__c_0_8' 
+					(true (1))
+					(false (0))))))
+			(false (occupied__c_0_8' 
+				(true (0))
+				(false (1)))))
+	light_signal2__i_2_4
+		(light_signal1__i_2_4 
+			(true (light_signal2__i_2_4' 
+				(true (0))
+				(false (1))))
+			(false (light_signal2__i_2_4' 
+				(true (1))
+				(false (0)))))
+	light_signal2__i_2_8
+		(light_signal1__i_2_8 
+			(true (light_signal2__i_2_8' 
+				(true (0))
+				(false (1))))
+			(false (light_signal2__i_2_8' 
+				(true (1))
+				(false (0)))))
+	cost [+ 
+		(occupied__c_2_1 
+			(true (1))
+			(false (0)))
+		(occupied__c_2_2 
+			(true (1))
+			(false (0)))
+		(occupied__c_2_3 
+			(true (1))
+			(false (0)))
+		(occupied__c_2_5 
+			(true (1))
+			(false (0)))
+		(occupied__c_2_6 
+			(true (1))
+			(false (0)))
+		(occupied__c_2_7 
+			(true (1))
+			(false (0)))
+		(occupied__c_2_9 
+			(true (1))
+			(false (0)))
+		(occupied__c_2_10 
+			(true (1))
+			(false (0)))
+		(occupied__c_2_11 
+			(true (1))
+			(false (0)))
+		(occupied__c_3_11 
+			(true (1))
+			(false (0)))
+		(occupied__c_3_10 
+			(true (1))
+			(false (0)))
+		(occupied__c_3_9 
+			(true (1))
+			(false (0)))
+		(occupied__c_3_7 
+			(true (1))
+			(false (0)))
+		(occupied__c_3_6 
+			(true (1))
+			(false (0)))
+		(occupied__c_3_5 
+			(true (1))
+			(false (0)))
+		(occupied__c_3_3 
+			(true (1))
+			(false (0)))
+		(occupied__c_3_2 
+			(true (1))
+			(false (0)))
+		(occupied__c_3_1 
+			(true (1))
+			(false (0)))
+		(occupied__c_4_4 
+			(true (1))
+			(false (0)))
+		(occupied__c_5_4 
+			(true (1))
+			(false (0)))
+		(occupied__c_1_4 
+			(true (1))
+			(false (0)))
+		(occupied__c_0_4 
+			(true (1))
+			(false (0)))
+		(occupied__c_4_8 
+			(true (1))
+			(false (0)))
+		(occupied__c_5_8 
+			(true (1))
+			(false (0)))
+		(occupied__c_1_8 
+			(true (1))
+			(false (0)))
+		(occupied__c_0_8 
+			(true (1))
+			(false (0)))
+	]
+endaction
+
+action advance__i_2_8
+	light_signal1__i_2_4
+		(light_signal1__i_2_4 
+			(true (light_signal1__i_2_4' 
+				(true (1))
+				(false (0))))
+			(false (light_signal1__i_2_4' 
+				(true (0))
+				(false (1)))))
+	light_signal1__i_2_8
+		(light_signal2__i_2_8 
+			(true (light_signal1__i_2_8' 
+				(true (1))
+				(false (0))))
+			(false (light_signal1__i_2_8' 
+				(true (0))
+				(false (1)))))
+	occupied__c_2_1
+		(occupied__c_2_1 
+			(true (occupied__c_2_2 
+				(true (occupied__c_2_1' 
+					(true (1))
+					(false (0))))
+				(false (occupied__c_2_1' 
+					(true (0))
+					(false (1))))))
+			(false (occupied__c_2_1' 
+				(true (0.8))
+				(false (0.2)))))
+	occupied__c_2_2
+		(occupied__c_2_1 
+			(true (occupied__c_2_2 
+				(true (occupied__c_2_3 
+					(true (occupied__c_2_2' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_2_2' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_2_2' 
+					(true (1))
+					(false (0))))))
+			(false (occupied__c_2_2 
+				(true (occupied__c_2_3 
+					(true (occupied__c_2_2' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_2_2' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_2_2' 
+					(true (0))
+					(false (1)))))))
+	occupied__c_2_3
+		(light_signal1__i_2_4 
+			(true (occupied__c_2_2 
+				(true (occupied__c_2_3 
+					(true (occupied__c_2_5 
+						(true (occupied__c_2_3' 
+							(true (1))
+							(false (0))))
+						(false (light_signal2__i_2_4 
+							(true (occupied__c_2_3' 
+								(true (1))
+								(false (0))))
+							(false (occupied__c_2_3' 
+								(true (0))
+								(false (1))))))))
+					(false (occupied__c_2_3' 
+						(true (1))
+						(false (0))))))
+				(false (occupied__c_2_5 
+					(true (occupied__c_2_3' 
+						(true (1))
+						(false (0))))
+					(false (light_signal2__i_2_4 
+						(true (occupied__c_2_3' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_2_3' 
+							(true (0))
+							(false (1))))))))))
+			(false (occupied__c_2_3' 
+				(true (1))
+				(false (0)))))
+	occupied__c_2_5
+		(light_signal1__i_2_4 
+			(true (occupied__c_2_3 
+				(true (occupied__c_2_5 
+					(true (occupied__c_2_6 
+						(true (occupied__c_2_5' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_2_5' 
+							(true (0))
+							(false (1))))))
+					(false (light_signal2__i_2_4 
+						(true (occupied__c_2_5' 
+							(true (0))
+							(false (1))))
+						(false (occupied__c_2_5' 
+							(true (1))
+							(false (0))))))))
+				(false (occupied__c_2_5 
+					(true (occupied__c_2_6 
+						(true (occupied__c_2_5' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_2_5' 
+							(true (0))
+							(false (1))))))
+					(false (occupied__c_2_5' 
+						(true (0))
+						(false (1))))))))
+			(false (occupied__c_2_5 
+				(true (occupied__c_2_6 
+					(true (occupied__c_2_5' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_2_5' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_2_5' 
+					(true (0))
+					(false (1)))))))
+	occupied__c_2_6
+		(occupied__c_2_5 
+			(true (occupied__c_2_6 
+				(true (occupied__c_2_7 
+					(true (occupied__c_2_6' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_2_6' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_2_6' 
+					(true (1))
+					(false (0))))))
+			(false (occupied__c_2_6 
+				(true (occupied__c_2_7 
+					(true (occupied__c_2_6' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_2_6' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_2_6' 
+					(true (0))
+					(false (1)))))))
+	occupied__c_2_7
+		(light_signal1__i_2_8 
+			(true (occupied__c_2_6 
+				(true (occupied__c_2_7 
+					(true (occupied__c_2_9 
+						(true (occupied__c_2_7' 
+							(true (1))
+							(false (0))))
+						(false (light_signal2__i_2_8 
+							(true (occupied__c_2_7' 
+								(true (1))
+								(false (0))))
+							(false (occupied__c_2_7' 
+								(true (0))
+								(false (1))))))))
+					(false (occupied__c_2_7' 
+						(true (1))
+						(false (0))))))
+				(false (occupied__c_2_9 
+					(true (occupied__c_2_7' 
+						(true (1))
+						(false (0))))
+					(false (light_signal2__i_2_8 
+						(true (occupied__c_2_7' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_2_7' 
+							(true (0))
+							(false (1))))))))))
+			(false (occupied__c_2_7' 
+				(true (1))
+				(false (0)))))
+	occupied__c_2_9
+		(light_signal1__i_2_8 
+			(true (occupied__c_2_7 
+				(true (occupied__c_2_9 
+					(true (occupied__c_2_10 
+						(true (occupied__c_2_9' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_2_9' 
+							(true (0))
+							(false (1))))))
+					(false (light_signal2__i_2_8 
+						(true (occupied__c_2_9' 
+							(true (0))
+							(false (1))))
+						(false (occupied__c_2_9' 
+							(true (1))
+							(false (0))))))))
+				(false (occupied__c_2_9 
+					(true (occupied__c_2_10 
+						(true (occupied__c_2_9' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_2_9' 
+							(true (0))
+							(false (1))))))
+					(false (occupied__c_2_9' 
+						(true (0))
+						(false (1))))))))
+			(false (occupied__c_2_9 
+				(true (occupied__c_2_10 
+					(true (occupied__c_2_9' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_2_9' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_2_9' 
+					(true (0))
+					(false (1)))))))
+	occupied__c_2_10
+		(occupied__c_2_9 
+			(true (occupied__c_2_10 
+				(true (occupied__c_2_11 
+					(true (occupied__c_2_10' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_2_10' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_2_10' 
+					(true (1))
+					(false (0))))))
+			(false (occupied__c_2_10 
+				(true (occupied__c_2_11 
+					(true (occupied__c_2_10' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_2_10' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_2_10' 
+					(true (0))
+					(false (1)))))))
+	occupied__c_2_11
+		(occupied__c_2_10 
+			(true (occupied__c_2_11 
+				(true (occupied__c_2_11' 
+					(true (0))
+					(false (1))))
+				(false (occupied__c_2_11' 
+					(true (1))
+					(false (0))))))
+			(false (occupied__c_2_11' 
+				(true (0))
+				(false (1)))))
+	occupied__c_3_11
+		(occupied__c_3_11 
+			(true (occupied__c_3_10 
+				(true (occupied__c_3_11' 
+					(true (1))
+					(false (0))))
+				(false (occupied__c_3_11' 
+					(true (0))
+					(false (1))))))
+			(false (occupied__c_3_11' 
+				(true (0.3))
+				(false (0.7)))))
+	occupied__c_3_10
+		(occupied__c_3_11 
+			(true (occupied__c_3_10 
+				(true (occupied__c_3_9 
+					(true (occupied__c_3_10' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_3_10' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_3_10' 
+					(true (1))
+					(false (0))))))
+			(false (occupied__c_3_10 
+				(true (occupied__c_3_9 
+					(true (occupied__c_3_10' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_3_10' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_3_10' 
+					(true (0))
+					(false (1)))))))
+	occupied__c_3_9
+		(light_signal1__i_2_8 
+			(true (occupied__c_3_10 
+				(true (occupied__c_3_9 
+					(true (occupied__c_3_7 
+						(true (occupied__c_3_9' 
+							(true (1))
+							(false (0))))
+						(false (light_signal2__i_2_8 
+							(true (occupied__c_3_9' 
+								(true (1))
+								(false (0))))
+							(false (occupied__c_3_9' 
+								(true (0))
+								(false (1))))))))
+					(false (occupied__c_3_9' 
+						(true (1))
+						(false (0))))))
+				(false (occupied__c_3_7 
+					(true (occupied__c_3_9' 
+						(true (1))
+						(false (0))))
+					(false (light_signal2__i_2_8 
+						(true (occupied__c_3_9' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_3_9' 
+							(true (0))
+							(false (1))))))))))
+			(false (occupied__c_3_9' 
+				(true (1))
+				(false (0)))))
+	occupied__c_3_7
+		(light_signal1__i_2_8 
+			(true (occupied__c_3_9 
+				(true (occupied__c_3_7 
+					(true (occupied__c_3_6 
+						(true (occupied__c_3_7' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_3_7' 
+							(true (0))
+							(false (1))))))
+					(false (light_signal2__i_2_8 
+						(true (occupied__c_3_7' 
+							(true (0))
+							(false (1))))
+						(false (occupied__c_3_7' 
+							(true (1))
+							(false (0))))))))
+				(false (occupied__c_3_7 
+					(true (occupied__c_3_6 
+						(true (occupied__c_3_7' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_3_7' 
+							(true (0))
+							(false (1))))))
+					(false (occupied__c_3_7' 
+						(true (0))
+						(false (1))))))))
+			(false (occupied__c_3_7 
+				(true (occupied__c_3_6 
+					(true (occupied__c_3_7' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_3_7' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_3_7' 
+					(true (0))
+					(false (1)))))))
+	occupied__c_3_6
+		(occupied__c_3_7 
+			(true (occupied__c_3_6 
+				(true (occupied__c_3_5 
+					(true (occupied__c_3_6' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_3_6' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_3_6' 
+					(true (1))
+					(false (0))))))
+			(false (occupied__c_3_6 
+				(true (occupied__c_3_5 
+					(true (occupied__c_3_6' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_3_6' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_3_6' 
+					(true (0))
+					(false (1)))))))
+	occupied__c_3_5
+		(light_signal1__i_2_4 
+			(true (occupied__c_3_6 
+				(true (occupied__c_3_5 
+					(true (occupied__c_3_3 
+						(true (occupied__c_3_5' 
+							(true (1))
+							(false (0))))
+						(false (light_signal2__i_2_4 
+							(true (occupied__c_3_5' 
+								(true (1))
+								(false (0))))
+							(false (occupied__c_3_5' 
+								(true (0))
+								(false (1))))))))
+					(false (occupied__c_3_5' 
+						(true (1))
+						(false (0))))))
+				(false (occupied__c_3_3 
+					(true (occupied__c_3_5' 
+						(true (1))
+						(false (0))))
+					(false (light_signal2__i_2_4 
+						(true (occupied__c_3_5' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_3_5' 
+							(true (0))
+							(false (1))))))))))
+			(false (occupied__c_3_5' 
+				(true (1))
+				(false (0)))))
+	occupied__c_3_3
+		(light_signal1__i_2_4 
+			(true (occupied__c_3_5 
+				(true (occupied__c_3_3 
+					(true (occupied__c_3_2 
+						(true (occupied__c_3_3' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_3_3' 
+							(true (0))
+							(false (1))))))
+					(false (light_signal2__i_2_4 
+						(true (occupied__c_3_3' 
+							(true (0))
+							(false (1))))
+						(false (occupied__c_3_3' 
+							(true (1))
+							(false (0))))))))
+				(false (occupied__c_3_3 
+					(true (occupied__c_3_2 
+						(true (occupied__c_3_3' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_3_3' 
+							(true (0))
+							(false (1))))))
+					(false (occupied__c_3_3' 
+						(true (0))
+						(false (1))))))))
+			(false (occupied__c_3_3 
+				(true (occupied__c_3_2 
+					(true (occupied__c_3_3' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_3_3' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_3_3' 
+					(true (0))
+					(false (1)))))))
+	occupied__c_3_2
+		(occupied__c_3_3 
+			(true (occupied__c_3_2 
+				(true (occupied__c_3_1 
+					(true (occupied__c_3_2' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_3_2' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_3_2' 
+					(true (1))
+					(false (0))))))
+			(false (occupied__c_3_2 
+				(true (occupied__c_3_1 
+					(true (occupied__c_3_2' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_3_2' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_3_2' 
+					(true (0))
+					(false (1)))))))
+	occupied__c_3_1
+		(occupied__c_3_2 
+			(true (occupied__c_3_1 
+				(true (occupied__c_3_1' 
+					(true (0))
+					(false (1))))
+				(false (occupied__c_3_1' 
+					(true (1))
+					(false (0))))))
+			(false (occupied__c_3_1' 
+				(true (0))
+				(false (1)))))
+	occupied__c_4_4
+		(light_signal1__i_2_4 
+			(true (occupied__c_4_4' 
+				(true (1))
+				(false (0))))
+			(false (occupied__c_4_4 
+				(true (occupied__c_1_4 
+					(true (occupied__c_4_4' 
+						(true (1))
+						(false (0))))
+					(false (light_signal2__i_2_4 
+						(true (occupied__c_4_4' 
+							(true (0))
+							(false (1))))
+						(false (occupied__c_4_4' 
+							(true (1))
+							(false (0))))))))
+				(false (occupied__c_5_4 
+					(true (occupied__c_4_4' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_1_4 
+						(true (occupied__c_4_4' 
+							(true (1))
+							(false (0))))
+						(false (light_signal2__i_2_4 
+							(true (occupied__c_4_4' 
+								(true (0))
+								(false (1))))
+							(false (occupied__c_4_4' 
+								(true (1))
+								(false (0)))))))))))))
+	occupied__c_5_4
+		(occupied__c_4_4 
+			(true (occupied__c_5_4 
+				(true (occupied__c_5_4' 
+					(true (1))
+					(false (0))))
+				(false (occupied__c_5_4' 
+					(true (0.3))
+					(false (0.7))))))
+			(false (occupied__c_5_4 
+				(true (occupied__c_5_4' 
+					(true (0))
+					(false (1))))
+				(false (occupied__c_5_4' 
+					(true (0.3))
+					(false (0.7)))))))
+	occupied__c_1_4
+		(light_signal1__i_2_4 
+			(true (occupied__c_1_4 
+				(true (occupied__c_0_4 
+					(true (occupied__c_1_4' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_1_4' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_1_4' 
+					(true (0))
+					(false (1))))))
+			(false (occupied__c_4_4 
+				(true (occupied__c_1_4 
+					(true (occupied__c_0_4 
+						(true (occupied__c_1_4' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_1_4' 
+							(true (0))
+							(false (1))))))
+					(false (light_signal2__i_2_4 
+						(true (occupied__c_1_4' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_1_4' 
+							(true (0))
+							(false (1))))))))
+				(false (occupied__c_1_4 
+					(true (occupied__c_0_4 
+						(true (occupied__c_1_4' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_1_4' 
+							(true (0))
+							(false (1))))))
+					(false (occupied__c_1_4' 
+						(true (0))
+						(false (1)))))))))
+	occupied__c_0_4
+		(occupied__c_1_4 
+			(true (occupied__c_0_4 
+				(true (occupied__c_0_4' 
+					(true (0))
+					(false (1))))
+				(false (occupied__c_0_4' 
+					(true (1))
+					(false (0))))))
+			(false (occupied__c_0_4' 
+				(true (0))
+				(false (1)))))
+	occupied__c_4_8
+		(light_signal1__i_2_8 
+			(true (occupied__c_4_8' 
+				(true (1))
+				(false (0))))
+			(false (occupied__c_4_8 
+				(true (occupied__c_1_8 
+					(true (occupied__c_4_8' 
+						(true (1))
+						(false (0))))
+					(false (light_signal2__i_2_8 
+						(true (occupied__c_4_8' 
+							(true (0))
+							(false (1))))
+						(false (occupied__c_4_8' 
+							(true (1))
+							(false (0))))))))
+				(false (occupied__c_5_8 
+					(true (occupied__c_4_8' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_1_8 
+						(true (occupied__c_4_8' 
+							(true (1))
+							(false (0))))
+						(false (light_signal2__i_2_8 
+							(true (occupied__c_4_8' 
+								(true (0))
+								(false (1))))
+							(false (occupied__c_4_8' 
+								(true (1))
+								(false (0)))))))))))))
+	occupied__c_5_8
+		(occupied__c_4_8 
+			(true (occupied__c_5_8 
+				(true (occupied__c_5_8' 
+					(true (1))
+					(false (0))))
+				(false (occupied__c_5_8' 
+					(true (0.3))
+					(false (0.7))))))
+			(false (occupied__c_5_8 
+				(true (occupied__c_5_8' 
+					(true (0))
+					(false (1))))
+				(false (occupied__c_5_8' 
+					(true (0.3))
+					(false (0.7)))))))
+	occupied__c_1_8
+		(light_signal1__i_2_8 
+			(true (occupied__c_1_8 
+				(true (occupied__c_0_8 
+					(true (occupied__c_1_8' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_1_8' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_1_8' 
+					(true (0))
+					(false (1))))))
+			(false (occupied__c_4_8 
+				(true (occupied__c_1_8 
+					(true (occupied__c_0_8 
+						(true (occupied__c_1_8' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_1_8' 
+							(true (0))
+							(false (1))))))
+					(false (light_signal2__i_2_8 
+						(true (occupied__c_1_8' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_1_8' 
+							(true (0))
+							(false (1))))))))
+				(false (occupied__c_1_8 
+					(true (occupied__c_0_8 
+						(true (occupied__c_1_8' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_1_8' 
+							(true (0))
+							(false (1))))))
+					(false (occupied__c_1_8' 
+						(true (0))
+						(false (1)))))))))
+	occupied__c_0_8
+		(occupied__c_1_8 
+			(true (occupied__c_0_8 
+				(true (occupied__c_0_8' 
+					(true (0))
+					(false (1))))
+				(false (occupied__c_0_8' 
+					(true (1))
+					(false (0))))))
+			(false (occupied__c_0_8' 
+				(true (0))
+				(false (1)))))
+	light_signal2__i_2_4
+		(light_signal1__i_2_4 
+			(true (light_signal2__i_2_4' 
+				(true (0))
+				(false (1))))
+			(false (light_signal2__i_2_4' 
+				(true (1))
+				(false (0)))))
+	light_signal2__i_2_8
+		(light_signal1__i_2_8 
+			(true (light_signal2__i_2_8' 
+				(true (0))
+				(false (1))))
+			(false (light_signal2__i_2_8' 
+				(true (1))
+				(false (0)))))
+	cost [+ 
+		(occupied__c_2_1 
+			(true (1))
+			(false (0)))
+		(occupied__c_2_2 
+			(true (1))
+			(false (0)))
+		(occupied__c_2_3 
+			(true (1))
+			(false (0)))
+		(occupied__c_2_5 
+			(true (1))
+			(false (0)))
+		(occupied__c_2_6 
+			(true (1))
+			(false (0)))
+		(occupied__c_2_7 
+			(true (1))
+			(false (0)))
+		(occupied__c_2_9 
+			(true (1))
+			(false (0)))
+		(occupied__c_2_10 
+			(true (1))
+			(false (0)))
+		(occupied__c_2_11 
+			(true (1))
+			(false (0)))
+		(occupied__c_3_11 
+			(true (1))
+			(false (0)))
+		(occupied__c_3_10 
+			(true (1))
+			(false (0)))
+		(occupied__c_3_9 
+			(true (1))
+			(false (0)))
+		(occupied__c_3_7 
+			(true (1))
+			(false (0)))
+		(occupied__c_3_6 
+			(true (1))
+			(false (0)))
+		(occupied__c_3_5 
+			(true (1))
+			(false (0)))
+		(occupied__c_3_3 
+			(true (1))
+			(false (0)))
+		(occupied__c_3_2 
+			(true (1))
+			(false (0)))
+		(occupied__c_3_1 
+			(true (1))
+			(false (0)))
+		(occupied__c_4_4 
+			(true (1))
+			(false (0)))
+		(occupied__c_5_4 
+			(true (1))
+			(false (0)))
+		(occupied__c_1_4 
+			(true (1))
+			(false (0)))
+		(occupied__c_0_4 
+			(true (1))
+			(false (0)))
+		(occupied__c_4_8 
+			(true (1))
+			(false (0)))
+		(occupied__c_5_8 
+			(true (1))
+			(false (0)))
+		(occupied__c_1_8 
+			(true (1))
+			(false (0)))
+		(occupied__c_0_8 
+			(true (1))
+			(false (0)))
+	]
+endaction
+
+action advance__i_2_8___advance__i_2_4
+	light_signal1__i_2_4
+		(light_signal2__i_2_4 
+			(true (light_signal1__i_2_4' 
+				(true (1))
+				(false (0))))
+			(false (light_signal1__i_2_4' 
+				(true (0))
+				(false (1)))))
+	light_signal1__i_2_8
+		(light_signal2__i_2_8 
+			(true (light_signal1__i_2_8' 
+				(true (1))
+				(false (0))))
+			(false (light_signal1__i_2_8' 
+				(true (0))
+				(false (1)))))
+	occupied__c_2_1
+		(occupied__c_2_1 
+			(true (occupied__c_2_2 
+				(true (occupied__c_2_1' 
+					(true (1))
+					(false (0))))
+				(false (occupied__c_2_1' 
+					(true (0))
+					(false (1))))))
+			(false (occupied__c_2_1' 
+				(true (0.8))
+				(false (0.2)))))
+	occupied__c_2_2
+		(occupied__c_2_1 
+			(true (occupied__c_2_2 
+				(true (occupied__c_2_3 
+					(true (occupied__c_2_2' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_2_2' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_2_2' 
+					(true (1))
+					(false (0))))))
+			(false (occupied__c_2_2 
+				(true (occupied__c_2_3 
+					(true (occupied__c_2_2' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_2_2' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_2_2' 
+					(true (0))
+					(false (1)))))))
+	occupied__c_2_3
+		(light_signal1__i_2_4 
+			(true (occupied__c_2_2 
+				(true (occupied__c_2_3 
+					(true (occupied__c_2_5 
+						(true (occupied__c_2_3' 
+							(true (1))
+							(false (0))))
+						(false (light_signal2__i_2_4 
+							(true (occupied__c_2_3' 
+								(true (1))
+								(false (0))))
+							(false (occupied__c_2_3' 
+								(true (0))
+								(false (1))))))))
+					(false (occupied__c_2_3' 
+						(true (1))
+						(false (0))))))
+				(false (occupied__c_2_5 
+					(true (occupied__c_2_3' 
+						(true (1))
+						(false (0))))
+					(false (light_signal2__i_2_4 
+						(true (occupied__c_2_3' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_2_3' 
+							(true (0))
+							(false (1))))))))))
+			(false (occupied__c_2_3' 
+				(true (1))
+				(false (0)))))
+	occupied__c_2_5
+		(light_signal1__i_2_4 
+			(true (occupied__c_2_3 
+				(true (occupied__c_2_5 
+					(true (occupied__c_2_6 
+						(true (occupied__c_2_5' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_2_5' 
+							(true (0))
+							(false (1))))))
+					(false (light_signal2__i_2_4 
+						(true (occupied__c_2_5' 
+							(true (0))
+							(false (1))))
+						(false (occupied__c_2_5' 
+							(true (1))
+							(false (0))))))))
+				(false (occupied__c_2_5 
+					(true (occupied__c_2_6 
+						(true (occupied__c_2_5' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_2_5' 
+							(true (0))
+							(false (1))))))
+					(false (occupied__c_2_5' 
+						(true (0))
+						(false (1))))))))
+			(false (occupied__c_2_5 
+				(true (occupied__c_2_6 
+					(true (occupied__c_2_5' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_2_5' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_2_5' 
+					(true (0))
+					(false (1)))))))
+	occupied__c_2_6
+		(occupied__c_2_5 
+			(true (occupied__c_2_6 
+				(true (occupied__c_2_7 
+					(true (occupied__c_2_6' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_2_6' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_2_6' 
+					(true (1))
+					(false (0))))))
+			(false (occupied__c_2_6 
+				(true (occupied__c_2_7 
+					(true (occupied__c_2_6' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_2_6' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_2_6' 
+					(true (0))
+					(false (1)))))))
+	occupied__c_2_7
+		(light_signal1__i_2_8 
+			(true (occupied__c_2_6 
+				(true (occupied__c_2_7 
+					(true (occupied__c_2_9 
+						(true (occupied__c_2_7' 
+							(true (1))
+							(false (0))))
+						(false (light_signal2__i_2_8 
+							(true (occupied__c_2_7' 
+								(true (1))
+								(false (0))))
+							(false (occupied__c_2_7' 
+								(true (0))
+								(false (1))))))))
+					(false (occupied__c_2_7' 
+						(true (1))
+						(false (0))))))
+				(false (occupied__c_2_9 
+					(true (occupied__c_2_7' 
+						(true (1))
+						(false (0))))
+					(false (light_signal2__i_2_8 
+						(true (occupied__c_2_7' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_2_7' 
+							(true (0))
+							(false (1))))))))))
+			(false (occupied__c_2_7' 
+				(true (1))
+				(false (0)))))
+	occupied__c_2_9
+		(light_signal1__i_2_8 
+			(true (occupied__c_2_7 
+				(true (occupied__c_2_9 
+					(true (occupied__c_2_10 
+						(true (occupied__c_2_9' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_2_9' 
+							(true (0))
+							(false (1))))))
+					(false (light_signal2__i_2_8 
+						(true (occupied__c_2_9' 
+							(true (0))
+							(false (1))))
+						(false (occupied__c_2_9' 
+							(true (1))
+							(false (0))))))))
+				(false (occupied__c_2_9 
+					(true (occupied__c_2_10 
+						(true (occupied__c_2_9' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_2_9' 
+							(true (0))
+							(false (1))))))
+					(false (occupied__c_2_9' 
+						(true (0))
+						(false (1))))))))
+			(false (occupied__c_2_9 
+				(true (occupied__c_2_10 
+					(true (occupied__c_2_9' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_2_9' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_2_9' 
+					(true (0))
+					(false (1)))))))
+	occupied__c_2_10
+		(occupied__c_2_9 
+			(true (occupied__c_2_10 
+				(true (occupied__c_2_11 
+					(true (occupied__c_2_10' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_2_10' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_2_10' 
+					(true (1))
+					(false (0))))))
+			(false (occupied__c_2_10 
+				(true (occupied__c_2_11 
+					(true (occupied__c_2_10' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_2_10' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_2_10' 
+					(true (0))
+					(false (1)))))))
+	occupied__c_2_11
+		(occupied__c_2_10 
+			(true (occupied__c_2_11 
+				(true (occupied__c_2_11' 
+					(true (0))
+					(false (1))))
+				(false (occupied__c_2_11' 
+					(true (1))
+					(false (0))))))
+			(false (occupied__c_2_11' 
+				(true (0))
+				(false (1)))))
+	occupied__c_3_11
+		(occupied__c_3_11 
+			(true (occupied__c_3_10 
+				(true (occupied__c_3_11' 
+					(true (1))
+					(false (0))))
+				(false (occupied__c_3_11' 
+					(true (0))
+					(false (1))))))
+			(false (occupied__c_3_11' 
+				(true (0.3))
+				(false (0.7)))))
+	occupied__c_3_10
+		(occupied__c_3_11 
+			(true (occupied__c_3_10 
+				(true (occupied__c_3_9 
+					(true (occupied__c_3_10' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_3_10' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_3_10' 
+					(true (1))
+					(false (0))))))
+			(false (occupied__c_3_10 
+				(true (occupied__c_3_9 
+					(true (occupied__c_3_10' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_3_10' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_3_10' 
+					(true (0))
+					(false (1)))))))
+	occupied__c_3_9
+		(light_signal1__i_2_8 
+			(true (occupied__c_3_10 
+				(true (occupied__c_3_9 
+					(true (occupied__c_3_7 
+						(true (occupied__c_3_9' 
+							(true (1))
+							(false (0))))
+						(false (light_signal2__i_2_8 
+							(true (occupied__c_3_9' 
+								(true (1))
+								(false (0))))
+							(false (occupied__c_3_9' 
+								(true (0))
+								(false (1))))))))
+					(false (occupied__c_3_9' 
+						(true (1))
+						(false (0))))))
+				(false (occupied__c_3_7 
+					(true (occupied__c_3_9' 
+						(true (1))
+						(false (0))))
+					(false (light_signal2__i_2_8 
+						(true (occupied__c_3_9' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_3_9' 
+							(true (0))
+							(false (1))))))))))
+			(false (occupied__c_3_9' 
+				(true (1))
+				(false (0)))))
+	occupied__c_3_7
+		(light_signal1__i_2_8 
+			(true (occupied__c_3_9 
+				(true (occupied__c_3_7 
+					(true (occupied__c_3_6 
+						(true (occupied__c_3_7' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_3_7' 
+							(true (0))
+							(false (1))))))
+					(false (light_signal2__i_2_8 
+						(true (occupied__c_3_7' 
+							(true (0))
+							(false (1))))
+						(false (occupied__c_3_7' 
+							(true (1))
+							(false (0))))))))
+				(false (occupied__c_3_7 
+					(true (occupied__c_3_6 
+						(true (occupied__c_3_7' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_3_7' 
+							(true (0))
+							(false (1))))))
+					(false (occupied__c_3_7' 
+						(true (0))
+						(false (1))))))))
+			(false (occupied__c_3_7 
+				(true (occupied__c_3_6 
+					(true (occupied__c_3_7' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_3_7' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_3_7' 
+					(true (0))
+					(false (1)))))))
+	occupied__c_3_6
+		(occupied__c_3_7 
+			(true (occupied__c_3_6 
+				(true (occupied__c_3_5 
+					(true (occupied__c_3_6' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_3_6' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_3_6' 
+					(true (1))
+					(false (0))))))
+			(false (occupied__c_3_6 
+				(true (occupied__c_3_5 
+					(true (occupied__c_3_6' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_3_6' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_3_6' 
+					(true (0))
+					(false (1)))))))
+	occupied__c_3_5
+		(light_signal1__i_2_4 
+			(true (occupied__c_3_6 
+				(true (occupied__c_3_5 
+					(true (occupied__c_3_3 
+						(true (occupied__c_3_5' 
+							(true (1))
+							(false (0))))
+						(false (light_signal2__i_2_4 
+							(true (occupied__c_3_5' 
+								(true (1))
+								(false (0))))
+							(false (occupied__c_3_5' 
+								(true (0))
+								(false (1))))))))
+					(false (occupied__c_3_5' 
+						(true (1))
+						(false (0))))))
+				(false (occupied__c_3_3 
+					(true (occupied__c_3_5' 
+						(true (1))
+						(false (0))))
+					(false (light_signal2__i_2_4 
+						(true (occupied__c_3_5' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_3_5' 
+							(true (0))
+							(false (1))))))))))
+			(false (occupied__c_3_5' 
+				(true (1))
+				(false (0)))))
+	occupied__c_3_3
+		(light_signal1__i_2_4 
+			(true (occupied__c_3_5 
+				(true (occupied__c_3_3 
+					(true (occupied__c_3_2 
+						(true (occupied__c_3_3' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_3_3' 
+							(true (0))
+							(false (1))))))
+					(false (light_signal2__i_2_4 
+						(true (occupied__c_3_3' 
+							(true (0))
+							(false (1))))
+						(false (occupied__c_3_3' 
+							(true (1))
+							(false (0))))))))
+				(false (occupied__c_3_3 
+					(true (occupied__c_3_2 
+						(true (occupied__c_3_3' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_3_3' 
+							(true (0))
+							(false (1))))))
+					(false (occupied__c_3_3' 
+						(true (0))
+						(false (1))))))))
+			(false (occupied__c_3_3 
+				(true (occupied__c_3_2 
+					(true (occupied__c_3_3' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_3_3' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_3_3' 
+					(true (0))
+					(false (1)))))))
+	occupied__c_3_2
+		(occupied__c_3_3 
+			(true (occupied__c_3_2 
+				(true (occupied__c_3_1 
+					(true (occupied__c_3_2' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_3_2' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_3_2' 
+					(true (1))
+					(false (0))))))
+			(false (occupied__c_3_2 
+				(true (occupied__c_3_1 
+					(true (occupied__c_3_2' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_3_2' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_3_2' 
+					(true (0))
+					(false (1)))))))
+	occupied__c_3_1
+		(occupied__c_3_2 
+			(true (occupied__c_3_1 
+				(true (occupied__c_3_1' 
+					(true (0))
+					(false (1))))
+				(false (occupied__c_3_1' 
+					(true (1))
+					(false (0))))))
+			(false (occupied__c_3_1' 
+				(true (0))
+				(false (1)))))
+	occupied__c_4_4
+		(light_signal1__i_2_4 
+			(true (occupied__c_4_4' 
+				(true (1))
+				(false (0))))
+			(false (occupied__c_4_4 
+				(true (occupied__c_1_4 
+					(true (occupied__c_4_4' 
+						(true (1))
+						(false (0))))
+					(false (light_signal2__i_2_4 
+						(true (occupied__c_4_4' 
+							(true (0))
+							(false (1))))
+						(false (occupied__c_4_4' 
+							(true (1))
+							(false (0))))))))
+				(false (occupied__c_5_4 
+					(true (occupied__c_4_4' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_1_4 
+						(true (occupied__c_4_4' 
+							(true (1))
+							(false (0))))
+						(false (light_signal2__i_2_4 
+							(true (occupied__c_4_4' 
+								(true (0))
+								(false (1))))
+							(false (occupied__c_4_4' 
+								(true (1))
+								(false (0)))))))))))))
+	occupied__c_5_4
+		(occupied__c_4_4 
+			(true (occupied__c_5_4 
+				(true (occupied__c_5_4' 
+					(true (1))
+					(false (0))))
+				(false (occupied__c_5_4' 
+					(true (0.3))
+					(false (0.7))))))
+			(false (occupied__c_5_4 
+				(true (occupied__c_5_4' 
+					(true (0))
+					(false (1))))
+				(false (occupied__c_5_4' 
+					(true (0.3))
+					(false (0.7)))))))
+	occupied__c_1_4
+		(light_signal1__i_2_4 
+			(true (occupied__c_1_4 
+				(true (occupied__c_0_4 
+					(true (occupied__c_1_4' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_1_4' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_1_4' 
+					(true (0))
+					(false (1))))))
+			(false (occupied__c_4_4 
+				(true (occupied__c_1_4 
+					(true (occupied__c_0_4 
+						(true (occupied__c_1_4' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_1_4' 
+							(true (0))
+							(false (1))))))
+					(false (light_signal2__i_2_4 
+						(true (occupied__c_1_4' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_1_4' 
+							(true (0))
+							(false (1))))))))
+				(false (occupied__c_1_4 
+					(true (occupied__c_0_4 
+						(true (occupied__c_1_4' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_1_4' 
+							(true (0))
+							(false (1))))))
+					(false (occupied__c_1_4' 
+						(true (0))
+						(false (1)))))))))
+	occupied__c_0_4
+		(occupied__c_1_4 
+			(true (occupied__c_0_4 
+				(true (occupied__c_0_4' 
+					(true (0))
+					(false (1))))
+				(false (occupied__c_0_4' 
+					(true (1))
+					(false (0))))))
+			(false (occupied__c_0_4' 
+				(true (0))
+				(false (1)))))
+	occupied__c_4_8
+		(light_signal1__i_2_8 
+			(true (occupied__c_4_8' 
+				(true (1))
+				(false (0))))
+			(false (occupied__c_4_8 
+				(true (occupied__c_1_8 
+					(true (occupied__c_4_8' 
+						(true (1))
+						(false (0))))
+					(false (light_signal2__i_2_8 
+						(true (occupied__c_4_8' 
+							(true (0))
+							(false (1))))
+						(false (occupied__c_4_8' 
+							(true (1))
+							(false (0))))))))
+				(false (occupied__c_5_8 
+					(true (occupied__c_4_8' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_1_8 
+						(true (occupied__c_4_8' 
+							(true (1))
+							(false (0))))
+						(false (light_signal2__i_2_8 
+							(true (occupied__c_4_8' 
+								(true (0))
+								(false (1))))
+							(false (occupied__c_4_8' 
+								(true (1))
+								(false (0)))))))))))))
+	occupied__c_5_8
+		(occupied__c_4_8 
+			(true (occupied__c_5_8 
+				(true (occupied__c_5_8' 
+					(true (1))
+					(false (0))))
+				(false (occupied__c_5_8' 
+					(true (0.3))
+					(false (0.7))))))
+			(false (occupied__c_5_8 
+				(true (occupied__c_5_8' 
+					(true (0))
+					(false (1))))
+				(false (occupied__c_5_8' 
+					(true (0.3))
+					(false (0.7)))))))
+	occupied__c_1_8
+		(light_signal1__i_2_8 
+			(true (occupied__c_1_8 
+				(true (occupied__c_0_8 
+					(true (occupied__c_1_8' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_1_8' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_1_8' 
+					(true (0))
+					(false (1))))))
+			(false (occupied__c_4_8 
+				(true (occupied__c_1_8 
+					(true (occupied__c_0_8 
+						(true (occupied__c_1_8' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_1_8' 
+							(true (0))
+							(false (1))))))
+					(false (light_signal2__i_2_8 
+						(true (occupied__c_1_8' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_1_8' 
+							(true (0))
+							(false (1))))))))
+				(false (occupied__c_1_8 
+					(true (occupied__c_0_8 
+						(true (occupied__c_1_8' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_1_8' 
+							(true (0))
+							(false (1))))))
+					(false (occupied__c_1_8' 
+						(true (0))
+						(false (1)))))))))
+	occupied__c_0_8
+		(occupied__c_1_8 
+			(true (occupied__c_0_8 
+				(true (occupied__c_0_8' 
+					(true (0))
+					(false (1))))
+				(false (occupied__c_0_8' 
+					(true (1))
+					(false (0))))))
+			(false (occupied__c_0_8' 
+				(true (0))
+				(false (1)))))
+	light_signal2__i_2_4
+		(light_signal1__i_2_4 
+			(true (light_signal2__i_2_4' 
+				(true (0))
+				(false (1))))
+			(false (light_signal2__i_2_4' 
+				(true (1))
+				(false (0)))))
+	light_signal2__i_2_8
+		(light_signal1__i_2_8 
+			(true (light_signal2__i_2_8' 
+				(true (0))
+				(false (1))))
+			(false (light_signal2__i_2_8' 
+				(true (1))
+				(false (0)))))
+	cost [+ 
+		(occupied__c_2_1 
+			(true (1))
+			(false (0)))
+		(occupied__c_2_2 
+			(true (1))
+			(false (0)))
+		(occupied__c_2_3 
+			(true (1))
+			(false (0)))
+		(occupied__c_2_5 
+			(true (1))
+			(false (0)))
+		(occupied__c_2_6 
+			(true (1))
+			(false (0)))
+		(occupied__c_2_7 
+			(true (1))
+			(false (0)))
+		(occupied__c_2_9 
+			(true (1))
+			(false (0)))
+		(occupied__c_2_10 
+			(true (1))
+			(false (0)))
+		(occupied__c_2_11 
+			(true (1))
+			(false (0)))
+		(occupied__c_3_11 
+			(true (1))
+			(false (0)))
+		(occupied__c_3_10 
+			(true (1))
+			(false (0)))
+		(occupied__c_3_9 
+			(true (1))
+			(false (0)))
+		(occupied__c_3_7 
+			(true (1))
+			(false (0)))
+		(occupied__c_3_6 
+			(true (1))
+			(false (0)))
+		(occupied__c_3_5 
+			(true (1))
+			(false (0)))
+		(occupied__c_3_3 
+			(true (1))
+			(false (0)))
+		(occupied__c_3_2 
+			(true (1))
+			(false (0)))
+		(occupied__c_3_1 
+			(true (1))
+			(false (0)))
+		(occupied__c_4_4 
+			(true (1))
+			(false (0)))
+		(occupied__c_5_4 
+			(true (1))
+			(false (0)))
+		(occupied__c_1_4 
+			(true (1))
+			(false (0)))
+		(occupied__c_0_4 
+			(true (1))
+			(false (0)))
+		(occupied__c_4_8 
+			(true (1))
+			(false (0)))
+		(occupied__c_5_8 
+			(true (1))
+			(false (0)))
+		(occupied__c_1_8 
+			(true (1))
+			(false (0)))
+		(occupied__c_0_8 
+			(true (1))
+			(false (0)))
+	]
+endaction
+
+action noop
+	light_signal1__i_2_4
+		(light_signal1__i_2_4 
+			(true (light_signal1__i_2_4' 
+				(true (1))
+				(false (0))))
+			(false (light_signal1__i_2_4' 
+				(true (0))
+				(false (1)))))
+	light_signal1__i_2_8
+		(light_signal1__i_2_8 
+			(true (light_signal1__i_2_8' 
+				(true (1))
+				(false (0))))
+			(false (light_signal1__i_2_8' 
+				(true (0))
+				(false (1)))))
+	occupied__c_2_1
+		(occupied__c_2_1 
+			(true (occupied__c_2_2 
+				(true (occupied__c_2_1' 
+					(true (1))
+					(false (0))))
+				(false (occupied__c_2_1' 
+					(true (0))
+					(false (1))))))
+			(false (occupied__c_2_1' 
+				(true (0.8))
+				(false (0.2)))))
+	occupied__c_2_2
+		(occupied__c_2_1 
+			(true (occupied__c_2_2 
+				(true (occupied__c_2_3 
+					(true (occupied__c_2_2' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_2_2' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_2_2' 
+					(true (1))
+					(false (0))))))
+			(false (occupied__c_2_2 
+				(true (occupied__c_2_3 
+					(true (occupied__c_2_2' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_2_2' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_2_2' 
+					(true (0))
+					(false (1)))))))
+	occupied__c_2_3
+		(light_signal1__i_2_4 
+			(true (occupied__c_2_2 
+				(true (occupied__c_2_3 
+					(true (occupied__c_2_5 
+						(true (occupied__c_2_3' 
+							(true (1))
+							(false (0))))
+						(false (light_signal2__i_2_4 
+							(true (occupied__c_2_3' 
+								(true (1))
+								(false (0))))
+							(false (occupied__c_2_3' 
+								(true (0))
+								(false (1))))))))
+					(false (occupied__c_2_3' 
+						(true (1))
+						(false (0))))))
+				(false (occupied__c_2_5 
+					(true (occupied__c_2_3' 
+						(true (1))
+						(false (0))))
+					(false (light_signal2__i_2_4 
+						(true (occupied__c_2_3' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_2_3' 
+							(true (0))
+							(false (1))))))))))
+			(false (occupied__c_2_3' 
+				(true (1))
+				(false (0)))))
+	occupied__c_2_5
+		(light_signal1__i_2_4 
+			(true (occupied__c_2_3 
+				(true (occupied__c_2_5 
+					(true (occupied__c_2_6 
+						(true (occupied__c_2_5' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_2_5' 
+							(true (0))
+							(false (1))))))
+					(false (light_signal2__i_2_4 
+						(true (occupied__c_2_5' 
+							(true (0))
+							(false (1))))
+						(false (occupied__c_2_5' 
+							(true (1))
+							(false (0))))))))
+				(false (occupied__c_2_5 
+					(true (occupied__c_2_6 
+						(true (occupied__c_2_5' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_2_5' 
+							(true (0))
+							(false (1))))))
+					(false (occupied__c_2_5' 
+						(true (0))
+						(false (1))))))))
+			(false (occupied__c_2_5 
+				(true (occupied__c_2_6 
+					(true (occupied__c_2_5' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_2_5' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_2_5' 
+					(true (0))
+					(false (1)))))))
+	occupied__c_2_6
+		(occupied__c_2_5 
+			(true (occupied__c_2_6 
+				(true (occupied__c_2_7 
+					(true (occupied__c_2_6' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_2_6' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_2_6' 
+					(true (1))
+					(false (0))))))
+			(false (occupied__c_2_6 
+				(true (occupied__c_2_7 
+					(true (occupied__c_2_6' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_2_6' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_2_6' 
+					(true (0))
+					(false (1)))))))
+	occupied__c_2_7
+		(light_signal1__i_2_8 
+			(true (occupied__c_2_6 
+				(true (occupied__c_2_7 
+					(true (occupied__c_2_9 
+						(true (occupied__c_2_7' 
+							(true (1))
+							(false (0))))
+						(false (light_signal2__i_2_8 
+							(true (occupied__c_2_7' 
+								(true (1))
+								(false (0))))
+							(false (occupied__c_2_7' 
+								(true (0))
+								(false (1))))))))
+					(false (occupied__c_2_7' 
+						(true (1))
+						(false (0))))))
+				(false (occupied__c_2_9 
+					(true (occupied__c_2_7' 
+						(true (1))
+						(false (0))))
+					(false (light_signal2__i_2_8 
+						(true (occupied__c_2_7' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_2_7' 
+							(true (0))
+							(false (1))))))))))
+			(false (occupied__c_2_7' 
+				(true (1))
+				(false (0)))))
+	occupied__c_2_9
+		(light_signal1__i_2_8 
+			(true (occupied__c_2_7 
+				(true (occupied__c_2_9 
+					(true (occupied__c_2_10 
+						(true (occupied__c_2_9' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_2_9' 
+							(true (0))
+							(false (1))))))
+					(false (light_signal2__i_2_8 
+						(true (occupied__c_2_9' 
+							(true (0))
+							(false (1))))
+						(false (occupied__c_2_9' 
+							(true (1))
+							(false (0))))))))
+				(false (occupied__c_2_9 
+					(true (occupied__c_2_10 
+						(true (occupied__c_2_9' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_2_9' 
+							(true (0))
+							(false (1))))))
+					(false (occupied__c_2_9' 
+						(true (0))
+						(false (1))))))))
+			(false (occupied__c_2_9 
+				(true (occupied__c_2_10 
+					(true (occupied__c_2_9' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_2_9' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_2_9' 
+					(true (0))
+					(false (1)))))))
+	occupied__c_2_10
+		(occupied__c_2_9 
+			(true (occupied__c_2_10 
+				(true (occupied__c_2_11 
+					(true (occupied__c_2_10' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_2_10' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_2_10' 
+					(true (1))
+					(false (0))))))
+			(false (occupied__c_2_10 
+				(true (occupied__c_2_11 
+					(true (occupied__c_2_10' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_2_10' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_2_10' 
+					(true (0))
+					(false (1)))))))
+	occupied__c_2_11
+		(occupied__c_2_10 
+			(true (occupied__c_2_11 
+				(true (occupied__c_2_11' 
+					(true (0))
+					(false (1))))
+				(false (occupied__c_2_11' 
+					(true (1))
+					(false (0))))))
+			(false (occupied__c_2_11' 
+				(true (0))
+				(false (1)))))
+	occupied__c_3_11
+		(occupied__c_3_11 
+			(true (occupied__c_3_10 
+				(true (occupied__c_3_11' 
+					(true (1))
+					(false (0))))
+				(false (occupied__c_3_11' 
+					(true (0))
+					(false (1))))))
+			(false (occupied__c_3_11' 
+				(true (0.3))
+				(false (0.7)))))
+	occupied__c_3_10
+		(occupied__c_3_11 
+			(true (occupied__c_3_10 
+				(true (occupied__c_3_9 
+					(true (occupied__c_3_10' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_3_10' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_3_10' 
+					(true (1))
+					(false (0))))))
+			(false (occupied__c_3_10 
+				(true (occupied__c_3_9 
+					(true (occupied__c_3_10' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_3_10' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_3_10' 
+					(true (0))
+					(false (1)))))))
+	occupied__c_3_9
+		(light_signal1__i_2_8 
+			(true (occupied__c_3_10 
+				(true (occupied__c_3_9 
+					(true (occupied__c_3_7 
+						(true (occupied__c_3_9' 
+							(true (1))
+							(false (0))))
+						(false (light_signal2__i_2_8 
+							(true (occupied__c_3_9' 
+								(true (1))
+								(false (0))))
+							(false (occupied__c_3_9' 
+								(true (0))
+								(false (1))))))))
+					(false (occupied__c_3_9' 
+						(true (1))
+						(false (0))))))
+				(false (occupied__c_3_7 
+					(true (occupied__c_3_9' 
+						(true (1))
+						(false (0))))
+					(false (light_signal2__i_2_8 
+						(true (occupied__c_3_9' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_3_9' 
+							(true (0))
+							(false (1))))))))))
+			(false (occupied__c_3_9' 
+				(true (1))
+				(false (0)))))
+	occupied__c_3_7
+		(light_signal1__i_2_8 
+			(true (occupied__c_3_9 
+				(true (occupied__c_3_7 
+					(true (occupied__c_3_6 
+						(true (occupied__c_3_7' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_3_7' 
+							(true (0))
+							(false (1))))))
+					(false (light_signal2__i_2_8 
+						(true (occupied__c_3_7' 
+							(true (0))
+							(false (1))))
+						(false (occupied__c_3_7' 
+							(true (1))
+							(false (0))))))))
+				(false (occupied__c_3_7 
+					(true (occupied__c_3_6 
+						(true (occupied__c_3_7' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_3_7' 
+							(true (0))
+							(false (1))))))
+					(false (occupied__c_3_7' 
+						(true (0))
+						(false (1))))))))
+			(false (occupied__c_3_7 
+				(true (occupied__c_3_6 
+					(true (occupied__c_3_7' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_3_7' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_3_7' 
+					(true (0))
+					(false (1)))))))
+	occupied__c_3_6
+		(occupied__c_3_7 
+			(true (occupied__c_3_6 
+				(true (occupied__c_3_5 
+					(true (occupied__c_3_6' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_3_6' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_3_6' 
+					(true (1))
+					(false (0))))))
+			(false (occupied__c_3_6 
+				(true (occupied__c_3_5 
+					(true (occupied__c_3_6' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_3_6' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_3_6' 
+					(true (0))
+					(false (1)))))))
+	occupied__c_3_5
+		(light_signal1__i_2_4 
+			(true (occupied__c_3_6 
+				(true (occupied__c_3_5 
+					(true (occupied__c_3_3 
+						(true (occupied__c_3_5' 
+							(true (1))
+							(false (0))))
+						(false (light_signal2__i_2_4 
+							(true (occupied__c_3_5' 
+								(true (1))
+								(false (0))))
+							(false (occupied__c_3_5' 
+								(true (0))
+								(false (1))))))))
+					(false (occupied__c_3_5' 
+						(true (1))
+						(false (0))))))
+				(false (occupied__c_3_3 
+					(true (occupied__c_3_5' 
+						(true (1))
+						(false (0))))
+					(false (light_signal2__i_2_4 
+						(true (occupied__c_3_5' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_3_5' 
+							(true (0))
+							(false (1))))))))))
+			(false (occupied__c_3_5' 
+				(true (1))
+				(false (0)))))
+	occupied__c_3_3
+		(light_signal1__i_2_4 
+			(true (occupied__c_3_5 
+				(true (occupied__c_3_3 
+					(true (occupied__c_3_2 
+						(true (occupied__c_3_3' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_3_3' 
+							(true (0))
+							(false (1))))))
+					(false (light_signal2__i_2_4 
+						(true (occupied__c_3_3' 
+							(true (0))
+							(false (1))))
+						(false (occupied__c_3_3' 
+							(true (1))
+							(false (0))))))))
+				(false (occupied__c_3_3 
+					(true (occupied__c_3_2 
+						(true (occupied__c_3_3' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_3_3' 
+							(true (0))
+							(false (1))))))
+					(false (occupied__c_3_3' 
+						(true (0))
+						(false (1))))))))
+			(false (occupied__c_3_3 
+				(true (occupied__c_3_2 
+					(true (occupied__c_3_3' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_3_3' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_3_3' 
+					(true (0))
+					(false (1)))))))
+	occupied__c_3_2
+		(occupied__c_3_3 
+			(true (occupied__c_3_2 
+				(true (occupied__c_3_1 
+					(true (occupied__c_3_2' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_3_2' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_3_2' 
+					(true (1))
+					(false (0))))))
+			(false (occupied__c_3_2 
+				(true (occupied__c_3_1 
+					(true (occupied__c_3_2' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_3_2' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_3_2' 
+					(true (0))
+					(false (1)))))))
+	occupied__c_3_1
+		(occupied__c_3_2 
+			(true (occupied__c_3_1 
+				(true (occupied__c_3_1' 
+					(true (0))
+					(false (1))))
+				(false (occupied__c_3_1' 
+					(true (1))
+					(false (0))))))
+			(false (occupied__c_3_1' 
+				(true (0))
+				(false (1)))))
+	occupied__c_4_4
+		(light_signal1__i_2_4 
+			(true (occupied__c_4_4' 
+				(true (1))
+				(false (0))))
+			(false (occupied__c_4_4 
+				(true (occupied__c_1_4 
+					(true (occupied__c_4_4' 
+						(true (1))
+						(false (0))))
+					(false (light_signal2__i_2_4 
+						(true (occupied__c_4_4' 
+							(true (0))
+							(false (1))))
+						(false (occupied__c_4_4' 
+							(true (1))
+							(false (0))))))))
+				(false (occupied__c_5_4 
+					(true (occupied__c_4_4' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_1_4 
+						(true (occupied__c_4_4' 
+							(true (1))
+							(false (0))))
+						(false (light_signal2__i_2_4 
+							(true (occupied__c_4_4' 
+								(true (0))
+								(false (1))))
+							(false (occupied__c_4_4' 
+								(true (1))
+								(false (0)))))))))))))
+	occupied__c_5_4
+		(occupied__c_4_4 
+			(true (occupied__c_5_4 
+				(true (occupied__c_5_4' 
+					(true (1))
+					(false (0))))
+				(false (occupied__c_5_4' 
+					(true (0.3))
+					(false (0.7))))))
+			(false (occupied__c_5_4 
+				(true (occupied__c_5_4' 
+					(true (0))
+					(false (1))))
+				(false (occupied__c_5_4' 
+					(true (0.3))
+					(false (0.7)))))))
+	occupied__c_1_4
+		(light_signal1__i_2_4 
+			(true (occupied__c_1_4 
+				(true (occupied__c_0_4 
+					(true (occupied__c_1_4' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_1_4' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_1_4' 
+					(true (0))
+					(false (1))))))
+			(false (occupied__c_4_4 
+				(true (occupied__c_1_4 
+					(true (occupied__c_0_4 
+						(true (occupied__c_1_4' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_1_4' 
+							(true (0))
+							(false (1))))))
+					(false (light_signal2__i_2_4 
+						(true (occupied__c_1_4' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_1_4' 
+							(true (0))
+							(false (1))))))))
+				(false (occupied__c_1_4 
+					(true (occupied__c_0_4 
+						(true (occupied__c_1_4' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_1_4' 
+							(true (0))
+							(false (1))))))
+					(false (occupied__c_1_4' 
+						(true (0))
+						(false (1)))))))))
+	occupied__c_0_4
+		(occupied__c_1_4 
+			(true (occupied__c_0_4 
+				(true (occupied__c_0_4' 
+					(true (0))
+					(false (1))))
+				(false (occupied__c_0_4' 
+					(true (1))
+					(false (0))))))
+			(false (occupied__c_0_4' 
+				(true (0))
+				(false (1)))))
+	occupied__c_4_8
+		(light_signal1__i_2_8 
+			(true (occupied__c_4_8' 
+				(true (1))
+				(false (0))))
+			(false (occupied__c_4_8 
+				(true (occupied__c_1_8 
+					(true (occupied__c_4_8' 
+						(true (1))
+						(false (0))))
+					(false (light_signal2__i_2_8 
+						(true (occupied__c_4_8' 
+							(true (0))
+							(false (1))))
+						(false (occupied__c_4_8' 
+							(true (1))
+							(false (0))))))))
+				(false (occupied__c_5_8 
+					(true (occupied__c_4_8' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_1_8 
+						(true (occupied__c_4_8' 
+							(true (1))
+							(false (0))))
+						(false (light_signal2__i_2_8 
+							(true (occupied__c_4_8' 
+								(true (0))
+								(false (1))))
+							(false (occupied__c_4_8' 
+								(true (1))
+								(false (0)))))))))))))
+	occupied__c_5_8
+		(occupied__c_4_8 
+			(true (occupied__c_5_8 
+				(true (occupied__c_5_8' 
+					(true (1))
+					(false (0))))
+				(false (occupied__c_5_8' 
+					(true (0.3))
+					(false (0.7))))))
+			(false (occupied__c_5_8 
+				(true (occupied__c_5_8' 
+					(true (0))
+					(false (1))))
+				(false (occupied__c_5_8' 
+					(true (0.3))
+					(false (0.7)))))))
+	occupied__c_1_8
+		(light_signal1__i_2_8 
+			(true (occupied__c_1_8 
+				(true (occupied__c_0_8 
+					(true (occupied__c_1_8' 
+						(true (1))
+						(false (0))))
+					(false (occupied__c_1_8' 
+						(true (0))
+						(false (1))))))
+				(false (occupied__c_1_8' 
+					(true (0))
+					(false (1))))))
+			(false (occupied__c_4_8 
+				(true (occupied__c_1_8 
+					(true (occupied__c_0_8 
+						(true (occupied__c_1_8' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_1_8' 
+							(true (0))
+							(false (1))))))
+					(false (light_signal2__i_2_8 
+						(true (occupied__c_1_8' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_1_8' 
+							(true (0))
+							(false (1))))))))
+				(false (occupied__c_1_8 
+					(true (occupied__c_0_8 
+						(true (occupied__c_1_8' 
+							(true (1))
+							(false (0))))
+						(false (occupied__c_1_8' 
+							(true (0))
+							(false (1))))))
+					(false (occupied__c_1_8' 
+						(true (0))
+						(false (1)))))))))
+	occupied__c_0_8
+		(occupied__c_1_8 
+			(true (occupied__c_0_8 
+				(true (occupied__c_0_8' 
+					(true (0))
+					(false (1))))
+				(false (occupied__c_0_8' 
+					(true (1))
+					(false (0))))))
+			(false (occupied__c_0_8' 
+				(true (0))
+				(false (1)))))
+	light_signal2__i_2_4
+		(light_signal1__i_2_4 
+			(true (light_signal2__i_2_4' 
+				(true (0))
+				(false (1))))
+			(false (light_signal2__i_2_4' 
+				(true (1))
+				(false (0)))))
+	light_signal2__i_2_8
+		(light_signal1__i_2_8 
+			(true (light_signal2__i_2_8' 
+				(true (0))
+				(false (1))))
+			(false (light_signal2__i_2_8' 
+				(true (1))
+				(false (0)))))
+	cost [+ 
+		(occupied__c_2_1 
+			(true (1))
+			(false (0)))
+		(occupied__c_2_2 
+			(true (1))
+			(false (0)))
+		(occupied__c_2_3 
+			(true (1))
+			(false (0)))
+		(occupied__c_2_5 
+			(true (1))
+			(false (0)))
+		(occupied__c_2_6 
+			(true (1))
+			(false (0)))
+		(occupied__c_2_7 
+			(true (1))
+			(false (0)))
+		(occupied__c_2_9 
+			(true (1))
+			(false (0)))
+		(occupied__c_2_10 
+			(true (1))
+			(false (0)))
+		(occupied__c_2_11 
+			(true (1))
+			(false (0)))
+		(occupied__c_3_11 
+			(true (1))
+			(false (0)))
+		(occupied__c_3_10 
+			(true (1))
+			(false (0)))
+		(occupied__c_3_9 
+			(true (1))
+			(false (0)))
+		(occupied__c_3_7 
+			(true (1))
+			(false (0)))
+		(occupied__c_3_6 
+			(true (1))
+			(false (0)))
+		(occupied__c_3_5 
+			(true (1))
+			(false (0)))
+		(occupied__c_3_3 
+			(true (1))
+			(false (0)))
+		(occupied__c_3_2 
+			(true (1))
+			(false (0)))
+		(occupied__c_3_1 
+			(true (1))
+			(false (0)))
+		(occupied__c_4_4 
+			(true (1))
+			(false (0)))
+		(occupied__c_5_4 
+			(true (1))
+			(false (0)))
+		(occupied__c_1_4 
+			(true (1))
+			(false (0)))
+		(occupied__c_0_4 
+			(true (1))
+			(false (0)))
+		(occupied__c_4_8 
+			(true (1))
+			(false (0)))
+		(occupied__c_5_8 
+			(true (1))
+			(false (0)))
+		(occupied__c_1_8 
+			(true (1))
+			(false (0)))
+		(occupied__c_0_8 
+			(true (1))
+			(false (0)))
+	]
+endaction
+
+reward
+	(0)
+
+discount 1.0
+horizon 100

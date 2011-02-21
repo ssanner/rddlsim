@@ -18,13 +18,14 @@ import dd.discrete.DD;
 import rddl.*;
 import rddl.RDDL.*;
 import rddl.parser.*;
+import rddl.viz.RDDL2Graph;
 import util.*;
 
 public class RDDL2Format {
 
 	public final static boolean DEBUG_CPTS = true;
 	public final static boolean SHOW_GRAPH = false;
-	public final static boolean SHOW_RELEVANCE = false;
+	public final static boolean SHOW_RELEVANCE = true;
 
 	public final static int     STATE_ITER  = 0;
 	public final static int     OBSERV_ITER = 1;
@@ -55,18 +56,19 @@ public class RDDL2Format {
 	public int         DD_ZERO;
 	public int         DD_ONE;
 
+	public RDDL2Graph _r2g;
 	public ArrayList<String> _alAllVars;
 	public ArrayList<String> _alStateVars;
 	public ArrayList<String> _alNextStateVars;
-	public ArrayList<String> _alActionVars;
+	public Map<String,ArrayList<PVAR_INST_DEF>> _hmActionMap;
 	public ArrayList<String> _alObservVars;
 	public HashMap<String,String> _hmPrimeRemap;
 	
 	public TreeMap<Pair, Integer> _var2transDD;
 	public TreeMap<Pair, Integer> _var2observDD;
-	public TreeMap<String, Integer> _act2rewardDD;
+	public TreeMap<String, ArrayList<Integer>> _act2rewardDD;
 
-	public Integer _reward;
+	//public ArrayList<Integer> _reward;
 	public String _sTranslationType = UNKNOWN;
 	
 	// Painful introduction just to pass arguments for PPDDL processing
@@ -109,6 +111,9 @@ public class RDDL2Format {
 				_d._hmTypes, _d._hmPVariables, _d._hmCPF,
 				_i._alInitState, _n == null ? null : _n._alNonFluents, 
 				_d._alStateConstraints, _d._exprReward, _i._nNonDefActions);
+		
+//		_r2g = new RDDL2Graph(rddl, instance_name, 
+//				/*strict levels*/false, /*strict grouping*/true);
 		
 		// Build the CPTs
 		buildCPTs();
@@ -163,7 +168,7 @@ public class RDDL2Format {
 		for (String s : _alStateVars)
 			pw.println("\t(" + s + " true false)");
 		if (allow_conc)
-			for (String a : _alActionVars)
+			for (String a : _hmActionMap.keySet())
 				pw.println("\t(" + a + " true false)");
 		pw.println(")");
 		
@@ -198,14 +203,14 @@ public class RDDL2Format {
 		if (allow_conc) {
 			exportSPUDDAction("<no action -- concurrent>", curr_format, pw);
 		} else {
-			for (String action_name : _alActionVars) {		
+			for (String action_name : _hmActionMap.keySet()) {		
 				exportSPUDDAction(action_name, curr_format, pw);
 			}
 		}
 		
-		// Reward
+		// Reward -- now zero since all reward is handled in action cost
 		pw.print("\nreward");
-		_context.exportTree(_reward, pw, curr_format, 1);
+		_context.exportTree(_context.getConstantNode(0d), pw, curr_format, 1);
 		
 		// Discount and tolerance
 		pw.println("\n\ndiscount " + _i._dDiscount);
@@ -273,14 +278,28 @@ public class RDDL2Format {
 			}
 			pw.println("\tendobserve");
 		}
-			
+
+		// SPUDD example for SysAdmin
+	    //cost [+ (m1 (down (-0.0))
+        //        (up (-2.0)))
+        //    (m2 (down (-0.0))
+        //        (up (-1.0)))
+        //    (m3 (down (-0.0))
+        //        (up (-1.0)))
+        //    (m4 (down (-0.0))
+        //        (up (-1.0)))
+        //    (2.5)]
+
 		// Always show action cost (can be zero)
-		int reward_dd = _act2rewardDD.get(action_name);
-		int cost_dd = _context.applyInt(_reward, reward_dd, DD.ARITH_MINUS);
-		//if (cost_dd != DD_ZERO) { // All functions are canonical 
-		pw.print("\tcost ");
-		_context.exportTree(cost_dd, pw, curr_format, 2);
-		pw.println();
+		// Reward is now fixed at zero
+		ArrayList<Integer> rewards = _act2rewardDD.get(action_name);
+		pw.print("\tcost [+ ");
+		for (int reward_dd : rewards) {
+			int cost_dd = _context.applyInt(/*_reward*/_context.getConstantNode(0d), reward_dd, DD.ARITH_MINUS);
+			//if (cost_dd != DD_ZERO) { // All functions are canonical 
+			_context.exportTree(cost_dd, pw, curr_format, 2);
+		}
+		pw.println("\n\t]");
 		//}
 
 		pw.println("endaction");	
@@ -307,7 +326,7 @@ public class RDDL2Format {
 				}
 				pw.println("\t)");
 			}
-			for (String action_name : _alActionVars) {		
+			for (String action_name : _hmActionMap.keySet()) {		
 				exportPPDDLAction(action_name, pw);
 			}
 	//		pw.println("\t(:action achieve-goal :parameters () :precondition () :effect (agoal))");
@@ -406,34 +425,48 @@ public class RDDL2Format {
 			//int reward_dd = _act2rewardDD.get(action_name);
 		}
 		
+		// (when (alive__x1_y1) (increase (reward) 1.0))
+		// (when (alive__x1_y2) (increase (reward) 1.0))
+		// (when (alive__x2_y1) (increase (reward) 1.0))
+		// (when (alive__x2_y2) (increase (reward) 1.0))
+		
 		// Now export the reward for this action
 		PW = pw;
-		int reward_dd = _act2rewardDD.get(action_name);
-		_context.enumeratePaths(reward_dd, 
-				new ADD.ADDLeafOperation() {
-			public void processADDLeaf(ArrayList<String> assign,
-					double leaf_val) {
-				
-				if (leaf_val == 0d)
-					return;
-				
-				PW.print("\t\t\t");
-				boolean use_when = (assign.size() > 0);
-				if (use_when) {
-					PW.print("(when (and ");
-					for ( String a : assign ) {
-						if ( a.startsWith("~")) {
-							PW.print(" (not (" + a.substring(1) + "))");
-						} else {
-							PW.print(" (" +a+")");
+		ArrayList<Integer> rewards = _act2rewardDD.get(action_name);
+		pw.println("\t\t\t; Reward");
+
+		for (int reward_dd : rewards) {
+
+			_context.enumeratePaths(reward_dd, 
+					new ADD.ADDLeafOperation() {
+				public void processADDLeaf(ArrayList<String> assign,
+						double leaf_val) {
+					
+					if (leaf_val == 0d)
+						return;
+					
+					PW.print("\t\t\t");
+					boolean use_when = (assign.size() > 0);
+					boolean use_and  = (assign.size() > 1);
+					if (use_when) {
+						PW.print("(when" + (use_and ? " (and " : ""));
+						for ( String a : assign ) {
+							if ( a.startsWith("~")) {
+								PW.print(" (not (" + a.substring(1) + "))");
+							} else {
+								PW.print(" (" +a+")");
+							}
 						}
-					}
-					PW.print(") ");
-				}	
-				String operation = leaf_val > 0d ? "increase" : "decrease";
-				PW.println("(" + operation + " (reward) " + Math.abs(leaf_val) + "))");
-			}
-		});
+						if (use_and)	
+							PW.print(") ");
+						else
+							PW.print(" ");
+					}	
+					String operation = leaf_val > 0d ? "increase" : "decrease";
+					PW.println("(" + operation + " (reward) " + Math.abs(leaf_val) + "))");
+				}
+			});
+		}
 		pw.println("\t\t)");
 		
 		if (_alObservVars.size() > 0) {
@@ -495,24 +528,24 @@ public class RDDL2Format {
 
 		_var2transDD = new TreeMap<Pair,Integer>();
 		_var2observDD = new TreeMap<Pair,Integer>();
-		_act2rewardDD = new TreeMap<String,Integer>();
+		_act2rewardDD = new TreeMap<String,ArrayList<Integer>>();
 		
 		// Verify no intermediate variables
 		if (_state._tmIntermNames.size() > 0)
 			throw new Exception("Cannot convert to SPUDD format: contains intermediate variables");
 
 		// Should verify that max-nondef-actions is 1 for non-concurrent versions.
-		if (_i._nNonDefActions > 1 
-				&& _sTranslationType != SPUDD_CONC 
-				&& _sTranslationType != SPUDD_CONT_CONC)
-			throw new Exception("This domain uses concurrency, but the translation type '" 
-					+ _sTranslationType + "' does not support it.");
-		else if (_i._nNonDefActions == 1
-				&& (_sTranslationType == SPUDD_CONC 
-				    || _sTranslationType == SPUDD_CONT_CONC)) {
-			throw new Exception("This domain does not use concurrency, but the translation type '" 
-					+ _sTranslationType + "' is intended for concurrency.");
-		}
+//		if (_i._nNonDefActions > 1 
+//				&& _sTranslationType != SPUDD_CONC 
+//				&& _sTranslationType != SPUDD_CONT_CONC)
+//			throw new Exception("This domain uses concurrency, but the translation type '" 
+//					+ _sTranslationType + "' does not support it.");
+//		else if (_i._nNonDefActions == 1
+//				&& (_sTranslationType == SPUDD_CONC 
+//				    || _sTranslationType == SPUDD_CONT_CONC)) {
+//			throw new Exception("This domain does not use concurrency, but the translation type '" 
+//					+ _sTranslationType + "' is intended for concurrency.");
+//		}
 		
 		// Get all variables
 		HashMap<PVAR_NAME,ArrayList<ArrayList<LCONST>>> state_vars  = collectStateVars();
@@ -542,15 +575,19 @@ public class RDDL2Format {
 		
 		// Interned so String equality can be tested by equality
 		// If supporting concurrency then encode actions as variables.
-		_alActionVars = new ArrayList<String>();
-		_alActionVars.add("noop");
-		for (Map.Entry<PVAR_NAME,ArrayList<ArrayList<LCONST>>> e : action_vars.entrySet()) {
-			PVAR_NAME p = e.getKey();
-			ArrayList<ArrayList<LCONST>> assignments = e.getValue();
-			for (ArrayList<LCONST> assign : assignments) {
-				String name = CleanFluentName(p.toString() + assign);
-				_alActionVars.add(name);
+		// TODO: how are action vars used
+		if (_sTranslationType == SPUDD_CONC || _sTranslationType == SPUDD_CONT_CONC) { 
+			_hmActionMap = new HashMap<String,ArrayList<PVAR_INST_DEF>>();
+			for (Map.Entry<PVAR_NAME,ArrayList<ArrayList<LCONST>>> e : action_vars.entrySet()) {
+				PVAR_NAME p = e.getKey();
+				ArrayList<ArrayList<LCONST>> assignments = e.getValue();
+				for (ArrayList<LCONST> assign : assignments) {
+					String name = CleanFluentName(p.toString() + assign);
+					_hmActionMap.put(name, null);
+				}
 			}
+		} else {
+			_hmActionMap = ActionGenerator.getLegalBoolActionMap(_state);
 		}
 		
 		_alObservVars = new ArrayList<String>();
@@ -566,9 +603,44 @@ public class RDDL2Format {
 		_alAllVars.addAll(_alStateVars);
 		_alAllVars.addAll(_alNextStateVars);
 		if (_sTranslationType == SPUDD_CONC || _sTranslationType == SPUDD_CONT_CONC)
-			_alAllVars.addAll(_alActionVars);
+			_alAllVars.addAll(_hmActionMap.keySet());
 		_alAllVars.addAll(_alObservVars);
 
+//		////////////////////////////////////////////////////////////////////////////
+//		// Get the best ordering from the context graph
+//		//_r2g.launchViewer(1024, 768);
+//		
+//		// Can also use graph to get a low-treewidth ordering for this RDDL domain
+//		ArrayList<String> newAllVars = new ArrayList<String>();
+//		List order = _r2g._graph.computeBestOrder(); // _graph.greedyTWSort(true);
+//		for (Object o : order) {
+//			String var = CleanFluentName(o.toString().replace("'", ""));
+//			System.out.print(var);
+//			if (_alAllVars.contains(var) && !newAllVars.contains(var))
+//				newAllVars.add(var);
+//			else 
+//				System.out.println("\n>> " + var + " missing");
+//		}
+//		for (Object o : order) {
+//			String var = CleanFluentName(o.toString().replace("'", "")) + "'";
+//			if (_alAllVars.contains(var) && !newAllVars.contains(var))
+//				newAllVars.add(var);
+//		}
+//		System.out.println("\nBest Order:   " + order);
+//		//System.out.println("MAX Bin Size: " + _r2g._graph._df.format(_r2g._graph._dMaxBinaryWidth));
+//		//System.out.println("Tree Width:   " + _r2g._graph.computeTreeWidth(order));
+//		
+//		System.out.println("\nCurrent order   [" + _alAllVars.size() + "]: " + _alAllVars);
+//		System.out.println("\nSuggested order [" + newAllVars.size() + "]: " + newAllVars);
+//
+//		if (_alAllVars.size() != newAllVars.size()) {
+//			System.out.println("Mismatch of variable list sizes");
+//			System.exit(1);
+//			throw new Exception("Mismatch of variable list sizes");
+//		}
+//		_alAllVars = newAllVars;
+//		////////////////////////////////////////////////////////////////////////////
+		
 		// Build the ADD context for the trees
 		System.out.println(_alAllVars);
 		_context = new ADD(_alAllVars);
@@ -650,7 +722,7 @@ public class RDDL2Format {
 	
 					}
 					
-					// Now go through all actions setting each one to be true in turn
+					// Now go through all actions, setting each one to be true in turn
 					if (_sTranslationType != SPUDD_CONC && _sTranslationType != SPUDD_CONT_CONC) {
 
 						// NON-CONCURRENT CASE, EXPLICITLY ENUMERATE ALL SINGLETON ACTIONS	
@@ -659,68 +731,65 @@ public class RDDL2Format {
 						//       ... need a |A|^|max-nondef-actions| enumeration method that checks constraints
 						//       ... then this method goes through each set one-by-one setting it true then
 						//       back to false
-						for (Map.Entry<PVAR_NAME,ArrayList<ArrayList<LCONST>>> e2 : action_vars.entrySet()) {
-							
-							PVAR_NAME action_name = e2.getKey();
-							ArrayList<ArrayList<LCONST>> action_assignments = e2.getValue();
-		
+						for (Map.Entry<String,ArrayList<PVAR_INST_DEF>> e2 : _hmActionMap.entrySet()) {
+
 							// Clear out ADD caches if required
 							_context.clearSpecialNodes();
 							for (int n : _alSaveNodes)
 								_context.addSpecialNode(n);
 							_context.flushCaches(true);
+
+							String action_instance = e2.getKey();
+							ArrayList<PVAR_INST_DEF> action_list = e2.getValue();
 		
-							// Use null as a sign of a NOOP
-							action_assignments.add(null /*new ArrayList<LCONST>()*/); // Add the empty list
-							action_assignments = (ArrayList<ArrayList<LCONST>>) action_assignments.clone();
-							for (ArrayList<LCONST> action_assign : action_assignments) {
+							// Set all pvariables in action
+							for (PVAR_INST_DEF pid : action_list)
+								_state.setPVariableAssign(pid._sPredName, pid._alTerms, RDDL.BOOL_CONST_EXPR.TRUE);
+
+							//////////////////////
+							
+							// Build action-specific reward
+							ArrayList<Integer> rew_fun = _act2rewardDD.get(action_instance);
+							if (rew_fun == null) {
+								//HashSet<Pair> rew_relevant_vars = new HashSet<Pair>();
 								
-								String action_instance;
-								if (action_assign != null) {
-									action_instance = CleanFluentName(action_name.toString() + action_assign);
-									_state.setPVariableAssign(action_name, action_assign, RDDL.BOOL_CONST_EXPR.TRUE);
-								} else
-									action_instance = "noop";
-									
-								// Build action-specific reward
-								Integer rew_fun = _act2rewardDD.get(action_instance);
-								if (rew_fun == null) {
-									HashSet<Pair> rew_relevant_vars = new HashSet<Pair>();
-									
-									HashMap<LVAR,LCONST> empty_sub = new HashMap<LVAR,LCONST>();
-									EXPR rew_expr =  _state._reward;
-									if (_d._bRewardDeterministic) // collectGFluents expects distribution
-										rew_expr = new DiracDelta(rew_expr);
-									rew_expr.collectGFluents(empty_sub, _state, rew_relevant_vars);
-									rew_relevant_vars = filterOutActionVars(rew_relevant_vars);
-	
-									if (SHOW_RELEVANCE)
-										System.out.println("Vars relevant to reward: " + rew_relevant_vars);
-									rew_fun = enumerateAssignments(new ArrayList<Pair>(rew_relevant_vars), rew_expr, empty_sub, 0); 
-									_act2rewardDD.put(action_instance, rew_fun);
-									_alSaveNodes.add(rew_fun);
-								}							
+								//HashMap<LVAR,LCONST> empty_sub = new HashMap<LVAR,LCONST>();
+								EXPR rew_expr =  _state._reward;
+								//if (_d._bRewardDeterministic) // collectGFluents expects distribution
+								//	rew_expr = new DiracDelta(rew_expr);
+								//rew_expr.collectGFluents(empty_sub, _state, rew_relevant_vars);
+								//rew_relevant_vars = filterOutActionVars(rew_relevant_vars);
+
+								//if (SHOW_RELEVANCE)
+								//	System.out.println("Vars relevant to reward: " + rew_relevant_vars);
+								//rew_fun = enumerateAssignments(new ArrayList<Pair>(rew_relevant_vars), rew_expr, empty_sub, 0);
+								rew_fun = convertAddExpr2ADD(rew_expr, true);
+								_act2rewardDD.put(action_instance, rew_fun);
+								_alSaveNodes.addAll(rew_fun);
+							}							
 								
-								// For this action, enumerate all relevant state assignments
-								// and build the CPT.  (Could be more efficient by recursively
-								// constructing ADD from RDDL expression, but this becomes
-								// extremely difficult when intermediate constructs like
-								// sum/prod are used in comparisons.  This method is generic
-								// and relatively simple.) 
-								if (SHOW_RELEVANCE)
-									System.out.println("Vars relevant to " + action_instance + ", " + cpt_var + ": " + relevant_vars);
-								
-								int cpt = enumerateAssignments(new ArrayList<Pair>(relevant_vars), cpf_expr, subs, 0);
-								_alSaveNodes.add(cpt);
-								if (iter == STATE_ITER)
-									_var2transDD.put(new Pair(action_instance, cpt_var), cpt);
-								else
-									_var2observDD.put(new Pair(action_instance, cpt_var + "'"), cpt);
-								
-								// Undo so next action can be set
-								if (action_assign != null)
-									_state.setPVariableAssign(action_name, action_assign, RDDL.BOOL_CONST_EXPR.FALSE);
-							}
+							// For this action, enumerate all relevant state assignments
+							// and build the CPT.  (Could be more efficient by recursively
+							// constructing ADD from RDDL expression, but this becomes
+							// extremely difficult when intermediate constructs like
+							// sum/prod are used in comparisons.  This method is generic
+							// and relatively simple.) 
+							if (SHOW_RELEVANCE)
+								System.out.println("Vars relevant to " + action_instance + ", " + cpt_var + ": " + relevant_vars);
+							
+							int cpt = enumerateAssignments(new ArrayList<Pair>(relevant_vars), cpf_expr, subs, 0);
+							_alSaveNodes.add(cpt);
+							if (iter == STATE_ITER)
+								_var2transDD.put(new Pair(action_instance, cpt_var), cpt);
+							else
+								_var2observDD.put(new Pair(action_instance, cpt_var + "'"), cpt);
+
+							//////////////////////
+							
+							// Unset all pvariables in action
+							for (PVAR_INST_DEF pid : action_list)
+								_state.setPVariableAssign(pid._sPredName, pid._alTerms, RDDL.BOOL_CONST_EXPR.FALSE);
+							
 						}
 					} else {
 						// CONCURRENT CASE, NO NEED TO ENUMERATE ACTIONS (IMPLICIT VARS IN CPT)
@@ -740,22 +809,23 @@ public class RDDL2Format {
 		// Get the non-action specific reward -- assuming defaults for actions,
 		// so may be incorrect if rewards are action-specific... in this case
 		// see _act2rewardDD. 
-		HashSet<Pair> relevant_vars = new HashSet<Pair>();
-		HashMap<LVAR,LCONST> empty_sub = new HashMap<LVAR,LCONST>();
+		//HashSet<Pair> relevant_vars = new HashSet<Pair>();
+		//HashMap<LVAR,LCONST> empty_sub = new HashMap<LVAR,LCONST>();
 		EXPR rew_expr =  _state._reward;
-		if (_d._bRewardDeterministic) // collectGFluents expects distribution
-			rew_expr = new DiracDelta(rew_expr);
-		rew_expr.collectGFluents(empty_sub, _state, relevant_vars);
+		//if (_d._bRewardDeterministic) // collectGFluents expects distribution
+		//	rew_expr = new DiracDelta(rew_expr);
+		//rew_expr.collectGFluents(empty_sub, _state, relevant_vars);
 		
-		if (_sTranslationType != SPUDD_CONC && _sTranslationType != SPUDD_CONT_CONC)
-			relevant_vars = filterOutActionVars(relevant_vars);
+		//if (_sTranslationType != SPUDD_CONC && _sTranslationType != SPUDD_CONT_CONC)
+		//	relevant_vars = filterOutActionVars(relevant_vars);
 		
-		System.out.println("Vars relevant to reward: " + relevant_vars);
-		_reward = null;
-		try {
-			_reward = enumerateAssignments(new ArrayList<Pair>(relevant_vars), rew_expr, empty_sub, 0);
-			_alSaveNodes.add(_reward);
-		} catch (Exception e) {}
+		//System.out.println("Vars relevant to reward: " + relevant_vars);
+//		_reward = null;
+//		try {
+//			//_reward = enumerateAssignments(new ArrayList<Pair>(relevant_vars), rew_expr, empty_sub, 0);
+//			_reward = convertAddExpr2ADD(rew_expr);
+//			_alSaveNodes.addAll(_reward);
+//		} catch (Exception e) {}
 
 		// Debug
 		if (DEBUG_CPTS) {
@@ -787,34 +857,122 @@ public class RDDL2Format {
 			i = 0;
 			System.out.println();
 			boolean reward_action_dependent = false;
-			Integer last_reward = null;
-			for (Map.Entry<String, Integer> e : _act2rewardDD.entrySet()) {
-				if (++i > 3)
-					break;
-				System.out.println("Action-based reward: " + e); // + " :: " + _context.printNode((Integer)e.getValue()));
-				if (SHOW_GRAPH)
-					_context.getGraph(e.getValue()).launchViewer();
-				
-				// Check to see if reward is independent of the action
-				if (last_reward != null) {
-					reward_action_dependent = reward_action_dependent || (!e.getValue().equals(last_reward));
-					//System.out.println(reward_action_dependent + " " + e.getValue() + " != " + last_reward + ", " + e.getValue().getClass() + ", " + last_reward.getClass() + " = " + (!e.getValue().equals(last_reward)));
-				}
-				last_reward = e.getValue();
-			}
+//			Integer last_reward = null;
+//			for (Map.Entry<String, Integer> e : _act2rewardDD.entrySet()) {
+//				if (++i > 3)
+//					break;
+//				System.out.println("Action-based reward: " + e); // + " :: " + _context.printNode((Integer)e.getValue()));
+//				if (SHOW_GRAPH)
+//					_context.getGraph(e.getValue()).launchViewer();
+//				
+//				// Check to see if reward is independent of the action
+//				if (last_reward != null) {
+//					reward_action_dependent = reward_action_dependent || (!e.getValue().equals(last_reward));
+//					//System.out.println(reward_action_dependent + " " + e.getValue() + " != " + last_reward + ", " + e.getValue().getClass() + ", " + last_reward.getClass() + " = " + (!e.getValue().equals(last_reward)));
+//				}
+//				last_reward = e.getValue();
+//			}
 
 			// Get the non-action specific reward -- assuming defaults for actions
-			System.out.println("\nGeneral reward = " + _reward);
-			if (SHOW_GRAPH)
-				_context.getGraph(_reward).launchViewer();
+			//System.out.println("\nGeneral reward = " + _reward);
+			//if (SHOW_GRAPH)
+			//	_context.getGraph(_reward).launchViewer();
 			
-			if (last_reward != null)
-				reward_action_dependent = reward_action_dependent || (!_reward.equals(last_reward));
+			//if (last_reward != null)
+			//	reward_action_dependent = reward_action_dependent || (!_reward.equals(last_reward));
 			//System.out.println(reward_action_dependent);
 			
 			if (reward_action_dependent)
 				System.err.println("NOTE: Reward is action dependent... verify this is correctly reflected in action cost functions.");
 		}
+	}
+	
+	public ArrayList<Integer> convertAddExpr2ADD(EXPR e, boolean filter_actions) throws Exception {
+		
+		ArrayList<Integer> adds = new ArrayList<Integer>();
+		ArrayList<Pair> exprs = getAdditiveComponents(e);
+		
+		System.out.println("\n");
+		for (Pair p : exprs) {
+			String str = "";
+			if (p._o2 instanceof RDDL.OPER_EXPR)
+				str = ((RDDL.OPER_EXPR)p._o2)._op;
+			System.out.println("Found pair: " + p._o1 + " -- " + p._o2.getClass() + " / " + str + "\n" + p);
+		}
+		
+		int ZERO_ADD = _context.getConstantNode(0d); 
+		
+		for (Pair p : exprs) {
+			
+			HashSet<Pair> relevant_vars = new HashSet<Pair>();
+			HashMap subs = (HashMap)p._o1;
+			EXPR e2 = ((EXPR)p._o2);
+			if (_d._bRewardDeterministic) // collectGFluents expects distribution
+				e2 = new DiracDelta(e2);
+			else
+				System.out.println("WARNING: May not convert additive reward correctly... check results.");
+			e2.collectGFluents(subs, _state, relevant_vars);
+			
+			if (filter_actions)
+				relevant_vars = filterOutActionVars(relevant_vars);
+			
+			if (SHOW_RELEVANCE)
+				System.out.println("  - relevant vars: " + relevant_vars);
+			
+			int add = enumerateAssignments(new ArrayList<Pair>(relevant_vars), e2, subs, 0);
+			if (add != ZERO_ADD)
+				adds.add(add);
+		}
+		System.out.println("Done processing additive expression");
+		
+		return adds;
+	}
+	
+	// TODO: Make this recursive (append subs, ...)
+	// TODO: Make an expression to additive expression converter to be called in buildCPTs()
+	// Returns Pair(HashMap subs, EXPR e)
+	public ArrayList<Pair> getAdditiveComponents(EXPR e) throws Exception {
+
+		ArrayList<Pair> ret = new ArrayList<Pair>();
+		
+		if (e instanceof OPER_EXPR && ((OPER_EXPR)e)._op == OPER_EXPR.PLUS) {
+
+			OPER_EXPR o = (OPER_EXPR)e;
+
+			//System.out.println("\n- Oper Processing " + o._e1);
+			//System.out.println("\n- Oper Processing " + o._e2);
+			
+			ret.addAll(getAdditiveComponents(o._e1));
+			ret.addAll(getAdditiveComponents(o._e2));
+						
+		} else if (e instanceof AGG_EXPR && ((AGG_EXPR)e)._op == AGG_EXPR.SUM) {
+			
+			AGG_EXPR a = (AGG_EXPR)e;
+			
+			ArrayList<ArrayList<LCONST>> possible_subs = _state.generateAtoms(a._alVariables);
+			HashMap<LVAR,LCONST> subs = new HashMap<LVAR,LCONST>();
+
+			//System.out.println("\n- Sum Processing " + a);
+
+			// Evaluate all possible substitutions
+			for (ArrayList<LCONST> sub_inst : possible_subs) {
+				for (int i = 0; i < a._alVariables.size(); i++) {
+					subs.put(a._alVariables.get(i)._sVarName, sub_inst.get(i));
+				}
+				
+				// Note: we are not currently decomposing additive structure below a sum aggregator
+				ret.add(new Pair(subs.clone(), a._e));			
+				
+				subs.clear();
+			}
+
+		} else {
+			//System.out.println("\n- General Processing " + e);
+			HashMap<LVAR,LCONST> empty_subs = new HashMap<LVAR,LCONST>();
+			ret.add(new Pair(empty_subs, e));
+		}
+		
+		return ret;
 	}
 	
 	private HashSet<Pair> filterOutActionVars(HashSet<Pair> relevant_vars) {
@@ -943,6 +1101,8 @@ public class RDDL2Format {
 		s = s.replace(' ','_');
 		s = s.replace('-','_');
 		s = s.replace("()","");
+		s = s.replace("(", "__");
+		s = s.replace(")", "");
 		if (s.endsWith("__"))
 			s = s.substring(0, s.length() - 2);
 		return s;

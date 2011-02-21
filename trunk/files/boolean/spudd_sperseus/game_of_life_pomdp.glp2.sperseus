@@ -2512,8 +2512,35 @@ action noop
 						(true (0.2))
 						(false (0.8)))))))
 	endobserve
-	cost 
-		(0)
+	cost [+ 
+		(alive__x1_y1 
+			(true (-1))
+			(false (0)))
+		(alive__x1_y2 
+			(true (-1))
+			(false (0)))
+		(alive__x1_y3 
+			(true (-1))
+			(false (0)))
+		(alive__x2_y1 
+			(true (-1))
+			(false (0)))
+		(alive__x2_y2 
+			(true (-1))
+			(false (0)))
+		(alive__x2_y3 
+			(true (-1))
+			(false (0)))
+		(alive__x3_y1 
+			(true (-1))
+			(false (0)))
+		(alive__x3_y2 
+			(true (-1))
+			(false (0)))
+		(alive__x3_y3 
+			(true (-1))
+			(false (0)))
+	]
 endaction
 
 action set__x1_y1
@@ -4955,8 +4982,35 @@ action set__x1_y1
 						(true (0.2))
 						(false (0.8)))))))
 	endobserve
-	cost 
-		(1)
+	cost [+ 
+		(alive__x1_y1 
+			(true (0))
+			(false (1)))
+		(alive__x1_y2 
+			(true (-1))
+			(false (0)))
+		(alive__x1_y3 
+			(true (-1))
+			(false (0)))
+		(alive__x2_y1 
+			(true (-1))
+			(false (0)))
+		(alive__x2_y2 
+			(true (-1))
+			(false (0)))
+		(alive__x2_y3 
+			(true (-1))
+			(false (0)))
+		(alive__x3_y1 
+			(true (-1))
+			(false (0)))
+		(alive__x3_y2 
+			(true (-1))
+			(false (0)))
+		(alive__x3_y3 
+			(true (-1))
+			(false (0)))
+	]
 endaction
 
 action set__x1_y2
@@ -7242,8 +7296,35 @@ action set__x1_y2
 						(true (0.2))
 						(false (0.8)))))))
 	endobserve
-	cost 
-		(1)
+	cost [+ 
+		(alive__x1_y1 
+			(true (-1))
+			(false (0)))
+		(alive__x1_y2 
+			(true (0))
+			(false (1)))
+		(alive__x1_y3 
+			(true (-1))
+			(false (0)))
+		(alive__x2_y1 
+			(true (-1))
+			(false (0)))
+		(alive__x2_y2 
+			(true (-1))
+			(false (0)))
+		(alive__x2_y3 
+			(true (-1))
+			(false (0)))
+		(alive__x3_y1 
+			(true (-1))
+			(false (0)))
+		(alive__x3_y2 
+			(true (-1))
+			(false (0)))
+		(alive__x3_y3 
+			(true (-1))
+			(false (0)))
+	]
 endaction
 
 action set__x1_y3
@@ -9685,8 +9766,35 @@ action set__x1_y3
 						(true (0.2))
 						(false (0.8)))))))
 	endobserve
-	cost 
-		(1)
+	cost [+ 
+		(alive__x1_y1 
+			(true (-1))
+			(false (0)))
+		(alive__x1_y2 
+			(true (-1))
+			(false (0)))
+		(alive__x1_y3 
+			(true (0))
+			(false (1)))
+		(alive__x2_y1 
+			(true (-1))
+			(false (0)))
+		(alive__x2_y2 
+			(true (-1))
+			(false (0)))
+		(alive__x2_y3 
+			(true (-1))
+			(false (0)))
+		(alive__x3_y1 
+			(true (-1))
+			(false (0)))
+		(alive__x3_y2 
+			(true (-1))
+			(false (0)))
+		(alive__x3_y3 
+			(true (-1))
+			(false (0)))
+	]
 endaction
 
 action set__x2_y1
@@ -11972,8 +12080,35 @@ action set__x2_y1
 						(true (0.2))
 						(false (0.8)))))))
 	endobserve
-	cost 
-		(1)
+	cost [+ 
+		(alive__x1_y1 
+			(true (-1))
+			(false (0)))
+		(alive__x1_y2 
+			(true (-1))
+			(false (0)))
+		(alive__x1_y3 
+			(true (-1))
+			(false (0)))
+		(alive__x2_y1 
+			(true (0))
+			(false (1)))
+		(alive__x2_y2 
+			(true (-1))
+			(false (0)))
+		(alive__x2_y3 
+			(true (-1))
+			(false (0)))
+		(alive__x3_y1 
+			(true (-1))
+			(false (0)))
+		(alive__x3_y2 
+			(true (-1))
+			(false (0)))
+		(alive__x3_y3 
+			(true (-1))
+			(false (0)))
+	]
 endaction
 
 action set__x2_y2
@@ -13359,8 +13494,35 @@ action set__x2_y2
 						(true (0.2))
 						(false (0.8)))))))
 	endobserve
-	cost 
-		(1)
+	cost [+ 
+		(alive__x1_y1 
+			(true (-1))
+			(false (0)))
+		(alive__x1_y2 
+			(true (-1))
+			(false (0)))
+		(alive__x1_y3 
+			(true (-1))
+			(false (0)))
+		(alive__x2_y1 
+			(true (-1))
+			(false (0)))
+		(alive__x2_y2 
+			(true (0))
+			(false (1)))
+		(alive__x2_y3 
+			(true (-1))
+			(false (0)))
+		(alive__x3_y1 
+			(true (-1))
+			(false (0)))
+		(alive__x3_y2 
+			(true (-1))
+			(false (0)))
+		(alive__x3_y3 
+			(true (-1))
+			(false (0)))
+	]
 endaction
 
 action set__x2_y3
@@ -15658,8 +15820,35 @@ action set__x2_y3
 						(true (0.2))
 						(false (0.8)))))))
 	endobserve
-	cost 
-		(1)
+	cost [+ 
+		(alive__x1_y1 
+			(true (-1))
+			(false (0)))
+		(alive__x1_y2 
+			(true (-1))
+			(false (0)))
+		(alive__x1_y3 
+			(true (-1))
+			(false (0)))
+		(alive__x2_y1 
+			(true (-1))
+			(false (0)))
+		(alive__x2_y2 
+			(true (-1))
+			(false (0)))
+		(alive__x2_y3 
+			(true (0))
+			(false (1)))
+		(alive__x3_y1 
+			(true (-1))
+			(false (0)))
+		(alive__x3_y2 
+			(true (-1))
+			(false (0)))
+		(alive__x3_y3 
+			(true (-1))
+			(false (0)))
+	]
 endaction
 
 action set__x3_y1
@@ -18101,8 +18290,35 @@ action set__x3_y1
 						(true (0.2))
 						(false (0.8)))))))
 	endobserve
-	cost 
-		(1)
+	cost [+ 
+		(alive__x1_y1 
+			(true (-1))
+			(false (0)))
+		(alive__x1_y2 
+			(true (-1))
+			(false (0)))
+		(alive__x1_y3 
+			(true (-1))
+			(false (0)))
+		(alive__x2_y1 
+			(true (-1))
+			(false (0)))
+		(alive__x2_y2 
+			(true (-1))
+			(false (0)))
+		(alive__x2_y3 
+			(true (-1))
+			(false (0)))
+		(alive__x3_y1 
+			(true (0))
+			(false (1)))
+		(alive__x3_y2 
+			(true (-1))
+			(false (0)))
+		(alive__x3_y3 
+			(true (-1))
+			(false (0)))
+	]
 endaction
 
 action set__x3_y2
@@ -20424,8 +20640,35 @@ action set__x3_y2
 						(true (0.2))
 						(false (0.8)))))))
 	endobserve
-	cost 
-		(1)
+	cost [+ 
+		(alive__x1_y1 
+			(true (-1))
+			(false (0)))
+		(alive__x1_y2 
+			(true (-1))
+			(false (0)))
+		(alive__x1_y3 
+			(true (-1))
+			(false (0)))
+		(alive__x2_y1 
+			(true (-1))
+			(false (0)))
+		(alive__x2_y2 
+			(true (-1))
+			(false (0)))
+		(alive__x2_y3 
+			(true (-1))
+			(false (0)))
+		(alive__x3_y1 
+			(true (-1))
+			(false (0)))
+		(alive__x3_y2 
+			(true (0))
+			(false (1)))
+		(alive__x3_y3 
+			(true (-1))
+			(false (0)))
+	]
 endaction
 
 action set__x3_y3
@@ -22867,1034 +23110,39 @@ action set__x3_y3
 						(true (0.2))
 						(false (0.8)))))))
 	endobserve
-	cost 
-		(1)
+	cost [+ 
+		(alive__x1_y1 
+			(true (-1))
+			(false (0)))
+		(alive__x1_y2 
+			(true (-1))
+			(false (0)))
+		(alive__x1_y3 
+			(true (-1))
+			(false (0)))
+		(alive__x2_y1 
+			(true (-1))
+			(false (0)))
+		(alive__x2_y2 
+			(true (-1))
+			(false (0)))
+		(alive__x2_y3 
+			(true (-1))
+			(false (0)))
+		(alive__x3_y1 
+			(true (-1))
+			(false (0)))
+		(alive__x3_y2 
+			(true (-1))
+			(false (0)))
+		(alive__x3_y3 
+			(true (0))
+			(false (1)))
+	]
 endaction
 
 reward
-	(alive__x1_y1 
-		(true (alive__x1_y2 
-			(true (alive__x1_y3 
-				(true (alive__x2_y1 
-					(true (alive__x2_y2 
-						(true (alive__x2_y3 
-							(true (alive__x3_y1 
-								(true (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (9))
-										(false (8))))
-									(false (alive__x3_y3 
-										(true (8))
-										(false (7))))))
-								(false (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (8))
-										(false (7))))
-									(false (alive__x3_y3 
-										(true (7))
-										(false (6))))))))
-							(false (alive__x3_y1 
-								(true (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (8))
-										(false (7))))
-									(false (alive__x3_y3 
-										(true (7))
-										(false (6))))))
-								(false (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (7))
-										(false (6))))
-									(false (alive__x3_y3 
-										(true (6))
-										(false (5))))))))))
-						(false (alive__x2_y3 
-							(true (alive__x3_y1 
-								(true (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (8))
-										(false (7))))
-									(false (alive__x3_y3 
-										(true (7))
-										(false (6))))))
-								(false (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (7))
-										(false (6))))
-									(false (alive__x3_y3 
-										(true (6))
-										(false (5))))))))
-							(false (alive__x3_y1 
-								(true (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (7))
-										(false (6))))
-									(false (alive__x3_y3 
-										(true (6))
-										(false (5))))))
-								(false (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (6))
-										(false (5))))
-									(false (alive__x3_y3 
-										(true (5))
-										(false (4))))))))))))
-					(false (alive__x2_y2 
-						(true (alive__x2_y3 
-							(true (alive__x3_y1 
-								(true (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (8))
-										(false (7))))
-									(false (alive__x3_y3 
-										(true (7))
-										(false (6))))))
-								(false (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (7))
-										(false (6))))
-									(false (alive__x3_y3 
-										(true (6))
-										(false (5))))))))
-							(false (alive__x3_y1 
-								(true (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (7))
-										(false (6))))
-									(false (alive__x3_y3 
-										(true (6))
-										(false (5))))))
-								(false (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (6))
-										(false (5))))
-									(false (alive__x3_y3 
-										(true (5))
-										(false (4))))))))))
-						(false (alive__x2_y3 
-							(true (alive__x3_y1 
-								(true (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (7))
-										(false (6))))
-									(false (alive__x3_y3 
-										(true (6))
-										(false (5))))))
-								(false (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (6))
-										(false (5))))
-									(false (alive__x3_y3 
-										(true (5))
-										(false (4))))))))
-							(false (alive__x3_y1 
-								(true (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (6))
-										(false (5))))
-									(false (alive__x3_y3 
-										(true (5))
-										(false (4))))))
-								(false (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (5))
-										(false (4))))
-									(false (alive__x3_y3 
-										(true (4))
-										(false (3))))))))))))))
-				(false (alive__x2_y1 
-					(true (alive__x2_y2 
-						(true (alive__x2_y3 
-							(true (alive__x3_y1 
-								(true (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (8))
-										(false (7))))
-									(false (alive__x3_y3 
-										(true (7))
-										(false (6))))))
-								(false (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (7))
-										(false (6))))
-									(false (alive__x3_y3 
-										(true (6))
-										(false (5))))))))
-							(false (alive__x3_y1 
-								(true (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (7))
-										(false (6))))
-									(false (alive__x3_y3 
-										(true (6))
-										(false (5))))))
-								(false (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (6))
-										(false (5))))
-									(false (alive__x3_y3 
-										(true (5))
-										(false (4))))))))))
-						(false (alive__x2_y3 
-							(true (alive__x3_y1 
-								(true (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (7))
-										(false (6))))
-									(false (alive__x3_y3 
-										(true (6))
-										(false (5))))))
-								(false (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (6))
-										(false (5))))
-									(false (alive__x3_y3 
-										(true (5))
-										(false (4))))))))
-							(false (alive__x3_y1 
-								(true (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (6))
-										(false (5))))
-									(false (alive__x3_y3 
-										(true (5))
-										(false (4))))))
-								(false (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (5))
-										(false (4))))
-									(false (alive__x3_y3 
-										(true (4))
-										(false (3))))))))))))
-					(false (alive__x2_y2 
-						(true (alive__x2_y3 
-							(true (alive__x3_y1 
-								(true (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (7))
-										(false (6))))
-									(false (alive__x3_y3 
-										(true (6))
-										(false (5))))))
-								(false (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (6))
-										(false (5))))
-									(false (alive__x3_y3 
-										(true (5))
-										(false (4))))))))
-							(false (alive__x3_y1 
-								(true (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (6))
-										(false (5))))
-									(false (alive__x3_y3 
-										(true (5))
-										(false (4))))))
-								(false (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (5))
-										(false (4))))
-									(false (alive__x3_y3 
-										(true (4))
-										(false (3))))))))))
-						(false (alive__x2_y3 
-							(true (alive__x3_y1 
-								(true (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (6))
-										(false (5))))
-									(false (alive__x3_y3 
-										(true (5))
-										(false (4))))))
-								(false (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (5))
-										(false (4))))
-									(false (alive__x3_y3 
-										(true (4))
-										(false (3))))))))
-							(false (alive__x3_y1 
-								(true (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (5))
-										(false (4))))
-									(false (alive__x3_y3 
-										(true (4))
-										(false (3))))))
-								(false (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (4))
-										(false (3))))
-									(false (alive__x3_y3 
-										(true (3))
-										(false (2))))))))))))))))
-			(false (alive__x1_y3 
-				(true (alive__x2_y1 
-					(true (alive__x2_y2 
-						(true (alive__x2_y3 
-							(true (alive__x3_y1 
-								(true (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (8))
-										(false (7))))
-									(false (alive__x3_y3 
-										(true (7))
-										(false (6))))))
-								(false (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (7))
-										(false (6))))
-									(false (alive__x3_y3 
-										(true (6))
-										(false (5))))))))
-							(false (alive__x3_y1 
-								(true (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (7))
-										(false (6))))
-									(false (alive__x3_y3 
-										(true (6))
-										(false (5))))))
-								(false (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (6))
-										(false (5))))
-									(false (alive__x3_y3 
-										(true (5))
-										(false (4))))))))))
-						(false (alive__x2_y3 
-							(true (alive__x3_y1 
-								(true (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (7))
-										(false (6))))
-									(false (alive__x3_y3 
-										(true (6))
-										(false (5))))))
-								(false (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (6))
-										(false (5))))
-									(false (alive__x3_y3 
-										(true (5))
-										(false (4))))))))
-							(false (alive__x3_y1 
-								(true (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (6))
-										(false (5))))
-									(false (alive__x3_y3 
-										(true (5))
-										(false (4))))))
-								(false (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (5))
-										(false (4))))
-									(false (alive__x3_y3 
-										(true (4))
-										(false (3))))))))))))
-					(false (alive__x2_y2 
-						(true (alive__x2_y3 
-							(true (alive__x3_y1 
-								(true (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (7))
-										(false (6))))
-									(false (alive__x3_y3 
-										(true (6))
-										(false (5))))))
-								(false (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (6))
-										(false (5))))
-									(false (alive__x3_y3 
-										(true (5))
-										(false (4))))))))
-							(false (alive__x3_y1 
-								(true (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (6))
-										(false (5))))
-									(false (alive__x3_y3 
-										(true (5))
-										(false (4))))))
-								(false (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (5))
-										(false (4))))
-									(false (alive__x3_y3 
-										(true (4))
-										(false (3))))))))))
-						(false (alive__x2_y3 
-							(true (alive__x3_y1 
-								(true (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (6))
-										(false (5))))
-									(false (alive__x3_y3 
-										(true (5))
-										(false (4))))))
-								(false (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (5))
-										(false (4))))
-									(false (alive__x3_y3 
-										(true (4))
-										(false (3))))))))
-							(false (alive__x3_y1 
-								(true (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (5))
-										(false (4))))
-									(false (alive__x3_y3 
-										(true (4))
-										(false (3))))))
-								(false (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (4))
-										(false (3))))
-									(false (alive__x3_y3 
-										(true (3))
-										(false (2))))))))))))))
-				(false (alive__x2_y1 
-					(true (alive__x2_y2 
-						(true (alive__x2_y3 
-							(true (alive__x3_y1 
-								(true (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (7))
-										(false (6))))
-									(false (alive__x3_y3 
-										(true (6))
-										(false (5))))))
-								(false (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (6))
-										(false (5))))
-									(false (alive__x3_y3 
-										(true (5))
-										(false (4))))))))
-							(false (alive__x3_y1 
-								(true (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (6))
-										(false (5))))
-									(false (alive__x3_y3 
-										(true (5))
-										(false (4))))))
-								(false (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (5))
-										(false (4))))
-									(false (alive__x3_y3 
-										(true (4))
-										(false (3))))))))))
-						(false (alive__x2_y3 
-							(true (alive__x3_y1 
-								(true (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (6))
-										(false (5))))
-									(false (alive__x3_y3 
-										(true (5))
-										(false (4))))))
-								(false (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (5))
-										(false (4))))
-									(false (alive__x3_y3 
-										(true (4))
-										(false (3))))))))
-							(false (alive__x3_y1 
-								(true (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (5))
-										(false (4))))
-									(false (alive__x3_y3 
-										(true (4))
-										(false (3))))))
-								(false (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (4))
-										(false (3))))
-									(false (alive__x3_y3 
-										(true (3))
-										(false (2))))))))))))
-					(false (alive__x2_y2 
-						(true (alive__x2_y3 
-							(true (alive__x3_y1 
-								(true (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (6))
-										(false (5))))
-									(false (alive__x3_y3 
-										(true (5))
-										(false (4))))))
-								(false (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (5))
-										(false (4))))
-									(false (alive__x3_y3 
-										(true (4))
-										(false (3))))))))
-							(false (alive__x3_y1 
-								(true (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (5))
-										(false (4))))
-									(false (alive__x3_y3 
-										(true (4))
-										(false (3))))))
-								(false (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (4))
-										(false (3))))
-									(false (alive__x3_y3 
-										(true (3))
-										(false (2))))))))))
-						(false (alive__x2_y3 
-							(true (alive__x3_y1 
-								(true (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (5))
-										(false (4))))
-									(false (alive__x3_y3 
-										(true (4))
-										(false (3))))))
-								(false (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (4))
-										(false (3))))
-									(false (alive__x3_y3 
-										(true (3))
-										(false (2))))))))
-							(false (alive__x3_y1 
-								(true (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (4))
-										(false (3))))
-									(false (alive__x3_y3 
-										(true (3))
-										(false (2))))))
-								(false (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (3))
-										(false (2))))
-									(false (alive__x3_y3 
-										(true (2))
-										(false (1))))))))))))))))))
-		(false (alive__x1_y2 
-			(true (alive__x1_y3 
-				(true (alive__x2_y1 
-					(true (alive__x2_y2 
-						(true (alive__x2_y3 
-							(true (alive__x3_y1 
-								(true (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (8))
-										(false (7))))
-									(false (alive__x3_y3 
-										(true (7))
-										(false (6))))))
-								(false (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (7))
-										(false (6))))
-									(false (alive__x3_y3 
-										(true (6))
-										(false (5))))))))
-							(false (alive__x3_y1 
-								(true (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (7))
-										(false (6))))
-									(false (alive__x3_y3 
-										(true (6))
-										(false (5))))))
-								(false (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (6))
-										(false (5))))
-									(false (alive__x3_y3 
-										(true (5))
-										(false (4))))))))))
-						(false (alive__x2_y3 
-							(true (alive__x3_y1 
-								(true (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (7))
-										(false (6))))
-									(false (alive__x3_y3 
-										(true (6))
-										(false (5))))))
-								(false (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (6))
-										(false (5))))
-									(false (alive__x3_y3 
-										(true (5))
-										(false (4))))))))
-							(false (alive__x3_y1 
-								(true (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (6))
-										(false (5))))
-									(false (alive__x3_y3 
-										(true (5))
-										(false (4))))))
-								(false (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (5))
-										(false (4))))
-									(false (alive__x3_y3 
-										(true (4))
-										(false (3))))))))))))
-					(false (alive__x2_y2 
-						(true (alive__x2_y3 
-							(true (alive__x3_y1 
-								(true (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (7))
-										(false (6))))
-									(false (alive__x3_y3 
-										(true (6))
-										(false (5))))))
-								(false (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (6))
-										(false (5))))
-									(false (alive__x3_y3 
-										(true (5))
-										(false (4))))))))
-							(false (alive__x3_y1 
-								(true (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (6))
-										(false (5))))
-									(false (alive__x3_y3 
-										(true (5))
-										(false (4))))))
-								(false (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (5))
-										(false (4))))
-									(false (alive__x3_y3 
-										(true (4))
-										(false (3))))))))))
-						(false (alive__x2_y3 
-							(true (alive__x3_y1 
-								(true (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (6))
-										(false (5))))
-									(false (alive__x3_y3 
-										(true (5))
-										(false (4))))))
-								(false (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (5))
-										(false (4))))
-									(false (alive__x3_y3 
-										(true (4))
-										(false (3))))))))
-							(false (alive__x3_y1 
-								(true (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (5))
-										(false (4))))
-									(false (alive__x3_y3 
-										(true (4))
-										(false (3))))))
-								(false (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (4))
-										(false (3))))
-									(false (alive__x3_y3 
-										(true (3))
-										(false (2))))))))))))))
-				(false (alive__x2_y1 
-					(true (alive__x2_y2 
-						(true (alive__x2_y3 
-							(true (alive__x3_y1 
-								(true (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (7))
-										(false (6))))
-									(false (alive__x3_y3 
-										(true (6))
-										(false (5))))))
-								(false (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (6))
-										(false (5))))
-									(false (alive__x3_y3 
-										(true (5))
-										(false (4))))))))
-							(false (alive__x3_y1 
-								(true (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (6))
-										(false (5))))
-									(false (alive__x3_y3 
-										(true (5))
-										(false (4))))))
-								(false (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (5))
-										(false (4))))
-									(false (alive__x3_y3 
-										(true (4))
-										(false (3))))))))))
-						(false (alive__x2_y3 
-							(true (alive__x3_y1 
-								(true (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (6))
-										(false (5))))
-									(false (alive__x3_y3 
-										(true (5))
-										(false (4))))))
-								(false (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (5))
-										(false (4))))
-									(false (alive__x3_y3 
-										(true (4))
-										(false (3))))))))
-							(false (alive__x3_y1 
-								(true (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (5))
-										(false (4))))
-									(false (alive__x3_y3 
-										(true (4))
-										(false (3))))))
-								(false (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (4))
-										(false (3))))
-									(false (alive__x3_y3 
-										(true (3))
-										(false (2))))))))))))
-					(false (alive__x2_y2 
-						(true (alive__x2_y3 
-							(true (alive__x3_y1 
-								(true (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (6))
-										(false (5))))
-									(false (alive__x3_y3 
-										(true (5))
-										(false (4))))))
-								(false (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (5))
-										(false (4))))
-									(false (alive__x3_y3 
-										(true (4))
-										(false (3))))))))
-							(false (alive__x3_y1 
-								(true (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (5))
-										(false (4))))
-									(false (alive__x3_y3 
-										(true (4))
-										(false (3))))))
-								(false (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (4))
-										(false (3))))
-									(false (alive__x3_y3 
-										(true (3))
-										(false (2))))))))))
-						(false (alive__x2_y3 
-							(true (alive__x3_y1 
-								(true (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (5))
-										(false (4))))
-									(false (alive__x3_y3 
-										(true (4))
-										(false (3))))))
-								(false (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (4))
-										(false (3))))
-									(false (alive__x3_y3 
-										(true (3))
-										(false (2))))))))
-							(false (alive__x3_y1 
-								(true (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (4))
-										(false (3))))
-									(false (alive__x3_y3 
-										(true (3))
-										(false (2))))))
-								(false (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (3))
-										(false (2))))
-									(false (alive__x3_y3 
-										(true (2))
-										(false (1))))))))))))))))
-			(false (alive__x1_y3 
-				(true (alive__x2_y1 
-					(true (alive__x2_y2 
-						(true (alive__x2_y3 
-							(true (alive__x3_y1 
-								(true (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (7))
-										(false (6))))
-									(false (alive__x3_y3 
-										(true (6))
-										(false (5))))))
-								(false (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (6))
-										(false (5))))
-									(false (alive__x3_y3 
-										(true (5))
-										(false (4))))))))
-							(false (alive__x3_y1 
-								(true (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (6))
-										(false (5))))
-									(false (alive__x3_y3 
-										(true (5))
-										(false (4))))))
-								(false (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (5))
-										(false (4))))
-									(false (alive__x3_y3 
-										(true (4))
-										(false (3))))))))))
-						(false (alive__x2_y3 
-							(true (alive__x3_y1 
-								(true (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (6))
-										(false (5))))
-									(false (alive__x3_y3 
-										(true (5))
-										(false (4))))))
-								(false (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (5))
-										(false (4))))
-									(false (alive__x3_y3 
-										(true (4))
-										(false (3))))))))
-							(false (alive__x3_y1 
-								(true (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (5))
-										(false (4))))
-									(false (alive__x3_y3 
-										(true (4))
-										(false (3))))))
-								(false (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (4))
-										(false (3))))
-									(false (alive__x3_y3 
-										(true (3))
-										(false (2))))))))))))
-					(false (alive__x2_y2 
-						(true (alive__x2_y3 
-							(true (alive__x3_y1 
-								(true (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (6))
-										(false (5))))
-									(false (alive__x3_y3 
-										(true (5))
-										(false (4))))))
-								(false (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (5))
-										(false (4))))
-									(false (alive__x3_y3 
-										(true (4))
-										(false (3))))))))
-							(false (alive__x3_y1 
-								(true (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (5))
-										(false (4))))
-									(false (alive__x3_y3 
-										(true (4))
-										(false (3))))))
-								(false (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (4))
-										(false (3))))
-									(false (alive__x3_y3 
-										(true (3))
-										(false (2))))))))))
-						(false (alive__x2_y3 
-							(true (alive__x3_y1 
-								(true (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (5))
-										(false (4))))
-									(false (alive__x3_y3 
-										(true (4))
-										(false (3))))))
-								(false (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (4))
-										(false (3))))
-									(false (alive__x3_y3 
-										(true (3))
-										(false (2))))))))
-							(false (alive__x3_y1 
-								(true (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (4))
-										(false (3))))
-									(false (alive__x3_y3 
-										(true (3))
-										(false (2))))))
-								(false (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (3))
-										(false (2))))
-									(false (alive__x3_y3 
-										(true (2))
-										(false (1))))))))))))))
-				(false (alive__x2_y1 
-					(true (alive__x2_y2 
-						(true (alive__x2_y3 
-							(true (alive__x3_y1 
-								(true (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (6))
-										(false (5))))
-									(false (alive__x3_y3 
-										(true (5))
-										(false (4))))))
-								(false (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (5))
-										(false (4))))
-									(false (alive__x3_y3 
-										(true (4))
-										(false (3))))))))
-							(false (alive__x3_y1 
-								(true (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (5))
-										(false (4))))
-									(false (alive__x3_y3 
-										(true (4))
-										(false (3))))))
-								(false (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (4))
-										(false (3))))
-									(false (alive__x3_y3 
-										(true (3))
-										(false (2))))))))))
-						(false (alive__x2_y3 
-							(true (alive__x3_y1 
-								(true (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (5))
-										(false (4))))
-									(false (alive__x3_y3 
-										(true (4))
-										(false (3))))))
-								(false (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (4))
-										(false (3))))
-									(false (alive__x3_y3 
-										(true (3))
-										(false (2))))))))
-							(false (alive__x3_y1 
-								(true (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (4))
-										(false (3))))
-									(false (alive__x3_y3 
-										(true (3))
-										(false (2))))))
-								(false (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (3))
-										(false (2))))
-									(false (alive__x3_y3 
-										(true (2))
-										(false (1))))))))))))
-					(false (alive__x2_y2 
-						(true (alive__x2_y3 
-							(true (alive__x3_y1 
-								(true (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (5))
-										(false (4))))
-									(false (alive__x3_y3 
-										(true (4))
-										(false (3))))))
-								(false (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (4))
-										(false (3))))
-									(false (alive__x3_y3 
-										(true (3))
-										(false (2))))))))
-							(false (alive__x3_y1 
-								(true (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (4))
-										(false (3))))
-									(false (alive__x3_y3 
-										(true (3))
-										(false (2))))))
-								(false (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (3))
-										(false (2))))
-									(false (alive__x3_y3 
-										(true (2))
-										(false (1))))))))))
-						(false (alive__x2_y3 
-							(true (alive__x3_y1 
-								(true (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (4))
-										(false (3))))
-									(false (alive__x3_y3 
-										(true (3))
-										(false (2))))))
-								(false (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (3))
-										(false (2))))
-									(false (alive__x3_y3 
-										(true (2))
-										(false (1))))))))
-							(false (alive__x3_y1 
-								(true (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (3))
-										(false (2))))
-									(false (alive__x3_y3 
-										(true (2))
-										(false (1))))))
-								(false (alive__x3_y2 
-									(true (alive__x3_y3 
-										(true (2))
-										(false (1))))
-									(false (alive__x3_y3 
-										(true (1))
-										(false (0)))))))))))))))))))
+	(0)
 
 discount 1.0
 horizon 20
