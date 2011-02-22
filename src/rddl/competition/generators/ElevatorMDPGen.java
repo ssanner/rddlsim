@@ -135,7 +135,7 @@ public class ElevatorMDPGen {
 		
 		
 		String s = "";
-		s += "non-fluents elComp" + id + " {\n\tdomain = elevators; \n\tobjects { \n";
+		s += "non-fluents elComp" + id + " {\n\tdomain = elevators_mdp; \n\tobjects { \n";
 		s += "\t\televator : {";
 		for(int e = 0; e < els; e++){
 			s+= "e" + e;
@@ -159,7 +159,7 @@ public class ElevatorMDPGen {
 		s+= "\t\tTOP-FLOOR(f"+ (floors-1) + ") = true;\n";  
 		s+= "\t\tBOTTOM-FLOOR(f0) = true;\n \t}; \n }\n";
 				
-		s += "instance ieComp" + id + " { \n\tdomain = elevators; \n ";
+		s += "instance ieComp" + id + " { \n\tdomain = elevators_mdp; \n ";
 		s += "\tnon-fluents = elComp" + id + ";\n\tinit-state { \n";
 		for(int e =0; e < els; e++){
 			s+= "\t\televator-at-floor(e" + e + ",f" + starts[e] + ");\n";  
