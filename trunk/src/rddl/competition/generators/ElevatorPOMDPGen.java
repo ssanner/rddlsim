@@ -20,7 +20,7 @@ public static void main(String [] args){
 			System.exit(127);
 		}
 		
-		ElevatorMDPGen efg = new ElevatorMDPGen(args);
+		ElevatorMDPGen efg = new ElevatorPOMDPGen(args);
 		//ElevatorFullGen efg = new ElevatorFullGen(numEls, numFloors, startFloors, arrParams, Double.parseDouble(args[numEls + numFloors + 2]), Integer.parseInt(args[numEls + numFloors + 3]), Double.parseDouble(args[numEls + numFloors + 4]), Integer.parseInt(args[numEls + numFloors + 5]));
 		int toGen = Integer.parseInt(args[args.length-1]);
 		String s = "";
@@ -45,10 +45,10 @@ public static void main(String [] args){
 		String [] broken = s.split("non-fluents \\{");
 		String mid = "";
 		for(int f =0; f < floors; f++){
-			mid += "REVEAL-PROB(f" +f+ ") = " + (ran.nextDouble() * (revealMax - revealMin) + revealMin) + ";\n";
-			mid += "PRANK(f" +f+ ") = " + (ran.nextDouble() * (prankMax - prankMin) + prankMin) + ";\n";
+			mid += "\t\tREVEAL-PROB(f" +f+ ") = " + (ran.nextDouble() * (revealMax - revealMin) + revealMin) + ";\n";
+			mid += "\t\tPRANK(f" +f+ ") = " + (ran.nextDouble() * (prankMax - prankMin) + prankMin) + ";\n";
 		}
-		return broken[0] + "non-fluents {\n" + mid + broken[1];
+		return (broken[0] + "non-fluents {\n" + mid + broken[1]).replaceAll("elevators_mdp", "elevators_pomdp");
 	}
 	
 	
