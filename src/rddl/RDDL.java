@@ -832,10 +832,12 @@ public class RDDL {
 				pred_name = pred_name.substring(0, pred_name.length() - 1);
 			}
 			_sPVarName = pred_name.intern();
-			_nHashCode = pred_name.hashCode() + (_bPrimed ? 1 : 0);
+			_sPVarNameCanon = pred_name.replace('-','_').intern();
+			_nHashCode = _sPVarNameCanon.hashCode() + (_bPrimed ? 1 : 0);
 		}
 		
 		public String _sPVarName;
+		public String _sPVarNameCanon;
 		public boolean _bPrimed;
 		public int    _nHashCode;
 		
@@ -850,7 +852,7 @@ public class RDDL {
 		
 		// Name was interned so can check reference equality
 		public boolean equals(Object o) {
-			return _sPVarName == ((PVAR_NAME)o)._sPVarName
+			return _sPVarNameCanon == ((PVAR_NAME)o)._sPVarNameCanon
 			       && _bPrimed == ((PVAR_NAME)o)._bPrimed;
 		}
 
