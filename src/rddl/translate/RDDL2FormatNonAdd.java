@@ -169,7 +169,7 @@ public class RDDL2FormatNonAdd {
 	public void exportSPUDD(PrintWriter pw, boolean curr_format,
 			boolean allow_conc) {
 		pw
-				.println("// Automatically produced by rddl.translate.RDDL2Format"/*
+				.println("// Automatically produced by rddl.translate.RDDL2FormatNonAdd"/*
 																				 * +
 																				 * " using '"
 																				 * +
@@ -320,7 +320,7 @@ public class RDDL2FormatNonAdd {
 	public void exportPPDDL(PrintWriter pw) {
 		// first write domain
 		pw
-				.println(";; Automatically produced by rddl.translate.RDDL2Format"/*
+				.println(";; Automatically produced by rddl.translate.RDDL2FormatNonAdd"/*
 																				 * +
 																				 * " using '"
 																				 * +
@@ -1147,7 +1147,7 @@ public class RDDL2FormatNonAdd {
 				RDDL rddl = parser.parse(f);
 
 				for (String instance_name : rddl._tmInstanceNodes.keySet()) {
-					RDDL2Format r2s = new RDDL2Format(rddl, instance_name,
+					RDDL2FormatNonAdd r2s = new RDDL2FormatNonAdd(rddl, instance_name,
 							arg2_intern);
 					r2s.export(output_dir);
 				}
