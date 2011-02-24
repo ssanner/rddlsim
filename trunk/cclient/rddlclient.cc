@@ -146,8 +146,8 @@ void sendAction(std::ostream& os) {
      << "<action-arg>c" << comp_num << "</action-arg>"
      << "<action-value>true</action-value>"
      << "</action></actions>" << '\0';
-     
-  // Example for a domain with three concurrent single-argument actions 
+
+  // Example for a domain with three *concurrent* single-argument actions 
   //os << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" 
   //   << "<actions>"
   //   << "<action><action-name>advance</action-name><action-arg>i1</action-arg><action-value>true</action-value></action>"

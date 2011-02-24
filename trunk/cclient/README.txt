@@ -63,18 +63,46 @@ or equivalently this
 
    <actions></actions>
 
-Obviously you will need to send non-noop actions.  For the IPPC 2011
-competition, no concurrency is being used, all actions will be boolean
-and their default value will be false.  In short, this means that you
-can simply send a single action name and associated arguments and a
-value of true for the action you wish to execute.  For example,
-something like the following (formatted for readability):
+Obviously you will need to send non-noop actions.  For most of the
+IPPC 2011 competition, concurrency is not being used.  This means that
+you can simply send a single action name and associated arguments with
+a value of true for the action you wish to execute.  For example, you
+will see PPDDL and SPUDD / Symbolic Perseus single action names like
+the following in the Game of Life domain:
+
+   set__x1_y1
+
+where the action name is separated from the arguments by a double
+underscore "__" and the arguments are separated by a single underscore
+"_".  To send such an action to the RDDL server as XML you would send:
 
    <actions>
        <action>
            <action-name>set</action-name>
            <action-arg>x1</action-arg>
            <action-arg>y1</action-arg>
+           <action-value>true</action-value>
+       </action>
+   </actions>
+
+For concurrent domains like traffic, you will see PPDDL and 
+SPUDD / Symbolic Perseus *joint* action names like:
+
+  advance__ia2a4___advance__ia2a8 
+
+This is actually two actions separated by a triple underscore
+"___".  To send such an action to the RDDL server, simply separate
+the joint action into singleton actions and send the following XML:
+
+   <actions>
+       <action>
+           <action-name>advance</action-name>
+           <action-arg>ia2a4</action-arg>
+           <action-value>true</action-value>
+       </action>
+       <action>
+           <action-name>advance</action-name>
+           <action-arg>ia2a8</action-arg>
            <action-value>true</action-value>
        </action>
    </actions>
