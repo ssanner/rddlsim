@@ -17,6 +17,7 @@ domain game_of_life_mdp {
 	};
       	
 	pvariables { 
+		NOISE-PROB(x_pos,y_pos) : { non-fluent, real, default = 0.1 };
 		NEIGHBOR(x_pos,y_pos,x_pos,y_pos) : { non-fluent, bool, default = false };
 		alive(x_pos,y_pos) : { state-fluent,  bool, default = false };
 		set(x_pos,y_pos)   : { action-fluent, bool, default = false };
@@ -32,13 +33,20 @@ domain game_of_life_mdp {
    		// For interactivity: we allow an agent to explicitly set different cells.
 		
 		alive'(?x,?y) = 
-			  KronDelta([alive(?x,?y) ^ ([sum_{?x2 : x_pos, ?y2 : y_pos} NEIGHBOR(?x,?y,?x2,?y2) ^ alive(?x2,?y2)] >= 2) 
+			if ([alive(?x,?y) ^ ([sum_{?x2 : x_pos, ?y2 : y_pos} NEIGHBOR(?x,?y,?x2,?y2) ^ alive(?x2,?y2)] >= 2) 
 							^ ([sum_{?x2 : x_pos, ?y2 : y_pos} NEIGHBOR(?x,?y,?x2,?y2) ^ alive(?x2,?y2)] <= 3)]
 						| [~alive(?x,?y) ^ ([sum_{?x2 : x_pos, ?y2 : y_pos} NEIGHBOR(?x,?y,?x2,?y2) ^ alive(?x2,?y2)] == 3)]
-						| set(?x,?y));  		
+						| set(?x,?y))
+			then Bernoulli(1.0 - NOISE-PROB(?x,?y))
+			else Bernoulli(NOISE-PROB(?x,?y));
 	};
     	
 	reward = sum_{?x : x_pos, ?y : y_pos} [alive(?x,?y) - set(?x,?y)];
+    	
+    state-action-constraints {
+    	forall_{?x : x_pos, ?y : y_pos}
+    		[(NOISE-PROB(?x,?y) >= 0.0) ^ (NOISE-PROB(?x,?y) <= 1.0)];
+    };
 }
    
 non-fluents game2 {
