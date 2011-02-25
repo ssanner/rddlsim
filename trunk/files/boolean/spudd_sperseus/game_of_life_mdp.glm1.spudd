@@ -21,161 +21,161 @@ action noop
 			(true (alive__x1_y2 
 				(true (alive__x2_y1 
 					(true (alive__x1_y1' 
-						(true (1))
-						(false (0))))
+						(true (0.9))
+						(false (0.1))))
 					(false (alive__x2_y2 
 						(true (alive__x1_y1' 
-							(true (1))
-							(false (0))))
+							(true (0.9))
+							(false (0.1))))
 						(false (alive__x1_y1' 
-							(true (0))
-							(false (1))))))))
+							(true (0.1))
+							(false (0.9))))))))
 				(false (alive__x2_y1 
 					(true (alive__x2_y2 
 						(true (alive__x1_y1' 
-							(true (1))
-							(false (0))))
+							(true (0.9))
+							(false (0.1))))
 						(false (alive__x1_y1' 
-							(true (0))
-							(false (1))))))
+							(true (0.1))
+							(false (0.9))))))
 					(false (alive__x1_y1' 
-						(true (0))
-						(false (1))))))))
+						(true (0.1))
+						(false (0.9))))))))
 			(false (alive__x1_y2 
 				(true (alive__x2_y1 
 					(true (alive__x2_y2 
 						(true (alive__x1_y1' 
-							(true (1))
-							(false (0))))
+							(true (0.9))
+							(false (0.1))))
 						(false (alive__x1_y1' 
-							(true (0))
-							(false (1))))))
+							(true (0.1))
+							(false (0.9))))))
 					(false (alive__x1_y1' 
-						(true (0))
-						(false (1))))))
+						(true (0.1))
+						(false (0.9))))))
 				(false (alive__x1_y1' 
-					(true (0))
-					(false (1)))))))
+					(true (0.1))
+					(false (0.9)))))))
 	alive__x1_y2
 		(alive__x1_y1 
 			(true (alive__x1_y2 
 				(true (alive__x2_y1 
 					(true (alive__x1_y2' 
-						(true (1))
-						(false (0))))
+						(true (0.9))
+						(false (0.1))))
 					(false (alive__x2_y2 
 						(true (alive__x1_y2' 
-							(true (1))
-							(false (0))))
+							(true (0.9))
+							(false (0.1))))
 						(false (alive__x1_y2' 
-							(true (0))
-							(false (1))))))))
+							(true (0.1))
+							(false (0.9))))))))
 				(false (alive__x2_y1 
 					(true (alive__x2_y2 
 						(true (alive__x1_y2' 
-							(true (1))
-							(false (0))))
+							(true (0.9))
+							(false (0.1))))
 						(false (alive__x1_y2' 
-							(true (0))
-							(false (1))))))
+							(true (0.1))
+							(false (0.9))))))
 					(false (alive__x1_y2' 
-						(true (0))
-						(false (1))))))))
+						(true (0.1))
+						(false (0.9))))))))
 			(false (alive__x1_y2 
 				(true (alive__x2_y1 
 					(true (alive__x2_y2 
 						(true (alive__x1_y2' 
-							(true (1))
-							(false (0))))
+							(true (0.9))
+							(false (0.1))))
 						(false (alive__x1_y2' 
-							(true (0))
-							(false (1))))))
+							(true (0.1))
+							(false (0.9))))))
 					(false (alive__x1_y2' 
-						(true (0))
-						(false (1))))))
+						(true (0.1))
+						(false (0.9))))))
 				(false (alive__x1_y2' 
-					(true (0))
-					(false (1)))))))
+					(true (0.1))
+					(false (0.9)))))))
 	alive__x2_y1
 		(alive__x1_y1 
 			(true (alive__x1_y2 
 				(true (alive__x2_y1 
 					(true (alive__x2_y1' 
-						(true (1))
-						(false (0))))
+						(true (0.9))
+						(false (0.1))))
 					(false (alive__x2_y2 
 						(true (alive__x2_y1' 
-							(true (1))
-							(false (0))))
+							(true (0.9))
+							(false (0.1))))
 						(false (alive__x2_y1' 
-							(true (0))
-							(false (1))))))))
+							(true (0.1))
+							(false (0.9))))))))
 				(false (alive__x2_y1 
 					(true (alive__x2_y2 
 						(true (alive__x2_y1' 
-							(true (1))
-							(false (0))))
+							(true (0.9))
+							(false (0.1))))
 						(false (alive__x2_y1' 
-							(true (0))
-							(false (1))))))
+							(true (0.1))
+							(false (0.9))))))
 					(false (alive__x2_y1' 
-						(true (0))
-						(false (1))))))))
+						(true (0.1))
+						(false (0.9))))))))
 			(false (alive__x1_y2 
 				(true (alive__x2_y1 
 					(true (alive__x2_y2 
 						(true (alive__x2_y1' 
-							(true (1))
-							(false (0))))
+							(true (0.9))
+							(false (0.1))))
 						(false (alive__x2_y1' 
-							(true (0))
-							(false (1))))))
+							(true (0.1))
+							(false (0.9))))))
 					(false (alive__x2_y1' 
-						(true (0))
-						(false (1))))))
+						(true (0.1))
+						(false (0.9))))))
 				(false (alive__x2_y1' 
-					(true (0))
-					(false (1)))))))
+					(true (0.1))
+					(false (0.9)))))))
 	alive__x2_y2
 		(alive__x1_y1 
 			(true (alive__x1_y2 
 				(true (alive__x2_y1 
 					(true (alive__x2_y2' 
-						(true (1))
-						(false (0))))
+						(true (0.9))
+						(false (0.1))))
 					(false (alive__x2_y2 
 						(true (alive__x2_y2' 
-							(true (1))
-							(false (0))))
+							(true (0.9))
+							(false (0.1))))
 						(false (alive__x2_y2' 
-							(true (0))
-							(false (1))))))))
+							(true (0.1))
+							(false (0.9))))))))
 				(false (alive__x2_y1 
 					(true (alive__x2_y2 
 						(true (alive__x2_y2' 
-							(true (1))
-							(false (0))))
+							(true (0.9))
+							(false (0.1))))
 						(false (alive__x2_y2' 
-							(true (0))
-							(false (1))))))
+							(true (0.1))
+							(false (0.9))))))
 					(false (alive__x2_y2' 
-						(true (0))
-						(false (1))))))))
+						(true (0.1))
+						(false (0.9))))))))
 			(false (alive__x1_y2 
 				(true (alive__x2_y1 
 					(true (alive__x2_y2 
 						(true (alive__x2_y2' 
-							(true (1))
-							(false (0))))
+							(true (0.9))
+							(false (0.1))))
 						(false (alive__x2_y2' 
-							(true (0))
-							(false (1))))))
+							(true (0.1))
+							(false (0.9))))))
 					(false (alive__x2_y2' 
-						(true (0))
-						(false (1))))))
+						(true (0.1))
+						(false (0.9))))))
 				(false (alive__x2_y2' 
-					(true (0))
-					(false (1)))))))
+					(true (0.1))
+					(false (0.9)))))))
 	cost [+ 
 		(alive__x1_y1 
 			(true (-1))
@@ -195,128 +195,128 @@ endaction
 action set__x1_y1
 	alive__x1_y1
 		(alive__x1_y1' 
-			(true (1))
-			(false (0)))
+			(true (0.9))
+			(false (0.1)))
 	alive__x1_y2
 		(alive__x1_y1 
 			(true (alive__x1_y2 
 				(true (alive__x2_y1 
 					(true (alive__x1_y2' 
-						(true (1))
-						(false (0))))
+						(true (0.9))
+						(false (0.1))))
 					(false (alive__x2_y2 
 						(true (alive__x1_y2' 
-							(true (1))
-							(false (0))))
+							(true (0.9))
+							(false (0.1))))
 						(false (alive__x1_y2' 
-							(true (0))
-							(false (1))))))))
+							(true (0.1))
+							(false (0.9))))))))
 				(false (alive__x2_y1 
 					(true (alive__x2_y2 
 						(true (alive__x1_y2' 
-							(true (1))
-							(false (0))))
+							(true (0.9))
+							(false (0.1))))
 						(false (alive__x1_y2' 
-							(true (0))
-							(false (1))))))
+							(true (0.1))
+							(false (0.9))))))
 					(false (alive__x1_y2' 
-						(true (0))
-						(false (1))))))))
+						(true (0.1))
+						(false (0.9))))))))
 			(false (alive__x1_y2 
 				(true (alive__x2_y1 
 					(true (alive__x2_y2 
 						(true (alive__x1_y2' 
-							(true (1))
-							(false (0))))
+							(true (0.9))
+							(false (0.1))))
 						(false (alive__x1_y2' 
-							(true (0))
-							(false (1))))))
+							(true (0.1))
+							(false (0.9))))))
 					(false (alive__x1_y2' 
-						(true (0))
-						(false (1))))))
+						(true (0.1))
+						(false (0.9))))))
 				(false (alive__x1_y2' 
-					(true (0))
-					(false (1)))))))
+					(true (0.1))
+					(false (0.9)))))))
 	alive__x2_y1
 		(alive__x1_y1 
 			(true (alive__x1_y2 
 				(true (alive__x2_y1 
 					(true (alive__x2_y1' 
-						(true (1))
-						(false (0))))
+						(true (0.9))
+						(false (0.1))))
 					(false (alive__x2_y2 
 						(true (alive__x2_y1' 
-							(true (1))
-							(false (0))))
+							(true (0.9))
+							(false (0.1))))
 						(false (alive__x2_y1' 
-							(true (0))
-							(false (1))))))))
+							(true (0.1))
+							(false (0.9))))))))
 				(false (alive__x2_y1 
 					(true (alive__x2_y2 
 						(true (alive__x2_y1' 
-							(true (1))
-							(false (0))))
+							(true (0.9))
+							(false (0.1))))
 						(false (alive__x2_y1' 
-							(true (0))
-							(false (1))))))
+							(true (0.1))
+							(false (0.9))))))
 					(false (alive__x2_y1' 
-						(true (0))
-						(false (1))))))))
+						(true (0.1))
+						(false (0.9))))))))
 			(false (alive__x1_y2 
 				(true (alive__x2_y1 
 					(true (alive__x2_y2 
 						(true (alive__x2_y1' 
-							(true (1))
-							(false (0))))
+							(true (0.9))
+							(false (0.1))))
 						(false (alive__x2_y1' 
-							(true (0))
-							(false (1))))))
+							(true (0.1))
+							(false (0.9))))))
 					(false (alive__x2_y1' 
-						(true (0))
-						(false (1))))))
+						(true (0.1))
+						(false (0.9))))))
 				(false (alive__x2_y1' 
-					(true (0))
-					(false (1)))))))
+					(true (0.1))
+					(false (0.9)))))))
 	alive__x2_y2
 		(alive__x1_y1 
 			(true (alive__x1_y2 
 				(true (alive__x2_y1 
 					(true (alive__x2_y2' 
-						(true (1))
-						(false (0))))
+						(true (0.9))
+						(false (0.1))))
 					(false (alive__x2_y2 
 						(true (alive__x2_y2' 
-							(true (1))
-							(false (0))))
+							(true (0.9))
+							(false (0.1))))
 						(false (alive__x2_y2' 
-							(true (0))
-							(false (1))))))))
+							(true (0.1))
+							(false (0.9))))))))
 				(false (alive__x2_y1 
 					(true (alive__x2_y2 
 						(true (alive__x2_y2' 
-							(true (1))
-							(false (0))))
+							(true (0.9))
+							(false (0.1))))
 						(false (alive__x2_y2' 
-							(true (0))
-							(false (1))))))
+							(true (0.1))
+							(false (0.9))))))
 					(false (alive__x2_y2' 
-						(true (0))
-						(false (1))))))))
+						(true (0.1))
+						(false (0.9))))))))
 			(false (alive__x1_y2 
 				(true (alive__x2_y1 
 					(true (alive__x2_y2 
 						(true (alive__x2_y2' 
-							(true (1))
-							(false (0))))
+							(true (0.9))
+							(false (0.1))))
 						(false (alive__x2_y2' 
-							(true (0))
-							(false (1))))))
+							(true (0.1))
+							(false (0.9))))))
 					(false (alive__x2_y2' 
-						(true (0))
-						(false (1))))))
+						(true (0.1))
+						(false (0.9))))))
 				(false (alive__x2_y2' 
-					(true (0))
-					(false (1)))))))
+					(true (0.1))
+					(false (0.9)))))))
 	cost [+ 
 		(alive__x1_y1 
 			(true (0))
@@ -339,125 +339,125 @@ action set__x1_y2
 			(true (alive__x1_y2 
 				(true (alive__x2_y1 
 					(true (alive__x1_y1' 
-						(true (1))
-						(false (0))))
+						(true (0.9))
+						(false (0.1))))
 					(false (alive__x2_y2 
 						(true (alive__x1_y1' 
-							(true (1))
-							(false (0))))
+							(true (0.9))
+							(false (0.1))))
 						(false (alive__x1_y1' 
-							(true (0))
-							(false (1))))))))
+							(true (0.1))
+							(false (0.9))))))))
 				(false (alive__x2_y1 
 					(true (alive__x2_y2 
 						(true (alive__x1_y1' 
-							(true (1))
-							(false (0))))
+							(true (0.9))
+							(false (0.1))))
 						(false (alive__x1_y1' 
-							(true (0))
-							(false (1))))))
+							(true (0.1))
+							(false (0.9))))))
 					(false (alive__x1_y1' 
-						(true (0))
-						(false (1))))))))
+						(true (0.1))
+						(false (0.9))))))))
 			(false (alive__x1_y2 
 				(true (alive__x2_y1 
 					(true (alive__x2_y2 
 						(true (alive__x1_y1' 
-							(true (1))
-							(false (0))))
+							(true (0.9))
+							(false (0.1))))
 						(false (alive__x1_y1' 
-							(true (0))
-							(false (1))))))
+							(true (0.1))
+							(false (0.9))))))
 					(false (alive__x1_y1' 
-						(true (0))
-						(false (1))))))
+						(true (0.1))
+						(false (0.9))))))
 				(false (alive__x1_y1' 
-					(true (0))
-					(false (1)))))))
+					(true (0.1))
+					(false (0.9)))))))
 	alive__x1_y2
 		(alive__x1_y2' 
-			(true (1))
-			(false (0)))
+			(true (0.9))
+			(false (0.1)))
 	alive__x2_y1
 		(alive__x1_y1 
 			(true (alive__x1_y2 
 				(true (alive__x2_y1 
 					(true (alive__x2_y1' 
-						(true (1))
-						(false (0))))
+						(true (0.9))
+						(false (0.1))))
 					(false (alive__x2_y2 
 						(true (alive__x2_y1' 
-							(true (1))
-							(false (0))))
+							(true (0.9))
+							(false (0.1))))
 						(false (alive__x2_y1' 
-							(true (0))
-							(false (1))))))))
+							(true (0.1))
+							(false (0.9))))))))
 				(false (alive__x2_y1 
 					(true (alive__x2_y2 
 						(true (alive__x2_y1' 
-							(true (1))
-							(false (0))))
+							(true (0.9))
+							(false (0.1))))
 						(false (alive__x2_y1' 
-							(true (0))
-							(false (1))))))
+							(true (0.1))
+							(false (0.9))))))
 					(false (alive__x2_y1' 
-						(true (0))
-						(false (1))))))))
+						(true (0.1))
+						(false (0.9))))))))
 			(false (alive__x1_y2 
 				(true (alive__x2_y1 
 					(true (alive__x2_y2 
 						(true (alive__x2_y1' 
-							(true (1))
-							(false (0))))
+							(true (0.9))
+							(false (0.1))))
 						(false (alive__x2_y1' 
-							(true (0))
-							(false (1))))))
+							(true (0.1))
+							(false (0.9))))))
 					(false (alive__x2_y1' 
-						(true (0))
-						(false (1))))))
+						(true (0.1))
+						(false (0.9))))))
 				(false (alive__x2_y1' 
-					(true (0))
-					(false (1)))))))
+					(true (0.1))
+					(false (0.9)))))))
 	alive__x2_y2
 		(alive__x1_y1 
 			(true (alive__x1_y2 
 				(true (alive__x2_y1 
 					(true (alive__x2_y2' 
-						(true (1))
-						(false (0))))
+						(true (0.9))
+						(false (0.1))))
 					(false (alive__x2_y2 
 						(true (alive__x2_y2' 
-							(true (1))
-							(false (0))))
+							(true (0.9))
+							(false (0.1))))
 						(false (alive__x2_y2' 
-							(true (0))
-							(false (1))))))))
+							(true (0.1))
+							(false (0.9))))))))
 				(false (alive__x2_y1 
 					(true (alive__x2_y2 
 						(true (alive__x2_y2' 
-							(true (1))
-							(false (0))))
+							(true (0.9))
+							(false (0.1))))
 						(false (alive__x2_y2' 
-							(true (0))
-							(false (1))))))
+							(true (0.1))
+							(false (0.9))))))
 					(false (alive__x2_y2' 
-						(true (0))
-						(false (1))))))))
+						(true (0.1))
+						(false (0.9))))))))
 			(false (alive__x1_y2 
 				(true (alive__x2_y1 
 					(true (alive__x2_y2 
 						(true (alive__x2_y2' 
-							(true (1))
-							(false (0))))
+							(true (0.9))
+							(false (0.1))))
 						(false (alive__x2_y2' 
-							(true (0))
-							(false (1))))))
+							(true (0.1))
+							(false (0.9))))))
 					(false (alive__x2_y2' 
-						(true (0))
-						(false (1))))))
+						(true (0.1))
+						(false (0.9))))))
 				(false (alive__x2_y2' 
-					(true (0))
-					(false (1)))))))
+					(true (0.1))
+					(false (0.9)))))))
 	cost [+ 
 		(alive__x1_y1 
 			(true (-1))
@@ -480,125 +480,125 @@ action set__x2_y1
 			(true (alive__x1_y2 
 				(true (alive__x2_y1 
 					(true (alive__x1_y1' 
-						(true (1))
-						(false (0))))
+						(true (0.9))
+						(false (0.1))))
 					(false (alive__x2_y2 
 						(true (alive__x1_y1' 
-							(true (1))
-							(false (0))))
+							(true (0.9))
+							(false (0.1))))
 						(false (alive__x1_y1' 
-							(true (0))
-							(false (1))))))))
+							(true (0.1))
+							(false (0.9))))))))
 				(false (alive__x2_y1 
 					(true (alive__x2_y2 
 						(true (alive__x1_y1' 
-							(true (1))
-							(false (0))))
+							(true (0.9))
+							(false (0.1))))
 						(false (alive__x1_y1' 
-							(true (0))
-							(false (1))))))
+							(true (0.1))
+							(false (0.9))))))
 					(false (alive__x1_y1' 
-						(true (0))
-						(false (1))))))))
+						(true (0.1))
+						(false (0.9))))))))
 			(false (alive__x1_y2 
 				(true (alive__x2_y1 
 					(true (alive__x2_y2 
 						(true (alive__x1_y1' 
-							(true (1))
-							(false (0))))
+							(true (0.9))
+							(false (0.1))))
 						(false (alive__x1_y1' 
-							(true (0))
-							(false (1))))))
+							(true (0.1))
+							(false (0.9))))))
 					(false (alive__x1_y1' 
-						(true (0))
-						(false (1))))))
+						(true (0.1))
+						(false (0.9))))))
 				(false (alive__x1_y1' 
-					(true (0))
-					(false (1)))))))
+					(true (0.1))
+					(false (0.9)))))))
 	alive__x1_y2
 		(alive__x1_y1 
 			(true (alive__x1_y2 
 				(true (alive__x2_y1 
 					(true (alive__x1_y2' 
-						(true (1))
-						(false (0))))
+						(true (0.9))
+						(false (0.1))))
 					(false (alive__x2_y2 
 						(true (alive__x1_y2' 
-							(true (1))
-							(false (0))))
+							(true (0.9))
+							(false (0.1))))
 						(false (alive__x1_y2' 
-							(true (0))
-							(false (1))))))))
+							(true (0.1))
+							(false (0.9))))))))
 				(false (alive__x2_y1 
 					(true (alive__x2_y2 
 						(true (alive__x1_y2' 
-							(true (1))
-							(false (0))))
+							(true (0.9))
+							(false (0.1))))
 						(false (alive__x1_y2' 
-							(true (0))
-							(false (1))))))
+							(true (0.1))
+							(false (0.9))))))
 					(false (alive__x1_y2' 
-						(true (0))
-						(false (1))))))))
+						(true (0.1))
+						(false (0.9))))))))
 			(false (alive__x1_y2 
 				(true (alive__x2_y1 
 					(true (alive__x2_y2 
 						(true (alive__x1_y2' 
-							(true (1))
-							(false (0))))
+							(true (0.9))
+							(false (0.1))))
 						(false (alive__x1_y2' 
-							(true (0))
-							(false (1))))))
+							(true (0.1))
+							(false (0.9))))))
 					(false (alive__x1_y2' 
-						(true (0))
-						(false (1))))))
+						(true (0.1))
+						(false (0.9))))))
 				(false (alive__x1_y2' 
-					(true (0))
-					(false (1)))))))
+					(true (0.1))
+					(false (0.9)))))))
 	alive__x2_y1
 		(alive__x2_y1' 
-			(true (1))
-			(false (0)))
+			(true (0.9))
+			(false (0.1)))
 	alive__x2_y2
 		(alive__x1_y1 
 			(true (alive__x1_y2 
 				(true (alive__x2_y1 
 					(true (alive__x2_y2' 
-						(true (1))
-						(false (0))))
+						(true (0.9))
+						(false (0.1))))
 					(false (alive__x2_y2 
 						(true (alive__x2_y2' 
-							(true (1))
-							(false (0))))
+							(true (0.9))
+							(false (0.1))))
 						(false (alive__x2_y2' 
-							(true (0))
-							(false (1))))))))
+							(true (0.1))
+							(false (0.9))))))))
 				(false (alive__x2_y1 
 					(true (alive__x2_y2 
 						(true (alive__x2_y2' 
-							(true (1))
-							(false (0))))
+							(true (0.9))
+							(false (0.1))))
 						(false (alive__x2_y2' 
-							(true (0))
-							(false (1))))))
+							(true (0.1))
+							(false (0.9))))))
 					(false (alive__x2_y2' 
-						(true (0))
-						(false (1))))))))
+						(true (0.1))
+						(false (0.9))))))))
 			(false (alive__x1_y2 
 				(true (alive__x2_y1 
 					(true (alive__x2_y2 
 						(true (alive__x2_y2' 
-							(true (1))
-							(false (0))))
+							(true (0.9))
+							(false (0.1))))
 						(false (alive__x2_y2' 
-							(true (0))
-							(false (1))))))
+							(true (0.1))
+							(false (0.9))))))
 					(false (alive__x2_y2' 
-						(true (0))
-						(false (1))))))
+						(true (0.1))
+						(false (0.9))))))
 				(false (alive__x2_y2' 
-					(true (0))
-					(false (1)))))))
+					(true (0.1))
+					(false (0.9)))))))
 	cost [+ 
 		(alive__x1_y1 
 			(true (-1))
@@ -621,125 +621,125 @@ action set__x2_y2
 			(true (alive__x1_y2 
 				(true (alive__x2_y1 
 					(true (alive__x1_y1' 
-						(true (1))
-						(false (0))))
+						(true (0.9))
+						(false (0.1))))
 					(false (alive__x2_y2 
 						(true (alive__x1_y1' 
-							(true (1))
-							(false (0))))
+							(true (0.9))
+							(false (0.1))))
 						(false (alive__x1_y1' 
-							(true (0))
-							(false (1))))))))
+							(true (0.1))
+							(false (0.9))))))))
 				(false (alive__x2_y1 
 					(true (alive__x2_y2 
 						(true (alive__x1_y1' 
-							(true (1))
-							(false (0))))
+							(true (0.9))
+							(false (0.1))))
 						(false (alive__x1_y1' 
-							(true (0))
-							(false (1))))))
+							(true (0.1))
+							(false (0.9))))))
 					(false (alive__x1_y1' 
-						(true (0))
-						(false (1))))))))
+						(true (0.1))
+						(false (0.9))))))))
 			(false (alive__x1_y2 
 				(true (alive__x2_y1 
 					(true (alive__x2_y2 
 						(true (alive__x1_y1' 
-							(true (1))
-							(false (0))))
+							(true (0.9))
+							(false (0.1))))
 						(false (alive__x1_y1' 
-							(true (0))
-							(false (1))))))
+							(true (0.1))
+							(false (0.9))))))
 					(false (alive__x1_y1' 
-						(true (0))
-						(false (1))))))
+						(true (0.1))
+						(false (0.9))))))
 				(false (alive__x1_y1' 
-					(true (0))
-					(false (1)))))))
+					(true (0.1))
+					(false (0.9)))))))
 	alive__x1_y2
 		(alive__x1_y1 
 			(true (alive__x1_y2 
 				(true (alive__x2_y1 
 					(true (alive__x1_y2' 
-						(true (1))
-						(false (0))))
+						(true (0.9))
+						(false (0.1))))
 					(false (alive__x2_y2 
 						(true (alive__x1_y2' 
-							(true (1))
-							(false (0))))
+							(true (0.9))
+							(false (0.1))))
 						(false (alive__x1_y2' 
-							(true (0))
-							(false (1))))))))
+							(true (0.1))
+							(false (0.9))))))))
 				(false (alive__x2_y1 
 					(true (alive__x2_y2 
 						(true (alive__x1_y2' 
-							(true (1))
-							(false (0))))
+							(true (0.9))
+							(false (0.1))))
 						(false (alive__x1_y2' 
-							(true (0))
-							(false (1))))))
+							(true (0.1))
+							(false (0.9))))))
 					(false (alive__x1_y2' 
-						(true (0))
-						(false (1))))))))
+						(true (0.1))
+						(false (0.9))))))))
 			(false (alive__x1_y2 
 				(true (alive__x2_y1 
 					(true (alive__x2_y2 
 						(true (alive__x1_y2' 
-							(true (1))
-							(false (0))))
+							(true (0.9))
+							(false (0.1))))
 						(false (alive__x1_y2' 
-							(true (0))
-							(false (1))))))
+							(true (0.1))
+							(false (0.9))))))
 					(false (alive__x1_y2' 
-						(true (0))
-						(false (1))))))
+						(true (0.1))
+						(false (0.9))))))
 				(false (alive__x1_y2' 
-					(true (0))
-					(false (1)))))))
+					(true (0.1))
+					(false (0.9)))))))
 	alive__x2_y1
 		(alive__x1_y1 
 			(true (alive__x1_y2 
 				(true (alive__x2_y1 
 					(true (alive__x2_y1' 
-						(true (1))
-						(false (0))))
+						(true (0.9))
+						(false (0.1))))
 					(false (alive__x2_y2 
 						(true (alive__x2_y1' 
-							(true (1))
-							(false (0))))
+							(true (0.9))
+							(false (0.1))))
 						(false (alive__x2_y1' 
-							(true (0))
-							(false (1))))))))
+							(true (0.1))
+							(false (0.9))))))))
 				(false (alive__x2_y1 
 					(true (alive__x2_y2 
 						(true (alive__x2_y1' 
-							(true (1))
-							(false (0))))
+							(true (0.9))
+							(false (0.1))))
 						(false (alive__x2_y1' 
-							(true (0))
-							(false (1))))))
+							(true (0.1))
+							(false (0.9))))))
 					(false (alive__x2_y1' 
-						(true (0))
-						(false (1))))))))
+						(true (0.1))
+						(false (0.9))))))))
 			(false (alive__x1_y2 
 				(true (alive__x2_y1 
 					(true (alive__x2_y2 
 						(true (alive__x2_y1' 
-							(true (1))
-							(false (0))))
+							(true (0.9))
+							(false (0.1))))
 						(false (alive__x2_y1' 
-							(true (0))
-							(false (1))))))
+							(true (0.1))
+							(false (0.9))))))
 					(false (alive__x2_y1' 
-						(true (0))
-						(false (1))))))
+						(true (0.1))
+						(false (0.9))))))
 				(false (alive__x2_y1' 
-					(true (0))
-					(false (1)))))))
+					(true (0.1))
+					(false (0.9)))))))
 	alive__x2_y2
 		(alive__x2_y2' 
-			(true (1))
-			(false (0)))
+			(true (0.9))
+			(false (0.1)))
 	cost [+ 
 		(alive__x1_y1 
 			(true (-1))

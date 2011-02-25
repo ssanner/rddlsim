@@ -2,8 +2,6 @@
 // SPUDD / Symbolic Perseus Format for 'traffic_binary_ctm_pomdp.trp1'
 
 (variables 
-	(light_signal1__ia2a4 true false)
-	(light_signal1__ia2a8 true false)
 	(occupied__ca2a1 true false)
 	(occupied__ca2a2 true false)
 	(occupied__ca2a3 true false)
@@ -30,6 +28,8 @@
 	(occupied__ca5a8 true false)
 	(occupied__ca1a8 true false)
 	(occupied__ca0a8 true false)
+	(light_signal1__ia2a4 true false)
+	(light_signal1__ia2a8 true false)
 	(light_signal2__ia2a4 true false)
 	(light_signal2__ia2a8 true false)
 )
@@ -42,8 +42,6 @@
 )
 
 init [*
-	(light_signal1__ia2a4 (true (0.0)) (false (1.0)))
-	(light_signal1__ia2a8 (true (0.0)) (false (1.0)))
 	(occupied__ca2a1 (true (0.0)) (false (1.0)))
 	(occupied__ca2a2 (true (0.0)) (false (1.0)))
 	(occupied__ca2a3 (true (0.0)) (false (1.0)))
@@ -70,27 +68,13 @@ init [*
 	(occupied__ca5a8 (true (0.0)) (false (1.0)))
 	(occupied__ca1a8 (true (0.0)) (false (1.0)))
 	(occupied__ca0a8 (true (0.0)) (false (1.0)))
+	(light_signal1__ia2a4 (true (0.0)) (false (1.0)))
+	(light_signal1__ia2a8 (true (0.0)) (false (1.0)))
 	(light_signal2__ia2a4 (true (0.0)) (false (1.0)))
 	(light_signal2__ia2a8 (true (0.0)) (false (1.0)))
 ]
 
 action advance__ia2a4
-	light_signal1__ia2a4
-		(light_signal2__ia2a4 
-			(true (light_signal1__ia2a4' 
-				(true (1))
-				(false (0))))
-			(false (light_signal1__ia2a4' 
-				(true (0))
-				(false (1)))))
-	light_signal1__ia2a8
-		(light_signal1__ia2a8 
-			(true (light_signal1__ia2a8' 
-				(true (1))
-				(false (0))))
-			(false (light_signal1__ia2a8' 
-				(true (0))
-				(false (1)))))
 	occupied__ca2a1
 		(occupied__ca2a1 
 			(true (occupied__ca2a2 
@@ -128,63 +112,59 @@ action advance__ia2a4
 					(true (0))
 					(false (1)))))))
 	occupied__ca2a3
-		(light_signal1__ia2a4 
-			(true (occupied__ca2a2 
-				(true (occupied__ca2a3 
-					(true (occupied__ca2a5 
-						(true (occupied__ca2a3' 
-							(true (1))
-							(false (0))))
-						(false (light_signal2__ia2a4 
+		(occupied__ca2a2 
+			(true (occupied__ca2a3 
+				(true (occupied__ca2a5 
+					(true (occupied__ca2a3' 
+						(true (1))
+						(false (0))))
+					(false (light_signal1__ia2a4 
+						(true (light_signal2__ia2a4 
 							(true (occupied__ca2a3' 
 								(true (1))
 								(false (0))))
 							(false (occupied__ca2a3' 
 								(true (0))
-								(false (1))))))))
-					(false (occupied__ca2a3' 
-						(true (1))
-						(false (0))))))
-				(false (occupied__ca2a5 
-					(true (occupied__ca2a3' 
-						(true (1))
-						(false (0))))
-					(false (light_signal2__ia2a4 
+								(false (1))))))
+						(false (occupied__ca2a3' 
+							(true (1))
+							(false (0))))))))
+				(false (occupied__ca2a3' 
+					(true (1))
+					(false (0))))))
+			(false (occupied__ca2a5 
+				(true (occupied__ca2a3' 
+					(true (1))
+					(false (0))))
+				(false (light_signal1__ia2a4 
+					(true (light_signal2__ia2a4 
 						(true (occupied__ca2a3' 
 							(true (1))
 							(false (0))))
 						(false (occupied__ca2a3' 
 							(true (0))
-							(false (1))))))))))
-			(false (occupied__ca2a3' 
-				(true (1))
-				(false (0)))))
-	occupied__ca2a5
-		(light_signal1__ia2a4 
-			(true (occupied__ca2a3 
-				(true (occupied__ca2a5 
-					(true (occupied__ca2a6 
-						(true (occupied__ca2a5' 
-							(true (1))
-							(false (0))))
-						(false (occupied__ca2a5' 
-							(true (0))
 							(false (1))))))
-					(false (light_signal2__ia2a4 
+					(false (occupied__ca2a3' 
+						(true (1))
+						(false (0)))))))))
+	occupied__ca2a5
+		(occupied__ca2a3 
+			(true (occupied__ca2a5 
+				(true (occupied__ca2a6 
+					(true (occupied__ca2a5' 
+						(true (1))
+						(false (0))))
+					(false (occupied__ca2a5' 
+						(true (0))
+						(false (1))))))
+				(false (light_signal1__ia2a4 
+					(true (light_signal2__ia2a4 
 						(true (occupied__ca2a5' 
 							(true (0))
 							(false (1))))
 						(false (occupied__ca2a5' 
 							(true (1))
-							(false (0))))))))
-				(false (occupied__ca2a5 
-					(true (occupied__ca2a6 
-						(true (occupied__ca2a5' 
-							(true (1))
-							(false (0))))
-						(false (occupied__ca2a5' 
-							(true (0))
-							(false (1))))))
+							(false (0))))))
 					(false (occupied__ca2a5' 
 						(true (0))
 						(false (1))))))))
@@ -224,63 +204,59 @@ action advance__ia2a4
 					(true (0))
 					(false (1)))))))
 	occupied__ca2a7
-		(light_signal1__ia2a8 
-			(true (occupied__ca2a6 
-				(true (occupied__ca2a7 
-					(true (occupied__ca2a9 
-						(true (occupied__ca2a7' 
-							(true (1))
-							(false (0))))
-						(false (light_signal2__ia2a8 
+		(occupied__ca2a6 
+			(true (occupied__ca2a7 
+				(true (occupied__ca2a9 
+					(true (occupied__ca2a7' 
+						(true (1))
+						(false (0))))
+					(false (light_signal1__ia2a8 
+						(true (light_signal2__ia2a8 
 							(true (occupied__ca2a7' 
 								(true (1))
 								(false (0))))
 							(false (occupied__ca2a7' 
 								(true (0))
-								(false (1))))))))
-					(false (occupied__ca2a7' 
-						(true (1))
-						(false (0))))))
-				(false (occupied__ca2a9 
-					(true (occupied__ca2a7' 
-						(true (1))
-						(false (0))))
-					(false (light_signal2__ia2a8 
+								(false (1))))))
+						(false (occupied__ca2a7' 
+							(true (1))
+							(false (0))))))))
+				(false (occupied__ca2a7' 
+					(true (1))
+					(false (0))))))
+			(false (occupied__ca2a9 
+				(true (occupied__ca2a7' 
+					(true (1))
+					(false (0))))
+				(false (light_signal1__ia2a8 
+					(true (light_signal2__ia2a8 
 						(true (occupied__ca2a7' 
 							(true (1))
 							(false (0))))
 						(false (occupied__ca2a7' 
 							(true (0))
-							(false (1))))))))))
-			(false (occupied__ca2a7' 
-				(true (1))
-				(false (0)))))
-	occupied__ca2a9
-		(light_signal1__ia2a8 
-			(true (occupied__ca2a7 
-				(true (occupied__ca2a9 
-					(true (occupied__ca2a10 
-						(true (occupied__ca2a9' 
-							(true (1))
-							(false (0))))
-						(false (occupied__ca2a9' 
-							(true (0))
 							(false (1))))))
-					(false (light_signal2__ia2a8 
+					(false (occupied__ca2a7' 
+						(true (1))
+						(false (0)))))))))
+	occupied__ca2a9
+		(occupied__ca2a7 
+			(true (occupied__ca2a9 
+				(true (occupied__ca2a10 
+					(true (occupied__ca2a9' 
+						(true (1))
+						(false (0))))
+					(false (occupied__ca2a9' 
+						(true (0))
+						(false (1))))))
+				(false (light_signal1__ia2a8 
+					(true (light_signal2__ia2a8 
 						(true (occupied__ca2a9' 
 							(true (0))
 							(false (1))))
 						(false (occupied__ca2a9' 
 							(true (1))
-							(false (0))))))))
-				(false (occupied__ca2a9 
-					(true (occupied__ca2a10 
-						(true (occupied__ca2a9' 
-							(true (1))
-							(false (0))))
-						(false (occupied__ca2a9' 
-							(true (0))
-							(false (1))))))
+							(false (0))))))
 					(false (occupied__ca2a9' 
 						(true (0))
 						(false (1))))))))
@@ -368,63 +344,59 @@ action advance__ia2a4
 					(true (0))
 					(false (1)))))))
 	occupied__ca3a9
-		(light_signal1__ia2a8 
-			(true (occupied__ca3a10 
-				(true (occupied__ca3a9 
-					(true (occupied__ca3a7 
-						(true (occupied__ca3a9' 
-							(true (1))
-							(false (0))))
-						(false (light_signal2__ia2a8 
+		(occupied__ca3a10 
+			(true (occupied__ca3a9 
+				(true (occupied__ca3a7 
+					(true (occupied__ca3a9' 
+						(true (1))
+						(false (0))))
+					(false (light_signal1__ia2a8 
+						(true (light_signal2__ia2a8 
 							(true (occupied__ca3a9' 
 								(true (1))
 								(false (0))))
 							(false (occupied__ca3a9' 
 								(true (0))
-								(false (1))))))))
-					(false (occupied__ca3a9' 
-						(true (1))
-						(false (0))))))
-				(false (occupied__ca3a7 
-					(true (occupied__ca3a9' 
-						(true (1))
-						(false (0))))
-					(false (light_signal2__ia2a8 
+								(false (1))))))
+						(false (occupied__ca3a9' 
+							(true (1))
+							(false (0))))))))
+				(false (occupied__ca3a9' 
+					(true (1))
+					(false (0))))))
+			(false (occupied__ca3a7 
+				(true (occupied__ca3a9' 
+					(true (1))
+					(false (0))))
+				(false (light_signal1__ia2a8 
+					(true (light_signal2__ia2a8 
 						(true (occupied__ca3a9' 
 							(true (1))
 							(false (0))))
 						(false (occupied__ca3a9' 
 							(true (0))
-							(false (1))))))))))
-			(false (occupied__ca3a9' 
-				(true (1))
-				(false (0)))))
-	occupied__ca3a7
-		(light_signal1__ia2a8 
-			(true (occupied__ca3a9 
-				(true (occupied__ca3a7 
-					(true (occupied__ca3a6 
-						(true (occupied__ca3a7' 
-							(true (1))
-							(false (0))))
-						(false (occupied__ca3a7' 
-							(true (0))
 							(false (1))))))
-					(false (light_signal2__ia2a8 
+					(false (occupied__ca3a9' 
+						(true (1))
+						(false (0)))))))))
+	occupied__ca3a7
+		(occupied__ca3a9 
+			(true (occupied__ca3a7 
+				(true (occupied__ca3a6 
+					(true (occupied__ca3a7' 
+						(true (1))
+						(false (0))))
+					(false (occupied__ca3a7' 
+						(true (0))
+						(false (1))))))
+				(false (light_signal1__ia2a8 
+					(true (light_signal2__ia2a8 
 						(true (occupied__ca3a7' 
 							(true (0))
 							(false (1))))
 						(false (occupied__ca3a7' 
 							(true (1))
-							(false (0))))))))
-				(false (occupied__ca3a7 
-					(true (occupied__ca3a6 
-						(true (occupied__ca3a7' 
-							(true (1))
-							(false (0))))
-						(false (occupied__ca3a7' 
-							(true (0))
-							(false (1))))))
+							(false (0))))))
 					(false (occupied__ca3a7' 
 						(true (0))
 						(false (1))))))))
@@ -464,63 +436,59 @@ action advance__ia2a4
 					(true (0))
 					(false (1)))))))
 	occupied__ca3a5
-		(light_signal1__ia2a4 
-			(true (occupied__ca3a6 
-				(true (occupied__ca3a5 
-					(true (occupied__ca3a3 
-						(true (occupied__ca3a5' 
-							(true (1))
-							(false (0))))
-						(false (light_signal2__ia2a4 
+		(occupied__ca3a6 
+			(true (occupied__ca3a5 
+				(true (occupied__ca3a3 
+					(true (occupied__ca3a5' 
+						(true (1))
+						(false (0))))
+					(false (light_signal1__ia2a4 
+						(true (light_signal2__ia2a4 
 							(true (occupied__ca3a5' 
 								(true (1))
 								(false (0))))
 							(false (occupied__ca3a5' 
 								(true (0))
-								(false (1))))))))
-					(false (occupied__ca3a5' 
-						(true (1))
-						(false (0))))))
-				(false (occupied__ca3a3 
-					(true (occupied__ca3a5' 
-						(true (1))
-						(false (0))))
-					(false (light_signal2__ia2a4 
+								(false (1))))))
+						(false (occupied__ca3a5' 
+							(true (1))
+							(false (0))))))))
+				(false (occupied__ca3a5' 
+					(true (1))
+					(false (0))))))
+			(false (occupied__ca3a3 
+				(true (occupied__ca3a5' 
+					(true (1))
+					(false (0))))
+				(false (light_signal1__ia2a4 
+					(true (light_signal2__ia2a4 
 						(true (occupied__ca3a5' 
 							(true (1))
 							(false (0))))
 						(false (occupied__ca3a5' 
 							(true (0))
-							(false (1))))))))))
-			(false (occupied__ca3a5' 
-				(true (1))
-				(false (0)))))
-	occupied__ca3a3
-		(light_signal1__ia2a4 
-			(true (occupied__ca3a5 
-				(true (occupied__ca3a3 
-					(true (occupied__ca3a2 
-						(true (occupied__ca3a3' 
-							(true (1))
-							(false (0))))
-						(false (occupied__ca3a3' 
-							(true (0))
 							(false (1))))))
-					(false (light_signal2__ia2a4 
+					(false (occupied__ca3a5' 
+						(true (1))
+						(false (0)))))))))
+	occupied__ca3a3
+		(occupied__ca3a5 
+			(true (occupied__ca3a3 
+				(true (occupied__ca3a2 
+					(true (occupied__ca3a3' 
+						(true (1))
+						(false (0))))
+					(false (occupied__ca3a3' 
+						(true (0))
+						(false (1))))))
+				(false (light_signal1__ia2a4 
+					(true (light_signal2__ia2a4 
 						(true (occupied__ca3a3' 
 							(true (0))
 							(false (1))))
 						(false (occupied__ca3a3' 
 							(true (1))
-							(false (0))))))))
-				(false (occupied__ca3a3 
-					(true (occupied__ca3a2 
-						(true (occupied__ca3a3' 
-							(true (1))
-							(false (0))))
-						(false (occupied__ca3a3' 
-							(true (0))
-							(false (1))))))
+							(false (0))))))
 					(false (occupied__ca3a3' 
 						(true (0))
 						(false (1))))))))
@@ -572,12 +540,12 @@ action advance__ia2a4
 				(true (0))
 				(false (1)))))
 	occupied__ca4a4
-		(light_signal1__ia2a4 
-			(true (occupied__ca4a4' 
-				(true (1))
-				(false (0))))
-			(false (occupied__ca4a4 
-				(true (occupied__ca1a4 
+		(occupied__ca4a4 
+			(true (occupied__ca1a4 
+				(true (occupied__ca4a4' 
+					(true (1))
+					(false (0))))
+				(false (light_signal1__ia2a4 
 					(true (occupied__ca4a4' 
 						(true (1))
 						(false (0))))
@@ -587,12 +555,16 @@ action advance__ia2a4
 							(false (1))))
 						(false (occupied__ca4a4' 
 							(true (1))
-							(false (0))))))))
-				(false (occupied__ca5a4 
+							(false (0))))))))))
+			(false (occupied__ca5a4 
+				(true (occupied__ca4a4' 
+					(true (1))
+					(false (0))))
+				(false (occupied__ca1a4 
 					(true (occupied__ca4a4' 
 						(true (1))
 						(false (0))))
-					(false (occupied__ca1a4 
+					(false (light_signal1__ia2a4 
 						(true (occupied__ca4a4' 
 							(true (1))
 							(false (0))))
@@ -620,8 +592,27 @@ action advance__ia2a4
 					(true (0.3))
 					(false (0.7)))))))
 	occupied__ca1a4
-		(light_signal1__ia2a4 
+		(occupied__ca4a4 
 			(true (occupied__ca1a4 
+				(true (occupied__ca0a4 
+					(true (occupied__ca1a4' 
+						(true (1))
+						(false (0))))
+					(false (occupied__ca1a4' 
+						(true (0))
+						(false (1))))))
+				(false (light_signal1__ia2a4 
+					(true (occupied__ca1a4' 
+						(true (0))
+						(false (1))))
+					(false (light_signal2__ia2a4 
+						(true (occupied__ca1a4' 
+							(true (1))
+							(false (0))))
+						(false (occupied__ca1a4' 
+							(true (0))
+							(false (1))))))))))
+			(false (occupied__ca1a4 
 				(true (occupied__ca0a4 
 					(true (occupied__ca1a4' 
 						(true (1))
@@ -631,34 +622,7 @@ action advance__ia2a4
 						(false (1))))))
 				(false (occupied__ca1a4' 
 					(true (0))
-					(false (1))))))
-			(false (occupied__ca4a4 
-				(true (occupied__ca1a4 
-					(true (occupied__ca0a4 
-						(true (occupied__ca1a4' 
-							(true (1))
-							(false (0))))
-						(false (occupied__ca1a4' 
-							(true (0))
-							(false (1))))))
-					(false (light_signal2__ia2a4 
-						(true (occupied__ca1a4' 
-							(true (1))
-							(false (0))))
-						(false (occupied__ca1a4' 
-							(true (0))
-							(false (1))))))))
-				(false (occupied__ca1a4 
-					(true (occupied__ca0a4 
-						(true (occupied__ca1a4' 
-							(true (1))
-							(false (0))))
-						(false (occupied__ca1a4' 
-							(true (0))
-							(false (1))))))
-					(false (occupied__ca1a4' 
-						(true (0))
-						(false (1)))))))))
+					(false (1)))))))
 	occupied__ca0a4
 		(occupied__ca1a4 
 			(true (occupied__ca0a4 
@@ -672,12 +636,12 @@ action advance__ia2a4
 				(true (0))
 				(false (1)))))
 	occupied__ca4a8
-		(light_signal1__ia2a8 
-			(true (occupied__ca4a8' 
-				(true (1))
-				(false (0))))
-			(false (occupied__ca4a8 
-				(true (occupied__ca1a8 
+		(occupied__ca4a8 
+			(true (occupied__ca1a8 
+				(true (occupied__ca4a8' 
+					(true (1))
+					(false (0))))
+				(false (light_signal1__ia2a8 
 					(true (occupied__ca4a8' 
 						(true (1))
 						(false (0))))
@@ -687,12 +651,16 @@ action advance__ia2a4
 							(false (1))))
 						(false (occupied__ca4a8' 
 							(true (1))
-							(false (0))))))))
-				(false (occupied__ca5a8 
+							(false (0))))))))))
+			(false (occupied__ca5a8 
+				(true (occupied__ca4a8' 
+					(true (1))
+					(false (0))))
+				(false (occupied__ca1a8 
 					(true (occupied__ca4a8' 
 						(true (1))
 						(false (0))))
-					(false (occupied__ca1a8 
+					(false (light_signal1__ia2a8 
 						(true (occupied__ca4a8' 
 							(true (1))
 							(false (0))))
@@ -720,8 +688,27 @@ action advance__ia2a4
 					(true (0.3))
 					(false (0.7)))))))
 	occupied__ca1a8
-		(light_signal1__ia2a8 
+		(occupied__ca4a8 
 			(true (occupied__ca1a8 
+				(true (occupied__ca0a8 
+					(true (occupied__ca1a8' 
+						(true (1))
+						(false (0))))
+					(false (occupied__ca1a8' 
+						(true (0))
+						(false (1))))))
+				(false (light_signal1__ia2a8 
+					(true (occupied__ca1a8' 
+						(true (0))
+						(false (1))))
+					(false (light_signal2__ia2a8 
+						(true (occupied__ca1a8' 
+							(true (1))
+							(false (0))))
+						(false (occupied__ca1a8' 
+							(true (0))
+							(false (1))))))))))
+			(false (occupied__ca1a8 
 				(true (occupied__ca0a8 
 					(true (occupied__ca1a8' 
 						(true (1))
@@ -731,34 +718,7 @@ action advance__ia2a4
 						(false (1))))))
 				(false (occupied__ca1a8' 
 					(true (0))
-					(false (1))))))
-			(false (occupied__ca4a8 
-				(true (occupied__ca1a8 
-					(true (occupied__ca0a8 
-						(true (occupied__ca1a8' 
-							(true (1))
-							(false (0))))
-						(false (occupied__ca1a8' 
-							(true (0))
-							(false (1))))))
-					(false (light_signal2__ia2a8 
-						(true (occupied__ca1a8' 
-							(true (1))
-							(false (0))))
-						(false (occupied__ca1a8' 
-							(true (0))
-							(false (1))))))))
-				(false (occupied__ca1a8 
-					(true (occupied__ca0a8 
-						(true (occupied__ca1a8' 
-							(true (1))
-							(false (0))))
-						(false (occupied__ca1a8' 
-							(true (0))
-							(false (1))))))
-					(false (occupied__ca1a8' 
-						(true (0))
-						(false (1)))))))))
+					(false (1)))))))
 	occupied__ca0a8
 		(occupied__ca1a8 
 			(true (occupied__ca0a8 
@@ -769,6 +729,22 @@ action advance__ia2a4
 					(true (1))
 					(false (0))))))
 			(false (occupied__ca0a8' 
+				(true (0))
+				(false (1)))))
+	light_signal1__ia2a4
+		(light_signal2__ia2a4 
+			(true (light_signal1__ia2a4' 
+				(true (1))
+				(false (0))))
+			(false (light_signal1__ia2a4' 
+				(true (0))
+				(false (1)))))
+	light_signal1__ia2a8
+		(light_signal1__ia2a8 
+			(true (light_signal1__ia2a8' 
+				(true (1))
+				(false (0))))
+			(false (light_signal1__ia2a8' 
 				(true (0))
 				(false (1)))))
 	light_signal2__ia2a4
@@ -912,22 +888,6 @@ action advance__ia2a4
 endaction
 
 action advance__ia2a4___advance__ia2a8
-	light_signal1__ia2a4
-		(light_signal2__ia2a4 
-			(true (light_signal1__ia2a4' 
-				(true (1))
-				(false (0))))
-			(false (light_signal1__ia2a4' 
-				(true (0))
-				(false (1)))))
-	light_signal1__ia2a8
-		(light_signal2__ia2a8 
-			(true (light_signal1__ia2a8' 
-				(true (1))
-				(false (0))))
-			(false (light_signal1__ia2a8' 
-				(true (0))
-				(false (1)))))
 	occupied__ca2a1
 		(occupied__ca2a1 
 			(true (occupied__ca2a2 
@@ -965,63 +925,59 @@ action advance__ia2a4___advance__ia2a8
 					(true (0))
 					(false (1)))))))
 	occupied__ca2a3
-		(light_signal1__ia2a4 
-			(true (occupied__ca2a2 
-				(true (occupied__ca2a3 
-					(true (occupied__ca2a5 
-						(true (occupied__ca2a3' 
-							(true (1))
-							(false (0))))
-						(false (light_signal2__ia2a4 
+		(occupied__ca2a2 
+			(true (occupied__ca2a3 
+				(true (occupied__ca2a5 
+					(true (occupied__ca2a3' 
+						(true (1))
+						(false (0))))
+					(false (light_signal1__ia2a4 
+						(true (light_signal2__ia2a4 
 							(true (occupied__ca2a3' 
 								(true (1))
 								(false (0))))
 							(false (occupied__ca2a3' 
 								(true (0))
-								(false (1))))))))
-					(false (occupied__ca2a3' 
-						(true (1))
-						(false (0))))))
-				(false (occupied__ca2a5 
-					(true (occupied__ca2a3' 
-						(true (1))
-						(false (0))))
-					(false (light_signal2__ia2a4 
+								(false (1))))))
+						(false (occupied__ca2a3' 
+							(true (1))
+							(false (0))))))))
+				(false (occupied__ca2a3' 
+					(true (1))
+					(false (0))))))
+			(false (occupied__ca2a5 
+				(true (occupied__ca2a3' 
+					(true (1))
+					(false (0))))
+				(false (light_signal1__ia2a4 
+					(true (light_signal2__ia2a4 
 						(true (occupied__ca2a3' 
 							(true (1))
 							(false (0))))
 						(false (occupied__ca2a3' 
 							(true (0))
-							(false (1))))))))))
-			(false (occupied__ca2a3' 
-				(true (1))
-				(false (0)))))
-	occupied__ca2a5
-		(light_signal1__ia2a4 
-			(true (occupied__ca2a3 
-				(true (occupied__ca2a5 
-					(true (occupied__ca2a6 
-						(true (occupied__ca2a5' 
-							(true (1))
-							(false (0))))
-						(false (occupied__ca2a5' 
-							(true (0))
 							(false (1))))))
-					(false (light_signal2__ia2a4 
+					(false (occupied__ca2a3' 
+						(true (1))
+						(false (0)))))))))
+	occupied__ca2a5
+		(occupied__ca2a3 
+			(true (occupied__ca2a5 
+				(true (occupied__ca2a6 
+					(true (occupied__ca2a5' 
+						(true (1))
+						(false (0))))
+					(false (occupied__ca2a5' 
+						(true (0))
+						(false (1))))))
+				(false (light_signal1__ia2a4 
+					(true (light_signal2__ia2a4 
 						(true (occupied__ca2a5' 
 							(true (0))
 							(false (1))))
 						(false (occupied__ca2a5' 
 							(true (1))
-							(false (0))))))))
-				(false (occupied__ca2a5 
-					(true (occupied__ca2a6 
-						(true (occupied__ca2a5' 
-							(true (1))
-							(false (0))))
-						(false (occupied__ca2a5' 
-							(true (0))
-							(false (1))))))
+							(false (0))))))
 					(false (occupied__ca2a5' 
 						(true (0))
 						(false (1))))))))
@@ -1061,63 +1017,59 @@ action advance__ia2a4___advance__ia2a8
 					(true (0))
 					(false (1)))))))
 	occupied__ca2a7
-		(light_signal1__ia2a8 
-			(true (occupied__ca2a6 
-				(true (occupied__ca2a7 
-					(true (occupied__ca2a9 
-						(true (occupied__ca2a7' 
-							(true (1))
-							(false (0))))
-						(false (light_signal2__ia2a8 
+		(occupied__ca2a6 
+			(true (occupied__ca2a7 
+				(true (occupied__ca2a9 
+					(true (occupied__ca2a7' 
+						(true (1))
+						(false (0))))
+					(false (light_signal1__ia2a8 
+						(true (light_signal2__ia2a8 
 							(true (occupied__ca2a7' 
 								(true (1))
 								(false (0))))
 							(false (occupied__ca2a7' 
 								(true (0))
-								(false (1))))))))
-					(false (occupied__ca2a7' 
-						(true (1))
-						(false (0))))))
-				(false (occupied__ca2a9 
-					(true (occupied__ca2a7' 
-						(true (1))
-						(false (0))))
-					(false (light_signal2__ia2a8 
+								(false (1))))))
+						(false (occupied__ca2a7' 
+							(true (1))
+							(false (0))))))))
+				(false (occupied__ca2a7' 
+					(true (1))
+					(false (0))))))
+			(false (occupied__ca2a9 
+				(true (occupied__ca2a7' 
+					(true (1))
+					(false (0))))
+				(false (light_signal1__ia2a8 
+					(true (light_signal2__ia2a8 
 						(true (occupied__ca2a7' 
 							(true (1))
 							(false (0))))
 						(false (occupied__ca2a7' 
 							(true (0))
-							(false (1))))))))))
-			(false (occupied__ca2a7' 
-				(true (1))
-				(false (0)))))
-	occupied__ca2a9
-		(light_signal1__ia2a8 
-			(true (occupied__ca2a7 
-				(true (occupied__ca2a9 
-					(true (occupied__ca2a10 
-						(true (occupied__ca2a9' 
-							(true (1))
-							(false (0))))
-						(false (occupied__ca2a9' 
-							(true (0))
 							(false (1))))))
-					(false (light_signal2__ia2a8 
+					(false (occupied__ca2a7' 
+						(true (1))
+						(false (0)))))))))
+	occupied__ca2a9
+		(occupied__ca2a7 
+			(true (occupied__ca2a9 
+				(true (occupied__ca2a10 
+					(true (occupied__ca2a9' 
+						(true (1))
+						(false (0))))
+					(false (occupied__ca2a9' 
+						(true (0))
+						(false (1))))))
+				(false (light_signal1__ia2a8 
+					(true (light_signal2__ia2a8 
 						(true (occupied__ca2a9' 
 							(true (0))
 							(false (1))))
 						(false (occupied__ca2a9' 
 							(true (1))
-							(false (0))))))))
-				(false (occupied__ca2a9 
-					(true (occupied__ca2a10 
-						(true (occupied__ca2a9' 
-							(true (1))
-							(false (0))))
-						(false (occupied__ca2a9' 
-							(true (0))
-							(false (1))))))
+							(false (0))))))
 					(false (occupied__ca2a9' 
 						(true (0))
 						(false (1))))))))
@@ -1205,63 +1157,59 @@ action advance__ia2a4___advance__ia2a8
 					(true (0))
 					(false (1)))))))
 	occupied__ca3a9
-		(light_signal1__ia2a8 
-			(true (occupied__ca3a10 
-				(true (occupied__ca3a9 
-					(true (occupied__ca3a7 
-						(true (occupied__ca3a9' 
-							(true (1))
-							(false (0))))
-						(false (light_signal2__ia2a8 
+		(occupied__ca3a10 
+			(true (occupied__ca3a9 
+				(true (occupied__ca3a7 
+					(true (occupied__ca3a9' 
+						(true (1))
+						(false (0))))
+					(false (light_signal1__ia2a8 
+						(true (light_signal2__ia2a8 
 							(true (occupied__ca3a9' 
 								(true (1))
 								(false (0))))
 							(false (occupied__ca3a9' 
 								(true (0))
-								(false (1))))))))
-					(false (occupied__ca3a9' 
-						(true (1))
-						(false (0))))))
-				(false (occupied__ca3a7 
-					(true (occupied__ca3a9' 
-						(true (1))
-						(false (0))))
-					(false (light_signal2__ia2a8 
+								(false (1))))))
+						(false (occupied__ca3a9' 
+							(true (1))
+							(false (0))))))))
+				(false (occupied__ca3a9' 
+					(true (1))
+					(false (0))))))
+			(false (occupied__ca3a7 
+				(true (occupied__ca3a9' 
+					(true (1))
+					(false (0))))
+				(false (light_signal1__ia2a8 
+					(true (light_signal2__ia2a8 
 						(true (occupied__ca3a9' 
 							(true (1))
 							(false (0))))
 						(false (occupied__ca3a9' 
 							(true (0))
-							(false (1))))))))))
-			(false (occupied__ca3a9' 
-				(true (1))
-				(false (0)))))
-	occupied__ca3a7
-		(light_signal1__ia2a8 
-			(true (occupied__ca3a9 
-				(true (occupied__ca3a7 
-					(true (occupied__ca3a6 
-						(true (occupied__ca3a7' 
-							(true (1))
-							(false (0))))
-						(false (occupied__ca3a7' 
-							(true (0))
 							(false (1))))))
-					(false (light_signal2__ia2a8 
+					(false (occupied__ca3a9' 
+						(true (1))
+						(false (0)))))))))
+	occupied__ca3a7
+		(occupied__ca3a9 
+			(true (occupied__ca3a7 
+				(true (occupied__ca3a6 
+					(true (occupied__ca3a7' 
+						(true (1))
+						(false (0))))
+					(false (occupied__ca3a7' 
+						(true (0))
+						(false (1))))))
+				(false (light_signal1__ia2a8 
+					(true (light_signal2__ia2a8 
 						(true (occupied__ca3a7' 
 							(true (0))
 							(false (1))))
 						(false (occupied__ca3a7' 
 							(true (1))
-							(false (0))))))))
-				(false (occupied__ca3a7 
-					(true (occupied__ca3a6 
-						(true (occupied__ca3a7' 
-							(true (1))
-							(false (0))))
-						(false (occupied__ca3a7' 
-							(true (0))
-							(false (1))))))
+							(false (0))))))
 					(false (occupied__ca3a7' 
 						(true (0))
 						(false (1))))))))
@@ -1301,63 +1249,59 @@ action advance__ia2a4___advance__ia2a8
 					(true (0))
 					(false (1)))))))
 	occupied__ca3a5
-		(light_signal1__ia2a4 
-			(true (occupied__ca3a6 
-				(true (occupied__ca3a5 
-					(true (occupied__ca3a3 
-						(true (occupied__ca3a5' 
-							(true (1))
-							(false (0))))
-						(false (light_signal2__ia2a4 
+		(occupied__ca3a6 
+			(true (occupied__ca3a5 
+				(true (occupied__ca3a3 
+					(true (occupied__ca3a5' 
+						(true (1))
+						(false (0))))
+					(false (light_signal1__ia2a4 
+						(true (light_signal2__ia2a4 
 							(true (occupied__ca3a5' 
 								(true (1))
 								(false (0))))
 							(false (occupied__ca3a5' 
 								(true (0))
-								(false (1))))))))
-					(false (occupied__ca3a5' 
-						(true (1))
-						(false (0))))))
-				(false (occupied__ca3a3 
-					(true (occupied__ca3a5' 
-						(true (1))
-						(false (0))))
-					(false (light_signal2__ia2a4 
+								(false (1))))))
+						(false (occupied__ca3a5' 
+							(true (1))
+							(false (0))))))))
+				(false (occupied__ca3a5' 
+					(true (1))
+					(false (0))))))
+			(false (occupied__ca3a3 
+				(true (occupied__ca3a5' 
+					(true (1))
+					(false (0))))
+				(false (light_signal1__ia2a4 
+					(true (light_signal2__ia2a4 
 						(true (occupied__ca3a5' 
 							(true (1))
 							(false (0))))
 						(false (occupied__ca3a5' 
 							(true (0))
-							(false (1))))))))))
-			(false (occupied__ca3a5' 
-				(true (1))
-				(false (0)))))
-	occupied__ca3a3
-		(light_signal1__ia2a4 
-			(true (occupied__ca3a5 
-				(true (occupied__ca3a3 
-					(true (occupied__ca3a2 
-						(true (occupied__ca3a3' 
-							(true (1))
-							(false (0))))
-						(false (occupied__ca3a3' 
-							(true (0))
 							(false (1))))))
-					(false (light_signal2__ia2a4 
+					(false (occupied__ca3a5' 
+						(true (1))
+						(false (0)))))))))
+	occupied__ca3a3
+		(occupied__ca3a5 
+			(true (occupied__ca3a3 
+				(true (occupied__ca3a2 
+					(true (occupied__ca3a3' 
+						(true (1))
+						(false (0))))
+					(false (occupied__ca3a3' 
+						(true (0))
+						(false (1))))))
+				(false (light_signal1__ia2a4 
+					(true (light_signal2__ia2a4 
 						(true (occupied__ca3a3' 
 							(true (0))
 							(false (1))))
 						(false (occupied__ca3a3' 
 							(true (1))
-							(false (0))))))))
-				(false (occupied__ca3a3 
-					(true (occupied__ca3a2 
-						(true (occupied__ca3a3' 
-							(true (1))
-							(false (0))))
-						(false (occupied__ca3a3' 
-							(true (0))
-							(false (1))))))
+							(false (0))))))
 					(false (occupied__ca3a3' 
 						(true (0))
 						(false (1))))))))
@@ -1409,12 +1353,12 @@ action advance__ia2a4___advance__ia2a8
 				(true (0))
 				(false (1)))))
 	occupied__ca4a4
-		(light_signal1__ia2a4 
-			(true (occupied__ca4a4' 
-				(true (1))
-				(false (0))))
-			(false (occupied__ca4a4 
-				(true (occupied__ca1a4 
+		(occupied__ca4a4 
+			(true (occupied__ca1a4 
+				(true (occupied__ca4a4' 
+					(true (1))
+					(false (0))))
+				(false (light_signal1__ia2a4 
 					(true (occupied__ca4a4' 
 						(true (1))
 						(false (0))))
@@ -1424,12 +1368,16 @@ action advance__ia2a4___advance__ia2a8
 							(false (1))))
 						(false (occupied__ca4a4' 
 							(true (1))
-							(false (0))))))))
-				(false (occupied__ca5a4 
+							(false (0))))))))))
+			(false (occupied__ca5a4 
+				(true (occupied__ca4a4' 
+					(true (1))
+					(false (0))))
+				(false (occupied__ca1a4 
 					(true (occupied__ca4a4' 
 						(true (1))
 						(false (0))))
-					(false (occupied__ca1a4 
+					(false (light_signal1__ia2a4 
 						(true (occupied__ca4a4' 
 							(true (1))
 							(false (0))))
@@ -1457,8 +1405,27 @@ action advance__ia2a4___advance__ia2a8
 					(true (0.3))
 					(false (0.7)))))))
 	occupied__ca1a4
-		(light_signal1__ia2a4 
+		(occupied__ca4a4 
 			(true (occupied__ca1a4 
+				(true (occupied__ca0a4 
+					(true (occupied__ca1a4' 
+						(true (1))
+						(false (0))))
+					(false (occupied__ca1a4' 
+						(true (0))
+						(false (1))))))
+				(false (light_signal1__ia2a4 
+					(true (occupied__ca1a4' 
+						(true (0))
+						(false (1))))
+					(false (light_signal2__ia2a4 
+						(true (occupied__ca1a4' 
+							(true (1))
+							(false (0))))
+						(false (occupied__ca1a4' 
+							(true (0))
+							(false (1))))))))))
+			(false (occupied__ca1a4 
 				(true (occupied__ca0a4 
 					(true (occupied__ca1a4' 
 						(true (1))
@@ -1468,34 +1435,7 @@ action advance__ia2a4___advance__ia2a8
 						(false (1))))))
 				(false (occupied__ca1a4' 
 					(true (0))
-					(false (1))))))
-			(false (occupied__ca4a4 
-				(true (occupied__ca1a4 
-					(true (occupied__ca0a4 
-						(true (occupied__ca1a4' 
-							(true (1))
-							(false (0))))
-						(false (occupied__ca1a4' 
-							(true (0))
-							(false (1))))))
-					(false (light_signal2__ia2a4 
-						(true (occupied__ca1a4' 
-							(true (1))
-							(false (0))))
-						(false (occupied__ca1a4' 
-							(true (0))
-							(false (1))))))))
-				(false (occupied__ca1a4 
-					(true (occupied__ca0a4 
-						(true (occupied__ca1a4' 
-							(true (1))
-							(false (0))))
-						(false (occupied__ca1a4' 
-							(true (0))
-							(false (1))))))
-					(false (occupied__ca1a4' 
-						(true (0))
-						(false (1)))))))))
+					(false (1)))))))
 	occupied__ca0a4
 		(occupied__ca1a4 
 			(true (occupied__ca0a4 
@@ -1509,12 +1449,12 @@ action advance__ia2a4___advance__ia2a8
 				(true (0))
 				(false (1)))))
 	occupied__ca4a8
-		(light_signal1__ia2a8 
-			(true (occupied__ca4a8' 
-				(true (1))
-				(false (0))))
-			(false (occupied__ca4a8 
-				(true (occupied__ca1a8 
+		(occupied__ca4a8 
+			(true (occupied__ca1a8 
+				(true (occupied__ca4a8' 
+					(true (1))
+					(false (0))))
+				(false (light_signal1__ia2a8 
 					(true (occupied__ca4a8' 
 						(true (1))
 						(false (0))))
@@ -1524,12 +1464,16 @@ action advance__ia2a4___advance__ia2a8
 							(false (1))))
 						(false (occupied__ca4a8' 
 							(true (1))
-							(false (0))))))))
-				(false (occupied__ca5a8 
+							(false (0))))))))))
+			(false (occupied__ca5a8 
+				(true (occupied__ca4a8' 
+					(true (1))
+					(false (0))))
+				(false (occupied__ca1a8 
 					(true (occupied__ca4a8' 
 						(true (1))
 						(false (0))))
-					(false (occupied__ca1a8 
+					(false (light_signal1__ia2a8 
 						(true (occupied__ca4a8' 
 							(true (1))
 							(false (0))))
@@ -1557,8 +1501,27 @@ action advance__ia2a4___advance__ia2a8
 					(true (0.3))
 					(false (0.7)))))))
 	occupied__ca1a8
-		(light_signal1__ia2a8 
+		(occupied__ca4a8 
 			(true (occupied__ca1a8 
+				(true (occupied__ca0a8 
+					(true (occupied__ca1a8' 
+						(true (1))
+						(false (0))))
+					(false (occupied__ca1a8' 
+						(true (0))
+						(false (1))))))
+				(false (light_signal1__ia2a8 
+					(true (occupied__ca1a8' 
+						(true (0))
+						(false (1))))
+					(false (light_signal2__ia2a8 
+						(true (occupied__ca1a8' 
+							(true (1))
+							(false (0))))
+						(false (occupied__ca1a8' 
+							(true (0))
+							(false (1))))))))))
+			(false (occupied__ca1a8 
 				(true (occupied__ca0a8 
 					(true (occupied__ca1a8' 
 						(true (1))
@@ -1568,34 +1531,7 @@ action advance__ia2a4___advance__ia2a8
 						(false (1))))))
 				(false (occupied__ca1a8' 
 					(true (0))
-					(false (1))))))
-			(false (occupied__ca4a8 
-				(true (occupied__ca1a8 
-					(true (occupied__ca0a8 
-						(true (occupied__ca1a8' 
-							(true (1))
-							(false (0))))
-						(false (occupied__ca1a8' 
-							(true (0))
-							(false (1))))))
-					(false (light_signal2__ia2a8 
-						(true (occupied__ca1a8' 
-							(true (1))
-							(false (0))))
-						(false (occupied__ca1a8' 
-							(true (0))
-							(false (1))))))))
-				(false (occupied__ca1a8 
-					(true (occupied__ca0a8 
-						(true (occupied__ca1a8' 
-							(true (1))
-							(false (0))))
-						(false (occupied__ca1a8' 
-							(true (0))
-							(false (1))))))
-					(false (occupied__ca1a8' 
-						(true (0))
-						(false (1)))))))))
+					(false (1)))))))
 	occupied__ca0a8
 		(occupied__ca1a8 
 			(true (occupied__ca0a8 
@@ -1606,6 +1542,22 @@ action advance__ia2a4___advance__ia2a8
 					(true (1))
 					(false (0))))))
 			(false (occupied__ca0a8' 
+				(true (0))
+				(false (1)))))
+	light_signal1__ia2a4
+		(light_signal2__ia2a4 
+			(true (light_signal1__ia2a4' 
+				(true (1))
+				(false (0))))
+			(false (light_signal1__ia2a4' 
+				(true (0))
+				(false (1)))))
+	light_signal1__ia2a8
+		(light_signal2__ia2a8 
+			(true (light_signal1__ia2a8' 
+				(true (1))
+				(false (0))))
+			(false (light_signal1__ia2a8' 
 				(true (0))
 				(false (1)))))
 	light_signal2__ia2a4
@@ -1749,22 +1701,6 @@ action advance__ia2a4___advance__ia2a8
 endaction
 
 action advance__ia2a8
-	light_signal1__ia2a4
-		(light_signal1__ia2a4 
-			(true (light_signal1__ia2a4' 
-				(true (1))
-				(false (0))))
-			(false (light_signal1__ia2a4' 
-				(true (0))
-				(false (1)))))
-	light_signal1__ia2a8
-		(light_signal2__ia2a8 
-			(true (light_signal1__ia2a8' 
-				(true (1))
-				(false (0))))
-			(false (light_signal1__ia2a8' 
-				(true (0))
-				(false (1)))))
 	occupied__ca2a1
 		(occupied__ca2a1 
 			(true (occupied__ca2a2 
@@ -1802,63 +1738,59 @@ action advance__ia2a8
 					(true (0))
 					(false (1)))))))
 	occupied__ca2a3
-		(light_signal1__ia2a4 
-			(true (occupied__ca2a2 
-				(true (occupied__ca2a3 
-					(true (occupied__ca2a5 
-						(true (occupied__ca2a3' 
-							(true (1))
-							(false (0))))
-						(false (light_signal2__ia2a4 
+		(occupied__ca2a2 
+			(true (occupied__ca2a3 
+				(true (occupied__ca2a5 
+					(true (occupied__ca2a3' 
+						(true (1))
+						(false (0))))
+					(false (light_signal1__ia2a4 
+						(true (light_signal2__ia2a4 
 							(true (occupied__ca2a3' 
 								(true (1))
 								(false (0))))
 							(false (occupied__ca2a3' 
 								(true (0))
-								(false (1))))))))
-					(false (occupied__ca2a3' 
-						(true (1))
-						(false (0))))))
-				(false (occupied__ca2a5 
-					(true (occupied__ca2a3' 
-						(true (1))
-						(false (0))))
-					(false (light_signal2__ia2a4 
+								(false (1))))))
+						(false (occupied__ca2a3' 
+							(true (1))
+							(false (0))))))))
+				(false (occupied__ca2a3' 
+					(true (1))
+					(false (0))))))
+			(false (occupied__ca2a5 
+				(true (occupied__ca2a3' 
+					(true (1))
+					(false (0))))
+				(false (light_signal1__ia2a4 
+					(true (light_signal2__ia2a4 
 						(true (occupied__ca2a3' 
 							(true (1))
 							(false (0))))
 						(false (occupied__ca2a3' 
 							(true (0))
-							(false (1))))))))))
-			(false (occupied__ca2a3' 
-				(true (1))
-				(false (0)))))
-	occupied__ca2a5
-		(light_signal1__ia2a4 
-			(true (occupied__ca2a3 
-				(true (occupied__ca2a5 
-					(true (occupied__ca2a6 
-						(true (occupied__ca2a5' 
-							(true (1))
-							(false (0))))
-						(false (occupied__ca2a5' 
-							(true (0))
 							(false (1))))))
-					(false (light_signal2__ia2a4 
+					(false (occupied__ca2a3' 
+						(true (1))
+						(false (0)))))))))
+	occupied__ca2a5
+		(occupied__ca2a3 
+			(true (occupied__ca2a5 
+				(true (occupied__ca2a6 
+					(true (occupied__ca2a5' 
+						(true (1))
+						(false (0))))
+					(false (occupied__ca2a5' 
+						(true (0))
+						(false (1))))))
+				(false (light_signal1__ia2a4 
+					(true (light_signal2__ia2a4 
 						(true (occupied__ca2a5' 
 							(true (0))
 							(false (1))))
 						(false (occupied__ca2a5' 
 							(true (1))
-							(false (0))))))))
-				(false (occupied__ca2a5 
-					(true (occupied__ca2a6 
-						(true (occupied__ca2a5' 
-							(true (1))
-							(false (0))))
-						(false (occupied__ca2a5' 
-							(true (0))
-							(false (1))))))
+							(false (0))))))
 					(false (occupied__ca2a5' 
 						(true (0))
 						(false (1))))))))
@@ -1898,63 +1830,59 @@ action advance__ia2a8
 					(true (0))
 					(false (1)))))))
 	occupied__ca2a7
-		(light_signal1__ia2a8 
-			(true (occupied__ca2a6 
-				(true (occupied__ca2a7 
-					(true (occupied__ca2a9 
-						(true (occupied__ca2a7' 
-							(true (1))
-							(false (0))))
-						(false (light_signal2__ia2a8 
+		(occupied__ca2a6 
+			(true (occupied__ca2a7 
+				(true (occupied__ca2a9 
+					(true (occupied__ca2a7' 
+						(true (1))
+						(false (0))))
+					(false (light_signal1__ia2a8 
+						(true (light_signal2__ia2a8 
 							(true (occupied__ca2a7' 
 								(true (1))
 								(false (0))))
 							(false (occupied__ca2a7' 
 								(true (0))
-								(false (1))))))))
-					(false (occupied__ca2a7' 
-						(true (1))
-						(false (0))))))
-				(false (occupied__ca2a9 
-					(true (occupied__ca2a7' 
-						(true (1))
-						(false (0))))
-					(false (light_signal2__ia2a8 
+								(false (1))))))
+						(false (occupied__ca2a7' 
+							(true (1))
+							(false (0))))))))
+				(false (occupied__ca2a7' 
+					(true (1))
+					(false (0))))))
+			(false (occupied__ca2a9 
+				(true (occupied__ca2a7' 
+					(true (1))
+					(false (0))))
+				(false (light_signal1__ia2a8 
+					(true (light_signal2__ia2a8 
 						(true (occupied__ca2a7' 
 							(true (1))
 							(false (0))))
 						(false (occupied__ca2a7' 
 							(true (0))
-							(false (1))))))))))
-			(false (occupied__ca2a7' 
-				(true (1))
-				(false (0)))))
-	occupied__ca2a9
-		(light_signal1__ia2a8 
-			(true (occupied__ca2a7 
-				(true (occupied__ca2a9 
-					(true (occupied__ca2a10 
-						(true (occupied__ca2a9' 
-							(true (1))
-							(false (0))))
-						(false (occupied__ca2a9' 
-							(true (0))
 							(false (1))))))
-					(false (light_signal2__ia2a8 
+					(false (occupied__ca2a7' 
+						(true (1))
+						(false (0)))))))))
+	occupied__ca2a9
+		(occupied__ca2a7 
+			(true (occupied__ca2a9 
+				(true (occupied__ca2a10 
+					(true (occupied__ca2a9' 
+						(true (1))
+						(false (0))))
+					(false (occupied__ca2a9' 
+						(true (0))
+						(false (1))))))
+				(false (light_signal1__ia2a8 
+					(true (light_signal2__ia2a8 
 						(true (occupied__ca2a9' 
 							(true (0))
 							(false (1))))
 						(false (occupied__ca2a9' 
 							(true (1))
-							(false (0))))))))
-				(false (occupied__ca2a9 
-					(true (occupied__ca2a10 
-						(true (occupied__ca2a9' 
-							(true (1))
-							(false (0))))
-						(false (occupied__ca2a9' 
-							(true (0))
-							(false (1))))))
+							(false (0))))))
 					(false (occupied__ca2a9' 
 						(true (0))
 						(false (1))))))))
@@ -2042,63 +1970,59 @@ action advance__ia2a8
 					(true (0))
 					(false (1)))))))
 	occupied__ca3a9
-		(light_signal1__ia2a8 
-			(true (occupied__ca3a10 
-				(true (occupied__ca3a9 
-					(true (occupied__ca3a7 
-						(true (occupied__ca3a9' 
-							(true (1))
-							(false (0))))
-						(false (light_signal2__ia2a8 
+		(occupied__ca3a10 
+			(true (occupied__ca3a9 
+				(true (occupied__ca3a7 
+					(true (occupied__ca3a9' 
+						(true (1))
+						(false (0))))
+					(false (light_signal1__ia2a8 
+						(true (light_signal2__ia2a8 
 							(true (occupied__ca3a9' 
 								(true (1))
 								(false (0))))
 							(false (occupied__ca3a9' 
 								(true (0))
-								(false (1))))))))
-					(false (occupied__ca3a9' 
-						(true (1))
-						(false (0))))))
-				(false (occupied__ca3a7 
-					(true (occupied__ca3a9' 
-						(true (1))
-						(false (0))))
-					(false (light_signal2__ia2a8 
+								(false (1))))))
+						(false (occupied__ca3a9' 
+							(true (1))
+							(false (0))))))))
+				(false (occupied__ca3a9' 
+					(true (1))
+					(false (0))))))
+			(false (occupied__ca3a7 
+				(true (occupied__ca3a9' 
+					(true (1))
+					(false (0))))
+				(false (light_signal1__ia2a8 
+					(true (light_signal2__ia2a8 
 						(true (occupied__ca3a9' 
 							(true (1))
 							(false (0))))
 						(false (occupied__ca3a9' 
 							(true (0))
-							(false (1))))))))))
-			(false (occupied__ca3a9' 
-				(true (1))
-				(false (0)))))
-	occupied__ca3a7
-		(light_signal1__ia2a8 
-			(true (occupied__ca3a9 
-				(true (occupied__ca3a7 
-					(true (occupied__ca3a6 
-						(true (occupied__ca3a7' 
-							(true (1))
-							(false (0))))
-						(false (occupied__ca3a7' 
-							(true (0))
 							(false (1))))))
-					(false (light_signal2__ia2a8 
+					(false (occupied__ca3a9' 
+						(true (1))
+						(false (0)))))))))
+	occupied__ca3a7
+		(occupied__ca3a9 
+			(true (occupied__ca3a7 
+				(true (occupied__ca3a6 
+					(true (occupied__ca3a7' 
+						(true (1))
+						(false (0))))
+					(false (occupied__ca3a7' 
+						(true (0))
+						(false (1))))))
+				(false (light_signal1__ia2a8 
+					(true (light_signal2__ia2a8 
 						(true (occupied__ca3a7' 
 							(true (0))
 							(false (1))))
 						(false (occupied__ca3a7' 
 							(true (1))
-							(false (0))))))))
-				(false (occupied__ca3a7 
-					(true (occupied__ca3a6 
-						(true (occupied__ca3a7' 
-							(true (1))
-							(false (0))))
-						(false (occupied__ca3a7' 
-							(true (0))
-							(false (1))))))
+							(false (0))))))
 					(false (occupied__ca3a7' 
 						(true (0))
 						(false (1))))))))
@@ -2138,63 +2062,59 @@ action advance__ia2a8
 					(true (0))
 					(false (1)))))))
 	occupied__ca3a5
-		(light_signal1__ia2a4 
-			(true (occupied__ca3a6 
-				(true (occupied__ca3a5 
-					(true (occupied__ca3a3 
-						(true (occupied__ca3a5' 
-							(true (1))
-							(false (0))))
-						(false (light_signal2__ia2a4 
+		(occupied__ca3a6 
+			(true (occupied__ca3a5 
+				(true (occupied__ca3a3 
+					(true (occupied__ca3a5' 
+						(true (1))
+						(false (0))))
+					(false (light_signal1__ia2a4 
+						(true (light_signal2__ia2a4 
 							(true (occupied__ca3a5' 
 								(true (1))
 								(false (0))))
 							(false (occupied__ca3a5' 
 								(true (0))
-								(false (1))))))))
-					(false (occupied__ca3a5' 
-						(true (1))
-						(false (0))))))
-				(false (occupied__ca3a3 
-					(true (occupied__ca3a5' 
-						(true (1))
-						(false (0))))
-					(false (light_signal2__ia2a4 
+								(false (1))))))
+						(false (occupied__ca3a5' 
+							(true (1))
+							(false (0))))))))
+				(false (occupied__ca3a5' 
+					(true (1))
+					(false (0))))))
+			(false (occupied__ca3a3 
+				(true (occupied__ca3a5' 
+					(true (1))
+					(false (0))))
+				(false (light_signal1__ia2a4 
+					(true (light_signal2__ia2a4 
 						(true (occupied__ca3a5' 
 							(true (1))
 							(false (0))))
 						(false (occupied__ca3a5' 
 							(true (0))
-							(false (1))))))))))
-			(false (occupied__ca3a5' 
-				(true (1))
-				(false (0)))))
-	occupied__ca3a3
-		(light_signal1__ia2a4 
-			(true (occupied__ca3a5 
-				(true (occupied__ca3a3 
-					(true (occupied__ca3a2 
-						(true (occupied__ca3a3' 
-							(true (1))
-							(false (0))))
-						(false (occupied__ca3a3' 
-							(true (0))
 							(false (1))))))
-					(false (light_signal2__ia2a4 
+					(false (occupied__ca3a5' 
+						(true (1))
+						(false (0)))))))))
+	occupied__ca3a3
+		(occupied__ca3a5 
+			(true (occupied__ca3a3 
+				(true (occupied__ca3a2 
+					(true (occupied__ca3a3' 
+						(true (1))
+						(false (0))))
+					(false (occupied__ca3a3' 
+						(true (0))
+						(false (1))))))
+				(false (light_signal1__ia2a4 
+					(true (light_signal2__ia2a4 
 						(true (occupied__ca3a3' 
 							(true (0))
 							(false (1))))
 						(false (occupied__ca3a3' 
 							(true (1))
-							(false (0))))))))
-				(false (occupied__ca3a3 
-					(true (occupied__ca3a2 
-						(true (occupied__ca3a3' 
-							(true (1))
-							(false (0))))
-						(false (occupied__ca3a3' 
-							(true (0))
-							(false (1))))))
+							(false (0))))))
 					(false (occupied__ca3a3' 
 						(true (0))
 						(false (1))))))))
@@ -2246,12 +2166,12 @@ action advance__ia2a8
 				(true (0))
 				(false (1)))))
 	occupied__ca4a4
-		(light_signal1__ia2a4 
-			(true (occupied__ca4a4' 
-				(true (1))
-				(false (0))))
-			(false (occupied__ca4a4 
-				(true (occupied__ca1a4 
+		(occupied__ca4a4 
+			(true (occupied__ca1a4 
+				(true (occupied__ca4a4' 
+					(true (1))
+					(false (0))))
+				(false (light_signal1__ia2a4 
 					(true (occupied__ca4a4' 
 						(true (1))
 						(false (0))))
@@ -2261,12 +2181,16 @@ action advance__ia2a8
 							(false (1))))
 						(false (occupied__ca4a4' 
 							(true (1))
-							(false (0))))))))
-				(false (occupied__ca5a4 
+							(false (0))))))))))
+			(false (occupied__ca5a4 
+				(true (occupied__ca4a4' 
+					(true (1))
+					(false (0))))
+				(false (occupied__ca1a4 
 					(true (occupied__ca4a4' 
 						(true (1))
 						(false (0))))
-					(false (occupied__ca1a4 
+					(false (light_signal1__ia2a4 
 						(true (occupied__ca4a4' 
 							(true (1))
 							(false (0))))
@@ -2294,8 +2218,27 @@ action advance__ia2a8
 					(true (0.3))
 					(false (0.7)))))))
 	occupied__ca1a4
-		(light_signal1__ia2a4 
+		(occupied__ca4a4 
 			(true (occupied__ca1a4 
+				(true (occupied__ca0a4 
+					(true (occupied__ca1a4' 
+						(true (1))
+						(false (0))))
+					(false (occupied__ca1a4' 
+						(true (0))
+						(false (1))))))
+				(false (light_signal1__ia2a4 
+					(true (occupied__ca1a4' 
+						(true (0))
+						(false (1))))
+					(false (light_signal2__ia2a4 
+						(true (occupied__ca1a4' 
+							(true (1))
+							(false (0))))
+						(false (occupied__ca1a4' 
+							(true (0))
+							(false (1))))))))))
+			(false (occupied__ca1a4 
 				(true (occupied__ca0a4 
 					(true (occupied__ca1a4' 
 						(true (1))
@@ -2305,34 +2248,7 @@ action advance__ia2a8
 						(false (1))))))
 				(false (occupied__ca1a4' 
 					(true (0))
-					(false (1))))))
-			(false (occupied__ca4a4 
-				(true (occupied__ca1a4 
-					(true (occupied__ca0a4 
-						(true (occupied__ca1a4' 
-							(true (1))
-							(false (0))))
-						(false (occupied__ca1a4' 
-							(true (0))
-							(false (1))))))
-					(false (light_signal2__ia2a4 
-						(true (occupied__ca1a4' 
-							(true (1))
-							(false (0))))
-						(false (occupied__ca1a4' 
-							(true (0))
-							(false (1))))))))
-				(false (occupied__ca1a4 
-					(true (occupied__ca0a4 
-						(true (occupied__ca1a4' 
-							(true (1))
-							(false (0))))
-						(false (occupied__ca1a4' 
-							(true (0))
-							(false (1))))))
-					(false (occupied__ca1a4' 
-						(true (0))
-						(false (1)))))))))
+					(false (1)))))))
 	occupied__ca0a4
 		(occupied__ca1a4 
 			(true (occupied__ca0a4 
@@ -2346,12 +2262,12 @@ action advance__ia2a8
 				(true (0))
 				(false (1)))))
 	occupied__ca4a8
-		(light_signal1__ia2a8 
-			(true (occupied__ca4a8' 
-				(true (1))
-				(false (0))))
-			(false (occupied__ca4a8 
-				(true (occupied__ca1a8 
+		(occupied__ca4a8 
+			(true (occupied__ca1a8 
+				(true (occupied__ca4a8' 
+					(true (1))
+					(false (0))))
+				(false (light_signal1__ia2a8 
 					(true (occupied__ca4a8' 
 						(true (1))
 						(false (0))))
@@ -2361,12 +2277,16 @@ action advance__ia2a8
 							(false (1))))
 						(false (occupied__ca4a8' 
 							(true (1))
-							(false (0))))))))
-				(false (occupied__ca5a8 
+							(false (0))))))))))
+			(false (occupied__ca5a8 
+				(true (occupied__ca4a8' 
+					(true (1))
+					(false (0))))
+				(false (occupied__ca1a8 
 					(true (occupied__ca4a8' 
 						(true (1))
 						(false (0))))
-					(false (occupied__ca1a8 
+					(false (light_signal1__ia2a8 
 						(true (occupied__ca4a8' 
 							(true (1))
 							(false (0))))
@@ -2394,8 +2314,27 @@ action advance__ia2a8
 					(true (0.3))
 					(false (0.7)))))))
 	occupied__ca1a8
-		(light_signal1__ia2a8 
+		(occupied__ca4a8 
 			(true (occupied__ca1a8 
+				(true (occupied__ca0a8 
+					(true (occupied__ca1a8' 
+						(true (1))
+						(false (0))))
+					(false (occupied__ca1a8' 
+						(true (0))
+						(false (1))))))
+				(false (light_signal1__ia2a8 
+					(true (occupied__ca1a8' 
+						(true (0))
+						(false (1))))
+					(false (light_signal2__ia2a8 
+						(true (occupied__ca1a8' 
+							(true (1))
+							(false (0))))
+						(false (occupied__ca1a8' 
+							(true (0))
+							(false (1))))))))))
+			(false (occupied__ca1a8 
 				(true (occupied__ca0a8 
 					(true (occupied__ca1a8' 
 						(true (1))
@@ -2405,34 +2344,7 @@ action advance__ia2a8
 						(false (1))))))
 				(false (occupied__ca1a8' 
 					(true (0))
-					(false (1))))))
-			(false (occupied__ca4a8 
-				(true (occupied__ca1a8 
-					(true (occupied__ca0a8 
-						(true (occupied__ca1a8' 
-							(true (1))
-							(false (0))))
-						(false (occupied__ca1a8' 
-							(true (0))
-							(false (1))))))
-					(false (light_signal2__ia2a8 
-						(true (occupied__ca1a8' 
-							(true (1))
-							(false (0))))
-						(false (occupied__ca1a8' 
-							(true (0))
-							(false (1))))))))
-				(false (occupied__ca1a8 
-					(true (occupied__ca0a8 
-						(true (occupied__ca1a8' 
-							(true (1))
-							(false (0))))
-						(false (occupied__ca1a8' 
-							(true (0))
-							(false (1))))))
-					(false (occupied__ca1a8' 
-						(true (0))
-						(false (1)))))))))
+					(false (1)))))))
 	occupied__ca0a8
 		(occupied__ca1a8 
 			(true (occupied__ca0a8 
@@ -2443,6 +2355,22 @@ action advance__ia2a8
 					(true (1))
 					(false (0))))))
 			(false (occupied__ca0a8' 
+				(true (0))
+				(false (1)))))
+	light_signal1__ia2a4
+		(light_signal1__ia2a4 
+			(true (light_signal1__ia2a4' 
+				(true (1))
+				(false (0))))
+			(false (light_signal1__ia2a4' 
+				(true (0))
+				(false (1)))))
+	light_signal1__ia2a8
+		(light_signal2__ia2a8 
+			(true (light_signal1__ia2a8' 
+				(true (1))
+				(false (0))))
+			(false (light_signal1__ia2a8' 
 				(true (0))
 				(false (1)))))
 	light_signal2__ia2a4
@@ -2586,22 +2514,6 @@ action advance__ia2a8
 endaction
 
 action advance__ia2a8___advance__ia2a4
-	light_signal1__ia2a4
-		(light_signal2__ia2a4 
-			(true (light_signal1__ia2a4' 
-				(true (1))
-				(false (0))))
-			(false (light_signal1__ia2a4' 
-				(true (0))
-				(false (1)))))
-	light_signal1__ia2a8
-		(light_signal2__ia2a8 
-			(true (light_signal1__ia2a8' 
-				(true (1))
-				(false (0))))
-			(false (light_signal1__ia2a8' 
-				(true (0))
-				(false (1)))))
 	occupied__ca2a1
 		(occupied__ca2a1 
 			(true (occupied__ca2a2 
@@ -2639,63 +2551,59 @@ action advance__ia2a8___advance__ia2a4
 					(true (0))
 					(false (1)))))))
 	occupied__ca2a3
-		(light_signal1__ia2a4 
-			(true (occupied__ca2a2 
-				(true (occupied__ca2a3 
-					(true (occupied__ca2a5 
-						(true (occupied__ca2a3' 
-							(true (1))
-							(false (0))))
-						(false (light_signal2__ia2a4 
+		(occupied__ca2a2 
+			(true (occupied__ca2a3 
+				(true (occupied__ca2a5 
+					(true (occupied__ca2a3' 
+						(true (1))
+						(false (0))))
+					(false (light_signal1__ia2a4 
+						(true (light_signal2__ia2a4 
 							(true (occupied__ca2a3' 
 								(true (1))
 								(false (0))))
 							(false (occupied__ca2a3' 
 								(true (0))
-								(false (1))))))))
-					(false (occupied__ca2a3' 
-						(true (1))
-						(false (0))))))
-				(false (occupied__ca2a5 
-					(true (occupied__ca2a3' 
-						(true (1))
-						(false (0))))
-					(false (light_signal2__ia2a4 
+								(false (1))))))
+						(false (occupied__ca2a3' 
+							(true (1))
+							(false (0))))))))
+				(false (occupied__ca2a3' 
+					(true (1))
+					(false (0))))))
+			(false (occupied__ca2a5 
+				(true (occupied__ca2a3' 
+					(true (1))
+					(false (0))))
+				(false (light_signal1__ia2a4 
+					(true (light_signal2__ia2a4 
 						(true (occupied__ca2a3' 
 							(true (1))
 							(false (0))))
 						(false (occupied__ca2a3' 
 							(true (0))
-							(false (1))))))))))
-			(false (occupied__ca2a3' 
-				(true (1))
-				(false (0)))))
-	occupied__ca2a5
-		(light_signal1__ia2a4 
-			(true (occupied__ca2a3 
-				(true (occupied__ca2a5 
-					(true (occupied__ca2a6 
-						(true (occupied__ca2a5' 
-							(true (1))
-							(false (0))))
-						(false (occupied__ca2a5' 
-							(true (0))
 							(false (1))))))
-					(false (light_signal2__ia2a4 
+					(false (occupied__ca2a3' 
+						(true (1))
+						(false (0)))))))))
+	occupied__ca2a5
+		(occupied__ca2a3 
+			(true (occupied__ca2a5 
+				(true (occupied__ca2a6 
+					(true (occupied__ca2a5' 
+						(true (1))
+						(false (0))))
+					(false (occupied__ca2a5' 
+						(true (0))
+						(false (1))))))
+				(false (light_signal1__ia2a4 
+					(true (light_signal2__ia2a4 
 						(true (occupied__ca2a5' 
 							(true (0))
 							(false (1))))
 						(false (occupied__ca2a5' 
 							(true (1))
-							(false (0))))))))
-				(false (occupied__ca2a5 
-					(true (occupied__ca2a6 
-						(true (occupied__ca2a5' 
-							(true (1))
-							(false (0))))
-						(false (occupied__ca2a5' 
-							(true (0))
-							(false (1))))))
+							(false (0))))))
 					(false (occupied__ca2a5' 
 						(true (0))
 						(false (1))))))))
@@ -2735,63 +2643,59 @@ action advance__ia2a8___advance__ia2a4
 					(true (0))
 					(false (1)))))))
 	occupied__ca2a7
-		(light_signal1__ia2a8 
-			(true (occupied__ca2a6 
-				(true (occupied__ca2a7 
-					(true (occupied__ca2a9 
-						(true (occupied__ca2a7' 
-							(true (1))
-							(false (0))))
-						(false (light_signal2__ia2a8 
+		(occupied__ca2a6 
+			(true (occupied__ca2a7 
+				(true (occupied__ca2a9 
+					(true (occupied__ca2a7' 
+						(true (1))
+						(false (0))))
+					(false (light_signal1__ia2a8 
+						(true (light_signal2__ia2a8 
 							(true (occupied__ca2a7' 
 								(true (1))
 								(false (0))))
 							(false (occupied__ca2a7' 
 								(true (0))
-								(false (1))))))))
-					(false (occupied__ca2a7' 
-						(true (1))
-						(false (0))))))
-				(false (occupied__ca2a9 
-					(true (occupied__ca2a7' 
-						(true (1))
-						(false (0))))
-					(false (light_signal2__ia2a8 
+								(false (1))))))
+						(false (occupied__ca2a7' 
+							(true (1))
+							(false (0))))))))
+				(false (occupied__ca2a7' 
+					(true (1))
+					(false (0))))))
+			(false (occupied__ca2a9 
+				(true (occupied__ca2a7' 
+					(true (1))
+					(false (0))))
+				(false (light_signal1__ia2a8 
+					(true (light_signal2__ia2a8 
 						(true (occupied__ca2a7' 
 							(true (1))
 							(false (0))))
 						(false (occupied__ca2a7' 
 							(true (0))
-							(false (1))))))))))
-			(false (occupied__ca2a7' 
-				(true (1))
-				(false (0)))))
-	occupied__ca2a9
-		(light_signal1__ia2a8 
-			(true (occupied__ca2a7 
-				(true (occupied__ca2a9 
-					(true (occupied__ca2a10 
-						(true (occupied__ca2a9' 
-							(true (1))
-							(false (0))))
-						(false (occupied__ca2a9' 
-							(true (0))
 							(false (1))))))
-					(false (light_signal2__ia2a8 
+					(false (occupied__ca2a7' 
+						(true (1))
+						(false (0)))))))))
+	occupied__ca2a9
+		(occupied__ca2a7 
+			(true (occupied__ca2a9 
+				(true (occupied__ca2a10 
+					(true (occupied__ca2a9' 
+						(true (1))
+						(false (0))))
+					(false (occupied__ca2a9' 
+						(true (0))
+						(false (1))))))
+				(false (light_signal1__ia2a8 
+					(true (light_signal2__ia2a8 
 						(true (occupied__ca2a9' 
 							(true (0))
 							(false (1))))
 						(false (occupied__ca2a9' 
 							(true (1))
-							(false (0))))))))
-				(false (occupied__ca2a9 
-					(true (occupied__ca2a10 
-						(true (occupied__ca2a9' 
-							(true (1))
-							(false (0))))
-						(false (occupied__ca2a9' 
-							(true (0))
-							(false (1))))))
+							(false (0))))))
 					(false (occupied__ca2a9' 
 						(true (0))
 						(false (1))))))))
@@ -2879,63 +2783,59 @@ action advance__ia2a8___advance__ia2a4
 					(true (0))
 					(false (1)))))))
 	occupied__ca3a9
-		(light_signal1__ia2a8 
-			(true (occupied__ca3a10 
-				(true (occupied__ca3a9 
-					(true (occupied__ca3a7 
-						(true (occupied__ca3a9' 
-							(true (1))
-							(false (0))))
-						(false (light_signal2__ia2a8 
+		(occupied__ca3a10 
+			(true (occupied__ca3a9 
+				(true (occupied__ca3a7 
+					(true (occupied__ca3a9' 
+						(true (1))
+						(false (0))))
+					(false (light_signal1__ia2a8 
+						(true (light_signal2__ia2a8 
 							(true (occupied__ca3a9' 
 								(true (1))
 								(false (0))))
 							(false (occupied__ca3a9' 
 								(true (0))
-								(false (1))))))))
-					(false (occupied__ca3a9' 
-						(true (1))
-						(false (0))))))
-				(false (occupied__ca3a7 
-					(true (occupied__ca3a9' 
-						(true (1))
-						(false (0))))
-					(false (light_signal2__ia2a8 
+								(false (1))))))
+						(false (occupied__ca3a9' 
+							(true (1))
+							(false (0))))))))
+				(false (occupied__ca3a9' 
+					(true (1))
+					(false (0))))))
+			(false (occupied__ca3a7 
+				(true (occupied__ca3a9' 
+					(true (1))
+					(false (0))))
+				(false (light_signal1__ia2a8 
+					(true (light_signal2__ia2a8 
 						(true (occupied__ca3a9' 
 							(true (1))
 							(false (0))))
 						(false (occupied__ca3a9' 
 							(true (0))
-							(false (1))))))))))
-			(false (occupied__ca3a9' 
-				(true (1))
-				(false (0)))))
-	occupied__ca3a7
-		(light_signal1__ia2a8 
-			(true (occupied__ca3a9 
-				(true (occupied__ca3a7 
-					(true (occupied__ca3a6 
-						(true (occupied__ca3a7' 
-							(true (1))
-							(false (0))))
-						(false (occupied__ca3a7' 
-							(true (0))
 							(false (1))))))
-					(false (light_signal2__ia2a8 
+					(false (occupied__ca3a9' 
+						(true (1))
+						(false (0)))))))))
+	occupied__ca3a7
+		(occupied__ca3a9 
+			(true (occupied__ca3a7 
+				(true (occupied__ca3a6 
+					(true (occupied__ca3a7' 
+						(true (1))
+						(false (0))))
+					(false (occupied__ca3a7' 
+						(true (0))
+						(false (1))))))
+				(false (light_signal1__ia2a8 
+					(true (light_signal2__ia2a8 
 						(true (occupied__ca3a7' 
 							(true (0))
 							(false (1))))
 						(false (occupied__ca3a7' 
 							(true (1))
-							(false (0))))))))
-				(false (occupied__ca3a7 
-					(true (occupied__ca3a6 
-						(true (occupied__ca3a7' 
-							(true (1))
-							(false (0))))
-						(false (occupied__ca3a7' 
-							(true (0))
-							(false (1))))))
+							(false (0))))))
 					(false (occupied__ca3a7' 
 						(true (0))
 						(false (1))))))))
@@ -2975,63 +2875,59 @@ action advance__ia2a8___advance__ia2a4
 					(true (0))
 					(false (1)))))))
 	occupied__ca3a5
-		(light_signal1__ia2a4 
-			(true (occupied__ca3a6 
-				(true (occupied__ca3a5 
-					(true (occupied__ca3a3 
-						(true (occupied__ca3a5' 
-							(true (1))
-							(false (0))))
-						(false (light_signal2__ia2a4 
+		(occupied__ca3a6 
+			(true (occupied__ca3a5 
+				(true (occupied__ca3a3 
+					(true (occupied__ca3a5' 
+						(true (1))
+						(false (0))))
+					(false (light_signal1__ia2a4 
+						(true (light_signal2__ia2a4 
 							(true (occupied__ca3a5' 
 								(true (1))
 								(false (0))))
 							(false (occupied__ca3a5' 
 								(true (0))
-								(false (1))))))))
-					(false (occupied__ca3a5' 
-						(true (1))
-						(false (0))))))
-				(false (occupied__ca3a3 
-					(true (occupied__ca3a5' 
-						(true (1))
-						(false (0))))
-					(false (light_signal2__ia2a4 
+								(false (1))))))
+						(false (occupied__ca3a5' 
+							(true (1))
+							(false (0))))))))
+				(false (occupied__ca3a5' 
+					(true (1))
+					(false (0))))))
+			(false (occupied__ca3a3 
+				(true (occupied__ca3a5' 
+					(true (1))
+					(false (0))))
+				(false (light_signal1__ia2a4 
+					(true (light_signal2__ia2a4 
 						(true (occupied__ca3a5' 
 							(true (1))
 							(false (0))))
 						(false (occupied__ca3a5' 
 							(true (0))
-							(false (1))))))))))
-			(false (occupied__ca3a5' 
-				(true (1))
-				(false (0)))))
-	occupied__ca3a3
-		(light_signal1__ia2a4 
-			(true (occupied__ca3a5 
-				(true (occupied__ca3a3 
-					(true (occupied__ca3a2 
-						(true (occupied__ca3a3' 
-							(true (1))
-							(false (0))))
-						(false (occupied__ca3a3' 
-							(true (0))
 							(false (1))))))
-					(false (light_signal2__ia2a4 
+					(false (occupied__ca3a5' 
+						(true (1))
+						(false (0)))))))))
+	occupied__ca3a3
+		(occupied__ca3a5 
+			(true (occupied__ca3a3 
+				(true (occupied__ca3a2 
+					(true (occupied__ca3a3' 
+						(true (1))
+						(false (0))))
+					(false (occupied__ca3a3' 
+						(true (0))
+						(false (1))))))
+				(false (light_signal1__ia2a4 
+					(true (light_signal2__ia2a4 
 						(true (occupied__ca3a3' 
 							(true (0))
 							(false (1))))
 						(false (occupied__ca3a3' 
 							(true (1))
-							(false (0))))))))
-				(false (occupied__ca3a3 
-					(true (occupied__ca3a2 
-						(true (occupied__ca3a3' 
-							(true (1))
-							(false (0))))
-						(false (occupied__ca3a3' 
-							(true (0))
-							(false (1))))))
+							(false (0))))))
 					(false (occupied__ca3a3' 
 						(true (0))
 						(false (1))))))))
@@ -3083,12 +2979,12 @@ action advance__ia2a8___advance__ia2a4
 				(true (0))
 				(false (1)))))
 	occupied__ca4a4
-		(light_signal1__ia2a4 
-			(true (occupied__ca4a4' 
-				(true (1))
-				(false (0))))
-			(false (occupied__ca4a4 
-				(true (occupied__ca1a4 
+		(occupied__ca4a4 
+			(true (occupied__ca1a4 
+				(true (occupied__ca4a4' 
+					(true (1))
+					(false (0))))
+				(false (light_signal1__ia2a4 
 					(true (occupied__ca4a4' 
 						(true (1))
 						(false (0))))
@@ -3098,12 +2994,16 @@ action advance__ia2a8___advance__ia2a4
 							(false (1))))
 						(false (occupied__ca4a4' 
 							(true (1))
-							(false (0))))))))
-				(false (occupied__ca5a4 
+							(false (0))))))))))
+			(false (occupied__ca5a4 
+				(true (occupied__ca4a4' 
+					(true (1))
+					(false (0))))
+				(false (occupied__ca1a4 
 					(true (occupied__ca4a4' 
 						(true (1))
 						(false (0))))
-					(false (occupied__ca1a4 
+					(false (light_signal1__ia2a4 
 						(true (occupied__ca4a4' 
 							(true (1))
 							(false (0))))
@@ -3131,8 +3031,27 @@ action advance__ia2a8___advance__ia2a4
 					(true (0.3))
 					(false (0.7)))))))
 	occupied__ca1a4
-		(light_signal1__ia2a4 
+		(occupied__ca4a4 
 			(true (occupied__ca1a4 
+				(true (occupied__ca0a4 
+					(true (occupied__ca1a4' 
+						(true (1))
+						(false (0))))
+					(false (occupied__ca1a4' 
+						(true (0))
+						(false (1))))))
+				(false (light_signal1__ia2a4 
+					(true (occupied__ca1a4' 
+						(true (0))
+						(false (1))))
+					(false (light_signal2__ia2a4 
+						(true (occupied__ca1a4' 
+							(true (1))
+							(false (0))))
+						(false (occupied__ca1a4' 
+							(true (0))
+							(false (1))))))))))
+			(false (occupied__ca1a4 
 				(true (occupied__ca0a4 
 					(true (occupied__ca1a4' 
 						(true (1))
@@ -3142,34 +3061,7 @@ action advance__ia2a8___advance__ia2a4
 						(false (1))))))
 				(false (occupied__ca1a4' 
 					(true (0))
-					(false (1))))))
-			(false (occupied__ca4a4 
-				(true (occupied__ca1a4 
-					(true (occupied__ca0a4 
-						(true (occupied__ca1a4' 
-							(true (1))
-							(false (0))))
-						(false (occupied__ca1a4' 
-							(true (0))
-							(false (1))))))
-					(false (light_signal2__ia2a4 
-						(true (occupied__ca1a4' 
-							(true (1))
-							(false (0))))
-						(false (occupied__ca1a4' 
-							(true (0))
-							(false (1))))))))
-				(false (occupied__ca1a4 
-					(true (occupied__ca0a4 
-						(true (occupied__ca1a4' 
-							(true (1))
-							(false (0))))
-						(false (occupied__ca1a4' 
-							(true (0))
-							(false (1))))))
-					(false (occupied__ca1a4' 
-						(true (0))
-						(false (1)))))))))
+					(false (1)))))))
 	occupied__ca0a4
 		(occupied__ca1a4 
 			(true (occupied__ca0a4 
@@ -3183,12 +3075,12 @@ action advance__ia2a8___advance__ia2a4
 				(true (0))
 				(false (1)))))
 	occupied__ca4a8
-		(light_signal1__ia2a8 
-			(true (occupied__ca4a8' 
-				(true (1))
-				(false (0))))
-			(false (occupied__ca4a8 
-				(true (occupied__ca1a8 
+		(occupied__ca4a8 
+			(true (occupied__ca1a8 
+				(true (occupied__ca4a8' 
+					(true (1))
+					(false (0))))
+				(false (light_signal1__ia2a8 
 					(true (occupied__ca4a8' 
 						(true (1))
 						(false (0))))
@@ -3198,12 +3090,16 @@ action advance__ia2a8___advance__ia2a4
 							(false (1))))
 						(false (occupied__ca4a8' 
 							(true (1))
-							(false (0))))))))
-				(false (occupied__ca5a8 
+							(false (0))))))))))
+			(false (occupied__ca5a8 
+				(true (occupied__ca4a8' 
+					(true (1))
+					(false (0))))
+				(false (occupied__ca1a8 
 					(true (occupied__ca4a8' 
 						(true (1))
 						(false (0))))
-					(false (occupied__ca1a8 
+					(false (light_signal1__ia2a8 
 						(true (occupied__ca4a8' 
 							(true (1))
 							(false (0))))
@@ -3231,8 +3127,27 @@ action advance__ia2a8___advance__ia2a4
 					(true (0.3))
 					(false (0.7)))))))
 	occupied__ca1a8
-		(light_signal1__ia2a8 
+		(occupied__ca4a8 
 			(true (occupied__ca1a8 
+				(true (occupied__ca0a8 
+					(true (occupied__ca1a8' 
+						(true (1))
+						(false (0))))
+					(false (occupied__ca1a8' 
+						(true (0))
+						(false (1))))))
+				(false (light_signal1__ia2a8 
+					(true (occupied__ca1a8' 
+						(true (0))
+						(false (1))))
+					(false (light_signal2__ia2a8 
+						(true (occupied__ca1a8' 
+							(true (1))
+							(false (0))))
+						(false (occupied__ca1a8' 
+							(true (0))
+							(false (1))))))))))
+			(false (occupied__ca1a8 
 				(true (occupied__ca0a8 
 					(true (occupied__ca1a8' 
 						(true (1))
@@ -3242,34 +3157,7 @@ action advance__ia2a8___advance__ia2a4
 						(false (1))))))
 				(false (occupied__ca1a8' 
 					(true (0))
-					(false (1))))))
-			(false (occupied__ca4a8 
-				(true (occupied__ca1a8 
-					(true (occupied__ca0a8 
-						(true (occupied__ca1a8' 
-							(true (1))
-							(false (0))))
-						(false (occupied__ca1a8' 
-							(true (0))
-							(false (1))))))
-					(false (light_signal2__ia2a8 
-						(true (occupied__ca1a8' 
-							(true (1))
-							(false (0))))
-						(false (occupied__ca1a8' 
-							(true (0))
-							(false (1))))))))
-				(false (occupied__ca1a8 
-					(true (occupied__ca0a8 
-						(true (occupied__ca1a8' 
-							(true (1))
-							(false (0))))
-						(false (occupied__ca1a8' 
-							(true (0))
-							(false (1))))))
-					(false (occupied__ca1a8' 
-						(true (0))
-						(false (1)))))))))
+					(false (1)))))))
 	occupied__ca0a8
 		(occupied__ca1a8 
 			(true (occupied__ca0a8 
@@ -3280,6 +3168,22 @@ action advance__ia2a8___advance__ia2a4
 					(true (1))
 					(false (0))))))
 			(false (occupied__ca0a8' 
+				(true (0))
+				(false (1)))))
+	light_signal1__ia2a4
+		(light_signal2__ia2a4 
+			(true (light_signal1__ia2a4' 
+				(true (1))
+				(false (0))))
+			(false (light_signal1__ia2a4' 
+				(true (0))
+				(false (1)))))
+	light_signal1__ia2a8
+		(light_signal2__ia2a8 
+			(true (light_signal1__ia2a8' 
+				(true (1))
+				(false (0))))
+			(false (light_signal1__ia2a8' 
 				(true (0))
 				(false (1)))))
 	light_signal2__ia2a4
@@ -3423,22 +3327,6 @@ action advance__ia2a8___advance__ia2a4
 endaction
 
 action noop
-	light_signal1__ia2a4
-		(light_signal1__ia2a4 
-			(true (light_signal1__ia2a4' 
-				(true (1))
-				(false (0))))
-			(false (light_signal1__ia2a4' 
-				(true (0))
-				(false (1)))))
-	light_signal1__ia2a8
-		(light_signal1__ia2a8 
-			(true (light_signal1__ia2a8' 
-				(true (1))
-				(false (0))))
-			(false (light_signal1__ia2a8' 
-				(true (0))
-				(false (1)))))
 	occupied__ca2a1
 		(occupied__ca2a1 
 			(true (occupied__ca2a2 
@@ -3476,63 +3364,59 @@ action noop
 					(true (0))
 					(false (1)))))))
 	occupied__ca2a3
-		(light_signal1__ia2a4 
-			(true (occupied__ca2a2 
-				(true (occupied__ca2a3 
-					(true (occupied__ca2a5 
-						(true (occupied__ca2a3' 
-							(true (1))
-							(false (0))))
-						(false (light_signal2__ia2a4 
+		(occupied__ca2a2 
+			(true (occupied__ca2a3 
+				(true (occupied__ca2a5 
+					(true (occupied__ca2a3' 
+						(true (1))
+						(false (0))))
+					(false (light_signal1__ia2a4 
+						(true (light_signal2__ia2a4 
 							(true (occupied__ca2a3' 
 								(true (1))
 								(false (0))))
 							(false (occupied__ca2a3' 
 								(true (0))
-								(false (1))))))))
-					(false (occupied__ca2a3' 
-						(true (1))
-						(false (0))))))
-				(false (occupied__ca2a5 
-					(true (occupied__ca2a3' 
-						(true (1))
-						(false (0))))
-					(false (light_signal2__ia2a4 
+								(false (1))))))
+						(false (occupied__ca2a3' 
+							(true (1))
+							(false (0))))))))
+				(false (occupied__ca2a3' 
+					(true (1))
+					(false (0))))))
+			(false (occupied__ca2a5 
+				(true (occupied__ca2a3' 
+					(true (1))
+					(false (0))))
+				(false (light_signal1__ia2a4 
+					(true (light_signal2__ia2a4 
 						(true (occupied__ca2a3' 
 							(true (1))
 							(false (0))))
 						(false (occupied__ca2a3' 
 							(true (0))
-							(false (1))))))))))
-			(false (occupied__ca2a3' 
-				(true (1))
-				(false (0)))))
-	occupied__ca2a5
-		(light_signal1__ia2a4 
-			(true (occupied__ca2a3 
-				(true (occupied__ca2a5 
-					(true (occupied__ca2a6 
-						(true (occupied__ca2a5' 
-							(true (1))
-							(false (0))))
-						(false (occupied__ca2a5' 
-							(true (0))
 							(false (1))))))
-					(false (light_signal2__ia2a4 
+					(false (occupied__ca2a3' 
+						(true (1))
+						(false (0)))))))))
+	occupied__ca2a5
+		(occupied__ca2a3 
+			(true (occupied__ca2a5 
+				(true (occupied__ca2a6 
+					(true (occupied__ca2a5' 
+						(true (1))
+						(false (0))))
+					(false (occupied__ca2a5' 
+						(true (0))
+						(false (1))))))
+				(false (light_signal1__ia2a4 
+					(true (light_signal2__ia2a4 
 						(true (occupied__ca2a5' 
 							(true (0))
 							(false (1))))
 						(false (occupied__ca2a5' 
 							(true (1))
-							(false (0))))))))
-				(false (occupied__ca2a5 
-					(true (occupied__ca2a6 
-						(true (occupied__ca2a5' 
-							(true (1))
-							(false (0))))
-						(false (occupied__ca2a5' 
-							(true (0))
-							(false (1))))))
+							(false (0))))))
 					(false (occupied__ca2a5' 
 						(true (0))
 						(false (1))))))))
@@ -3572,63 +3456,59 @@ action noop
 					(true (0))
 					(false (1)))))))
 	occupied__ca2a7
-		(light_signal1__ia2a8 
-			(true (occupied__ca2a6 
-				(true (occupied__ca2a7 
-					(true (occupied__ca2a9 
-						(true (occupied__ca2a7' 
-							(true (1))
-							(false (0))))
-						(false (light_signal2__ia2a8 
+		(occupied__ca2a6 
+			(true (occupied__ca2a7 
+				(true (occupied__ca2a9 
+					(true (occupied__ca2a7' 
+						(true (1))
+						(false (0))))
+					(false (light_signal1__ia2a8 
+						(true (light_signal2__ia2a8 
 							(true (occupied__ca2a7' 
 								(true (1))
 								(false (0))))
 							(false (occupied__ca2a7' 
 								(true (0))
-								(false (1))))))))
-					(false (occupied__ca2a7' 
-						(true (1))
-						(false (0))))))
-				(false (occupied__ca2a9 
-					(true (occupied__ca2a7' 
-						(true (1))
-						(false (0))))
-					(false (light_signal2__ia2a8 
+								(false (1))))))
+						(false (occupied__ca2a7' 
+							(true (1))
+							(false (0))))))))
+				(false (occupied__ca2a7' 
+					(true (1))
+					(false (0))))))
+			(false (occupied__ca2a9 
+				(true (occupied__ca2a7' 
+					(true (1))
+					(false (0))))
+				(false (light_signal1__ia2a8 
+					(true (light_signal2__ia2a8 
 						(true (occupied__ca2a7' 
 							(true (1))
 							(false (0))))
 						(false (occupied__ca2a7' 
 							(true (0))
-							(false (1))))))))))
-			(false (occupied__ca2a7' 
-				(true (1))
-				(false (0)))))
-	occupied__ca2a9
-		(light_signal1__ia2a8 
-			(true (occupied__ca2a7 
-				(true (occupied__ca2a9 
-					(true (occupied__ca2a10 
-						(true (occupied__ca2a9' 
-							(true (1))
-							(false (0))))
-						(false (occupied__ca2a9' 
-							(true (0))
 							(false (1))))))
-					(false (light_signal2__ia2a8 
+					(false (occupied__ca2a7' 
+						(true (1))
+						(false (0)))))))))
+	occupied__ca2a9
+		(occupied__ca2a7 
+			(true (occupied__ca2a9 
+				(true (occupied__ca2a10 
+					(true (occupied__ca2a9' 
+						(true (1))
+						(false (0))))
+					(false (occupied__ca2a9' 
+						(true (0))
+						(false (1))))))
+				(false (light_signal1__ia2a8 
+					(true (light_signal2__ia2a8 
 						(true (occupied__ca2a9' 
 							(true (0))
 							(false (1))))
 						(false (occupied__ca2a9' 
 							(true (1))
-							(false (0))))))))
-				(false (occupied__ca2a9 
-					(true (occupied__ca2a10 
-						(true (occupied__ca2a9' 
-							(true (1))
-							(false (0))))
-						(false (occupied__ca2a9' 
-							(true (0))
-							(false (1))))))
+							(false (0))))))
 					(false (occupied__ca2a9' 
 						(true (0))
 						(false (1))))))))
@@ -3716,63 +3596,59 @@ action noop
 					(true (0))
 					(false (1)))))))
 	occupied__ca3a9
-		(light_signal1__ia2a8 
-			(true (occupied__ca3a10 
-				(true (occupied__ca3a9 
-					(true (occupied__ca3a7 
-						(true (occupied__ca3a9' 
-							(true (1))
-							(false (0))))
-						(false (light_signal2__ia2a8 
+		(occupied__ca3a10 
+			(true (occupied__ca3a9 
+				(true (occupied__ca3a7 
+					(true (occupied__ca3a9' 
+						(true (1))
+						(false (0))))
+					(false (light_signal1__ia2a8 
+						(true (light_signal2__ia2a8 
 							(true (occupied__ca3a9' 
 								(true (1))
 								(false (0))))
 							(false (occupied__ca3a9' 
 								(true (0))
-								(false (1))))))))
-					(false (occupied__ca3a9' 
-						(true (1))
-						(false (0))))))
-				(false (occupied__ca3a7 
-					(true (occupied__ca3a9' 
-						(true (1))
-						(false (0))))
-					(false (light_signal2__ia2a8 
+								(false (1))))))
+						(false (occupied__ca3a9' 
+							(true (1))
+							(false (0))))))))
+				(false (occupied__ca3a9' 
+					(true (1))
+					(false (0))))))
+			(false (occupied__ca3a7 
+				(true (occupied__ca3a9' 
+					(true (1))
+					(false (0))))
+				(false (light_signal1__ia2a8 
+					(true (light_signal2__ia2a8 
 						(true (occupied__ca3a9' 
 							(true (1))
 							(false (0))))
 						(false (occupied__ca3a9' 
 							(true (0))
-							(false (1))))))))))
-			(false (occupied__ca3a9' 
-				(true (1))
-				(false (0)))))
-	occupied__ca3a7
-		(light_signal1__ia2a8 
-			(true (occupied__ca3a9 
-				(true (occupied__ca3a7 
-					(true (occupied__ca3a6 
-						(true (occupied__ca3a7' 
-							(true (1))
-							(false (0))))
-						(false (occupied__ca3a7' 
-							(true (0))
 							(false (1))))))
-					(false (light_signal2__ia2a8 
+					(false (occupied__ca3a9' 
+						(true (1))
+						(false (0)))))))))
+	occupied__ca3a7
+		(occupied__ca3a9 
+			(true (occupied__ca3a7 
+				(true (occupied__ca3a6 
+					(true (occupied__ca3a7' 
+						(true (1))
+						(false (0))))
+					(false (occupied__ca3a7' 
+						(true (0))
+						(false (1))))))
+				(false (light_signal1__ia2a8 
+					(true (light_signal2__ia2a8 
 						(true (occupied__ca3a7' 
 							(true (0))
 							(false (1))))
 						(false (occupied__ca3a7' 
 							(true (1))
-							(false (0))))))))
-				(false (occupied__ca3a7 
-					(true (occupied__ca3a6 
-						(true (occupied__ca3a7' 
-							(true (1))
-							(false (0))))
-						(false (occupied__ca3a7' 
-							(true (0))
-							(false (1))))))
+							(false (0))))))
 					(false (occupied__ca3a7' 
 						(true (0))
 						(false (1))))))))
@@ -3812,63 +3688,59 @@ action noop
 					(true (0))
 					(false (1)))))))
 	occupied__ca3a5
-		(light_signal1__ia2a4 
-			(true (occupied__ca3a6 
-				(true (occupied__ca3a5 
-					(true (occupied__ca3a3 
-						(true (occupied__ca3a5' 
-							(true (1))
-							(false (0))))
-						(false (light_signal2__ia2a4 
+		(occupied__ca3a6 
+			(true (occupied__ca3a5 
+				(true (occupied__ca3a3 
+					(true (occupied__ca3a5' 
+						(true (1))
+						(false (0))))
+					(false (light_signal1__ia2a4 
+						(true (light_signal2__ia2a4 
 							(true (occupied__ca3a5' 
 								(true (1))
 								(false (0))))
 							(false (occupied__ca3a5' 
 								(true (0))
-								(false (1))))))))
-					(false (occupied__ca3a5' 
-						(true (1))
-						(false (0))))))
-				(false (occupied__ca3a3 
-					(true (occupied__ca3a5' 
-						(true (1))
-						(false (0))))
-					(false (light_signal2__ia2a4 
+								(false (1))))))
+						(false (occupied__ca3a5' 
+							(true (1))
+							(false (0))))))))
+				(false (occupied__ca3a5' 
+					(true (1))
+					(false (0))))))
+			(false (occupied__ca3a3 
+				(true (occupied__ca3a5' 
+					(true (1))
+					(false (0))))
+				(false (light_signal1__ia2a4 
+					(true (light_signal2__ia2a4 
 						(true (occupied__ca3a5' 
 							(true (1))
 							(false (0))))
 						(false (occupied__ca3a5' 
 							(true (0))
-							(false (1))))))))))
-			(false (occupied__ca3a5' 
-				(true (1))
-				(false (0)))))
-	occupied__ca3a3
-		(light_signal1__ia2a4 
-			(true (occupied__ca3a5 
-				(true (occupied__ca3a3 
-					(true (occupied__ca3a2 
-						(true (occupied__ca3a3' 
-							(true (1))
-							(false (0))))
-						(false (occupied__ca3a3' 
-							(true (0))
 							(false (1))))))
-					(false (light_signal2__ia2a4 
+					(false (occupied__ca3a5' 
+						(true (1))
+						(false (0)))))))))
+	occupied__ca3a3
+		(occupied__ca3a5 
+			(true (occupied__ca3a3 
+				(true (occupied__ca3a2 
+					(true (occupied__ca3a3' 
+						(true (1))
+						(false (0))))
+					(false (occupied__ca3a3' 
+						(true (0))
+						(false (1))))))
+				(false (light_signal1__ia2a4 
+					(true (light_signal2__ia2a4 
 						(true (occupied__ca3a3' 
 							(true (0))
 							(false (1))))
 						(false (occupied__ca3a3' 
 							(true (1))
-							(false (0))))))))
-				(false (occupied__ca3a3 
-					(true (occupied__ca3a2 
-						(true (occupied__ca3a3' 
-							(true (1))
-							(false (0))))
-						(false (occupied__ca3a3' 
-							(true (0))
-							(false (1))))))
+							(false (0))))))
 					(false (occupied__ca3a3' 
 						(true (0))
 						(false (1))))))))
@@ -3920,12 +3792,12 @@ action noop
 				(true (0))
 				(false (1)))))
 	occupied__ca4a4
-		(light_signal1__ia2a4 
-			(true (occupied__ca4a4' 
-				(true (1))
-				(false (0))))
-			(false (occupied__ca4a4 
-				(true (occupied__ca1a4 
+		(occupied__ca4a4 
+			(true (occupied__ca1a4 
+				(true (occupied__ca4a4' 
+					(true (1))
+					(false (0))))
+				(false (light_signal1__ia2a4 
 					(true (occupied__ca4a4' 
 						(true (1))
 						(false (0))))
@@ -3935,12 +3807,16 @@ action noop
 							(false (1))))
 						(false (occupied__ca4a4' 
 							(true (1))
-							(false (0))))))))
-				(false (occupied__ca5a4 
+							(false (0))))))))))
+			(false (occupied__ca5a4 
+				(true (occupied__ca4a4' 
+					(true (1))
+					(false (0))))
+				(false (occupied__ca1a4 
 					(true (occupied__ca4a4' 
 						(true (1))
 						(false (0))))
-					(false (occupied__ca1a4 
+					(false (light_signal1__ia2a4 
 						(true (occupied__ca4a4' 
 							(true (1))
 							(false (0))))
@@ -3968,8 +3844,27 @@ action noop
 					(true (0.3))
 					(false (0.7)))))))
 	occupied__ca1a4
-		(light_signal1__ia2a4 
+		(occupied__ca4a4 
 			(true (occupied__ca1a4 
+				(true (occupied__ca0a4 
+					(true (occupied__ca1a4' 
+						(true (1))
+						(false (0))))
+					(false (occupied__ca1a4' 
+						(true (0))
+						(false (1))))))
+				(false (light_signal1__ia2a4 
+					(true (occupied__ca1a4' 
+						(true (0))
+						(false (1))))
+					(false (light_signal2__ia2a4 
+						(true (occupied__ca1a4' 
+							(true (1))
+							(false (0))))
+						(false (occupied__ca1a4' 
+							(true (0))
+							(false (1))))))))))
+			(false (occupied__ca1a4 
 				(true (occupied__ca0a4 
 					(true (occupied__ca1a4' 
 						(true (1))
@@ -3979,34 +3874,7 @@ action noop
 						(false (1))))))
 				(false (occupied__ca1a4' 
 					(true (0))
-					(false (1))))))
-			(false (occupied__ca4a4 
-				(true (occupied__ca1a4 
-					(true (occupied__ca0a4 
-						(true (occupied__ca1a4' 
-							(true (1))
-							(false (0))))
-						(false (occupied__ca1a4' 
-							(true (0))
-							(false (1))))))
-					(false (light_signal2__ia2a4 
-						(true (occupied__ca1a4' 
-							(true (1))
-							(false (0))))
-						(false (occupied__ca1a4' 
-							(true (0))
-							(false (1))))))))
-				(false (occupied__ca1a4 
-					(true (occupied__ca0a4 
-						(true (occupied__ca1a4' 
-							(true (1))
-							(false (0))))
-						(false (occupied__ca1a4' 
-							(true (0))
-							(false (1))))))
-					(false (occupied__ca1a4' 
-						(true (0))
-						(false (1)))))))))
+					(false (1)))))))
 	occupied__ca0a4
 		(occupied__ca1a4 
 			(true (occupied__ca0a4 
@@ -4020,12 +3888,12 @@ action noop
 				(true (0))
 				(false (1)))))
 	occupied__ca4a8
-		(light_signal1__ia2a8 
-			(true (occupied__ca4a8' 
-				(true (1))
-				(false (0))))
-			(false (occupied__ca4a8 
-				(true (occupied__ca1a8 
+		(occupied__ca4a8 
+			(true (occupied__ca1a8 
+				(true (occupied__ca4a8' 
+					(true (1))
+					(false (0))))
+				(false (light_signal1__ia2a8 
 					(true (occupied__ca4a8' 
 						(true (1))
 						(false (0))))
@@ -4035,12 +3903,16 @@ action noop
 							(false (1))))
 						(false (occupied__ca4a8' 
 							(true (1))
-							(false (0))))))))
-				(false (occupied__ca5a8 
+							(false (0))))))))))
+			(false (occupied__ca5a8 
+				(true (occupied__ca4a8' 
+					(true (1))
+					(false (0))))
+				(false (occupied__ca1a8 
 					(true (occupied__ca4a8' 
 						(true (1))
 						(false (0))))
-					(false (occupied__ca1a8 
+					(false (light_signal1__ia2a8 
 						(true (occupied__ca4a8' 
 							(true (1))
 							(false (0))))
@@ -4068,8 +3940,27 @@ action noop
 					(true (0.3))
 					(false (0.7)))))))
 	occupied__ca1a8
-		(light_signal1__ia2a8 
+		(occupied__ca4a8 
 			(true (occupied__ca1a8 
+				(true (occupied__ca0a8 
+					(true (occupied__ca1a8' 
+						(true (1))
+						(false (0))))
+					(false (occupied__ca1a8' 
+						(true (0))
+						(false (1))))))
+				(false (light_signal1__ia2a8 
+					(true (occupied__ca1a8' 
+						(true (0))
+						(false (1))))
+					(false (light_signal2__ia2a8 
+						(true (occupied__ca1a8' 
+							(true (1))
+							(false (0))))
+						(false (occupied__ca1a8' 
+							(true (0))
+							(false (1))))))))))
+			(false (occupied__ca1a8 
 				(true (occupied__ca0a8 
 					(true (occupied__ca1a8' 
 						(true (1))
@@ -4079,34 +3970,7 @@ action noop
 						(false (1))))))
 				(false (occupied__ca1a8' 
 					(true (0))
-					(false (1))))))
-			(false (occupied__ca4a8 
-				(true (occupied__ca1a8 
-					(true (occupied__ca0a8 
-						(true (occupied__ca1a8' 
-							(true (1))
-							(false (0))))
-						(false (occupied__ca1a8' 
-							(true (0))
-							(false (1))))))
-					(false (light_signal2__ia2a8 
-						(true (occupied__ca1a8' 
-							(true (1))
-							(false (0))))
-						(false (occupied__ca1a8' 
-							(true (0))
-							(false (1))))))))
-				(false (occupied__ca1a8 
-					(true (occupied__ca0a8 
-						(true (occupied__ca1a8' 
-							(true (1))
-							(false (0))))
-						(false (occupied__ca1a8' 
-							(true (0))
-							(false (1))))))
-					(false (occupied__ca1a8' 
-						(true (0))
-						(false (1)))))))))
+					(false (1)))))))
 	occupied__ca0a8
 		(occupied__ca1a8 
 			(true (occupied__ca0a8 
@@ -4117,6 +3981,22 @@ action noop
 					(true (1))
 					(false (0))))))
 			(false (occupied__ca0a8' 
+				(true (0))
+				(false (1)))))
+	light_signal1__ia2a4
+		(light_signal1__ia2a4 
+			(true (light_signal1__ia2a4' 
+				(true (1))
+				(false (0))))
+			(false (light_signal1__ia2a4' 
+				(true (0))
+				(false (1)))))
+	light_signal1__ia2a8
+		(light_signal1__ia2a8 
+			(true (light_signal1__ia2a8' 
+				(true (1))
+				(false (0))))
+			(false (light_signal1__ia2a8' 
 				(true (0))
 				(false (1)))))
 	light_signal2__ia2a4
