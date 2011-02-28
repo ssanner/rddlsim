@@ -200,18 +200,22 @@ public class RDDL2FormatNonAdd {
 		}
 
 		// Initial state
-		ArrayList<String> true_vars = new ArrayList<String>();
-		for (PVAR_INST_DEF def : _i._alInitState) {
+		HashMap<String,Boolean> init_state_assign = new HashMap<String,Boolean>();
+		for (PVAR_INST_DEF def : _i._alInitState) {	
 			// Get the assignments for this PVAR
-			Boolean value = (Boolean) def._oValue;
-			if (value)
-				true_vars.add(CleanFluentName(def._sPredName.toString()
-						+ def._alTerms));
+			init_state_assign.put(CleanFluentName(def._sPredName.toString() + def._alTerms),
+					(Boolean)def._oValue);
 		}
 		pw.println("\ninit [*");
 		for (String s : _alStateVars) {
-
-			if (true_vars.contains(s))
+			
+			Boolean bval = init_state_assign.get(s);
+			if (bval == null) { // No assignment, get default value
+				// This is a quick fix... a bit ugly
+				PVAR_NAME p = new PVAR_NAME(s.split("__")[0]);
+				bval = (Boolean)_state.getDefaultValue(p);
+			}
+			if (bval)
 				pw.println("\t(" + s + " (true (1.0)) (false (0.0)))");
 			else
 				pw.println("\t(" + s + " (true (0.0)) (false (1.0)))");
@@ -359,20 +363,28 @@ public class RDDL2FormatNonAdd {
 		pw.println("(define (problem " + _i._sName + ")");
 		pw.println("\t(:domain " + _d._sDomainName + ")");
 		pw.println("\t(:init ");
-		ArrayList<String> true_vars = new ArrayList<String>();
-		for (PVAR_INST_DEF def : _i._alInitState) {
+		
+		// Initial state
+		HashMap<String,Boolean> init_state_assign = new HashMap<String,Boolean>();
+		for (PVAR_INST_DEF def : _i._alInitState) {	
 			// Get the assignments for this PVAR
-			Boolean value = (Boolean) def._oValue;
-			if (value)
-				true_vars.add(CleanFluentName(def._sPredName.toString()
-						+ def._alTerms));
+			init_state_assign.put(CleanFluentName(def._sPredName.toString() + def._alTerms),
+					(Boolean)def._oValue);
 		}
 		for (String s : _alStateVars) {
-			if (true_vars.contains(s)) {
-				// pw.println("\t\t(probabilistic 1.0 " + s + ")");
+			
+			Boolean bval = init_state_assign.get(s);
+			if (bval == null) { // No assignment, get default value
+				// This is a quick fix... a bit ugly
+				PVAR_NAME p = new PVAR_NAME(s.split("__")[0]);
+				bval = (Boolean)_state.getDefaultValue(p);
+			}
+
+			if (bval) {
+//				pw.println("\t\t(probabilistic 1.0 " + s + ")");
 				pw.println("\t\t(" + s + ")");
 			} else {
-				// pw.println("\t\t(probabilistic 0.0 " + s +")");
+//				pw.println("\t\t(probabilistic 0.0 " + s +")");
 			}
 		}
 		pw.println("\t)");
