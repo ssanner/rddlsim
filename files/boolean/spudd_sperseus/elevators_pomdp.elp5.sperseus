@@ -34,7 +34,7 @@
 )
 
 init [*
-	(elevator_dir_up__e1 (true (0.0)) (false (1.0)))
+	(elevator_dir_up__e1 (true (1.0)) (false (0.0)))
 	(elevator_at_floor__e1_f1 (true (1.0)) (false (0.0)))
 	(elevator_at_floor__e1_f2 (true (0.0)) (false (1.0)))
 	(elevator_at_floor__e1_f3 (true (0.0)) (false (1.0)))
@@ -52,7 +52,7 @@ init [*
 	(person_waiting_down__f3 (true (0.0)) (false (1.0)))
 	(person_waiting_down__f4 (true (0.0)) (false (1.0)))
 	(person_waiting_down__f5 (true (0.0)) (false (1.0)))
-	(elevator_closed__e1 (true (0.0)) (false (1.0)))
+	(elevator_closed__e1 (true (1.0)) (false (0.0)))
 ]
 
 action close_door__e1

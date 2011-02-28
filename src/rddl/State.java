@@ -389,6 +389,18 @@ public class State {
 		return UNDEFINED;
 	}
 	
+	public Object getDefaultValue(PVAR_NAME p) {
+		
+		Object def_value = null;
+		PVARIABLE_DEF pvar_def = _hmPVariables.get(new PVAR_NAME(p._sPVarName));
+		if (pvar_def instanceof PVARIABLE_STATE_DEF) // state & non_fluents
+			def_value = ((PVARIABLE_STATE_DEF) pvar_def)._oDefValue;
+		else if (pvar_def instanceof RDDL.PVARIABLE_ACTION_DEF) // actions
+			def_value = ((PVARIABLE_ACTION_DEF) pvar_def)._oDefValue;	
+		
+		return def_value;
+	}
+	
 	public Object getPVariableAssign(PVAR_NAME p, ArrayList<LCONST> terms) {
 
 		// Get default value if it exists

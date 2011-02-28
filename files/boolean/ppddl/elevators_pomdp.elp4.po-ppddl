@@ -1253,7 +1253,9 @@
 (define (problem elp4)
 	(:domain elevators_pomdp)
 	(:init 
+		(elevator_dir_up__e1)
 		(elevator_at_floor__e1_f1)
+		(elevator_closed__e1)
 	)
 	(:metric maximize (reward))
 	;; (:horizon 100)
