@@ -196,7 +196,7 @@ public class RDDL {
 
 			sb.append("  reward = " + _exprReward + ";\n");
 
-			sb.append("  state-constraints {\n");
+			sb.append("  state-action-constraints {\n");
 			for (BOOL_EXPR sc : _alStateConstraints) {
 				sb.append("    " + sc + ";\n");
 			}
