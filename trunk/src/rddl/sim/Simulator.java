@@ -121,7 +121,18 @@ public class Simulator {
 			if (args.length == 5)
 				rand_seed = new Integer(args[4]);
 			
-			RDDL rddl = parser.parse(new File(rddl_file));
+			// Load RDDL files
+			RDDL rddl = new RDDL();
+			File f = new File(rddl_file);
+			if (f.isDirectory()) {
+				for (File f2 : f.listFiles())
+					if (f2.getName().endsWith(".rddl")) {
+						System.out.println("Loading: " + f2);
+						rddl.addOtherRDDL(parser.parse(f2));
+					}
+			} else
+				rddl.addOtherRDDL(parser.parse(f));
+			
 			Simulator sim = new Simulator(rddl, instance_name);
 			Policy pol = (Policy)Class.forName(policy_class_name).newInstance();
 			StateViz viz = (StateViz)Class.forName(state_viz_class_name).newInstance();

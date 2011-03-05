@@ -57,6 +57,8 @@ public class RDDL2Format {
 	public int         DD_ONE;
 
 	public RDDL2Graph _r2g;
+	public String _filename;
+	
 	public ArrayList<String> _alAllVars;
 	public ArrayList<String> _alStateVars;
 	public ArrayList<String> _alNextStateVars;
@@ -82,7 +84,7 @@ public class RDDL2Format {
 	//public static double rewardSum;
 	
 	public RDDL2Format(RDDL rddl, String instance_name,
-			String translation_type) throws Exception {
+			String translation_type, String directory) throws Exception {
 		
 		_sTranslationType = translation_type.toLowerCase().intern();
 		
@@ -115,6 +117,28 @@ public class RDDL2Format {
 //		_r2g = new RDDL2Graph(rddl, instance_name, 
 //				/*strict levels*/false, /*strict grouping*/true);
 		
+		String separator = (directory.endsWith("\\") || directory.endsWith("/")) ? "" : File.separator;
+		_filename = directory + separator + _d._sDomainName + "." + _i._sName;
+		
+		if (_sTranslationType == PPDDL) {
+			if (!_d._bPartiallyObserved)
+				_filename = _filename + ".ppddl";
+			else
+				_filename = _filename + ".po-ppddl";
+		} else {
+			if (!_d._bPartiallyObserved)
+				_filename = _filename + ".spudd";
+			else
+				_filename = _filename + ".sperseus";
+		}
+		
+		File f = new File(_filename);
+		if (f.exists()) {
+			System.err.println(">> File '" + _filename + "' already exists... skipping");
+			_filename = null;
+			return;
+		}
+		
 		// Build the CPTs
 		buildCPTs();
 	}
@@ -124,23 +148,13 @@ public class RDDL2Format {
 	////////////////////////////////////////////////////////////////////////////////
 
 	// TODO: Export PO-PPDDL (like SPUDD / Symbolic Perseus, first do detect)
-	public void export(String directory) throws Exception {
+	public void export() throws Exception {
 		
-		String separator = (directory.endsWith("\\") || directory.endsWith("/")) ? "" : File.separator;
-		String filename = directory + separator + _d._sDomainName + "." + _i._sName;
+		// Null if filename already existed
+		if (_filename == null)
+			return;
 		
-		if (_sTranslationType == PPDDL) {
-			if (_var2observDD.size() == 0)
-				filename = filename + ".ppddl";
-			else
-				filename = filename + ".po-ppddl";
-		} else {
-			if (_var2observDD.size() == 0)
-				filename = filename + ".spudd";
-			else
-				filename = filename + ".sperseus";
-		}
-		PrintWriter pw = new PrintWriter(new FileWriter(filename));
+		PrintWriter pw = new PrintWriter(new FileWriter(_filename));
 		//PrintWriter pw = new PrintWriter(System.out);
 		
 		// Strings interned so can test equality here
@@ -156,7 +170,7 @@ public class RDDL2Format {
 			throw new Exception(_sTranslationType + " not currently supported.");
 		
 		pw.close();
-		System.out.println("\n>> Exported: '" + filename + "'");
+		System.out.println("\n>> Exported: '" + _filename + "'");
 	}
 	
 	public void exportSPUDD(PrintWriter pw, boolean curr_format, boolean allow_conc) {
@@ -1173,14 +1187,29 @@ public class RDDL2Format {
 		else
 			rddl_files.add(file);
 		
+		// Load RDDL files
+		RDDL rddl = new RDDL();
+		HashMap<File,RDDL> file2rddl = new HashMap<File,RDDL>();
 		for (File f : (ArrayList<File>)rddl_files.clone()) {
-						
+			RDDL r = null;
 			try {
-				RDDL rddl = parser.parse(f);
-				
-				for (String instance_name : rddl._tmInstanceNodes.keySet()) {
-					RDDL2Format r2s = new RDDL2Format(rddl, instance_name, arg2_intern);
-					r2s.export(output_dir);
+				r = parser.parse(f);
+			} catch (Exception e) {
+				System.out.println(e);
+				System.out.println("Error processing: " + f + ", skipping...");
+				rddl_files.remove(f);
+				continue;
+			}
+			file2rddl.put(f, r);
+			rddl.addOtherRDDL(r);
+		}
+		
+		for (File f : rddl_files) {
+						
+			try {	
+				for (String instance_name : file2rddl.get(f)._tmInstanceNodes.keySet()) {
+					RDDL2Format r2s = new RDDL2Format(rddl, instance_name, arg2_intern, output_dir);
+					r2s.export();
 				}
 			} catch (Exception e) {
 				System.err.println("Error processing: " + f);
