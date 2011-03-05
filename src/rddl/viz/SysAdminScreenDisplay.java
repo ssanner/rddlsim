@@ -46,9 +46,12 @@ public class SysAdminScreenDisplay extends StateViz {
 			ArrayList<ArrayList<LCONST>> gfluents = s.generateAtoms(state);										
 			for (ArrayList<LCONST> gfluent : gfluents)
 				sb.append(((Boolean)s.getPVariableAssign(state, gfluent) ? "." : "X"));
-			sb.append(" ---obs--> ");
-			for (ArrayList<LCONST> gfluent : gfluents)
-				sb.append(((Boolean)s.getPVariableAssign(obs, gfluent) ? "." : "X"));
+			
+			if (s._hmPVariables.get(obs) != null) {
+				sb.append(" ---obs--> ");
+				for (ArrayList<LCONST> gfluent : gfluents)
+					sb.append(((Boolean)s.getPVariableAssign(obs, gfluent) ? "." : "X"));
+			}
 						
 		} catch (EvalException ex) {
 			sb.append("- could not retrieve assignment for " + state + "/" + obs + "\n");

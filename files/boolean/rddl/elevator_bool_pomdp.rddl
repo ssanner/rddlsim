@@ -214,10 +214,8 @@ domain elevators_pomdp {
 		// is just to count.
 		forall_{?e : elevator} ([sum_{?f: floor} elevator-at-floor(?e, ?f)] == 1);
 		
-		// Cannot open and close door at the same time... implicitly enforced
-		// if max-non-def-actions is 1.
-		~exists_{?e : elevator} [open-door-going-up(?e) ^ close-door(?e)];
-		~exists_{?e : elevator} [open-door-going-down(?e) ^ close-door(?e)];
+		// Max of one action per elevator.
+		forall_{?e : elevator} [(open-door-going-up(?e) + open-door-going-down(?e) + close-door(?e) + move-current-dir(?e)) <= 1];
 		
 		// All floors except top and bottom must have one adjacent floor above/below
 		forall_{?f : floor} [ TOP-FLOOR(?f) | (sum_{?fup : floor} ADJACENT-UP(?f,?fup)) == 1 ];

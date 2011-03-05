@@ -1152,15 +1152,29 @@ public class RDDL2FormatNonAdd {
 			rddl_files.addAll(Arrays.asList(file.listFiles()));
 		else
 			rddl_files.add(file);
-
-		for (File f : (ArrayList<File>) rddl_files.clone()) {
-
+		
+		// Load RDDL files
+		RDDL rddl = new RDDL();
+		HashMap<File,RDDL> file2rddl = new HashMap<File,RDDL>();
+		for (File f : (ArrayList<File>)rddl_files.clone()) {
+			RDDL r = null;
 			try {
-				RDDL rddl = parser.parse(f);
-
-				for (String instance_name : rddl._tmInstanceNodes.keySet()) {
-					RDDL2FormatNonAdd r2s = new RDDL2FormatNonAdd(rddl, instance_name,
-							arg2_intern);
+				r = parser.parse(f);
+			} catch (Exception e) {
+				System.out.println(e);
+				System.out.println("Error processing: " + f + ", skipping...");
+				rddl_files.remove(f);
+				continue;
+			}
+			file2rddl.put(f, r);
+			rddl.addOtherRDDL(r);
+		}
+		
+		for (File f : rddl_files) {
+						
+			try {	
+				for (String instance_name : file2rddl.get(f)._tmInstanceNodes.keySet()) {
+					RDDL2FormatNonAdd r2s = new RDDL2FormatNonAdd(rddl, instance_name, arg2_intern);
 					r2s.export(output_dir);
 				}
 			} catch (Exception e) {
