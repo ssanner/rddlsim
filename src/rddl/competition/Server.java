@@ -50,12 +50,13 @@ public class Server implements Runnable {
 	public static final boolean SHOW_XML = false;
 	public static final boolean SHOW_MSG = false;
 	
-	private static final String LOG_FILE = "rddl.log";
+	private static final String LOG_FILE = "rddl";
 	/**
 	 * following is XML definitions
 	 */
 	public static final String SESSION_REQUEST = "session-request";
 	public static final String CLIENT_NAME = "client-name";
+	public static final String INSTANCE_NAME = "instance-name";
 	public static final String PROBLEM_NAME = "problem-name";
 	public static final String SESSION_INIT = "session-init";
 	public static final String SESSION_ID = "session-id";
@@ -108,6 +109,7 @@ public class Server implements Runnable {
 	private static int ID = 0;
 	private static int DEFAULT_NUM_ROUNDS = 30;
 	private static double DEFAULT_TIME_ALLOWED = 30;
+	public int port;
 	public int id;
 	public String clientName = null;
 	public String requestedInstance = null;
@@ -169,7 +171,7 @@ public class Server implements Runnable {
 			System.out.println("RDDL Server Initialized");
 			while (true) {
 				Socket connection = socket1.accept();
-				Runnable runnable = new Server(connection, ++ID, rddl, state_viz);
+				Runnable runnable = new Server(connection, ++ID, rddl, state_viz, port);
 				Thread thread = new Thread(runnable);
 				thread.start();
 			}
@@ -179,14 +181,12 @@ public class Server implements Runnable {
 			e.printStackTrace();
 		}
 	}
-	Server (Socket s, int i, RDDL rddl) {
-		this(s, i, rddl, new NullScreenDisplay(false));
-	}
-	Server (Socket s, int i, RDDL rddl, StateViz state_viz) {
+	Server (Socket s, int i, RDDL rddl, StateViz state_viz, int port) {
 		this.connection = s;
 		this.id = i;
 		this.rddl = rddl;
 		this.stateViz = state_viz;
+		this.port = port;
 	}
 	public void run() {
 		DOMParser p = new DOMParser();
@@ -298,20 +298,19 @@ public class Server implements Runnable {
 					state.advanceNextState();
 				}
 				accum_total_reward += accum_reward;
-				msg = createXMLRoundEnd(r, accum_reward, h, 0);
+				msg = createXMLRoundEnd(requestedInstance, r, accum_reward, h, 0);
 				if (SHOW_MSG)
 					System.out.println("Sending msg:\n" + msg);
 				sendOneMessage(osw, msg);
+				
+				writeToLog(msg);
 			}
-			msg = createXMLSessionEnd(accum_total_reward, r, 0, this.clientName, this.id);
+			msg = createXMLSessionEnd(requestedInstance, accum_total_reward, r, 0, this.clientName, this.id);
 			if (SHOW_MSG)
 				System.out.println("Sending msg:\n" + msg);
 			sendOneMessage(osw, msg);
 
-			BufferedWriter bw = new BufferedWriter(new FileWriter(LOG_FILE, true));
-			bw.write(msg);
-			bw.newLine();
-			bw.flush();
+			writeToLog(msg);
 
 			//need to wait 10 seconds to pretend that we're processing something
 //			try {
@@ -331,6 +330,14 @@ public class Server implements Runnable {
 			}
 			catch (IOException e){}
 		}
+	}
+	
+	public void writeToLog(String msg) throws IOException {
+		BufferedWriter bw = new BufferedWriter(new FileWriter(LOG_FILE + "-" + this.port + ".log" , true));
+		bw.write(msg);
+		bw.newLine();
+		bw.flush();
+		bw.close();
 	}
 	
 	HashMap<PVAR_NAME, HashMap<ArrayList<LCONST>, Object>> copyObserv(
@@ -681,7 +688,7 @@ public class Server implements Runnable {
 		}
 	}
 	
-	static String createXMLRoundEnd (int round, double reward,
+	static String createXMLRoundEnd (String requested_instance, int round, double reward,
 			int turnsUsed, double timeUsed) {
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		try {
@@ -689,6 +696,7 @@ public class Server implements Runnable {
 			Document dom = db.newDocument();
 			Element rootEle = dom.createElement(ROUND_END);
 			dom.appendChild(rootEle);
+			addOneText(dom,rootEle,INSTANCE_NAME, requested_instance);			
 			addOneText(dom,rootEle,	ROUND_NUM, round + "");
 			addOneText(dom,rootEle, ROUND_REWARD, reward + "");			
 			addOneText(dom,rootEle, TURNS_USED, turnsUsed + "");
@@ -709,7 +717,8 @@ public class Server implements Runnable {
 		p.appendChild(e);
 	}
 	
-	static String createXMLSessionEnd(double reward, int roundsUsed, double timeUsed,
+	static String createXMLSessionEnd(String requested_instance, 
+			double reward, int roundsUsed, double timeUsed,
 			String clientName, int sessionId) {
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		try {
@@ -717,6 +726,7 @@ public class Server implements Runnable {
 			Document dom = db.newDocument();
 			Element rootEle = dom.createElement(SESSION_END);
 			dom.appendChild(rootEle);
+			addOneText(dom,rootEle,INSTANCE_NAME, requested_instance);			
 			addOneText(dom,rootEle,TOTAL_REWARD, reward + "");			
 			addOneText(dom,rootEle,ROUNDS_USED, roundsUsed + "");
 			addOneText(dom,rootEle,TIME_USED, timeUsed + "");
