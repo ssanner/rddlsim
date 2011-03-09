@@ -1609,7 +1609,7 @@ public class RDDL {
 		public EXPR _falseBranch;
 		
 		public String toString() {
-			if (USE_PREFIX)
+			if (USE_PREFIX) // TODO: Change prefix to if-then-else?
 				return "(if " + _test + " then " + _trueBranch + " else " + _falseBranch + ")";
 			else
 				return "if (" + _test + ") then [" + _trueBranch + "] else [" + _falseBranch + "]";
