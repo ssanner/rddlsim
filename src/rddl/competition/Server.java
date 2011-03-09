@@ -298,7 +298,7 @@ public class Server implements Runnable {
 					state.advanceNextState();
 				}
 				accum_total_reward += accum_reward;
-				msg = createXMLRoundEnd(requestedInstance, r, accum_reward, h, 0);
+				msg = createXMLRoundEnd(requestedInstance, r, accum_reward, h, 0, clientName);
 				if (SHOW_MSG)
 					System.out.println("Sending msg:\n" + msg);
 				sendOneMessage(osw, msg);
@@ -689,7 +689,7 @@ public class Server implements Runnable {
 	}
 	
 	static String createXMLRoundEnd (String requested_instance, int round, double reward,
-			int turnsUsed, double timeUsed) {
+			int turnsUsed, double timeUsed, String client_name) {
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		try {
 			DocumentBuilder db = dbf.newDocumentBuilder();
@@ -697,6 +697,7 @@ public class Server implements Runnable {
 			Element rootEle = dom.createElement(ROUND_END);
 			dom.appendChild(rootEle);
 			addOneText(dom,rootEle,INSTANCE_NAME, requested_instance);			
+			addOneText(dom,rootEle,CLIENT_NAME, client_name + "");
 			addOneText(dom,rootEle,	ROUND_NUM, round + "");
 			addOneText(dom,rootEle, ROUND_REWARD, reward + "");			
 			addOneText(dom,rootEle, TURNS_USED, turnsUsed + "");
