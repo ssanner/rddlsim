@@ -112,11 +112,11 @@ public class TrafficDisplay extends StateViz {
 			boolean red = (b_ls1 && b_ls2) || (!b_ls1 && !b_ls2);
 			if (red) {
 				_bd.setCell(row, col, Color.red, null);				
-				_bd.setCell(row+1, col, Color.red, null);				
+				//_bd.setCell(row+1, col, Color.red, null);				
 			} else {
 				boolean ns = (!b_ls1 && b_ls2);
 				_bd.setCell(row, col, Color.green, ns ? "||" : "--");
-				_bd.setCell(row+1, col, Color.green, ns ? "||" : "--");	
+				//_bd.setCell(row+1, col, Color.green, ns ? "||" : "--");	
 			}
 			
 		}
