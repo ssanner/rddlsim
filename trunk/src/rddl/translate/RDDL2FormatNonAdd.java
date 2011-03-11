@@ -133,7 +133,7 @@ public class RDDL2FormatNonAdd {
 
 		String separator = (directory.endsWith("\\") || directory.endsWith("/")) ? ""
 				: File.separator;
-		String filename = directory + separator + _d._sDomainName + "."
+		String filename = directory + separator /*+ _d._sDomainName + "."*/
 				+ _i._sName;
 
 		if (_sTranslationType == PPDDL) {

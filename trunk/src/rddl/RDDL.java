@@ -2237,6 +2237,10 @@ public class RDDL {
 				&& _alTerms.equals(pid._alTerms);
 		}
 		
+		public int hashCode() {
+			return _sPredName.hashCode() + (_oValue.hashCode() << 10) + (_alTerms.hashCode() << 20); 
+		}
+		
 		public String toString() {
 			StringBuilder sb = new StringBuilder();
 			if (_oValue instanceof Boolean) {

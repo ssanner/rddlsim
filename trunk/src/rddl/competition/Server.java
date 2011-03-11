@@ -136,10 +136,10 @@ public class Server implements Runnable {
 		ArrayList<RDDL> rddls = new ArrayList<RDDL>();
 		int port = PORT_NUMBER;
 		if ( args.length < 1 ) {
-			System.out.println("usage: rddlfilename (optional) portnumber random-seed state-viz-class-name");
+			System.out.println("usage: rddlfilename (optional) portnumber num-rounds random-seed state-viz-class-name");
 			System.out.println("\nexample 1: Server rddlfilename");
 			System.out.println("example 2: Server rddlfilename 2323");
-			System.out.println("example 3: Server rddlfilename 2323 0 rddl.viz.GenericScreenDisplay");
+			System.out.println("example 3: Server rddlfilename 2323 100 0 rddl.viz.GenericScreenDisplay");
 			System.exit(1);
 		}
 				
@@ -160,13 +160,16 @@ public class Server implements Runnable {
 				port = Integer.valueOf(args[1]);
 			}
 			ServerSocket socket1 = new ServerSocket(port);
-			if ( args.length > 2) {
-				Server.rand = new Random(Integer.valueOf(args[2]));
+			if (args.length > 2) {
+				DEFAULT_NUM_ROUNDS = Integer.valueOf(args[2]);
+			}
+			if ( args.length > 3) {
+				Server.rand = new Random(Integer.valueOf(args[3]));
 			} else {
 				Server.rand = new Random(DEFAULT_SEED);
 			}
-			if (args.length > 3) {
-				state_viz = (StateViz)Class.forName(args[3]).newInstance();
+			if (args.length > 4) {
+				state_viz = (StateViz)Class.forName(args[4]).newInstance();
 			}
 			System.out.println("RDDL Server Initialized");
 			while (true) {
@@ -214,9 +217,10 @@ public class Server implements Runnable {
 			initializeState(rddl, requestedInstance);
 			//System.out.println("STATE:\n" + state);
 			
-			double accum_total_reward = 0;
+			double accum_total_reward = 0d;
 			ArrayList<Double> rewards = new ArrayList<Double>(DEFAULT_NUM_ROUNDS * instance._nHorizon);
 			int r = 0;
+			long session_elapsed_time = 0l;
 			for( ; r < numRounds; r++ ) {			
 				isrc = readOneMessage(isr);
 				if ( !processXMLRoundRequest(p, isrc) ) {
@@ -226,6 +230,7 @@ public class Server implements Runnable {
 				msg = createXMLRoundInit(r+1, numRounds, timeUsed, timeAllowed);
 				sendOneMessage(osw,msg);
 				
+				long start_round_time = System.currentTimeMillis();
 				System.out.println("Round " + (r+1) + " / " + numRounds);
 				if (SHOW_MEMORY_USAGE)
 					System.out.print("[ Memory usage: " + 
@@ -298,14 +303,16 @@ public class Server implements Runnable {
 					state.advanceNextState();
 				}
 				accum_total_reward += accum_reward;
-				msg = createXMLRoundEnd(requestedInstance, r, accum_reward, h, 0, clientName);
+				long elapsed_time = System.currentTimeMillis() - start_round_time;
+				session_elapsed_time += elapsed_time;
+				msg = createXMLRoundEnd(requestedInstance, r, accum_reward, h, elapsed_time, clientName);
 				if (SHOW_MSG)
 					System.out.println("Sending msg:\n" + msg);
 				sendOneMessage(osw, msg);
 				
 				writeToLog(msg);
 			}
-			msg = createXMLSessionEnd(requestedInstance, accum_total_reward, r, 0, this.clientName, this.id);
+			msg = createXMLSessionEnd(requestedInstance, accum_total_reward, r, session_elapsed_time, this.clientName, this.id);
 			if (SHOW_MSG)
 				System.out.println("Sending msg:\n" + msg);
 			sendOneMessage(osw, msg);
@@ -689,7 +696,7 @@ public class Server implements Runnable {
 	}
 	
 	static String createXMLRoundEnd (String requested_instance, int round, double reward,
-			int turnsUsed, double timeUsed, String client_name) {
+			int turnsUsed, long timeUsed, String client_name) {
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		try {
 			DocumentBuilder db = dbf.newDocumentBuilder();
@@ -719,7 +726,7 @@ public class Server implements Runnable {
 	}
 	
 	static String createXMLSessionEnd(String requested_instance, 
-			double reward, int roundsUsed, double timeUsed,
+			double reward, int roundsUsed, long timeUsed,
 			String clientName, int sessionId) {
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		try {
