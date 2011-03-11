@@ -85,7 +85,7 @@ We currently provide the following rddlsim command line utilities:
 
     Running the RDDL Server and Client: [command line parameters subject to change]
     
-        rddl.competition.Server RDDL-file [port-number]
+        rddl.competition.Server RDDL-file [port-number] [num-trials] [random-seed] [state-viz-class-name]
         rddl.competition.Client RDDL-file host-name client-name policy-class-name [port-number]
         
         n.b., (1) default port number is 2323
@@ -96,12 +96,16 @@ We currently provide the following rddlsim command line utilities:
         
 	Examples (run from rddlsim directory, ./run for UNIX/Cygwin, run.bat for Windows):
 
+		**Client/Server examples**
+
 		./run rddl.competition.Server files/boolean/rddl/
 		./run rddl.competition.Client files/boolean/rddl localhost MyClientName rddl.policy.SPerseusSPUDDPolicy 2323 123456 glm1
 		./run rddl.competition.Client files/boolean/rddl localhost MyClientName rddl.policy.SPerseusSPUDDPolicy 2323 123456 glp1
 
                 Note: see directory rddlsim/cclient for instructions
                 on how to build and run a C++ client.
+
+		**Parser and translation examples**
 
 		./run rddl.parser.parser files/rddl/test/sysadmin.rddl 
 		./run rddl.parser.parser files/rddl/test/game_of_life.rddl 
@@ -111,11 +115,17 @@ We currently provide the following rddlsim command line utilities:
                 prefix format (rather than the current infix format):
                 
 		./run rddl.parser.parser files/rddl/test/sysadmin.rddl -prefix-output
-		./run rddl.parser.parser files/rddl/test/game_of_life.rddl -prefix-output
+		
+				Or do the prefix translations for an entire directory:				
+
+		./run rddl.translate.RDDL2Prefix files/boolean/rddl files/boolean/rddl_prefix
+		
+				Translate to (PO-)PPDDL / SPUDD / Symbolic Perseus:
 	
 		./run rddl.translate.RDDL2Format files/boolean/rddl files/boolean/spudd_sperseus spudd_sperseus
 		./run rddl.translate.RDDL2Format files/boolean/rddl files/boolean/ppddl ppddl
-		./run rddl.translate.RDDL2Prefix files/boolean/rddl files/boolean/rddl_prefix
+
+		**Simulator examples**
 	
 		./run rddl.sim.Simulator files/rddl/test/dbn_prop.rddl rddl.policy.RandomBoolPolicy inst_dbn
 		./run rddl.sim.Simulator files/rddl/test/game_of_life.rddl rddl.policy.RandomBoolPolicy is1 rddl.viz.GameOfLifeScreenDisplay
@@ -124,6 +134,8 @@ We currently provide the following rddlsim command line utilities:
 		./run rddl.sim.Simulator files/rddl/test/traffic_binary_ctm.rddl rddl.policy.RandomBoolPolicy is1 rddl.viz.TrafficDisplay
 		./run rddl.sim.Simulator files/boolean/rddl/elevator_bool_mdp.rddl rddl.policy.RandomBoolPolicy elm4 rddl.viz.ElevatorDisplay
 		./run rddl.sim.Simulator files/boolean/rddl/traffic_bool_mdp.rddl rddl.policy.RandomBoolPolicy trm1 rddl.viz.TrafficDisplay
+
+		**RDDL DBN / Influence Diagram Visualization**
 
 		./run rddl.viz.RDDL2Graph files/rddl/test/dbn_prop.rddl inst_dbn
 		./run rddl.viz.RDDL2Graph files/rddl/test/dbn_types_interm_po.rddl inst_dbn

@@ -11,12 +11,6 @@ import rddl.translate.RDDL2Format;
 
 public class ActionGenerator {
 
-	///////////////////////////////////////////////////////////////////////////
-	//                             Helper Methods
-	//
-	// You likely won't need to understand the code below, only the above code.
-	///////////////////////////////////////////////////////////////////////////
-	
 	public static TreeMap<String,ArrayList<PVAR_INST_DEF>> getLegalBoolActionMap(State s) 
 		throws EvalException {
 	
@@ -27,18 +21,19 @@ public class ActionGenerator {
 		TreeMap<String,ArrayList<PVAR_INST_DEF>> action_map = new TreeMap<String,ArrayList<PVAR_INST_DEF>>();
 	
 		//if (ALLOW_NOOP) {
-		HashSet<ArrayList<PVAR_INST_DEF>> noop_set = new HashSet<ArrayList<PVAR_INST_DEF>>();
 		action_map.put("noop", (ArrayList<PVAR_INST_DEF>)actions.clone());
 		//}
 		
-		buildBooleanActionSet(s, s._nMaxNondefActions, actions, action_map);
+		HashSet<HashSet<PVAR_INST_DEF>> action_set = new HashSet<HashSet<PVAR_INST_DEF>>();
+		buildBooleanActionSet(s, s._nMaxNondefActions, actions, action_map, action_set);
 		
 		return action_map;
 	}
 
 	public static void buildBooleanActionSet(State s, int actions_left, 
 			ArrayList<PVAR_INST_DEF> action_list,
-			TreeMap<String,ArrayList<PVAR_INST_DEF>> action_map) {
+			TreeMap<String,ArrayList<PVAR_INST_DEF>> action_map,
+			HashSet<HashSet<PVAR_INST_DEF>> action_set) {
 	
 		--actions_left;
 		if (actions_left < 0) {
@@ -54,7 +49,12 @@ public class ActionGenerator {
 				sb.append(RDDL2Format.CleanFluentName("" + p._sPredName + p._alTerms));
 				first = false;
 			}
-			action_map.put(sb.toString(), (ArrayList<PVAR_INST_DEF>)action_list.clone());
+			ArrayList<PVAR_INST_DEF> action_list_to_add = (ArrayList<PVAR_INST_DEF>)action_list.clone();
+			HashSet<PVAR_INST_DEF> action_set_to_add = new HashSet<PVAR_INST_DEF>(action_list_to_add);
+			if (!action_set.contains(action_set_to_add)) {
+				action_map.put(sb.toString(), action_list_to_add);
+				action_set.add(action_set_to_add);
+			}
 		} else {
 		
 			for (PVAR_NAME p : s._alActionNames) {
@@ -83,7 +83,7 @@ public class ActionGenerator {
 						passed_constraints = false;
 					}
 					if (passed_constraints) {
-						buildBooleanActionSet(s, actions_left, action_list, action_map);
+						buildBooleanActionSet(s, actions_left, action_list, action_map, action_set);
 					}
 					if (!action_already_added)
 						action_list.remove(action_list.size() - 1);

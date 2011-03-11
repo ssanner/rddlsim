@@ -118,7 +118,7 @@ public class RDDL2Format {
 //				/*strict levels*/false, /*strict grouping*/true);
 		
 		String separator = (directory.endsWith("\\") || directory.endsWith("/")) ? "" : File.separator;
-		_filename = directory + separator + _d._sDomainName + "." + _i._sName;
+		_filename = directory + separator + /*_d._sDomainName + "." +*/ _i._sName;
 		
 		if (_sTranslationType == PPDDL) {
 			if (!_d._bPartiallyObserved)
