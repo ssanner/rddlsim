@@ -1,0 +1,18 @@
+./run rddl.sim.Simulator files/test_comp/rddl rddl.policy.RandomBoolPolicy elevator_inst_mdp__9 rddl.viz.ElevatorDisplay
+./run rddl.sim.Simulator files/test_comp/rddl rddl.policy.RandomBoolPolicy elevator_inst_pomdp__9 rddl.viz.ElevatorDisplay
+
+
+./run rddl.sim.Simulator files/test_comp/rddl rddl.policy.RandomBoolPolicy game_of_life_inst_mdp__10 rddl.viz.GameOfLifeScreenDisplay
+./run rddl.sim.Simulator files/test_comp/rddl rddl.policy.RandomBoolPolicy game_of_life_inst_pomdp__10 rddl.viz.GameOfLifeScreenDisplay
+
+
+./run rddl.sim.Simulator files/test_comp/rddl rddl.policy.RandomBoolPolicy sysadmin_inst_mdp__10 rddl.viz.SysAdminScreenDisplay
+./run rddl.sim.Simulator files/test_comp/rddl rddl.policy.RandomBoolPolicy sysadmin_inst_pomdp__10 rddl.viz.SysAdminScreenDisplay
+
+
+./run rddl.sim.Simulator files/test_comp/rddl rddl.policy.RandomBoolPolicy traffic_inst_mdp__1 rddl.viz.TrafficDisplay
+./run rddl.sim.Simulator files/test_comp/rddl rddl.policy.RandomBoolPolicy traffic_inst_pomdp__1 rddl.viz.TrafficDisplay
+
+
+./run rddl.sim.Simulator files/test_comp/rddl rddl.policy.RandomBoolPolicy traffic_inst_mdp__3 rddl.viz.TrafficDisplay
+./run rddl.sim.Simulator files/test_comp/rddl rddl.policy.RandomBoolPolicy traffic_inst_pomdp__3 rddl.viz.TrafficDisplay
