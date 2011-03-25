@@ -510,7 +510,7 @@ public class Server implements Runnable {
 		StringBuffer message = new StringBuffer();
 		int character;
 		try {
-			while((character = isr.read()) != '\0') {
+			while((character = isr.read()) != '\0' && character != -1) { 
 				message.append((char)character);
 			}
 //			System.out.println(message);
