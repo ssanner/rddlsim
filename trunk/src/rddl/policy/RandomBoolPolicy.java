@@ -28,6 +28,13 @@ public class RandomBoolPolicy extends Policy {
 
 	public ArrayList<PVAR_INST_DEF> getActions(State s) throws EvalException {
 		
+		if (s == null) {
+			// This should only occur on the **first step** of a POMDP trial
+			// when no observations have been generated, for now, we just
+			// return a 'noop'
+			return new ArrayList<PVAR_INST_DEF>();
+		}
+
 		// Get a map of { legal action names -> RDDL action definition }  
 		Map<String,ArrayList<PVAR_INST_DEF>> action_map = 
 			ActionGenerator.getLegalBoolActionMap(s);
@@ -35,7 +42,7 @@ public class RandomBoolPolicy extends Policy {
 		// Return a random action selection
 		ArrayList<String> actions = new ArrayList<String>(action_map.keySet());
 		String action_taken = actions.get(_rand.nextInt(action_map.size()));
-		System.out.println("\n--> Action taken: " + action_taken);
+		//System.out.println("\n--> Action taken: " + action_taken);
 		
 		return action_map.get(action_taken);
 	}
