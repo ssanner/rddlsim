@@ -36,6 +36,11 @@ public class LogReader {
 	
 	public LogReader(File f) {
 		
+		File f2 = new File(f.toString() + ".clean");
+		if (!f2.exists()) {
+			CleanFile(f, f2);
+		}
+		
 		_client2data = new HashMap<String,MapList>();
  
 		/**
@@ -43,7 +48,7 @@ public class LogReader {
          */
 		try {
 	        DOMParser parser = new DOMParser();
-	        InputStream byteStream = new FileInputStream(f);
+	        InputStream byteStream = new FileInputStream(f2);
 	        parser.parse(new org.xml.sax.InputSource(byteStream));
 	        _doc = parser.getDocument();
 		} catch (Exception e) {
@@ -65,15 +70,44 @@ public class LogReader {
 //	        }
 //		}
         
-		NodeList nodes = (NodeList)XPathQuery(_doc, "//round-end", XPathConstants.NODESET);		
+		//NodeList nodes = (NodeList)XPathQuery(_doc, "//round-end", XPathConstants.NODESET);		
 		//System.out.println("\n\nQuery result: " + result.getClass());
+		NodeList nodes = _doc.getChildNodes().item(0).getChildNodes();
 		for (int i = 0; i < nodes.getLength(); i++) {
+
+			Node n = nodes.item(i);
+			if (!n.getNodeName().equals("round-end"))
+				continue;
 			
 			// Note: use . for the current node: nodes.item(i)
-			String client_name = (String)XPathQuery(nodes.item(i), ".//client-name", XPathConstants.STRING);		
-			String instance_name = (String)XPathQuery(nodes.item(i), ".//instance-name", XPathConstants.STRING);		
-			double reward = (Double)XPathQuery(nodes.item(i), ".//round-reward", XPathConstants.NUMBER);		
+			String client_name = null; //(String)XPathQuery(n, ".//client-name", XPathConstants.STRING);		
+			String instance_name = null; //(String)XPathQuery(n, ".//instance-name", XPathConstants.STRING);		
+			double reward = Double.NaN; //(Double)XPathQuery(n, ".//round-reward", XPathConstants.NUMBER);
+			
+			NodeList children = n.getChildNodes();
+			for (int j = 0; j < children.getLength(); j++) {
+				Node c = children.item(j);
+				
+				if (c.getNodeName().equals("client-name")) {
+					client_name = c.getFirstChild().getNodeValue();		
+				}
+				if (c.getNodeName().equals("instance-name")) {
+					instance_name = c.getFirstChild().getNodeValue(); 
+				}
+				if (c.getNodeName().equals("round-reward")) {
+					//PrintNode(c.getFirstChild(), "", 0);
+					//System.out.println("C:" + c.getFirstChild().getNodeValue());
+					reward = new Double(c.getFirstChild().getNodeValue());
+				}
+			}
 
+			if (client_name == null) {
+				System.err.println("Client name null... skipping");
+				PrintNode(n, "", 0);
+				continue;
+				//System.exit(1);
+			}
+			
 			//System.out.println(_sClientName + ": " + instance_name + " -> " + reward);
 			MapList ml = _client2data.get(client_name);
 			if (ml == null) {
@@ -86,6 +120,26 @@ public class LogReader {
 		//System.out.println(_client2data);
 	}
 	
+	public static void CleanFile(File f, File f2) {
+		try {
+			BufferedReader br = new BufferedReader(new FileReader(f));
+			PrintStream ps = new PrintStream(new FileOutputStream(f2));
+			String line = br.readLine(); // Discard first line
+			ps.println("<root>");
+			while ((line = br.readLine()) != null) {
+				if (line.startsWith("<?xml version=\"1.0\" encoding=\"UTF-8\"?>"))
+					continue;
+				ps.println(line);
+			}
+			ps.println("</root>");
+			br.close();
+			ps.close();
+		} catch (Exception e) {
+			System.out.println("Cannot process file: '" + f + "'\n" + e);
+			System.exit(1);
+		}
+	}
+
 	/**
      * Creates a string buffer of spaces
      * @param depth the number of spaces
@@ -146,7 +200,7 @@ public class LogReader {
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		LogReader d = new LogReader(new File("TestComp/rddl-2314.log"));
+		LogReader d = new LogReader(new File("TestComp/rddl-2320.log"));
 		System.out.println(d._client2data);
 	}
 }
