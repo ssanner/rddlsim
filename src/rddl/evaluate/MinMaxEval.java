@@ -35,9 +35,9 @@ public class MinMaxEval {
 	
 	public static HashSet<String> BASELINE_POLICIES = new HashSet<String>();
 	static {
-		BASELINE_POLICIES.add("RandomBoolPolicy");
-		BASELINE_POLICIES.add("RandomPolicy");
-		BASELINE_POLICIES.add("NoopPolicy");
+		BASELINE_POLICIES.add("RandomBoolPolicy".toLowerCase());
+		BASELINE_POLICIES.add("RandomPolicy".toLowerCase());
+		BASELINE_POLICIES.add("NoopPolicy".toLowerCase());
 	}
 	
 	public static DecimalFormat df = new DecimalFormat("#.##");
@@ -83,7 +83,7 @@ public class MinMaxEval {
 					count = 0;
 					instance2minR.put(instance_name, Double.MAX_VALUE);
 					instance2maxR.put(instance_name, -Double.MAX_VALUE);
-					instance2minRNoopRandom.put(instance_name, Double.MAX_VALUE);
+					instance2minRNoopRandom.put(instance_name, -Double.MAX_VALUE);
 				}
 				instance2count.put(instance_name, count + 1);
 				instances_encountered.add(instance_name);
@@ -105,8 +105,8 @@ public class MinMaxEval {
 					instance2maxRName.put(instance_name, client_name);
 					instance2maxRStdErr.put(instance_name, stderr);
 				}
-				if (avg < min_valNoopRandom && 
-						(BASELINE_POLICIES.contains(client_name))) {
+				if (avg > min_valNoopRandom && 
+						(BASELINE_POLICIES.contains(client_name.toLowerCase()))) {
 					instance2minRNoopRandom.put(instance_name, avg);
 					instance2minRNameNoopRandom.put(instance_name, client_name);
 					instance2minRStdErrNoopRandom.put(instance_name, stderr);
