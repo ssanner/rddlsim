@@ -31,6 +31,15 @@ import com.sun.org.apache.xml.internal.dtm.ref.DTMDefaultBaseIterators.ChildrenI
 
 public class MinMaxEval {
 	
+	public static final String MIN_MAX_FILE = "min_max_norm_constants.txt";
+	
+	public static HashSet<String> BASELINE_POLICIES = new HashSet<String>();
+	static {
+		BASELINE_POLICIES.add("RandomBoolPolicy");
+		BASELINE_POLICIES.add("RandomPolicy");
+		BASELINE_POLICIES.add("NoopPolicy");
+	}
+	
 	public static DecimalFormat df = new DecimalFormat("#.##");
 	
 	/**
@@ -53,13 +62,16 @@ public class MinMaxEval {
 		
 		HashMap<String,Integer> instance2count = new HashMap<String,Integer>();
 		HashMap<String,Double>  instance2minR  = new HashMap<String,Double>();
+		HashMap<String,Double>  instance2minRNoopRandom = new HashMap<String,Double>();
 		HashMap<String,Double>  instance2maxR  = new HashMap<String,Double>();
 		HashMap<String,String>  instance2minRName    = new HashMap<String,String>();
+		HashMap<String,String>  instance2minRNameNoopRandom    = new HashMap<String,String>();
 		HashMap<String,String>  instance2maxRName    = new HashMap<String,String>();
 		HashMap<String,Double>  instance2minRStdErr  = new HashMap<String,Double>();
+		HashMap<String,Double>  instance2minRStdErrNoopRandom  = new HashMap<String,Double>();
 		HashMap<String,Double>  instance2maxRStdErr  = new HashMap<String,Double>();
 
-		TreeSet<String> instances = new TreeSet<String>();
+		TreeSet<String> instances = new TreeSet<String>(new InstNameComparator());
 		for (Map.Entry<String, MapList> e : client2data.entrySet()) {
 			String client_name = e.getKey();
 			HashSet<String> instances_encountered = new HashSet<String>();
@@ -71,6 +83,7 @@ public class MinMaxEval {
 					count = 0;
 					instance2minR.put(instance_name, Double.MAX_VALUE);
 					instance2maxR.put(instance_name, -Double.MAX_VALUE);
+					instance2minRNoopRandom.put(instance_name, Double.MAX_VALUE);
 				}
 				instance2count.put(instance_name, count + 1);
 				instances_encountered.add(instance_name);
@@ -79,46 +92,86 @@ public class MinMaxEval {
 				
 				double min_val = instance2minR.get(instance_name);
 				double max_val = instance2maxR.get(instance_name);	
+				double min_valNoopRandom = instance2minRNoopRandom.get(instance_name);
 				double avg = Statistics.Avg(rewards);
 				double stderr = Statistics.StdError95(rewards);
 				if (avg < min_val) {
-					instance2minR.put(instance_name, Math.min(min_val, avg));
+					instance2minR.put(instance_name, avg);
 					instance2minRName.put(instance_name, client_name);
 					instance2minRStdErr.put(instance_name, stderr);
 				}
 				if (avg > max_val) {
-					instance2maxR.put(instance_name, Math.max(max_val, avg));
+					instance2maxR.put(instance_name, avg);
 					instance2maxRName.put(instance_name, client_name);
 					instance2maxRStdErr.put(instance_name, stderr);
+				}
+				if (avg < min_valNoopRandom && 
+						(BASELINE_POLICIES.contains(client_name))) {
+					instance2minRNoopRandom.put(instance_name, avg);
+					instance2minRNameNoopRandom.put(instance_name, client_name);
+					instance2minRStdErrNoopRandom.put(instance_name, stderr);
 				}
 			}
 			instances.addAll(instances_encountered);
 		}
 		
+		PrintStream ps = new PrintStream(f.getPath() + File.separator + MIN_MAX_FILE);
 		for (String instance_name : instances) {
-			double count   = instance2count.get(instance_name);
+			
+			int count   = instance2count.get(instance_name);
 			double min_val = instance2minR.get(instance_name);
 			String min_val_src = instance2minRName.get(instance_name);;
 			double min_val_stderr = instance2minRStdErr.get(instance_name);;
+			double min_valNoopRandom = instance2minRNoopRandom.get(instance_name);
+			String min_val_srcNoopRandom = instance2minRNameNoopRandom.get(instance_name);;
+			Double min_val_stderrNoopRandom = instance2minRStdErrNoopRandom.get(instance_name);;
+			if (min_val_stderrNoopRandom == null) {
+				System.out.println("ERROR: could not find min for: " + instance_name);
+				System.exit(1);
+			}
+			
 			double max_val = instance2maxR.get(instance_name);
 			String max_val_src = instance2maxRName.get(instance_name);;
 			double max_val_stderr = instance2maxRStdErr.get(instance_name);;
 			System.out.println(instance_name + "\t" + count + "\t" + 
-					min_val_src + "\t" + df.format(min_val) + "\t+/-" + df.format(min_val_stderr) + "\t" +
-					max_val_src + "\t" + df.format(max_val) + "\t+/-" + df.format(max_val_stderr));
+					min_val_src + "\t" + df.format(min_val) + "\t+/- " + df.format(min_val_stderr) + "\t" +
+					min_val_srcNoopRandom + "\t" + df.format(min_valNoopRandom) + "\t+/- " + df.format(min_val_stderrNoopRandom) + "\t" +
+					max_val_src + "\t" + df.format(max_val) + "\t+/- " + df.format(max_val_stderr));
+			
+			ps.println(instance_name + "\t" + min_val_srcNoopRandom + "\t" + df.format(min_valNoopRandom) + "\t" + max_val_src + "\t" + df.format(max_val));
 		}
+		ps.close();
+	}
+	
+	public static class InstNameComparator implements Comparator {
+
+		public int compare(Object o1, Object o2) {
+			String[] parts1 = ((String)o1).split("__");
+			String[] parts2 = ((String)o2).split("__");
+			
+			int comp1 = parts1[0].compareTo(parts2[0]);
+			if (comp1 != 0)
+				return comp1;
+			
+			int id1 = new Integer(parts1[1]);
+			int id2 = new Integer(parts2[1]);
+			return id1 - id2;
+		}
+		
 	}
 	
 	public static void main(String[] args) throws Exception {
 		
-		//if (args.length != 1)
-		//	usage();
+		String directory = "TestComp/POMDP";
+		if (args.length == 1)
+			directory = args[0];
+		else
+			usage();
 		
-		Eval(new File("TestComp"));
+		Eval(new File(directory));
 	}
 	
 	public static void usage() {
 		System.out.println("\nUsage: <directory of RDDL .log files>");
-		System.exit(1);
 	}
 }
