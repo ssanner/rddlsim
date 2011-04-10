@@ -1,4 +1,8 @@
 #!/bin/sh
+#
+# Shell script for converting xml log files to proper XML.
+# Note: the Java evaluation code already does this automatically.
+#
 echo Cleaning xml files in $1
 
 # Remove repeated header lines

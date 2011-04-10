@@ -200,7 +200,7 @@ public class LogReader {
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		LogReader d = new LogReader(new File("TestComp/rddl-2320.log"));
+		LogReader d = new LogReader(new File("TestComp/MDP/rddl-2320.log"));
 		System.out.println(d._client2data);
 	}
 }
