@@ -103,7 +103,7 @@ public class FinalEval {
 
 				ArrayList<Double> rewards = new ArrayList<Double>(e.getValue().getValues(instance_name));
 				
-				if (MinMaxEval.BASELINE_POLICIES.contains(client_name)
+				if (MinMaxEval.BASELINE_POLICIES.contains(client_name.toLowerCase())
 						&& rewards.size() != NUM_EXPECTED_TRIALS) {
 						System.err.println("INCORRECT NUMBER OF TRIALS [" + rewards.size() + "/"
 								+ NUM_EXPECTED_TRIALS + "] for " + client_name);
@@ -184,14 +184,17 @@ public class FinalEval {
 				if (avg < instance_min)
 					avg = instance_min;
 
-				double norm_score = (avg - instance_min) / (instance_max - instance_min);
+				double range = instance_max - instance_min;
+				if (range == 0d)
+					range = 1e10d;
+				double norm_score = (avg - instance_min) / range;
 				client2normval.putValue(client_name, norm_score);
 				domain_client2normval.putValue(new Pair<String,String>(domain_name,client_name), norm_score);
 				
 				// Note: the "min-average rule" technically prevents us from directly normalizing individual
 				//       performances -- the instance normalized avg is the result of a min function
 				for (Double reward : all_rewards) {
-					double norm_reward = (reward - instance_min) / (instance_max - instance_min);
+					double norm_reward = (reward - instance_min) / range;
 					client2normvalAll.putValue(client_name, norm_reward);
 					domain_client2normvalAll.putValue(new Pair<String,String>(domain_name,client_name), norm_reward);
 				}
