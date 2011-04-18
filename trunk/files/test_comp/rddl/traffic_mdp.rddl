@@ -103,7 +103,7 @@ domain traffic_mdp {
   							else KronDelta( false )] // Vacated since cell enters intersection
 								
 						// Check for occupied cell entering intersection (if get here, must be red)
-  						else if (exists_{?i : intersection} (occupied(?c) ^ (FLOWS-INTO-INTERSECTION-NS(?c,?i) | FLOWS-INTO-INTERSECTION-EW(?c,?i)))) 
+  						else if (exists_{?i : intersection} ((FLOWS-INTO-INTERSECTION-NS(?c,?i) | FLOWS-INTO-INTERSECTION-EW(?c,?i)) ^ occupied(?c))) 
   		   					then KronDelta( true ) // car stuck at red light
 								
 						// Check cells ?c that take traffic exiting an intersection
@@ -126,11 +126,11 @@ domain traffic_mdp {
 	};
 
 	// Minimize congestion: get -1 for each occupied cell.
-	reward = sum_{?c : cell} -occupied(?c);
+	//reward = sum_{?c : cell} -occupied(?c);
 
 	// Minimize congestion: rather than penalize all traffic, this reward only penalizes
 	// congested traffic defined as pairs of *consecutive* occupied cells
-	//reward = sum_{?c : cell} -[occupied(?c) ^ exists_{?c2 : cell} (FLOWS-INTO-CELL(?c2, ?c) ^ occupied(?c2))];
+	reward = sum_{?c : cell} -[occupied(?c) ^ exists_{?c2 : cell} (FLOWS-INTO-CELL(?c2, ?c) ^ occupied(?c2))];
 	
 //	state-action-constraints {
 //		// Make sure probabilities are in correct range
