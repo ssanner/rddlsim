@@ -96,14 +96,14 @@ domain traffic_mdp {
   							else KronDelta( true )] // Stopped
   							
   						// Check for cell entering intersection on green light
-  						else if ([exists_{?i : intersection, ?c2 : cell} [light-signal2(?i) ^ ~light-signal1(?i) ^ FLOWS-INTO-INTERSECTION-NS(?c,?i) ^ FLOWS-INTO-CELL(?c, ?c2) ^ ~occupied(?c2)]]
-  		   						 | [exists_{?i : intersection, ?c2 : cell} [light-signal1(?i) ^ ~light-signal2(?i) ^ FLOWS-INTO-INTERSECTION-EW(?c,?i) ^ FLOWS-INTO-CELL(?c, ?c2) ^ ~occupied(?c2)]])
+  						else if ([exists_{?i : intersection} [light-signal2(?i) ^ ~light-signal1(?i) ^ FLOWS-INTO-INTERSECTION-NS(?c,?i) ^ exists_{?c2 : cell} [FLOWS-INTO-CELL(?c, ?c2) ^ ~occupied(?c2)]]]
+  		   						 | [exists_{?i : intersection} [light-signal1(?i) ^ ~light-signal2(?i) ^ FLOWS-INTO-INTERSECTION-EW(?c,?i) ^ exists_{?c2 : cell} [FLOWS-INTO-CELL(?c, ?c2) ^ ~occupied(?c2)]]])
 						then [if (~occupied(?c))
   							then KronDelta( exists_{?c2 : cell} [FLOWS-INTO-CELL(?c2, ?c) ^ occupied(?c2)] )
   							else KronDelta( false )] // Vacated since cell enters intersection
 								
 						// Check for occupied cell entering intersection (if get here, must be red)
-  						else if (exists_{?i : intersection} (FLOWS-INTO-INTERSECTION-NS(?c,?i) | FLOWS-INTO-INTERSECTION-EW(?c,?i))) 
+  						else if (exists_{?i : intersection} (occupied(?c) ^ (FLOWS-INTO-INTERSECTION-NS(?c,?i) | FLOWS-INTO-INTERSECTION-EW(?c,?i)))) 
   		   					then KronDelta( true ) // car stuck at red light
 								
 						// Check cells ?c that take traffic exiting an intersection
@@ -113,8 +113,8 @@ domain traffic_mdp {
 							then KronDelta( ~exists_{?c2 : cell} FLOWS-INTO-CELL(?c, ?c2) ^ ~occupied(?c2) ) 
 							// Did a car enter from intersection?
 							else KronDelta( 
-								[exists_{?i : intersection, ?c2 : cell} [light-signal2(?i) ^ ~light-signal1(?i) ^ FLOWS-INTO-INTERSECTION-NS(?c2,?i) ^ FLOWS-INTO-CELL(?c2, ?c) ^ occupied(?c2)]]
-  		   						 | [exists_{?i : intersection, ?c2 : cell} [light-signal1(?i) ^ ~light-signal2(?i) ^ FLOWS-INTO-INTERSECTION-EW(?c2,?i) ^ FLOWS-INTO-CELL(?c2, ?c) ^ occupied(?c2)]]
+								[exists_{?i : intersection} [light-signal2(?i) ^ ~light-signal1(?i) ^ exists_{?c2 : cell} [FLOWS-INTO-INTERSECTION-NS(?c2,?i) ^ FLOWS-INTO-CELL(?c2, ?c) ^ occupied(?c2)]]]
+  		   						 | [exists_{?i : intersection} [light-signal1(?i) ^ ~light-signal2(?i) ^ exists_{?c2 : cell} [FLOWS-INTO-INTERSECTION-EW(?c2,?i) ^ FLOWS-INTO-CELL(?c2, ?c) ^ occupied(?c2)]]]
   		   					)] 
 								
 						// Must be a normal cell - normal transition rules apply
