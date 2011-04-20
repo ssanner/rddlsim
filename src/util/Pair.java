@@ -8,12 +8,12 @@
 
 package util;
 
-public class Pair implements Comparable {
+public class Pair<K1,K2> implements Comparable {
 
-	public Object _o1;
-	public Object _o2;
+	public K1 _o1;
+	public K2 _o2;
 
-	public Pair(Object o1, Object o2) {
+	public Pair(K1 o1, K2 o2) {
 		_o1 = o1;
 		_o2 = o2;
 	}

@@ -22,7 +22,7 @@ import rddl.RDDL.TYPE_NAME;
 public class TrafficDisplay extends StateViz {
 
 	public TrafficDisplay() {
-		_nTimeDelay = 200; // in milliseconds
+		_nTimeDelay = 0; // in milliseconds
 	}
 
 	public TrafficDisplay(int time_delay_per_frame) {

@@ -44,11 +44,14 @@ import rddl.viz.GenericScreenDisplay;
 import rddl.viz.NullScreenDisplay;
 import rddl.viz.StateViz;
 
+import util.Timer;
+
 public class Server implements Runnable {
 	
-	public final static boolean SHOW_ACTIONS = true;
+	public static final boolean SHOW_ACTIONS = false;
 	public static final boolean SHOW_XML = false;
 	public static final boolean SHOW_MSG = false;
+	public static final boolean SHOW_TIMING = false;
 	
 	private static final String LOG_FILE = "rddl";
 	/**
@@ -113,7 +116,7 @@ public class Server implements Runnable {
 	public int id;
 	public String clientName = null;
 	public String requestedInstance = null;
-	public static Random rand;
+	public Random rand;
 	
 	public State      state;
 	public INSTANCE   instance;
@@ -163,10 +166,11 @@ public class Server implements Runnable {
 			if (args.length > 2) {
 				DEFAULT_NUM_ROUNDS = Integer.valueOf(args[2]);
 			}
+			int rand_seed = -1;
 			if ( args.length > 3) {
-				Server.rand = new Random(Integer.valueOf(args[3]));
+				rand_seed = Integer.valueOf(args[3]);
 			} else {
-				Server.rand = new Random(DEFAULT_SEED);
+				rand_seed = DEFAULT_SEED;
 			}
 			if (args.length > 4) {
 				state_viz = (StateViz)Class.forName(args[4]).newInstance();
@@ -174,7 +178,7 @@ public class Server implements Runnable {
 			System.out.println("RDDL Server Initialized");
 			while (true) {
 				Socket connection = socket1.accept();
-				Runnable runnable = new Server(connection, ++ID, rddl, state_viz, port);
+				Runnable runnable = new Server(connection, ++ID, rddl, state_viz, port, new Random(rand_seed));
 				Thread thread = new Thread(runnable);
 				thread.start();
 			}
@@ -184,12 +188,13 @@ public class Server implements Runnable {
 			e.printStackTrace();
 		}
 	}
-	Server (Socket s, int i, RDDL rddl, StateViz state_viz, int port) {
+	Server (Socket s, int i, RDDL rddl, StateViz state_viz, int port, Random rgen) {
 		this.connection = s;
 		this.id = i;
 		this.rddl = rddl;
 		this.stateViz = state_viz;
 		this.port = port;
+		this.rand = rgen;
 	}
 	public void run() {
 		DOMParser p = new DOMParser();
@@ -197,8 +202,8 @@ public class Server implements Runnable {
 		double timeAllowed = DEFAULT_TIME_ALLOWED;
 		double timeUsed = 0;
 		try {
-			BufferedInputStream is = new BufferedInputStream(connection.getInputStream());
-			InputStreamReader isr = new InputStreamReader(is);
+			BufferedInputStream isr = new BufferedInputStream(connection.getInputStream());
+			//InputStreamReader isr = new InputStreamReader(is);
 			InputSource isrc = readOneMessage(isr);
 			requestedInstance = null;
 			processXMLSessionRequest(p, isrc, this);
@@ -245,6 +250,8 @@ public class Server implements Runnable {
 				HashMap<PVAR_NAME, HashMap<ArrayList<LCONST>, Object>> observStore =null;
 				for( ; h < instance._nHorizon; h++ ) {
 					
+					Timer timer = new Timer();
+				
 					//if ( observStore != null) {
 					//	for ( PVAR_NAME pn : observStore.keySet() ) {
 					//		System.out.println("check3 " + pn);
@@ -254,6 +261,10 @@ public class Server implements Runnable {
 					//	}
 					//}
 					msg = createXMLTurn(state, h+1, domain, observStore);
+					
+					if (SHOW_TIMING)
+						System.out.println("**TIME to create XML turn: " + timer.GetTimeSoFarAndReset());
+					
 					if (SHOW_MSG)
 						System.out.println("Sending msg:\n" + msg);
 					sendOneMessage(osw,msg);
@@ -262,10 +273,17 @@ public class Server implements Runnable {
 					if (isrc == null)
 						throw new Exception("FATAL SERVER EXCEPTION: EMPTY CLIENT MESSAGE");
 
+					if (SHOW_TIMING)
+						System.out.println("**TIME to send/read msg: " + timer.GetTimeSoFarAndReset());
+						
 					ArrayList<PVAR_INST_DEF> ds = processXMLAction(p,isrc,state);
 					if ( ds == null ) {
 						break;
 					}
+					
+					if (SHOW_TIMING)
+						System.out.println("**TIME to process XML action: " + timer.GetTimeSoFarAndReset());
+					
 					//Sungwook: this is not required.  -Scott
 					//if ( h== 0 && domain._bPartiallyObserved && ds.size() != 0) {
 					//	System.err.println("the first action for partial observable domain should be noop");
@@ -287,6 +305,10 @@ public class Server implements Runnable {
 					//		System.out.println("check1 :" + aa + ": " + state._observ.get(pn).get(aa));
 					//	}
 					//}
+					
+					if (SHOW_TIMING)
+						System.out.println("**TIME to compute next state: " + timer.GetTimeSoFarAndReset());
+					
 					if (domain._bPartiallyObserved)
 						observStore = copyObserv(state._observ);
 					
@@ -298,9 +320,15 @@ public class Server implements Runnable {
 					//System.out.println("Accum reward: " + accum_reward + ", instance._dDiscount: " + instance._dDiscount + 
 					//   " / " + (cur_discount * reward) + " / " + reward);
 					cur_discount *= instance._dDiscount;
+					
+					if (SHOW_TIMING)
+						System.out.println("**TIME to copy observations & update rewards: " + timer.GetTimeSoFarAndReset());
 
 					stateViz.display(state, h);			
 					state.advanceNextState();
+					
+					if (SHOW_TIMING)
+						System.out.println("**TIME to advance state: " + timer.GetTimeSoFarAndReset());
 				}
 				accum_total_reward += accum_reward;
 				long elapsed_time = System.currentTimeMillis() - start_round_time;
@@ -506,15 +534,30 @@ public class Server implements Runnable {
 		osw.flush();
 	}
 	
-	public static InputSource readOneMessage(InputStreamReader isr) {
-		StringBuffer message = new StringBuffer();
-		int character;
+	public static final int MAX_BYTES = 1048576;
+	public static byte[] bytes = new byte[MAX_BYTES];
+	
+	// Synchronize because this uses a global bytes[] buffer
+	public static synchronized InputSource readOneMessage(InputStream isr) {
+
 		try {
-			while((character = isr.read()) != '\0' && character != -1) { 
-				message.append((char)character);
+		
+			int cur_pos = 0; 
+			while (true && cur_pos < MAX_BYTES) {
+				cur_pos += isr.read( bytes, cur_pos, 1 );
+				if (/* Socket closed  */ cur_pos == -1 || 
+					/* End of message */ bytes[cur_pos - 1] == '\0')
+					break;
 			}
-//			System.out.println(message);
-			ByteArrayInputStream bais = new ByteArrayInputStream(message.toString().getBytes());
+			
+			//while((character = isr.read()) != '\0' && character != -1) { 
+			//	message.append((char)character);
+			//}
+			if (SHOW_MSG) {
+				System.out.println("Received message [" + (cur_pos - 1) + "]: **" + new String(bytes, 0, cur_pos - 1) + "**");
+			}
+			//ByteArrayInputStream bais = new ByteArrayInputStream(message.toString().getBytes());
+			ByteArrayInputStream bais = new ByteArrayInputStream(bytes, 0, cur_pos - 1); // No '\0'
 			InputSource isrc = new InputSource();
 			isrc.setByteStream(bais);
 			return isrc;

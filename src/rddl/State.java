@@ -187,7 +187,7 @@ public class State {
 			// satisfied must be true if get here
 			try {
 				if (! (Boolean)constraint.sample(subs, this, null) )
-					throw new EvalException("Violated state-action constraint: " + constraint);
+					throw new EvalException("Violated state-action constraint: " + constraint + "\n**in state**\n" + this);
 			} catch (NullPointerException e) {
 				System.out.println("\n***SIMULATOR ERROR EVALUATING: " + constraint);
 				throw e;

@@ -30,9 +30,9 @@ public class RandomBoolPolicy extends Policy {
 		
 		if (s == null) {
 			// This should only occur on the **first step** of a POMDP trial
-			// when no observations have been generated, for now, we just
-			// return a 'noop'
-			return new ArrayList<PVAR_INST_DEF>();
+			// when no observations have been generated, for now, we don't
+			// handle this differently since we're just choosing a random
+			// action.
 		}
 
 		// Get a map of { legal action names -> RDDL action definition }  
@@ -42,7 +42,7 @@ public class RandomBoolPolicy extends Policy {
 		// Return a random action selection
 		ArrayList<String> actions = new ArrayList<String>(action_map.keySet());
 		String action_taken = actions.get(_rand.nextInt(action_map.size()));
-		//System.out.println("\n--> Action taken: " + action_taken);
+		System.out.println("\n--> Action taken: " + action_taken);
 		
 		return action_map.get(action_taken);
 	}
