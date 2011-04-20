@@ -1481,7 +1481,7 @@ public class ADD extends DD {
 			ADDDNode d = (ADDDNode) cur;
 			ps.print("\n" + tab(level));
 			ps.print((branch_label != null && branch_label.length() > 0 ? "(" + branch_label + " " : ""));
-			ps.print("(" + _df.format(d._dLower) + ")");
+			ps.print("(" + d._dLower + ")");
 			ps.print(branch_label != null && branch_label.length() > 0 ? ")" : "");
 		}
 	}

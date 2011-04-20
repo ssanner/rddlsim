@@ -196,12 +196,11 @@ public class Client {
 			/** Write across the socket connection and flush the buffer */
 			String msg = createXMLSessionRequest(instanceName, clientName);
 			Server.sendOneMessage(osw, msg);
-			BufferedInputStream bis = new BufferedInputStream(connection.
-					getInputStream());
+			BufferedInputStream isr = new BufferedInputStream(connection.getInputStream());
 			/**Instantiate an InputStreamReader with the optional
 			 * character encoding.
 			 */
-			InputStreamReader isr = new InputStreamReader(bis, "US-ASCII");
+			//InputStreamReader isr = new InputStreamReader(bis, "US-ASCII");
 			DOMParser p = new DOMParser();
 			
 			/**Read the socket's InputStream and append to a StringBuffer */

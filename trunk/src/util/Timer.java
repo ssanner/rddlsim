@@ -30,6 +30,17 @@ public class Timer {
 		return _lElapsedTime;
 	}
 
+	public long GetTimeSoFar() {
+		return System.currentTimeMillis() - _lTime;
+	}
+
+	public long GetTimeSoFarAndReset() {
+		long elapsed = System.currentTimeMillis() - _lTime;
+		_lTime = System.currentTimeMillis();
+		_lElapsedTime = -1;
+		return elapsed;
+	}
+
 	public long GetElapsedTime() {
 		return _lElapsedTime;
 	}
