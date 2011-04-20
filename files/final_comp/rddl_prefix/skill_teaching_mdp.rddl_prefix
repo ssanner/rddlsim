@@ -1,0 +1,38 @@
+domain skill_teaching_mdp {
+  requirements = {
+    reward-deterministic
+  };
+  types {
+    skill : object;
+  };
+  pvariables {
+    PROB_ALL_PRE(skill) : {non-fluent, real, default = 0.8};
+    PROB_ALL_PRE_MED(skill) : {non-fluent, real, default = 1.0};
+    updateTurn(skill) : {state-fluent, bool, default = false};
+    hintDelayVar(skill) : {state-fluent, bool, default = false};
+    PROB_PER_PRE_MED(skill) : {non-fluent, real, default = 0.3};
+    PROB_HIGH(skill) : {non-fluent, real, default = 0.9};
+    PROB_PER_PRE(skill) : {non-fluent, real, default = 0.1};
+    proficiencyMed(skill) : {state-fluent, bool, default = false};
+    proficiencyHigh(skill) : {state-fluent, bool, default = false};
+    SKILL_WEIGHT(skill) : {non-fluent, real, default = 1.0};
+    hintedRight(skill) : {state-fluent, bool, default = false};
+    LOSE_PROB(skill) : {non-fluent, real, default = 0.02};
+    askProb(skill) : {action-fluent, bool, default = false};
+    answeredRight(skill) : {state-fluent, bool, default = false};
+    giveHint(skill) : {action-fluent, bool, default = false};
+    PRE_REQ(skill, skill) : {non-fluent, bool, default = false};
+  };
+  cpfs {
+    (updateTurn' ?s) = (KronDelta (forall ( (?s2 : skill) ) (^ (~ (updateTurn ?s2)) (| (askProb ?s) (giveHint ?s) ) )));
+    (hintDelayVar' ?s) = (KronDelta (forall ( (?s2 : skill) ) (^ (~ (updateTurn ?s2)) (giveHint ?s) )));
+    (answeredRight' ?s) = (if (forall ( (?s2 : skill) ) (^ (~ (updateTurn ?s2)) (askProb ?s) (proficiencyHigh ?s) )) then (Bernoulli (PROB_HIGH ?s)) else (if (forall ( (?s2 : skill) ) (^ (~ (updateTurn ?s2)) (askProb ?s) (proficiencyMed ?s) (forall ( (?s2 : skill) ) (=> (PRE_REQ ?s2 ?s) (proficiencyHigh ?s2) )) )) then (Bernoulli (PROB_ALL_PRE_MED ?s)) else (if (forall ( (?s2 : skill) ) (^ (~ (updateTurn ?s2)) (askProb ?s) (proficiencyMed ?s) (askProb ?s) )) then (Bernoulli (sum ( (?s2 : skill) ) (* (PRE_REQ ?s2 ?s) (PROB_PER_PRE_MED ?s)))) else (if (forall ( (?s2 : skill) ) (^ (~ (updateTurn ?s2)) (askProb ?s) (forall ( (?s2 : skill) ) (=> (PRE_REQ ?s2 ?s) (proficiencyHigh ?s2) )) )) then (Bernoulli (PROB_ALL_PRE ?s)) else (if (forall ( (?s2 : skill) ) (^ (~ (updateTurn ?s2)) (askProb ?s) (askProb ?s) )) then (Bernoulli (sum ( (?s2 : skill) ) (* (PRE_REQ ?s2 ?s) (PROB_PER_PRE ?s)))) else (KronDelta false))))));
+    (proficiencyHigh' ?s) = (if (forall ( (?s2 : skill) ) (~ (updateTurn ?s2))) then (KronDelta (proficiencyHigh ?s)) else (if (^ (~ (updateTurn ?s)) (proficiencyHigh ?s) ) then (Bernoulli (- 1.0 (LOSE_PROB ?s))) else (if (^ (proficiencyMed ?s) (updateTurn ?s) (answeredRight ?s) ) then (KronDelta true) else (if (^ (proficiencyHigh ?s) (updateTurn ?s) (| (hintDelayVar ?s) (answeredRight ?s) ) ) then (KronDelta true) else (KronDelta false)))));
+    (hintedRight' ?s) = (KronDelta (forall ( (?s2 : skill) ) (^ (~ (updateTurn ?s2)) (giveHint ?s) (forall ( (?s2 : skill) ) (=> (PRE_REQ ?s2 ?s) (proficiencyHigh ?s2) )) )));
+    (proficiencyMed' ?s) = (if (^ (~ (updateTurn ?s)) (proficiencyMed ?s) ) then (KronDelta true) else (if (^ (updateTurn ?s) (hintedRight ?s) ) then (KronDelta true) else (if (^ (updateTurn ?s) (answeredRight ?s) ) then (KronDelta true) else (if (proficiencyHigh ?s) then (KronDelta true) else (if (^ (proficiencyMed ?s) (updateTurn ?s) (hintDelayVar ?s) ) then (KronDelta true) else (KronDelta false))))));
+  };
+  reward = (+ (sum ( (?s : skill) ) (* (SKILL_WEIGHT ?s) (proficiencyHigh ?s))) (sum ( (?s : skill) ) (- 0 (* (SKILL_WEIGHT ?s) (~ (proficiencyMed ?s))))));
+  state-action-constraints {
+  };
+}
+
