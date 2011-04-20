@@ -42,7 +42,7 @@ public class RandomBoolPolicy extends Policy {
 		// Return a random action selection
 		ArrayList<String> actions = new ArrayList<String>(action_map.keySet());
 		String action_taken = actions.get(_rand.nextInt(action_map.size()));
-		System.out.println("\n--> Action taken: " + action_taken);
+		//System.out.println("\n--> Action taken: " + action_taken);
 		
 		return action_map.get(action_taken);
 	}
