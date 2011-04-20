@@ -1,0 +1,50 @@
+domain elevators_pomdp {
+  requirements = {
+    reward-deterministic,
+    constrained-state,
+    partially-observed
+  };
+  types {
+    elevator : object;
+    floor : object;
+  };
+  pvariables {
+    elevator-dir-up(elevator) : {state-fluent, bool, default = true};
+    move-current-dir(elevator) : {action-fluent, bool, default = false};
+    TOP-FLOOR(floor) : {non-fluent, bool, default = false};
+    person-waiting-up(floor) : {state-fluent, bool, default = false};
+    elevator-at-floor(elevator, floor) : {state-fluent, bool, default = false};
+    person-waiting-obs(floor) : {observ-fluent, bool};
+    ELEVATOR-PENALTY-RIGHT-DIR : {non-fluent, real, default = 0.5};
+    person-in-elevator-going-down(elevator) : {state-fluent, bool, default = false};
+    ELEVATOR-PENALTY-WRONG-DIR : {non-fluent, real, default = 3.0};
+    person-in-elevator-going-down-obs(elevator) : {observ-fluent, bool};
+    person-waiting-down(floor) : {state-fluent, bool, default = false};
+    ARRIVE-PARAM(floor) : {non-fluent, real, default = 0.0};
+    elevator-closed(elevator) : {state-fluent, bool, default = true};
+    close-door(elevator) : {action-fluent, bool, default = false};
+    person-in-elevator-going-up-obs(elevator) : {observ-fluent, bool};
+    ADJACENT-UP(floor, floor) : {non-fluent, bool, default = false};
+    BOTTOM-FLOOR(floor) : {non-fluent, bool, default = false};
+    person-in-elevator-going-up(elevator) : {state-fluent, bool, default = false};
+    open-door-going-down(elevator) : {action-fluent, bool, default = false};
+    open-door-going-up(elevator) : {action-fluent, bool, default = false};
+  };
+  cpfs {
+    (elevator-dir-up' ?e) = (if (open-door-going-up ?e) then (KronDelta true) else (if (open-door-going-down ?e) then (KronDelta false) else (KronDelta (elevator-dir-up ?e))));
+    (elevator-at-floor' ?e ?f) = (if (| (~ (elevator-closed ?e)) (~ (move-current-dir ?e)) ) then (KronDelta (elevator-at-floor ?e ?f)) else (if (^ (move-current-dir ?e) (elevator-dir-up ?e) (exists ( (?cur : floor) ) (^ (elevator-at-floor ?e ?cur) (ADJACENT-UP ?cur ?f) )) ) then (KronDelta true) else (if (^ (move-current-dir ?e) (~ (elevator-dir-up ?e)) (exists ( (?cur : floor) ) (^ (elevator-at-floor ?e ?cur) (ADJACENT-UP ?f ?cur) )) ) then (KronDelta true) else (if (^ (move-current-dir ?e) (elevator-dir-up ?e) (~ (exists ( (?next : floor) ) (^ (elevator-at-floor ?e ?f) (ADJACENT-UP ?f ?next) ))) ) then (KronDelta (elevator-at-floor ?e ?f)) else (if (^ (move-current-dir ?e) (~ (elevator-dir-up ?e)) (~ (exists ( (?next : floor) ) (^ (elevator-at-floor ?e ?f) (ADJACENT-UP ?next ?f) ))) ) then (KronDelta (elevator-at-floor ?e ?f)) else (KronDelta false))))));
+    (person-in-elevator-going-up-obs ?e) = (KronDelta (person-in-elevator-going-up' ?e));
+    (person-waiting-obs ?f) = (KronDelta (| (person-waiting-up' ?f) (person-waiting-down' ?f) ));
+    (person-in-elevator-going-down' ?e) = (if (person-in-elevator-going-down ?e) then (KronDelta (~ (exists ( (?f : floor) ) (^ (elevator-at-floor ?e ?f) (BOTTOM-FLOOR ?f) )))) else (KronDelta (exists ( (?f : floor) ) (^ (elevator-at-floor ?e ?f) (~ (elevator-dir-up ?e)) (~ (elevator-closed ?e)) (person-waiting-down ?f) ))));
+    (person-in-elevator-going-down-obs ?e) = (KronDelta (person-in-elevator-going-down' ?e));
+    (elevator-closed' ?e) = (KronDelta (| (^ (elevator-closed ?e) (~ (open-door-going-up ?e)) (~ (open-door-going-down ?e)) ) (close-door ?e) ));
+    (person-waiting-down' ?f) = (if (^ (person-waiting-down ?f) (~ (exists ( (?e : elevator) ) (^ (elevator-at-floor ?e ?f) (~ (elevator-dir-up ?e)) (~ (elevator-closed ?e)) ))) ) then (KronDelta true) else (Bernoulli (ARRIVE-PARAM ?f)));
+    (person-waiting-up' ?f) = (if (^ (person-waiting-up ?f) (~ (exists ( (?e : elevator) ) (^ (elevator-at-floor ?e ?f) (elevator-dir-up ?e) (~ (elevator-closed ?e)) ))) ) then (KronDelta true) else (Bernoulli (ARRIVE-PARAM ?f)));
+    (person-in-elevator-going-up' ?e) = (if (person-in-elevator-going-up ?e) then (KronDelta (~ (exists ( (?f : floor) ) (^ (elevator-at-floor ?e ?f) (TOP-FLOOR ?f) )))) else (KronDelta (exists ( (?f : floor) ) (^ (elevator-at-floor ?e ?f) (elevator-dir-up ?e) (~ (elevator-closed ?e)) (person-waiting-up ?f) ))));
+  };
+  reward = (+ (+ (+ (+ (sum ( (?e : elevator) ) (* (- 0 (ELEVATOR-PENALTY-RIGHT-DIR)) (^ (person-in-elevator-going-up ?e) (elevator-dir-up ?e) ))) (sum ( (?e : elevator) ) (* (- 0 (ELEVATOR-PENALTY-RIGHT-DIR)) (^ (person-in-elevator-going-down ?e) (~ (elevator-dir-up ?e)) )))) (sum ( (?e : elevator) ) (* (- 0 (ELEVATOR-PENALTY-WRONG-DIR)) (^ (person-in-elevator-going-up ?e) (~ (elevator-dir-up ?e)) )))) (sum ( (?e : elevator) ) (* (- 0 (ELEVATOR-PENALTY-WRONG-DIR)) (^ (person-in-elevator-going-down ?e) (elevator-dir-up ?e) )))) (sum ( (?f : floor) ) (- (- 0 (person-waiting-up ?f)) (person-waiting-down ?f))));
+  state-action-constraints {
+    (forall ( (?e : elevator) ) (<= (+ (+ (+ (open-door-going-up ?e) (open-door-going-down ?e)) (close-door ?e)) (move-current-dir ?e)) 1));
+  };
+}
+

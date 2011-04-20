@@ -1,0 +1,26 @@
+domain sysadmin_pomdp {
+  requirements = {
+    reward-deterministic,
+    partially-observed
+  };
+  types {
+    computer : object;
+  };
+  pvariables {
+    reboot(computer) : {action-fluent, bool, default = false};
+    OBSERV-PROB : {non-fluent, real, default = 0.95};
+    CONNECTED(computer, computer) : {non-fluent, bool, default = false};
+    REBOOT-PENALTY : {non-fluent, real, default = 0.1};
+    REBOOT-PROB : {non-fluent, real, default = 0.1};
+    running(computer) : {state-fluent, bool, default = false};
+    running-obs(computer) : {observ-fluent, bool};
+  };
+  cpfs {
+    (running' ?x) = (if (reboot ?x) then (KronDelta true) else (if (running ?x) then (Bernoulli (+ 0.45 (/ (* 0.5 (+ 1 (sum ( (?y : computer) ) (^ (CONNECTED ?y ?x) (running ?y) )))) (+ 1 (sum ( (?y : computer) ) (CONNECTED ?y ?x)))))) else (Bernoulli (REBOOT-PROB))));
+    (running-obs ?x) = (if (running' ?x) then (Bernoulli (OBSERV-PROB)) else (Bernoulli (- 1 (OBSERV-PROB))));
+  };
+  reward = (sum ( (?c : computer) ) (- (running ?c) (* (REBOOT-PENALTY) (reboot ?c))));
+  state-action-constraints {
+  };
+}
+

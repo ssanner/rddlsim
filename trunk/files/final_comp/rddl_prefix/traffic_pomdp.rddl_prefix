@@ -1,0 +1,37 @@
+domain traffic_pomdp {
+  requirements = {
+    reward-deterministic,
+    concurrent,
+    constrained-state,
+    partially-observed
+  };
+  types {
+    intersection : object;
+    cell : object;
+  };
+  pvariables {
+    FLOWS-INTO-INTERSECTION-EW(cell, intersection) : {non-fluent, bool, default = false};
+    occupied(cell) : {state-fluent, bool, default = false};
+    FLOWS-INTO-INTERSECTION-NS(cell, intersection) : {non-fluent, bool, default = false};
+    FLOWS-INTO-CELL(cell, cell) : {non-fluent, bool, default = false};
+    traffic-at-stopline-EW-obs(intersection) : {observ-fluent, bool};
+    light-signal1(intersection) : {state-fluent, bool, default = false};
+    light-signal2(intersection) : {state-fluent, bool, default = false};
+    PERIMETER-EXIT-CELL(cell) : {non-fluent, bool, default = false};
+    PERIMETER-INPUT-CELL(cell) : {non-fluent, bool, default = false};
+    traffic-at-stopline-NS-obs(intersection) : {observ-fluent, bool};
+    advance(intersection) : {action-fluent, bool, default = false};
+    PERIMETER-INPUT-RATE(cell) : {non-fluent, real, default = 1.0};
+  };
+  cpfs {
+    (occupied' ?c) = (if (PERIMETER-INPUT-CELL ?c) then (if (~ (occupied ?c)) then (Bernoulli (PERIMETER-INPUT-RATE ?c)) else (if (exists ( (?c2 : cell) ) (^ (FLOWS-INTO-CELL ?c ?c2) (~ (occupied ?c2)) )) then (KronDelta false) else (KronDelta true))) else (if (| (exists ( (?i : intersection) ) (^ (light-signal2 ?i) (~ (light-signal1 ?i)) (FLOWS-INTO-INTERSECTION-NS ?c ?i) (exists ( (?c2 : cell) ) (^ (FLOWS-INTO-CELL ?c ?c2) (~ (occupied ?c2)) )) )) (exists ( (?i : intersection) ) (^ (light-signal1 ?i) (~ (light-signal2 ?i)) (FLOWS-INTO-INTERSECTION-EW ?c ?i) (exists ( (?c2 : cell) ) (^ (FLOWS-INTO-CELL ?c ?c2) (~ (occupied ?c2)) )) )) ) then (if (~ (occupied ?c)) then (KronDelta (exists ( (?c2 : cell) ) (^ (FLOWS-INTO-CELL ?c2 ?c) (occupied ?c2) ))) else (KronDelta false)) else (if (exists ( (?i : intersection) ) (^ (| (FLOWS-INTO-INTERSECTION-NS ?c ?i) (FLOWS-INTO-INTERSECTION-EW ?c ?i) ) (occupied ?c) )) then (KronDelta true) else (if (exists ( (?i : intersection) (?c2 : cell) ) (^ (| (FLOWS-INTO-INTERSECTION-NS ?c2 ?i) (FLOWS-INTO-INTERSECTION-EW ?c2 ?i) ) (FLOWS-INTO-CELL ?c2 ?c) )) then (if (occupied ?c) then (KronDelta (~ (exists ( (?c2 : cell) ) (^ (FLOWS-INTO-CELL ?c ?c2) (~ (occupied ?c2)) )))) else (KronDelta (| (exists ( (?i : intersection) ) (^ (light-signal2 ?i) (~ (light-signal1 ?i)) (exists ( (?c2 : cell) ) (^ (FLOWS-INTO-INTERSECTION-NS ?c2 ?i) (FLOWS-INTO-CELL ?c2 ?c) (occupied ?c2) )) )) (exists ( (?i : intersection) ) (^ (light-signal1 ?i) (~ (light-signal2 ?i)) (exists ( (?c2 : cell) ) (^ (FLOWS-INTO-INTERSECTION-EW ?c2 ?i) (FLOWS-INTO-CELL ?c2 ?c) (occupied ?c2) )) )) ))) else (if (occupied ?c) then (KronDelta (^ (~ (PERIMETER-EXIT-CELL ?c)) (~ (exists ( (?c2 : cell) ) (^ (FLOWS-INTO-CELL ?c ?c2) (~ (occupied ?c2)) ))) )) else (KronDelta (exists ( (?c2 : cell) ) (^ (FLOWS-INTO-CELL ?c2 ?c) (occupied ?c2) ))))))));
+    (traffic-at-stopline-EW-obs ?i) = (KronDelta (exists ( (?c : cell) ) (^ (FLOWS-INTO-INTERSECTION-EW ?c ?i) (occupied' ?c) )));
+    (light-signal1' ?i) = (if (| (advance ?i) (^ (light-signal1 ?i) (light-signal2 ?i) ) (^ (~ (light-signal1 ?i)) (~ (light-signal2 ?i)) ) ) then (KronDelta (light-signal2 ?i)) else (KronDelta (light-signal1 ?i)));
+    (light-signal2' ?i) = (if (| (advance ?i) (^ (light-signal1 ?i) (light-signal2 ?i) ) (^ (~ (light-signal1 ?i)) (~ (light-signal2 ?i)) ) ) then (KronDelta (~ (light-signal1 ?i))) else (KronDelta (light-signal2 ?i)));
+    (traffic-at-stopline-NS-obs ?i) = (KronDelta (exists ( (?c : cell) ) (^ (FLOWS-INTO-INTERSECTION-NS ?c ?i) (occupied' ?c) )));
+  };
+  reward = (sum ( (?c : cell) ) (- 0 (^ (occupied ?c) (exists ( (?c2 : cell) ) (^ (FLOWS-INTO-CELL ?c2 ?c) (occupied ?c2) )) )));
+  state-action-constraints {
+  };
+}
+

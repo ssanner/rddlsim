@@ -1,0 +1,72 @@
+non-fluents nf_game_of_life_inst_pomdp__1 {
+  domain = game_of_life_pomdp;
+  objects {
+    y_pos : {y1, y2, y3};
+    x_pos : {x1, x2, x3};
+  };
+  non-fluents {
+    NOISE-PROB(x1, y1) = 0.024908893;
+    NEIGHBOR(x1, y1, x1, y2);
+    NEIGHBOR(x1, y1, x2, y1);
+    NEIGHBOR(x1, y1, x2, y2);
+    NOISE-PROB(x1, y2) = 0.03225722;
+    NEIGHBOR(x1, y2, x1, y1);
+    NEIGHBOR(x1, y2, x1, y3);
+    NEIGHBOR(x1, y2, x2, y1);
+    NEIGHBOR(x1, y2, x2, y2);
+    NEIGHBOR(x1, y2, x2, y3);
+    NOISE-PROB(x1, y3) = 0.025866164;
+    NEIGHBOR(x1, y3, x1, y2);
+    NEIGHBOR(x1, y3, x2, y2);
+    NEIGHBOR(x1, y3, x2, y3);
+    NOISE-PROB(x2, y1) = 0.01966858;
+    NEIGHBOR(x2, y1, x1, y1);
+    NEIGHBOR(x2, y1, x1, y2);
+    NEIGHBOR(x2, y1, x2, y2);
+    NEIGHBOR(x2, y1, x3, y1);
+    NEIGHBOR(x2, y1, x3, y2);
+    NOISE-PROB(x2, y2) = 0.023435032;
+    NEIGHBOR(x2, y2, x1, y1);
+    NEIGHBOR(x2, y2, x1, y2);
+    NEIGHBOR(x2, y2, x1, y3);
+    NEIGHBOR(x2, y2, x2, y1);
+    NEIGHBOR(x2, y2, x2, y3);
+    NEIGHBOR(x2, y2, x3, y1);
+    NEIGHBOR(x2, y2, x3, y2);
+    NEIGHBOR(x2, y2, x3, y3);
+    NOISE-PROB(x2, y3) = 0.017987497;
+    NEIGHBOR(x2, y3, x1, y2);
+    NEIGHBOR(x2, y3, x1, y3);
+    NEIGHBOR(x2, y3, x2, y2);
+    NEIGHBOR(x2, y3, x3, y2);
+    NEIGHBOR(x2, y3, x3, y3);
+    NOISE-PROB(x3, y1) = 0.022505272;
+    NEIGHBOR(x3, y1, x2, y1);
+    NEIGHBOR(x3, y1, x2, y2);
+    NEIGHBOR(x3, y1, x3, y2);
+    NOISE-PROB(x3, y2) = 0.018321363;
+    NEIGHBOR(x3, y2, x2, y1);
+    NEIGHBOR(x3, y2, x2, y2);
+    NEIGHBOR(x3, y2, x2, y3);
+    NEIGHBOR(x3, y2, x3, y1);
+    NEIGHBOR(x3, y2, x3, y3);
+    NOISE-PROB(x3, y3) = 0.03091217;
+    NEIGHBOR(x3, y3, x2, y2);
+    NEIGHBOR(x3, y3, x2, y3);
+    NEIGHBOR(x3, y3, x3, y2);
+  };
+}
+
+instance game_of_life_inst_pomdp__1 {
+  domain = game_of_life_pomdp;
+  non-fluents = nf_game_of_life_inst_pomdp__1;
+  init-state {
+    alive(x1, y1);
+    alive(x2, y3);
+    alive(x3, y1);
+  };
+  max-nondef-actions = 1;
+  horizon = 40;
+  discount = 1.0;
+}
+

@@ -1,0 +1,22 @@
+domain sysadmin_mdp {
+  requirements = {
+    reward-deterministic
+  };
+  types {
+    computer : object;
+  };
+  pvariables {
+    reboot(computer) : {action-fluent, bool, default = false};
+    CONNECTED(computer, computer) : {non-fluent, bool, default = false};
+    REBOOT-PENALTY : {non-fluent, real, default = 0.5};
+    REBOOT-PROB : {non-fluent, real, default = 0.1};
+    running(computer) : {state-fluent, bool, default = false};
+  };
+  cpfs {
+    (running' ?x) = (if (reboot ?x) then (KronDelta true) else (if (running ?x) then (Bernoulli (+ 0.45 (/ (* 0.5 (+ 1 (sum ( (?y : computer) ) (^ (CONNECTED ?y ?x) (running ?y) )))) (+ 1 (sum ( (?y : computer) ) (CONNECTED ?y ?x)))))) else (Bernoulli (REBOOT-PROB))));
+  };
+  reward = (sum ( (?c : computer) ) (- (running ?c) (* (REBOOT-PENALTY) (reboot ?c))));
+  state-action-constraints {
+  };
+}
+
