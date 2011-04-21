@@ -4,6 +4,8 @@
 (variables 
 	(HAS_WATER__o0 true false)
 	(HAS_WATER__o1 true false)
+	(HAS_WATER__o2 true false)
+	(HAS_WATER__o3 true false)
 	(damaged__l1 true false)
 	(damaged__w1 true false)
 	(damaged__p1 true false)
@@ -13,12 +15,20 @@
 	(agentAt__a1_x1_y1 true false)
 	(pictureTaken__o0 true false)
 	(pictureTaken__o1 true false)
+	(pictureTaken__o2 true false)
+	(pictureTaken__o3 true false)
 	(HAS_LIFE__o0 true false)
 	(HAS_LIFE__o1 true false)
+	(HAS_LIFE__o2 true false)
+	(HAS_LIFE__o3 true false)
 	(waterDetected__o0 true false)
 	(waterDetected__o1 true false)
+	(waterDetected__o2 true false)
+	(waterDetected__o3 true false)
 	(lifeDetected__o0 true false)
 	(lifeDetected__o1 true false)
+	(lifeDetected__o2 true false)
+	(lifeDetected__o3 true false)
 	(oneStep true false)
 	(twoStep true false)
 )
@@ -26,31 +36,45 @@
 (observations 
 	(waterDetectedObs__o0 true false)
 	(waterDetectedObs__o1 true false)
+	(waterDetectedObs__o2 true false)
+	(waterDetectedObs__o3 true false)
 	(damagedObs__l1 true false)
 	(damagedObs__w1 true false)
 	(damagedObs__p1 true false)
 	(lifeDetectedObs__o0 true false)
 	(lifeDetectedObs__o1 true false)
+	(lifeDetectedObs__o2 true false)
+	(lifeDetectedObs__o3 true false)
 )
 
 init [*
 	(HAS_WATER__o0 (true (0.0)) (false (1.0)))
 	(HAS_WATER__o1 (true (0.0)) (false (1.0)))
+	(HAS_WATER__o2 (true (0.0)) (false (1.0)))
+	(HAS_WATER__o3 (true (0.0)) (false (1.0)))
 	(damaged__l1 (true (0.0)) (false (1.0)))
 	(damaged__w1 (true (0.0)) (false (1.0)))
 	(damaged__p1 (true (0.0)) (false (1.0)))
-	(agentAt__a1_x0_y0 (true (1.0)) (false (0.0)))
+	(agentAt__a1_x0_y0 (true (0.0)) (false (1.0)))
 	(agentAt__a1_x0_y1 (true (0.0)) (false (1.0)))
 	(agentAt__a1_x1_y0 (true (0.0)) (false (1.0)))
-	(agentAt__a1_x1_y1 (true (0.0)) (false (1.0)))
+	(agentAt__a1_x1_y1 (true (1.0)) (false (0.0)))
 	(pictureTaken__o0 (true (0.0)) (false (1.0)))
 	(pictureTaken__o1 (true (0.0)) (false (1.0)))
+	(pictureTaken__o2 (true (0.0)) (false (1.0)))
+	(pictureTaken__o3 (true (0.0)) (false (1.0)))
 	(HAS_LIFE__o0 (true (0.0)) (false (1.0)))
 	(HAS_LIFE__o1 (true (0.0)) (false (1.0)))
+	(HAS_LIFE__o2 (true (0.0)) (false (1.0)))
+	(HAS_LIFE__o3 (true (0.0)) (false (1.0)))
 	(waterDetected__o0 (true (0.0)) (false (1.0)))
 	(waterDetected__o1 (true (0.0)) (false (1.0)))
+	(waterDetected__o2 (true (0.0)) (false (1.0)))
+	(waterDetected__o3 (true (0.0)) (false (1.0)))
 	(lifeDetected__o0 (true (0.0)) (false (1.0)))
 	(lifeDetected__o1 (true (0.0)) (false (1.0)))
+	(lifeDetected__o2 (true (0.0)) (false (1.0)))
+	(lifeDetected__o3 (true (0.0)) (false (1.0)))
 	(oneStep (true (0.0)) (false (1.0)))
 	(twoStep (true (0.0)) (false (1.0)))
 ]
@@ -80,6 +104,30 @@ action down__a1
 				(false (HAS_WATER__o1' 
 					(true (0.8))
 					(false (0.2)))))))
+	HAS_WATER__o2
+		(HAS_WATER__o2 
+			(true (HAS_WATER__o2' 
+				(true (1.0))
+				(false (0.0))))
+			(false (oneStep 
+				(true (HAS_WATER__o2' 
+					(true (0.0))
+					(false (1.0))))
+				(false (HAS_WATER__o2' 
+					(true (0.8))
+					(false (0.2)))))))
+	HAS_WATER__o3
+		(HAS_WATER__o3 
+			(true (HAS_WATER__o3' 
+				(true (1.0))
+				(false (0.0))))
+			(false (oneStep 
+				(true (HAS_WATER__o3' 
+					(true (0.0))
+					(false (1.0))))
+				(false (HAS_WATER__o3' 
+					(true (0.8))
+					(false (0.2)))))))
 	damaged__l1
 		(damaged__l1 
 			(true (damaged__l1' 
@@ -87,8 +135,8 @@ action down__a1
 				(false (0.0))))
 			(false (agentAt__a1_x1_y0 
 				(true (damaged__l1' 
-					(true (0.3359123))
-					(false (0.6640877000000001))))
+					(true (0.35914695))
+					(false (0.64085305))))
 				(false (damaged__l1' 
 					(true (0.0))
 					(false (1.0)))))))
@@ -99,8 +147,8 @@ action down__a1
 				(false (0.0))))
 			(false (agentAt__a1_x1_y0 
 				(true (damaged__w1' 
-					(true (0.37663338))
-					(false (0.62336662))))
+					(true (0.25491363))
+					(false (0.74508637))))
 				(false (damaged__w1' 
 					(true (0.0))
 					(false (1.0)))))))
@@ -152,6 +200,14 @@ action down__a1
 		(pictureTaken__o1' 
 			(true (0.0))
 			(false (1.0)))
+	pictureTaken__o2
+		(pictureTaken__o2' 
+			(true (0.0))
+			(false (1.0)))
+	pictureTaken__o3
+		(pictureTaken__o3' 
+			(true (0.0))
+			(false (1.0)))
 	HAS_LIFE__o0
 		(HAS_WATER__o0 
 			(true (HAS_LIFE__o0 
@@ -192,6 +248,46 @@ action down__a1
 				(false (HAS_LIFE__o1' 
 					(true (0.0))
 					(false (1.0)))))))
+	HAS_LIFE__o2
+		(HAS_WATER__o2 
+			(true (HAS_LIFE__o2 
+				(true (HAS_LIFE__o2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (twoStep 
+					(true (HAS_LIFE__o2' 
+						(true (0.0))
+						(false (1.0))))
+					(false (HAS_LIFE__o2' 
+						(true (0.7))
+						(false (0.30000000000000004))))))))
+			(false (HAS_LIFE__o2 
+				(true (HAS_LIFE__o2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (HAS_LIFE__o2' 
+					(true (0.0))
+					(false (1.0)))))))
+	HAS_LIFE__o3
+		(HAS_WATER__o3 
+			(true (HAS_LIFE__o3 
+				(true (HAS_LIFE__o3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (twoStep 
+					(true (HAS_LIFE__o3' 
+						(true (0.0))
+						(false (1.0))))
+					(false (HAS_LIFE__o3' 
+						(true (0.7))
+						(false (0.30000000000000004))))))))
+			(false (HAS_LIFE__o3 
+				(true (HAS_LIFE__o3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (HAS_LIFE__o3' 
+					(true (0.0))
+					(false (1.0)))))))
 	waterDetected__o0
 		(waterDetected__o0 
 			(true (waterDetected__o0' 
@@ -208,6 +304,22 @@ action down__a1
 			(false (waterDetected__o1' 
 				(true (0.0))
 				(false (1.0)))))
+	waterDetected__o2
+		(waterDetected__o2 
+			(true (waterDetected__o2' 
+				(true (1.0))
+				(false (0.0))))
+			(false (waterDetected__o2' 
+				(true (0.0))
+				(false (1.0)))))
+	waterDetected__o3
+		(waterDetected__o3 
+			(true (waterDetected__o3' 
+				(true (1.0))
+				(false (0.0))))
+			(false (waterDetected__o3' 
+				(true (0.0))
+				(false (1.0)))))
 	lifeDetected__o0
 		(lifeDetected__o0 
 			(true (lifeDetected__o0' 
@@ -222,6 +334,22 @@ action down__a1
 				(true (1.0))
 				(false (0.0))))
 			(false (lifeDetected__o1' 
+				(true (0.0))
+				(false (1.0)))))
+	lifeDetected__o2
+		(lifeDetected__o2 
+			(true (lifeDetected__o2' 
+				(true (1.0))
+				(false (0.0))))
+			(false (lifeDetected__o2' 
+				(true (0.0))
+				(false (1.0)))))
+	lifeDetected__o3
+		(lifeDetected__o3 
+			(true (lifeDetected__o3' 
+				(true (1.0))
+				(false (0.0))))
+			(false (lifeDetected__o3' 
 				(true (0.0))
 				(false (1.0)))))
 	oneStep
@@ -253,22 +381,38 @@ action down__a1
 				(false (waterDetectedObs__o1' 
 					(true (0.0))
 					(false (1.0)))))
+		waterDetectedObs__o2
+			(waterDetected__o2' 
+				(true (waterDetectedObs__o2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (waterDetectedObs__o2' 
+					(true (0.0))
+					(false (1.0)))))
+		waterDetectedObs__o3
+			(waterDetected__o3' 
+				(true (waterDetectedObs__o3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (waterDetectedObs__o3' 
+					(true (0.0))
+					(false (1.0)))))
 		damagedObs__l1
 			(damaged__l1' 
 				(true (damagedObs__l1' 
-					(true (0.9544825181365013))
-					(false (0.04551748186349869))))
+					(true (0.9382016696035862))
+					(false (0.0617983303964138))))
 				(false (damagedObs__l1' 
-					(true (0.021615148))
-					(false (0.978384852)))))
+					(true (0.07345955))
+					(false (0.92654045)))))
 		damagedObs__w1
 			(damaged__w1' 
 				(true (damagedObs__w1' 
-					(true (0.9638246335089207))
-					(false (0.03617536649107933))))
+					(true (0.9263422265648842))
+					(false (0.07365777343511581))))
 				(false (damagedObs__w1' 
-					(true (0.08656731))
-					(false (0.91343269)))))
+					(true (0.08379076))
+					(false (0.91620924)))))
 		damagedObs__p1
 			(damaged__p1' 
 				(true (damagedObs__p1' 
@@ -291,6 +435,22 @@ action down__a1
 					(true (1.0))
 					(false (0.0))))
 				(false (lifeDetectedObs__o1' 
+					(true (0.0))
+					(false (1.0)))))
+		lifeDetectedObs__o2
+			(lifeDetected__o2' 
+				(true (lifeDetectedObs__o2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (lifeDetectedObs__o2' 
+					(true (0.0))
+					(false (1.0)))))
+		lifeDetectedObs__o3
+			(lifeDetected__o3' 
+				(true (lifeDetectedObs__o3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (lifeDetectedObs__o3' 
 					(true (0.0))
 					(false (1.0)))))
 	endobserve
@@ -323,6 +483,30 @@ action left__a1
 				(false (HAS_WATER__o1' 
 					(true (0.8))
 					(false (0.2)))))))
+	HAS_WATER__o2
+		(HAS_WATER__o2 
+			(true (HAS_WATER__o2' 
+				(true (1.0))
+				(false (0.0))))
+			(false (oneStep 
+				(true (HAS_WATER__o2' 
+					(true (0.0))
+					(false (1.0))))
+				(false (HAS_WATER__o2' 
+					(true (0.8))
+					(false (0.2)))))))
+	HAS_WATER__o3
+		(HAS_WATER__o3 
+			(true (HAS_WATER__o3' 
+				(true (1.0))
+				(false (0.0))))
+			(false (oneStep 
+				(true (HAS_WATER__o3' 
+					(true (0.0))
+					(false (1.0))))
+				(false (HAS_WATER__o3' 
+					(true (0.8))
+					(false (0.2)))))))
 	damaged__l1
 		(damaged__l1 
 			(true (damaged__l1' 
@@ -330,8 +514,8 @@ action left__a1
 				(false (0.0))))
 			(false (agentAt__a1_x1_y0 
 				(true (damaged__l1' 
-					(true (0.3359123))
-					(false (0.6640877000000001))))
+					(true (0.35914695))
+					(false (0.64085305))))
 				(false (damaged__l1' 
 					(true (0.0))
 					(false (1.0)))))))
@@ -342,8 +526,8 @@ action left__a1
 				(false (0.0))))
 			(false (agentAt__a1_x1_y0 
 				(true (damaged__w1' 
-					(true (0.37663338))
-					(false (0.62336662))))
+					(true (0.25491363))
+					(false (0.74508637))))
 				(false (damaged__w1' 
 					(true (0.0))
 					(false (1.0)))))))
@@ -395,6 +579,14 @@ action left__a1
 		(pictureTaken__o1' 
 			(true (0.0))
 			(false (1.0)))
+	pictureTaken__o2
+		(pictureTaken__o2' 
+			(true (0.0))
+			(false (1.0)))
+	pictureTaken__o3
+		(pictureTaken__o3' 
+			(true (0.0))
+			(false (1.0)))
 	HAS_LIFE__o0
 		(HAS_WATER__o0 
 			(true (HAS_LIFE__o0 
@@ -435,6 +627,46 @@ action left__a1
 				(false (HAS_LIFE__o1' 
 					(true (0.0))
 					(false (1.0)))))))
+	HAS_LIFE__o2
+		(HAS_WATER__o2 
+			(true (HAS_LIFE__o2 
+				(true (HAS_LIFE__o2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (twoStep 
+					(true (HAS_LIFE__o2' 
+						(true (0.0))
+						(false (1.0))))
+					(false (HAS_LIFE__o2' 
+						(true (0.7))
+						(false (0.30000000000000004))))))))
+			(false (HAS_LIFE__o2 
+				(true (HAS_LIFE__o2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (HAS_LIFE__o2' 
+					(true (0.0))
+					(false (1.0)))))))
+	HAS_LIFE__o3
+		(HAS_WATER__o3 
+			(true (HAS_LIFE__o3 
+				(true (HAS_LIFE__o3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (twoStep 
+					(true (HAS_LIFE__o3' 
+						(true (0.0))
+						(false (1.0))))
+					(false (HAS_LIFE__o3' 
+						(true (0.7))
+						(false (0.30000000000000004))))))))
+			(false (HAS_LIFE__o3 
+				(true (HAS_LIFE__o3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (HAS_LIFE__o3' 
+					(true (0.0))
+					(false (1.0)))))))
 	waterDetected__o0
 		(waterDetected__o0 
 			(true (waterDetected__o0' 
@@ -451,6 +683,22 @@ action left__a1
 			(false (waterDetected__o1' 
 				(true (0.0))
 				(false (1.0)))))
+	waterDetected__o2
+		(waterDetected__o2 
+			(true (waterDetected__o2' 
+				(true (1.0))
+				(false (0.0))))
+			(false (waterDetected__o2' 
+				(true (0.0))
+				(false (1.0)))))
+	waterDetected__o3
+		(waterDetected__o3 
+			(true (waterDetected__o3' 
+				(true (1.0))
+				(false (0.0))))
+			(false (waterDetected__o3' 
+				(true (0.0))
+				(false (1.0)))))
 	lifeDetected__o0
 		(lifeDetected__o0 
 			(true (lifeDetected__o0' 
@@ -465,6 +713,22 @@ action left__a1
 				(true (1.0))
 				(false (0.0))))
 			(false (lifeDetected__o1' 
+				(true (0.0))
+				(false (1.0)))))
+	lifeDetected__o2
+		(lifeDetected__o2 
+			(true (lifeDetected__o2' 
+				(true (1.0))
+				(false (0.0))))
+			(false (lifeDetected__o2' 
+				(true (0.0))
+				(false (1.0)))))
+	lifeDetected__o3
+		(lifeDetected__o3 
+			(true (lifeDetected__o3' 
+				(true (1.0))
+				(false (0.0))))
+			(false (lifeDetected__o3' 
 				(true (0.0))
 				(false (1.0)))))
 	oneStep
@@ -496,22 +760,38 @@ action left__a1
 				(false (waterDetectedObs__o1' 
 					(true (0.0))
 					(false (1.0)))))
+		waterDetectedObs__o2
+			(waterDetected__o2' 
+				(true (waterDetectedObs__o2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (waterDetectedObs__o2' 
+					(true (0.0))
+					(false (1.0)))))
+		waterDetectedObs__o3
+			(waterDetected__o3' 
+				(true (waterDetectedObs__o3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (waterDetectedObs__o3' 
+					(true (0.0))
+					(false (1.0)))))
 		damagedObs__l1
 			(damaged__l1' 
 				(true (damagedObs__l1' 
-					(true (0.9544825181365013))
-					(false (0.04551748186349869))))
+					(true (0.9382016696035862))
+					(false (0.0617983303964138))))
 				(false (damagedObs__l1' 
-					(true (0.021615148))
-					(false (0.978384852)))))
+					(true (0.07345955))
+					(false (0.92654045)))))
 		damagedObs__w1
 			(damaged__w1' 
 				(true (damagedObs__w1' 
-					(true (0.9638246335089207))
-					(false (0.03617536649107933))))
+					(true (0.9263422265648842))
+					(false (0.07365777343511581))))
 				(false (damagedObs__w1' 
-					(true (0.08656731))
-					(false (0.91343269)))))
+					(true (0.08379076))
+					(false (0.91620924)))))
 		damagedObs__p1
 			(damaged__p1' 
 				(true (damagedObs__p1' 
@@ -534,6 +814,22 @@ action left__a1
 					(true (1.0))
 					(false (0.0))))
 				(false (lifeDetectedObs__o1' 
+					(true (0.0))
+					(false (1.0)))))
+		lifeDetectedObs__o2
+			(lifeDetected__o2' 
+				(true (lifeDetectedObs__o2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (lifeDetectedObs__o2' 
+					(true (0.0))
+					(false (1.0)))))
+		lifeDetectedObs__o3
+			(lifeDetected__o3' 
+				(true (lifeDetectedObs__o3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (lifeDetectedObs__o3' 
 					(true (0.0))
 					(false (1.0)))))
 	endobserve
@@ -566,6 +862,30 @@ action noop
 				(false (HAS_WATER__o1' 
 					(true (0.8))
 					(false (0.2)))))))
+	HAS_WATER__o2
+		(HAS_WATER__o2 
+			(true (HAS_WATER__o2' 
+				(true (1.0))
+				(false (0.0))))
+			(false (oneStep 
+				(true (HAS_WATER__o2' 
+					(true (0.0))
+					(false (1.0))))
+				(false (HAS_WATER__o2' 
+					(true (0.8))
+					(false (0.2)))))))
+	HAS_WATER__o3
+		(HAS_WATER__o3 
+			(true (HAS_WATER__o3' 
+				(true (1.0))
+				(false (0.0))))
+			(false (oneStep 
+				(true (HAS_WATER__o3' 
+					(true (0.0))
+					(false (1.0))))
+				(false (HAS_WATER__o3' 
+					(true (0.8))
+					(false (0.2)))))))
 	damaged__l1
 		(damaged__l1 
 			(true (damaged__l1' 
@@ -573,8 +893,8 @@ action noop
 				(false (0.0))))
 			(false (agentAt__a1_x1_y0 
 				(true (damaged__l1' 
-					(true (0.3359123))
-					(false (0.6640877000000001))))
+					(true (0.35914695))
+					(false (0.64085305))))
 				(false (damaged__l1' 
 					(true (0.0))
 					(false (1.0)))))))
@@ -585,8 +905,8 @@ action noop
 				(false (0.0))))
 			(false (agentAt__a1_x1_y0 
 				(true (damaged__w1' 
-					(true (0.37663338))
-					(false (0.62336662))))
+					(true (0.25491363))
+					(false (0.74508637))))
 				(false (damaged__w1' 
 					(true (0.0))
 					(false (1.0)))))))
@@ -638,6 +958,14 @@ action noop
 		(pictureTaken__o1' 
 			(true (0.0))
 			(false (1.0)))
+	pictureTaken__o2
+		(pictureTaken__o2' 
+			(true (0.0))
+			(false (1.0)))
+	pictureTaken__o3
+		(pictureTaken__o3' 
+			(true (0.0))
+			(false (1.0)))
 	HAS_LIFE__o0
 		(HAS_WATER__o0 
 			(true (HAS_LIFE__o0 
@@ -678,6 +1006,46 @@ action noop
 				(false (HAS_LIFE__o1' 
 					(true (0.0))
 					(false (1.0)))))))
+	HAS_LIFE__o2
+		(HAS_WATER__o2 
+			(true (HAS_LIFE__o2 
+				(true (HAS_LIFE__o2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (twoStep 
+					(true (HAS_LIFE__o2' 
+						(true (0.0))
+						(false (1.0))))
+					(false (HAS_LIFE__o2' 
+						(true (0.7))
+						(false (0.30000000000000004))))))))
+			(false (HAS_LIFE__o2 
+				(true (HAS_LIFE__o2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (HAS_LIFE__o2' 
+					(true (0.0))
+					(false (1.0)))))))
+	HAS_LIFE__o3
+		(HAS_WATER__o3 
+			(true (HAS_LIFE__o3 
+				(true (HAS_LIFE__o3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (twoStep 
+					(true (HAS_LIFE__o3' 
+						(true (0.0))
+						(false (1.0))))
+					(false (HAS_LIFE__o3' 
+						(true (0.7))
+						(false (0.30000000000000004))))))))
+			(false (HAS_LIFE__o3 
+				(true (HAS_LIFE__o3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (HAS_LIFE__o3' 
+					(true (0.0))
+					(false (1.0)))))))
 	waterDetected__o0
 		(waterDetected__o0 
 			(true (waterDetected__o0' 
@@ -694,6 +1062,22 @@ action noop
 			(false (waterDetected__o1' 
 				(true (0.0))
 				(false (1.0)))))
+	waterDetected__o2
+		(waterDetected__o2 
+			(true (waterDetected__o2' 
+				(true (1.0))
+				(false (0.0))))
+			(false (waterDetected__o2' 
+				(true (0.0))
+				(false (1.0)))))
+	waterDetected__o3
+		(waterDetected__o3 
+			(true (waterDetected__o3' 
+				(true (1.0))
+				(false (0.0))))
+			(false (waterDetected__o3' 
+				(true (0.0))
+				(false (1.0)))))
 	lifeDetected__o0
 		(lifeDetected__o0 
 			(true (lifeDetected__o0' 
@@ -708,6 +1092,22 @@ action noop
 				(true (1.0))
 				(false (0.0))))
 			(false (lifeDetected__o1' 
+				(true (0.0))
+				(false (1.0)))))
+	lifeDetected__o2
+		(lifeDetected__o2 
+			(true (lifeDetected__o2' 
+				(true (1.0))
+				(false (0.0))))
+			(false (lifeDetected__o2' 
+				(true (0.0))
+				(false (1.0)))))
+	lifeDetected__o3
+		(lifeDetected__o3 
+			(true (lifeDetected__o3' 
+				(true (1.0))
+				(false (0.0))))
+			(false (lifeDetected__o3' 
 				(true (0.0))
 				(false (1.0)))))
 	oneStep
@@ -739,22 +1139,38 @@ action noop
 				(false (waterDetectedObs__o1' 
 					(true (0.0))
 					(false (1.0)))))
+		waterDetectedObs__o2
+			(waterDetected__o2' 
+				(true (waterDetectedObs__o2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (waterDetectedObs__o2' 
+					(true (0.0))
+					(false (1.0)))))
+		waterDetectedObs__o3
+			(waterDetected__o3' 
+				(true (waterDetectedObs__o3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (waterDetectedObs__o3' 
+					(true (0.0))
+					(false (1.0)))))
 		damagedObs__l1
 			(damaged__l1' 
 				(true (damagedObs__l1' 
-					(true (0.9544825181365013))
-					(false (0.04551748186349869))))
+					(true (0.9382016696035862))
+					(false (0.0617983303964138))))
 				(false (damagedObs__l1' 
-					(true (0.021615148))
-					(false (0.978384852)))))
+					(true (0.07345955))
+					(false (0.92654045)))))
 		damagedObs__w1
 			(damaged__w1' 
 				(true (damagedObs__w1' 
-					(true (0.9638246335089207))
-					(false (0.03617536649107933))))
+					(true (0.9263422265648842))
+					(false (0.07365777343511581))))
 				(false (damagedObs__w1' 
-					(true (0.08656731))
-					(false (0.91343269)))))
+					(true (0.08379076))
+					(false (0.91620924)))))
 		damagedObs__p1
 			(damaged__p1' 
 				(true (damagedObs__p1' 
@@ -777,6 +1193,22 @@ action noop
 					(true (1.0))
 					(false (0.0))))
 				(false (lifeDetectedObs__o1' 
+					(true (0.0))
+					(false (1.0)))))
+		lifeDetectedObs__o2
+			(lifeDetected__o2' 
+				(true (lifeDetectedObs__o2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (lifeDetectedObs__o2' 
+					(true (0.0))
+					(false (1.0)))))
+		lifeDetectedObs__o3
+			(lifeDetected__o3' 
+				(true (lifeDetectedObs__o3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (lifeDetectedObs__o3' 
 					(true (0.0))
 					(false (1.0)))))
 	endobserve
@@ -809,26 +1241,50 @@ action repair__a1_l1
 				(false (HAS_WATER__o1' 
 					(true (0.8))
 					(false (0.2)))))))
+	HAS_WATER__o2
+		(HAS_WATER__o2 
+			(true (HAS_WATER__o2' 
+				(true (1.0))
+				(false (0.0))))
+			(false (oneStep 
+				(true (HAS_WATER__o2' 
+					(true (0.0))
+					(false (1.0))))
+				(false (HAS_WATER__o2' 
+					(true (0.8))
+					(false (0.2)))))))
+	HAS_WATER__o3
+		(HAS_WATER__o3 
+			(true (HAS_WATER__o3' 
+				(true (1.0))
+				(false (0.0))))
+			(false (oneStep 
+				(true (HAS_WATER__o3' 
+					(true (0.0))
+					(false (1.0))))
+				(false (HAS_WATER__o3' 
+					(true (0.8))
+					(false (0.2)))))))
 	damaged__l1
 		(damaged__l1 
-			(true (agentAt__a1_x0_y0 
+			(true (agentAt__a1_x1_y1 
 				(true (damaged__l1' 
 					(true (0.0))
 					(false (1.0))))
 				(false (damaged__l1' 
 					(true (1.0))
 					(false (0.0))))))
-			(false (agentAt__a1_x0_y0 
-				(true (damaged__l1' 
-					(true (0.0))
-					(false (1.0))))
-				(false (agentAt__a1_x1_y0 
+			(false (agentAt__a1_x1_y0 
+				(true (agentAt__a1_x1_y1 
 					(true (damaged__l1' 
-						(true (0.3359123))
-						(false (0.6640877000000001))))
-					(false (damaged__l1' 
 						(true (0.0))
-						(false (1.0)))))))))
+						(false (1.0))))
+					(false (damaged__l1' 
+						(true (0.35914695))
+						(false (0.64085305))))))
+				(false (damaged__l1' 
+					(true (0.0))
+					(false (1.0)))))))
 	damaged__w1
 		(damaged__w1 
 			(true (damaged__w1' 
@@ -836,8 +1292,8 @@ action repair__a1_l1
 				(false (0.0))))
 			(false (agentAt__a1_x1_y0 
 				(true (damaged__w1' 
-					(true (0.37663338))
-					(false (0.62336662))))
+					(true (0.25491363))
+					(false (0.74508637))))
 				(false (damaged__w1' 
 					(true (0.0))
 					(false (1.0)))))))
@@ -889,6 +1345,14 @@ action repair__a1_l1
 		(pictureTaken__o1' 
 			(true (0.0))
 			(false (1.0)))
+	pictureTaken__o2
+		(pictureTaken__o2' 
+			(true (0.0))
+			(false (1.0)))
+	pictureTaken__o3
+		(pictureTaken__o3' 
+			(true (0.0))
+			(false (1.0)))
 	HAS_LIFE__o0
 		(HAS_WATER__o0 
 			(true (HAS_LIFE__o0 
@@ -929,6 +1393,46 @@ action repair__a1_l1
 				(false (HAS_LIFE__o1' 
 					(true (0.0))
 					(false (1.0)))))))
+	HAS_LIFE__o2
+		(HAS_WATER__o2 
+			(true (HAS_LIFE__o2 
+				(true (HAS_LIFE__o2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (twoStep 
+					(true (HAS_LIFE__o2' 
+						(true (0.0))
+						(false (1.0))))
+					(false (HAS_LIFE__o2' 
+						(true (0.7))
+						(false (0.30000000000000004))))))))
+			(false (HAS_LIFE__o2 
+				(true (HAS_LIFE__o2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (HAS_LIFE__o2' 
+					(true (0.0))
+					(false (1.0)))))))
+	HAS_LIFE__o3
+		(HAS_WATER__o3 
+			(true (HAS_LIFE__o3 
+				(true (HAS_LIFE__o3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (twoStep 
+					(true (HAS_LIFE__o3' 
+						(true (0.0))
+						(false (1.0))))
+					(false (HAS_LIFE__o3' 
+						(true (0.7))
+						(false (0.30000000000000004))))))))
+			(false (HAS_LIFE__o3 
+				(true (HAS_LIFE__o3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (HAS_LIFE__o3' 
+					(true (0.0))
+					(false (1.0)))))))
 	waterDetected__o0
 		(waterDetected__o0 
 			(true (waterDetected__o0' 
@@ -945,6 +1449,22 @@ action repair__a1_l1
 			(false (waterDetected__o1' 
 				(true (0.0))
 				(false (1.0)))))
+	waterDetected__o2
+		(waterDetected__o2 
+			(true (waterDetected__o2' 
+				(true (1.0))
+				(false (0.0))))
+			(false (waterDetected__o2' 
+				(true (0.0))
+				(false (1.0)))))
+	waterDetected__o3
+		(waterDetected__o3 
+			(true (waterDetected__o3' 
+				(true (1.0))
+				(false (0.0))))
+			(false (waterDetected__o3' 
+				(true (0.0))
+				(false (1.0)))))
 	lifeDetected__o0
 		(lifeDetected__o0 
 			(true (lifeDetected__o0' 
@@ -959,6 +1479,22 @@ action repair__a1_l1
 				(true (1.0))
 				(false (0.0))))
 			(false (lifeDetected__o1' 
+				(true (0.0))
+				(false (1.0)))))
+	lifeDetected__o2
+		(lifeDetected__o2 
+			(true (lifeDetected__o2' 
+				(true (1.0))
+				(false (0.0))))
+			(false (lifeDetected__o2' 
+				(true (0.0))
+				(false (1.0)))))
+	lifeDetected__o3
+		(lifeDetected__o3 
+			(true (lifeDetected__o3' 
+				(true (1.0))
+				(false (0.0))))
+			(false (lifeDetected__o3' 
 				(true (0.0))
 				(false (1.0)))))
 	oneStep
@@ -990,22 +1526,38 @@ action repair__a1_l1
 				(false (waterDetectedObs__o1' 
 					(true (0.0))
 					(false (1.0)))))
+		waterDetectedObs__o2
+			(waterDetected__o2' 
+				(true (waterDetectedObs__o2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (waterDetectedObs__o2' 
+					(true (0.0))
+					(false (1.0)))))
+		waterDetectedObs__o3
+			(waterDetected__o3' 
+				(true (waterDetectedObs__o3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (waterDetectedObs__o3' 
+					(true (0.0))
+					(false (1.0)))))
 		damagedObs__l1
 			(damaged__l1' 
 				(true (damagedObs__l1' 
-					(true (0.9544825181365013))
-					(false (0.04551748186349869))))
+					(true (0.9382016696035862))
+					(false (0.0617983303964138))))
 				(false (damagedObs__l1' 
-					(true (0.021615148))
-					(false (0.978384852)))))
+					(true (0.07345955))
+					(false (0.92654045)))))
 		damagedObs__w1
 			(damaged__w1' 
 				(true (damagedObs__w1' 
-					(true (0.9638246335089207))
-					(false (0.03617536649107933))))
+					(true (0.9263422265648842))
+					(false (0.07365777343511581))))
 				(false (damagedObs__w1' 
-					(true (0.08656731))
-					(false (0.91343269)))))
+					(true (0.08379076))
+					(false (0.91620924)))))
 		damagedObs__p1
 			(damaged__p1' 
 				(true (damagedObs__p1' 
@@ -1028,6 +1580,22 @@ action repair__a1_l1
 					(true (1.0))
 					(false (0.0))))
 				(false (lifeDetectedObs__o1' 
+					(true (0.0))
+					(false (1.0)))))
+		lifeDetectedObs__o2
+			(lifeDetected__o2' 
+				(true (lifeDetectedObs__o2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (lifeDetectedObs__o2' 
+					(true (0.0))
+					(false (1.0)))))
+		lifeDetectedObs__o3
+			(lifeDetected__o3' 
+				(true (lifeDetectedObs__o3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (lifeDetectedObs__o3' 
 					(true (0.0))
 					(false (1.0)))))
 	endobserve
@@ -1060,6 +1628,30 @@ action repair__a1_p1
 				(false (HAS_WATER__o1' 
 					(true (0.8))
 					(false (0.2)))))))
+	HAS_WATER__o2
+		(HAS_WATER__o2 
+			(true (HAS_WATER__o2' 
+				(true (1.0))
+				(false (0.0))))
+			(false (oneStep 
+				(true (HAS_WATER__o2' 
+					(true (0.0))
+					(false (1.0))))
+				(false (HAS_WATER__o2' 
+					(true (0.8))
+					(false (0.2)))))))
+	HAS_WATER__o3
+		(HAS_WATER__o3 
+			(true (HAS_WATER__o3' 
+				(true (1.0))
+				(false (0.0))))
+			(false (oneStep 
+				(true (HAS_WATER__o3' 
+					(true (0.0))
+					(false (1.0))))
+				(false (HAS_WATER__o3' 
+					(true (0.8))
+					(false (0.2)))))))
 	damaged__l1
 		(damaged__l1 
 			(true (damaged__l1' 
@@ -1067,8 +1659,8 @@ action repair__a1_p1
 				(false (0.0))))
 			(false (agentAt__a1_x1_y0 
 				(true (damaged__l1' 
-					(true (0.3359123))
-					(false (0.6640877000000001))))
+					(true (0.35914695))
+					(false (0.64085305))))
 				(false (damaged__l1' 
 					(true (0.0))
 					(false (1.0)))))))
@@ -1079,14 +1671,14 @@ action repair__a1_p1
 				(false (0.0))))
 			(false (agentAt__a1_x1_y0 
 				(true (damaged__w1' 
-					(true (0.37663338))
-					(false (0.62336662))))
+					(true (0.25491363))
+					(false (0.74508637))))
 				(false (damaged__w1' 
 					(true (0.0))
 					(false (1.0)))))))
 	damaged__p1
 		(damaged__p1 
-			(true (agentAt__a1_x0_y0 
+			(true (agentAt__a1_x1_y1 
 				(true (damaged__p1' 
 					(true (0.0))
 					(false (1.0))))
@@ -1136,6 +1728,14 @@ action repair__a1_p1
 		(pictureTaken__o1' 
 			(true (0.0))
 			(false (1.0)))
+	pictureTaken__o2
+		(pictureTaken__o2' 
+			(true (0.0))
+			(false (1.0)))
+	pictureTaken__o3
+		(pictureTaken__o3' 
+			(true (0.0))
+			(false (1.0)))
 	HAS_LIFE__o0
 		(HAS_WATER__o0 
 			(true (HAS_LIFE__o0 
@@ -1176,6 +1776,46 @@ action repair__a1_p1
 				(false (HAS_LIFE__o1' 
 					(true (0.0))
 					(false (1.0)))))))
+	HAS_LIFE__o2
+		(HAS_WATER__o2 
+			(true (HAS_LIFE__o2 
+				(true (HAS_LIFE__o2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (twoStep 
+					(true (HAS_LIFE__o2' 
+						(true (0.0))
+						(false (1.0))))
+					(false (HAS_LIFE__o2' 
+						(true (0.7))
+						(false (0.30000000000000004))))))))
+			(false (HAS_LIFE__o2 
+				(true (HAS_LIFE__o2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (HAS_LIFE__o2' 
+					(true (0.0))
+					(false (1.0)))))))
+	HAS_LIFE__o3
+		(HAS_WATER__o3 
+			(true (HAS_LIFE__o3 
+				(true (HAS_LIFE__o3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (twoStep 
+					(true (HAS_LIFE__o3' 
+						(true (0.0))
+						(false (1.0))))
+					(false (HAS_LIFE__o3' 
+						(true (0.7))
+						(false (0.30000000000000004))))))))
+			(false (HAS_LIFE__o3 
+				(true (HAS_LIFE__o3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (HAS_LIFE__o3' 
+					(true (0.0))
+					(false (1.0)))))))
 	waterDetected__o0
 		(waterDetected__o0 
 			(true (waterDetected__o0' 
@@ -1192,6 +1832,22 @@ action repair__a1_p1
 			(false (waterDetected__o1' 
 				(true (0.0))
 				(false (1.0)))))
+	waterDetected__o2
+		(waterDetected__o2 
+			(true (waterDetected__o2' 
+				(true (1.0))
+				(false (0.0))))
+			(false (waterDetected__o2' 
+				(true (0.0))
+				(false (1.0)))))
+	waterDetected__o3
+		(waterDetected__o3 
+			(true (waterDetected__o3' 
+				(true (1.0))
+				(false (0.0))))
+			(false (waterDetected__o3' 
+				(true (0.0))
+				(false (1.0)))))
 	lifeDetected__o0
 		(lifeDetected__o0 
 			(true (lifeDetected__o0' 
@@ -1206,6 +1862,22 @@ action repair__a1_p1
 				(true (1.0))
 				(false (0.0))))
 			(false (lifeDetected__o1' 
+				(true (0.0))
+				(false (1.0)))))
+	lifeDetected__o2
+		(lifeDetected__o2 
+			(true (lifeDetected__o2' 
+				(true (1.0))
+				(false (0.0))))
+			(false (lifeDetected__o2' 
+				(true (0.0))
+				(false (1.0)))))
+	lifeDetected__o3
+		(lifeDetected__o3 
+			(true (lifeDetected__o3' 
+				(true (1.0))
+				(false (0.0))))
+			(false (lifeDetected__o3' 
 				(true (0.0))
 				(false (1.0)))))
 	oneStep
@@ -1237,22 +1909,38 @@ action repair__a1_p1
 				(false (waterDetectedObs__o1' 
 					(true (0.0))
 					(false (1.0)))))
+		waterDetectedObs__o2
+			(waterDetected__o2' 
+				(true (waterDetectedObs__o2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (waterDetectedObs__o2' 
+					(true (0.0))
+					(false (1.0)))))
+		waterDetectedObs__o3
+			(waterDetected__o3' 
+				(true (waterDetectedObs__o3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (waterDetectedObs__o3' 
+					(true (0.0))
+					(false (1.0)))))
 		damagedObs__l1
 			(damaged__l1' 
 				(true (damagedObs__l1' 
-					(true (0.9544825181365013))
-					(false (0.04551748186349869))))
+					(true (0.9382016696035862))
+					(false (0.0617983303964138))))
 				(false (damagedObs__l1' 
-					(true (0.021615148))
-					(false (0.978384852)))))
+					(true (0.07345955))
+					(false (0.92654045)))))
 		damagedObs__w1
 			(damaged__w1' 
 				(true (damagedObs__w1' 
-					(true (0.9638246335089207))
-					(false (0.03617536649107933))))
+					(true (0.9263422265648842))
+					(false (0.07365777343511581))))
 				(false (damagedObs__w1' 
-					(true (0.08656731))
-					(false (0.91343269)))))
+					(true (0.08379076))
+					(false (0.91620924)))))
 		damagedObs__p1
 			(damaged__p1' 
 				(true (damagedObs__p1' 
@@ -1275,6 +1963,22 @@ action repair__a1_p1
 					(true (1.0))
 					(false (0.0))))
 				(false (lifeDetectedObs__o1' 
+					(true (0.0))
+					(false (1.0)))))
+		lifeDetectedObs__o2
+			(lifeDetected__o2' 
+				(true (lifeDetectedObs__o2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (lifeDetectedObs__o2' 
+					(true (0.0))
+					(false (1.0)))))
+		lifeDetectedObs__o3
+			(lifeDetected__o3' 
+				(true (lifeDetectedObs__o3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (lifeDetectedObs__o3' 
 					(true (0.0))
 					(false (1.0)))))
 	endobserve
@@ -1307,6 +2011,30 @@ action repair__a1_w1
 				(false (HAS_WATER__o1' 
 					(true (0.8))
 					(false (0.2)))))))
+	HAS_WATER__o2
+		(HAS_WATER__o2 
+			(true (HAS_WATER__o2' 
+				(true (1.0))
+				(false (0.0))))
+			(false (oneStep 
+				(true (HAS_WATER__o2' 
+					(true (0.0))
+					(false (1.0))))
+				(false (HAS_WATER__o2' 
+					(true (0.8))
+					(false (0.2)))))))
+	HAS_WATER__o3
+		(HAS_WATER__o3 
+			(true (HAS_WATER__o3' 
+				(true (1.0))
+				(false (0.0))))
+			(false (oneStep 
+				(true (HAS_WATER__o3' 
+					(true (0.0))
+					(false (1.0))))
+				(false (HAS_WATER__o3' 
+					(true (0.8))
+					(false (0.2)))))))
 	damaged__l1
 		(damaged__l1 
 			(true (damaged__l1' 
@@ -1314,31 +2042,31 @@ action repair__a1_w1
 				(false (0.0))))
 			(false (agentAt__a1_x1_y0 
 				(true (damaged__l1' 
-					(true (0.3359123))
-					(false (0.6640877000000001))))
+					(true (0.35914695))
+					(false (0.64085305))))
 				(false (damaged__l1' 
 					(true (0.0))
 					(false (1.0)))))))
 	damaged__w1
 		(damaged__w1 
-			(true (agentAt__a1_x0_y0 
+			(true (agentAt__a1_x1_y1 
 				(true (damaged__w1' 
 					(true (0.0))
 					(false (1.0))))
 				(false (damaged__w1' 
 					(true (1.0))
 					(false (0.0))))))
-			(false (agentAt__a1_x0_y0 
-				(true (damaged__w1' 
-					(true (0.0))
-					(false (1.0))))
-				(false (agentAt__a1_x1_y0 
+			(false (agentAt__a1_x1_y0 
+				(true (agentAt__a1_x1_y1 
 					(true (damaged__w1' 
-						(true (0.37663338))
-						(false (0.62336662))))
-					(false (damaged__w1' 
 						(true (0.0))
-						(false (1.0)))))))))
+						(false (1.0))))
+					(false (damaged__w1' 
+						(true (0.25491363))
+						(false (0.74508637))))))
+				(false (damaged__w1' 
+					(true (0.0))
+					(false (1.0)))))))
 	damaged__p1
 		(damaged__p1 
 			(true (damaged__p1' 
@@ -1387,6 +2115,14 @@ action repair__a1_w1
 		(pictureTaken__o1' 
 			(true (0.0))
 			(false (1.0)))
+	pictureTaken__o2
+		(pictureTaken__o2' 
+			(true (0.0))
+			(false (1.0)))
+	pictureTaken__o3
+		(pictureTaken__o3' 
+			(true (0.0))
+			(false (1.0)))
 	HAS_LIFE__o0
 		(HAS_WATER__o0 
 			(true (HAS_LIFE__o0 
@@ -1427,6 +2163,46 @@ action repair__a1_w1
 				(false (HAS_LIFE__o1' 
 					(true (0.0))
 					(false (1.0)))))))
+	HAS_LIFE__o2
+		(HAS_WATER__o2 
+			(true (HAS_LIFE__o2 
+				(true (HAS_LIFE__o2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (twoStep 
+					(true (HAS_LIFE__o2' 
+						(true (0.0))
+						(false (1.0))))
+					(false (HAS_LIFE__o2' 
+						(true (0.7))
+						(false (0.30000000000000004))))))))
+			(false (HAS_LIFE__o2 
+				(true (HAS_LIFE__o2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (HAS_LIFE__o2' 
+					(true (0.0))
+					(false (1.0)))))))
+	HAS_LIFE__o3
+		(HAS_WATER__o3 
+			(true (HAS_LIFE__o3 
+				(true (HAS_LIFE__o3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (twoStep 
+					(true (HAS_LIFE__o3' 
+						(true (0.0))
+						(false (1.0))))
+					(false (HAS_LIFE__o3' 
+						(true (0.7))
+						(false (0.30000000000000004))))))))
+			(false (HAS_LIFE__o3 
+				(true (HAS_LIFE__o3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (HAS_LIFE__o3' 
+					(true (0.0))
+					(false (1.0)))))))
 	waterDetected__o0
 		(waterDetected__o0 
 			(true (waterDetected__o0' 
@@ -1443,6 +2219,22 @@ action repair__a1_w1
 			(false (waterDetected__o1' 
 				(true (0.0))
 				(false (1.0)))))
+	waterDetected__o2
+		(waterDetected__o2 
+			(true (waterDetected__o2' 
+				(true (1.0))
+				(false (0.0))))
+			(false (waterDetected__o2' 
+				(true (0.0))
+				(false (1.0)))))
+	waterDetected__o3
+		(waterDetected__o3 
+			(true (waterDetected__o3' 
+				(true (1.0))
+				(false (0.0))))
+			(false (waterDetected__o3' 
+				(true (0.0))
+				(false (1.0)))))
 	lifeDetected__o0
 		(lifeDetected__o0 
 			(true (lifeDetected__o0' 
@@ -1457,6 +2249,22 @@ action repair__a1_w1
 				(true (1.0))
 				(false (0.0))))
 			(false (lifeDetected__o1' 
+				(true (0.0))
+				(false (1.0)))))
+	lifeDetected__o2
+		(lifeDetected__o2 
+			(true (lifeDetected__o2' 
+				(true (1.0))
+				(false (0.0))))
+			(false (lifeDetected__o2' 
+				(true (0.0))
+				(false (1.0)))))
+	lifeDetected__o3
+		(lifeDetected__o3 
+			(true (lifeDetected__o3' 
+				(true (1.0))
+				(false (0.0))))
+			(false (lifeDetected__o3' 
 				(true (0.0))
 				(false (1.0)))))
 	oneStep
@@ -1488,22 +2296,38 @@ action repair__a1_w1
 				(false (waterDetectedObs__o1' 
 					(true (0.0))
 					(false (1.0)))))
+		waterDetectedObs__o2
+			(waterDetected__o2' 
+				(true (waterDetectedObs__o2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (waterDetectedObs__o2' 
+					(true (0.0))
+					(false (1.0)))))
+		waterDetectedObs__o3
+			(waterDetected__o3' 
+				(true (waterDetectedObs__o3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (waterDetectedObs__o3' 
+					(true (0.0))
+					(false (1.0)))))
 		damagedObs__l1
 			(damaged__l1' 
 				(true (damagedObs__l1' 
-					(true (0.9544825181365013))
-					(false (0.04551748186349869))))
+					(true (0.9382016696035862))
+					(false (0.0617983303964138))))
 				(false (damagedObs__l1' 
-					(true (0.021615148))
-					(false (0.978384852)))))
+					(true (0.07345955))
+					(false (0.92654045)))))
 		damagedObs__w1
 			(damaged__w1' 
 				(true (damagedObs__w1' 
-					(true (0.9638246335089207))
-					(false (0.03617536649107933))))
+					(true (0.9263422265648842))
+					(false (0.07365777343511581))))
 				(false (damagedObs__w1' 
-					(true (0.08656731))
-					(false (0.91343269)))))
+					(true (0.08379076))
+					(false (0.91620924)))))
 		damagedObs__p1
 			(damaged__p1' 
 				(true (damagedObs__p1' 
@@ -1526,6 +2350,22 @@ action repair__a1_w1
 					(true (1.0))
 					(false (0.0))))
 				(false (lifeDetectedObs__o1' 
+					(true (0.0))
+					(false (1.0)))))
+		lifeDetectedObs__o2
+			(lifeDetected__o2' 
+				(true (lifeDetectedObs__o2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (lifeDetectedObs__o2' 
+					(true (0.0))
+					(false (1.0)))))
+		lifeDetectedObs__o3
+			(lifeDetected__o3' 
+				(true (lifeDetectedObs__o3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (lifeDetectedObs__o3' 
 					(true (0.0))
 					(false (1.0)))))
 	endobserve
@@ -1558,6 +2398,30 @@ action right__a1
 				(false (HAS_WATER__o1' 
 					(true (0.8))
 					(false (0.2)))))))
+	HAS_WATER__o2
+		(HAS_WATER__o2 
+			(true (HAS_WATER__o2' 
+				(true (1.0))
+				(false (0.0))))
+			(false (oneStep 
+				(true (HAS_WATER__o2' 
+					(true (0.0))
+					(false (1.0))))
+				(false (HAS_WATER__o2' 
+					(true (0.8))
+					(false (0.2)))))))
+	HAS_WATER__o3
+		(HAS_WATER__o3 
+			(true (HAS_WATER__o3' 
+				(true (1.0))
+				(false (0.0))))
+			(false (oneStep 
+				(true (HAS_WATER__o3' 
+					(true (0.0))
+					(false (1.0))))
+				(false (HAS_WATER__o3' 
+					(true (0.8))
+					(false (0.2)))))))
 	damaged__l1
 		(damaged__l1 
 			(true (damaged__l1' 
@@ -1565,8 +2429,8 @@ action right__a1
 				(false (0.0))))
 			(false (agentAt__a1_x1_y0 
 				(true (damaged__l1' 
-					(true (0.3359123))
-					(false (0.6640877000000001))))
+					(true (0.35914695))
+					(false (0.64085305))))
 				(false (damaged__l1' 
 					(true (0.0))
 					(false (1.0)))))))
@@ -1577,8 +2441,8 @@ action right__a1
 				(false (0.0))))
 			(false (agentAt__a1_x1_y0 
 				(true (damaged__w1' 
-					(true (0.37663338))
-					(false (0.62336662))))
+					(true (0.25491363))
+					(false (0.74508637))))
 				(false (damaged__w1' 
 					(true (0.0))
 					(false (1.0)))))))
@@ -1630,6 +2494,14 @@ action right__a1
 		(pictureTaken__o1' 
 			(true (0.0))
 			(false (1.0)))
+	pictureTaken__o2
+		(pictureTaken__o2' 
+			(true (0.0))
+			(false (1.0)))
+	pictureTaken__o3
+		(pictureTaken__o3' 
+			(true (0.0))
+			(false (1.0)))
 	HAS_LIFE__o0
 		(HAS_WATER__o0 
 			(true (HAS_LIFE__o0 
@@ -1670,6 +2542,46 @@ action right__a1
 				(false (HAS_LIFE__o1' 
 					(true (0.0))
 					(false (1.0)))))))
+	HAS_LIFE__o2
+		(HAS_WATER__o2 
+			(true (HAS_LIFE__o2 
+				(true (HAS_LIFE__o2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (twoStep 
+					(true (HAS_LIFE__o2' 
+						(true (0.0))
+						(false (1.0))))
+					(false (HAS_LIFE__o2' 
+						(true (0.7))
+						(false (0.30000000000000004))))))))
+			(false (HAS_LIFE__o2 
+				(true (HAS_LIFE__o2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (HAS_LIFE__o2' 
+					(true (0.0))
+					(false (1.0)))))))
+	HAS_LIFE__o3
+		(HAS_WATER__o3 
+			(true (HAS_LIFE__o3 
+				(true (HAS_LIFE__o3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (twoStep 
+					(true (HAS_LIFE__o3' 
+						(true (0.0))
+						(false (1.0))))
+					(false (HAS_LIFE__o3' 
+						(true (0.7))
+						(false (0.30000000000000004))))))))
+			(false (HAS_LIFE__o3 
+				(true (HAS_LIFE__o3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (HAS_LIFE__o3' 
+					(true (0.0))
+					(false (1.0)))))))
 	waterDetected__o0
 		(waterDetected__o0 
 			(true (waterDetected__o0' 
@@ -1686,6 +2598,22 @@ action right__a1
 			(false (waterDetected__o1' 
 				(true (0.0))
 				(false (1.0)))))
+	waterDetected__o2
+		(waterDetected__o2 
+			(true (waterDetected__o2' 
+				(true (1.0))
+				(false (0.0))))
+			(false (waterDetected__o2' 
+				(true (0.0))
+				(false (1.0)))))
+	waterDetected__o3
+		(waterDetected__o3 
+			(true (waterDetected__o3' 
+				(true (1.0))
+				(false (0.0))))
+			(false (waterDetected__o3' 
+				(true (0.0))
+				(false (1.0)))))
 	lifeDetected__o0
 		(lifeDetected__o0 
 			(true (lifeDetected__o0' 
@@ -1700,6 +2628,22 @@ action right__a1
 				(true (1.0))
 				(false (0.0))))
 			(false (lifeDetected__o1' 
+				(true (0.0))
+				(false (1.0)))))
+	lifeDetected__o2
+		(lifeDetected__o2 
+			(true (lifeDetected__o2' 
+				(true (1.0))
+				(false (0.0))))
+			(false (lifeDetected__o2' 
+				(true (0.0))
+				(false (1.0)))))
+	lifeDetected__o3
+		(lifeDetected__o3 
+			(true (lifeDetected__o3' 
+				(true (1.0))
+				(false (0.0))))
+			(false (lifeDetected__o3' 
 				(true (0.0))
 				(false (1.0)))))
 	oneStep
@@ -1731,22 +2675,38 @@ action right__a1
 				(false (waterDetectedObs__o1' 
 					(true (0.0))
 					(false (1.0)))))
+		waterDetectedObs__o2
+			(waterDetected__o2' 
+				(true (waterDetectedObs__o2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (waterDetectedObs__o2' 
+					(true (0.0))
+					(false (1.0)))))
+		waterDetectedObs__o3
+			(waterDetected__o3' 
+				(true (waterDetectedObs__o3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (waterDetectedObs__o3' 
+					(true (0.0))
+					(false (1.0)))))
 		damagedObs__l1
 			(damaged__l1' 
 				(true (damagedObs__l1' 
-					(true (0.9544825181365013))
-					(false (0.04551748186349869))))
+					(true (0.9382016696035862))
+					(false (0.0617983303964138))))
 				(false (damagedObs__l1' 
-					(true (0.021615148))
-					(false (0.978384852)))))
+					(true (0.07345955))
+					(false (0.92654045)))))
 		damagedObs__w1
 			(damaged__w1' 
 				(true (damagedObs__w1' 
-					(true (0.9638246335089207))
-					(false (0.03617536649107933))))
+					(true (0.9263422265648842))
+					(false (0.07365777343511581))))
 				(false (damagedObs__w1' 
-					(true (0.08656731))
-					(false (0.91343269)))))
+					(true (0.08379076))
+					(false (0.91620924)))))
 		damagedObs__p1
 			(damaged__p1' 
 				(true (damagedObs__p1' 
@@ -1769,6 +2729,22 @@ action right__a1
 					(true (1.0))
 					(false (0.0))))
 				(false (lifeDetectedObs__o1' 
+					(true (0.0))
+					(false (1.0)))))
+		lifeDetectedObs__o2
+			(lifeDetected__o2' 
+				(true (lifeDetectedObs__o2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (lifeDetectedObs__o2' 
+					(true (0.0))
+					(false (1.0)))))
+		lifeDetectedObs__o3
+			(lifeDetected__o3' 
+				(true (lifeDetectedObs__o3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (lifeDetectedObs__o3' 
 					(true (0.0))
 					(false (1.0)))))
 	endobserve
@@ -1801,6 +2777,30 @@ action up__a1
 				(false (HAS_WATER__o1' 
 					(true (0.8))
 					(false (0.2)))))))
+	HAS_WATER__o2
+		(HAS_WATER__o2 
+			(true (HAS_WATER__o2' 
+				(true (1.0))
+				(false (0.0))))
+			(false (oneStep 
+				(true (HAS_WATER__o2' 
+					(true (0.0))
+					(false (1.0))))
+				(false (HAS_WATER__o2' 
+					(true (0.8))
+					(false (0.2)))))))
+	HAS_WATER__o3
+		(HAS_WATER__o3 
+			(true (HAS_WATER__o3' 
+				(true (1.0))
+				(false (0.0))))
+			(false (oneStep 
+				(true (HAS_WATER__o3' 
+					(true (0.0))
+					(false (1.0))))
+				(false (HAS_WATER__o3' 
+					(true (0.8))
+					(false (0.2)))))))
 	damaged__l1
 		(damaged__l1 
 			(true (damaged__l1' 
@@ -1808,8 +2808,8 @@ action up__a1
 				(false (0.0))))
 			(false (agentAt__a1_x1_y0 
 				(true (damaged__l1' 
-					(true (0.3359123))
-					(false (0.6640877000000001))))
+					(true (0.35914695))
+					(false (0.64085305))))
 				(false (damaged__l1' 
 					(true (0.0))
 					(false (1.0)))))))
@@ -1820,8 +2820,8 @@ action up__a1
 				(false (0.0))))
 			(false (agentAt__a1_x1_y0 
 				(true (damaged__w1' 
-					(true (0.37663338))
-					(false (0.62336662))))
+					(true (0.25491363))
+					(false (0.74508637))))
 				(false (damaged__w1' 
 					(true (0.0))
 					(false (1.0)))))))
@@ -1873,6 +2873,14 @@ action up__a1
 		(pictureTaken__o1' 
 			(true (0.0))
 			(false (1.0)))
+	pictureTaken__o2
+		(pictureTaken__o2' 
+			(true (0.0))
+			(false (1.0)))
+	pictureTaken__o3
+		(pictureTaken__o3' 
+			(true (0.0))
+			(false (1.0)))
 	HAS_LIFE__o0
 		(HAS_WATER__o0 
 			(true (HAS_LIFE__o0 
@@ -1913,6 +2921,46 @@ action up__a1
 				(false (HAS_LIFE__o1' 
 					(true (0.0))
 					(false (1.0)))))))
+	HAS_LIFE__o2
+		(HAS_WATER__o2 
+			(true (HAS_LIFE__o2 
+				(true (HAS_LIFE__o2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (twoStep 
+					(true (HAS_LIFE__o2' 
+						(true (0.0))
+						(false (1.0))))
+					(false (HAS_LIFE__o2' 
+						(true (0.7))
+						(false (0.30000000000000004))))))))
+			(false (HAS_LIFE__o2 
+				(true (HAS_LIFE__o2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (HAS_LIFE__o2' 
+					(true (0.0))
+					(false (1.0)))))))
+	HAS_LIFE__o3
+		(HAS_WATER__o3 
+			(true (HAS_LIFE__o3 
+				(true (HAS_LIFE__o3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (twoStep 
+					(true (HAS_LIFE__o3' 
+						(true (0.0))
+						(false (1.0))))
+					(false (HAS_LIFE__o3' 
+						(true (0.7))
+						(false (0.30000000000000004))))))))
+			(false (HAS_LIFE__o3 
+				(true (HAS_LIFE__o3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (HAS_LIFE__o3' 
+					(true (0.0))
+					(false (1.0)))))))
 	waterDetected__o0
 		(waterDetected__o0 
 			(true (waterDetected__o0' 
@@ -1929,6 +2977,22 @@ action up__a1
 			(false (waterDetected__o1' 
 				(true (0.0))
 				(false (1.0)))))
+	waterDetected__o2
+		(waterDetected__o2 
+			(true (waterDetected__o2' 
+				(true (1.0))
+				(false (0.0))))
+			(false (waterDetected__o2' 
+				(true (0.0))
+				(false (1.0)))))
+	waterDetected__o3
+		(waterDetected__o3 
+			(true (waterDetected__o3' 
+				(true (1.0))
+				(false (0.0))))
+			(false (waterDetected__o3' 
+				(true (0.0))
+				(false (1.0)))))
 	lifeDetected__o0
 		(lifeDetected__o0 
 			(true (lifeDetected__o0' 
@@ -1943,6 +3007,22 @@ action up__a1
 				(true (1.0))
 				(false (0.0))))
 			(false (lifeDetected__o1' 
+				(true (0.0))
+				(false (1.0)))))
+	lifeDetected__o2
+		(lifeDetected__o2 
+			(true (lifeDetected__o2' 
+				(true (1.0))
+				(false (0.0))))
+			(false (lifeDetected__o2' 
+				(true (0.0))
+				(false (1.0)))))
+	lifeDetected__o3
+		(lifeDetected__o3 
+			(true (lifeDetected__o3' 
+				(true (1.0))
+				(false (0.0))))
+			(false (lifeDetected__o3' 
 				(true (0.0))
 				(false (1.0)))))
 	oneStep
@@ -1974,22 +3054,38 @@ action up__a1
 				(false (waterDetectedObs__o1' 
 					(true (0.0))
 					(false (1.0)))))
+		waterDetectedObs__o2
+			(waterDetected__o2' 
+				(true (waterDetectedObs__o2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (waterDetectedObs__o2' 
+					(true (0.0))
+					(false (1.0)))))
+		waterDetectedObs__o3
+			(waterDetected__o3' 
+				(true (waterDetectedObs__o3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (waterDetectedObs__o3' 
+					(true (0.0))
+					(false (1.0)))))
 		damagedObs__l1
 			(damaged__l1' 
 				(true (damagedObs__l1' 
-					(true (0.9544825181365013))
-					(false (0.04551748186349869))))
+					(true (0.9382016696035862))
+					(false (0.0617983303964138))))
 				(false (damagedObs__l1' 
-					(true (0.021615148))
-					(false (0.978384852)))))
+					(true (0.07345955))
+					(false (0.92654045)))))
 		damagedObs__w1
 			(damaged__w1' 
 				(true (damagedObs__w1' 
-					(true (0.9638246335089207))
-					(false (0.03617536649107933))))
+					(true (0.9263422265648842))
+					(false (0.07365777343511581))))
 				(false (damagedObs__w1' 
-					(true (0.08656731))
-					(false (0.91343269)))))
+					(true (0.08379076))
+					(false (0.91620924)))))
 		damagedObs__p1
 			(damaged__p1' 
 				(true (damagedObs__p1' 
@@ -2012,6 +3108,22 @@ action up__a1
 					(true (1.0))
 					(false (0.0))))
 				(false (lifeDetectedObs__o1' 
+					(true (0.0))
+					(false (1.0)))))
+		lifeDetectedObs__o2
+			(lifeDetected__o2' 
+				(true (lifeDetectedObs__o2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (lifeDetectedObs__o2' 
+					(true (0.0))
+					(false (1.0)))))
+		lifeDetectedObs__o3
+			(lifeDetected__o3' 
+				(true (lifeDetectedObs__o3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (lifeDetectedObs__o3' 
 					(true (0.0))
 					(false (1.0)))))
 	endobserve
@@ -2044,6 +3156,30 @@ action useToolOn__a1_l1_o0
 				(false (HAS_WATER__o1' 
 					(true (0.8))
 					(false (0.2)))))))
+	HAS_WATER__o2
+		(HAS_WATER__o2 
+			(true (HAS_WATER__o2' 
+				(true (1.0))
+				(false (0.0))))
+			(false (oneStep 
+				(true (HAS_WATER__o2' 
+					(true (0.0))
+					(false (1.0))))
+				(false (HAS_WATER__o2' 
+					(true (0.8))
+					(false (0.2)))))))
+	HAS_WATER__o3
+		(HAS_WATER__o3 
+			(true (HAS_WATER__o3' 
+				(true (1.0))
+				(false (0.0))))
+			(false (oneStep 
+				(true (HAS_WATER__o3' 
+					(true (0.0))
+					(false (1.0))))
+				(false (HAS_WATER__o3' 
+					(true (0.8))
+					(false (0.2)))))))
 	damaged__l1
 		(damaged__l1 
 			(true (damaged__l1' 
@@ -2051,8 +3187,8 @@ action useToolOn__a1_l1_o0
 				(false (0.0))))
 			(false (agentAt__a1_x1_y0 
 				(true (damaged__l1' 
-					(true (0.3359123))
-					(false (0.6640877000000001))))
+					(true (0.35914695))
+					(false (0.64085305))))
 				(false (damaged__l1' 
 					(true (0.0))
 					(false (1.0)))))))
@@ -2063,8 +3199,8 @@ action useToolOn__a1_l1_o0
 				(false (0.0))))
 			(false (agentAt__a1_x1_y0 
 				(true (damaged__w1' 
-					(true (0.37663338))
-					(false (0.62336662))))
+					(true (0.25491363))
+					(false (0.74508637))))
 				(false (damaged__w1' 
 					(true (0.0))
 					(false (1.0)))))))
@@ -2116,6 +3252,14 @@ action useToolOn__a1_l1_o0
 		(pictureTaken__o1' 
 			(true (0.0))
 			(false (1.0)))
+	pictureTaken__o2
+		(pictureTaken__o2' 
+			(true (0.0))
+			(false (1.0)))
+	pictureTaken__o3
+		(pictureTaken__o3' 
+			(true (0.0))
+			(false (1.0)))
 	HAS_LIFE__o0
 		(HAS_WATER__o0 
 			(true (HAS_LIFE__o0 
@@ -2156,6 +3300,46 @@ action useToolOn__a1_l1_o0
 				(false (HAS_LIFE__o1' 
 					(true (0.0))
 					(false (1.0)))))))
+	HAS_LIFE__o2
+		(HAS_WATER__o2 
+			(true (HAS_LIFE__o2 
+				(true (HAS_LIFE__o2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (twoStep 
+					(true (HAS_LIFE__o2' 
+						(true (0.0))
+						(false (1.0))))
+					(false (HAS_LIFE__o2' 
+						(true (0.7))
+						(false (0.30000000000000004))))))))
+			(false (HAS_LIFE__o2 
+				(true (HAS_LIFE__o2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (HAS_LIFE__o2' 
+					(true (0.0))
+					(false (1.0)))))))
+	HAS_LIFE__o3
+		(HAS_WATER__o3 
+			(true (HAS_LIFE__o3 
+				(true (HAS_LIFE__o3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (twoStep 
+					(true (HAS_LIFE__o3' 
+						(true (0.0))
+						(false (1.0))))
+					(false (HAS_LIFE__o3' 
+						(true (0.7))
+						(false (0.30000000000000004))))))))
+			(false (HAS_LIFE__o3 
+				(true (HAS_LIFE__o3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (HAS_LIFE__o3' 
+					(true (0.0))
+					(false (1.0)))))))
 	waterDetected__o0
 		(waterDetected__o0 
 			(true (waterDetected__o0' 
@@ -2172,9 +3356,25 @@ action useToolOn__a1_l1_o0
 			(false (waterDetected__o1' 
 				(true (0.0))
 				(false (1.0)))))
+	waterDetected__o2
+		(waterDetected__o2 
+			(true (waterDetected__o2' 
+				(true (1.0))
+				(false (0.0))))
+			(false (waterDetected__o2' 
+				(true (0.0))
+				(false (1.0)))))
+	waterDetected__o3
+		(waterDetected__o3 
+			(true (waterDetected__o3' 
+				(true (1.0))
+				(false (0.0))))
+			(false (waterDetected__o3' 
+				(true (0.0))
+				(false (1.0)))))
 	lifeDetected__o0
 		(damaged__l1 
-			(true (agentAt__a1_x1_y1 
+			(true (agentAt__a1_x0_y0 
 				(true (HAS_LIFE__o0 
 					(true (waterDetected__o0 
 						(true (lifeDetected__o0 
@@ -2182,8 +3382,8 @@ action useToolOn__a1_l1_o0
 								(true (1.0))
 								(false (0.0))))
 							(false (lifeDetected__o0' 
-								(true (0.15627001))
-								(false (0.84372999))))))
+								(true (0.1505892))
+								(false (0.8494108))))))
 						(false (lifeDetected__o0 
 							(true (lifeDetected__o0' 
 								(true (1.0))
@@ -2205,7 +3405,7 @@ action useToolOn__a1_l1_o0
 					(false (lifeDetected__o0' 
 						(true (0.0))
 						(false (1.0))))))))
-			(false (agentAt__a1_x1_y1 
+			(false (agentAt__a1_x0_y0 
 				(true (HAS_LIFE__o0 
 					(true (waterDetected__o0 
 						(true (lifeDetected__o0 
@@ -2213,8 +3413,8 @@ action useToolOn__a1_l1_o0
 								(true (1.0))
 								(false (0.0))))
 							(false (lifeDetected__o0' 
-								(true (0.9884197))
-								(false (0.011580299999999988))))))
+								(true (0.9771499))
+								(false (0.022850099999999984))))))
 						(false (lifeDetected__o0 
 							(true (lifeDetected__o0' 
 								(true (1.0))
@@ -2242,6 +3442,22 @@ action useToolOn__a1_l1_o0
 				(true (1.0))
 				(false (0.0))))
 			(false (lifeDetected__o1' 
+				(true (0.0))
+				(false (1.0)))))
+	lifeDetected__o2
+		(lifeDetected__o2 
+			(true (lifeDetected__o2' 
+				(true (1.0))
+				(false (0.0))))
+			(false (lifeDetected__o2' 
+				(true (0.0))
+				(false (1.0)))))
+	lifeDetected__o3
+		(lifeDetected__o3 
+			(true (lifeDetected__o3' 
+				(true (1.0))
+				(false (0.0))))
+			(false (lifeDetected__o3' 
 				(true (0.0))
 				(false (1.0)))))
 	oneStep
@@ -2273,22 +3489,38 @@ action useToolOn__a1_l1_o0
 				(false (waterDetectedObs__o1' 
 					(true (0.0))
 					(false (1.0)))))
+		waterDetectedObs__o2
+			(waterDetected__o2' 
+				(true (waterDetectedObs__o2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (waterDetectedObs__o2' 
+					(true (0.0))
+					(false (1.0)))))
+		waterDetectedObs__o3
+			(waterDetected__o3' 
+				(true (waterDetectedObs__o3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (waterDetectedObs__o3' 
+					(true (0.0))
+					(false (1.0)))))
 		damagedObs__l1
 			(damaged__l1' 
 				(true (damagedObs__l1' 
-					(true (0.9544825181365013))
-					(false (0.04551748186349869))))
+					(true (0.9382016696035862))
+					(false (0.0617983303964138))))
 				(false (damagedObs__l1' 
-					(true (0.021615148))
-					(false (0.978384852)))))
+					(true (0.07345955))
+					(false (0.92654045)))))
 		damagedObs__w1
 			(damaged__w1' 
 				(true (damagedObs__w1' 
-					(true (0.9638246335089207))
-					(false (0.03617536649107933))))
+					(true (0.9263422265648842))
+					(false (0.07365777343511581))))
 				(false (damagedObs__w1' 
-					(true (0.08656731))
-					(false (0.91343269)))))
+					(true (0.08379076))
+					(false (0.91620924)))))
 		damagedObs__p1
 			(damaged__p1' 
 				(true (damagedObs__p1' 
@@ -2311,6 +3543,22 @@ action useToolOn__a1_l1_o0
 					(true (1.0))
 					(false (0.0))))
 				(false (lifeDetectedObs__o1' 
+					(true (0.0))
+					(false (1.0)))))
+		lifeDetectedObs__o2
+			(lifeDetected__o2' 
+				(true (lifeDetectedObs__o2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (lifeDetectedObs__o2' 
+					(true (0.0))
+					(false (1.0)))))
+		lifeDetectedObs__o3
+			(lifeDetected__o3' 
+				(true (lifeDetectedObs__o3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (lifeDetectedObs__o3' 
 					(true (0.0))
 					(false (1.0)))))
 	endobserve
@@ -2343,6 +3591,30 @@ action useToolOn__a1_l1_o1
 				(false (HAS_WATER__o1' 
 					(true (0.8))
 					(false (0.2)))))))
+	HAS_WATER__o2
+		(HAS_WATER__o2 
+			(true (HAS_WATER__o2' 
+				(true (1.0))
+				(false (0.0))))
+			(false (oneStep 
+				(true (HAS_WATER__o2' 
+					(true (0.0))
+					(false (1.0))))
+				(false (HAS_WATER__o2' 
+					(true (0.8))
+					(false (0.2)))))))
+	HAS_WATER__o3
+		(HAS_WATER__o3 
+			(true (HAS_WATER__o3' 
+				(true (1.0))
+				(false (0.0))))
+			(false (oneStep 
+				(true (HAS_WATER__o3' 
+					(true (0.0))
+					(false (1.0))))
+				(false (HAS_WATER__o3' 
+					(true (0.8))
+					(false (0.2)))))))
 	damaged__l1
 		(damaged__l1 
 			(true (damaged__l1' 
@@ -2350,8 +3622,8 @@ action useToolOn__a1_l1_o1
 				(false (0.0))))
 			(false (agentAt__a1_x1_y0 
 				(true (damaged__l1' 
-					(true (0.3359123))
-					(false (0.6640877000000001))))
+					(true (0.35914695))
+					(false (0.64085305))))
 				(false (damaged__l1' 
 					(true (0.0))
 					(false (1.0)))))))
@@ -2362,8 +3634,8 @@ action useToolOn__a1_l1_o1
 				(false (0.0))))
 			(false (agentAt__a1_x1_y0 
 				(true (damaged__w1' 
-					(true (0.37663338))
-					(false (0.62336662))))
+					(true (0.25491363))
+					(false (0.74508637))))
 				(false (damaged__w1' 
 					(true (0.0))
 					(false (1.0)))))))
@@ -2415,6 +3687,14 @@ action useToolOn__a1_l1_o1
 		(pictureTaken__o1' 
 			(true (0.0))
 			(false (1.0)))
+	pictureTaken__o2
+		(pictureTaken__o2' 
+			(true (0.0))
+			(false (1.0)))
+	pictureTaken__o3
+		(pictureTaken__o3' 
+			(true (0.0))
+			(false (1.0)))
 	HAS_LIFE__o0
 		(HAS_WATER__o0 
 			(true (HAS_LIFE__o0 
@@ -2455,6 +3735,46 @@ action useToolOn__a1_l1_o1
 				(false (HAS_LIFE__o1' 
 					(true (0.0))
 					(false (1.0)))))))
+	HAS_LIFE__o2
+		(HAS_WATER__o2 
+			(true (HAS_LIFE__o2 
+				(true (HAS_LIFE__o2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (twoStep 
+					(true (HAS_LIFE__o2' 
+						(true (0.0))
+						(false (1.0))))
+					(false (HAS_LIFE__o2' 
+						(true (0.7))
+						(false (0.30000000000000004))))))))
+			(false (HAS_LIFE__o2 
+				(true (HAS_LIFE__o2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (HAS_LIFE__o2' 
+					(true (0.0))
+					(false (1.0)))))))
+	HAS_LIFE__o3
+		(HAS_WATER__o3 
+			(true (HAS_LIFE__o3 
+				(true (HAS_LIFE__o3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (twoStep 
+					(true (HAS_LIFE__o3' 
+						(true (0.0))
+						(false (1.0))))
+					(false (HAS_LIFE__o3' 
+						(true (0.7))
+						(false (0.30000000000000004))))))))
+			(false (HAS_LIFE__o3 
+				(true (HAS_LIFE__o3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (HAS_LIFE__o3' 
+					(true (0.0))
+					(false (1.0)))))))
 	waterDetected__o0
 		(waterDetected__o0 
 			(true (waterDetected__o0' 
@@ -2469,6 +3789,22 @@ action useToolOn__a1_l1_o1
 				(true (1.0))
 				(false (0.0))))
 			(false (waterDetected__o1' 
+				(true (0.0))
+				(false (1.0)))))
+	waterDetected__o2
+		(waterDetected__o2 
+			(true (waterDetected__o2' 
+				(true (1.0))
+				(false (0.0))))
+			(false (waterDetected__o2' 
+				(true (0.0))
+				(false (1.0)))))
+	waterDetected__o3
+		(waterDetected__o3 
+			(true (waterDetected__o3' 
+				(true (1.0))
+				(false (0.0))))
+			(false (waterDetected__o3' 
 				(true (0.0))
 				(false (1.0)))))
 	lifeDetected__o0
@@ -2489,8 +3825,8 @@ action useToolOn__a1_l1_o1
 								(true (1.0))
 								(false (0.0))))
 							(false (lifeDetected__o1' 
-								(true (0.15627001))
-								(false (0.84372999))))))
+								(true (0.1505892))
+								(false (0.8494108))))))
 						(false (lifeDetected__o1 
 							(true (lifeDetected__o1' 
 								(true (1.0))
@@ -2520,8 +3856,8 @@ action useToolOn__a1_l1_o1
 								(true (1.0))
 								(false (0.0))))
 							(false (lifeDetected__o1' 
-								(true (0.9884197))
-								(false (0.011580299999999988))))))
+								(true (0.9771499))
+								(false (0.022850099999999984))))))
 						(false (lifeDetected__o1 
 							(true (lifeDetected__o1' 
 								(true (1.0))
@@ -2541,6 +3877,892 @@ action useToolOn__a1_l1_o1
 						(true (1.0))
 						(false (0.0))))
 					(false (lifeDetected__o1' 
+						(true (0.0))
+						(false (1.0)))))))))
+	lifeDetected__o2
+		(lifeDetected__o2 
+			(true (lifeDetected__o2' 
+				(true (1.0))
+				(false (0.0))))
+			(false (lifeDetected__o2' 
+				(true (0.0))
+				(false (1.0)))))
+	lifeDetected__o3
+		(lifeDetected__o3 
+			(true (lifeDetected__o3' 
+				(true (1.0))
+				(false (0.0))))
+			(false (lifeDetected__o3' 
+				(true (0.0))
+				(false (1.0)))))
+	oneStep
+		(oneStep' 
+			(true (1.0))
+			(false (0.0)))
+	twoStep
+		(oneStep 
+			(true (twoStep' 
+				(true (1.0))
+				(false (0.0))))
+			(false (twoStep' 
+				(true (0.0))
+				(false (1.0)))))
+	observe 
+		waterDetectedObs__o0
+			(waterDetected__o0' 
+				(true (waterDetectedObs__o0' 
+					(true (1.0))
+					(false (0.0))))
+				(false (waterDetectedObs__o0' 
+					(true (0.0))
+					(false (1.0)))))
+		waterDetectedObs__o1
+			(waterDetected__o1' 
+				(true (waterDetectedObs__o1' 
+					(true (1.0))
+					(false (0.0))))
+				(false (waterDetectedObs__o1' 
+					(true (0.0))
+					(false (1.0)))))
+		waterDetectedObs__o2
+			(waterDetected__o2' 
+				(true (waterDetectedObs__o2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (waterDetectedObs__o2' 
+					(true (0.0))
+					(false (1.0)))))
+		waterDetectedObs__o3
+			(waterDetected__o3' 
+				(true (waterDetectedObs__o3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (waterDetectedObs__o3' 
+					(true (0.0))
+					(false (1.0)))))
+		damagedObs__l1
+			(damaged__l1' 
+				(true (damagedObs__l1' 
+					(true (0.9382016696035862))
+					(false (0.0617983303964138))))
+				(false (damagedObs__l1' 
+					(true (0.07345955))
+					(false (0.92654045)))))
+		damagedObs__w1
+			(damaged__w1' 
+				(true (damagedObs__w1' 
+					(true (0.9263422265648842))
+					(false (0.07365777343511581))))
+				(false (damagedObs__w1' 
+					(true (0.08379076))
+					(false (0.91620924)))))
+		damagedObs__p1
+			(damaged__p1' 
+				(true (damagedObs__p1' 
+					(true (0.8))
+					(false (0.2))))
+				(false (damagedObs__p1' 
+					(true (0.2))
+					(false (0.8)))))
+		lifeDetectedObs__o0
+			(lifeDetected__o0' 
+				(true (lifeDetectedObs__o0' 
+					(true (1.0))
+					(false (0.0))))
+				(false (lifeDetectedObs__o0' 
+					(true (0.0))
+					(false (1.0)))))
+		lifeDetectedObs__o1
+			(lifeDetected__o1' 
+				(true (lifeDetectedObs__o1' 
+					(true (1.0))
+					(false (0.0))))
+				(false (lifeDetectedObs__o1' 
+					(true (0.0))
+					(false (1.0)))))
+		lifeDetectedObs__o2
+			(lifeDetected__o2' 
+				(true (lifeDetectedObs__o2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (lifeDetectedObs__o2' 
+					(true (0.0))
+					(false (1.0)))))
+		lifeDetectedObs__o3
+			(lifeDetected__o3' 
+				(true (lifeDetectedObs__o3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (lifeDetectedObs__o3' 
+					(true (0.0))
+					(false (1.0)))))
+	endobserve
+	cost [+ 
+	]
+endaction
+
+action useToolOn__a1_l1_o2
+	HAS_WATER__o0
+		(HAS_WATER__o0 
+			(true (HAS_WATER__o0' 
+				(true (1.0))
+				(false (0.0))))
+			(false (oneStep 
+				(true (HAS_WATER__o0' 
+					(true (0.0))
+					(false (1.0))))
+				(false (HAS_WATER__o0' 
+					(true (0.8))
+					(false (0.2)))))))
+	HAS_WATER__o1
+		(HAS_WATER__o1 
+			(true (HAS_WATER__o1' 
+				(true (1.0))
+				(false (0.0))))
+			(false (oneStep 
+				(true (HAS_WATER__o1' 
+					(true (0.0))
+					(false (1.0))))
+				(false (HAS_WATER__o1' 
+					(true (0.8))
+					(false (0.2)))))))
+	HAS_WATER__o2
+		(HAS_WATER__o2 
+			(true (HAS_WATER__o2' 
+				(true (1.0))
+				(false (0.0))))
+			(false (oneStep 
+				(true (HAS_WATER__o2' 
+					(true (0.0))
+					(false (1.0))))
+				(false (HAS_WATER__o2' 
+					(true (0.8))
+					(false (0.2)))))))
+	HAS_WATER__o3
+		(HAS_WATER__o3 
+			(true (HAS_WATER__o3' 
+				(true (1.0))
+				(false (0.0))))
+			(false (oneStep 
+				(true (HAS_WATER__o3' 
+					(true (0.0))
+					(false (1.0))))
+				(false (HAS_WATER__o3' 
+					(true (0.8))
+					(false (0.2)))))))
+	damaged__l1
+		(damaged__l1 
+			(true (damaged__l1' 
+				(true (1.0))
+				(false (0.0))))
+			(false (agentAt__a1_x1_y0 
+				(true (damaged__l1' 
+					(true (0.35914695))
+					(false (0.64085305))))
+				(false (damaged__l1' 
+					(true (0.0))
+					(false (1.0)))))))
+	damaged__w1
+		(damaged__w1 
+			(true (damaged__w1' 
+				(true (1.0))
+				(false (0.0))))
+			(false (agentAt__a1_x1_y0 
+				(true (damaged__w1' 
+					(true (0.25491363))
+					(false (0.74508637))))
+				(false (damaged__w1' 
+					(true (0.0))
+					(false (1.0)))))))
+	damaged__p1
+		(damaged__p1 
+			(true (damaged__p1' 
+				(true (1.0))
+				(false (0.0))))
+			(false (damaged__p1' 
+				(true (0.0))
+				(false (1.0)))))
+	agentAt__a1_x0_y0
+		(agentAt__a1_x0_y0 
+			(true (agentAt__a1_x0_y0' 
+				(true (1.0))
+				(false (0.0))))
+			(false (agentAt__a1_x0_y0' 
+				(true (0.0))
+				(false (1.0)))))
+	agentAt__a1_x0_y1
+		(agentAt__a1_x0_y1 
+			(true (agentAt__a1_x0_y1' 
+				(true (1.0))
+				(false (0.0))))
+			(false (agentAt__a1_x0_y1' 
+				(true (0.0))
+				(false (1.0)))))
+	agentAt__a1_x1_y0
+		(agentAt__a1_x1_y0 
+			(true (agentAt__a1_x1_y0' 
+				(true (1.0))
+				(false (0.0))))
+			(false (agentAt__a1_x1_y0' 
+				(true (0.0))
+				(false (1.0)))))
+	agentAt__a1_x1_y1
+		(agentAt__a1_x1_y1 
+			(true (agentAt__a1_x1_y1' 
+				(true (1.0))
+				(false (0.0))))
+			(false (agentAt__a1_x1_y1' 
+				(true (0.0))
+				(false (1.0)))))
+	pictureTaken__o0
+		(pictureTaken__o0' 
+			(true (0.0))
+			(false (1.0)))
+	pictureTaken__o1
+		(pictureTaken__o1' 
+			(true (0.0))
+			(false (1.0)))
+	pictureTaken__o2
+		(pictureTaken__o2' 
+			(true (0.0))
+			(false (1.0)))
+	pictureTaken__o3
+		(pictureTaken__o3' 
+			(true (0.0))
+			(false (1.0)))
+	HAS_LIFE__o0
+		(HAS_WATER__o0 
+			(true (HAS_LIFE__o0 
+				(true (HAS_LIFE__o0' 
+					(true (1.0))
+					(false (0.0))))
+				(false (twoStep 
+					(true (HAS_LIFE__o0' 
+						(true (0.0))
+						(false (1.0))))
+					(false (HAS_LIFE__o0' 
+						(true (0.7))
+						(false (0.30000000000000004))))))))
+			(false (HAS_LIFE__o0 
+				(true (HAS_LIFE__o0' 
+					(true (1.0))
+					(false (0.0))))
+				(false (HAS_LIFE__o0' 
+					(true (0.0))
+					(false (1.0)))))))
+	HAS_LIFE__o1
+		(HAS_WATER__o1 
+			(true (HAS_LIFE__o1 
+				(true (HAS_LIFE__o1' 
+					(true (1.0))
+					(false (0.0))))
+				(false (twoStep 
+					(true (HAS_LIFE__o1' 
+						(true (0.0))
+						(false (1.0))))
+					(false (HAS_LIFE__o1' 
+						(true (0.7))
+						(false (0.30000000000000004))))))))
+			(false (HAS_LIFE__o1 
+				(true (HAS_LIFE__o1' 
+					(true (1.0))
+					(false (0.0))))
+				(false (HAS_LIFE__o1' 
+					(true (0.0))
+					(false (1.0)))))))
+	HAS_LIFE__o2
+		(HAS_WATER__o2 
+			(true (HAS_LIFE__o2 
+				(true (HAS_LIFE__o2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (twoStep 
+					(true (HAS_LIFE__o2' 
+						(true (0.0))
+						(false (1.0))))
+					(false (HAS_LIFE__o2' 
+						(true (0.7))
+						(false (0.30000000000000004))))))))
+			(false (HAS_LIFE__o2 
+				(true (HAS_LIFE__o2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (HAS_LIFE__o2' 
+					(true (0.0))
+					(false (1.0)))))))
+	HAS_LIFE__o3
+		(HAS_WATER__o3 
+			(true (HAS_LIFE__o3 
+				(true (HAS_LIFE__o3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (twoStep 
+					(true (HAS_LIFE__o3' 
+						(true (0.0))
+						(false (1.0))))
+					(false (HAS_LIFE__o3' 
+						(true (0.7))
+						(false (0.30000000000000004))))))))
+			(false (HAS_LIFE__o3 
+				(true (HAS_LIFE__o3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (HAS_LIFE__o3' 
+					(true (0.0))
+					(false (1.0)))))))
+	waterDetected__o0
+		(waterDetected__o0 
+			(true (waterDetected__o0' 
+				(true (1.0))
+				(false (0.0))))
+			(false (waterDetected__o0' 
+				(true (0.0))
+				(false (1.0)))))
+	waterDetected__o1
+		(waterDetected__o1 
+			(true (waterDetected__o1' 
+				(true (1.0))
+				(false (0.0))))
+			(false (waterDetected__o1' 
+				(true (0.0))
+				(false (1.0)))))
+	waterDetected__o2
+		(waterDetected__o2 
+			(true (waterDetected__o2' 
+				(true (1.0))
+				(false (0.0))))
+			(false (waterDetected__o2' 
+				(true (0.0))
+				(false (1.0)))))
+	waterDetected__o3
+		(waterDetected__o3 
+			(true (waterDetected__o3' 
+				(true (1.0))
+				(false (0.0))))
+			(false (waterDetected__o3' 
+				(true (0.0))
+				(false (1.0)))))
+	lifeDetected__o0
+		(lifeDetected__o0 
+			(true (lifeDetected__o0' 
+				(true (1.0))
+				(false (0.0))))
+			(false (lifeDetected__o0' 
+				(true (0.0))
+				(false (1.0)))))
+	lifeDetected__o1
+		(lifeDetected__o1 
+			(true (lifeDetected__o1' 
+				(true (1.0))
+				(false (0.0))))
+			(false (lifeDetected__o1' 
+				(true (0.0))
+				(false (1.0)))))
+	lifeDetected__o2
+		(damaged__l1 
+			(true (agentAt__a1_x1_y0 
+				(true (HAS_LIFE__o2 
+					(true (waterDetected__o2 
+						(true (lifeDetected__o2 
+							(true (lifeDetected__o2' 
+								(true (1.0))
+								(false (0.0))))
+							(false (lifeDetected__o2' 
+								(true (0.1505892))
+								(false (0.8494108))))))
+						(false (lifeDetected__o2 
+							(true (lifeDetected__o2' 
+								(true (1.0))
+								(false (0.0))))
+							(false (lifeDetected__o2' 
+								(true (0.0))
+								(false (1.0))))))))
+					(false (lifeDetected__o2 
+						(true (lifeDetected__o2' 
+							(true (1.0))
+							(false (0.0))))
+						(false (lifeDetected__o2' 
+							(true (0.0))
+							(false (1.0))))))))
+				(false (lifeDetected__o2 
+					(true (lifeDetected__o2' 
+						(true (1.0))
+						(false (0.0))))
+					(false (lifeDetected__o2' 
+						(true (0.0))
+						(false (1.0))))))))
+			(false (agentAt__a1_x1_y0 
+				(true (HAS_LIFE__o2 
+					(true (waterDetected__o2 
+						(true (lifeDetected__o2 
+							(true (lifeDetected__o2' 
+								(true (1.0))
+								(false (0.0))))
+							(false (lifeDetected__o2' 
+								(true (0.9771499))
+								(false (0.022850099999999984))))))
+						(false (lifeDetected__o2 
+							(true (lifeDetected__o2' 
+								(true (1.0))
+								(false (0.0))))
+							(false (lifeDetected__o2' 
+								(true (0.0))
+								(false (1.0))))))))
+					(false (lifeDetected__o2 
+						(true (lifeDetected__o2' 
+							(true (1.0))
+							(false (0.0))))
+						(false (lifeDetected__o2' 
+							(true (0.0))
+							(false (1.0))))))))
+				(false (lifeDetected__o2 
+					(true (lifeDetected__o2' 
+						(true (1.0))
+						(false (0.0))))
+					(false (lifeDetected__o2' 
+						(true (0.0))
+						(false (1.0)))))))))
+	lifeDetected__o3
+		(lifeDetected__o3 
+			(true (lifeDetected__o3' 
+				(true (1.0))
+				(false (0.0))))
+			(false (lifeDetected__o3' 
+				(true (0.0))
+				(false (1.0)))))
+	oneStep
+		(oneStep' 
+			(true (1.0))
+			(false (0.0)))
+	twoStep
+		(oneStep 
+			(true (twoStep' 
+				(true (1.0))
+				(false (0.0))))
+			(false (twoStep' 
+				(true (0.0))
+				(false (1.0)))))
+	observe 
+		waterDetectedObs__o0
+			(waterDetected__o0' 
+				(true (waterDetectedObs__o0' 
+					(true (1.0))
+					(false (0.0))))
+				(false (waterDetectedObs__o0' 
+					(true (0.0))
+					(false (1.0)))))
+		waterDetectedObs__o1
+			(waterDetected__o1' 
+				(true (waterDetectedObs__o1' 
+					(true (1.0))
+					(false (0.0))))
+				(false (waterDetectedObs__o1' 
+					(true (0.0))
+					(false (1.0)))))
+		waterDetectedObs__o2
+			(waterDetected__o2' 
+				(true (waterDetectedObs__o2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (waterDetectedObs__o2' 
+					(true (0.0))
+					(false (1.0)))))
+		waterDetectedObs__o3
+			(waterDetected__o3' 
+				(true (waterDetectedObs__o3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (waterDetectedObs__o3' 
+					(true (0.0))
+					(false (1.0)))))
+		damagedObs__l1
+			(damaged__l1' 
+				(true (damagedObs__l1' 
+					(true (0.9382016696035862))
+					(false (0.0617983303964138))))
+				(false (damagedObs__l1' 
+					(true (0.07345955))
+					(false (0.92654045)))))
+		damagedObs__w1
+			(damaged__w1' 
+				(true (damagedObs__w1' 
+					(true (0.9263422265648842))
+					(false (0.07365777343511581))))
+				(false (damagedObs__w1' 
+					(true (0.08379076))
+					(false (0.91620924)))))
+		damagedObs__p1
+			(damaged__p1' 
+				(true (damagedObs__p1' 
+					(true (0.8))
+					(false (0.2))))
+				(false (damagedObs__p1' 
+					(true (0.2))
+					(false (0.8)))))
+		lifeDetectedObs__o0
+			(lifeDetected__o0' 
+				(true (lifeDetectedObs__o0' 
+					(true (1.0))
+					(false (0.0))))
+				(false (lifeDetectedObs__o0' 
+					(true (0.0))
+					(false (1.0)))))
+		lifeDetectedObs__o1
+			(lifeDetected__o1' 
+				(true (lifeDetectedObs__o1' 
+					(true (1.0))
+					(false (0.0))))
+				(false (lifeDetectedObs__o1' 
+					(true (0.0))
+					(false (1.0)))))
+		lifeDetectedObs__o2
+			(lifeDetected__o2' 
+				(true (lifeDetectedObs__o2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (lifeDetectedObs__o2' 
+					(true (0.0))
+					(false (1.0)))))
+		lifeDetectedObs__o3
+			(lifeDetected__o3' 
+				(true (lifeDetectedObs__o3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (lifeDetectedObs__o3' 
+					(true (0.0))
+					(false (1.0)))))
+	endobserve
+	cost [+ 
+	]
+endaction
+
+action useToolOn__a1_l1_o3
+	HAS_WATER__o0
+		(HAS_WATER__o0 
+			(true (HAS_WATER__o0' 
+				(true (1.0))
+				(false (0.0))))
+			(false (oneStep 
+				(true (HAS_WATER__o0' 
+					(true (0.0))
+					(false (1.0))))
+				(false (HAS_WATER__o0' 
+					(true (0.8))
+					(false (0.2)))))))
+	HAS_WATER__o1
+		(HAS_WATER__o1 
+			(true (HAS_WATER__o1' 
+				(true (1.0))
+				(false (0.0))))
+			(false (oneStep 
+				(true (HAS_WATER__o1' 
+					(true (0.0))
+					(false (1.0))))
+				(false (HAS_WATER__o1' 
+					(true (0.8))
+					(false (0.2)))))))
+	HAS_WATER__o2
+		(HAS_WATER__o2 
+			(true (HAS_WATER__o2' 
+				(true (1.0))
+				(false (0.0))))
+			(false (oneStep 
+				(true (HAS_WATER__o2' 
+					(true (0.0))
+					(false (1.0))))
+				(false (HAS_WATER__o2' 
+					(true (0.8))
+					(false (0.2)))))))
+	HAS_WATER__o3
+		(HAS_WATER__o3 
+			(true (HAS_WATER__o3' 
+				(true (1.0))
+				(false (0.0))))
+			(false (oneStep 
+				(true (HAS_WATER__o3' 
+					(true (0.0))
+					(false (1.0))))
+				(false (HAS_WATER__o3' 
+					(true (0.8))
+					(false (0.2)))))))
+	damaged__l1
+		(damaged__l1 
+			(true (damaged__l1' 
+				(true (1.0))
+				(false (0.0))))
+			(false (agentAt__a1_x1_y0 
+				(true (damaged__l1' 
+					(true (0.35914695))
+					(false (0.64085305))))
+				(false (damaged__l1' 
+					(true (0.0))
+					(false (1.0)))))))
+	damaged__w1
+		(damaged__w1 
+			(true (damaged__w1' 
+				(true (1.0))
+				(false (0.0))))
+			(false (agentAt__a1_x1_y0 
+				(true (damaged__w1' 
+					(true (0.25491363))
+					(false (0.74508637))))
+				(false (damaged__w1' 
+					(true (0.0))
+					(false (1.0)))))))
+	damaged__p1
+		(damaged__p1 
+			(true (damaged__p1' 
+				(true (1.0))
+				(false (0.0))))
+			(false (damaged__p1' 
+				(true (0.0))
+				(false (1.0)))))
+	agentAt__a1_x0_y0
+		(agentAt__a1_x0_y0 
+			(true (agentAt__a1_x0_y0' 
+				(true (1.0))
+				(false (0.0))))
+			(false (agentAt__a1_x0_y0' 
+				(true (0.0))
+				(false (1.0)))))
+	agentAt__a1_x0_y1
+		(agentAt__a1_x0_y1 
+			(true (agentAt__a1_x0_y1' 
+				(true (1.0))
+				(false (0.0))))
+			(false (agentAt__a1_x0_y1' 
+				(true (0.0))
+				(false (1.0)))))
+	agentAt__a1_x1_y0
+		(agentAt__a1_x1_y0 
+			(true (agentAt__a1_x1_y0' 
+				(true (1.0))
+				(false (0.0))))
+			(false (agentAt__a1_x1_y0' 
+				(true (0.0))
+				(false (1.0)))))
+	agentAt__a1_x1_y1
+		(agentAt__a1_x1_y1 
+			(true (agentAt__a1_x1_y1' 
+				(true (1.0))
+				(false (0.0))))
+			(false (agentAt__a1_x1_y1' 
+				(true (0.0))
+				(false (1.0)))))
+	pictureTaken__o0
+		(pictureTaken__o0' 
+			(true (0.0))
+			(false (1.0)))
+	pictureTaken__o1
+		(pictureTaken__o1' 
+			(true (0.0))
+			(false (1.0)))
+	pictureTaken__o2
+		(pictureTaken__o2' 
+			(true (0.0))
+			(false (1.0)))
+	pictureTaken__o3
+		(pictureTaken__o3' 
+			(true (0.0))
+			(false (1.0)))
+	HAS_LIFE__o0
+		(HAS_WATER__o0 
+			(true (HAS_LIFE__o0 
+				(true (HAS_LIFE__o0' 
+					(true (1.0))
+					(false (0.0))))
+				(false (twoStep 
+					(true (HAS_LIFE__o0' 
+						(true (0.0))
+						(false (1.0))))
+					(false (HAS_LIFE__o0' 
+						(true (0.7))
+						(false (0.30000000000000004))))))))
+			(false (HAS_LIFE__o0 
+				(true (HAS_LIFE__o0' 
+					(true (1.0))
+					(false (0.0))))
+				(false (HAS_LIFE__o0' 
+					(true (0.0))
+					(false (1.0)))))))
+	HAS_LIFE__o1
+		(HAS_WATER__o1 
+			(true (HAS_LIFE__o1 
+				(true (HAS_LIFE__o1' 
+					(true (1.0))
+					(false (0.0))))
+				(false (twoStep 
+					(true (HAS_LIFE__o1' 
+						(true (0.0))
+						(false (1.0))))
+					(false (HAS_LIFE__o1' 
+						(true (0.7))
+						(false (0.30000000000000004))))))))
+			(false (HAS_LIFE__o1 
+				(true (HAS_LIFE__o1' 
+					(true (1.0))
+					(false (0.0))))
+				(false (HAS_LIFE__o1' 
+					(true (0.0))
+					(false (1.0)))))))
+	HAS_LIFE__o2
+		(HAS_WATER__o2 
+			(true (HAS_LIFE__o2 
+				(true (HAS_LIFE__o2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (twoStep 
+					(true (HAS_LIFE__o2' 
+						(true (0.0))
+						(false (1.0))))
+					(false (HAS_LIFE__o2' 
+						(true (0.7))
+						(false (0.30000000000000004))))))))
+			(false (HAS_LIFE__o2 
+				(true (HAS_LIFE__o2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (HAS_LIFE__o2' 
+					(true (0.0))
+					(false (1.0)))))))
+	HAS_LIFE__o3
+		(HAS_WATER__o3 
+			(true (HAS_LIFE__o3 
+				(true (HAS_LIFE__o3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (twoStep 
+					(true (HAS_LIFE__o3' 
+						(true (0.0))
+						(false (1.0))))
+					(false (HAS_LIFE__o3' 
+						(true (0.7))
+						(false (0.30000000000000004))))))))
+			(false (HAS_LIFE__o3 
+				(true (HAS_LIFE__o3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (HAS_LIFE__o3' 
+					(true (0.0))
+					(false (1.0)))))))
+	waterDetected__o0
+		(waterDetected__o0 
+			(true (waterDetected__o0' 
+				(true (1.0))
+				(false (0.0))))
+			(false (waterDetected__o0' 
+				(true (0.0))
+				(false (1.0)))))
+	waterDetected__o1
+		(waterDetected__o1 
+			(true (waterDetected__o1' 
+				(true (1.0))
+				(false (0.0))))
+			(false (waterDetected__o1' 
+				(true (0.0))
+				(false (1.0)))))
+	waterDetected__o2
+		(waterDetected__o2 
+			(true (waterDetected__o2' 
+				(true (1.0))
+				(false (0.0))))
+			(false (waterDetected__o2' 
+				(true (0.0))
+				(false (1.0)))))
+	waterDetected__o3
+		(waterDetected__o3 
+			(true (waterDetected__o3' 
+				(true (1.0))
+				(false (0.0))))
+			(false (waterDetected__o3' 
+				(true (0.0))
+				(false (1.0)))))
+	lifeDetected__o0
+		(lifeDetected__o0 
+			(true (lifeDetected__o0' 
+				(true (1.0))
+				(false (0.0))))
+			(false (lifeDetected__o0' 
+				(true (0.0))
+				(false (1.0)))))
+	lifeDetected__o1
+		(lifeDetected__o1 
+			(true (lifeDetected__o1' 
+				(true (1.0))
+				(false (0.0))))
+			(false (lifeDetected__o1' 
+				(true (0.0))
+				(false (1.0)))))
+	lifeDetected__o2
+		(lifeDetected__o2 
+			(true (lifeDetected__o2' 
+				(true (1.0))
+				(false (0.0))))
+			(false (lifeDetected__o2' 
+				(true (0.0))
+				(false (1.0)))))
+	lifeDetected__o3
+		(damaged__l1 
+			(true (agentAt__a1_x0_y0 
+				(true (HAS_LIFE__o3 
+					(true (waterDetected__o3 
+						(true (lifeDetected__o3 
+							(true (lifeDetected__o3' 
+								(true (1.0))
+								(false (0.0))))
+							(false (lifeDetected__o3' 
+								(true (0.1505892))
+								(false (0.8494108))))))
+						(false (lifeDetected__o3 
+							(true (lifeDetected__o3' 
+								(true (1.0))
+								(false (0.0))))
+							(false (lifeDetected__o3' 
+								(true (0.0))
+								(false (1.0))))))))
+					(false (lifeDetected__o3 
+						(true (lifeDetected__o3' 
+							(true (1.0))
+							(false (0.0))))
+						(false (lifeDetected__o3' 
+							(true (0.0))
+							(false (1.0))))))))
+				(false (lifeDetected__o3 
+					(true (lifeDetected__o3' 
+						(true (1.0))
+						(false (0.0))))
+					(false (lifeDetected__o3' 
+						(true (0.0))
+						(false (1.0))))))))
+			(false (agentAt__a1_x0_y0 
+				(true (HAS_LIFE__o3 
+					(true (waterDetected__o3 
+						(true (lifeDetected__o3 
+							(true (lifeDetected__o3' 
+								(true (1.0))
+								(false (0.0))))
+							(false (lifeDetected__o3' 
+								(true (0.9771499))
+								(false (0.022850099999999984))))))
+						(false (lifeDetected__o3 
+							(true (lifeDetected__o3' 
+								(true (1.0))
+								(false (0.0))))
+							(false (lifeDetected__o3' 
+								(true (0.0))
+								(false (1.0))))))))
+					(false (lifeDetected__o3 
+						(true (lifeDetected__o3' 
+							(true (1.0))
+							(false (0.0))))
+						(false (lifeDetected__o3' 
+							(true (0.0))
+							(false (1.0))))))))
+				(false (lifeDetected__o3 
+					(true (lifeDetected__o3' 
+						(true (1.0))
+						(false (0.0))))
+					(false (lifeDetected__o3' 
 						(true (0.0))
 						(false (1.0)))))))))
 	oneStep
@@ -2572,22 +4794,38 @@ action useToolOn__a1_l1_o1
 				(false (waterDetectedObs__o1' 
 					(true (0.0))
 					(false (1.0)))))
+		waterDetectedObs__o2
+			(waterDetected__o2' 
+				(true (waterDetectedObs__o2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (waterDetectedObs__o2' 
+					(true (0.0))
+					(false (1.0)))))
+		waterDetectedObs__o3
+			(waterDetected__o3' 
+				(true (waterDetectedObs__o3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (waterDetectedObs__o3' 
+					(true (0.0))
+					(false (1.0)))))
 		damagedObs__l1
 			(damaged__l1' 
 				(true (damagedObs__l1' 
-					(true (0.9544825181365013))
-					(false (0.04551748186349869))))
+					(true (0.9382016696035862))
+					(false (0.0617983303964138))))
 				(false (damagedObs__l1' 
-					(true (0.021615148))
-					(false (0.978384852)))))
+					(true (0.07345955))
+					(false (0.92654045)))))
 		damagedObs__w1
 			(damaged__w1' 
 				(true (damagedObs__w1' 
-					(true (0.9638246335089207))
-					(false (0.03617536649107933))))
+					(true (0.9263422265648842))
+					(false (0.07365777343511581))))
 				(false (damagedObs__w1' 
-					(true (0.08656731))
-					(false (0.91343269)))))
+					(true (0.08379076))
+					(false (0.91620924)))))
 		damagedObs__p1
 			(damaged__p1' 
 				(true (damagedObs__p1' 
@@ -2610,6 +4848,22 @@ action useToolOn__a1_l1_o1
 					(true (1.0))
 					(false (0.0))))
 				(false (lifeDetectedObs__o1' 
+					(true (0.0))
+					(false (1.0)))))
+		lifeDetectedObs__o2
+			(lifeDetected__o2' 
+				(true (lifeDetectedObs__o2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (lifeDetectedObs__o2' 
+					(true (0.0))
+					(false (1.0)))))
+		lifeDetectedObs__o3
+			(lifeDetected__o3' 
+				(true (lifeDetectedObs__o3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (lifeDetectedObs__o3' 
 					(true (0.0))
 					(false (1.0)))))
 	endobserve
@@ -2642,6 +4896,30 @@ action useToolOn__a1_p1_o0
 				(false (HAS_WATER__o1' 
 					(true (0.8))
 					(false (0.2)))))))
+	HAS_WATER__o2
+		(HAS_WATER__o2 
+			(true (HAS_WATER__o2' 
+				(true (1.0))
+				(false (0.0))))
+			(false (oneStep 
+				(true (HAS_WATER__o2' 
+					(true (0.0))
+					(false (1.0))))
+				(false (HAS_WATER__o2' 
+					(true (0.8))
+					(false (0.2)))))))
+	HAS_WATER__o3
+		(HAS_WATER__o3 
+			(true (HAS_WATER__o3' 
+				(true (1.0))
+				(false (0.0))))
+			(false (oneStep 
+				(true (HAS_WATER__o3' 
+					(true (0.0))
+					(false (1.0))))
+				(false (HAS_WATER__o3' 
+					(true (0.8))
+					(false (0.2)))))))
 	damaged__l1
 		(damaged__l1 
 			(true (damaged__l1' 
@@ -2649,8 +4927,8 @@ action useToolOn__a1_p1_o0
 				(false (0.0))))
 			(false (agentAt__a1_x1_y0 
 				(true (damaged__l1' 
-					(true (0.3359123))
-					(false (0.6640877000000001))))
+					(true (0.35914695))
+					(false (0.64085305))))
 				(false (damaged__l1' 
 					(true (0.0))
 					(false (1.0)))))))
@@ -2661,8 +4939,8 @@ action useToolOn__a1_p1_o0
 				(false (0.0))))
 			(false (agentAt__a1_x1_y0 
 				(true (damaged__w1' 
-					(true (0.37663338))
-					(false (0.62336662))))
+					(true (0.25491363))
+					(false (0.74508637))))
 				(false (damaged__w1' 
 					(true (0.0))
 					(false (1.0)))))))
@@ -2711,7 +4989,7 @@ action useToolOn__a1_p1_o0
 			(true (pictureTaken__o0' 
 				(true (0.0))
 				(false (1.0))))
-			(false (agentAt__a1_x1_y1 
+			(false (agentAt__a1_x0_y0 
 				(true (pictureTaken__o0' 
 					(true (1.0))
 					(false (0.0))))
@@ -2720,6 +4998,14 @@ action useToolOn__a1_p1_o0
 					(false (1.0)))))))
 	pictureTaken__o1
 		(pictureTaken__o1' 
+			(true (0.0))
+			(false (1.0)))
+	pictureTaken__o2
+		(pictureTaken__o2' 
+			(true (0.0))
+			(false (1.0)))
+	pictureTaken__o3
+		(pictureTaken__o3' 
 			(true (0.0))
 			(false (1.0)))
 	HAS_LIFE__o0
@@ -2762,6 +5048,46 @@ action useToolOn__a1_p1_o0
 				(false (HAS_LIFE__o1' 
 					(true (0.0))
 					(false (1.0)))))))
+	HAS_LIFE__o2
+		(HAS_WATER__o2 
+			(true (HAS_LIFE__o2 
+				(true (HAS_LIFE__o2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (twoStep 
+					(true (HAS_LIFE__o2' 
+						(true (0.0))
+						(false (1.0))))
+					(false (HAS_LIFE__o2' 
+						(true (0.7))
+						(false (0.30000000000000004))))))))
+			(false (HAS_LIFE__o2 
+				(true (HAS_LIFE__o2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (HAS_LIFE__o2' 
+					(true (0.0))
+					(false (1.0)))))))
+	HAS_LIFE__o3
+		(HAS_WATER__o3 
+			(true (HAS_LIFE__o3 
+				(true (HAS_LIFE__o3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (twoStep 
+					(true (HAS_LIFE__o3' 
+						(true (0.0))
+						(false (1.0))))
+					(false (HAS_LIFE__o3' 
+						(true (0.7))
+						(false (0.30000000000000004))))))))
+			(false (HAS_LIFE__o3 
+				(true (HAS_LIFE__o3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (HAS_LIFE__o3' 
+					(true (0.0))
+					(false (1.0)))))))
 	waterDetected__o0
 		(waterDetected__o0 
 			(true (waterDetected__o0' 
@@ -2778,6 +5104,22 @@ action useToolOn__a1_p1_o0
 			(false (waterDetected__o1' 
 				(true (0.0))
 				(false (1.0)))))
+	waterDetected__o2
+		(waterDetected__o2 
+			(true (waterDetected__o2' 
+				(true (1.0))
+				(false (0.0))))
+			(false (waterDetected__o2' 
+				(true (0.0))
+				(false (1.0)))))
+	waterDetected__o3
+		(waterDetected__o3 
+			(true (waterDetected__o3' 
+				(true (1.0))
+				(false (0.0))))
+			(false (waterDetected__o3' 
+				(true (0.0))
+				(false (1.0)))))
 	lifeDetected__o0
 		(lifeDetected__o0 
 			(true (lifeDetected__o0' 
@@ -2792,6 +5134,22 @@ action useToolOn__a1_p1_o0
 				(true (1.0))
 				(false (0.0))))
 			(false (lifeDetected__o1' 
+				(true (0.0))
+				(false (1.0)))))
+	lifeDetected__o2
+		(lifeDetected__o2 
+			(true (lifeDetected__o2' 
+				(true (1.0))
+				(false (0.0))))
+			(false (lifeDetected__o2' 
+				(true (0.0))
+				(false (1.0)))))
+	lifeDetected__o3
+		(lifeDetected__o3 
+			(true (lifeDetected__o3' 
+				(true (1.0))
+				(false (0.0))))
+			(false (lifeDetected__o3' 
 				(true (0.0))
 				(false (1.0)))))
 	oneStep
@@ -2823,22 +5181,38 @@ action useToolOn__a1_p1_o0
 				(false (waterDetectedObs__o1' 
 					(true (0.0))
 					(false (1.0)))))
+		waterDetectedObs__o2
+			(waterDetected__o2' 
+				(true (waterDetectedObs__o2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (waterDetectedObs__o2' 
+					(true (0.0))
+					(false (1.0)))))
+		waterDetectedObs__o3
+			(waterDetected__o3' 
+				(true (waterDetectedObs__o3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (waterDetectedObs__o3' 
+					(true (0.0))
+					(false (1.0)))))
 		damagedObs__l1
 			(damaged__l1' 
 				(true (damagedObs__l1' 
-					(true (0.9544825181365013))
-					(false (0.04551748186349869))))
+					(true (0.9382016696035862))
+					(false (0.0617983303964138))))
 				(false (damagedObs__l1' 
-					(true (0.021615148))
-					(false (0.978384852)))))
+					(true (0.07345955))
+					(false (0.92654045)))))
 		damagedObs__w1
 			(damaged__w1' 
 				(true (damagedObs__w1' 
-					(true (0.9638246335089207))
-					(false (0.03617536649107933))))
+					(true (0.9263422265648842))
+					(false (0.07365777343511581))))
 				(false (damagedObs__w1' 
-					(true (0.08656731))
-					(false (0.91343269)))))
+					(true (0.08379076))
+					(false (0.91620924)))))
 		damagedObs__p1
 			(damaged__p1' 
 				(true (damagedObs__p1' 
@@ -2863,23 +5237,39 @@ action useToolOn__a1_p1_o0
 				(false (lifeDetectedObs__o1' 
 					(true (0.0))
 					(false (1.0)))))
+		lifeDetectedObs__o2
+			(lifeDetected__o2' 
+				(true (lifeDetectedObs__o2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (lifeDetectedObs__o2' 
+					(true (0.0))
+					(false (1.0)))))
+		lifeDetectedObs__o3
+			(lifeDetected__o3' 
+				(true (lifeDetectedObs__o3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (lifeDetectedObs__o3' 
+					(true (0.0))
+					(false (1.0)))))
 	endobserve
 	cost [+ 
 		(damaged__p1 
 			(true (0.0))
-			(false (agentAt__a1_x1_y1 
+			(false (agentAt__a1_x0_y0 
 				(true (pictureTaken__o0 
 					(true (0.0))
 					(false (lifeDetected__o0 
-						(true (-0.4913149))
+						(true (-0.6804353))
 						(false (0.0))))))
 				(false (0.0)))))
 		(damaged__p1 
 			(true (0.0))
-			(false (agentAt__a1_x1_y1 
+			(false (agentAt__a1_x0_y0 
 				(true (lifeDetected__o0 
 					(true (0.0))
-					(false (0.9749394))))
+					(false (0.30658853))))
 				(false (0.0)))))
 	]
 endaction
@@ -2909,6 +5299,30 @@ action useToolOn__a1_p1_o1
 				(false (HAS_WATER__o1' 
 					(true (0.8))
 					(false (0.2)))))))
+	HAS_WATER__o2
+		(HAS_WATER__o2 
+			(true (HAS_WATER__o2' 
+				(true (1.0))
+				(false (0.0))))
+			(false (oneStep 
+				(true (HAS_WATER__o2' 
+					(true (0.0))
+					(false (1.0))))
+				(false (HAS_WATER__o2' 
+					(true (0.8))
+					(false (0.2)))))))
+	HAS_WATER__o3
+		(HAS_WATER__o3 
+			(true (HAS_WATER__o3' 
+				(true (1.0))
+				(false (0.0))))
+			(false (oneStep 
+				(true (HAS_WATER__o3' 
+					(true (0.0))
+					(false (1.0))))
+				(false (HAS_WATER__o3' 
+					(true (0.8))
+					(false (0.2)))))))
 	damaged__l1
 		(damaged__l1 
 			(true (damaged__l1' 
@@ -2916,8 +5330,8 @@ action useToolOn__a1_p1_o1
 				(false (0.0))))
 			(false (agentAt__a1_x1_y0 
 				(true (damaged__l1' 
-					(true (0.3359123))
-					(false (0.6640877000000001))))
+					(true (0.35914695))
+					(false (0.64085305))))
 				(false (damaged__l1' 
 					(true (0.0))
 					(false (1.0)))))))
@@ -2928,8 +5342,8 @@ action useToolOn__a1_p1_o1
 				(false (0.0))))
 			(false (agentAt__a1_x1_y0 
 				(true (damaged__w1' 
-					(true (0.37663338))
-					(false (0.62336662))))
+					(true (0.25491363))
+					(false (0.74508637))))
 				(false (damaged__w1' 
 					(true (0.0))
 					(false (1.0)))))))
@@ -2989,6 +5403,14 @@ action useToolOn__a1_p1_o1
 				(false (pictureTaken__o1' 
 					(true (0.0))
 					(false (1.0)))))))
+	pictureTaken__o2
+		(pictureTaken__o2' 
+			(true (0.0))
+			(false (1.0)))
+	pictureTaken__o3
+		(pictureTaken__o3' 
+			(true (0.0))
+			(false (1.0)))
 	HAS_LIFE__o0
 		(HAS_WATER__o0 
 			(true (HAS_LIFE__o0 
@@ -3029,6 +5451,46 @@ action useToolOn__a1_p1_o1
 				(false (HAS_LIFE__o1' 
 					(true (0.0))
 					(false (1.0)))))))
+	HAS_LIFE__o2
+		(HAS_WATER__o2 
+			(true (HAS_LIFE__o2 
+				(true (HAS_LIFE__o2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (twoStep 
+					(true (HAS_LIFE__o2' 
+						(true (0.0))
+						(false (1.0))))
+					(false (HAS_LIFE__o2' 
+						(true (0.7))
+						(false (0.30000000000000004))))))))
+			(false (HAS_LIFE__o2 
+				(true (HAS_LIFE__o2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (HAS_LIFE__o2' 
+					(true (0.0))
+					(false (1.0)))))))
+	HAS_LIFE__o3
+		(HAS_WATER__o3 
+			(true (HAS_LIFE__o3 
+				(true (HAS_LIFE__o3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (twoStep 
+					(true (HAS_LIFE__o3' 
+						(true (0.0))
+						(false (1.0))))
+					(false (HAS_LIFE__o3' 
+						(true (0.7))
+						(false (0.30000000000000004))))))))
+			(false (HAS_LIFE__o3 
+				(true (HAS_LIFE__o3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (HAS_LIFE__o3' 
+					(true (0.0))
+					(false (1.0)))))))
 	waterDetected__o0
 		(waterDetected__o0 
 			(true (waterDetected__o0' 
@@ -3045,6 +5507,22 @@ action useToolOn__a1_p1_o1
 			(false (waterDetected__o1' 
 				(true (0.0))
 				(false (1.0)))))
+	waterDetected__o2
+		(waterDetected__o2 
+			(true (waterDetected__o2' 
+				(true (1.0))
+				(false (0.0))))
+			(false (waterDetected__o2' 
+				(true (0.0))
+				(false (1.0)))))
+	waterDetected__o3
+		(waterDetected__o3 
+			(true (waterDetected__o3' 
+				(true (1.0))
+				(false (0.0))))
+			(false (waterDetected__o3' 
+				(true (0.0))
+				(false (1.0)))))
 	lifeDetected__o0
 		(lifeDetected__o0 
 			(true (lifeDetected__o0' 
@@ -3059,6 +5537,22 @@ action useToolOn__a1_p1_o1
 				(true (1.0))
 				(false (0.0))))
 			(false (lifeDetected__o1' 
+				(true (0.0))
+				(false (1.0)))))
+	lifeDetected__o2
+		(lifeDetected__o2 
+			(true (lifeDetected__o2' 
+				(true (1.0))
+				(false (0.0))))
+			(false (lifeDetected__o2' 
+				(true (0.0))
+				(false (1.0)))))
+	lifeDetected__o3
+		(lifeDetected__o3 
+			(true (lifeDetected__o3' 
+				(true (1.0))
+				(false (0.0))))
+			(false (lifeDetected__o3' 
 				(true (0.0))
 				(false (1.0)))))
 	oneStep
@@ -3090,22 +5584,38 @@ action useToolOn__a1_p1_o1
 				(false (waterDetectedObs__o1' 
 					(true (0.0))
 					(false (1.0)))))
+		waterDetectedObs__o2
+			(waterDetected__o2' 
+				(true (waterDetectedObs__o2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (waterDetectedObs__o2' 
+					(true (0.0))
+					(false (1.0)))))
+		waterDetectedObs__o3
+			(waterDetected__o3' 
+				(true (waterDetectedObs__o3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (waterDetectedObs__o3' 
+					(true (0.0))
+					(false (1.0)))))
 		damagedObs__l1
 			(damaged__l1' 
 				(true (damagedObs__l1' 
-					(true (0.9544825181365013))
-					(false (0.04551748186349869))))
+					(true (0.9382016696035862))
+					(false (0.0617983303964138))))
 				(false (damagedObs__l1' 
-					(true (0.021615148))
-					(false (0.978384852)))))
+					(true (0.07345955))
+					(false (0.92654045)))))
 		damagedObs__w1
 			(damaged__w1' 
 				(true (damagedObs__w1' 
-					(true (0.9638246335089207))
-					(false (0.03617536649107933))))
+					(true (0.9263422265648842))
+					(false (0.07365777343511581))))
 				(false (damagedObs__w1' 
-					(true (0.08656731))
-					(false (0.91343269)))))
+					(true (0.08379076))
+					(false (0.91620924)))))
 		damagedObs__p1
 			(damaged__p1' 
 				(true (damagedObs__p1' 
@@ -3130,6 +5640,22 @@ action useToolOn__a1_p1_o1
 				(false (lifeDetectedObs__o1' 
 					(true (0.0))
 					(false (1.0)))))
+		lifeDetectedObs__o2
+			(lifeDetected__o2' 
+				(true (lifeDetectedObs__o2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (lifeDetectedObs__o2' 
+					(true (0.0))
+					(false (1.0)))))
+		lifeDetectedObs__o3
+			(lifeDetected__o3' 
+				(true (lifeDetectedObs__o3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (lifeDetectedObs__o3' 
+					(true (0.0))
+					(false (1.0)))))
 	endobserve
 	cost [+ 
 		(damaged__p1 
@@ -3138,7 +5664,7 @@ action useToolOn__a1_p1_o1
 				(true (pictureTaken__o1 
 					(true (0.0))
 					(false (lifeDetected__o1 
-						(true (-0.4913149))
+						(true (-0.6804353))
 						(false (0.0))))))
 				(false (0.0)))))
 		(damaged__p1 
@@ -3146,12 +5672,12 @@ action useToolOn__a1_p1_o1
 			(false (agentAt__a1_x0_y1 
 				(true (lifeDetected__o1 
 					(true (0.0))
-					(false (0.9749394))))
+					(false (0.30658853))))
 				(false (0.0)))))
 	]
 endaction
 
-action useToolOn__a1_w1_o0
+action useToolOn__a1_p1_o2
 	HAS_WATER__o0
 		(HAS_WATER__o0 
 			(true (HAS_WATER__o0' 
@@ -3176,6 +5702,30 @@ action useToolOn__a1_w1_o0
 				(false (HAS_WATER__o1' 
 					(true (0.8))
 					(false (0.2)))))))
+	HAS_WATER__o2
+		(HAS_WATER__o2 
+			(true (HAS_WATER__o2' 
+				(true (1.0))
+				(false (0.0))))
+			(false (oneStep 
+				(true (HAS_WATER__o2' 
+					(true (0.0))
+					(false (1.0))))
+				(false (HAS_WATER__o2' 
+					(true (0.8))
+					(false (0.2)))))))
+	HAS_WATER__o3
+		(HAS_WATER__o3 
+			(true (HAS_WATER__o3' 
+				(true (1.0))
+				(false (0.0))))
+			(false (oneStep 
+				(true (HAS_WATER__o3' 
+					(true (0.0))
+					(false (1.0))))
+				(false (HAS_WATER__o3' 
+					(true (0.8))
+					(false (0.2)))))))
 	damaged__l1
 		(damaged__l1 
 			(true (damaged__l1' 
@@ -3183,8 +5733,8 @@ action useToolOn__a1_w1_o0
 				(false (0.0))))
 			(false (agentAt__a1_x1_y0 
 				(true (damaged__l1' 
-					(true (0.3359123))
-					(false (0.6640877000000001))))
+					(true (0.35914695))
+					(false (0.64085305))))
 				(false (damaged__l1' 
 					(true (0.0))
 					(false (1.0)))))))
@@ -3195,8 +5745,8 @@ action useToolOn__a1_w1_o0
 				(false (0.0))))
 			(false (agentAt__a1_x1_y0 
 				(true (damaged__w1' 
-					(true (0.37663338))
-					(false (0.62336662))))
+					(true (0.25491363))
+					(false (0.74508637))))
 				(false (damaged__w1' 
 					(true (0.0))
 					(false (1.0)))))))
@@ -3248,6 +5798,22 @@ action useToolOn__a1_w1_o0
 		(pictureTaken__o1' 
 			(true (0.0))
 			(false (1.0)))
+	pictureTaken__o2
+		(damaged__p1 
+			(true (pictureTaken__o2' 
+				(true (0.0))
+				(false (1.0))))
+			(false (agentAt__a1_x1_y0 
+				(true (pictureTaken__o2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (pictureTaken__o2' 
+					(true (0.0))
+					(false (1.0)))))))
+	pictureTaken__o3
+		(pictureTaken__o3' 
+			(true (0.0))
+			(false (1.0)))
 	HAS_LIFE__o0
 		(HAS_WATER__o0 
 			(true (HAS_LIFE__o0 
@@ -3288,52 +5854,76 @@ action useToolOn__a1_w1_o0
 				(false (HAS_LIFE__o1' 
 					(true (0.0))
 					(false (1.0)))))))
-	waterDetected__o0
-		(HAS_WATER__o0 
-			(true (damaged__w1 
-				(true (agentAt__a1_x1_y1 
-					(true (waterDetected__o0 
-						(true (waterDetected__o0' 
-							(true (1.0))
-							(false (0.0))))
-						(false (waterDetected__o0' 
-							(true (0.55040485))
-							(false (0.44959515000000005))))))
-					(false (waterDetected__o0 
-						(true (waterDetected__o0' 
-							(true (1.0))
-							(false (0.0))))
-						(false (waterDetected__o0' 
-							(true (0.0))
-							(false (1.0))))))))
-				(false (agentAt__a1_x1_y1 
-					(true (waterDetected__o0 
-						(true (waterDetected__o0' 
-							(true (1.0))
-							(false (0.0))))
-						(false (waterDetected__o0' 
-							(true (0.8778412))
-							(false (0.12215880000000001))))))
-					(false (waterDetected__o0 
-						(true (waterDetected__o0' 
-							(true (1.0))
-							(false (0.0))))
-						(false (waterDetected__o0' 
-							(true (0.0))
-							(false (1.0))))))))))
-			(false (waterDetected__o0 
-				(true (waterDetected__o0' 
+	HAS_LIFE__o2
+		(HAS_WATER__o2 
+			(true (HAS_LIFE__o2 
+				(true (HAS_LIFE__o2' 
 					(true (1.0))
 					(false (0.0))))
-				(false (waterDetected__o0' 
+				(false (twoStep 
+					(true (HAS_LIFE__o2' 
+						(true (0.0))
+						(false (1.0))))
+					(false (HAS_LIFE__o2' 
+						(true (0.7))
+						(false (0.30000000000000004))))))))
+			(false (HAS_LIFE__o2 
+				(true (HAS_LIFE__o2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (HAS_LIFE__o2' 
 					(true (0.0))
 					(false (1.0)))))))
+	HAS_LIFE__o3
+		(HAS_WATER__o3 
+			(true (HAS_LIFE__o3 
+				(true (HAS_LIFE__o3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (twoStep 
+					(true (HAS_LIFE__o3' 
+						(true (0.0))
+						(false (1.0))))
+					(false (HAS_LIFE__o3' 
+						(true (0.7))
+						(false (0.30000000000000004))))))))
+			(false (HAS_LIFE__o3 
+				(true (HAS_LIFE__o3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (HAS_LIFE__o3' 
+					(true (0.0))
+					(false (1.0)))))))
+	waterDetected__o0
+		(waterDetected__o0 
+			(true (waterDetected__o0' 
+				(true (1.0))
+				(false (0.0))))
+			(false (waterDetected__o0' 
+				(true (0.0))
+				(false (1.0)))))
 	waterDetected__o1
 		(waterDetected__o1 
 			(true (waterDetected__o1' 
 				(true (1.0))
 				(false (0.0))))
 			(false (waterDetected__o1' 
+				(true (0.0))
+				(false (1.0)))))
+	waterDetected__o2
+		(waterDetected__o2 
+			(true (waterDetected__o2' 
+				(true (1.0))
+				(false (0.0))))
+			(false (waterDetected__o2' 
+				(true (0.0))
+				(false (1.0)))))
+	waterDetected__o3
+		(waterDetected__o3 
+			(true (waterDetected__o3' 
+				(true (1.0))
+				(false (0.0))))
+			(false (waterDetected__o3' 
 				(true (0.0))
 				(false (1.0)))))
 	lifeDetected__o0
@@ -3350,6 +5940,22 @@ action useToolOn__a1_w1_o0
 				(true (1.0))
 				(false (0.0))))
 			(false (lifeDetected__o1' 
+				(true (0.0))
+				(false (1.0)))))
+	lifeDetected__o2
+		(lifeDetected__o2 
+			(true (lifeDetected__o2' 
+				(true (1.0))
+				(false (0.0))))
+			(false (lifeDetected__o2' 
+				(true (0.0))
+				(false (1.0)))))
+	lifeDetected__o3
+		(lifeDetected__o3 
+			(true (lifeDetected__o3' 
+				(true (1.0))
+				(false (0.0))))
+			(false (lifeDetected__o3' 
 				(true (0.0))
 				(false (1.0)))))
 	oneStep
@@ -3381,22 +5987,38 @@ action useToolOn__a1_w1_o0
 				(false (waterDetectedObs__o1' 
 					(true (0.0))
 					(false (1.0)))))
+		waterDetectedObs__o2
+			(waterDetected__o2' 
+				(true (waterDetectedObs__o2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (waterDetectedObs__o2' 
+					(true (0.0))
+					(false (1.0)))))
+		waterDetectedObs__o3
+			(waterDetected__o3' 
+				(true (waterDetectedObs__o3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (waterDetectedObs__o3' 
+					(true (0.0))
+					(false (1.0)))))
 		damagedObs__l1
 			(damaged__l1' 
 				(true (damagedObs__l1' 
-					(true (0.9544825181365013))
-					(false (0.04551748186349869))))
+					(true (0.9382016696035862))
+					(false (0.0617983303964138))))
 				(false (damagedObs__l1' 
-					(true (0.021615148))
-					(false (0.978384852)))))
+					(true (0.07345955))
+					(false (0.92654045)))))
 		damagedObs__w1
 			(damaged__w1' 
 				(true (damagedObs__w1' 
-					(true (0.9638246335089207))
-					(false (0.03617536649107933))))
+					(true (0.9263422265648842))
+					(false (0.07365777343511581))))
 				(false (damagedObs__w1' 
-					(true (0.08656731))
-					(false (0.91343269)))))
+					(true (0.08379076))
+					(false (0.91620924)))))
 		damagedObs__p1
 			(damaged__p1' 
 				(true (damagedObs__p1' 
@@ -3419,6 +6041,852 @@ action useToolOn__a1_w1_o0
 					(true (1.0))
 					(false (0.0))))
 				(false (lifeDetectedObs__o1' 
+					(true (0.0))
+					(false (1.0)))))
+		lifeDetectedObs__o2
+			(lifeDetected__o2' 
+				(true (lifeDetectedObs__o2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (lifeDetectedObs__o2' 
+					(true (0.0))
+					(false (1.0)))))
+		lifeDetectedObs__o3
+			(lifeDetected__o3' 
+				(true (lifeDetectedObs__o3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (lifeDetectedObs__o3' 
+					(true (0.0))
+					(false (1.0)))))
+	endobserve
+	cost [+ 
+		(damaged__p1 
+			(true (0.0))
+			(false (agentAt__a1_x1_y0 
+				(true (pictureTaken__o2 
+					(true (0.0))
+					(false (lifeDetected__o2 
+						(true (-0.6804353))
+						(false (0.0))))))
+				(false (0.0)))))
+		(damaged__p1 
+			(true (0.0))
+			(false (agentAt__a1_x1_y0 
+				(true (lifeDetected__o2 
+					(true (0.0))
+					(false (0.30658853))))
+				(false (0.0)))))
+	]
+endaction
+
+action useToolOn__a1_p1_o3
+	HAS_WATER__o0
+		(HAS_WATER__o0 
+			(true (HAS_WATER__o0' 
+				(true (1.0))
+				(false (0.0))))
+			(false (oneStep 
+				(true (HAS_WATER__o0' 
+					(true (0.0))
+					(false (1.0))))
+				(false (HAS_WATER__o0' 
+					(true (0.8))
+					(false (0.2)))))))
+	HAS_WATER__o1
+		(HAS_WATER__o1 
+			(true (HAS_WATER__o1' 
+				(true (1.0))
+				(false (0.0))))
+			(false (oneStep 
+				(true (HAS_WATER__o1' 
+					(true (0.0))
+					(false (1.0))))
+				(false (HAS_WATER__o1' 
+					(true (0.8))
+					(false (0.2)))))))
+	HAS_WATER__o2
+		(HAS_WATER__o2 
+			(true (HAS_WATER__o2' 
+				(true (1.0))
+				(false (0.0))))
+			(false (oneStep 
+				(true (HAS_WATER__o2' 
+					(true (0.0))
+					(false (1.0))))
+				(false (HAS_WATER__o2' 
+					(true (0.8))
+					(false (0.2)))))))
+	HAS_WATER__o3
+		(HAS_WATER__o3 
+			(true (HAS_WATER__o3' 
+				(true (1.0))
+				(false (0.0))))
+			(false (oneStep 
+				(true (HAS_WATER__o3' 
+					(true (0.0))
+					(false (1.0))))
+				(false (HAS_WATER__o3' 
+					(true (0.8))
+					(false (0.2)))))))
+	damaged__l1
+		(damaged__l1 
+			(true (damaged__l1' 
+				(true (1.0))
+				(false (0.0))))
+			(false (agentAt__a1_x1_y0 
+				(true (damaged__l1' 
+					(true (0.35914695))
+					(false (0.64085305))))
+				(false (damaged__l1' 
+					(true (0.0))
+					(false (1.0)))))))
+	damaged__w1
+		(damaged__w1 
+			(true (damaged__w1' 
+				(true (1.0))
+				(false (0.0))))
+			(false (agentAt__a1_x1_y0 
+				(true (damaged__w1' 
+					(true (0.25491363))
+					(false (0.74508637))))
+				(false (damaged__w1' 
+					(true (0.0))
+					(false (1.0)))))))
+	damaged__p1
+		(damaged__p1 
+			(true (damaged__p1' 
+				(true (1.0))
+				(false (0.0))))
+			(false (damaged__p1' 
+				(true (0.0))
+				(false (1.0)))))
+	agentAt__a1_x0_y0
+		(agentAt__a1_x0_y0 
+			(true (agentAt__a1_x0_y0' 
+				(true (1.0))
+				(false (0.0))))
+			(false (agentAt__a1_x0_y0' 
+				(true (0.0))
+				(false (1.0)))))
+	agentAt__a1_x0_y1
+		(agentAt__a1_x0_y1 
+			(true (agentAt__a1_x0_y1' 
+				(true (1.0))
+				(false (0.0))))
+			(false (agentAt__a1_x0_y1' 
+				(true (0.0))
+				(false (1.0)))))
+	agentAt__a1_x1_y0
+		(agentAt__a1_x1_y0 
+			(true (agentAt__a1_x1_y0' 
+				(true (1.0))
+				(false (0.0))))
+			(false (agentAt__a1_x1_y0' 
+				(true (0.0))
+				(false (1.0)))))
+	agentAt__a1_x1_y1
+		(agentAt__a1_x1_y1 
+			(true (agentAt__a1_x1_y1' 
+				(true (1.0))
+				(false (0.0))))
+			(false (agentAt__a1_x1_y1' 
+				(true (0.0))
+				(false (1.0)))))
+	pictureTaken__o0
+		(pictureTaken__o0' 
+			(true (0.0))
+			(false (1.0)))
+	pictureTaken__o1
+		(pictureTaken__o1' 
+			(true (0.0))
+			(false (1.0)))
+	pictureTaken__o2
+		(pictureTaken__o2' 
+			(true (0.0))
+			(false (1.0)))
+	pictureTaken__o3
+		(damaged__p1 
+			(true (pictureTaken__o3' 
+				(true (0.0))
+				(false (1.0))))
+			(false (agentAt__a1_x0_y0 
+				(true (pictureTaken__o3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (pictureTaken__o3' 
+					(true (0.0))
+					(false (1.0)))))))
+	HAS_LIFE__o0
+		(HAS_WATER__o0 
+			(true (HAS_LIFE__o0 
+				(true (HAS_LIFE__o0' 
+					(true (1.0))
+					(false (0.0))))
+				(false (twoStep 
+					(true (HAS_LIFE__o0' 
+						(true (0.0))
+						(false (1.0))))
+					(false (HAS_LIFE__o0' 
+						(true (0.7))
+						(false (0.30000000000000004))))))))
+			(false (HAS_LIFE__o0 
+				(true (HAS_LIFE__o0' 
+					(true (1.0))
+					(false (0.0))))
+				(false (HAS_LIFE__o0' 
+					(true (0.0))
+					(false (1.0)))))))
+	HAS_LIFE__o1
+		(HAS_WATER__o1 
+			(true (HAS_LIFE__o1 
+				(true (HAS_LIFE__o1' 
+					(true (1.0))
+					(false (0.0))))
+				(false (twoStep 
+					(true (HAS_LIFE__o1' 
+						(true (0.0))
+						(false (1.0))))
+					(false (HAS_LIFE__o1' 
+						(true (0.7))
+						(false (0.30000000000000004))))))))
+			(false (HAS_LIFE__o1 
+				(true (HAS_LIFE__o1' 
+					(true (1.0))
+					(false (0.0))))
+				(false (HAS_LIFE__o1' 
+					(true (0.0))
+					(false (1.0)))))))
+	HAS_LIFE__o2
+		(HAS_WATER__o2 
+			(true (HAS_LIFE__o2 
+				(true (HAS_LIFE__o2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (twoStep 
+					(true (HAS_LIFE__o2' 
+						(true (0.0))
+						(false (1.0))))
+					(false (HAS_LIFE__o2' 
+						(true (0.7))
+						(false (0.30000000000000004))))))))
+			(false (HAS_LIFE__o2 
+				(true (HAS_LIFE__o2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (HAS_LIFE__o2' 
+					(true (0.0))
+					(false (1.0)))))))
+	HAS_LIFE__o3
+		(HAS_WATER__o3 
+			(true (HAS_LIFE__o3 
+				(true (HAS_LIFE__o3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (twoStep 
+					(true (HAS_LIFE__o3' 
+						(true (0.0))
+						(false (1.0))))
+					(false (HAS_LIFE__o3' 
+						(true (0.7))
+						(false (0.30000000000000004))))))))
+			(false (HAS_LIFE__o3 
+				(true (HAS_LIFE__o3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (HAS_LIFE__o3' 
+					(true (0.0))
+					(false (1.0)))))))
+	waterDetected__o0
+		(waterDetected__o0 
+			(true (waterDetected__o0' 
+				(true (1.0))
+				(false (0.0))))
+			(false (waterDetected__o0' 
+				(true (0.0))
+				(false (1.0)))))
+	waterDetected__o1
+		(waterDetected__o1 
+			(true (waterDetected__o1' 
+				(true (1.0))
+				(false (0.0))))
+			(false (waterDetected__o1' 
+				(true (0.0))
+				(false (1.0)))))
+	waterDetected__o2
+		(waterDetected__o2 
+			(true (waterDetected__o2' 
+				(true (1.0))
+				(false (0.0))))
+			(false (waterDetected__o2' 
+				(true (0.0))
+				(false (1.0)))))
+	waterDetected__o3
+		(waterDetected__o3 
+			(true (waterDetected__o3' 
+				(true (1.0))
+				(false (0.0))))
+			(false (waterDetected__o3' 
+				(true (0.0))
+				(false (1.0)))))
+	lifeDetected__o0
+		(lifeDetected__o0 
+			(true (lifeDetected__o0' 
+				(true (1.0))
+				(false (0.0))))
+			(false (lifeDetected__o0' 
+				(true (0.0))
+				(false (1.0)))))
+	lifeDetected__o1
+		(lifeDetected__o1 
+			(true (lifeDetected__o1' 
+				(true (1.0))
+				(false (0.0))))
+			(false (lifeDetected__o1' 
+				(true (0.0))
+				(false (1.0)))))
+	lifeDetected__o2
+		(lifeDetected__o2 
+			(true (lifeDetected__o2' 
+				(true (1.0))
+				(false (0.0))))
+			(false (lifeDetected__o2' 
+				(true (0.0))
+				(false (1.0)))))
+	lifeDetected__o3
+		(lifeDetected__o3 
+			(true (lifeDetected__o3' 
+				(true (1.0))
+				(false (0.0))))
+			(false (lifeDetected__o3' 
+				(true (0.0))
+				(false (1.0)))))
+	oneStep
+		(oneStep' 
+			(true (1.0))
+			(false (0.0)))
+	twoStep
+		(oneStep 
+			(true (twoStep' 
+				(true (1.0))
+				(false (0.0))))
+			(false (twoStep' 
+				(true (0.0))
+				(false (1.0)))))
+	observe 
+		waterDetectedObs__o0
+			(waterDetected__o0' 
+				(true (waterDetectedObs__o0' 
+					(true (1.0))
+					(false (0.0))))
+				(false (waterDetectedObs__o0' 
+					(true (0.0))
+					(false (1.0)))))
+		waterDetectedObs__o1
+			(waterDetected__o1' 
+				(true (waterDetectedObs__o1' 
+					(true (1.0))
+					(false (0.0))))
+				(false (waterDetectedObs__o1' 
+					(true (0.0))
+					(false (1.0)))))
+		waterDetectedObs__o2
+			(waterDetected__o2' 
+				(true (waterDetectedObs__o2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (waterDetectedObs__o2' 
+					(true (0.0))
+					(false (1.0)))))
+		waterDetectedObs__o3
+			(waterDetected__o3' 
+				(true (waterDetectedObs__o3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (waterDetectedObs__o3' 
+					(true (0.0))
+					(false (1.0)))))
+		damagedObs__l1
+			(damaged__l1' 
+				(true (damagedObs__l1' 
+					(true (0.9382016696035862))
+					(false (0.0617983303964138))))
+				(false (damagedObs__l1' 
+					(true (0.07345955))
+					(false (0.92654045)))))
+		damagedObs__w1
+			(damaged__w1' 
+				(true (damagedObs__w1' 
+					(true (0.9263422265648842))
+					(false (0.07365777343511581))))
+				(false (damagedObs__w1' 
+					(true (0.08379076))
+					(false (0.91620924)))))
+		damagedObs__p1
+			(damaged__p1' 
+				(true (damagedObs__p1' 
+					(true (0.8))
+					(false (0.2))))
+				(false (damagedObs__p1' 
+					(true (0.2))
+					(false (0.8)))))
+		lifeDetectedObs__o0
+			(lifeDetected__o0' 
+				(true (lifeDetectedObs__o0' 
+					(true (1.0))
+					(false (0.0))))
+				(false (lifeDetectedObs__o0' 
+					(true (0.0))
+					(false (1.0)))))
+		lifeDetectedObs__o1
+			(lifeDetected__o1' 
+				(true (lifeDetectedObs__o1' 
+					(true (1.0))
+					(false (0.0))))
+				(false (lifeDetectedObs__o1' 
+					(true (0.0))
+					(false (1.0)))))
+		lifeDetectedObs__o2
+			(lifeDetected__o2' 
+				(true (lifeDetectedObs__o2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (lifeDetectedObs__o2' 
+					(true (0.0))
+					(false (1.0)))))
+		lifeDetectedObs__o3
+			(lifeDetected__o3' 
+				(true (lifeDetectedObs__o3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (lifeDetectedObs__o3' 
+					(true (0.0))
+					(false (1.0)))))
+	endobserve
+	cost [+ 
+		(damaged__p1 
+			(true (0.0))
+			(false (agentAt__a1_x0_y0 
+				(true (pictureTaken__o3 
+					(true (0.0))
+					(false (lifeDetected__o3 
+						(true (-0.6804353))
+						(false (0.0))))))
+				(false (0.0)))))
+		(damaged__p1 
+			(true (0.0))
+			(false (agentAt__a1_x0_y0 
+				(true (lifeDetected__o3 
+					(true (0.0))
+					(false (0.30658853))))
+				(false (0.0)))))
+	]
+endaction
+
+action useToolOn__a1_w1_o0
+	HAS_WATER__o0
+		(HAS_WATER__o0 
+			(true (HAS_WATER__o0' 
+				(true (1.0))
+				(false (0.0))))
+			(false (oneStep 
+				(true (HAS_WATER__o0' 
+					(true (0.0))
+					(false (1.0))))
+				(false (HAS_WATER__o0' 
+					(true (0.8))
+					(false (0.2)))))))
+	HAS_WATER__o1
+		(HAS_WATER__o1 
+			(true (HAS_WATER__o1' 
+				(true (1.0))
+				(false (0.0))))
+			(false (oneStep 
+				(true (HAS_WATER__o1' 
+					(true (0.0))
+					(false (1.0))))
+				(false (HAS_WATER__o1' 
+					(true (0.8))
+					(false (0.2)))))))
+	HAS_WATER__o2
+		(HAS_WATER__o2 
+			(true (HAS_WATER__o2' 
+				(true (1.0))
+				(false (0.0))))
+			(false (oneStep 
+				(true (HAS_WATER__o2' 
+					(true (0.0))
+					(false (1.0))))
+				(false (HAS_WATER__o2' 
+					(true (0.8))
+					(false (0.2)))))))
+	HAS_WATER__o3
+		(HAS_WATER__o3 
+			(true (HAS_WATER__o3' 
+				(true (1.0))
+				(false (0.0))))
+			(false (oneStep 
+				(true (HAS_WATER__o3' 
+					(true (0.0))
+					(false (1.0))))
+				(false (HAS_WATER__o3' 
+					(true (0.8))
+					(false (0.2)))))))
+	damaged__l1
+		(damaged__l1 
+			(true (damaged__l1' 
+				(true (1.0))
+				(false (0.0))))
+			(false (agentAt__a1_x1_y0 
+				(true (damaged__l1' 
+					(true (0.35914695))
+					(false (0.64085305))))
+				(false (damaged__l1' 
+					(true (0.0))
+					(false (1.0)))))))
+	damaged__w1
+		(damaged__w1 
+			(true (damaged__w1' 
+				(true (1.0))
+				(false (0.0))))
+			(false (agentAt__a1_x1_y0 
+				(true (damaged__w1' 
+					(true (0.25491363))
+					(false (0.74508637))))
+				(false (damaged__w1' 
+					(true (0.0))
+					(false (1.0)))))))
+	damaged__p1
+		(damaged__p1 
+			(true (damaged__p1' 
+				(true (1.0))
+				(false (0.0))))
+			(false (damaged__p1' 
+				(true (0.0))
+				(false (1.0)))))
+	agentAt__a1_x0_y0
+		(agentAt__a1_x0_y0 
+			(true (agentAt__a1_x0_y0' 
+				(true (1.0))
+				(false (0.0))))
+			(false (agentAt__a1_x0_y0' 
+				(true (0.0))
+				(false (1.0)))))
+	agentAt__a1_x0_y1
+		(agentAt__a1_x0_y1 
+			(true (agentAt__a1_x0_y1' 
+				(true (1.0))
+				(false (0.0))))
+			(false (agentAt__a1_x0_y1' 
+				(true (0.0))
+				(false (1.0)))))
+	agentAt__a1_x1_y0
+		(agentAt__a1_x1_y0 
+			(true (agentAt__a1_x1_y0' 
+				(true (1.0))
+				(false (0.0))))
+			(false (agentAt__a1_x1_y0' 
+				(true (0.0))
+				(false (1.0)))))
+	agentAt__a1_x1_y1
+		(agentAt__a1_x1_y1 
+			(true (agentAt__a1_x1_y1' 
+				(true (1.0))
+				(false (0.0))))
+			(false (agentAt__a1_x1_y1' 
+				(true (0.0))
+				(false (1.0)))))
+	pictureTaken__o0
+		(pictureTaken__o0' 
+			(true (0.0))
+			(false (1.0)))
+	pictureTaken__o1
+		(pictureTaken__o1' 
+			(true (0.0))
+			(false (1.0)))
+	pictureTaken__o2
+		(pictureTaken__o2' 
+			(true (0.0))
+			(false (1.0)))
+	pictureTaken__o3
+		(pictureTaken__o3' 
+			(true (0.0))
+			(false (1.0)))
+	HAS_LIFE__o0
+		(HAS_WATER__o0 
+			(true (HAS_LIFE__o0 
+				(true (HAS_LIFE__o0' 
+					(true (1.0))
+					(false (0.0))))
+				(false (twoStep 
+					(true (HAS_LIFE__o0' 
+						(true (0.0))
+						(false (1.0))))
+					(false (HAS_LIFE__o0' 
+						(true (0.7))
+						(false (0.30000000000000004))))))))
+			(false (HAS_LIFE__o0 
+				(true (HAS_LIFE__o0' 
+					(true (1.0))
+					(false (0.0))))
+				(false (HAS_LIFE__o0' 
+					(true (0.0))
+					(false (1.0)))))))
+	HAS_LIFE__o1
+		(HAS_WATER__o1 
+			(true (HAS_LIFE__o1 
+				(true (HAS_LIFE__o1' 
+					(true (1.0))
+					(false (0.0))))
+				(false (twoStep 
+					(true (HAS_LIFE__o1' 
+						(true (0.0))
+						(false (1.0))))
+					(false (HAS_LIFE__o1' 
+						(true (0.7))
+						(false (0.30000000000000004))))))))
+			(false (HAS_LIFE__o1 
+				(true (HAS_LIFE__o1' 
+					(true (1.0))
+					(false (0.0))))
+				(false (HAS_LIFE__o1' 
+					(true (0.0))
+					(false (1.0)))))))
+	HAS_LIFE__o2
+		(HAS_WATER__o2 
+			(true (HAS_LIFE__o2 
+				(true (HAS_LIFE__o2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (twoStep 
+					(true (HAS_LIFE__o2' 
+						(true (0.0))
+						(false (1.0))))
+					(false (HAS_LIFE__o2' 
+						(true (0.7))
+						(false (0.30000000000000004))))))))
+			(false (HAS_LIFE__o2 
+				(true (HAS_LIFE__o2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (HAS_LIFE__o2' 
+					(true (0.0))
+					(false (1.0)))))))
+	HAS_LIFE__o3
+		(HAS_WATER__o3 
+			(true (HAS_LIFE__o3 
+				(true (HAS_LIFE__o3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (twoStep 
+					(true (HAS_LIFE__o3' 
+						(true (0.0))
+						(false (1.0))))
+					(false (HAS_LIFE__o3' 
+						(true (0.7))
+						(false (0.30000000000000004))))))))
+			(false (HAS_LIFE__o3 
+				(true (HAS_LIFE__o3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (HAS_LIFE__o3' 
+					(true (0.0))
+					(false (1.0)))))))
+	waterDetected__o0
+		(HAS_WATER__o0 
+			(true (damaged__w1 
+				(true (agentAt__a1_x0_y0 
+					(true (waterDetected__o0 
+						(true (waterDetected__o0' 
+							(true (1.0))
+							(false (0.0))))
+						(false (waterDetected__o0' 
+							(true (0.15262716))
+							(false (0.84737284))))))
+					(false (waterDetected__o0 
+						(true (waterDetected__o0' 
+							(true (1.0))
+							(false (0.0))))
+						(false (waterDetected__o0' 
+							(true (0.0))
+							(false (1.0))))))))
+				(false (agentAt__a1_x0_y0 
+					(true (waterDetected__o0 
+						(true (waterDetected__o0' 
+							(true (1.0))
+							(false (0.0))))
+						(false (waterDetected__o0' 
+							(true (0.9173212))
+							(false (0.08267880000000005))))))
+					(false (waterDetected__o0 
+						(true (waterDetected__o0' 
+							(true (1.0))
+							(false (0.0))))
+						(false (waterDetected__o0' 
+							(true (0.0))
+							(false (1.0))))))))))
+			(false (waterDetected__o0 
+				(true (waterDetected__o0' 
+					(true (1.0))
+					(false (0.0))))
+				(false (waterDetected__o0' 
+					(true (0.0))
+					(false (1.0)))))))
+	waterDetected__o1
+		(waterDetected__o1 
+			(true (waterDetected__o1' 
+				(true (1.0))
+				(false (0.0))))
+			(false (waterDetected__o1' 
+				(true (0.0))
+				(false (1.0)))))
+	waterDetected__o2
+		(waterDetected__o2 
+			(true (waterDetected__o2' 
+				(true (1.0))
+				(false (0.0))))
+			(false (waterDetected__o2' 
+				(true (0.0))
+				(false (1.0)))))
+	waterDetected__o3
+		(waterDetected__o3 
+			(true (waterDetected__o3' 
+				(true (1.0))
+				(false (0.0))))
+			(false (waterDetected__o3' 
+				(true (0.0))
+				(false (1.0)))))
+	lifeDetected__o0
+		(lifeDetected__o0 
+			(true (lifeDetected__o0' 
+				(true (1.0))
+				(false (0.0))))
+			(false (lifeDetected__o0' 
+				(true (0.0))
+				(false (1.0)))))
+	lifeDetected__o1
+		(lifeDetected__o1 
+			(true (lifeDetected__o1' 
+				(true (1.0))
+				(false (0.0))))
+			(false (lifeDetected__o1' 
+				(true (0.0))
+				(false (1.0)))))
+	lifeDetected__o2
+		(lifeDetected__o2 
+			(true (lifeDetected__o2' 
+				(true (1.0))
+				(false (0.0))))
+			(false (lifeDetected__o2' 
+				(true (0.0))
+				(false (1.0)))))
+	lifeDetected__o3
+		(lifeDetected__o3 
+			(true (lifeDetected__o3' 
+				(true (1.0))
+				(false (0.0))))
+			(false (lifeDetected__o3' 
+				(true (0.0))
+				(false (1.0)))))
+	oneStep
+		(oneStep' 
+			(true (1.0))
+			(false (0.0)))
+	twoStep
+		(oneStep 
+			(true (twoStep' 
+				(true (1.0))
+				(false (0.0))))
+			(false (twoStep' 
+				(true (0.0))
+				(false (1.0)))))
+	observe 
+		waterDetectedObs__o0
+			(waterDetected__o0' 
+				(true (waterDetectedObs__o0' 
+					(true (1.0))
+					(false (0.0))))
+				(false (waterDetectedObs__o0' 
+					(true (0.0))
+					(false (1.0)))))
+		waterDetectedObs__o1
+			(waterDetected__o1' 
+				(true (waterDetectedObs__o1' 
+					(true (1.0))
+					(false (0.0))))
+				(false (waterDetectedObs__o1' 
+					(true (0.0))
+					(false (1.0)))))
+		waterDetectedObs__o2
+			(waterDetected__o2' 
+				(true (waterDetectedObs__o2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (waterDetectedObs__o2' 
+					(true (0.0))
+					(false (1.0)))))
+		waterDetectedObs__o3
+			(waterDetected__o3' 
+				(true (waterDetectedObs__o3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (waterDetectedObs__o3' 
+					(true (0.0))
+					(false (1.0)))))
+		damagedObs__l1
+			(damaged__l1' 
+				(true (damagedObs__l1' 
+					(true (0.9382016696035862))
+					(false (0.0617983303964138))))
+				(false (damagedObs__l1' 
+					(true (0.07345955))
+					(false (0.92654045)))))
+		damagedObs__w1
+			(damaged__w1' 
+				(true (damagedObs__w1' 
+					(true (0.9263422265648842))
+					(false (0.07365777343511581))))
+				(false (damagedObs__w1' 
+					(true (0.08379076))
+					(false (0.91620924)))))
+		damagedObs__p1
+			(damaged__p1' 
+				(true (damagedObs__p1' 
+					(true (0.8))
+					(false (0.2))))
+				(false (damagedObs__p1' 
+					(true (0.2))
+					(false (0.8)))))
+		lifeDetectedObs__o0
+			(lifeDetected__o0' 
+				(true (lifeDetectedObs__o0' 
+					(true (1.0))
+					(false (0.0))))
+				(false (lifeDetectedObs__o0' 
+					(true (0.0))
+					(false (1.0)))))
+		lifeDetectedObs__o1
+			(lifeDetected__o1' 
+				(true (lifeDetectedObs__o1' 
+					(true (1.0))
+					(false (0.0))))
+				(false (lifeDetectedObs__o1' 
+					(true (0.0))
+					(false (1.0)))))
+		lifeDetectedObs__o2
+			(lifeDetected__o2' 
+				(true (lifeDetectedObs__o2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (lifeDetectedObs__o2' 
+					(true (0.0))
+					(false (1.0)))))
+		lifeDetectedObs__o3
+			(lifeDetected__o3' 
+				(true (lifeDetectedObs__o3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (lifeDetectedObs__o3' 
 					(true (0.0))
 					(false (1.0)))))
 	endobserve
@@ -3451,6 +6919,30 @@ action useToolOn__a1_w1_o1
 				(false (HAS_WATER__o1' 
 					(true (0.8))
 					(false (0.2)))))))
+	HAS_WATER__o2
+		(HAS_WATER__o2 
+			(true (HAS_WATER__o2' 
+				(true (1.0))
+				(false (0.0))))
+			(false (oneStep 
+				(true (HAS_WATER__o2' 
+					(true (0.0))
+					(false (1.0))))
+				(false (HAS_WATER__o2' 
+					(true (0.8))
+					(false (0.2)))))))
+	HAS_WATER__o3
+		(HAS_WATER__o3 
+			(true (HAS_WATER__o3' 
+				(true (1.0))
+				(false (0.0))))
+			(false (oneStep 
+				(true (HAS_WATER__o3' 
+					(true (0.0))
+					(false (1.0))))
+				(false (HAS_WATER__o3' 
+					(true (0.8))
+					(false (0.2)))))))
 	damaged__l1
 		(damaged__l1 
 			(true (damaged__l1' 
@@ -3458,8 +6950,8 @@ action useToolOn__a1_w1_o1
 				(false (0.0))))
 			(false (agentAt__a1_x1_y0 
 				(true (damaged__l1' 
-					(true (0.3359123))
-					(false (0.6640877000000001))))
+					(true (0.35914695))
+					(false (0.64085305))))
 				(false (damaged__l1' 
 					(true (0.0))
 					(false (1.0)))))))
@@ -3470,8 +6962,8 @@ action useToolOn__a1_w1_o1
 				(false (0.0))))
 			(false (agentAt__a1_x1_y0 
 				(true (damaged__w1' 
-					(true (0.37663338))
-					(false (0.62336662))))
+					(true (0.25491363))
+					(false (0.74508637))))
 				(false (damaged__w1' 
 					(true (0.0))
 					(false (1.0)))))))
@@ -3523,6 +7015,14 @@ action useToolOn__a1_w1_o1
 		(pictureTaken__o1' 
 			(true (0.0))
 			(false (1.0)))
+	pictureTaken__o2
+		(pictureTaken__o2' 
+			(true (0.0))
+			(false (1.0)))
+	pictureTaken__o3
+		(pictureTaken__o3' 
+			(true (0.0))
+			(false (1.0)))
 	HAS_LIFE__o0
 		(HAS_WATER__o0 
 			(true (HAS_LIFE__o0 
@@ -3563,6 +7063,46 @@ action useToolOn__a1_w1_o1
 				(false (HAS_LIFE__o1' 
 					(true (0.0))
 					(false (1.0)))))))
+	HAS_LIFE__o2
+		(HAS_WATER__o2 
+			(true (HAS_LIFE__o2 
+				(true (HAS_LIFE__o2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (twoStep 
+					(true (HAS_LIFE__o2' 
+						(true (0.0))
+						(false (1.0))))
+					(false (HAS_LIFE__o2' 
+						(true (0.7))
+						(false (0.30000000000000004))))))))
+			(false (HAS_LIFE__o2 
+				(true (HAS_LIFE__o2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (HAS_LIFE__o2' 
+					(true (0.0))
+					(false (1.0)))))))
+	HAS_LIFE__o3
+		(HAS_WATER__o3 
+			(true (HAS_LIFE__o3 
+				(true (HAS_LIFE__o3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (twoStep 
+					(true (HAS_LIFE__o3' 
+						(true (0.0))
+						(false (1.0))))
+					(false (HAS_LIFE__o3' 
+						(true (0.7))
+						(false (0.30000000000000004))))))))
+			(false (HAS_LIFE__o3 
+				(true (HAS_LIFE__o3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (HAS_LIFE__o3' 
+					(true (0.0))
+					(false (1.0)))))))
 	waterDetected__o0
 		(waterDetected__o0 
 			(true (waterDetected__o0' 
@@ -3580,8 +7120,8 @@ action useToolOn__a1_w1_o1
 							(true (1.0))
 							(false (0.0))))
 						(false (waterDetected__o1' 
-							(true (0.55040485))
-							(false (0.44959515000000005))))))
+							(true (0.15262716))
+							(false (0.84737284))))))
 					(false (waterDetected__o1 
 						(true (waterDetected__o1' 
 							(true (1.0))
@@ -3595,8 +7135,8 @@ action useToolOn__a1_w1_o1
 							(true (1.0))
 							(false (0.0))))
 						(false (waterDetected__o1' 
-							(true (0.8778412))
-							(false (0.12215880000000001))))))
+							(true (0.9173212))
+							(false (0.08267880000000005))))))
 					(false (waterDetected__o1 
 						(true (waterDetected__o1' 
 							(true (1.0))
@@ -3611,6 +7151,22 @@ action useToolOn__a1_w1_o1
 				(false (waterDetected__o1' 
 					(true (0.0))
 					(false (1.0)))))))
+	waterDetected__o2
+		(waterDetected__o2 
+			(true (waterDetected__o2' 
+				(true (1.0))
+				(false (0.0))))
+			(false (waterDetected__o2' 
+				(true (0.0))
+				(false (1.0)))))
+	waterDetected__o3
+		(waterDetected__o3 
+			(true (waterDetected__o3' 
+				(true (1.0))
+				(false (0.0))))
+			(false (waterDetected__o3' 
+				(true (0.0))
+				(false (1.0)))))
 	lifeDetected__o0
 		(lifeDetected__o0 
 			(true (lifeDetected__o0' 
@@ -3625,6 +7181,22 @@ action useToolOn__a1_w1_o1
 				(true (1.0))
 				(false (0.0))))
 			(false (lifeDetected__o1' 
+				(true (0.0))
+				(false (1.0)))))
+	lifeDetected__o2
+		(lifeDetected__o2 
+			(true (lifeDetected__o2' 
+				(true (1.0))
+				(false (0.0))))
+			(false (lifeDetected__o2' 
+				(true (0.0))
+				(false (1.0)))))
+	lifeDetected__o3
+		(lifeDetected__o3 
+			(true (lifeDetected__o3' 
+				(true (1.0))
+				(false (0.0))))
+			(false (lifeDetected__o3' 
 				(true (0.0))
 				(false (1.0)))))
 	oneStep
@@ -3656,22 +7228,38 @@ action useToolOn__a1_w1_o1
 				(false (waterDetectedObs__o1' 
 					(true (0.0))
 					(false (1.0)))))
+		waterDetectedObs__o2
+			(waterDetected__o2' 
+				(true (waterDetectedObs__o2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (waterDetectedObs__o2' 
+					(true (0.0))
+					(false (1.0)))))
+		waterDetectedObs__o3
+			(waterDetected__o3' 
+				(true (waterDetectedObs__o3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (waterDetectedObs__o3' 
+					(true (0.0))
+					(false (1.0)))))
 		damagedObs__l1
 			(damaged__l1' 
 				(true (damagedObs__l1' 
-					(true (0.9544825181365013))
-					(false (0.04551748186349869))))
+					(true (0.9382016696035862))
+					(false (0.0617983303964138))))
 				(false (damagedObs__l1' 
-					(true (0.021615148))
-					(false (0.978384852)))))
+					(true (0.07345955))
+					(false (0.92654045)))))
 		damagedObs__w1
 			(damaged__w1' 
 				(true (damagedObs__w1' 
-					(true (0.9638246335089207))
-					(false (0.03617536649107933))))
+					(true (0.9263422265648842))
+					(false (0.07365777343511581))))
 				(false (damagedObs__w1' 
-					(true (0.08656731))
-					(false (0.91343269)))))
+					(true (0.08379076))
+					(false (0.91620924)))))
 		damagedObs__p1
 			(damaged__p1' 
 				(true (damagedObs__p1' 
@@ -3694,6 +7282,844 @@ action useToolOn__a1_w1_o1
 					(true (1.0))
 					(false (0.0))))
 				(false (lifeDetectedObs__o1' 
+					(true (0.0))
+					(false (1.0)))))
+		lifeDetectedObs__o2
+			(lifeDetected__o2' 
+				(true (lifeDetectedObs__o2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (lifeDetectedObs__o2' 
+					(true (0.0))
+					(false (1.0)))))
+		lifeDetectedObs__o3
+			(lifeDetected__o3' 
+				(true (lifeDetectedObs__o3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (lifeDetectedObs__o3' 
+					(true (0.0))
+					(false (1.0)))))
+	endobserve
+	cost [+ 
+	]
+endaction
+
+action useToolOn__a1_w1_o2
+	HAS_WATER__o0
+		(HAS_WATER__o0 
+			(true (HAS_WATER__o0' 
+				(true (1.0))
+				(false (0.0))))
+			(false (oneStep 
+				(true (HAS_WATER__o0' 
+					(true (0.0))
+					(false (1.0))))
+				(false (HAS_WATER__o0' 
+					(true (0.8))
+					(false (0.2)))))))
+	HAS_WATER__o1
+		(HAS_WATER__o1 
+			(true (HAS_WATER__o1' 
+				(true (1.0))
+				(false (0.0))))
+			(false (oneStep 
+				(true (HAS_WATER__o1' 
+					(true (0.0))
+					(false (1.0))))
+				(false (HAS_WATER__o1' 
+					(true (0.8))
+					(false (0.2)))))))
+	HAS_WATER__o2
+		(HAS_WATER__o2 
+			(true (HAS_WATER__o2' 
+				(true (1.0))
+				(false (0.0))))
+			(false (oneStep 
+				(true (HAS_WATER__o2' 
+					(true (0.0))
+					(false (1.0))))
+				(false (HAS_WATER__o2' 
+					(true (0.8))
+					(false (0.2)))))))
+	HAS_WATER__o3
+		(HAS_WATER__o3 
+			(true (HAS_WATER__o3' 
+				(true (1.0))
+				(false (0.0))))
+			(false (oneStep 
+				(true (HAS_WATER__o3' 
+					(true (0.0))
+					(false (1.0))))
+				(false (HAS_WATER__o3' 
+					(true (0.8))
+					(false (0.2)))))))
+	damaged__l1
+		(damaged__l1 
+			(true (damaged__l1' 
+				(true (1.0))
+				(false (0.0))))
+			(false (agentAt__a1_x1_y0 
+				(true (damaged__l1' 
+					(true (0.35914695))
+					(false (0.64085305))))
+				(false (damaged__l1' 
+					(true (0.0))
+					(false (1.0)))))))
+	damaged__w1
+		(damaged__w1 
+			(true (damaged__w1' 
+				(true (1.0))
+				(false (0.0))))
+			(false (agentAt__a1_x1_y0 
+				(true (damaged__w1' 
+					(true (0.25491363))
+					(false (0.74508637))))
+				(false (damaged__w1' 
+					(true (0.0))
+					(false (1.0)))))))
+	damaged__p1
+		(damaged__p1 
+			(true (damaged__p1' 
+				(true (1.0))
+				(false (0.0))))
+			(false (damaged__p1' 
+				(true (0.0))
+				(false (1.0)))))
+	agentAt__a1_x0_y0
+		(agentAt__a1_x0_y0 
+			(true (agentAt__a1_x0_y0' 
+				(true (1.0))
+				(false (0.0))))
+			(false (agentAt__a1_x0_y0' 
+				(true (0.0))
+				(false (1.0)))))
+	agentAt__a1_x0_y1
+		(agentAt__a1_x0_y1 
+			(true (agentAt__a1_x0_y1' 
+				(true (1.0))
+				(false (0.0))))
+			(false (agentAt__a1_x0_y1' 
+				(true (0.0))
+				(false (1.0)))))
+	agentAt__a1_x1_y0
+		(agentAt__a1_x1_y0 
+			(true (agentAt__a1_x1_y0' 
+				(true (1.0))
+				(false (0.0))))
+			(false (agentAt__a1_x1_y0' 
+				(true (0.0))
+				(false (1.0)))))
+	agentAt__a1_x1_y1
+		(agentAt__a1_x1_y1 
+			(true (agentAt__a1_x1_y1' 
+				(true (1.0))
+				(false (0.0))))
+			(false (agentAt__a1_x1_y1' 
+				(true (0.0))
+				(false (1.0)))))
+	pictureTaken__o0
+		(pictureTaken__o0' 
+			(true (0.0))
+			(false (1.0)))
+	pictureTaken__o1
+		(pictureTaken__o1' 
+			(true (0.0))
+			(false (1.0)))
+	pictureTaken__o2
+		(pictureTaken__o2' 
+			(true (0.0))
+			(false (1.0)))
+	pictureTaken__o3
+		(pictureTaken__o3' 
+			(true (0.0))
+			(false (1.0)))
+	HAS_LIFE__o0
+		(HAS_WATER__o0 
+			(true (HAS_LIFE__o0 
+				(true (HAS_LIFE__o0' 
+					(true (1.0))
+					(false (0.0))))
+				(false (twoStep 
+					(true (HAS_LIFE__o0' 
+						(true (0.0))
+						(false (1.0))))
+					(false (HAS_LIFE__o0' 
+						(true (0.7))
+						(false (0.30000000000000004))))))))
+			(false (HAS_LIFE__o0 
+				(true (HAS_LIFE__o0' 
+					(true (1.0))
+					(false (0.0))))
+				(false (HAS_LIFE__o0' 
+					(true (0.0))
+					(false (1.0)))))))
+	HAS_LIFE__o1
+		(HAS_WATER__o1 
+			(true (HAS_LIFE__o1 
+				(true (HAS_LIFE__o1' 
+					(true (1.0))
+					(false (0.0))))
+				(false (twoStep 
+					(true (HAS_LIFE__o1' 
+						(true (0.0))
+						(false (1.0))))
+					(false (HAS_LIFE__o1' 
+						(true (0.7))
+						(false (0.30000000000000004))))))))
+			(false (HAS_LIFE__o1 
+				(true (HAS_LIFE__o1' 
+					(true (1.0))
+					(false (0.0))))
+				(false (HAS_LIFE__o1' 
+					(true (0.0))
+					(false (1.0)))))))
+	HAS_LIFE__o2
+		(HAS_WATER__o2 
+			(true (HAS_LIFE__o2 
+				(true (HAS_LIFE__o2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (twoStep 
+					(true (HAS_LIFE__o2' 
+						(true (0.0))
+						(false (1.0))))
+					(false (HAS_LIFE__o2' 
+						(true (0.7))
+						(false (0.30000000000000004))))))))
+			(false (HAS_LIFE__o2 
+				(true (HAS_LIFE__o2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (HAS_LIFE__o2' 
+					(true (0.0))
+					(false (1.0)))))))
+	HAS_LIFE__o3
+		(HAS_WATER__o3 
+			(true (HAS_LIFE__o3 
+				(true (HAS_LIFE__o3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (twoStep 
+					(true (HAS_LIFE__o3' 
+						(true (0.0))
+						(false (1.0))))
+					(false (HAS_LIFE__o3' 
+						(true (0.7))
+						(false (0.30000000000000004))))))))
+			(false (HAS_LIFE__o3 
+				(true (HAS_LIFE__o3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (HAS_LIFE__o3' 
+					(true (0.0))
+					(false (1.0)))))))
+	waterDetected__o0
+		(waterDetected__o0 
+			(true (waterDetected__o0' 
+				(true (1.0))
+				(false (0.0))))
+			(false (waterDetected__o0' 
+				(true (0.0))
+				(false (1.0)))))
+	waterDetected__o1
+		(waterDetected__o1 
+			(true (waterDetected__o1' 
+				(true (1.0))
+				(false (0.0))))
+			(false (waterDetected__o1' 
+				(true (0.0))
+				(false (1.0)))))
+	waterDetected__o2
+		(HAS_WATER__o2 
+			(true (damaged__w1 
+				(true (agentAt__a1_x1_y0 
+					(true (waterDetected__o2 
+						(true (waterDetected__o2' 
+							(true (1.0))
+							(false (0.0))))
+						(false (waterDetected__o2' 
+							(true (0.15262716))
+							(false (0.84737284))))))
+					(false (waterDetected__o2 
+						(true (waterDetected__o2' 
+							(true (1.0))
+							(false (0.0))))
+						(false (waterDetected__o2' 
+							(true (0.0))
+							(false (1.0))))))))
+				(false (agentAt__a1_x1_y0 
+					(true (waterDetected__o2 
+						(true (waterDetected__o2' 
+							(true (1.0))
+							(false (0.0))))
+						(false (waterDetected__o2' 
+							(true (0.9173212))
+							(false (0.08267880000000005))))))
+					(false (waterDetected__o2 
+						(true (waterDetected__o2' 
+							(true (1.0))
+							(false (0.0))))
+						(false (waterDetected__o2' 
+							(true (0.0))
+							(false (1.0))))))))))
+			(false (waterDetected__o2 
+				(true (waterDetected__o2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (waterDetected__o2' 
+					(true (0.0))
+					(false (1.0)))))))
+	waterDetected__o3
+		(waterDetected__o3 
+			(true (waterDetected__o3' 
+				(true (1.0))
+				(false (0.0))))
+			(false (waterDetected__o3' 
+				(true (0.0))
+				(false (1.0)))))
+	lifeDetected__o0
+		(lifeDetected__o0 
+			(true (lifeDetected__o0' 
+				(true (1.0))
+				(false (0.0))))
+			(false (lifeDetected__o0' 
+				(true (0.0))
+				(false (1.0)))))
+	lifeDetected__o1
+		(lifeDetected__o1 
+			(true (lifeDetected__o1' 
+				(true (1.0))
+				(false (0.0))))
+			(false (lifeDetected__o1' 
+				(true (0.0))
+				(false (1.0)))))
+	lifeDetected__o2
+		(lifeDetected__o2 
+			(true (lifeDetected__o2' 
+				(true (1.0))
+				(false (0.0))))
+			(false (lifeDetected__o2' 
+				(true (0.0))
+				(false (1.0)))))
+	lifeDetected__o3
+		(lifeDetected__o3 
+			(true (lifeDetected__o3' 
+				(true (1.0))
+				(false (0.0))))
+			(false (lifeDetected__o3' 
+				(true (0.0))
+				(false (1.0)))))
+	oneStep
+		(oneStep' 
+			(true (1.0))
+			(false (0.0)))
+	twoStep
+		(oneStep 
+			(true (twoStep' 
+				(true (1.0))
+				(false (0.0))))
+			(false (twoStep' 
+				(true (0.0))
+				(false (1.0)))))
+	observe 
+		waterDetectedObs__o0
+			(waterDetected__o0' 
+				(true (waterDetectedObs__o0' 
+					(true (1.0))
+					(false (0.0))))
+				(false (waterDetectedObs__o0' 
+					(true (0.0))
+					(false (1.0)))))
+		waterDetectedObs__o1
+			(waterDetected__o1' 
+				(true (waterDetectedObs__o1' 
+					(true (1.0))
+					(false (0.0))))
+				(false (waterDetectedObs__o1' 
+					(true (0.0))
+					(false (1.0)))))
+		waterDetectedObs__o2
+			(waterDetected__o2' 
+				(true (waterDetectedObs__o2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (waterDetectedObs__o2' 
+					(true (0.0))
+					(false (1.0)))))
+		waterDetectedObs__o3
+			(waterDetected__o3' 
+				(true (waterDetectedObs__o3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (waterDetectedObs__o3' 
+					(true (0.0))
+					(false (1.0)))))
+		damagedObs__l1
+			(damaged__l1' 
+				(true (damagedObs__l1' 
+					(true (0.9382016696035862))
+					(false (0.0617983303964138))))
+				(false (damagedObs__l1' 
+					(true (0.07345955))
+					(false (0.92654045)))))
+		damagedObs__w1
+			(damaged__w1' 
+				(true (damagedObs__w1' 
+					(true (0.9263422265648842))
+					(false (0.07365777343511581))))
+				(false (damagedObs__w1' 
+					(true (0.08379076))
+					(false (0.91620924)))))
+		damagedObs__p1
+			(damaged__p1' 
+				(true (damagedObs__p1' 
+					(true (0.8))
+					(false (0.2))))
+				(false (damagedObs__p1' 
+					(true (0.2))
+					(false (0.8)))))
+		lifeDetectedObs__o0
+			(lifeDetected__o0' 
+				(true (lifeDetectedObs__o0' 
+					(true (1.0))
+					(false (0.0))))
+				(false (lifeDetectedObs__o0' 
+					(true (0.0))
+					(false (1.0)))))
+		lifeDetectedObs__o1
+			(lifeDetected__o1' 
+				(true (lifeDetectedObs__o1' 
+					(true (1.0))
+					(false (0.0))))
+				(false (lifeDetectedObs__o1' 
+					(true (0.0))
+					(false (1.0)))))
+		lifeDetectedObs__o2
+			(lifeDetected__o2' 
+				(true (lifeDetectedObs__o2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (lifeDetectedObs__o2' 
+					(true (0.0))
+					(false (1.0)))))
+		lifeDetectedObs__o3
+			(lifeDetected__o3' 
+				(true (lifeDetectedObs__o3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (lifeDetectedObs__o3' 
+					(true (0.0))
+					(false (1.0)))))
+	endobserve
+	cost [+ 
+	]
+endaction
+
+action useToolOn__a1_w1_o3
+	HAS_WATER__o0
+		(HAS_WATER__o0 
+			(true (HAS_WATER__o0' 
+				(true (1.0))
+				(false (0.0))))
+			(false (oneStep 
+				(true (HAS_WATER__o0' 
+					(true (0.0))
+					(false (1.0))))
+				(false (HAS_WATER__o0' 
+					(true (0.8))
+					(false (0.2)))))))
+	HAS_WATER__o1
+		(HAS_WATER__o1 
+			(true (HAS_WATER__o1' 
+				(true (1.0))
+				(false (0.0))))
+			(false (oneStep 
+				(true (HAS_WATER__o1' 
+					(true (0.0))
+					(false (1.0))))
+				(false (HAS_WATER__o1' 
+					(true (0.8))
+					(false (0.2)))))))
+	HAS_WATER__o2
+		(HAS_WATER__o2 
+			(true (HAS_WATER__o2' 
+				(true (1.0))
+				(false (0.0))))
+			(false (oneStep 
+				(true (HAS_WATER__o2' 
+					(true (0.0))
+					(false (1.0))))
+				(false (HAS_WATER__o2' 
+					(true (0.8))
+					(false (0.2)))))))
+	HAS_WATER__o3
+		(HAS_WATER__o3 
+			(true (HAS_WATER__o3' 
+				(true (1.0))
+				(false (0.0))))
+			(false (oneStep 
+				(true (HAS_WATER__o3' 
+					(true (0.0))
+					(false (1.0))))
+				(false (HAS_WATER__o3' 
+					(true (0.8))
+					(false (0.2)))))))
+	damaged__l1
+		(damaged__l1 
+			(true (damaged__l1' 
+				(true (1.0))
+				(false (0.0))))
+			(false (agentAt__a1_x1_y0 
+				(true (damaged__l1' 
+					(true (0.35914695))
+					(false (0.64085305))))
+				(false (damaged__l1' 
+					(true (0.0))
+					(false (1.0)))))))
+	damaged__w1
+		(damaged__w1 
+			(true (damaged__w1' 
+				(true (1.0))
+				(false (0.0))))
+			(false (agentAt__a1_x1_y0 
+				(true (damaged__w1' 
+					(true (0.25491363))
+					(false (0.74508637))))
+				(false (damaged__w1' 
+					(true (0.0))
+					(false (1.0)))))))
+	damaged__p1
+		(damaged__p1 
+			(true (damaged__p1' 
+				(true (1.0))
+				(false (0.0))))
+			(false (damaged__p1' 
+				(true (0.0))
+				(false (1.0)))))
+	agentAt__a1_x0_y0
+		(agentAt__a1_x0_y0 
+			(true (agentAt__a1_x0_y0' 
+				(true (1.0))
+				(false (0.0))))
+			(false (agentAt__a1_x0_y0' 
+				(true (0.0))
+				(false (1.0)))))
+	agentAt__a1_x0_y1
+		(agentAt__a1_x0_y1 
+			(true (agentAt__a1_x0_y1' 
+				(true (1.0))
+				(false (0.0))))
+			(false (agentAt__a1_x0_y1' 
+				(true (0.0))
+				(false (1.0)))))
+	agentAt__a1_x1_y0
+		(agentAt__a1_x1_y0 
+			(true (agentAt__a1_x1_y0' 
+				(true (1.0))
+				(false (0.0))))
+			(false (agentAt__a1_x1_y0' 
+				(true (0.0))
+				(false (1.0)))))
+	agentAt__a1_x1_y1
+		(agentAt__a1_x1_y1 
+			(true (agentAt__a1_x1_y1' 
+				(true (1.0))
+				(false (0.0))))
+			(false (agentAt__a1_x1_y1' 
+				(true (0.0))
+				(false (1.0)))))
+	pictureTaken__o0
+		(pictureTaken__o0' 
+			(true (0.0))
+			(false (1.0)))
+	pictureTaken__o1
+		(pictureTaken__o1' 
+			(true (0.0))
+			(false (1.0)))
+	pictureTaken__o2
+		(pictureTaken__o2' 
+			(true (0.0))
+			(false (1.0)))
+	pictureTaken__o3
+		(pictureTaken__o3' 
+			(true (0.0))
+			(false (1.0)))
+	HAS_LIFE__o0
+		(HAS_WATER__o0 
+			(true (HAS_LIFE__o0 
+				(true (HAS_LIFE__o0' 
+					(true (1.0))
+					(false (0.0))))
+				(false (twoStep 
+					(true (HAS_LIFE__o0' 
+						(true (0.0))
+						(false (1.0))))
+					(false (HAS_LIFE__o0' 
+						(true (0.7))
+						(false (0.30000000000000004))))))))
+			(false (HAS_LIFE__o0 
+				(true (HAS_LIFE__o0' 
+					(true (1.0))
+					(false (0.0))))
+				(false (HAS_LIFE__o0' 
+					(true (0.0))
+					(false (1.0)))))))
+	HAS_LIFE__o1
+		(HAS_WATER__o1 
+			(true (HAS_LIFE__o1 
+				(true (HAS_LIFE__o1' 
+					(true (1.0))
+					(false (0.0))))
+				(false (twoStep 
+					(true (HAS_LIFE__o1' 
+						(true (0.0))
+						(false (1.0))))
+					(false (HAS_LIFE__o1' 
+						(true (0.7))
+						(false (0.30000000000000004))))))))
+			(false (HAS_LIFE__o1 
+				(true (HAS_LIFE__o1' 
+					(true (1.0))
+					(false (0.0))))
+				(false (HAS_LIFE__o1' 
+					(true (0.0))
+					(false (1.0)))))))
+	HAS_LIFE__o2
+		(HAS_WATER__o2 
+			(true (HAS_LIFE__o2 
+				(true (HAS_LIFE__o2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (twoStep 
+					(true (HAS_LIFE__o2' 
+						(true (0.0))
+						(false (1.0))))
+					(false (HAS_LIFE__o2' 
+						(true (0.7))
+						(false (0.30000000000000004))))))))
+			(false (HAS_LIFE__o2 
+				(true (HAS_LIFE__o2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (HAS_LIFE__o2' 
+					(true (0.0))
+					(false (1.0)))))))
+	HAS_LIFE__o3
+		(HAS_WATER__o3 
+			(true (HAS_LIFE__o3 
+				(true (HAS_LIFE__o3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (twoStep 
+					(true (HAS_LIFE__o3' 
+						(true (0.0))
+						(false (1.0))))
+					(false (HAS_LIFE__o3' 
+						(true (0.7))
+						(false (0.30000000000000004))))))))
+			(false (HAS_LIFE__o3 
+				(true (HAS_LIFE__o3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (HAS_LIFE__o3' 
+					(true (0.0))
+					(false (1.0)))))))
+	waterDetected__o0
+		(waterDetected__o0 
+			(true (waterDetected__o0' 
+				(true (1.0))
+				(false (0.0))))
+			(false (waterDetected__o0' 
+				(true (0.0))
+				(false (1.0)))))
+	waterDetected__o1
+		(waterDetected__o1 
+			(true (waterDetected__o1' 
+				(true (1.0))
+				(false (0.0))))
+			(false (waterDetected__o1' 
+				(true (0.0))
+				(false (1.0)))))
+	waterDetected__o2
+		(waterDetected__o2 
+			(true (waterDetected__o2' 
+				(true (1.0))
+				(false (0.0))))
+			(false (waterDetected__o2' 
+				(true (0.0))
+				(false (1.0)))))
+	waterDetected__o3
+		(HAS_WATER__o3 
+			(true (damaged__w1 
+				(true (agentAt__a1_x0_y0 
+					(true (waterDetected__o3 
+						(true (waterDetected__o3' 
+							(true (1.0))
+							(false (0.0))))
+						(false (waterDetected__o3' 
+							(true (0.15262716))
+							(false (0.84737284))))))
+					(false (waterDetected__o3 
+						(true (waterDetected__o3' 
+							(true (1.0))
+							(false (0.0))))
+						(false (waterDetected__o3' 
+							(true (0.0))
+							(false (1.0))))))))
+				(false (agentAt__a1_x0_y0 
+					(true (waterDetected__o3 
+						(true (waterDetected__o3' 
+							(true (1.0))
+							(false (0.0))))
+						(false (waterDetected__o3' 
+							(true (0.9173212))
+							(false (0.08267880000000005))))))
+					(false (waterDetected__o3 
+						(true (waterDetected__o3' 
+							(true (1.0))
+							(false (0.0))))
+						(false (waterDetected__o3' 
+							(true (0.0))
+							(false (1.0))))))))))
+			(false (waterDetected__o3 
+				(true (waterDetected__o3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (waterDetected__o3' 
+					(true (0.0))
+					(false (1.0)))))))
+	lifeDetected__o0
+		(lifeDetected__o0 
+			(true (lifeDetected__o0' 
+				(true (1.0))
+				(false (0.0))))
+			(false (lifeDetected__o0' 
+				(true (0.0))
+				(false (1.0)))))
+	lifeDetected__o1
+		(lifeDetected__o1 
+			(true (lifeDetected__o1' 
+				(true (1.0))
+				(false (0.0))))
+			(false (lifeDetected__o1' 
+				(true (0.0))
+				(false (1.0)))))
+	lifeDetected__o2
+		(lifeDetected__o2 
+			(true (lifeDetected__o2' 
+				(true (1.0))
+				(false (0.0))))
+			(false (lifeDetected__o2' 
+				(true (0.0))
+				(false (1.0)))))
+	lifeDetected__o3
+		(lifeDetected__o3 
+			(true (lifeDetected__o3' 
+				(true (1.0))
+				(false (0.0))))
+			(false (lifeDetected__o3' 
+				(true (0.0))
+				(false (1.0)))))
+	oneStep
+		(oneStep' 
+			(true (1.0))
+			(false (0.0)))
+	twoStep
+		(oneStep 
+			(true (twoStep' 
+				(true (1.0))
+				(false (0.0))))
+			(false (twoStep' 
+				(true (0.0))
+				(false (1.0)))))
+	observe 
+		waterDetectedObs__o0
+			(waterDetected__o0' 
+				(true (waterDetectedObs__o0' 
+					(true (1.0))
+					(false (0.0))))
+				(false (waterDetectedObs__o0' 
+					(true (0.0))
+					(false (1.0)))))
+		waterDetectedObs__o1
+			(waterDetected__o1' 
+				(true (waterDetectedObs__o1' 
+					(true (1.0))
+					(false (0.0))))
+				(false (waterDetectedObs__o1' 
+					(true (0.0))
+					(false (1.0)))))
+		waterDetectedObs__o2
+			(waterDetected__o2' 
+				(true (waterDetectedObs__o2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (waterDetectedObs__o2' 
+					(true (0.0))
+					(false (1.0)))))
+		waterDetectedObs__o3
+			(waterDetected__o3' 
+				(true (waterDetectedObs__o3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (waterDetectedObs__o3' 
+					(true (0.0))
+					(false (1.0)))))
+		damagedObs__l1
+			(damaged__l1' 
+				(true (damagedObs__l1' 
+					(true (0.9382016696035862))
+					(false (0.0617983303964138))))
+				(false (damagedObs__l1' 
+					(true (0.07345955))
+					(false (0.92654045)))))
+		damagedObs__w1
+			(damaged__w1' 
+				(true (damagedObs__w1' 
+					(true (0.9263422265648842))
+					(false (0.07365777343511581))))
+				(false (damagedObs__w1' 
+					(true (0.08379076))
+					(false (0.91620924)))))
+		damagedObs__p1
+			(damaged__p1' 
+				(true (damagedObs__p1' 
+					(true (0.8))
+					(false (0.2))))
+				(false (damagedObs__p1' 
+					(true (0.2))
+					(false (0.8)))))
+		lifeDetectedObs__o0
+			(lifeDetected__o0' 
+				(true (lifeDetectedObs__o0' 
+					(true (1.0))
+					(false (0.0))))
+				(false (lifeDetectedObs__o0' 
+					(true (0.0))
+					(false (1.0)))))
+		lifeDetectedObs__o1
+			(lifeDetected__o1' 
+				(true (lifeDetectedObs__o1' 
+					(true (1.0))
+					(false (0.0))))
+				(false (lifeDetectedObs__o1' 
+					(true (0.0))
+					(false (1.0)))))
+		lifeDetectedObs__o2
+			(lifeDetected__o2' 
+				(true (lifeDetectedObs__o2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (lifeDetectedObs__o2' 
+					(true (0.0))
+					(false (1.0)))))
+		lifeDetectedObs__o3
+			(lifeDetected__o3' 
+				(true (lifeDetectedObs__o3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (lifeDetectedObs__o3' 
 					(true (0.0))
 					(false (1.0)))))
 	endobserve

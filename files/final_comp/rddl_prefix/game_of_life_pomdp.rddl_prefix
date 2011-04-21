@@ -9,10 +9,10 @@ domain game_of_life_pomdp {
   };
   pvariables {
     set(x_pos, y_pos) : {action-fluent, bool, default = false};
-    NOISE-PROB(x_pos, y_pos) : {non-fluent, real, default = 0.1};
     surround-obs(x_pos, y_pos) : {observ-fluent, bool};
-    alive(x_pos, y_pos) : {state-fluent, bool, default = false};
+    NOISE-PROB(x_pos, y_pos) : {non-fluent, real, default = 0.1};
     NEIGHBOR(x_pos, y_pos, x_pos, y_pos) : {non-fluent, bool, default = false};
+    alive(x_pos, y_pos) : {state-fluent, bool, default = false};
   };
   cpfs {
     (surround-obs ?x ?y) = (KronDelta (>= (sum ( (?x2 : x_pos) (?y2 : y_pos) ) (^ (NEIGHBOR ?x ?y ?x2 ?y2) (alive' ?x2 ?y2) )) 2));

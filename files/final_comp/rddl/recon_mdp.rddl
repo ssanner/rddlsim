@@ -79,13 +79,13 @@ domain recon_mdp {
 		//after you check for water once, there is the observation you will always get back 
 		//you can think of the test as contaminating the sampled object
 		waterChecked(obj) : { state-fluent, bool, default = false };
-		waterDetected(obj) : { state-fluent, bool, default = false };
+		waterDetected(obj,tool) : { state-fluent, bool, default = false };
 
 		//rechecking for life might be needed as the test is unreliable
 		//again, the test is contaminating, but only after the second try
 		lifeChecked(obj) : { state-fluent, bool, default = false };
 		lifeChecked2(obj) : { state-fluent, bool, default = false };
-		lifeDetected(obj) : { state-fluent, bool, default = false };
+		lifeDetected(obj,tool) : { state-fluent, bool, default = false };
 
 		pictureTaken(obj) : { state-fluent, bool, default = false };
 		agentAt(agent, x_pos, y_pos) : { state-fluent, bool, default = false };
@@ -123,14 +123,14 @@ domain recon_mdp {
 				|  exists_{?x : x_pos, ?y : y_pos, ?a: agent, ?t: tool} [agentAt(?a, ?x, ?y) ^ objAt(?o, ?x, ?y) ^ useToolOn(?a, ?t, ?o) ^ WATER_TOOL(?t)]);
 
 		//first 2 cases are if you have found water and whether it has been checked, the next two are based on the tool being damaged or not
-		waterDetected'(?o) = 
-			if (waterDetected(?o)) 
+		waterDetected'(?o, ?t) = 
+			if (waterDetected(?o, ?t)) 
 				then KronDelta( true ) 
 			else if(waterChecked(?o)) // Only one chance to detect water
 				then KronDelta( false ) 
-			else if (exists_{?t: tool,?x : x_pos, ?y : y_pos, ?a: agent} [WATER_TOOL(?t) ^ damaged(?t) ^ agentAt(?a, ?x, ?y) ^ objAt(?o, ?x, ?y) ^ useToolOn(?a, ?t, ?o)]) 
+			else if (exists_{?x : x_pos, ?y : y_pos, ?a: agent} [WATER_TOOL(?t) ^ damaged(?t) ^ agentAt(?a, ?x, ?y) ^ objAt(?o, ?x, ?y) ^ useToolOn(?a, ?t, ?o)]) 
 				then Bernoulli(DETECT_PROB_DAMAGED(?t))
-			else if (exists_{?x : x_pos, ?y : y_pos, ?a: agent, ?t: tool} [agentAt(?a, ?x, ?y) ^ objAt(?o, ?x, ?y) ^ useToolOn(?a, ?t, ?o) ^ WATER_TOOL(?t)]) 
+			else if (exists_{?x : x_pos, ?y : y_pos, ?a: agent} [agentAt(?a, ?x, ?y) ^ objAt(?o, ?x, ?y) ^ useToolOn(?a, ?t, ?o) ^ WATER_TOOL(?t)]) 
 				then Bernoulli(DETECT_PROB(?t))
 			else
 				KronDelta( false );
@@ -147,14 +147,14 @@ domain recon_mdp {
 				|  lifeChecked(?o) ^ exists_{?x : x_pos, ?y : y_pos, ?a: agent, ?t: tool} [agentAt(?a, ?x, ?y) ^ objAt(?o, ?x, ?y) ^ useToolOn(?a, ?t, ?o) ^ LIFE_TOOL(?t)]);
 
 		//similar to waterDetected
-		lifeDetected'(?o) = 
-			if (lifeDetected(?o)) 
+		lifeDetected'(?o, ?t) = 
+			if (lifeDetected(?o, ?t)) 
 				then KronDelta( true ) 
-			else if (lifeChecked2(?o) | ~waterDetected(?o)) // Never detect life after 2nd try or if no water
+			else if (lifeChecked2(?o) | ~exists_{?t2 : tool}[waterDetected(?o, ?t2)]) // Never detect life after 2nd try or if no water
 				then KronDelta( false )
-			else if (exists_{?t: tool,?x : x_pos, ?y : y_pos, ?a: agent}[ LIFE_TOOL(?t) ^ damaged(?t) ^ agentAt(?a, ?x, ?y) ^ objAt(?o, ?x, ?y) ^ useToolOn(?a, ?t, ?o) ^ LIFE_TOOL(?t) ]) 
+			else if (exists_{?x : x_pos, ?y : y_pos, ?a: agent}[ LIFE_TOOL(?t) ^ damaged(?t) ^ agentAt(?a, ?x, ?y) ^ objAt(?o, ?x, ?y) ^ useToolOn(?a, ?t, ?o) ^ LIFE_TOOL(?t) ]) 
 				then Bernoulli(DETECT_PROB_DAMAGED(?t))
-			else if (exists_{?t: tool,?x : x_pos, ?y : y_pos, ?a: agent}[ LIFE_TOOL(?t)  ^ agentAt(?a, ?x, ?y) ^ objAt(?o, ?x, ?y) ^ useToolOn(?a, ?t, ?o) ]) 
+			else if (exists_{?x : x_pos, ?y : y_pos, ?a: agent}[ LIFE_TOOL(?t)  ^ agentAt(?a, ?x, ?y) ^ objAt(?o, ?x, ?y) ^ useToolOn(?a, ?t, ?o) ]) 
 				then Bernoulli(DETECT_PROB(?t))
 			else
 				KronDelta( false );	
@@ -174,13 +174,13 @@ domain recon_mdp {
     	
 	//we may want to change the way lifeDetected works because right now the same domain has different possible rewards
 	// Only get rewarded for a good or bad picture the first time the action is *taken*
-	reward = [sum_{?o : obj} 
+	reward = [sum_{?o : obj}  
 				 (GOOD_PIC_WEIGHT * 
-				  [ ~pictureTaken(?o) ^ lifeDetected(?o) ^ exists_{?x : x_pos, ?y : y_pos, ?a: agent, ?t: tool} [agentAt(?a, ?x, ?y) ^ objAt(?o, ?x, ?y) ^ useToolOn(?a, ?t, ?o) ^ CAMERA_TOOL(?t) ^ ~damaged(?t)]])
+				  [ ~pictureTaken(?o) ^ exists_{?t2 : tool}[lifeDetected(?o, ?t2)] ^ exists_{?x : x_pos, ?y : y_pos, ?a: agent, ?t: tool} [agentAt(?a, ?x, ?y) ^ objAt(?o, ?x, ?y) ^ useToolOn(?a, ?t, ?o) ^ CAMERA_TOOL(?t) ^ ~damaged(?t)]])
 			 ] +
 			 [sum_{?o : obj} 
 				 -(BAD_PIC_WEIGHT * 
-				  [ ~lifeDetected(?o) ^ exists_{?x : x_pos, ?y : y_pos, ?a: agent, ?t: tool} [agentAt(?a, ?x, ?y) ^ objAt(?o, ?x, ?y) ^ useToolOn(?a, ?t, ?o) ^ CAMERA_TOOL(?t) ^ ~damaged(?t)]])
+				  [ ~exists_{?t2 : tool}[lifeDetected(?o, ?t2)] ^  exists_{?x : x_pos, ?y : y_pos, ?a: agent, ?t: tool} [agentAt(?a, ?x, ?y) ^ objAt(?o, ?x, ?y) ^ useToolOn(?a, ?t, ?o) ^ CAMERA_TOOL(?t) ^ ~damaged(?t)]])
 			 ]; 
 
 	//only 1 of each kind of tool -- actually might be more fun if there were multiple of each one 	
@@ -190,3 +190,6 @@ domain recon_mdp {
 		(sum_{?t: tool}[LIFE_TOOL(?t)]) == 1;
 	};
 }
+
+
+

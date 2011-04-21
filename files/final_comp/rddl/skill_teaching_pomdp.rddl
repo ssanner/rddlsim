@@ -100,24 +100,24 @@ domain skill_teaching_pomdp {
 			KronDelta( updateTurn'(?s) );
 
 		updateTurn'(?s) = 
-			KronDelta( forall_{?s2: skill} [~updateTurn(?s2)] ^ (askProb(?s) | giveHint(?s)) );  //student does not get a turn on a hint
+			KronDelta( [forall_{?s2: skill} ~updateTurn(?s2)] ^ (askProb(?s) | giveHint(?s)) );  //student does not get a turn on a hint
 
 		//false positives
 		fpos'(?s) = 
-			if (forall_{?s2: skill} [~updateTurn(?s2)] ^ askProb(?s)) 
+			if ([forall_{?s2: skill} ~updateTurn(?s2)] ^ askProb(?s)) 
 				then Bernoulli(FALSE_POS(?s)) 
 			else KronDelta( false );
 
 		answeredRight'(?s) = 
-			if (forall_{?s2: skill} [~updateTurn(?s2)] ^ askProb(?s) ^ proficiencyHigh(?s)) 
+			if ([forall_{?s2: skill} ~updateTurn(?s2)] ^ askProb(?s) ^ proficiencyHigh(?s)) 
 				then Bernoulli(PROB_HIGH(?s))
-			else if (forall_{?s2: skill} [~updateTurn(?s2)] ^ askProb(?s) ^ proficiencyMed(?s) ^forall_{?s2: skill}[PRE_REQ(?s2, ?s) => proficiencyHigh(?s2)]) 
+			else if ([forall_{?s3: skill} ~updateTurn(?s3)] ^ askProb(?s) ^ proficiencyMed(?s) ^forall_{?s2: skill}[PRE_REQ(?s2, ?s) => proficiencyHigh(?s2)]) 
 				then Bernoulli(PROB_ALL_PRE_MED(?s))
-			else if (forall_{?s2: skill} [~updateTurn(?s2)] ^ askProb(?s) ^proficiencyMed(?s) ^ askProb(?s)) 
+			else if ([forall_{?s2: skill} ~updateTurn(?s2)] ^ askProb(?s) ^proficiencyMed(?s) ^ askProb(?s)) 
 				then Bernoulli(sum_{?s2: skill}[PRE_REQ(?s2, ?s) * PROB_PER_PRE_MED(?s)])
-			else if (forall_{?s2: skill} [~updateTurn(?s2)] ^ askProb(?s) ^forall_{?s2: skill}[PRE_REQ(?s2, ?s) => proficiencyHigh(?s2)]) 
+			else if ([forall_{?s3: skill} ~updateTurn(?s3)] ^ askProb(?s) ^forall_{?s2: skill}[PRE_REQ(?s2, ?s) => proficiencyHigh(?s2)]) 
 				then Bernoulli(PROB_ALL_PRE(?s))
-			else if (forall_{?s2: skill} [~updateTurn(?s2)] ^ askProb(?s)  ^ askProb(?s)) 
+			else if ([forall_{?s2: skill} ~updateTurn(?s2)] ^ askProb(?s)  ^ askProb(?s)) 
 				then Bernoulli(sum_{?s2: skill}[PRE_REQ(?s2, ?s) * PROB_PER_PRE(?s)])
 			else
 				KronDelta( false );
@@ -126,10 +126,10 @@ domain skill_teaching_pomdp {
 			KronDelta( answeredRight'(?s) );
 
 		hintedRight'(?s) = 
-			KronDelta( forall_{?s2: skill} [~updateTurn(?s2)] ^ giveHint(?s) ^ forall_{?s2: skill}[PRE_REQ(?s2, ?s) => proficiencyHigh(?s2)] );
+			KronDelta( [forall_{?s3: skill} ~updateTurn(?s3)] ^ giveHint(?s) ^ forall_{?s2: skill}[PRE_REQ(?s2, ?s) => proficiencyHigh(?s2)] );
 
 		hintDelayVar'(?s) = 
-			KronDelta( forall_{?s2: skill} [~updateTurn(?s2)] ^ giveHint(?s) );
+			KronDelta( [forall_{?s2: skill} ~updateTurn(?s2)] ^ giveHint(?s) );
 
 		//without intermediate nodes, we need to keep ``on'' all proficiency levels that have been attained		
 		//can't go down from proficiencyMed without intermediate nodes or a time delay I think
@@ -169,3 +169,6 @@ domain skill_teaching_pomdp {
 	 reward = [sum_{?s : skill} [SKILL_WEIGHT(?s) * proficiencyHigh(?s)]] + [sum_{?s : skill} -[SKILL_WEIGHT(?s) * ~proficiencyMed(?s)]];
 
 }
+
+
+

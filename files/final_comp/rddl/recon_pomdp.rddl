@@ -99,8 +99,8 @@ domain recon_pomdp {
 		damaged(tool) : { state-fluent, bool, default = false };
 
 		//tool detection fluents
-		waterDetected(obj) : { state-fluent, bool, default = false };
-		lifeDetected(obj) : { state-fluent, bool, default = false };
+		waterDetected(obj, tool) : { state-fluent, bool, default = false };
+		lifeDetected(obj, tool) : { state-fluent, bool, default = false };
 
 		pictureTaken(obj) : { state-fluent, bool, default = false };
 		agentAt(agent, x_pos, y_pos) : { state-fluent, bool, default = false };
@@ -144,10 +144,10 @@ domain recon_pomdp {
  
 		//observables, mostly fully observable
 		lifeDetectedObs(?o) = 
-			KronDelta( lifeDetected'(?o) );
+			KronDelta(exists_{?t : tool} [lifeDetected'(?o, ?t)] );
 			
 		waterDetectedObs(?o) = 
-			KronDelta( waterDetected'(?o) );
+			KronDelta(exists_{?t : tool} [ waterDetected'(?o, ?t) ]);
 			
 		damagedObs(?t) = 
 			if (damaged'(?t)) 
@@ -166,31 +166,31 @@ domain recon_pomdp {
 				KronDelta( damaged(?t) ); // Nothing affected tool so state persists
 		
 		//water detection, no false positives
-		waterDetected'(?o) = 
-			if (waterDetected(?o)) 
+		waterDetected'(?o, ?t) = 
+			if (waterDetected(?o, ?t)) 
 				then KronDelta(true) 
 			else if (~HAS_WATER(?o)) 
 				then KronDelta(false) 
 				
 			// water present for remaining cases
-			else if (exists_{?x : x_pos, ?y : y_pos, ?a: agent, ?t: tool} [WATER_TOOL(?t) ^ damaged(?t) ^ agentAt(?a, ?x, ?y) ^ objAt(?o, ?x, ?y) ^ useToolOn(?a, ?t, ?o)])
+			else if (exists_{?x : x_pos, ?y : y_pos, ?a: agent} [WATER_TOOL(?t) ^ damaged(?t) ^ agentAt(?a, ?x, ?y) ^ objAt(?o, ?x, ?y) ^ useToolOn(?a, ?t, ?o)])
 				then Bernoulli(DETECT_PROB_DAMAGED(?t))
-			else if (exists_{?x : x_pos, ?y : y_pos, ?a: agent, ?t: tool} [WATER_TOOL(?t) ^ agentAt(?a, ?x, ?y) ^ objAt(?o, ?x, ?y) ^ useToolOn(?a, ?t, ?o)])
+			else if (exists_{?x : x_pos, ?y : y_pos, ?a: agent} [WATER_TOOL(?t) ^ agentAt(?a, ?x, ?y) ^ objAt(?o, ?x, ?y) ^ useToolOn(?a, ?t, ?o)])
 				then Bernoulli(DETECT_PROB(?t))
 			else
 				KronDelta(false); // no detection action
 
 		//life detection, no false positives
-		lifeDetected'(?o) = 
-			if (lifeDetected(?o)) 
+		lifeDetected'(?o, ?t) = 
+			if (lifeDetected(?o, ?t)) 
 				then KronDelta(true) 
-			else if (~HAS_LIFE(?o) | ~waterDetected(?o)) 
+			else if (~HAS_LIFE(?o) | ~ exists_{?t2: tool}[waterDetected(?o, ?t2)]) 
 				then KronDelta(false)
 				
 			// life present for remaining cases
-			else if (exists_{?x : x_pos, ?y : y_pos, ?a: agent, ?t: tool} [LIFE_TOOL(?t) ^ damaged(?t) ^ agentAt(?a, ?x, ?y) ^ objAt(?o, ?x, ?y) ^ useToolOn(?a, ?t, ?o)])
+			else if (exists_{?x : x_pos, ?y : y_pos, ?a: agent} [LIFE_TOOL(?t) ^ damaged(?t) ^ agentAt(?a, ?x, ?y) ^ objAt(?o, ?x, ?y) ^ useToolOn(?a, ?t, ?o)])
 				then Bernoulli(DETECT_PROB_DAMAGED(?t))
-			else if (exists_{?x : x_pos, ?y : y_pos, ?a: agent, ?t: tool} [LIFE_TOOL(?t) ^ agentAt(?a, ?x, ?y) ^ objAt(?o, ?x, ?y) ^ useToolOn(?a, ?t, ?o)])
+			else if (exists_{?x : x_pos, ?y : y_pos, ?a: agent} [LIFE_TOOL(?t) ^ agentAt(?a, ?x, ?y) ^ objAt(?o, ?x, ?y) ^ useToolOn(?a, ?t, ?o)])
 				then Bernoulli(DETECT_PROB(?t))
 			else
 				KronDelta(false); // no detection action
@@ -210,13 +210,13 @@ domain recon_pomdp {
 	};
     	
 	// Only get rewarded for a good or bad picture when the action is *taken*
-	reward = [sum_{?o : obj} 
+	reward = [sum_{?o : obj}  
 				 (GOOD_PIC_WEIGHT * 
-				  [ ~pictureTaken(?o) ^ lifeDetected(?o) ^ exists_{?x : x_pos, ?y : y_pos, ?a: agent, ?t: tool} [agentAt(?a, ?x, ?y) ^ objAt(?o, ?x, ?y) ^ useToolOn(?a, ?t, ?o) ^ CAMERA_TOOL(?t) ^ ~damaged(?t)]])
+				  [ ~pictureTaken(?o) ^ exists_{?t2 : tool}[lifeDetected(?o, ?t2)] ^ exists_{?x : x_pos, ?y : y_pos, ?a: agent, ?t: tool} [agentAt(?a, ?x, ?y) ^ objAt(?o, ?x, ?y) ^ useToolOn(?a, ?t, ?o) ^ CAMERA_TOOL(?t) ^ ~damaged(?t)]])
 			 ] +
 			 [sum_{?o : obj} 
 				 -(BAD_PIC_WEIGHT * 
-				  [ ~lifeDetected(?o) ^ exists_{?x : x_pos, ?y : y_pos, ?a: agent, ?t: tool} [agentAt(?a, ?x, ?y) ^ objAt(?o, ?x, ?y) ^ useToolOn(?a, ?t, ?o) ^ CAMERA_TOOL(?t) ^ ~damaged(?t)]])
+				  [ ~exists_{?t2 : tool}[lifeDetected(?o, ?t2)] ^ exists_{?x : x_pos, ?y : y_pos, ?a: agent, ?t: tool} [agentAt(?a, ?x, ?y) ^ objAt(?o, ?x, ?y) ^ useToolOn(?a, ?t, ?o) ^ CAMERA_TOOL(?t) ^ ~damaged(?t)]])
 			 ]; 
 
 	state-action-constraints {
@@ -226,3 +226,4 @@ domain recon_pomdp {
 	};
 
 }
+

@@ -9,23 +9,23 @@ domain crossing_traffic_pomdp {
     ypos : object;
   };
   pvariables {
-    WEST(xpos, xpos) : {non-fluent, bool, default = false};
+    MIN-YPOS(ypos) : {non-fluent, bool, default = false};
     obstacle-at(xpos, ypos) : {state-fluent, bool, default = false};
     robot-at(xpos, ypos) : {state-fluent, bool, default = false};
+    MIN-XPOS(xpos) : {non-fluent, bool, default = false};
+    NORTH(ypos, ypos) : {non-fluent, bool, default = false};
     MAX-XPOS(xpos) : {non-fluent, bool, default = false};
-    MAX-YPOS(ypos) : {non-fluent, bool, default = false};
+    GOAL(xpos, ypos) : {non-fluent, bool, default = false};
     move-east : {action-fluent, bool, default = false};
     move-west : {action-fluent, bool, default = false};
-    NORTH(ypos, ypos) : {non-fluent, bool, default = false};
-    MIN-XPOS(xpos) : {non-fluent, bool, default = false};
-    move-south : {action-fluent, bool, default = false};
-    SOUTH(ypos, ypos) : {non-fluent, bool, default = false};
-    EAST(xpos, xpos) : {non-fluent, bool, default = false};
-    MIN-YPOS(ypos) : {non-fluent, bool, default = false};
-    arrival-max-xpos(ypos) : {observ-fluent, bool};
-    move-north : {action-fluent, bool, default = false};
-    GOAL(xpos, ypos) : {non-fluent, bool, default = false};
     INPUT-RATE : {non-fluent, real, default = 0.2};
+    move-south : {action-fluent, bool, default = false};
+    MAX-YPOS(ypos) : {non-fluent, bool, default = false};
+    arrival-max-xpos(ypos) : {observ-fluent, bool};
+    SOUTH(ypos, ypos) : {non-fluent, bool, default = false};
+    move-north : {action-fluent, bool, default = false};
+    EAST(xpos, xpos) : {non-fluent, bool, default = false};
+    WEST(xpos, xpos) : {non-fluent, bool, default = false};
   };
   cpfs {
     (obstacle-at' ?x ?y) = (if (| (MIN-YPOS ?y) (MAX-YPOS ?y) ) then (KronDelta false) else (if (MAX-XPOS ?x) then (Bernoulli (INPUT-RATE)) else (KronDelta (exists ( (?x2 : xpos) ) (^ (EAST ?x ?x2) (obstacle-at ?x2 ?y) )))));

@@ -9,8 +9,8 @@ domain game_of_life_mdp {
   pvariables {
     set(x_pos, y_pos) : {action-fluent, bool, default = false};
     NOISE-PROB(x_pos, y_pos) : {non-fluent, real, default = 0.1};
-    alive(x_pos, y_pos) : {state-fluent, bool, default = false};
     NEIGHBOR(x_pos, y_pos, x_pos, y_pos) : {non-fluent, bool, default = false};
+    alive(x_pos, y_pos) : {state-fluent, bool, default = false};
   };
   cpfs {
     (alive' ?x ?y) = (if (| (^ (alive ?x ?y) (>= (sum ( (?x2 : x_pos) (?y2 : y_pos) ) (^ (NEIGHBOR ?x ?y ?x2 ?y2) (alive ?x2 ?y2) )) 2) (<= (sum ( (?x2 : x_pos) (?y2 : y_pos) ) (^ (NEIGHBOR ?x ?y ?x2 ?y2) (alive ?x2 ?y2) )) 3) ) (^ (~ (alive ?x ?y)) (== (sum ( (?x2 : x_pos) (?y2 : y_pos) ) (^ (NEIGHBOR ?x ?y ?x2 ?y2) (alive ?x2 ?y2) )) 3) ) (set ?x ?y) ) then (Bernoulli (- 1.0 (NOISE-PROB ?x ?y))) else (Bernoulli (NOISE-PROB ?x ?y)));
