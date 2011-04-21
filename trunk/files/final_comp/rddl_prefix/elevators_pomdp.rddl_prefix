@@ -11,21 +11,21 @@ domain elevators_pomdp {
   pvariables {
     elevator-dir-up(elevator) : {state-fluent, bool, default = true};
     move-current-dir(elevator) : {action-fluent, bool, default = false};
-    TOP-FLOOR(floor) : {non-fluent, bool, default = false};
     person-waiting-up(floor) : {state-fluent, bool, default = false};
     elevator-at-floor(elevator, floor) : {state-fluent, bool, default = false};
     person-waiting-obs(floor) : {observ-fluent, bool};
-    ELEVATOR-PENALTY-RIGHT-DIR : {non-fluent, real, default = 0.5};
     person-in-elevator-going-down(elevator) : {state-fluent, bool, default = false};
-    ELEVATOR-PENALTY-WRONG-DIR : {non-fluent, real, default = 3.0};
     person-in-elevator-going-down-obs(elevator) : {observ-fluent, bool};
     person-waiting-down(floor) : {state-fluent, bool, default = false};
-    ARRIVE-PARAM(floor) : {non-fluent, real, default = 0.0};
+    ADJACENT-UP(floor, floor) : {non-fluent, bool, default = false};
     elevator-closed(elevator) : {state-fluent, bool, default = true};
     close-door(elevator) : {action-fluent, bool, default = false};
     person-in-elevator-going-up-obs(elevator) : {observ-fluent, bool};
-    ADJACENT-UP(floor, floor) : {non-fluent, bool, default = false};
+    TOP-FLOOR(floor) : {non-fluent, bool, default = false};
     BOTTOM-FLOOR(floor) : {non-fluent, bool, default = false};
+    ARRIVE-PARAM(floor) : {non-fluent, real, default = 0.0};
+    ELEVATOR-PENALTY-WRONG-DIR : {non-fluent, real, default = 3.0};
+    ELEVATOR-PENALTY-RIGHT-DIR : {non-fluent, real, default = 0.5};
     person-in-elevator-going-up(elevator) : {state-fluent, bool, default = false};
     open-door-going-down(elevator) : {action-fluent, bool, default = false};
     open-door-going-up(elevator) : {action-fluent, bool, default = false};

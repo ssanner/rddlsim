@@ -5,24 +5,26 @@ non-fluents nf_sysadmin_inst_pomdp__1 {
 	};
 	non-fluents {
 		REBOOT-PROB = 0.02;
-		CONNECTED(c1,c3);
-		CONNECTED(c2,c6);
-		CONNECTED(c2,c9);
-		CONNECTED(c3,c8);
-		CONNECTED(c3,c10);
-		CONNECTED(c4,c1);
-		CONNECTED(c4,c9);
-		CONNECTED(c5,c8);
-		CONNECTED(c5,c10);
+		CONNECTED(c1,c4);
+		CONNECTED(c1,c7);
+		CONNECTED(c2,c4);
+		CONNECTED(c2,c10);
+		CONNECTED(c3,c5);
+		CONNECTED(c3,c7);
+		CONNECTED(c4,c2);
+		CONNECTED(c4,c5);
+		CONNECTED(c5,c2);
+		CONNECTED(c5,c6);
 		CONNECTED(c6,c3);
-		CONNECTED(c6,c10);
-		CONNECTED(c7,c5);
-		CONNECTED(c8,c1);
-		CONNECTED(c8,c7);
-		CONNECTED(c9,c1);
-		CONNECTED(c9,c10);
-		CONNECTED(c10,c4);
-		CONNECTED(c10,c5);
+		CONNECTED(c6,c8);
+		CONNECTED(c7,c1);
+		CONNECTED(c7,c6);
+		CONNECTED(c8,c9);
+		CONNECTED(c8,c10);
+		CONNECTED(c9,c5);
+		CONNECTED(c9,c7);
+		CONNECTED(c10,c2);
+		CONNECTED(c10,c3);
 	};
 }
 

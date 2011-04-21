@@ -8,10 +8,10 @@ domain sysadmin_pomdp {
   };
   pvariables {
     reboot(computer) : {action-fluent, bool, default = false};
-    OBSERV-PROB : {non-fluent, real, default = 0.95};
     CONNECTED(computer, computer) : {non-fluent, bool, default = false};
     REBOOT-PENALTY : {non-fluent, real, default = 0.1};
     REBOOT-PROB : {non-fluent, real, default = 0.1};
+    OBSERV-PROB : {non-fluent, real, default = 0.95};
     running(computer) : {state-fluent, bool, default = false};
     running-obs(computer) : {observ-fluent, bool};
   };
