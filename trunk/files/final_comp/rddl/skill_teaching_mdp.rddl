@@ -87,7 +87,7 @@ domain skill_teaching_mdp {
 	cpfs {
 
 		updateTurn'(?s) = 
-			KronDelta( forall_{?s2: skill}[~updateTurn(?s2)] ^ (askProb(?s) | giveHint(?s)) ); 
+			KronDelta( [forall_{?s2: skill} ~updateTurn(?s2)] ^ (askProb(?s) | giveHint(?s)) ); 
 
 		//without intermediate nodes, we need to keep ``on'' all proficiency levels that have been attained		
 
