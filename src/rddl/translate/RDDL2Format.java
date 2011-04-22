@@ -312,14 +312,18 @@ public class RDDL2Format {
 		// Always show action cost (can be zero)
 		// Reward is now fixed at zero
 		ArrayList<Integer> rewards = _act2rewardDD.get(action_name);
-		pw.print("\tcost [+ ");
-		for (int reward_dd : rewards) {
-			int cost_dd = _context.applyInt(/*_reward*/_context.getConstantNode(0d), reward_dd, DD.ARITH_MINUS);
-			//if (cost_dd != DD_ZERO) { // All functions are canonical 
-			_context.exportTree(cost_dd, pw, curr_format, 2);
+		if (rewards.size() > 0) {
+			pw.print("\tcost [+ ");
+			for (int reward_dd : rewards) {
+				int cost_dd = _context.applyInt(/*_reward*/_context.getConstantNode(0d), reward_dd, DD.ARITH_MINUS);
+				//if (cost_dd != DD_ZERO) { // All functions are canonical 
+				//_context.getGraph(cost_dd).launchViewer();
+				_context.exportTree(cost_dd, pw, curr_format, 2);
+			}
+			//try {System.in.read();} catch (Exception e) {}
+			pw.println("\n\t]");
+			//}
 		}
-		pw.println("\n\t]");
-		//}
 
 		pw.println("endaction");	
 	}
@@ -1191,22 +1195,25 @@ public class RDDL2Format {
 		RDDL rddl = new RDDL();
 		HashMap<File,RDDL> file2rddl = new HashMap<File,RDDL>();
 		for (File f : (ArrayList<File>)rddl_files.clone()) {
-			RDDL r = null;
 			try {
-				r = parser.parse(f);
+				if (f.getName().endsWith(".rddl")) {
+					RDDL r = parser.parse(f);
+					file2rddl.put(f, r);
+					rddl.addOtherRDDL(r);
+				}
 			} catch (Exception e) {
 				System.out.println(e);
 				System.out.println("Error processing: " + f + ", skipping...");
 				rddl_files.remove(f);
 				continue;
 			}
-			file2rddl.put(f, r);
-			rddl.addOtherRDDL(r);
 		}
 		
-		for (File f : rddl_files) {
+		for (File f : (ArrayList<File>)rddl_files.clone()) {
 						
 			try {	
+				if (!file2rddl.containsKey(f))
+					continue;
 				for (String instance_name : file2rddl.get(f)._tmInstanceNodes.keySet()) {
 					RDDL2Format r2s = new RDDL2Format(rddl, instance_name, arg2_intern, output_dir);
 					r2s.export();

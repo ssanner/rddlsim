@@ -9,10 +9,10 @@ non-fluents nf_traffic_inst_pomdp__1 {
     PERIMETER-INPUT-CELL(ca6a1);
     PERIMETER-INPUT-CELL(ca1a3);
     PERIMETER-INPUT-CELL(ca1a6);
-    PERIMETER-INPUT-RATE(ca3a1) = 0.18385866;
-    PERIMETER-INPUT-RATE(ca6a1) = 0.13073458;
-    PERIMETER-INPUT-RATE(ca1a3) = 0.16569832;
-    PERIMETER-INPUT-RATE(ca1a6) = 0.11787508;
+    PERIMETER-INPUT-RATE(ca3a1) = 0.18723258;
+    PERIMETER-INPUT-RATE(ca6a1) = 0.10762301;
+    PERIMETER-INPUT-RATE(ca1a3) = 0.14164352;
+    PERIMETER-INPUT-RATE(ca1a6) = 0.13870016;
     PERIMETER-EXIT-CELL(ca3a8);
     PERIMETER-EXIT-CELL(ca6a8);
     PERIMETER-EXIT-CELL(ca8a3);
@@ -52,12 +52,15 @@ instance traffic_inst_pomdp__1 {
   domain = traffic_pomdp;
   non-fluents = nf_traffic_inst_pomdp__1;
   init-state {
-    occupied(ca5a3);
-    occupied(ca3a7);
-    occupied(ca1a6);
-    occupied(ca2a6);
+    occupied(ca1a3);
+    occupied(ca2a3);
+    occupied(ca3a5);
+    occupied(ca7a3);
+    occupied(ca6a1);
+    occupied(ca6a2);
     occupied(ca4a6);
-    occupied(ca6a8);
+    occupied(ca6a5);
+    occupied(ca6a7);
   };
   max-nondef-actions = 4;
   horizon = 40;

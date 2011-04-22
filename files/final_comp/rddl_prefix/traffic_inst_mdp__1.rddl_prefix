@@ -9,10 +9,10 @@ non-fluents nf_traffic_inst_mdp__1 {
     PERIMETER-INPUT-CELL(ca6a1);
     PERIMETER-INPUT-CELL(ca1a3);
     PERIMETER-INPUT-CELL(ca1a6);
-    PERIMETER-INPUT-RATE(ca3a1) = 0.225391;
-    PERIMETER-INPUT-RATE(ca6a1) = 0.13379635;
-    PERIMETER-INPUT-RATE(ca1a3) = 0.16490132;
-    PERIMETER-INPUT-RATE(ca1a6) = 0.14717297;
+    PERIMETER-INPUT-RATE(ca3a1) = 0.10508581;
+    PERIMETER-INPUT-RATE(ca6a1) = 0.14764053;
+    PERIMETER-INPUT-RATE(ca1a3) = 0.22346595;
+    PERIMETER-INPUT-RATE(ca1a6) = 0.113538474;
     PERIMETER-EXIT-CELL(ca3a8);
     PERIMETER-EXIT-CELL(ca6a8);
     PERIMETER-EXIT-CELL(ca8a3);
@@ -52,12 +52,9 @@ instance traffic_inst_mdp__1 {
   domain = traffic_mdp;
   non-fluents = nf_traffic_inst_mdp__1;
   init-state {
-    occupied(ca7a3);
-    occupied(ca8a3);
+    occupied(ca3a1);
     occupied(ca1a6);
-    occupied(ca6a2);
     occupied(ca2a6);
-    occupied(ca4a6);
   };
   max-nondef-actions = 4;
   horizon = 40;

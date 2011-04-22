@@ -24,7 +24,9 @@
 // *            G *
 // ****************
 //
-// You can think of this as the RDDL version of Frogger.
+// You can think of this as the RDDL version of Frogger:
+//
+//   http://en.wikipedia.org/wiki/Frogger
 //
 ////////////////////////////////////////////////////////////////////
 
@@ -71,47 +73,33 @@ domain crossing_traffic_mdp {
 		robot-at'(?x,?y) =
 		
 			// Goal is absorbing so robot stays put 
-			if ( robot-at(?x,?y) ^ GOAL(?x,?y) )
+			if ( GOAL(?x,?y) ^ robot-at(?x,?y)  )
 			then 
 				KronDelta(true)
-			else if ( exists_{?x2 : xpos, ?y2 : ypos} [ robot-at(?x2,?y2) ^ GOAL(?x2,?y2) ] )
+			else if ( exists_{?x2 : xpos, ?y2 : ypos} [ GOAL(?x2,?y2) ^ robot-at(?x2,?y2)  ] )
 			then 
 				KronDelta(false) // because of fall-through we know (?x,y) != (?x2,?y2)
 				
-			// Check for hitting an obstacle and robot state reset
-			else if ( robot-at(?x,?y) ^ obstacle-at(?x,?y) )
-			then 
-				KronDelta(false) // Robot hit an obstacle at this position, so disappears
-			//else if ( MAX-XPOS(?x) ^ MIN-YPOS(?y) ^ 
-			//	exists_{?x2 : xpos, ?y2 : ypos} [ robot-at(?x2,?y2) ^ obstacle-at(?x2,?y2) ] )
-			//then 
-			//	KronDelta(true) // Robot state resets
-			else if ( exists_{?x2 : xpos, ?y2 : ypos} [ robot-at(?x2,?y2) ^ obstacle-at(?x2,?y2) ] )
-			then 
-				KronDelta(false) // Kill off any moves in progress to other positions
-				                 // that are not the collision or rest point (i.e., prevent 
-				                 // from falling through to moves below)
-				
-			// Check for legal robot movement
-			else if ( move-north ^ exists_{?y2 : ypos} [ NORTH(?y2,?y) ^ robot-at(?x,?y2) ] )
+			// Check for legal robot movement (robot disappears if at an obstacle)
+			else if ( move-north ^ exists_{?y2 : ypos} [ NORTH(?y2,?y) ^ robot-at(?x,?y2) ^ ~obstacle-at(?x,?y2) ] )
 			then 
 				KronDelta(true) // robot moves to this location
 			else if ( move-north ^ exists_{?y2 : ypos} [ NORTH(?y,?y2) ^ robot-at(?x,?y) ] )
 			then 
 				KronDelta(false) // robot leaves this location
-			else if ( move-south ^ exists_{?y2 : ypos} [ SOUTH(?y2,?y) ^ robot-at(?x,?y2) ] )
+			else if ( move-south ^ exists_{?y2 : ypos} [ SOUTH(?y2,?y) ^ robot-at(?x,?y2) ^ ~obstacle-at(?x,?y2) ] )
 			then 
 				KronDelta(true) // robot moves to this location
 			else if ( move-south ^ exists_{?y2 : ypos} [ SOUTH(?y,?y2) ^ robot-at(?x,?y) ] )
 			then 
 				KronDelta(false) // robot leaves this location
-			else if ( move-east ^ exists_{?x2 : xpos} [ EAST(?x2,?x) ^ robot-at(?x2,?y) ] )
+			else if ( move-east ^ exists_{?x2 : xpos} [ EAST(?x2,?x) ^ robot-at(?x2,?y) ^ ~obstacle-at(?x2,?y) ] )
 			then 
 				KronDelta(true) // robot moves to this location
 			else if ( move-east ^ exists_{?x2 : xpos} [ EAST(?x,?x2) ^ robot-at(?x,?y) ] )
 			then 
 				KronDelta(false) // robot leaves this location
-			else if ( move-west ^ exists_{?x2 : xpos} [ WEST(?x2,?x) ^ robot-at(?x2,?y) ] )
+			else if ( move-west ^ exists_{?x2 : xpos} [ WEST(?x2,?x) ^ robot-at(?x2,?y) ^ ~obstacle-at(?x2,?y) ] )
 			then 
 				KronDelta(true) // robot moves to this location
 			else if ( move-west ^ exists_{?x2 : xpos} [ WEST(?x,?x2) ^ robot-at(?x,?y) ] )
@@ -120,7 +108,7 @@ domain crossing_traffic_mdp {
 				
 			// A noop or illegal movement, so state unchanged
 			else 
-				KronDelta( robot-at(?x,?y) );
+				KronDelta( robot-at(?x,?y) ^ ~obstacle-at(?x,?y) );
 			
 		obstacle-at'(?x, ?y) =
 		

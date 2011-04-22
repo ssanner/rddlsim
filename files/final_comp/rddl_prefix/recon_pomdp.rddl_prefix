@@ -29,10 +29,10 @@ domain recon_pomdp {
     waterDetectedObs(obj) : {observ-fluent, bool};
     left(agent) : {action-fluent, bool, default = false};
     repair(agent, tool) : {action-fluent, bool, default = false};
-    waterDetected(obj, tool) : {state-fluent, bool, default = false};
+    waterDetected(obj) : {state-fluent, bool, default = false};
     right(agent) : {action-fluent, bool, default = false};
     ADJACENT-DOWN(y_pos, y_pos) : {non-fluent, bool, default = false};
-    lifeDetected(obj, tool) : {state-fluent, bool, default = false};
+    lifeDetected(obj) : {state-fluent, bool, default = false};
     HAS_LIFE(obj) : {state-fluent, bool, default = false};
     HAZARD(x_pos, y_pos) : {non-fluent, bool, default = false};
     DETECT_PROB_DAMAGED : {non-fluent, real, default = 0.4};
@@ -64,7 +64,7 @@ domain recon_pomdp {
     (waterDetected' ?o) = (if (waterDetected ?o) then (KronDelta true) else (if (~ (HAS_WATER ?o)) then (KronDelta false) else (if (exists ( (?t : tool) (?x : x_pos) (?y : y_pos) (?a : agent) ) (^ (WATER_TOOL ?t) (damaged ?t) (agentAt ?a ?x ?y) (objAt ?o ?x ?y) (useToolOn ?a ?t ?o) )) then (Bernoulli (DETECT_PROB_DAMAGED)) else (if (exists ( (?t : tool) (?x : x_pos) (?y : y_pos) (?a : agent) ) (^ (WATER_TOOL ?t) (agentAt ?a ?x ?y) (objAt ?o ?x ?y) (useToolOn ?a ?t ?o) )) then (Bernoulli (DETECT_PROB)) else (KronDelta false)))));
     (HAS_WATER' ?o) = (if (HAS_WATER ?o) then (KronDelta true) else (if (~ (oneStep)) then (Bernoulli (WATER_PROB)) else (KronDelta false)));
   };
-  reward = (+ (sum ( (?o : obj) ) (* (GOOD_PIC_WEIGHT) (^ (~ (pictureTaken ?o)) (exists ( (?t2 : tool) ) (lifeDetected ?o ?t2)) (exists ( (?x : x_pos) (?y : y_pos) (?a : agent) (?t : tool) ) (^ (agentAt ?a ?x ?y) (objAt ?o ?x ?y) (useToolOn ?a ?t ?o) (CAMERA_TOOL ?t) (~ (damaged ?t)) )) ))) (sum ( (?o : obj) ) (- 0 (* (BAD_PIC_WEIGHT) (^ (~ (exists ( (?t2 : tool) ) (lifeDetected ?o ?t2))) (exists ( (?x : x_pos) (?y : y_pos) (?a : agent) (?t : tool) ) (^ (agentAt ?a ?x ?y) (objAt ?o ?x ?y) (useToolOn ?a ?t ?o) (CAMERA_TOOL ?t) (~ (damaged ?t)) )) )))));
+  reward = (+ (sum ( (?o : obj) ) (* (GOOD_PIC_WEIGHT) (^ (~ (pictureTaken ?o)) (lifeDetected ?o) (exists ( (?x : x_pos) (?y : y_pos) (?a : agent) (?t : tool) ) (^ (agentAt ?a ?x ?y) (objAt ?o ?x ?y) (useToolOn ?a ?t ?o) (CAMERA_TOOL ?t) (~ (damaged ?t)) )) ))) (sum ( (?o : obj) ) (- 0 (* (BAD_PIC_WEIGHT) (^ (~ (lifeDetected ?o)) (exists ( (?x : x_pos) (?y : y_pos) (?a : agent) (?t : tool) ) (^ (agentAt ?a ?x ?y) (objAt ?o ?x ?y) (useToolOn ?a ?t ?o) (CAMERA_TOOL ?t) )) )))));
   state-action-constraints {
     (>= (sum ( (?t : tool) ) (WATER_TOOL ?t)) 1);
     (>= (sum ( (?t : tool) ) (CAMERA_TOOL ?t)) 1);

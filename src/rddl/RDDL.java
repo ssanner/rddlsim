@@ -15,7 +15,9 @@ import util.Pair;
 
 public class RDDL {
 
-	public final static boolean DEBUG_EXPR_EVAL = false;
+	public final static boolean DEBUG_EXPR_EVAL  = false;
+	public final static boolean DEBUG_PVAR_NAMES = false;
+	public static TreeSet<String> PVAR_SRC_SET = new TreeSet<String>();
 	
 	public static boolean USE_PREFIX = false;
 	
@@ -831,8 +833,10 @@ public class RDDL {
 			if (_bPrimed) {
 				pred_name = pred_name.substring(0, pred_name.length() - 1);
 			}
+			//if (DEBUG_PVAR_NAMES) 
+			//	PVAR_SRC_SET.add(pred_name);
 			_sPVarName = pred_name.intern();
-			_sPVarNameCanon = pred_name.replace('-','_').intern();
+			_sPVarNameCanon = pred_name.replace('-','_').toLowerCase().intern();
 			_nHashCode = _sPVarNameCanon.hashCode() + (_bPrimed ? 1 : 0);
 		}
 		
@@ -1990,11 +1994,20 @@ public class RDDL {
 						}
 					}
 				}
+			} else if (_sConn == IMPLY && _alSubNodes.get(0) instanceof PVAR_EXPR) {
+				PVAR_EXPR p = (PVAR_EXPR)_alSubNodes.get(0);
+				if (s.getPVariableType(p._sName) == State.NONFLUENT) {
+					boolean lhs_condition = (Boolean)p.sample(subs, s, null);
+					if (!lhs_condition)
+						return; // Terminate fluent collection, the LHS of this rule is false
+				}
 			}
 			
 			// Otherwise collect subnodes
 			for (BOOL_EXPR b : _alSubNodes)
 				b.collectGFluents(subs, s, gfluents);
+
+			//System.out.println("CollGfluents: " + this + " -- " + gfluents);
 		}
 
 	}
