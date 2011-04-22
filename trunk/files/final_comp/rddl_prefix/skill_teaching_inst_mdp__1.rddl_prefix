@@ -4,16 +4,16 @@ non-fluents nf_skill_teaching_inst_mdp__1 {
     skill : {s0, s1};
   };
   non-fluents {
-    PROB_ALL_PRE(s0) = 0.61606365;
-    PROB_ALL_PRE_MED(s0) = 0.7784798;
-    PROB_HIGH(s0) = 0.88851607;
-    SKILL_WEIGHT(s0) = 1.2530024;
-    LOSE_PROB(s0) = 0.03791872560977936;
-    PROB_ALL_PRE(s1) = 0.72714263;
-    PROB_ALL_PRE_MED(s1) = 0.7998237;
-    PROB_HIGH(s1) = 0.8692743;
-    SKILL_WEIGHT(s1) = 1.0466678;
-    LOSE_PROB(s1) = 0.021123239398002626;
+    PROB_ALL_PRE(s0) = 0.558511;
+    PROB_ALL_PRE_MED(s0) = 0.77992105;
+    PROB_HIGH(s0) = 0.86656624;
+    SKILL_WEIGHT(s0) = 1.4176776;
+    LOSE_PROB(s0) = 0.034975948929786685;
+    PROB_ALL_PRE(s1) = 0.60322183;
+    PROB_ALL_PRE_MED(s1) = 0.733022;
+    PROB_HIGH(s1) = 0.8657213;
+    SKILL_WEIGHT(s1) = 1.0650309;
+    LOSE_PROB(s1) = 0.01;
   };
 }
 
