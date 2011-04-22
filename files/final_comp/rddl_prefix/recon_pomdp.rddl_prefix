@@ -35,7 +35,7 @@ domain recon_pomdp {
     lifeDetected(obj, tool) : {state-fluent, bool, default = false};
     HAS_LIFE(obj) : {state-fluent, bool, default = false};
     HAZARD(x_pos, y_pos) : {non-fluent, bool, default = false};
-    DETECT_PROB_DAMAGED(tool) : {non-fluent, real, default = 1.0};
+    DETECT_PROB_DAMAGED : {non-fluent, real, default = 0.4};
     DAMAGE_PROB(tool) : {non-fluent, real, default = 0.0};
     ADJACENT-UP(y_pos, y_pos) : {non-fluent, bool, default = false};
     up(agent) : {action-fluent, bool, default = false};
@@ -47,28 +47,28 @@ domain recon_pomdp {
     down(agent) : {action-fluent, bool, default = false};
     BAD_PIC_WEIGHT : {non-fluent, real, default = 2.0};
     twoStep : {state-fluent, bool, default = false};
-    DETECT_PROB(tool) : {non-fluent, real, default = 1.0};
+    DETECT_PROB : {non-fluent, real, default = 0.8};
     HAS_WATER(obj) : {state-fluent, bool, default = false};
   };
   cpfs {
-    (lifeDetected' ?o ?t) = (if (lifeDetected ?o ?t) then (KronDelta true) else (if (| (~ (HAS_LIFE ?o)) (~ (exists ( (?t2 : tool) ) (waterDetected ?o ?t2))) ) then (KronDelta false) else (if (exists ( (?x : x_pos) (?y : y_pos) (?a : agent) ) (^ (LIFE_TOOL ?t) (damaged ?t) (agentAt ?a ?x ?y) (objAt ?o ?x ?y) (useToolOn ?a ?t ?o) )) then (Bernoulli (DETECT_PROB_DAMAGED ?t)) else (if (exists ( (?x : x_pos) (?y : y_pos) (?a : agent) ) (^ (LIFE_TOOL ?t) (agentAt ?a ?x ?y) (objAt ?o ?x ?y) (useToolOn ?a ?t ?o) )) then (Bernoulli (DETECT_PROB ?t)) else (KronDelta false)))));
+    (lifeDetected' ?o) = (if (lifeDetected ?o) then (KronDelta true) else (if (| (~ (HAS_LIFE ?o)) (~ (waterDetected ?o)) ) then (KronDelta false) else (if (exists ( (?t : tool) (?x : x_pos) (?y : y_pos) (?a : agent) ) (^ (LIFE_TOOL ?t) (damaged ?t) (agentAt ?a ?x ?y) (objAt ?o ?x ?y) (useToolOn ?a ?t ?o) )) then (Bernoulli (DETECT_PROB_DAMAGED)) else (if (exists ( (?t : tool) (?x : x_pos) (?y : y_pos) (?a : agent) ) (^ (LIFE_TOOL ?t) (agentAt ?a ?x ?y) (objAt ?o ?x ?y) (useToolOn ?a ?t ?o) )) then (Bernoulli (DETECT_PROB)) else (KronDelta false)))));
     (agentAt' ?a ?x ?y) = (KronDelta (| (^ (agentAt ?a ?x ?y) (~ (| (up ?a) (down ?a) (right ?a) (left ?a) )) ) (^ (left ?a) (exists ( (?x2 : x_pos) ) (^ (agentAt ?a ?x2 ?y) (ADJACENT-LEFT ?x2 ?x) )) ) (^ (right ?a) (exists ( (?x2 : x_pos) ) (^ (agentAt ?a ?x2 ?y) (ADJACENT-RIGHT ?x2 ?x) )) ) (^ (up ?a) (exists ( (?y2 : y_pos) ) (^ (agentAt ?a ?x ?y2) (ADJACENT-UP ?y2 ?y) )) ) (^ (down ?a) (exists ( (?y2 : y_pos) ) (^ (agentAt ?a ?x ?y2) (ADJACENT-DOWN ?y2 ?y) )) ) ));
     (oneStep') = (KronDelta true);
     (damaged' ?t) = (if (exists ( (?x : x_pos) (?y : y_pos) (?a : agent) ) (^ (agentAt ?a ?x ?y) (BASE ?x ?y) (repair ?a ?t) )) then (KronDelta false) else (if (^ (~ (damaged ?t)) (exists ( (?x : x_pos) (?y : y_pos) (?a : agent) ) (^ (agentAt ?a ?x ?y) (HAZARD ?x ?y) )) ) then (Bernoulli (DAMAGE_PROB ?t)) else (KronDelta (damaged ?t))));
-    (pictureTaken' ?o) = (KronDelta (exists ( (?x : x_pos) (?y : y_pos) (?a : agent) (?t : tool) ) (^ (agentAt ?a ?x ?y) (objAt ?o ?x ?y) (useToolOn ?a ?t ?o) (CAMERA_TOOL ?t) (~ (damaged ?t)) )));
+    (pictureTaken' ?o) = (KronDelta (exists ( (?x : x_pos) (?y : y_pos) (?a : agent) (?t : tool) ) (^ (CAMERA_TOOL ?t) (agentAt ?a ?x ?y) (objAt ?o ?x ?y) (useToolOn ?a ?t ?o) (~ (damaged ?t)) )));
     (HAS_LIFE' ?o) = (if (HAS_LIFE ?o) then (KronDelta true) else (if (^ (~ (twoStep)) (HAS_WATER ?o) ) then (Bernoulli (LIFE_PROB)) else (KronDelta false)));
-    (lifeDetectedObs ?o) = (KronDelta (exists ( (?t : tool) ) (lifeDetected' ?o ?t)));
-    (waterDetectedObs ?o) = (KronDelta (exists ( (?t : tool) ) (waterDetected' ?o ?t)));
+    (lifeDetectedObs ?o) = (KronDelta (lifeDetected' ?o));
+    (waterDetectedObs ?o) = (KronDelta (waterDetected' ?o));
     (twoStep') = (KronDelta (oneStep));
     (damagedObs ?t) = (if (damaged' ?t) then (Bernoulli (DAMAGE_OBS ?t)) else (Bernoulli (NOISE_DAMAGE_OBS ?t)));
-    (waterDetected' ?o ?t) = (if (waterDetected ?o ?t) then (KronDelta true) else (if (~ (HAS_WATER ?o)) then (KronDelta false) else (if (exists ( (?x : x_pos) (?y : y_pos) (?a : agent) ) (^ (WATER_TOOL ?t) (damaged ?t) (agentAt ?a ?x ?y) (objAt ?o ?x ?y) (useToolOn ?a ?t ?o) )) then (Bernoulli (DETECT_PROB_DAMAGED ?t)) else (if (exists ( (?x : x_pos) (?y : y_pos) (?a : agent) ) (^ (WATER_TOOL ?t) (agentAt ?a ?x ?y) (objAt ?o ?x ?y) (useToolOn ?a ?t ?o) )) then (Bernoulli (DETECT_PROB ?t)) else (KronDelta false)))));
+    (waterDetected' ?o) = (if (waterDetected ?o) then (KronDelta true) else (if (~ (HAS_WATER ?o)) then (KronDelta false) else (if (exists ( (?t : tool) (?x : x_pos) (?y : y_pos) (?a : agent) ) (^ (WATER_TOOL ?t) (damaged ?t) (agentAt ?a ?x ?y) (objAt ?o ?x ?y) (useToolOn ?a ?t ?o) )) then (Bernoulli (DETECT_PROB_DAMAGED)) else (if (exists ( (?t : tool) (?x : x_pos) (?y : y_pos) (?a : agent) ) (^ (WATER_TOOL ?t) (agentAt ?a ?x ?y) (objAt ?o ?x ?y) (useToolOn ?a ?t ?o) )) then (Bernoulli (DETECT_PROB)) else (KronDelta false)))));
     (HAS_WATER' ?o) = (if (HAS_WATER ?o) then (KronDelta true) else (if (~ (oneStep)) then (Bernoulli (WATER_PROB)) else (KronDelta false)));
   };
-  reward = (+ (sum ( (?o : obj) ) (* (GOOD_PIC_WEIGHT) (^ (~ (pictureTaken ?o)) (exists ( (?t2 : tool) ) (^ (lifeDetected ?o ?t2) (exists ( (?x : x_pos) (?y : y_pos) (?a : agent) (?t : tool) ) (^ (agentAt ?a ?x ?y) (objAt ?o ?x ?y) (useToolOn ?a ?t ?o) (CAMERA_TOOL ?t) (~ (damaged ?t)) )) )) ))) (sum ( (?o : obj) ) (- 0 (* (BAD_PIC_WEIGHT) (~ (exists ( (?t2 : tool) ) (^ (lifeDetected ?o ?t2) (exists ( (?x : x_pos) (?y : y_pos) (?a : agent) (?t : tool) ) (^ (agentAt ?a ?x ?y) (objAt ?o ?x ?y) (useToolOn ?a ?t ?o) (CAMERA_TOOL ?t) (~ (damaged ?t)) )) )))))));
+  reward = (+ (sum ( (?o : obj) ) (* (GOOD_PIC_WEIGHT) (^ (~ (pictureTaken ?o)) (exists ( (?t2 : tool) ) (lifeDetected ?o ?t2)) (exists ( (?x : x_pos) (?y : y_pos) (?a : agent) (?t : tool) ) (^ (agentAt ?a ?x ?y) (objAt ?o ?x ?y) (useToolOn ?a ?t ?o) (CAMERA_TOOL ?t) (~ (damaged ?t)) )) ))) (sum ( (?o : obj) ) (- 0 (* (BAD_PIC_WEIGHT) (^ (~ (exists ( (?t2 : tool) ) (lifeDetected ?o ?t2))) (exists ( (?x : x_pos) (?y : y_pos) (?a : agent) (?t : tool) ) (^ (agentAt ?a ?x ?y) (objAt ?o ?x ?y) (useToolOn ?a ?t ?o) (CAMERA_TOOL ?t) (~ (damaged ?t)) )) )))));
   state-action-constraints {
-    (== (sum ( (?t : tool) ) (WATER_TOOL ?t)) 1);
-    (== (sum ( (?t : tool) ) (CAMERA_TOOL ?t)) 1);
-    (== (sum ( (?t : tool) ) (LIFE_TOOL ?t)) 1);
+    (>= (sum ( (?t : tool) ) (WATER_TOOL ?t)) 1);
+    (>= (sum ( (?t : tool) ) (CAMERA_TOOL ?t)) 1);
+    (>= (sum ( (?t : tool) ) (LIFE_TOOL ?t)) 1);
   };
 }
 
