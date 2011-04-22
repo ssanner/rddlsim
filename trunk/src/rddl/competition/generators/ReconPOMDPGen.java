@@ -43,7 +43,7 @@ public class ReconPOMDPGen extends ReconMDPGen {
 	
 	public String generate() {
 		Random ran = new Random();
-		String s = super.generate();
+		String s = super.generate(false);
 		s = s.replaceAll("recon_mdp", "recon_pomdp");
 		String[] broken = s.split("non-fluents \\{");
 		String mid = "";
@@ -53,9 +53,9 @@ public class ReconPOMDPGen extends ReconMDPGen {
 		
 		String[] tools = {"w1","l1"};
 		
-		for(String t : tools){
-			float noise1 = ran.nextFloat() * noiseMax;
-			float noise2 = ran.nextFloat() * noiseMax;
+		for (String t : tools){
+			float noise1 = (ran.nextFloat() * noiseMax * 0.99f) + 0.01f;
+			float noise2 = (ran.nextFloat() * noiseMax * 0.99f) + 0.01f;
 			mid += "\t\tDAMAGE_OBS(" + t + ") = "
 						+ (1.0 - noise1)
 						+ ";\n";

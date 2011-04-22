@@ -44,7 +44,7 @@ public class ReconMDPGen {
 			usage();
 
 		ReconMDPGen efg = new ReconMDPGen(args);
-		String content = efg.generate();
+		String content = efg.generate(true);
 		PrintStream ps = new PrintStream(
 				new FileOutputStream(efg.output_dir + File.separator + efg.instance_name + ".rddl"));
 		ps.println(content);
@@ -85,9 +85,9 @@ public class ReconMDPGen {
 		}
 	}
 
-	public String generate() {
+	public String generate(boolean mdp) {
 		Random ran = new Random();
-		int numObjects = Math.max(2, ran.nextInt(maxObjects +1));
+		int numObjects = Math.max(2, maxObjects); //Math.max(2, ran.nextInt(maxObjects +1));
 		int numHazards = Math.max(1, ran.nextInt((int) (size * size * maxHazardDensity))); 
 		while(size * size -  1 - numHazards - numObjects < 0)
 			numHazards--;
@@ -128,10 +128,10 @@ public class ReconMDPGen {
 			s += "\t\tADJACENT-UP(y" + x + ", y" +  Math.min(size-1, x+1) + ");\n";
 		}
 		s+= "\t\tWATER_TOOL(w1);\n\t\tLIFE_TOOL(l1);\n\t\tCAMERA_TOOL(p1);\n";
-		s+= "\t\tDETECT_PROB(w1) = " + (ran.nextFloat() * 0.15f + 0.85f)+";\n";
-		s+= "\t\tDETECT_PROB(l1) = " + (ran.nextFloat() * 0.25f+ 0.75f) +";\n";
-		s+= "\t\tDETECT_PROB_DAMAGED(w1) = " + ran.nextFloat() * 0.7f +";\n";
-		s+= "\t\tDETECT_PROB_DAMAGED(l1) = " + ran.nextFloat() * 0.6f +";\n";
+		//s+= "\t\tDETECT_PROB(w1) = " + (ran.nextFloat() * 0.15f + 0.85f)+";\n";
+		//s+= "\t\tDETECT_PROB(l1) = " + (ran.nextFloat() * 0.25f+ 0.75f) +";\n";
+		//s+= "\t\tDETECT_PROB_DAMAGED(w1) = " + ran.nextFloat() * 0.7f +";\n";
+		//s+= "\t\tDETECT_PROB_DAMAGED(l1) = " + ran.nextFloat() * 0.6f +";\n";
 		
 		int [] filled = new int[size * size];
 		for(int x = 0; x < filled.length; x++)
@@ -149,13 +149,16 @@ public class ReconMDPGen {
 			s+= "\t\tobjAt(o" + o +",x" + loc % size + ",y" + loc / size + ");\n";
 			filled[loc] =1;
 			if(ran.nextFloat()< lifeDensity || life < 1){
-				s+= "\t\tHAS_WATER(o" + o + ");\n";
-				s+= "\t\tHAS_LIFE(o" + o + ");\n";
+				if (!mdp) {
+					s+= "\t\tHAS_WATER(o" + o + ");\n";
+					s+= "\t\tHAS_LIFE(o" + o + ");\n";
+				}
 				life++;
 				//System.err.println(numObjects + "  " + life);
 			}
 			else if(ran.nextFloat()< 0.7){
-				s+= "\t\tHAS_WATER(o" + o + ");\n";
+				if (!mdp)
+					s+= "\t\tHAS_WATER(o" + o + ");\n";
 			}
 		}
 		for(int x = 0; x < filled.length; x++)
@@ -173,8 +176,8 @@ public class ReconMDPGen {
 		s += "\t\tDAMAGE_PROB(w1) = " + (ran.nextFloat()* (damageProbMax -0.25f) + 0.25f) + ";\n";
 		s += "\t\tDAMAGE_PROB(l1) = " + (ran.nextFloat()* (damageProbMax -0.25f) + 0.25f) + ";\n";
 		
-		s += "\t\tGOOD_PIC_WEIGHT = " + ran.nextFloat()  + ";\n";
-		s += "\t\tBAD_PIC_WEIGHT = " + ran.nextFloat() + ";\n";
+		s += "\t\tGOOD_PIC_WEIGHT = " + (ran.nextFloat()*0.9f + 0.1f)  + ";\n";
+		s += "\t\tBAD_PIC_WEIGHT = " + (ran.nextFloat()*0.9f + 0.1f) + ";\n";
 		
 		
 		s += "\t};\n}\ninstance " + instance_name + " { \n\tdomain = recon_mdp; \n ";

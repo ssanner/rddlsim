@@ -150,7 +150,7 @@ domain skill_teaching_pomdp {
 	        else 
 	        	KronDelta( false );
 
-			//high proficiency is reached by getting a question and having proficiencyMed
+		//high proficiency is reached by getting a question and having proficiencyMed
 		proficiencyHigh'(?s) =
 		    if (~updateTurn(?s) ^ proficiencyHigh(?s)) 
 		    	then KronDelta( true )

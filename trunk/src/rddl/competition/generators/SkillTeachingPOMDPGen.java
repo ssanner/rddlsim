@@ -41,6 +41,8 @@ public class SkillTeachingPOMDPGen extends SkillTeachingMDPGen {
 		
 		for(int x = 0; x < curNumSkills; x++){
 			float noise2 = ran.nextFloat() * noiseMax;
+			if (noise2 < 0.01f)
+				noise2 = 0.01f;
 			//float noise2 = Math.min(noiseMax, 0.25f + ran.nextFloat() * (noiseMax - 0.25f));
 			//mid += "\t\tREPORT_PROB(s" + x + ") = "
 			//			+ (1.0 - noise1)

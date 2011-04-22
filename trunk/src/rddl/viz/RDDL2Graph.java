@@ -34,12 +34,19 @@ public class RDDL2Graph {
 	public DOMAIN     _d;
 	public Graph      _graph;
 	
+	public int _nStateVars  = 0;
+	public int _nIntermVars = 0;
+	public int _nActionVars = 0;
+	public int _nObservVars = 0;
+	
 	// Display cur state, actions, interm, observations, next state occur in fixed order?
 	public boolean    _bStrictLevels;   
 	
 	// Display cur state, actions, interm, observations, next state occur at same rank?
 	// if this is false, then strict levels can have no effect
 	public boolean    _bStrictGrouping;
+	
+	public boolean    _bDirected;
 
 	// Maintain mappings from names to (a) lists of dependent nodes and (b) formulae
 	public HashMap<String, String> _hmName2Dependents = new HashMap<String, String>();
@@ -47,7 +54,7 @@ public class RDDL2Graph {
 	public HashMap<String, String> _hmName2Type       = new HashMap<String,String>();
 	public HashMap<String, String> _hmName2ParamName  = new HashMap<String,String>();
 	
-	public RDDL2Graph(RDDL rddl, String instance_name, 
+	public RDDL2Graph(RDDL rddl, String instance_name, boolean directed, 
 			boolean strict_levels, boolean strict_grouping) throws Exception {
 		_state = new State();
 
@@ -69,6 +76,7 @@ public class RDDL2Graph {
 		// in State that we'll need to produce the DBN
 		_bStrictLevels = strict_levels;
 		_bStrictGrouping = strict_grouping;
+		_bDirected = directed;
 		_state.init(_n != null ? _n._hmObjects : null, _i._hmObjects,  
 				_d._hmTypes, _d._hmPVariables, _d._hmCPF,
 				_i._alInitState, _n == null ? null : _n._alNonFluents, 
@@ -81,7 +89,7 @@ public class RDDL2Graph {
 	public Graph rddl2graph() throws Exception {
 		
 		// lightblue2, gold1, plum, ivory3, lightblue, salmon
-		Graph g = new Graph(/*directed*/true, false, /*left-to-right*/true, false);
+		Graph g = new Graph(_bDirected, false, /*left-to-right*/true, false);
 
 		// Can still allow common rank if not strict levels, just don't enforce
 		// that each variable type goes at a separate level (with unilinks below)
@@ -114,6 +122,7 @@ public class RDDL2Graph {
 					String action_name = CleanFluentName(p + gfluent.toString());
 					g.addNode(action_name, 1, "olivedrab1", "box", "filled");
 					actions.add(action_name);
+					_nActionVars++;
 					_hmName2Dependents.put(action_name, "None");
 					_hmName2Formula.put(action_name, "agent controlled");
 					_hmName2Type.put(action_name, "Action");
@@ -153,7 +162,8 @@ public class RDDL2Graph {
 				cpf._exprEquals.collectGFluents(subs, _state, parents);
 				for (Pair par : parents)
 					g.addUniLink(CleanFluentName(par._o1.toString() + par._o2.toString()), interm_name);
-				
+
+				_nIntermVars++;
 				_hmName2Dependents.put(interm_name, CleanFluentName(parents.toString()));
 				_hmName2Formula.put(interm_name, cpf._exprEquals.toString());
 				_hmName2Type.put(interm_name, "Intermediate @ Level " + level);
@@ -204,6 +214,7 @@ public class RDDL2Graph {
 				for (Pair par : parents)
 					g.addUniLink(CleanFluentName(par._o1.toString() + par._o2.toString()), observ_name, "black", "dashed", null);
 
+				_nObservVars++;
 				_hmName2Dependents.put(observ_name, CleanFluentName(parents.toString()));
 				_hmName2Formula.put(observ_name, cpf._exprEquals.toString());
 				_hmName2Type.put(observ_name, "Observation");
@@ -262,8 +273,9 @@ public class RDDL2Graph {
 				parents.clear();
 				cpf._exprEquals.collectGFluents(subs, _state, parents);
 				for (Pair par : parents)
-					g.addUniLink(CleanFluentName(par._o1.toString() + par._o2.toString()), primed_name);
+					g.addUniLink(CleanFluentName(par._o1.toString() + par._o2.toString()), primed_name, "black", "solid", null);
 
+				_nStateVars++;
 				_hmName2Dependents.put(unprimed_name, "None");
 				_hmName2Formula.put(unprimed_name, "fully observed");
 				_hmName2Type.put(unprimed_name, "Current State");
@@ -397,18 +409,51 @@ public class RDDL2Graph {
 		// Get first instance name in file and create a simulator
 		//String instance_name = rddl._tmInstanceNodes.firstKey();
 	
-		if (args.length != 2) {
-			System.out.println("usage: RDDL-file instance-name");
+		if (args.length != 2 && args.length != 5) {
+			System.out.println("usage: RDDL-file instance-name [directed={true,false}] [strict-levels={true,false}] [strict-grouping={true,false}]");
 			System.exit(1);
 		}
 		String rddl_file = args[0];
 		String instance_name = args[1];
-		RDDL rddl = parser.parse(new File(rddl_file));
+		boolean strict_grouping = true;
+		boolean strict_levels   = false;
+		boolean directed        = true;
+		if (args.length == 5) {
+			directed        = new Boolean(args[2]);
+			strict_levels   = new Boolean(args[3]);
+			strict_grouping = new Boolean(args[4]);
+		}
 		
-		RDDL2Graph r2g = new RDDL2Graph(rddl, instance_name, 
+		// If RDDL file is a directory, add all files
+		ArrayList<File> rddl_files = new ArrayList<File>();
+		File file = new File(rddl_file);
+		if (file.isDirectory())
+			rddl_files.addAll(Arrays.asList(file.listFiles()));
+		else
+			rddl_files.add(file);
+		
+		// Load RDDL files
+		RDDL rddl = new RDDL();
+		HashMap<File,RDDL> file2rddl = new HashMap<File,RDDL>();
+		for (File f : (ArrayList<File>)rddl_files.clone()) {
+			try {
+				if (f.getName().endsWith(".rddl")) {
+					RDDL r = parser.parse(f);
+					file2rddl.put(f, r);
+					rddl.addOtherRDDL(r);
+				}
+			} catch (Exception e) {
+				System.out.println(e);
+				System.out.println("Error processing: " + f + ", skipping...");
+				rddl_files.remove(f);
+				continue;
+			}
+		}
+		
+		RDDL2Graph r2g = new RDDL2Graph(rddl, instance_name, directed, strict_levels, strict_grouping);
 //				/*strict levels*/false, /*strict grouping*/false);
-//				/*strict levels*/true, /*strict grouping*/true);
-				/*strict levels*/false, /*strict grouping*/true);
+//				/*strict levels*/true,  /*strict grouping*/true);
+//				/*strict levels*/false, /*strict grouping*/true);
 		
 		// Reset, pass a policy, a visualization interface, a random seed, and simulate!
 		r2g.launchViewer(1024, 768);
@@ -417,6 +462,10 @@ public class RDDL2Graph {
 		System.out.println();
 		List order = r2g._graph.computeBestOrder(); // _graph.greedyTWSort(true);
 		System.out.println("\nBest Order:   " + order);
+		System.out.println("Num state vars:  " + r2g._nStateVars);
+		System.out.println("Num interm vars: " + r2g._nIntermVars);
+		System.out.println("Num observ vars: " + r2g._nObservVars);
+		System.out.println("Num action vars: " + r2g._nActionVars);
 		System.out.println("MAX Bin Size: " + r2g._graph._df.format(r2g._graph._dMaxBinaryWidth));
 		System.out.println("Tree Width:   " + r2g._graph.computeTreeWidth(order));
 		//r2g._graph.genDotFile(VIEWER_FILE);

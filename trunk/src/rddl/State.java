@@ -333,10 +333,15 @@ public class State {
 							  ArrayList<PVAR_INST_DEF> src) {
 
 		int non_def = 0;
+		boolean fatal_error = false;
 		for (PVAR_INST_DEF def : src) {
 			
 			// Get the assignments for this PVAR
 			HashMap<ArrayList<LCONST>,Object> pred_assign = assign.get(def._sPredName);
+			if (pred_assign == null) {
+				System.out.println("FATAL ERROR: '" + def._sPredName + "' not defined");
+				fatal_error = true;
+			}
 			
 			// Get default value if it exists
 			Object def_value = null;
@@ -353,6 +358,11 @@ public class State {
 			} else if ( pvar_def instanceof PVARIABLE_OBS_DEF ) {
 				pred_assign.put(def._alTerms, def._oValue);
 			}
+		}
+		
+		if (fatal_error) {
+			System.out.println("ABORTING DUE TO FATAL ERRORS");
+			System.exit(1);
 		}
 		
 		return non_def;
@@ -408,6 +418,16 @@ public class State {
 		boolean primed = p._bPrimed;
 		p = new PVAR_NAME(p._sPVarName);
 		PVARIABLE_DEF pvar_def = _hmPVariables.get(p);
+		
+		if (pvar_def == null) {
+			System.out.println("ERROR: undefined pvariable: " + p);
+			return null;
+		} else if (pvar_def._alParamTypes.size() != terms.size()) {
+			System.out.println("ERROR: expected " + pvar_def._alParamTypes.size() + 
+					" for " + p + ", got " + terms.size());
+			return null;
+		}
+		
 		if (pvar_def instanceof PVARIABLE_STATE_DEF) // state & non_fluents
 			def_value = ((PVARIABLE_STATE_DEF) pvar_def)._oDefValue;
 		else if (pvar_def instanceof RDDL.PVARIABLE_ACTION_DEF) // actions
@@ -425,11 +445,11 @@ public class State {
 			var_src = _interm.get(p);
 		else if (pvar_def instanceof PVARIABLE_OBS_DEF)
 			var_src = _observ.get(p);
-		else
-			System.out.println("ERROR: getPVariableAssign, unhandled pvariable " + p + terms);
 			
-		if (var_src == null)
+		if (var_src == null) {
+			System.out.println("ERROR: no variable source for " + p);
 			return null;
+		}
 		
 		// Lookup value, return default (if available) if value not found
 		Object ret = var_src.get(terms);
@@ -446,6 +466,16 @@ public class State {
 		boolean primed = p._bPrimed;
 		p = new PVAR_NAME(p._sPVarName);
 		PVARIABLE_DEF pvar_def = _hmPVariables.get(p);
+		
+		if (pvar_def == null) {
+			System.out.println("ERROR: undefined pvariable: " + p);
+			return false;
+		} else if (pvar_def._alParamTypes.size() != terms.size()) {
+			System.out.println("ERROR: expected " + pvar_def._alParamTypes.size() + 
+					" for " + p + ", got " + terms.size());
+			return false;
+		}
+		
 		if (pvar_def instanceof PVARIABLE_STATE_DEF) // state & non_fluents
 			def_value = ((PVARIABLE_STATE_DEF) pvar_def)._oDefValue;
 		else if (pvar_def instanceof RDDL.PVARIABLE_ACTION_DEF) // actions
@@ -464,8 +494,10 @@ public class State {
 		else if (pvar_def instanceof PVARIABLE_OBS_DEF)
 			var_src = _observ.get(p);
 		
-		if (var_src == null)
+		if (var_src == null) {
+			System.out.println("ERROR: no variable source for " + p);
 			return false;
+		}
 
 		// Set value (or remove if default)... n.b., def_value could be null if not s,a,s'
 		if (value == null || value.equals(def_value)) {

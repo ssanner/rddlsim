@@ -165,5 +165,8 @@ public class Simulator {
 		//} catch (EvalException e) {
 		//	System.err.println(e);
 		//}
+			
+		if (RDDL.DEBUG_PVAR_NAMES)
+			System.out.println(RDDL.PVAR_SRC_SET);
 	}
 }

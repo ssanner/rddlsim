@@ -11,10 +11,10 @@ non-fluents nf_recon_inst_pomdp__1 {
 	non-fluents {
 		LIFE_PROB = 0.7;
 		WATER_PROB = 0.8;
-		DAMAGE_OBS(w1) = 0.9489773698151112;
-		NOISE_DAMAGE_OBS(w1) = 0.05610798;
-		DAMAGE_OBS(l1) = 0.900923378765583;
-		NOISE_DAMAGE_OBS(l1) = 0.036240943;
+		DAMAGE_OBS(w1) = 0.9357861056923866;
+		NOISE_DAMAGE_OBS(w1) = 0.029551815;
+		DAMAGE_OBS(l1) = 0.9579484090209007;
+		NOISE_DAMAGE_OBS(l1) = 0.04754059;
 
 		ADJACENT-LEFT(x0, x0);
 		ADJACENT-DOWN(y0, y0);
@@ -27,23 +27,23 @@ non-fluents nf_recon_inst_pomdp__1 {
 		WATER_TOOL(w1);
 		LIFE_TOOL(l1);
 		CAMERA_TOOL(p1);
-		BASE(x0,y1);
+		BASE(x1,y0);
 		objAt(o0,x1,y1);
-		objAt(o1,x1,y0);
+		objAt(o1,x0,y1);
 		objAt(o2,x0,y0);
-		objAt(o3,x0,y1);
-		HAZARD(x1,y1);
-		DAMAGE_PROB(w1) = 0.26219082;
-		DAMAGE_PROB(l1) = 0.3083102;
-		GOOD_PIC_WEIGHT = 0.7277761;
-		BAD_PIC_WEIGHT = 0.30138415;
+		objAt(o3,x1,y1);
+		HAZARD(x0,y1);
+		DAMAGE_PROB(w1) = 0.35924795;
+		DAMAGE_PROB(l1) = 0.37307265;
+		GOOD_PIC_WEIGHT = 0.4324996;
+		BAD_PIC_WEIGHT = 0.10827564;
 	};
 }
 instance recon_inst_pomdp__1 { 
 	domain = recon_pomdp; 
  	non-fluents = nf_recon_inst_pomdp__1;
 	init-state { 
-		agentAt(a1,x0,y1);
+		agentAt(a1,x1,y0);
 	};
 	max-nondef-actions = 1;
 	horizon = 40;
