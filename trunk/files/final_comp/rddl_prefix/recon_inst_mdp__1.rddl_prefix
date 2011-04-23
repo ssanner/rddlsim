@@ -19,16 +19,16 @@ non-fluents nf_recon_inst_mdp__1 {
     WATER_TOOL(w1);
     LIFE_TOOL(l1);
     CAMERA_TOOL(p1);
-    BASE(x1, y0);
-    objAt(o0, x0, y0);
-    objAt(o1, x0, y1);
-    objAt(o2, x1, y1);
-    objAt(o3, x1, y1);
-    HAZARD(x0, y1);
-    DAMAGE_PROB(w1) = 0.3120867;
-    DAMAGE_PROB(l1) = 0.3109896;
-    GOOD_PIC_WEIGHT = 0.47911516;
-    BAD_PIC_WEIGHT = 0.39731872;
+    BASE(x0, y1);
+    objAt(o0, x1, y1);
+    objAt(o1, x1, y0);
+    objAt(o2, x0, y0);
+    objAt(o3, x1, y0);
+    HAZARD(x1, y0);
+    DAMAGE_PROB(w1) = 0.29898286;
+    DAMAGE_PROB(l1) = 0.3058349;
+    GOOD_PIC_WEIGHT = 0.18377236;
+    BAD_PIC_WEIGHT = 0.7311116;
   };
 }
 
@@ -36,7 +36,7 @@ instance recon_inst_mdp__1 {
   domain = recon_mdp;
   non-fluents = nf_recon_inst_mdp__1;
   init-state {
-    agentAt(a1, x1, y0);
+    agentAt(a1, x0, y1);
   };
   max-nondef-actions = 1;
   horizon = 40;

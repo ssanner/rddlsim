@@ -150,8 +150,8 @@ action askProb__s0
 						(true (0.0))
 						(false (1.0))))
 					(false (answeredRight__s0' 
-						(true (0.9377455))
-						(false (0.06225449999999999))))))))
+						(true (0.85399747))
+						(false (0.14600252999999996))))))))
 			(false (updateTurn__s0 
 				(true (answeredRight__s0' 
 					(true (0.0))
@@ -162,11 +162,11 @@ action askProb__s0
 						(false (1.0))))
 					(false (proficiencyMed__s0 
 						(true (answeredRight__s0' 
-							(true (0.72634214))
-							(false (0.27365786000000003))))
+							(true (0.73191))
+							(false (0.26809000000000005))))
 						(false (answeredRight__s0' 
-							(true (0.5997234))
-							(false (0.4002766)))))))))))
+							(true (0.7199796))
+							(false (0.28002039999999995)))))))))))
 	answeredRight__s1
 		(answeredRight__s1' 
 			(true (0.0))
@@ -181,8 +181,8 @@ action askProb__s0
 					(true (0.0))
 					(false (1.0))))
 				(false (fpos__s0' 
-					(true (0.079184145))
-					(false (0.920815855)))))))
+					(true (0.05016588))
+					(false (0.94983412)))))))
 	fpos__s1
 		(fpos__s1' 
 			(true (0.0))
@@ -327,17 +327,17 @@ action askProb__s0
 	endobserve
 	cost [+ 
 		(proficiencyHigh__s0 
-			(true (-1.1397905))
+			(true (-1.1563843))
 			(false (0.0)))
 		(proficiencyHigh__s1 
-			(true (-1.401068))
+			(true (-1.0460582))
 			(false (0.0)))
 		(proficiencyMed__s0 
 			(true (0.0))
-			(false (1.1397905)))
+			(false (1.1563843)))
 		(proficiencyMed__s1 
 			(true (0.0))
-			(false (1.401068)))
+			(false (1.0460582)))
 	]
 endaction
 
@@ -453,8 +453,8 @@ action askProb__s1
 						(true (0.0))
 						(false (1.0))))
 					(false (answeredRight__s1' 
-						(true (0.93270004))
-						(false (0.06729996000000005))))))))
+						(true (0.9513694))
+						(false (0.04863059999999997))))))))
 			(false (updateTurn__s0 
 				(true (answeredRight__s1' 
 					(true (0.0))
@@ -465,11 +465,11 @@ action askProb__s1
 						(false (1.0))))
 					(false (proficiencyMed__s1 
 						(true (answeredRight__s1' 
-							(true (0.7881144))
-							(false (0.2118856))))
+							(true (0.74608207))
+							(false (0.25391792999999996))))
 						(false (answeredRight__s1' 
-							(true (0.58869505))
-							(false (0.41130495)))))))))))
+							(true (0.6515699))
+							(false (0.34843009999999996)))))))))))
 	fpos__s0
 		(fpos__s0' 
 			(true (0.0))
@@ -484,8 +484,8 @@ action askProb__s1
 					(true (0.0))
 					(false (1.0))))
 				(false (fpos__s1' 
-					(true (0.042122692))
-					(false (0.957877308)))))))
+					(true (0.0917274))
+					(false (0.9082726)))))))
 	proficiencyMed__s0
 		(proficiencyHigh__s0 
 			(true (proficiencyMed__s0' 
@@ -626,17 +626,17 @@ action askProb__s1
 	endobserve
 	cost [+ 
 		(proficiencyHigh__s0 
-			(true (-1.1397905))
+			(true (-1.1563843))
 			(false (0.0)))
 		(proficiencyHigh__s1 
-			(true (-1.401068))
+			(true (-1.0460582))
 			(false (0.0)))
 		(proficiencyMed__s0 
 			(true (0.0))
-			(false (1.1397905)))
+			(false (1.1563843)))
 		(proficiencyMed__s1 
 			(true (0.0))
-			(false (1.401068)))
+			(false (1.0460582)))
 	]
 endaction
 
@@ -909,17 +909,17 @@ action giveHint__s0
 	endobserve
 	cost [+ 
 		(proficiencyHigh__s0 
-			(true (-1.1397905))
+			(true (-1.1563843))
 			(false (0.0)))
 		(proficiencyHigh__s1 
-			(true (-1.401068))
+			(true (-1.0460582))
 			(false (0.0)))
 		(proficiencyMed__s0 
 			(true (0.0))
-			(false (1.1397905)))
+			(false (1.1563843)))
 		(proficiencyMed__s1 
 			(true (0.0))
-			(false (1.401068)))
+			(false (1.0460582)))
 	]
 endaction
 
@@ -1192,17 +1192,17 @@ action giveHint__s1
 	endobserve
 	cost [+ 
 		(proficiencyHigh__s0 
-			(true (-1.1397905))
+			(true (-1.1563843))
 			(false (0.0)))
 		(proficiencyHigh__s1 
-			(true (-1.401068))
+			(true (-1.0460582))
 			(false (0.0)))
 		(proficiencyMed__s0 
 			(true (0.0))
-			(false (1.1397905)))
+			(false (1.1563843)))
 		(proficiencyMed__s1 
 			(true (0.0))
-			(false (1.401068)))
+			(false (1.0460582)))
 	]
 endaction
 
@@ -1451,17 +1451,17 @@ action noop
 	endobserve
 	cost [+ 
 		(proficiencyHigh__s0 
-			(true (-1.1397905))
+			(true (-1.1563843))
 			(false (0.0)))
 		(proficiencyHigh__s1 
-			(true (-1.401068))
+			(true (-1.0460582))
 			(false (0.0)))
 		(proficiencyMed__s0 
 			(true (0.0))
-			(false (1.1397905)))
+			(false (1.1563843)))
 		(proficiencyMed__s1 
 			(true (0.0))
-			(false (1.401068)))
+			(false (1.0460582)))
 	]
 endaction
 

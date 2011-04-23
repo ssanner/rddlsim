@@ -5,10 +5,10 @@ non-fluents nf_elevators_inst_mdp__1 {
     floor : {f0, f1, f2};
   };
   non-fluents {
-    ELEVATOR-PENALTY-RIGHT-DIR = 0.5;
+    ELEVATOR-PENALTY-RIGHT-DIR = 0.75;
     ELEVATOR-PENALTY-WRONG-DIR = 3.0;
     ADJACENT-UP(f0, f1);
-    ARRIVE-PARAM(f1) = 0.07218209;
+    ARRIVE-PARAM(f1) = 0.14635538;
     ADJACENT-UP(f1, f2);
     TOP-FLOOR(f2);
     BOTTOM-FLOOR(f0);

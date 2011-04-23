@@ -32,7 +32,7 @@ instance crossing_traffic_inst_mdp__1 {
 	init-state {
 		robot-at(x3,y1);
 		obstacle-at(x1,y2);
-		obstacle-at(x2,y2);
+		obstacle-at(x3,y2);
 	};
 	max-nondef-actions = 1;
 	horizon = 40;

@@ -50,7 +50,7 @@ domain sysadmin_pomdp {
         
         
 // Define non-fluents here.
-non-fluents ring4 {
+non-fluents ring4_pomdp {
 
 	domain = sysadmin_pomdp;
 	
@@ -69,7 +69,7 @@ non-fluents ring4 {
 }
         
 // Define non-fluents here.
-non-fluents ring8 {
+non-fluents ring8_pomdp {
 
 	domain = sysadmin_pomdp;
 	
@@ -96,7 +96,7 @@ instance sysp1 {
 
 	domain = sysadmin_pomdp;
 	
-	non-fluents = ring4;
+	non-fluents = ring4_pomdp;
 
 	init-state { 
 		running(c1); 
@@ -113,7 +113,7 @@ instance sysp2 {
 
 	domain = sysadmin_pomdp;
 	
-	non-fluents = ring8;
+	non-fluents = ring8_pomdp;
 
 	init-state { 
 		running(c1); 

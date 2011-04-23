@@ -5,23 +5,20 @@ non-fluents nf_sysadmin_inst_mdp__1 {
 	};
 	non-fluents {
 		REBOOT-PROB = 0.05;
-		CONNECTED(c1,c2);
-		CONNECTED(c1,c7);
-		CONNECTED(c2,c1);
+		CONNECTED(c1,c4);
+		CONNECTED(c1,c9);
+		CONNECTED(c2,c8);
 		CONNECTED(c3,c4);
-		CONNECTED(c3,c10);
-		CONNECTED(c4,c3);
+		CONNECTED(c3,c9);
 		CONNECTED(c4,c5);
-		CONNECTED(c5,c4);
-		CONNECTED(c5,c6);
+		CONNECTED(c5,c7);
+		CONNECTED(c6,c4);
 		CONNECTED(c6,c8);
-		CONNECTED(c6,c10);
-		CONNECTED(c7,c4);
 		CONNECTED(c7,c9);
-		CONNECTED(c8,c2);
 		CONNECTED(c8,c6);
+		CONNECTED(c8,c10);
 		CONNECTED(c9,c6);
-		CONNECTED(c10,c9);
+		CONNECTED(c10,c2);
 	};
 }
 

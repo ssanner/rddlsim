@@ -37,7 +37,7 @@
 )
 
 init [*
-	(occupied__ca3a1 (true (1.0)) (false (0.0)))
+	(occupied__ca3a1 (true (0.0)) (false (1.0)))
 	(occupied__ca1a3 (true (0.0)) (false (1.0)))
 	(occupied__ca3a2 (true (0.0)) (false (1.0)))
 	(occupied__ca2a3 (true (0.0)) (false (1.0)))
@@ -45,22 +45,22 @@ init [*
 	(occupied__ca4a3 (true (0.0)) (false (1.0)))
 	(occupied__ca3a5 (true (0.0)) (false (1.0)))
 	(occupied__ca5a3 (true (0.0)) (false (1.0)))
-	(occupied__ca3a7 (true (0.0)) (false (1.0)))
+	(occupied__ca3a7 (true (1.0)) (false (0.0)))
 	(occupied__ca7a3 (true (0.0)) (false (1.0)))
 	(occupied__ca3a8 (true (0.0)) (false (1.0)))
 	(occupied__ca8a3 (true (0.0)) (false (1.0)))
 	(occupied__ca6a1 (true (0.0)) (false (1.0)))
-	(occupied__ca1a6 (true (1.0)) (false (0.0)))
+	(occupied__ca1a6 (true (0.0)) (false (1.0)))
 	(occupied__ca6a2 (true (0.0)) (false (1.0)))
-	(occupied__ca2a6 (true (1.0)) (false (0.0)))
+	(occupied__ca2a6 (true (0.0)) (false (1.0)))
 	(occupied__ca6a4 (true (0.0)) (false (1.0)))
 	(occupied__ca4a6 (true (0.0)) (false (1.0)))
 	(occupied__ca6a5 (true (0.0)) (false (1.0)))
 	(occupied__ca5a6 (true (0.0)) (false (1.0)))
-	(occupied__ca6a7 (true (0.0)) (false (1.0)))
+	(occupied__ca6a7 (true (1.0)) (false (0.0)))
 	(occupied__ca7a6 (true (0.0)) (false (1.0)))
 	(occupied__ca6a8 (true (0.0)) (false (1.0)))
-	(occupied__ca8a6 (true (0.0)) (false (1.0)))
+	(occupied__ca8a6 (true (1.0)) (false (0.0)))
 	(light_signal1__ia3a3 (true (0.0)) (false (1.0)))
 	(light_signal1__ia3a6 (true (0.0)) (false (1.0)))
 	(light_signal1__ia6a3 (true (0.0)) (false (1.0)))
@@ -82,8 +82,8 @@ action advance__ia3a3
 					(true (0.0))
 					(false (1.0))))))
 			(false (occupied__ca3a1' 
-				(true (0.10508581))
-				(false (0.8949141899999999)))))
+				(true (0.12959473))
+				(false (0.87040527)))))
 	occupied__ca1a3
 		(occupied__ca1a3 
 			(true (occupied__ca2a3 
@@ -94,8 +94,8 @@ action advance__ia3a3
 					(true (0.0))
 					(false (1.0))))))
 			(false (occupied__ca1a3' 
-				(true (0.22346595))
-				(false (0.77653405)))))
+				(true (0.16023976))
+				(false (0.8397602399999999)))))
 	occupied__ca3a2
 		(occupied__ca3a1 
 			(true (occupied__ca3a2 
@@ -418,8 +418,8 @@ action advance__ia3a3
 					(true (0.0))
 					(false (1.0))))))
 			(false (occupied__ca6a1' 
-				(true (0.14764053))
-				(false (0.85235947)))))
+				(true (0.17356908))
+				(false (0.82643092)))))
 	occupied__ca1a6
 		(occupied__ca1a6 
 			(true (occupied__ca2a6 
@@ -430,8 +430,8 @@ action advance__ia3a3
 					(true (0.0))
 					(false (1.0))))))
 			(false (occupied__ca1a6' 
-				(true (0.113538474))
-				(false (0.8864615259999999)))))
+				(true (0.1621306))
+				(false (0.8378694)))))
 	occupied__ca6a2
 		(occupied__ca6a1 
 			(true (occupied__ca6a2 
@@ -923,8 +923,8 @@ action advance__ia3a3___advance__ia3a6
 					(true (0.0))
 					(false (1.0))))))
 			(false (occupied__ca3a1' 
-				(true (0.10508581))
-				(false (0.8949141899999999)))))
+				(true (0.12959473))
+				(false (0.87040527)))))
 	occupied__ca1a3
 		(occupied__ca1a3 
 			(true (occupied__ca2a3 
@@ -935,8 +935,8 @@ action advance__ia3a3___advance__ia3a6
 					(true (0.0))
 					(false (1.0))))))
 			(false (occupied__ca1a3' 
-				(true (0.22346595))
-				(false (0.77653405)))))
+				(true (0.16023976))
+				(false (0.8397602399999999)))))
 	occupied__ca3a2
 		(occupied__ca3a1 
 			(true (occupied__ca3a2 
@@ -1259,8 +1259,8 @@ action advance__ia3a3___advance__ia3a6
 					(true (0.0))
 					(false (1.0))))))
 			(false (occupied__ca6a1' 
-				(true (0.14764053))
-				(false (0.85235947)))))
+				(true (0.17356908))
+				(false (0.82643092)))))
 	occupied__ca1a6
 		(occupied__ca1a6 
 			(true (occupied__ca2a6 
@@ -1271,8 +1271,8 @@ action advance__ia3a3___advance__ia3a6
 					(true (0.0))
 					(false (1.0))))))
 			(false (occupied__ca1a6' 
-				(true (0.113538474))
-				(false (0.8864615259999999)))))
+				(true (0.1621306))
+				(false (0.8378694)))))
 	occupied__ca6a2
 		(occupied__ca6a1 
 			(true (occupied__ca6a2 
@@ -1764,8 +1764,8 @@ action advance__ia3a3___advance__ia3a6___advance__ia6a3
 					(true (0.0))
 					(false (1.0))))))
 			(false (occupied__ca3a1' 
-				(true (0.10508581))
-				(false (0.8949141899999999)))))
+				(true (0.12959473))
+				(false (0.87040527)))))
 	occupied__ca1a3
 		(occupied__ca1a3 
 			(true (occupied__ca2a3 
@@ -1776,8 +1776,8 @@ action advance__ia3a3___advance__ia3a6___advance__ia6a3
 					(true (0.0))
 					(false (1.0))))))
 			(false (occupied__ca1a3' 
-				(true (0.22346595))
-				(false (0.77653405)))))
+				(true (0.16023976))
+				(false (0.8397602399999999)))))
 	occupied__ca3a2
 		(occupied__ca3a1 
 			(true (occupied__ca3a2 
@@ -2100,8 +2100,8 @@ action advance__ia3a3___advance__ia3a6___advance__ia6a3
 					(true (0.0))
 					(false (1.0))))))
 			(false (occupied__ca6a1' 
-				(true (0.14764053))
-				(false (0.85235947)))))
+				(true (0.17356908))
+				(false (0.82643092)))))
 	occupied__ca1a6
 		(occupied__ca1a6 
 			(true (occupied__ca2a6 
@@ -2112,8 +2112,8 @@ action advance__ia3a3___advance__ia3a6___advance__ia6a3
 					(true (0.0))
 					(false (1.0))))))
 			(false (occupied__ca1a6' 
-				(true (0.113538474))
-				(false (0.8864615259999999)))))
+				(true (0.1621306))
+				(false (0.8378694)))))
 	occupied__ca6a2
 		(occupied__ca6a1 
 			(true (occupied__ca6a2 
@@ -2605,8 +2605,8 @@ action advance__ia3a3___advance__ia3a6___advance__ia6a3___advance__ia6a6
 					(true (0.0))
 					(false (1.0))))))
 			(false (occupied__ca3a1' 
-				(true (0.10508581))
-				(false (0.8949141899999999)))))
+				(true (0.12959473))
+				(false (0.87040527)))))
 	occupied__ca1a3
 		(occupied__ca1a3 
 			(true (occupied__ca2a3 
@@ -2617,8 +2617,8 @@ action advance__ia3a3___advance__ia3a6___advance__ia6a3___advance__ia6a6
 					(true (0.0))
 					(false (1.0))))))
 			(false (occupied__ca1a3' 
-				(true (0.22346595))
-				(false (0.77653405)))))
+				(true (0.16023976))
+				(false (0.8397602399999999)))))
 	occupied__ca3a2
 		(occupied__ca3a1 
 			(true (occupied__ca3a2 
@@ -2941,8 +2941,8 @@ action advance__ia3a3___advance__ia3a6___advance__ia6a3___advance__ia6a6
 					(true (0.0))
 					(false (1.0))))))
 			(false (occupied__ca6a1' 
-				(true (0.14764053))
-				(false (0.85235947)))))
+				(true (0.17356908))
+				(false (0.82643092)))))
 	occupied__ca1a6
 		(occupied__ca1a6 
 			(true (occupied__ca2a6 
@@ -2953,8 +2953,8 @@ action advance__ia3a3___advance__ia3a6___advance__ia6a3___advance__ia6a6
 					(true (0.0))
 					(false (1.0))))))
 			(false (occupied__ca1a6' 
-				(true (0.113538474))
-				(false (0.8864615259999999)))))
+				(true (0.1621306))
+				(false (0.8378694)))))
 	occupied__ca6a2
 		(occupied__ca6a1 
 			(true (occupied__ca6a2 
@@ -3446,8 +3446,8 @@ action advance__ia3a3___advance__ia3a6___advance__ia6a6
 					(true (0.0))
 					(false (1.0))))))
 			(false (occupied__ca3a1' 
-				(true (0.10508581))
-				(false (0.8949141899999999)))))
+				(true (0.12959473))
+				(false (0.87040527)))))
 	occupied__ca1a3
 		(occupied__ca1a3 
 			(true (occupied__ca2a3 
@@ -3458,8 +3458,8 @@ action advance__ia3a3___advance__ia3a6___advance__ia6a6
 					(true (0.0))
 					(false (1.0))))))
 			(false (occupied__ca1a3' 
-				(true (0.22346595))
-				(false (0.77653405)))))
+				(true (0.16023976))
+				(false (0.8397602399999999)))))
 	occupied__ca3a2
 		(occupied__ca3a1 
 			(true (occupied__ca3a2 
@@ -3782,8 +3782,8 @@ action advance__ia3a3___advance__ia3a6___advance__ia6a6
 					(true (0.0))
 					(false (1.0))))))
 			(false (occupied__ca6a1' 
-				(true (0.14764053))
-				(false (0.85235947)))))
+				(true (0.17356908))
+				(false (0.82643092)))))
 	occupied__ca1a6
 		(occupied__ca1a6 
 			(true (occupied__ca2a6 
@@ -3794,8 +3794,8 @@ action advance__ia3a3___advance__ia3a6___advance__ia6a6
 					(true (0.0))
 					(false (1.0))))))
 			(false (occupied__ca1a6' 
-				(true (0.113538474))
-				(false (0.8864615259999999)))))
+				(true (0.1621306))
+				(false (0.8378694)))))
 	occupied__ca6a2
 		(occupied__ca6a1 
 			(true (occupied__ca6a2 
@@ -4287,8 +4287,8 @@ action advance__ia3a3___advance__ia6a3
 					(true (0.0))
 					(false (1.0))))))
 			(false (occupied__ca3a1' 
-				(true (0.10508581))
-				(false (0.8949141899999999)))))
+				(true (0.12959473))
+				(false (0.87040527)))))
 	occupied__ca1a3
 		(occupied__ca1a3 
 			(true (occupied__ca2a3 
@@ -4299,8 +4299,8 @@ action advance__ia3a3___advance__ia6a3
 					(true (0.0))
 					(false (1.0))))))
 			(false (occupied__ca1a3' 
-				(true (0.22346595))
-				(false (0.77653405)))))
+				(true (0.16023976))
+				(false (0.8397602399999999)))))
 	occupied__ca3a2
 		(occupied__ca3a1 
 			(true (occupied__ca3a2 
@@ -4623,8 +4623,8 @@ action advance__ia3a3___advance__ia6a3
 					(true (0.0))
 					(false (1.0))))))
 			(false (occupied__ca6a1' 
-				(true (0.14764053))
-				(false (0.85235947)))))
+				(true (0.17356908))
+				(false (0.82643092)))))
 	occupied__ca1a6
 		(occupied__ca1a6 
 			(true (occupied__ca2a6 
@@ -4635,8 +4635,8 @@ action advance__ia3a3___advance__ia6a3
 					(true (0.0))
 					(false (1.0))))))
 			(false (occupied__ca1a6' 
-				(true (0.113538474))
-				(false (0.8864615259999999)))))
+				(true (0.1621306))
+				(false (0.8378694)))))
 	occupied__ca6a2
 		(occupied__ca6a1 
 			(true (occupied__ca6a2 
@@ -5128,8 +5128,8 @@ action advance__ia3a3___advance__ia6a3___advance__ia6a6
 					(true (0.0))
 					(false (1.0))))))
 			(false (occupied__ca3a1' 
-				(true (0.10508581))
-				(false (0.8949141899999999)))))
+				(true (0.12959473))
+				(false (0.87040527)))))
 	occupied__ca1a3
 		(occupied__ca1a3 
 			(true (occupied__ca2a3 
@@ -5140,8 +5140,8 @@ action advance__ia3a3___advance__ia6a3___advance__ia6a6
 					(true (0.0))
 					(false (1.0))))))
 			(false (occupied__ca1a3' 
-				(true (0.22346595))
-				(false (0.77653405)))))
+				(true (0.16023976))
+				(false (0.8397602399999999)))))
 	occupied__ca3a2
 		(occupied__ca3a1 
 			(true (occupied__ca3a2 
@@ -5464,8 +5464,8 @@ action advance__ia3a3___advance__ia6a3___advance__ia6a6
 					(true (0.0))
 					(false (1.0))))))
 			(false (occupied__ca6a1' 
-				(true (0.14764053))
-				(false (0.85235947)))))
+				(true (0.17356908))
+				(false (0.82643092)))))
 	occupied__ca1a6
 		(occupied__ca1a6 
 			(true (occupied__ca2a6 
@@ -5476,8 +5476,8 @@ action advance__ia3a3___advance__ia6a3___advance__ia6a6
 					(true (0.0))
 					(false (1.0))))))
 			(false (occupied__ca1a6' 
-				(true (0.113538474))
-				(false (0.8864615259999999)))))
+				(true (0.1621306))
+				(false (0.8378694)))))
 	occupied__ca6a2
 		(occupied__ca6a1 
 			(true (occupied__ca6a2 
@@ -5969,8 +5969,8 @@ action advance__ia3a3___advance__ia6a6
 					(true (0.0))
 					(false (1.0))))))
 			(false (occupied__ca3a1' 
-				(true (0.10508581))
-				(false (0.8949141899999999)))))
+				(true (0.12959473))
+				(false (0.87040527)))))
 	occupied__ca1a3
 		(occupied__ca1a3 
 			(true (occupied__ca2a3 
@@ -5981,8 +5981,8 @@ action advance__ia3a3___advance__ia6a6
 					(true (0.0))
 					(false (1.0))))))
 			(false (occupied__ca1a3' 
-				(true (0.22346595))
-				(false (0.77653405)))))
+				(true (0.16023976))
+				(false (0.8397602399999999)))))
 	occupied__ca3a2
 		(occupied__ca3a1 
 			(true (occupied__ca3a2 
@@ -6305,8 +6305,8 @@ action advance__ia3a3___advance__ia6a6
 					(true (0.0))
 					(false (1.0))))))
 			(false (occupied__ca6a1' 
-				(true (0.14764053))
-				(false (0.85235947)))))
+				(true (0.17356908))
+				(false (0.82643092)))))
 	occupied__ca1a6
 		(occupied__ca1a6 
 			(true (occupied__ca2a6 
@@ -6317,8 +6317,8 @@ action advance__ia3a3___advance__ia6a6
 					(true (0.0))
 					(false (1.0))))))
 			(false (occupied__ca1a6' 
-				(true (0.113538474))
-				(false (0.8864615259999999)))))
+				(true (0.1621306))
+				(false (0.8378694)))))
 	occupied__ca6a2
 		(occupied__ca6a1 
 			(true (occupied__ca6a2 
@@ -6810,8 +6810,8 @@ action advance__ia3a6
 					(true (0.0))
 					(false (1.0))))))
 			(false (occupied__ca3a1' 
-				(true (0.10508581))
-				(false (0.8949141899999999)))))
+				(true (0.12959473))
+				(false (0.87040527)))))
 	occupied__ca1a3
 		(occupied__ca1a3 
 			(true (occupied__ca2a3 
@@ -6822,8 +6822,8 @@ action advance__ia3a6
 					(true (0.0))
 					(false (1.0))))))
 			(false (occupied__ca1a3' 
-				(true (0.22346595))
-				(false (0.77653405)))))
+				(true (0.16023976))
+				(false (0.8397602399999999)))))
 	occupied__ca3a2
 		(occupied__ca3a1 
 			(true (occupied__ca3a2 
@@ -7146,8 +7146,8 @@ action advance__ia3a6
 					(true (0.0))
 					(false (1.0))))))
 			(false (occupied__ca6a1' 
-				(true (0.14764053))
-				(false (0.85235947)))))
+				(true (0.17356908))
+				(false (0.82643092)))))
 	occupied__ca1a6
 		(occupied__ca1a6 
 			(true (occupied__ca2a6 
@@ -7158,8 +7158,8 @@ action advance__ia3a6
 					(true (0.0))
 					(false (1.0))))))
 			(false (occupied__ca1a6' 
-				(true (0.113538474))
-				(false (0.8864615259999999)))))
+				(true (0.1621306))
+				(false (0.8378694)))))
 	occupied__ca6a2
 		(occupied__ca6a1 
 			(true (occupied__ca6a2 
@@ -7651,8 +7651,8 @@ action advance__ia3a6___advance__ia6a3
 					(true (0.0))
 					(false (1.0))))))
 			(false (occupied__ca3a1' 
-				(true (0.10508581))
-				(false (0.8949141899999999)))))
+				(true (0.12959473))
+				(false (0.87040527)))))
 	occupied__ca1a3
 		(occupied__ca1a3 
 			(true (occupied__ca2a3 
@@ -7663,8 +7663,8 @@ action advance__ia3a6___advance__ia6a3
 					(true (0.0))
 					(false (1.0))))))
 			(false (occupied__ca1a3' 
-				(true (0.22346595))
-				(false (0.77653405)))))
+				(true (0.16023976))
+				(false (0.8397602399999999)))))
 	occupied__ca3a2
 		(occupied__ca3a1 
 			(true (occupied__ca3a2 
@@ -7987,8 +7987,8 @@ action advance__ia3a6___advance__ia6a3
 					(true (0.0))
 					(false (1.0))))))
 			(false (occupied__ca6a1' 
-				(true (0.14764053))
-				(false (0.85235947)))))
+				(true (0.17356908))
+				(false (0.82643092)))))
 	occupied__ca1a6
 		(occupied__ca1a6 
 			(true (occupied__ca2a6 
@@ -7999,8 +7999,8 @@ action advance__ia3a6___advance__ia6a3
 					(true (0.0))
 					(false (1.0))))))
 			(false (occupied__ca1a6' 
-				(true (0.113538474))
-				(false (0.8864615259999999)))))
+				(true (0.1621306))
+				(false (0.8378694)))))
 	occupied__ca6a2
 		(occupied__ca6a1 
 			(true (occupied__ca6a2 
@@ -8492,8 +8492,8 @@ action advance__ia3a6___advance__ia6a3___advance__ia6a6
 					(true (0.0))
 					(false (1.0))))))
 			(false (occupied__ca3a1' 
-				(true (0.10508581))
-				(false (0.8949141899999999)))))
+				(true (0.12959473))
+				(false (0.87040527)))))
 	occupied__ca1a3
 		(occupied__ca1a3 
 			(true (occupied__ca2a3 
@@ -8504,8 +8504,8 @@ action advance__ia3a6___advance__ia6a3___advance__ia6a6
 					(true (0.0))
 					(false (1.0))))))
 			(false (occupied__ca1a3' 
-				(true (0.22346595))
-				(false (0.77653405)))))
+				(true (0.16023976))
+				(false (0.8397602399999999)))))
 	occupied__ca3a2
 		(occupied__ca3a1 
 			(true (occupied__ca3a2 
@@ -8828,8 +8828,8 @@ action advance__ia3a6___advance__ia6a3___advance__ia6a6
 					(true (0.0))
 					(false (1.0))))))
 			(false (occupied__ca6a1' 
-				(true (0.14764053))
-				(false (0.85235947)))))
+				(true (0.17356908))
+				(false (0.82643092)))))
 	occupied__ca1a6
 		(occupied__ca1a6 
 			(true (occupied__ca2a6 
@@ -8840,8 +8840,8 @@ action advance__ia3a6___advance__ia6a3___advance__ia6a6
 					(true (0.0))
 					(false (1.0))))))
 			(false (occupied__ca1a6' 
-				(true (0.113538474))
-				(false (0.8864615259999999)))))
+				(true (0.1621306))
+				(false (0.8378694)))))
 	occupied__ca6a2
 		(occupied__ca6a1 
 			(true (occupied__ca6a2 
@@ -9333,8 +9333,8 @@ action advance__ia3a6___advance__ia6a6
 					(true (0.0))
 					(false (1.0))))))
 			(false (occupied__ca3a1' 
-				(true (0.10508581))
-				(false (0.8949141899999999)))))
+				(true (0.12959473))
+				(false (0.87040527)))))
 	occupied__ca1a3
 		(occupied__ca1a3 
 			(true (occupied__ca2a3 
@@ -9345,8 +9345,8 @@ action advance__ia3a6___advance__ia6a6
 					(true (0.0))
 					(false (1.0))))))
 			(false (occupied__ca1a3' 
-				(true (0.22346595))
-				(false (0.77653405)))))
+				(true (0.16023976))
+				(false (0.8397602399999999)))))
 	occupied__ca3a2
 		(occupied__ca3a1 
 			(true (occupied__ca3a2 
@@ -9669,8 +9669,8 @@ action advance__ia3a6___advance__ia6a6
 					(true (0.0))
 					(false (1.0))))))
 			(false (occupied__ca6a1' 
-				(true (0.14764053))
-				(false (0.85235947)))))
+				(true (0.17356908))
+				(false (0.82643092)))))
 	occupied__ca1a6
 		(occupied__ca1a6 
 			(true (occupied__ca2a6 
@@ -9681,8 +9681,8 @@ action advance__ia3a6___advance__ia6a6
 					(true (0.0))
 					(false (1.0))))))
 			(false (occupied__ca1a6' 
-				(true (0.113538474))
-				(false (0.8864615259999999)))))
+				(true (0.1621306))
+				(false (0.8378694)))))
 	occupied__ca6a2
 		(occupied__ca6a1 
 			(true (occupied__ca6a2 
@@ -10174,8 +10174,8 @@ action advance__ia6a3
 					(true (0.0))
 					(false (1.0))))))
 			(false (occupied__ca3a1' 
-				(true (0.10508581))
-				(false (0.8949141899999999)))))
+				(true (0.12959473))
+				(false (0.87040527)))))
 	occupied__ca1a3
 		(occupied__ca1a3 
 			(true (occupied__ca2a3 
@@ -10186,8 +10186,8 @@ action advance__ia6a3
 					(true (0.0))
 					(false (1.0))))))
 			(false (occupied__ca1a3' 
-				(true (0.22346595))
-				(false (0.77653405)))))
+				(true (0.16023976))
+				(false (0.8397602399999999)))))
 	occupied__ca3a2
 		(occupied__ca3a1 
 			(true (occupied__ca3a2 
@@ -10510,8 +10510,8 @@ action advance__ia6a3
 					(true (0.0))
 					(false (1.0))))))
 			(false (occupied__ca6a1' 
-				(true (0.14764053))
-				(false (0.85235947)))))
+				(true (0.17356908))
+				(false (0.82643092)))))
 	occupied__ca1a6
 		(occupied__ca1a6 
 			(true (occupied__ca2a6 
@@ -10522,8 +10522,8 @@ action advance__ia6a3
 					(true (0.0))
 					(false (1.0))))))
 			(false (occupied__ca1a6' 
-				(true (0.113538474))
-				(false (0.8864615259999999)))))
+				(true (0.1621306))
+				(false (0.8378694)))))
 	occupied__ca6a2
 		(occupied__ca6a1 
 			(true (occupied__ca6a2 
@@ -11015,8 +11015,8 @@ action advance__ia6a3___advance__ia6a6
 					(true (0.0))
 					(false (1.0))))))
 			(false (occupied__ca3a1' 
-				(true (0.10508581))
-				(false (0.8949141899999999)))))
+				(true (0.12959473))
+				(false (0.87040527)))))
 	occupied__ca1a3
 		(occupied__ca1a3 
 			(true (occupied__ca2a3 
@@ -11027,8 +11027,8 @@ action advance__ia6a3___advance__ia6a6
 					(true (0.0))
 					(false (1.0))))))
 			(false (occupied__ca1a3' 
-				(true (0.22346595))
-				(false (0.77653405)))))
+				(true (0.16023976))
+				(false (0.8397602399999999)))))
 	occupied__ca3a2
 		(occupied__ca3a1 
 			(true (occupied__ca3a2 
@@ -11351,8 +11351,8 @@ action advance__ia6a3___advance__ia6a6
 					(true (0.0))
 					(false (1.0))))))
 			(false (occupied__ca6a1' 
-				(true (0.14764053))
-				(false (0.85235947)))))
+				(true (0.17356908))
+				(false (0.82643092)))))
 	occupied__ca1a6
 		(occupied__ca1a6 
 			(true (occupied__ca2a6 
@@ -11363,8 +11363,8 @@ action advance__ia6a3___advance__ia6a6
 					(true (0.0))
 					(false (1.0))))))
 			(false (occupied__ca1a6' 
-				(true (0.113538474))
-				(false (0.8864615259999999)))))
+				(true (0.1621306))
+				(false (0.8378694)))))
 	occupied__ca6a2
 		(occupied__ca6a1 
 			(true (occupied__ca6a2 
@@ -11856,8 +11856,8 @@ action advance__ia6a6
 					(true (0.0))
 					(false (1.0))))))
 			(false (occupied__ca3a1' 
-				(true (0.10508581))
-				(false (0.8949141899999999)))))
+				(true (0.12959473))
+				(false (0.87040527)))))
 	occupied__ca1a3
 		(occupied__ca1a3 
 			(true (occupied__ca2a3 
@@ -11868,8 +11868,8 @@ action advance__ia6a6
 					(true (0.0))
 					(false (1.0))))))
 			(false (occupied__ca1a3' 
-				(true (0.22346595))
-				(false (0.77653405)))))
+				(true (0.16023976))
+				(false (0.8397602399999999)))))
 	occupied__ca3a2
 		(occupied__ca3a1 
 			(true (occupied__ca3a2 
@@ -12192,8 +12192,8 @@ action advance__ia6a6
 					(true (0.0))
 					(false (1.0))))))
 			(false (occupied__ca6a1' 
-				(true (0.14764053))
-				(false (0.85235947)))))
+				(true (0.17356908))
+				(false (0.82643092)))))
 	occupied__ca1a6
 		(occupied__ca1a6 
 			(true (occupied__ca2a6 
@@ -12204,8 +12204,8 @@ action advance__ia6a6
 					(true (0.0))
 					(false (1.0))))))
 			(false (occupied__ca1a6' 
-				(true (0.113538474))
-				(false (0.8864615259999999)))))
+				(true (0.1621306))
+				(false (0.8378694)))))
 	occupied__ca6a2
 		(occupied__ca6a1 
 			(true (occupied__ca6a2 
@@ -12697,8 +12697,8 @@ action noop
 					(true (0.0))
 					(false (1.0))))))
 			(false (occupied__ca3a1' 
-				(true (0.10508581))
-				(false (0.8949141899999999)))))
+				(true (0.12959473))
+				(false (0.87040527)))))
 	occupied__ca1a3
 		(occupied__ca1a3 
 			(true (occupied__ca2a3 
@@ -12709,8 +12709,8 @@ action noop
 					(true (0.0))
 					(false (1.0))))))
 			(false (occupied__ca1a3' 
-				(true (0.22346595))
-				(false (0.77653405)))))
+				(true (0.16023976))
+				(false (0.8397602399999999)))))
 	occupied__ca3a2
 		(occupied__ca3a1 
 			(true (occupied__ca3a2 
@@ -13033,8 +13033,8 @@ action noop
 					(true (0.0))
 					(false (1.0))))))
 			(false (occupied__ca6a1' 
-				(true (0.14764053))
-				(false (0.85235947)))))
+				(true (0.17356908))
+				(false (0.82643092)))))
 	occupied__ca1a6
 		(occupied__ca1a6 
 			(true (occupied__ca2a6 
@@ -13045,8 +13045,8 @@ action noop
 					(true (0.0))
 					(false (1.0))))))
 			(false (occupied__ca1a6' 
-				(true (0.113538474))
-				(false (0.8864615259999999)))))
+				(true (0.1621306))
+				(false (0.8378694)))))
 	occupied__ca6a2
 		(occupied__ca6a1 
 			(true (occupied__ca6a2 

@@ -30,14 +30,28 @@
 // 2) Whether or not to repair the tools.
 // 3) Whether or not to risk damage to the tools.
 //
+// This domain contains elements of the Rock Sample and Mars Rover domains:
+//
+// * Mars Rover reference:
+//
+//   John L. Bresina, Richard Dearden, Nicolas Meuleau, Sailesh Ramkrishnan, 
+//   David E. Smith, Richard Washington: Planning under Continuous Time and 
+//   Resource Uncertainty: A Challenge for AI. UAI 2002: 77-84.
+//   http://ti.arc.nasa.gov/static/asanicms/pub-archive/archive/2002-0339.pdf
+// 
+// * Rock Sample reference:
+//
+//   Trey Smith and Reid G. Simmons: Heuristic Search Value Iteration for 
+//   POMDPs.  UAI 2004.  http://www.cs.cmu.edu/~trey/papers/smith04_hsvi.pdf
+//
 ////////////////////////////////////////////////////////////////////
 
 domain recon_pomdp {
   	
 	requirements = { 
 		reward-deterministic,
-		partially-observed,
-		constrained-state
+//		constrained-state,
+		partially-observed
 	};
 
 	types { 
@@ -219,11 +233,11 @@ domain recon_pomdp {
 				  [ ~lifeDetected(?o) ^ exists_{?x : x_pos, ?y : y_pos, ?a: agent, ?t: tool} [agentAt(?a, ?x, ?y) ^ objAt(?o, ?x, ?y) ^ useToolOn(?a, ?t, ?o) ^ CAMERA_TOOL(?t)]])
 			 ]; 
 
-	state-action-constraints {
-		(sum_{?t: tool} [WATER_TOOL(?t)]) >= 1;
-		(sum_{?t: tool} [CAMERA_TOOL(?t)]) >= 1;
-		(sum_{?t: tool} [LIFE_TOOL(?t)]) >= 1;
-	};
+//	state-action-constraints {
+//		(sum_{?t: tool} [WATER_TOOL(?t)]) >= 1;
+//		(sum_{?t: tool} [CAMERA_TOOL(?t)]) >= 1;
+//		(sum_{?t: tool} [LIFE_TOOL(?t)]) >= 1;
+//	};
 
 }
 

@@ -116,7 +116,7 @@ public class Simulator {
 			String instance_name = args[2];
 			String state_viz_class_name = "rddl.viz.GenericScreenDisplay";
 			int rand_seed = 123456;
-			if (args.length == 4)
+			if (args.length >= 4)
 				state_viz_class_name = args[3];
 			if (args.length == 5)
 				rand_seed = new Integer(args[4]);

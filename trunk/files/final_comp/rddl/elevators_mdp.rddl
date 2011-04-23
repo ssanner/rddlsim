@@ -29,8 +29,8 @@
 domain elevators_mdp {
 	
 	requirements = { 
-		reward-deterministic,
-		constrained-state
+		constrained-state,
+		reward-deterministic
 	};
 	
 	types {
@@ -45,7 +45,7 @@ domain elevators_mdp {
 		
 		// Penalty for persons in the elevator going in right/wrong direction
 		// Note: a constant 1.0 penalty for people waiting at a floor 
-		ELEVATOR-PENALTY-RIGHT-DIR : { non-fluent, real, default = 0.50 };
+		ELEVATOR-PENALTY-RIGHT-DIR : { non-fluent, real, default = 0.75 };
 		ELEVATOR-PENALTY-WRONG-DIR : { non-fluent, real, default = 3.00 };
 
 		// Useful definitions

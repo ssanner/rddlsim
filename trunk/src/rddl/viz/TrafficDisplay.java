@@ -94,7 +94,7 @@ public class TrafficDisplay extends StateViz {
 			int row = new Integer(split[1]);
 			int col = new Integer(split[2]);
 			Color c = _bd._colors[row % _bd._colors.length];
-			System.out.println(occupied + " (" + row + "," + col + ") = " + occ);
+			//System.out.println(occupied + " (" + row + "," + col + ") = " + occ);
 
 			_bd.setCell(row, col, c, occ ? null : ".");
 		}

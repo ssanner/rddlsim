@@ -139,7 +139,7 @@ public class ElevatorMDPGen {
 				s += ",";
 		}
 		s += " }; \n\t}; \n\tnon-fluents {\n";
-		s += "\t\tELEVATOR-PENALTY-RIGHT-DIR = " + 0.50 + ";\n";
+		s += "\t\tELEVATOR-PENALTY-RIGHT-DIR = " + 0.75 + ";\n";
 		s += "\t\tELEVATOR-PENALTY-WRONG-DIR = " + 3.00 + ";\n";
 		for (int e = 0; e < floors; e++) {
 			if (e != 0 && e != (floors-1))
