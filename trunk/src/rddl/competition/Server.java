@@ -638,9 +638,8 @@ public class Server implements Runnable {
 				Element el = (Element)nl.item(i);
 				returnVal.add(el.getFirstChild().getNodeValue());
 			}
-			return returnVal;
 		}
-		return null;
+		return returnVal;
 	}
 	
 	static String createXMLTurn (State state, int turn, DOMAIN domain,
