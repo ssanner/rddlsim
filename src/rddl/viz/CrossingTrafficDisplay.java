@@ -53,10 +53,10 @@ public class CrossingTrafficDisplay extends StateViz {
 		PVAR_NAME obstacle_at = new PVAR_NAME("obstacle-at");
 
 		if (_bd == null) {
-			int max_row = list_xpos.size() - 1;
-			int max_col = list_ypos.size() - 1;
+			int max_row = list_ypos.size() - 1;
+			int max_col = list_xpos.size() - 1;
 
-			_bd= new BlockDisplay("RDDL Crowded Room Simulation", "RDDL Crowded Room Simulation", max_row + 2, max_col + 2);	
+			_bd= new BlockDisplay("RDDL Crossing Traffic Simulation", "RDDL Crossing Traffic Simulation", max_row + 2, max_col + 2);	
 		}
 		
 		// Set up an arity-1 parameter list

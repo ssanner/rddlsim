@@ -56,8 +56,8 @@ action askProb__s0
 							(false (1.0))))))))
 				(false (updateTurn__s1 
 					(true (proficiencyHigh__s0' 
-						(true (0.99))
-						(false (0.010000000000000009))))
+						(true (0.9564708054065705))
+						(false (0.04352919459342952))))
 					(false (proficiencyHigh__s0' 
 						(true (1.0))
 						(false (0.0))))))))
@@ -92,8 +92,8 @@ action askProb__s0
 								(true (0.0))
 								(false (1.0))))))))
 					(false (proficiencyHigh__s1' 
-						(true (0.99))
-						(false (0.010000000000000009))))))
+						(true (0.9812308311462402))
+						(false (0.018769168853759788))))))
 				(false (updateTurn__s1 
 					(true (answeredRight__s1 
 						(true (proficiencyHigh__s1' 
@@ -151,8 +151,8 @@ action askProb__s0
 						(true (0.0))
 						(false (1.0))))
 					(false (answeredRight__s0' 
-						(true (0.8617379))
-						(false (0.13826210000000005))))))))
+						(true (0.9066789))
+						(false (0.09332110000000005))))))))
 			(false (updateTurn__s0 
 				(true (answeredRight__s0' 
 					(true (0.0))
@@ -163,11 +163,11 @@ action askProb__s0
 						(false (1.0))))
 					(false (proficiencyMed__s0 
 						(true (answeredRight__s0' 
-							(true (0.6914049))
-							(false (0.3085951))))
+							(true (0.71801746))
+							(false (0.28198254))))
 						(false (answeredRight__s0' 
-							(true (0.5455291))
-							(false (0.4544709)))))))))))
+							(true (0.56987906))
+							(false (0.43012094)))))))))))
 	answeredRight__s1
 		(answeredRight__s1' 
 			(true (0.0))
@@ -270,17 +270,17 @@ action askProb__s0
 			(false (1.0)))
 	cost [+ 
 		(proficiencyHigh__s0 
-			(true (-1.3806796))
+			(true (-1.1778302))
 			(false (0.0)))
 		(proficiencyHigh__s1 
-			(true (-1.1388297))
+			(true (-1.2346091))
 			(false (0.0)))
 		(proficiencyMed__s0 
 			(true (0.0))
-			(false (1.3806796)))
+			(false (1.1778302)))
 		(proficiencyMed__s1 
 			(true (0.0))
-			(false (1.1388297)))
+			(false (1.2346091)))
 	]
 endaction
 
@@ -309,8 +309,8 @@ action askProb__s1
 							(false (1.0))))))))
 				(false (updateTurn__s1 
 					(true (proficiencyHigh__s0' 
-						(true (0.99))
-						(false (0.010000000000000009))))
+						(true (0.9564708054065705))
+						(false (0.04352919459342952))))
 					(false (proficiencyHigh__s0' 
 						(true (1.0))
 						(false (0.0))))))))
@@ -345,8 +345,8 @@ action askProb__s1
 								(true (0.0))
 								(false (1.0))))))))
 					(false (proficiencyHigh__s1' 
-						(true (0.99))
-						(false (0.010000000000000009))))))
+						(true (0.9812308311462402))
+						(false (0.018769168853759788))))))
 				(false (updateTurn__s1 
 					(true (answeredRight__s1 
 						(true (proficiencyHigh__s1' 
@@ -408,8 +408,8 @@ action askProb__s1
 						(true (0.0))
 						(false (1.0))))
 					(false (answeredRight__s1' 
-						(true (0.965685))
-						(false (0.034314999999999984))))))))
+						(true (0.9543038))
+						(false (0.045696199999999965))))))))
 			(false (updateTurn__s0 
 				(true (answeredRight__s1' 
 					(true (0.0))
@@ -420,11 +420,11 @@ action askProb__s1
 						(false (1.0))))
 					(false (proficiencyMed__s1 
 						(true (answeredRight__s1' 
-							(true (0.72438335))
-							(false (0.27561665))))
+							(true (0.7900833))
+							(false (0.20991669999999996))))
 						(false (answeredRight__s1' 
-							(true (0.5865933))
-							(false (0.4134067)))))))))))
+							(true (0.7414986))
+							(false (0.2585014)))))))))))
 	proficiencyMed__s0
 		(hintedRight__s0 
 			(true (proficiencyHigh__s0 
@@ -523,17 +523,17 @@ action askProb__s1
 			(false (1.0)))
 	cost [+ 
 		(proficiencyHigh__s0 
-			(true (-1.3806796))
+			(true (-1.1778302))
 			(false (0.0)))
 		(proficiencyHigh__s1 
-			(true (-1.1388297))
+			(true (-1.2346091))
 			(false (0.0)))
 		(proficiencyMed__s0 
 			(true (0.0))
-			(false (1.3806796)))
+			(false (1.1778302)))
 		(proficiencyMed__s1 
 			(true (0.0))
-			(false (1.1388297)))
+			(false (1.2346091)))
 	]
 endaction
 
@@ -570,8 +570,8 @@ action giveHint__s0
 							(false (1.0))))))))
 				(false (updateTurn__s1 
 					(true (proficiencyHigh__s0' 
-						(true (0.99))
-						(false (0.010000000000000009))))
+						(true (0.9564708054065705))
+						(false (0.04352919459342952))))
 					(false (proficiencyHigh__s0' 
 						(true (1.0))
 						(false (0.0))))))))
@@ -606,8 +606,8 @@ action giveHint__s0
 								(true (0.0))
 								(false (1.0))))))))
 					(false (proficiencyHigh__s1' 
-						(true (0.99))
-						(false (0.010000000000000009))))))
+						(true (0.9812308311462402))
+						(false (0.018769168853759788))))))
 				(false (updateTurn__s1 
 					(true (answeredRight__s1 
 						(true (proficiencyHigh__s1' 
@@ -768,17 +768,17 @@ action giveHint__s0
 			(false (1.0)))
 	cost [+ 
 		(proficiencyHigh__s0 
-			(true (-1.3806796))
+			(true (-1.1778302))
 			(false (0.0)))
 		(proficiencyHigh__s1 
-			(true (-1.1388297))
+			(true (-1.2346091))
 			(false (0.0)))
 		(proficiencyMed__s0 
 			(true (0.0))
-			(false (1.3806796)))
+			(false (1.1778302)))
 		(proficiencyMed__s1 
 			(true (0.0))
-			(false (1.1388297)))
+			(false (1.2346091)))
 	]
 endaction
 
@@ -815,8 +815,8 @@ action giveHint__s1
 							(false (1.0))))))))
 				(false (updateTurn__s1 
 					(true (proficiencyHigh__s0' 
-						(true (0.99))
-						(false (0.010000000000000009))))
+						(true (0.9564708054065705))
+						(false (0.04352919459342952))))
 					(false (proficiencyHigh__s0' 
 						(true (1.0))
 						(false (0.0))))))))
@@ -851,8 +851,8 @@ action giveHint__s1
 								(true (0.0))
 								(false (1.0))))))))
 					(false (proficiencyHigh__s1' 
-						(true (0.99))
-						(false (0.010000000000000009))))))
+						(true (0.9812308311462402))
+						(false (0.018769168853759788))))))
 				(false (updateTurn__s1 
 					(true (answeredRight__s1 
 						(true (proficiencyHigh__s1' 
@@ -1013,17 +1013,17 @@ action giveHint__s1
 					(false (0.0)))))))
 	cost [+ 
 		(proficiencyHigh__s0 
-			(true (-1.3806796))
+			(true (-1.1778302))
 			(false (0.0)))
 		(proficiencyHigh__s1 
-			(true (-1.1388297))
+			(true (-1.2346091))
 			(false (0.0)))
 		(proficiencyMed__s0 
 			(true (0.0))
-			(false (1.3806796)))
+			(false (1.1778302)))
 		(proficiencyMed__s1 
 			(true (0.0))
-			(false (1.1388297)))
+			(false (1.2346091)))
 	]
 endaction
 
@@ -1052,8 +1052,8 @@ action noop
 							(false (1.0))))))))
 				(false (updateTurn__s1 
 					(true (proficiencyHigh__s0' 
-						(true (0.99))
-						(false (0.010000000000000009))))
+						(true (0.9564708054065705))
+						(false (0.04352919459342952))))
 					(false (proficiencyHigh__s0' 
 						(true (1.0))
 						(false (0.0))))))))
@@ -1088,8 +1088,8 @@ action noop
 								(true (0.0))
 								(false (1.0))))))))
 					(false (proficiencyHigh__s1' 
-						(true (0.99))
-						(false (0.010000000000000009))))))
+						(true (0.9812308311462402))
+						(false (0.018769168853759788))))))
 				(false (updateTurn__s1 
 					(true (answeredRight__s1 
 						(true (proficiencyHigh__s1' 
@@ -1234,17 +1234,17 @@ action noop
 			(false (1.0)))
 	cost [+ 
 		(proficiencyHigh__s0 
-			(true (-1.3806796))
+			(true (-1.1778302))
 			(false (0.0)))
 		(proficiencyHigh__s1 
-			(true (-1.1388297))
+			(true (-1.2346091))
 			(false (0.0)))
 		(proficiencyMed__s0 
 			(true (0.0))
-			(false (1.3806796)))
+			(false (1.1778302)))
 		(proficiencyMed__s1 
 			(true (0.0))
-			(false (1.1388297)))
+			(false (1.2346091)))
 	]
 endaction
 

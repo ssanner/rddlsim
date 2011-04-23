@@ -21,7 +21,7 @@ domain elevators_mdp {
     BOTTOM-FLOOR(floor) : {non-fluent, bool, default = false};
     ARRIVE-PARAM(floor) : {non-fluent, real, default = 0.0};
     ELEVATOR-PENALTY-WRONG-DIR : {non-fluent, real, default = 3.0};
-    ELEVATOR-PENALTY-RIGHT-DIR : {non-fluent, real, default = 0.5};
+    ELEVATOR-PENALTY-RIGHT-DIR : {non-fluent, real, default = 0.75};
     person-in-elevator-going-up(elevator) : {state-fluent, bool, default = false};
     open-door-going-down(elevator) : {action-fluent, bool, default = false};
     open-door-going-up(elevator) : {action-fluent, bool, default = false};

@@ -32,8 +32,8 @@
 
 domain crossing_traffic_mdp {
 	requirements = {
-		reward-deterministic,
-		constrained-state
+//		constrained-state,
+		reward-deterministic
 	};
 	
 	types {
@@ -129,26 +129,26 @@ domain crossing_traffic_mdp {
 	// 0 reward for reaching goal, -1 in all other cases
 	reward = [sum_{?x : xpos, ?y : ypos} -(GOAL(?x,?y) ^ ~robot-at(?x,?y))]; 
 	
-	state-action-constraints {
-	
-		// Robot at exactly one position
-		[sum_{?x : xpos, ?y : ypos} robot-at(?x,?y)] <= 1;
-		
-		// EAST, WEST, NORTH, SOUTH defined properly (unique and symmetric)
-		forall_{?x1 : xpos} [(sum_{?x2 : xpos} WEST(?x1,?x2)) <= 1];
-		forall_{?x1 : xpos} [(sum_{?x2 : xpos} EAST(?x1,?x2)) <= 1];
-		forall_{?y1 : ypos} [(sum_{?y2 : ypos} NORTH(?y1,?y2)) <= 1];
-		forall_{?y1 : ypos} [(sum_{?y2 : ypos} SOUTH(?y1,?y2)) <= 1];
-		forall_{?x1 : xpos, ?x2 : xpos} [ EAST(?x1,?x2) <=> WEST(?x2,?x1) ];
-		forall_{?y1 : ypos, ?y2 : ypos} [ SOUTH(?y1,?y2) <=> NORTH(?y2,?y1) ];
-
-		// Definition verification
-		[ sum_{?x : xpos} MIN-XPOS(?x) ] == 1;
-		[ sum_{?x : xpos} MAX-XPOS(?x) ] == 1;
-		[ sum_{?y : ypos} MIN-YPOS(?y) ] == 1;
-		[ sum_{?y : ypos} MAX-YPOS(?y) ] == 1;
-		[ sum_{?x : xpos, ?y : ypos} GOAL(?x,?y) ] == 1;
-		
-	};
+//	state-action-constraints {
+//	
+//		// Robot at exactly one position
+//		[sum_{?x : xpos, ?y : ypos} robot-at(?x,?y)] <= 1;
+//		
+//		// EAST, WEST, NORTH, SOUTH defined properly (unique and symmetric)
+//		forall_{?x1 : xpos} [(sum_{?x2 : xpos} WEST(?x1,?x2)) <= 1];
+//		forall_{?x1 : xpos} [(sum_{?x2 : xpos} EAST(?x1,?x2)) <= 1];
+//		forall_{?y1 : ypos} [(sum_{?y2 : ypos} NORTH(?y1,?y2)) <= 1];
+//		forall_{?y1 : ypos} [(sum_{?y2 : ypos} SOUTH(?y1,?y2)) <= 1];
+//		forall_{?x1 : xpos, ?x2 : xpos} [ EAST(?x1,?x2) <=> WEST(?x2,?x1) ];
+//		forall_{?y1 : ypos, ?y2 : ypos} [ SOUTH(?y1,?y2) <=> NORTH(?y2,?y1) ];
+//
+//		// Definition verification
+//		[ sum_{?x : xpos} MIN-XPOS(?x) ] == 1;
+//		[ sum_{?x : xpos} MAX-XPOS(?x) ] == 1;
+//		[ sum_{?y : ypos} MIN-YPOS(?y) ] == 1;
+//		[ sum_{?y : ypos} MAX-YPOS(?y) ] == 1;
+//		[ sum_{?x : xpos, ?y : ypos} GOAL(?x,?y) ] == 1;
+//		
+//	};
 	
 }

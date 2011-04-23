@@ -19,7 +19,7 @@ domain sysadmin_mdp {
 	pvariables { 
     		  		    		  		
 		REBOOT-PROB : { non-fluent, real, default = 0.1 };
-		REBOOT-PENALTY : { non-fluent, real, default = 0.5 };
+		REBOOT-PENALTY : { non-fluent, real, default = 0.75 };
 
 		CONNECTED(computer, computer) : { non-fluent, bool, default = false };
 

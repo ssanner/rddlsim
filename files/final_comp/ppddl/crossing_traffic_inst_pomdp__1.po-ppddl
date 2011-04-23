@@ -360,6 +360,7 @@
 	(:domain crossing_traffic_pomdp)
 	(:init 
 		(obstacle_at__x1_y2)
+		(obstacle_at__x2_y2)
 		(obstacle_at__x3_y2)
 		(robot_at__x3_y1)
 	)

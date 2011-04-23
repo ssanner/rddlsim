@@ -291,6 +291,14 @@ public class Server implements Runnable {
 					if (SHOW_ACTIONS)
 						System.out.println("** Actions received: " + ds);
 					
+					// Check state-action constraints (also checks maxNonDefActions)
+					try {
+						state.checkStateActionConstraints(ds);
+					} catch (Exception e) {
+						System.out.println("TRIAL ERROR -- STATE-ACTION CONSTRAINT VIOLATION:\n" + e);
+						break;
+					}
+					
 					try {
 						state.computeNextState(ds, rand);
 					} catch (Exception ee) {

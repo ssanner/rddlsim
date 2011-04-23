@@ -5,10 +5,10 @@ non-fluents nf_elevators_inst_pomdp__1 {
 		floor : {f0,f1,f2 }; 
 	}; 
 	non-fluents {
-		ELEVATOR-PENALTY-RIGHT-DIR = 0.5;
+		ELEVATOR-PENALTY-RIGHT-DIR = 0.75;
 		ELEVATOR-PENALTY-WRONG-DIR = 3.0;
 		ADJACENT-UP(f0,f1) = true;
-		ARRIVE-PARAM(f1) = 0.09809042;
+		ARRIVE-PARAM(f1) = 0.048779503;
 		ADJACENT-UP(f1,f2) = true;
 		TOP-FLOOR(f2) = true;
 		BOTTOM-FLOOR(f0) = true;

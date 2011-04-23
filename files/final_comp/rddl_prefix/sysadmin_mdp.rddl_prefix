@@ -8,7 +8,7 @@ domain sysadmin_mdp {
   pvariables {
     reboot(computer) : {action-fluent, bool, default = false};
     CONNECTED(computer, computer) : {non-fluent, bool, default = false};
-    REBOOT-PENALTY : {non-fluent, real, default = 0.5};
+    REBOOT-PENALTY : {non-fluent, real, default = 0.75};
     REBOOT-PROB : {non-fluent, real, default = 0.1};
     running(computer) : {state-fluent, bool, default = false};
   };
