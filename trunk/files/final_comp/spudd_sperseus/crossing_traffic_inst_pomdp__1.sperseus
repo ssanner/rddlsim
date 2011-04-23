@@ -1,0 +1,1326 @@
+// Automatically produced by rddl.translate.RDDL2Format
+// SPUDD / Symbolic Perseus Format for 'crossing_traffic_pomdp.crossing_traffic_inst_pomdp__1'
+
+(variables 
+	(obstacle_at__x1_y1 true false)
+	(obstacle_at__x1_y2 true false)
+	(obstacle_at__x1_y3 true false)
+	(obstacle_at__x2_y1 true false)
+	(obstacle_at__x2_y2 true false)
+	(obstacle_at__x2_y3 true false)
+	(obstacle_at__x3_y1 true false)
+	(obstacle_at__x3_y2 true false)
+	(obstacle_at__x3_y3 true false)
+	(robot_at__x1_y1 true false)
+	(robot_at__x1_y2 true false)
+	(robot_at__x1_y3 true false)
+	(robot_at__x2_y1 true false)
+	(robot_at__x2_y2 true false)
+	(robot_at__x2_y3 true false)
+	(robot_at__x3_y1 true false)
+	(robot_at__x3_y2 true false)
+	(robot_at__x3_y3 true false)
+)
+
+(observations 
+	(arrival_max_xpos__y1 true false)
+	(arrival_max_xpos__y2 true false)
+	(arrival_max_xpos__y3 true false)
+)
+
+init [*
+	(obstacle_at__x1_y1 (true (0.0)) (false (1.0)))
+	(obstacle_at__x1_y2 (true (1.0)) (false (0.0)))
+	(obstacle_at__x1_y3 (true (0.0)) (false (1.0)))
+	(obstacle_at__x2_y1 (true (0.0)) (false (1.0)))
+	(obstacle_at__x2_y2 (true (0.0)) (false (1.0)))
+	(obstacle_at__x2_y3 (true (0.0)) (false (1.0)))
+	(obstacle_at__x3_y1 (true (0.0)) (false (1.0)))
+	(obstacle_at__x3_y2 (true (1.0)) (false (0.0)))
+	(obstacle_at__x3_y3 (true (0.0)) (false (1.0)))
+	(robot_at__x1_y1 (true (0.0)) (false (1.0)))
+	(robot_at__x1_y2 (true (0.0)) (false (1.0)))
+	(robot_at__x1_y3 (true (0.0)) (false (1.0)))
+	(robot_at__x2_y1 (true (0.0)) (false (1.0)))
+	(robot_at__x2_y2 (true (0.0)) (false (1.0)))
+	(robot_at__x2_y3 (true (0.0)) (false (1.0)))
+	(robot_at__x3_y1 (true (1.0)) (false (0.0)))
+	(robot_at__x3_y2 (true (0.0)) (false (1.0)))
+	(robot_at__x3_y3 (true (0.0)) (false (1.0)))
+]
+
+action move_east
+	obstacle_at__x1_y1
+		(obstacle_at__x1_y1' 
+			(true (0.0))
+			(false (1.0)))
+	obstacle_at__x1_y2
+		(obstacle_at__x2_y2 
+			(true (obstacle_at__x1_y2' 
+				(true (1.0))
+				(false (0.0))))
+			(false (obstacle_at__x1_y2' 
+				(true (0.0))
+				(false (1.0)))))
+	obstacle_at__x1_y3
+		(obstacle_at__x1_y3' 
+			(true (0.0))
+			(false (1.0)))
+	obstacle_at__x2_y1
+		(obstacle_at__x2_y1' 
+			(true (0.0))
+			(false (1.0)))
+	obstacle_at__x2_y2
+		(obstacle_at__x3_y2 
+			(true (obstacle_at__x2_y2' 
+				(true (1.0))
+				(false (0.0))))
+			(false (obstacle_at__x2_y2' 
+				(true (0.0))
+				(false (1.0)))))
+	obstacle_at__x2_y3
+		(obstacle_at__x2_y3' 
+			(true (0.0))
+			(false (1.0)))
+	obstacle_at__x3_y1
+		(obstacle_at__x3_y1' 
+			(true (0.0))
+			(false (1.0)))
+	obstacle_at__x3_y2
+		(obstacle_at__x3_y2' 
+			(true (0.2))
+			(false (0.8)))
+	obstacle_at__x3_y3
+		(obstacle_at__x3_y3' 
+			(true (0.0))
+			(false (1.0)))
+	robot_at__x1_y1
+		(robot_at__x1_y1' 
+			(true (0.0))
+			(false (1.0)))
+	robot_at__x1_y2
+		(robot_at__x1_y2' 
+			(true (0.0))
+			(false (1.0)))
+	robot_at__x1_y3
+		(robot_at__x1_y3' 
+			(true (0.0))
+			(false (1.0)))
+	robot_at__x2_y1
+		(obstacle_at__x1_y1 
+			(true (robot_at__x2_y1' 
+				(true (0.0))
+				(false (1.0))))
+			(false (robot_at__x1_y1 
+				(true (robot_at__x3_y3 
+					(true (robot_at__x2_y1' 
+						(true (0.0))
+						(false (1.0))))
+					(false (robot_at__x2_y1' 
+						(true (1.0))
+						(false (0.0))))))
+				(false (robot_at__x2_y1' 
+					(true (0.0))
+					(false (1.0)))))))
+	robot_at__x2_y2
+		(obstacle_at__x1_y2 
+			(true (robot_at__x2_y2' 
+				(true (0.0))
+				(false (1.0))))
+			(false (robot_at__x1_y2 
+				(true (robot_at__x3_y3 
+					(true (robot_at__x2_y2' 
+						(true (0.0))
+						(false (1.0))))
+					(false (robot_at__x2_y2' 
+						(true (1.0))
+						(false (0.0))))))
+				(false (robot_at__x2_y2' 
+					(true (0.0))
+					(false (1.0)))))))
+	robot_at__x2_y3
+		(obstacle_at__x1_y3 
+			(true (robot_at__x2_y3' 
+				(true (0.0))
+				(false (1.0))))
+			(false (robot_at__x1_y3 
+				(true (robot_at__x3_y3 
+					(true (robot_at__x2_y3' 
+						(true (0.0))
+						(false (1.0))))
+					(false (robot_at__x2_y3' 
+						(true (1.0))
+						(false (0.0))))))
+				(false (robot_at__x2_y3' 
+					(true (0.0))
+					(false (1.0)))))))
+	robot_at__x3_y1
+		(obstacle_at__x2_y1 
+			(true (obstacle_at__x3_y1 
+				(true (robot_at__x3_y1' 
+					(true (0.0))
+					(false (1.0))))
+				(false (robot_at__x3_y1 
+					(true (robot_at__x3_y3 
+						(true (robot_at__x3_y1' 
+							(true (0.0))
+							(false (1.0))))
+						(false (robot_at__x3_y1' 
+							(true (1.0))
+							(false (0.0))))))
+					(false (robot_at__x3_y1' 
+						(true (0.0))
+						(false (1.0))))))))
+			(false (obstacle_at__x3_y1 
+				(true (robot_at__x2_y1 
+					(true (robot_at__x3_y3 
+						(true (robot_at__x3_y1' 
+							(true (0.0))
+							(false (1.0))))
+						(false (robot_at__x3_y1' 
+							(true (1.0))
+							(false (0.0))))))
+					(false (robot_at__x3_y1' 
+						(true (0.0))
+						(false (1.0))))))
+				(false (robot_at__x2_y1 
+					(true (robot_at__x3_y3 
+						(true (robot_at__x3_y1' 
+							(true (0.0))
+							(false (1.0))))
+						(false (robot_at__x3_y1' 
+							(true (1.0))
+							(false (0.0))))))
+					(false (robot_at__x3_y1 
+						(true (robot_at__x3_y3 
+							(true (robot_at__x3_y1' 
+								(true (0.0))
+								(false (1.0))))
+							(false (robot_at__x3_y1' 
+								(true (1.0))
+								(false (0.0))))))
+						(false (robot_at__x3_y1' 
+							(true (0.0))
+							(false (1.0)))))))))))
+	robot_at__x3_y2
+		(obstacle_at__x2_y2 
+			(true (obstacle_at__x3_y2 
+				(true (robot_at__x3_y2' 
+					(true (0.0))
+					(false (1.0))))
+				(false (robot_at__x3_y2 
+					(true (robot_at__x3_y3 
+						(true (robot_at__x3_y2' 
+							(true (0.0))
+							(false (1.0))))
+						(false (robot_at__x3_y2' 
+							(true (1.0))
+							(false (0.0))))))
+					(false (robot_at__x3_y2' 
+						(true (0.0))
+						(false (1.0))))))))
+			(false (obstacle_at__x3_y2 
+				(true (robot_at__x2_y2 
+					(true (robot_at__x3_y3 
+						(true (robot_at__x3_y2' 
+							(true (0.0))
+							(false (1.0))))
+						(false (robot_at__x3_y2' 
+							(true (1.0))
+							(false (0.0))))))
+					(false (robot_at__x3_y2' 
+						(true (0.0))
+						(false (1.0))))))
+				(false (robot_at__x2_y2 
+					(true (robot_at__x3_y3 
+						(true (robot_at__x3_y2' 
+							(true (0.0))
+							(false (1.0))))
+						(false (robot_at__x3_y2' 
+							(true (1.0))
+							(false (0.0))))))
+					(false (robot_at__x3_y2 
+						(true (robot_at__x3_y3 
+							(true (robot_at__x3_y2' 
+								(true (0.0))
+								(false (1.0))))
+							(false (robot_at__x3_y2' 
+								(true (1.0))
+								(false (0.0))))))
+						(false (robot_at__x3_y2' 
+							(true (0.0))
+							(false (1.0)))))))))))
+	robot_at__x3_y3
+		(obstacle_at__x2_y3 
+			(true (robot_at__x3_y3 
+				(true (robot_at__x3_y3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (robot_at__x3_y3' 
+					(true (0.0))
+					(false (1.0))))))
+			(false (robot_at__x2_y3 
+				(true (robot_at__x3_y3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (robot_at__x3_y3 
+					(true (robot_at__x3_y3' 
+						(true (1.0))
+						(false (0.0))))
+					(false (robot_at__x3_y3' 
+						(true (0.0))
+						(false (1.0)))))))))
+	observe 
+		arrival_max_xpos__y1
+			(obstacle_at__x3_y1' 
+				(true (arrival_max_xpos__y1' 
+					(true (1.0))
+					(false (0.0))))
+				(false (arrival_max_xpos__y1' 
+					(true (0.0))
+					(false (1.0)))))
+		arrival_max_xpos__y2
+			(obstacle_at__x3_y2' 
+				(true (arrival_max_xpos__y2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (arrival_max_xpos__y2' 
+					(true (0.0))
+					(false (1.0)))))
+		arrival_max_xpos__y3
+			(obstacle_at__x3_y3' 
+				(true (arrival_max_xpos__y3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (arrival_max_xpos__y3' 
+					(true (0.0))
+					(false (1.0)))))
+	endobserve
+	cost [+ 
+		(robot_at__x3_y3 
+			(true (0.0))
+			(false (1.0)))
+	]
+endaction
+
+action move_north
+	obstacle_at__x1_y1
+		(obstacle_at__x1_y1' 
+			(true (0.0))
+			(false (1.0)))
+	obstacle_at__x1_y2
+		(obstacle_at__x2_y2 
+			(true (obstacle_at__x1_y2' 
+				(true (1.0))
+				(false (0.0))))
+			(false (obstacle_at__x1_y2' 
+				(true (0.0))
+				(false (1.0)))))
+	obstacle_at__x1_y3
+		(obstacle_at__x1_y3' 
+			(true (0.0))
+			(false (1.0)))
+	obstacle_at__x2_y1
+		(obstacle_at__x2_y1' 
+			(true (0.0))
+			(false (1.0)))
+	obstacle_at__x2_y2
+		(obstacle_at__x3_y2 
+			(true (obstacle_at__x2_y2' 
+				(true (1.0))
+				(false (0.0))))
+			(false (obstacle_at__x2_y2' 
+				(true (0.0))
+				(false (1.0)))))
+	obstacle_at__x2_y3
+		(obstacle_at__x2_y3' 
+			(true (0.0))
+			(false (1.0)))
+	obstacle_at__x3_y1
+		(obstacle_at__x3_y1' 
+			(true (0.0))
+			(false (1.0)))
+	obstacle_at__x3_y2
+		(obstacle_at__x3_y2' 
+			(true (0.2))
+			(false (0.8)))
+	obstacle_at__x3_y3
+		(obstacle_at__x3_y3' 
+			(true (0.0))
+			(false (1.0)))
+	robot_at__x1_y1
+		(robot_at__x1_y1' 
+			(true (0.0))
+			(false (1.0)))
+	robot_at__x1_y2
+		(obstacle_at__x1_y1 
+			(true (robot_at__x1_y2' 
+				(true (0.0))
+				(false (1.0))))
+			(false (robot_at__x1_y1 
+				(true (robot_at__x3_y3 
+					(true (robot_at__x1_y2' 
+						(true (0.0))
+						(false (1.0))))
+					(false (robot_at__x1_y2' 
+						(true (1.0))
+						(false (0.0))))))
+				(false (robot_at__x1_y2' 
+					(true (0.0))
+					(false (1.0)))))))
+	robot_at__x1_y3
+		(obstacle_at__x1_y2 
+			(true (obstacle_at__x1_y3 
+				(true (robot_at__x1_y3' 
+					(true (0.0))
+					(false (1.0))))
+				(false (robot_at__x1_y3 
+					(true (robot_at__x3_y3 
+						(true (robot_at__x1_y3' 
+							(true (0.0))
+							(false (1.0))))
+						(false (robot_at__x1_y3' 
+							(true (1.0))
+							(false (0.0))))))
+					(false (robot_at__x1_y3' 
+						(true (0.0))
+						(false (1.0))))))))
+			(false (obstacle_at__x1_y3 
+				(true (robot_at__x1_y2 
+					(true (robot_at__x3_y3 
+						(true (robot_at__x1_y3' 
+							(true (0.0))
+							(false (1.0))))
+						(false (robot_at__x1_y3' 
+							(true (1.0))
+							(false (0.0))))))
+					(false (robot_at__x1_y3' 
+						(true (0.0))
+						(false (1.0))))))
+				(false (robot_at__x1_y2 
+					(true (robot_at__x3_y3 
+						(true (robot_at__x1_y3' 
+							(true (0.0))
+							(false (1.0))))
+						(false (robot_at__x1_y3' 
+							(true (1.0))
+							(false (0.0))))))
+					(false (robot_at__x1_y3 
+						(true (robot_at__x3_y3 
+							(true (robot_at__x1_y3' 
+								(true (0.0))
+								(false (1.0))))
+							(false (robot_at__x1_y3' 
+								(true (1.0))
+								(false (0.0))))))
+						(false (robot_at__x1_y3' 
+							(true (0.0))
+							(false (1.0)))))))))))
+	robot_at__x2_y1
+		(robot_at__x2_y1' 
+			(true (0.0))
+			(false (1.0)))
+	robot_at__x2_y2
+		(obstacle_at__x2_y1 
+			(true (robot_at__x2_y2' 
+				(true (0.0))
+				(false (1.0))))
+			(false (robot_at__x2_y1 
+				(true (robot_at__x3_y3 
+					(true (robot_at__x2_y2' 
+						(true (0.0))
+						(false (1.0))))
+					(false (robot_at__x2_y2' 
+						(true (1.0))
+						(false (0.0))))))
+				(false (robot_at__x2_y2' 
+					(true (0.0))
+					(false (1.0)))))))
+	robot_at__x2_y3
+		(obstacle_at__x2_y2 
+			(true (obstacle_at__x2_y3 
+				(true (robot_at__x2_y3' 
+					(true (0.0))
+					(false (1.0))))
+				(false (robot_at__x2_y3 
+					(true (robot_at__x3_y3 
+						(true (robot_at__x2_y3' 
+							(true (0.0))
+							(false (1.0))))
+						(false (robot_at__x2_y3' 
+							(true (1.0))
+							(false (0.0))))))
+					(false (robot_at__x2_y3' 
+						(true (0.0))
+						(false (1.0))))))))
+			(false (obstacle_at__x2_y3 
+				(true (robot_at__x2_y2 
+					(true (robot_at__x3_y3 
+						(true (robot_at__x2_y3' 
+							(true (0.0))
+							(false (1.0))))
+						(false (robot_at__x2_y3' 
+							(true (1.0))
+							(false (0.0))))))
+					(false (robot_at__x2_y3' 
+						(true (0.0))
+						(false (1.0))))))
+				(false (robot_at__x2_y2 
+					(true (robot_at__x3_y3 
+						(true (robot_at__x2_y3' 
+							(true (0.0))
+							(false (1.0))))
+						(false (robot_at__x2_y3' 
+							(true (1.0))
+							(false (0.0))))))
+					(false (robot_at__x2_y3 
+						(true (robot_at__x3_y3 
+							(true (robot_at__x2_y3' 
+								(true (0.0))
+								(false (1.0))))
+							(false (robot_at__x2_y3' 
+								(true (1.0))
+								(false (0.0))))))
+						(false (robot_at__x2_y3' 
+							(true (0.0))
+							(false (1.0)))))))))))
+	robot_at__x3_y1
+		(robot_at__x3_y1' 
+			(true (0.0))
+			(false (1.0)))
+	robot_at__x3_y2
+		(obstacle_at__x3_y1 
+			(true (robot_at__x3_y2' 
+				(true (0.0))
+				(false (1.0))))
+			(false (robot_at__x3_y1 
+				(true (robot_at__x3_y3 
+					(true (robot_at__x3_y2' 
+						(true (0.0))
+						(false (1.0))))
+					(false (robot_at__x3_y2' 
+						(true (1.0))
+						(false (0.0))))))
+				(false (robot_at__x3_y2' 
+					(true (0.0))
+					(false (1.0)))))))
+	robot_at__x3_y3
+		(obstacle_at__x3_y2 
+			(true (robot_at__x3_y3 
+				(true (robot_at__x3_y3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (robot_at__x3_y3' 
+					(true (0.0))
+					(false (1.0))))))
+			(false (robot_at__x3_y2 
+				(true (robot_at__x3_y3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (robot_at__x3_y3 
+					(true (robot_at__x3_y3' 
+						(true (1.0))
+						(false (0.0))))
+					(false (robot_at__x3_y3' 
+						(true (0.0))
+						(false (1.0)))))))))
+	observe 
+		arrival_max_xpos__y1
+			(obstacle_at__x3_y1' 
+				(true (arrival_max_xpos__y1' 
+					(true (1.0))
+					(false (0.0))))
+				(false (arrival_max_xpos__y1' 
+					(true (0.0))
+					(false (1.0)))))
+		arrival_max_xpos__y2
+			(obstacle_at__x3_y2' 
+				(true (arrival_max_xpos__y2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (arrival_max_xpos__y2' 
+					(true (0.0))
+					(false (1.0)))))
+		arrival_max_xpos__y3
+			(obstacle_at__x3_y3' 
+				(true (arrival_max_xpos__y3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (arrival_max_xpos__y3' 
+					(true (0.0))
+					(false (1.0)))))
+	endobserve
+	cost [+ 
+		(robot_at__x3_y3 
+			(true (0.0))
+			(false (1.0)))
+	]
+endaction
+
+action move_south
+	obstacle_at__x1_y1
+		(obstacle_at__x1_y1' 
+			(true (0.0))
+			(false (1.0)))
+	obstacle_at__x1_y2
+		(obstacle_at__x2_y2 
+			(true (obstacle_at__x1_y2' 
+				(true (1.0))
+				(false (0.0))))
+			(false (obstacle_at__x1_y2' 
+				(true (0.0))
+				(false (1.0)))))
+	obstacle_at__x1_y3
+		(obstacle_at__x1_y3' 
+			(true (0.0))
+			(false (1.0)))
+	obstacle_at__x2_y1
+		(obstacle_at__x2_y1' 
+			(true (0.0))
+			(false (1.0)))
+	obstacle_at__x2_y2
+		(obstacle_at__x3_y2 
+			(true (obstacle_at__x2_y2' 
+				(true (1.0))
+				(false (0.0))))
+			(false (obstacle_at__x2_y2' 
+				(true (0.0))
+				(false (1.0)))))
+	obstacle_at__x2_y3
+		(obstacle_at__x2_y3' 
+			(true (0.0))
+			(false (1.0)))
+	obstacle_at__x3_y1
+		(obstacle_at__x3_y1' 
+			(true (0.0))
+			(false (1.0)))
+	obstacle_at__x3_y2
+		(obstacle_at__x3_y2' 
+			(true (0.2))
+			(false (0.8)))
+	obstacle_at__x3_y3
+		(obstacle_at__x3_y3' 
+			(true (0.0))
+			(false (1.0)))
+	robot_at__x1_y1
+		(obstacle_at__x1_y1 
+			(true (obstacle_at__x1_y2 
+				(true (robot_at__x1_y1' 
+					(true (0.0))
+					(false (1.0))))
+				(false (robot_at__x1_y2 
+					(true (robot_at__x3_y3 
+						(true (robot_at__x1_y1' 
+							(true (0.0))
+							(false (1.0))))
+						(false (robot_at__x1_y1' 
+							(true (1.0))
+							(false (0.0))))))
+					(false (robot_at__x1_y1' 
+						(true (0.0))
+						(false (1.0))))))))
+			(false (obstacle_at__x1_y2 
+				(true (robot_at__x1_y1 
+					(true (robot_at__x3_y3 
+						(true (robot_at__x1_y1' 
+							(true (0.0))
+							(false (1.0))))
+						(false (robot_at__x1_y1' 
+							(true (1.0))
+							(false (0.0))))))
+					(false (robot_at__x1_y1' 
+						(true (0.0))
+						(false (1.0))))))
+				(false (robot_at__x1_y1 
+					(true (robot_at__x3_y3 
+						(true (robot_at__x1_y1' 
+							(true (0.0))
+							(false (1.0))))
+						(false (robot_at__x1_y1' 
+							(true (1.0))
+							(false (0.0))))))
+					(false (robot_at__x1_y2 
+						(true (robot_at__x3_y3 
+							(true (robot_at__x1_y1' 
+								(true (0.0))
+								(false (1.0))))
+							(false (robot_at__x1_y1' 
+								(true (1.0))
+								(false (0.0))))))
+						(false (robot_at__x1_y1' 
+							(true (0.0))
+							(false (1.0)))))))))))
+	robot_at__x1_y2
+		(obstacle_at__x1_y3 
+			(true (robot_at__x1_y2' 
+				(true (0.0))
+				(false (1.0))))
+			(false (robot_at__x1_y3 
+				(true (robot_at__x3_y3 
+					(true (robot_at__x1_y2' 
+						(true (0.0))
+						(false (1.0))))
+					(false (robot_at__x1_y2' 
+						(true (1.0))
+						(false (0.0))))))
+				(false (robot_at__x1_y2' 
+					(true (0.0))
+					(false (1.0)))))))
+	robot_at__x1_y3
+		(robot_at__x1_y3' 
+			(true (0.0))
+			(false (1.0)))
+	robot_at__x2_y1
+		(obstacle_at__x2_y1 
+			(true (obstacle_at__x2_y2 
+				(true (robot_at__x2_y1' 
+					(true (0.0))
+					(false (1.0))))
+				(false (robot_at__x2_y2 
+					(true (robot_at__x3_y3 
+						(true (robot_at__x2_y1' 
+							(true (0.0))
+							(false (1.0))))
+						(false (robot_at__x2_y1' 
+							(true (1.0))
+							(false (0.0))))))
+					(false (robot_at__x2_y1' 
+						(true (0.0))
+						(false (1.0))))))))
+			(false (obstacle_at__x2_y2 
+				(true (robot_at__x2_y1 
+					(true (robot_at__x3_y3 
+						(true (robot_at__x2_y1' 
+							(true (0.0))
+							(false (1.0))))
+						(false (robot_at__x2_y1' 
+							(true (1.0))
+							(false (0.0))))))
+					(false (robot_at__x2_y1' 
+						(true (0.0))
+						(false (1.0))))))
+				(false (robot_at__x2_y1 
+					(true (robot_at__x3_y3 
+						(true (robot_at__x2_y1' 
+							(true (0.0))
+							(false (1.0))))
+						(false (robot_at__x2_y1' 
+							(true (1.0))
+							(false (0.0))))))
+					(false (robot_at__x2_y2 
+						(true (robot_at__x3_y3 
+							(true (robot_at__x2_y1' 
+								(true (0.0))
+								(false (1.0))))
+							(false (robot_at__x2_y1' 
+								(true (1.0))
+								(false (0.0))))))
+						(false (robot_at__x2_y1' 
+							(true (0.0))
+							(false (1.0)))))))))))
+	robot_at__x2_y2
+		(obstacle_at__x2_y3 
+			(true (robot_at__x2_y2' 
+				(true (0.0))
+				(false (1.0))))
+			(false (robot_at__x2_y3 
+				(true (robot_at__x3_y3 
+					(true (robot_at__x2_y2' 
+						(true (0.0))
+						(false (1.0))))
+					(false (robot_at__x2_y2' 
+						(true (1.0))
+						(false (0.0))))))
+				(false (robot_at__x2_y2' 
+					(true (0.0))
+					(false (1.0)))))))
+	robot_at__x2_y3
+		(robot_at__x2_y3' 
+			(true (0.0))
+			(false (1.0)))
+	robot_at__x3_y1
+		(obstacle_at__x3_y1 
+			(true (obstacle_at__x3_y2 
+				(true (robot_at__x3_y1' 
+					(true (0.0))
+					(false (1.0))))
+				(false (robot_at__x3_y2 
+					(true (robot_at__x3_y3 
+						(true (robot_at__x3_y1' 
+							(true (0.0))
+							(false (1.0))))
+						(false (robot_at__x3_y1' 
+							(true (1.0))
+							(false (0.0))))))
+					(false (robot_at__x3_y1' 
+						(true (0.0))
+						(false (1.0))))))))
+			(false (obstacle_at__x3_y2 
+				(true (robot_at__x3_y1 
+					(true (robot_at__x3_y3 
+						(true (robot_at__x3_y1' 
+							(true (0.0))
+							(false (1.0))))
+						(false (robot_at__x3_y1' 
+							(true (1.0))
+							(false (0.0))))))
+					(false (robot_at__x3_y1' 
+						(true (0.0))
+						(false (1.0))))))
+				(false (robot_at__x3_y1 
+					(true (robot_at__x3_y3 
+						(true (robot_at__x3_y1' 
+							(true (0.0))
+							(false (1.0))))
+						(false (robot_at__x3_y1' 
+							(true (1.0))
+							(false (0.0))))))
+					(false (robot_at__x3_y2 
+						(true (robot_at__x3_y3 
+							(true (robot_at__x3_y1' 
+								(true (0.0))
+								(false (1.0))))
+							(false (robot_at__x3_y1' 
+								(true (1.0))
+								(false (0.0))))))
+						(false (robot_at__x3_y1' 
+							(true (0.0))
+							(false (1.0)))))))))))
+	robot_at__x3_y2
+		(robot_at__x3_y2' 
+			(true (0.0))
+			(false (1.0)))
+	robot_at__x3_y3
+		(robot_at__x3_y3 
+			(true (robot_at__x3_y3' 
+				(true (1.0))
+				(false (0.0))))
+			(false (robot_at__x3_y3' 
+				(true (0.0))
+				(false (1.0)))))
+	observe 
+		arrival_max_xpos__y1
+			(obstacle_at__x3_y1' 
+				(true (arrival_max_xpos__y1' 
+					(true (1.0))
+					(false (0.0))))
+				(false (arrival_max_xpos__y1' 
+					(true (0.0))
+					(false (1.0)))))
+		arrival_max_xpos__y2
+			(obstacle_at__x3_y2' 
+				(true (arrival_max_xpos__y2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (arrival_max_xpos__y2' 
+					(true (0.0))
+					(false (1.0)))))
+		arrival_max_xpos__y3
+			(obstacle_at__x3_y3' 
+				(true (arrival_max_xpos__y3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (arrival_max_xpos__y3' 
+					(true (0.0))
+					(false (1.0)))))
+	endobserve
+	cost [+ 
+		(robot_at__x3_y3 
+			(true (0.0))
+			(false (1.0)))
+	]
+endaction
+
+action move_west
+	obstacle_at__x1_y1
+		(obstacle_at__x1_y1' 
+			(true (0.0))
+			(false (1.0)))
+	obstacle_at__x1_y2
+		(obstacle_at__x2_y2 
+			(true (obstacle_at__x1_y2' 
+				(true (1.0))
+				(false (0.0))))
+			(false (obstacle_at__x1_y2' 
+				(true (0.0))
+				(false (1.0)))))
+	obstacle_at__x1_y3
+		(obstacle_at__x1_y3' 
+			(true (0.0))
+			(false (1.0)))
+	obstacle_at__x2_y1
+		(obstacle_at__x2_y1' 
+			(true (0.0))
+			(false (1.0)))
+	obstacle_at__x2_y2
+		(obstacle_at__x3_y2 
+			(true (obstacle_at__x2_y2' 
+				(true (1.0))
+				(false (0.0))))
+			(false (obstacle_at__x2_y2' 
+				(true (0.0))
+				(false (1.0)))))
+	obstacle_at__x2_y3
+		(obstacle_at__x2_y3' 
+			(true (0.0))
+			(false (1.0)))
+	obstacle_at__x3_y1
+		(obstacle_at__x3_y1' 
+			(true (0.0))
+			(false (1.0)))
+	obstacle_at__x3_y2
+		(obstacle_at__x3_y2' 
+			(true (0.2))
+			(false (0.8)))
+	obstacle_at__x3_y3
+		(obstacle_at__x3_y3' 
+			(true (0.0))
+			(false (1.0)))
+	robot_at__x1_y1
+		(obstacle_at__x1_y1 
+			(true (obstacle_at__x2_y1 
+				(true (robot_at__x1_y1' 
+					(true (0.0))
+					(false (1.0))))
+				(false (robot_at__x2_y1 
+					(true (robot_at__x3_y3 
+						(true (robot_at__x1_y1' 
+							(true (0.0))
+							(false (1.0))))
+						(false (robot_at__x1_y1' 
+							(true (1.0))
+							(false (0.0))))))
+					(false (robot_at__x1_y1' 
+						(true (0.0))
+						(false (1.0))))))))
+			(false (obstacle_at__x2_y1 
+				(true (robot_at__x1_y1 
+					(true (robot_at__x3_y3 
+						(true (robot_at__x1_y1' 
+							(true (0.0))
+							(false (1.0))))
+						(false (robot_at__x1_y1' 
+							(true (1.0))
+							(false (0.0))))))
+					(false (robot_at__x1_y1' 
+						(true (0.0))
+						(false (1.0))))))
+				(false (robot_at__x1_y1 
+					(true (robot_at__x3_y3 
+						(true (robot_at__x1_y1' 
+							(true (0.0))
+							(false (1.0))))
+						(false (robot_at__x1_y1' 
+							(true (1.0))
+							(false (0.0))))))
+					(false (robot_at__x2_y1 
+						(true (robot_at__x3_y3 
+							(true (robot_at__x1_y1' 
+								(true (0.0))
+								(false (1.0))))
+							(false (robot_at__x1_y1' 
+								(true (1.0))
+								(false (0.0))))))
+						(false (robot_at__x1_y1' 
+							(true (0.0))
+							(false (1.0)))))))))))
+	robot_at__x1_y2
+		(obstacle_at__x1_y2 
+			(true (obstacle_at__x2_y2 
+				(true (robot_at__x1_y2' 
+					(true (0.0))
+					(false (1.0))))
+				(false (robot_at__x2_y2 
+					(true (robot_at__x3_y3 
+						(true (robot_at__x1_y2' 
+							(true (0.0))
+							(false (1.0))))
+						(false (robot_at__x1_y2' 
+							(true (1.0))
+							(false (0.0))))))
+					(false (robot_at__x1_y2' 
+						(true (0.0))
+						(false (1.0))))))))
+			(false (obstacle_at__x2_y2 
+				(true (robot_at__x1_y2 
+					(true (robot_at__x3_y3 
+						(true (robot_at__x1_y2' 
+							(true (0.0))
+							(false (1.0))))
+						(false (robot_at__x1_y2' 
+							(true (1.0))
+							(false (0.0))))))
+					(false (robot_at__x1_y2' 
+						(true (0.0))
+						(false (1.0))))))
+				(false (robot_at__x1_y2 
+					(true (robot_at__x3_y3 
+						(true (robot_at__x1_y2' 
+							(true (0.0))
+							(false (1.0))))
+						(false (robot_at__x1_y2' 
+							(true (1.0))
+							(false (0.0))))))
+					(false (robot_at__x2_y2 
+						(true (robot_at__x3_y3 
+							(true (robot_at__x1_y2' 
+								(true (0.0))
+								(false (1.0))))
+							(false (robot_at__x1_y2' 
+								(true (1.0))
+								(false (0.0))))))
+						(false (robot_at__x1_y2' 
+							(true (0.0))
+							(false (1.0)))))))))))
+	robot_at__x1_y3
+		(obstacle_at__x1_y3 
+			(true (obstacle_at__x2_y3 
+				(true (robot_at__x1_y3' 
+					(true (0.0))
+					(false (1.0))))
+				(false (robot_at__x2_y3 
+					(true (robot_at__x3_y3 
+						(true (robot_at__x1_y3' 
+							(true (0.0))
+							(false (1.0))))
+						(false (robot_at__x1_y3' 
+							(true (1.0))
+							(false (0.0))))))
+					(false (robot_at__x1_y3' 
+						(true (0.0))
+						(false (1.0))))))))
+			(false (obstacle_at__x2_y3 
+				(true (robot_at__x1_y3 
+					(true (robot_at__x3_y3 
+						(true (robot_at__x1_y3' 
+							(true (0.0))
+							(false (1.0))))
+						(false (robot_at__x1_y3' 
+							(true (1.0))
+							(false (0.0))))))
+					(false (robot_at__x1_y3' 
+						(true (0.0))
+						(false (1.0))))))
+				(false (robot_at__x1_y3 
+					(true (robot_at__x3_y3 
+						(true (robot_at__x1_y3' 
+							(true (0.0))
+							(false (1.0))))
+						(false (robot_at__x1_y3' 
+							(true (1.0))
+							(false (0.0))))))
+					(false (robot_at__x2_y3 
+						(true (robot_at__x3_y3 
+							(true (robot_at__x1_y3' 
+								(true (0.0))
+								(false (1.0))))
+							(false (robot_at__x1_y3' 
+								(true (1.0))
+								(false (0.0))))))
+						(false (robot_at__x1_y3' 
+							(true (0.0))
+							(false (1.0)))))))))))
+	robot_at__x2_y1
+		(obstacle_at__x3_y1 
+			(true (robot_at__x2_y1' 
+				(true (0.0))
+				(false (1.0))))
+			(false (robot_at__x3_y1 
+				(true (robot_at__x3_y3 
+					(true (robot_at__x2_y1' 
+						(true (0.0))
+						(false (1.0))))
+					(false (robot_at__x2_y1' 
+						(true (1.0))
+						(false (0.0))))))
+				(false (robot_at__x2_y1' 
+					(true (0.0))
+					(false (1.0)))))))
+	robot_at__x2_y2
+		(obstacle_at__x3_y2 
+			(true (robot_at__x2_y2' 
+				(true (0.0))
+				(false (1.0))))
+			(false (robot_at__x3_y2 
+				(true (robot_at__x3_y3 
+					(true (robot_at__x2_y2' 
+						(true (0.0))
+						(false (1.0))))
+					(false (robot_at__x2_y2' 
+						(true (1.0))
+						(false (0.0))))))
+				(false (robot_at__x2_y2' 
+					(true (0.0))
+					(false (1.0)))))))
+	robot_at__x2_y3
+		(robot_at__x2_y3' 
+			(true (0.0))
+			(false (1.0)))
+	robot_at__x3_y1
+		(robot_at__x3_y1' 
+			(true (0.0))
+			(false (1.0)))
+	robot_at__x3_y2
+		(robot_at__x3_y2' 
+			(true (0.0))
+			(false (1.0)))
+	robot_at__x3_y3
+		(robot_at__x3_y3 
+			(true (robot_at__x3_y3' 
+				(true (1.0))
+				(false (0.0))))
+			(false (robot_at__x3_y3' 
+				(true (0.0))
+				(false (1.0)))))
+	observe 
+		arrival_max_xpos__y1
+			(obstacle_at__x3_y1' 
+				(true (arrival_max_xpos__y1' 
+					(true (1.0))
+					(false (0.0))))
+				(false (arrival_max_xpos__y1' 
+					(true (0.0))
+					(false (1.0)))))
+		arrival_max_xpos__y2
+			(obstacle_at__x3_y2' 
+				(true (arrival_max_xpos__y2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (arrival_max_xpos__y2' 
+					(true (0.0))
+					(false (1.0)))))
+		arrival_max_xpos__y3
+			(obstacle_at__x3_y3' 
+				(true (arrival_max_xpos__y3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (arrival_max_xpos__y3' 
+					(true (0.0))
+					(false (1.0)))))
+	endobserve
+	cost [+ 
+		(robot_at__x3_y3 
+			(true (0.0))
+			(false (1.0)))
+	]
+endaction
+
+action noop
+	obstacle_at__x1_y1
+		(obstacle_at__x1_y1' 
+			(true (0.0))
+			(false (1.0)))
+	obstacle_at__x1_y2
+		(obstacle_at__x2_y2 
+			(true (obstacle_at__x1_y2' 
+				(true (1.0))
+				(false (0.0))))
+			(false (obstacle_at__x1_y2' 
+				(true (0.0))
+				(false (1.0)))))
+	obstacle_at__x1_y3
+		(obstacle_at__x1_y3' 
+			(true (0.0))
+			(false (1.0)))
+	obstacle_at__x2_y1
+		(obstacle_at__x2_y1' 
+			(true (0.0))
+			(false (1.0)))
+	obstacle_at__x2_y2
+		(obstacle_at__x3_y2 
+			(true (obstacle_at__x2_y2' 
+				(true (1.0))
+				(false (0.0))))
+			(false (obstacle_at__x2_y2' 
+				(true (0.0))
+				(false (1.0)))))
+	obstacle_at__x2_y3
+		(obstacle_at__x2_y3' 
+			(true (0.0))
+			(false (1.0)))
+	obstacle_at__x3_y1
+		(obstacle_at__x3_y1' 
+			(true (0.0))
+			(false (1.0)))
+	obstacle_at__x3_y2
+		(obstacle_at__x3_y2' 
+			(true (0.2))
+			(false (0.8)))
+	obstacle_at__x3_y3
+		(obstacle_at__x3_y3' 
+			(true (0.0))
+			(false (1.0)))
+	robot_at__x1_y1
+		(obstacle_at__x1_y1 
+			(true (robot_at__x1_y1' 
+				(true (0.0))
+				(false (1.0))))
+			(false (robot_at__x1_y1 
+				(true (robot_at__x3_y3 
+					(true (robot_at__x1_y1' 
+						(true (0.0))
+						(false (1.0))))
+					(false (robot_at__x1_y1' 
+						(true (1.0))
+						(false (0.0))))))
+				(false (robot_at__x1_y1' 
+					(true (0.0))
+					(false (1.0)))))))
+	robot_at__x1_y2
+		(obstacle_at__x1_y2 
+			(true (robot_at__x1_y2' 
+				(true (0.0))
+				(false (1.0))))
+			(false (robot_at__x1_y2 
+				(true (robot_at__x3_y3 
+					(true (robot_at__x1_y2' 
+						(true (0.0))
+						(false (1.0))))
+					(false (robot_at__x1_y2' 
+						(true (1.0))
+						(false (0.0))))))
+				(false (robot_at__x1_y2' 
+					(true (0.0))
+					(false (1.0)))))))
+	robot_at__x1_y3
+		(obstacle_at__x1_y3 
+			(true (robot_at__x1_y3' 
+				(true (0.0))
+				(false (1.0))))
+			(false (robot_at__x1_y3 
+				(true (robot_at__x3_y3 
+					(true (robot_at__x1_y3' 
+						(true (0.0))
+						(false (1.0))))
+					(false (robot_at__x1_y3' 
+						(true (1.0))
+						(false (0.0))))))
+				(false (robot_at__x1_y3' 
+					(true (0.0))
+					(false (1.0)))))))
+	robot_at__x2_y1
+		(obstacle_at__x2_y1 
+			(true (robot_at__x2_y1' 
+				(true (0.0))
+				(false (1.0))))
+			(false (robot_at__x2_y1 
+				(true (robot_at__x3_y3 
+					(true (robot_at__x2_y1' 
+						(true (0.0))
+						(false (1.0))))
+					(false (robot_at__x2_y1' 
+						(true (1.0))
+						(false (0.0))))))
+				(false (robot_at__x2_y1' 
+					(true (0.0))
+					(false (1.0)))))))
+	robot_at__x2_y2
+		(obstacle_at__x2_y2 
+			(true (robot_at__x2_y2' 
+				(true (0.0))
+				(false (1.0))))
+			(false (robot_at__x2_y2 
+				(true (robot_at__x3_y3 
+					(true (robot_at__x2_y2' 
+						(true (0.0))
+						(false (1.0))))
+					(false (robot_at__x2_y2' 
+						(true (1.0))
+						(false (0.0))))))
+				(false (robot_at__x2_y2' 
+					(true (0.0))
+					(false (1.0)))))))
+	robot_at__x2_y3
+		(obstacle_at__x2_y3 
+			(true (robot_at__x2_y3' 
+				(true (0.0))
+				(false (1.0))))
+			(false (robot_at__x2_y3 
+				(true (robot_at__x3_y3 
+					(true (robot_at__x2_y3' 
+						(true (0.0))
+						(false (1.0))))
+					(false (robot_at__x2_y3' 
+						(true (1.0))
+						(false (0.0))))))
+				(false (robot_at__x2_y3' 
+					(true (0.0))
+					(false (1.0)))))))
+	robot_at__x3_y1
+		(obstacle_at__x3_y1 
+			(true (robot_at__x3_y1' 
+				(true (0.0))
+				(false (1.0))))
+			(false (robot_at__x3_y1 
+				(true (robot_at__x3_y3 
+					(true (robot_at__x3_y1' 
+						(true (0.0))
+						(false (1.0))))
+					(false (robot_at__x3_y1' 
+						(true (1.0))
+						(false (0.0))))))
+				(false (robot_at__x3_y1' 
+					(true (0.0))
+					(false (1.0)))))))
+	robot_at__x3_y2
+		(obstacle_at__x3_y2 
+			(true (robot_at__x3_y2' 
+				(true (0.0))
+				(false (1.0))))
+			(false (robot_at__x3_y2 
+				(true (robot_at__x3_y3 
+					(true (robot_at__x3_y2' 
+						(true (0.0))
+						(false (1.0))))
+					(false (robot_at__x3_y2' 
+						(true (1.0))
+						(false (0.0))))))
+				(false (robot_at__x3_y2' 
+					(true (0.0))
+					(false (1.0)))))))
+	robot_at__x3_y3
+		(robot_at__x3_y3 
+			(true (robot_at__x3_y3' 
+				(true (1.0))
+				(false (0.0))))
+			(false (robot_at__x3_y3' 
+				(true (0.0))
+				(false (1.0)))))
+	observe 
+		arrival_max_xpos__y1
+			(obstacle_at__x3_y1' 
+				(true (arrival_max_xpos__y1' 
+					(true (1.0))
+					(false (0.0))))
+				(false (arrival_max_xpos__y1' 
+					(true (0.0))
+					(false (1.0)))))
+		arrival_max_xpos__y2
+			(obstacle_at__x3_y2' 
+				(true (arrival_max_xpos__y2' 
+					(true (1.0))
+					(false (0.0))))
+				(false (arrival_max_xpos__y2' 
+					(true (0.0))
+					(false (1.0)))))
+		arrival_max_xpos__y3
+			(obstacle_at__x3_y3' 
+				(true (arrival_max_xpos__y3' 
+					(true (1.0))
+					(false (0.0))))
+				(false (arrival_max_xpos__y3' 
+					(true (0.0))
+					(false (1.0)))))
+	endobserve
+	cost [+ 
+		(robot_at__x3_y3 
+			(true (0.0))
+			(false (1.0)))
+	]
+endaction
+
+reward
+	(0.0)
+
+discount 1.0
+horizon 40
