@@ -1,0 +1,17 @@
+There are three versions of traffic here (all *logically equivalent*):
+
+- traffic_(po)mdp.rddl.simulate:  
+
+  This version delays nested quantifier evaluation so it simulates 
+  faster in RDDLSim.
+
+- traffic_(po)mdp.rddl.translate: 
+
+  This version places non-fluents earlier in the formula to help 
+  the SPUDD and PPDDL translators better identify relevant variables 
+  in the condition probability functions.
+
+- traffic_(po)mdp.rddl: 
+
+  The same as the simulate version and the one used by the Server
+  in the competition.
