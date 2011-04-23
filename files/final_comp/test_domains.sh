@@ -20,6 +20,3 @@
 
 ./run rddl.sim.Simulator files/final_comp/rddl rddl.policy.RandomBoolPolicy skill_teaching_inst_mdp__10
 ./run rddl.sim.Simulator files/final_comp/rddl rddl.policy.RandomBoolPolicy skill_teaching_inst_pomdp__10
-
-./run rddl.sim.Simulator files/final_comp/rddl rddl.policy.RandomBoolPolicy navigation_inst_mdp__10 rddl.viz.NavigationDisplay
-./run rddl.sim.Simulator files/final_comp/rddl rddl.policy.RandomBoolPolicy navigation_inst_pomdp__10 rddl.viz.NavigationDisplay
