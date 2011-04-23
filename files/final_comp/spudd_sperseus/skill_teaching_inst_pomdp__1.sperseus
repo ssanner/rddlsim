@@ -2,159 +2,127 @@
 // SPUDD / Symbolic Perseus Format for 'skill_teaching_pomdp.skill_teaching_inst_pomdp__1'
 
 (variables 
-	(proficiencyMed__s0 true false)
-	(proficiencyMed__s1 true false)
-	(updateTurn__s0 true false)
-	(updateTurn__s1 true false)
-	(hintDelayVar__s0 true false)
-	(hintDelayVar__s1 true false)
 	(proficiencyHigh__s0 true false)
 	(proficiencyHigh__s1 true false)
-	(fpos__s0 true false)
-	(fpos__s1 true false)
 	(hintedRight__s0 true false)
 	(hintedRight__s1 true false)
+	(updateTurn__s0 true false)
+	(updateTurn__s1 true false)
 	(answeredRight__s0 true false)
 	(answeredRight__s1 true false)
+	(fpos__s0 true false)
+	(fpos__s1 true false)
+	(proficiencyMed__s0 true false)
+	(proficiencyMed__s1 true false)
+	(hintDelayVar__s0 true false)
+	(hintDelayVar__s1 true false)
 )
 
 (observations 
-	(answeredRightObs__s0 true false)
-	(answeredRightObs__s1 true false)
 	(updateTurnObs__s0 true false)
 	(updateTurnObs__s1 true false)
+	(answeredRightObs__s0 true false)
+	(answeredRightObs__s1 true false)
 )
 
 init [*
-	(proficiencyMed__s0 (true (0.0)) (false (1.0)))
-	(proficiencyMed__s1 (true (0.0)) (false (1.0)))
-	(updateTurn__s0 (true (0.0)) (false (1.0)))
-	(updateTurn__s1 (true (0.0)) (false (1.0)))
-	(hintDelayVar__s0 (true (0.0)) (false (1.0)))
-	(hintDelayVar__s1 (true (0.0)) (false (1.0)))
 	(proficiencyHigh__s0 (true (0.0)) (false (1.0)))
 	(proficiencyHigh__s1 (true (0.0)) (false (1.0)))
-	(fpos__s0 (true (0.0)) (false (1.0)))
-	(fpos__s1 (true (0.0)) (false (1.0)))
 	(hintedRight__s0 (true (0.0)) (false (1.0)))
 	(hintedRight__s1 (true (0.0)) (false (1.0)))
+	(updateTurn__s0 (true (0.0)) (false (1.0)))
+	(updateTurn__s1 (true (0.0)) (false (1.0)))
 	(answeredRight__s0 (true (0.0)) (false (1.0)))
 	(answeredRight__s1 (true (0.0)) (false (1.0)))
+	(fpos__s0 (true (0.0)) (false (1.0)))
+	(fpos__s1 (true (0.0)) (false (1.0)))
+	(proficiencyMed__s0 (true (0.0)) (false (1.0)))
+	(proficiencyMed__s1 (true (0.0)) (false (1.0)))
+	(hintDelayVar__s0 (true (0.0)) (false (1.0)))
+	(hintDelayVar__s1 (true (0.0)) (false (1.0)))
 ]
 
 action askProb__s0
-	proficiencyMed__s0
-		(proficiencyMed__s0 
+	proficiencyHigh__s0
+		(proficiencyHigh__s0 
 			(true (updateTurn__s0 
-				(true (hintDelayVar__s0 
-					(true (proficiencyMed__s0' 
+				(true (answeredRight__s0 
+					(true (proficiencyHigh__s0' 
 						(true (1.0))
 						(false (0.0))))
-					(false (proficiencyHigh__s0 
-						(true (proficiencyMed__s0' 
+					(false (hintDelayVar__s0 
+						(true (proficiencyHigh__s0' 
 							(true (1.0))
 							(false (0.0))))
-						(false (hintedRight__s0 
-							(true (proficiencyMed__s0' 
-								(true (1.0))
-								(false (0.0))))
-							(false (answeredRight__s0 
-								(true (proficiencyMed__s0' 
-									(true (1.0))
-									(false (0.0))))
-								(false (proficiencyMed__s0' 
-									(true (0.0))
-									(false (1.0))))))))))))
-				(false (proficiencyMed__s0' 
+						(false (proficiencyHigh__s0' 
+							(true (0.0))
+							(false (1.0))))))))
+				(false (proficiencyHigh__s0' 
 					(true (1.0))
 					(false (0.0))))))
 			(false (updateTurn__s0 
-				(true (proficiencyHigh__s0 
-					(true (proficiencyMed__s0' 
-						(true (1.0))
-						(false (0.0))))
-					(false (fpos__s0 
-						(true (hintedRight__s0 
-							(true (proficiencyMed__s0' 
+				(true (answeredRight__s0 
+					(true (fpos__s0 
+						(true (proficiencyHigh__s0' 
+							(true (0.0))
+							(false (1.0))))
+						(false (proficiencyMed__s0 
+							(true (proficiencyHigh__s0' 
 								(true (1.0))
 								(false (0.0))))
-							(false (proficiencyMed__s0' 
+							(false (proficiencyHigh__s0' 
 								(true (0.0))
-								(false (1.0))))))
-						(false (hintedRight__s0 
-							(true (proficiencyMed__s0' 
-								(true (1.0))
-								(false (0.0))))
-							(false (answeredRight__s0 
-								(true (proficiencyMed__s0' 
-									(true (1.0))
-									(false (0.0))))
-								(false (proficiencyMed__s0' 
-									(true (0.0))
-									(false (1.0))))))))))))
-				(false (proficiencyHigh__s0 
-					(true (proficiencyMed__s0' 
-						(true (1.0))
-						(false (0.0))))
-					(false (proficiencyMed__s0' 
+								(false (1.0))))))))
+					(false (proficiencyHigh__s0' 
 						(true (0.0))
-						(false (1.0)))))))))
-	proficiencyMed__s1
-		(proficiencyMed__s1 
+						(false (1.0))))))
+				(false (proficiencyHigh__s0' 
+					(true (0.0))
+					(false (1.0)))))))
+	proficiencyHigh__s1
+		(proficiencyHigh__s1 
 			(true (updateTurn__s1 
-				(true (hintDelayVar__s1 
-					(true (proficiencyMed__s1' 
+				(true (answeredRight__s1 
+					(true (proficiencyHigh__s1' 
 						(true (1.0))
 						(false (0.0))))
-					(false (proficiencyHigh__s1 
-						(true (proficiencyMed__s1' 
+					(false (hintDelayVar__s1 
+						(true (proficiencyHigh__s1' 
 							(true (1.0))
 							(false (0.0))))
-						(false (hintedRight__s1 
-							(true (proficiencyMed__s1' 
-								(true (1.0))
-								(false (0.0))))
-							(false (answeredRight__s1 
-								(true (proficiencyMed__s1' 
-									(true (1.0))
-									(false (0.0))))
-								(false (proficiencyMed__s1' 
-									(true (0.0))
-									(false (1.0))))))))))))
-				(false (proficiencyMed__s1' 
+						(false (proficiencyHigh__s1' 
+							(true (0.0))
+							(false (1.0))))))))
+				(false (proficiencyHigh__s1' 
 					(true (1.0))
 					(false (0.0))))))
 			(false (updateTurn__s1 
-				(true (proficiencyHigh__s1 
-					(true (proficiencyMed__s1' 
-						(true (1.0))
-						(false (0.0))))
-					(false (fpos__s1 
-						(true (hintedRight__s1 
-							(true (proficiencyMed__s1' 
+				(true (answeredRight__s1 
+					(true (fpos__s1 
+						(true (proficiencyHigh__s1' 
+							(true (0.0))
+							(false (1.0))))
+						(false (proficiencyMed__s1 
+							(true (proficiencyHigh__s1' 
 								(true (1.0))
 								(false (0.0))))
-							(false (proficiencyMed__s1' 
+							(false (proficiencyHigh__s1' 
 								(true (0.0))
-								(false (1.0))))))
-						(false (hintedRight__s1 
-							(true (proficiencyMed__s1' 
-								(true (1.0))
-								(false (0.0))))
-							(false (answeredRight__s1 
-								(true (proficiencyMed__s1' 
-									(true (1.0))
-									(false (0.0))))
-								(false (proficiencyMed__s1' 
-									(true (0.0))
-									(false (1.0))))))))))))
-				(false (proficiencyHigh__s1 
-					(true (proficiencyMed__s1' 
-						(true (1.0))
-						(false (0.0))))
-					(false (proficiencyMed__s1' 
+								(false (1.0))))))))
+					(false (proficiencyHigh__s1' 
 						(true (0.0))
-						(false (1.0)))))))))
+						(false (1.0))))))
+				(false (proficiencyHigh__s1' 
+					(true (0.0))
+					(false (1.0)))))))
+	hintedRight__s0
+		(hintedRight__s0' 
+			(true (0.0))
+			(false (1.0)))
+	hintedRight__s1
+		(hintedRight__s1' 
+			(true (0.0))
+			(false (1.0)))
 	updateTurn__s0
 		(updateTurn__s0 
 			(true (updateTurn__s0' 
@@ -171,158 +139,38 @@ action askProb__s0
 		(updateTurn__s1' 
 			(true (0.0))
 			(false (1.0)))
-	hintDelayVar__s0
-		(hintDelayVar__s0' 
-			(true (0.0))
-			(false (1.0)))
-	hintDelayVar__s1
-		(hintDelayVar__s1' 
-			(true (0.0))
-			(false (1.0)))
-	proficiencyHigh__s0
-		(proficiencyMed__s0 
+	answeredRight__s0
+		(proficiencyHigh__s0 
 			(true (updateTurn__s0 
-				(true (hintDelayVar__s0 
-					(true (proficiencyHigh__s0 
-						(true (proficiencyHigh__s0' 
-							(true (1.0))
-							(false (0.0))))
-						(false (fpos__s0 
-							(true (proficiencyHigh__s0' 
-								(true (0.0))
-								(false (1.0))))
-							(false (answeredRight__s0 
-								(true (proficiencyHigh__s0' 
-									(true (1.0))
-									(false (0.0))))
-								(false (proficiencyHigh__s0' 
-									(true (0.0))
-									(false (1.0))))))))))
-					(false (proficiencyHigh__s0 
-						(true (answeredRight__s0 
-							(true (proficiencyHigh__s0' 
-								(true (1.0))
-								(false (0.0))))
-							(false (proficiencyHigh__s0' 
-								(true (0.0))
-								(false (1.0))))))
-						(false (fpos__s0 
-							(true (proficiencyHigh__s0' 
-								(true (0.0))
-								(false (1.0))))
-							(false (answeredRight__s0 
-								(true (proficiencyHigh__s0' 
-									(true (1.0))
-									(false (0.0))))
-								(false (proficiencyHigh__s0' 
-									(true (0.0))
-									(false (1.0))))))))))))
-				(false (proficiencyHigh__s0 
-					(true (proficiencyHigh__s0' 
-						(true (1.0))
-						(false (0.0))))
-					(false (proficiencyHigh__s0' 
+				(true (answeredRight__s0' 
+					(true (0.0))
+					(false (1.0))))
+				(false (updateTurn__s1 
+					(true (answeredRight__s0' 
 						(true (0.0))
-						(false (1.0))))))))
+						(false (1.0))))
+					(false (answeredRight__s0' 
+						(true (0.9377455))
+						(false (0.06225449999999999))))))))
 			(false (updateTurn__s0 
-				(true (hintDelayVar__s0 
-					(true (proficiencyHigh__s0 
-						(true (proficiencyHigh__s0' 
-							(true (1.0))
-							(false (0.0))))
-						(false (proficiencyHigh__s0' 
-							(true (0.0))
-							(false (1.0))))))
-					(false (proficiencyHigh__s0 
-						(true (answeredRight__s0 
-							(true (proficiencyHigh__s0' 
-								(true (1.0))
-								(false (0.0))))
-							(false (proficiencyHigh__s0' 
-								(true (0.0))
-								(false (1.0))))))
-						(false (proficiencyHigh__s0' 
-							(true (0.0))
-							(false (1.0))))))))
-				(false (proficiencyHigh__s0 
-					(true (proficiencyHigh__s0' 
-						(true (1.0))
-						(false (0.0))))
-					(false (proficiencyHigh__s0' 
+				(true (answeredRight__s0' 
+					(true (0.0))
+					(false (1.0))))
+				(false (updateTurn__s1 
+					(true (answeredRight__s0' 
 						(true (0.0))
-						(false (1.0)))))))))
-	proficiencyHigh__s1
-		(proficiencyMed__s1 
-			(true (updateTurn__s1 
-				(true (hintDelayVar__s1 
-					(true (proficiencyHigh__s1 
-						(true (proficiencyHigh__s1' 
-							(true (1.0))
-							(false (0.0))))
-						(false (fpos__s1 
-							(true (proficiencyHigh__s1' 
-								(true (0.0))
-								(false (1.0))))
-							(false (answeredRight__s1 
-								(true (proficiencyHigh__s1' 
-									(true (1.0))
-									(false (0.0))))
-								(false (proficiencyHigh__s1' 
-									(true (0.0))
-									(false (1.0))))))))))
-					(false (proficiencyHigh__s1 
-						(true (answeredRight__s1 
-							(true (proficiencyHigh__s1' 
-								(true (1.0))
-								(false (0.0))))
-							(false (proficiencyHigh__s1' 
-								(true (0.0))
-								(false (1.0))))))
-						(false (fpos__s1 
-							(true (proficiencyHigh__s1' 
-								(true (0.0))
-								(false (1.0))))
-							(false (answeredRight__s1 
-								(true (proficiencyHigh__s1' 
-									(true (1.0))
-									(false (0.0))))
-								(false (proficiencyHigh__s1' 
-									(true (0.0))
-									(false (1.0))))))))))))
-				(false (proficiencyHigh__s1 
-					(true (proficiencyHigh__s1' 
-						(true (1.0))
-						(false (0.0))))
-					(false (proficiencyHigh__s1' 
-						(true (0.0))
-						(false (1.0))))))))
-			(false (updateTurn__s1 
-				(true (hintDelayVar__s1 
-					(true (proficiencyHigh__s1 
-						(true (proficiencyHigh__s1' 
-							(true (1.0))
-							(false (0.0))))
-						(false (proficiencyHigh__s1' 
-							(true (0.0))
-							(false (1.0))))))
-					(false (proficiencyHigh__s1 
-						(true (answeredRight__s1 
-							(true (proficiencyHigh__s1' 
-								(true (1.0))
-								(false (0.0))))
-							(false (proficiencyHigh__s1' 
-								(true (0.0))
-								(false (1.0))))))
-						(false (proficiencyHigh__s1' 
-							(true (0.0))
-							(false (1.0))))))))
-				(false (proficiencyHigh__s1 
-					(true (proficiencyHigh__s1' 
-						(true (1.0))
-						(false (0.0))))
-					(false (proficiencyHigh__s1' 
-						(true (0.0))
-						(false (1.0)))))))))
+						(false (1.0))))
+					(false (proficiencyMed__s0 
+						(true (answeredRight__s0' 
+							(true (0.72634214))
+							(false (0.27365786000000003))))
+						(false (answeredRight__s0' 
+							(true (0.5997234))
+							(false (0.4002766)))))))))))
+	answeredRight__s1
+		(answeredRight__s1' 
+			(true (0.0))
+			(false (1.0)))
 	fpos__s0
 		(updateTurn__s0 
 			(true (fpos__s0' 
@@ -333,73 +181,117 @@ action askProb__s0
 					(true (0.0))
 					(false (1.0))))
 				(false (fpos__s0' 
-					(true (0.041790236))
-					(false (0.958209764)))))))
+					(true (0.079184145))
+					(false (0.920815855)))))))
 	fpos__s1
 		(fpos__s1' 
 			(true (0.0))
 			(false (1.0)))
-	hintedRight__s0
-		(hintedRight__s0' 
+	proficiencyMed__s0
+		(proficiencyHigh__s0 
+			(true (proficiencyMed__s0' 
+				(true (1.0))
+				(false (0.0))))
+			(false (hintedRight__s0 
+				(true (updateTurn__s0 
+					(true (proficiencyMed__s0' 
+						(true (1.0))
+						(false (0.0))))
+					(false (proficiencyMed__s0 
+						(true (proficiencyMed__s0' 
+							(true (1.0))
+							(false (0.0))))
+						(false (proficiencyMed__s0' 
+							(true (0.0))
+							(false (1.0))))))))
+				(false (updateTurn__s0 
+					(true (answeredRight__s0 
+						(true (fpos__s0 
+							(true (proficiencyMed__s0 
+								(true (proficiencyMed__s0' 
+									(true (1.0))
+									(false (0.0))))
+								(false (proficiencyMed__s0' 
+									(true (0.0))
+									(false (1.0))))))
+							(false (proficiencyMed__s0' 
+								(true (1.0))
+								(false (0.0))))))
+						(false (proficiencyMed__s0 
+							(true (hintDelayVar__s0 
+								(true (proficiencyMed__s0' 
+									(true (1.0))
+									(false (0.0))))
+								(false (proficiencyMed__s0' 
+									(true (0.0))
+									(false (1.0))))))
+							(false (proficiencyMed__s0' 
+								(true (0.0))
+								(false (1.0))))))))
+					(false (proficiencyMed__s0 
+						(true (proficiencyMed__s0' 
+							(true (1.0))
+							(false (0.0))))
+						(false (proficiencyMed__s0' 
+							(true (0.0))
+							(false (1.0)))))))))))
+	proficiencyMed__s1
+		(proficiencyHigh__s1 
+			(true (proficiencyMed__s1' 
+				(true (1.0))
+				(false (0.0))))
+			(false (hintedRight__s1 
+				(true (updateTurn__s1 
+					(true (proficiencyMed__s1' 
+						(true (1.0))
+						(false (0.0))))
+					(false (proficiencyMed__s1 
+						(true (proficiencyMed__s1' 
+							(true (1.0))
+							(false (0.0))))
+						(false (proficiencyMed__s1' 
+							(true (0.0))
+							(false (1.0))))))))
+				(false (updateTurn__s1 
+					(true (answeredRight__s1 
+						(true (fpos__s1 
+							(true (proficiencyMed__s1 
+								(true (proficiencyMed__s1' 
+									(true (1.0))
+									(false (0.0))))
+								(false (proficiencyMed__s1' 
+									(true (0.0))
+									(false (1.0))))))
+							(false (proficiencyMed__s1' 
+								(true (1.0))
+								(false (0.0))))))
+						(false (proficiencyMed__s1 
+							(true (hintDelayVar__s1 
+								(true (proficiencyMed__s1' 
+									(true (1.0))
+									(false (0.0))))
+								(false (proficiencyMed__s1' 
+									(true (0.0))
+									(false (1.0))))))
+							(false (proficiencyMed__s1' 
+								(true (0.0))
+								(false (1.0))))))))
+					(false (proficiencyMed__s1 
+						(true (proficiencyMed__s1' 
+							(true (1.0))
+							(false (0.0))))
+						(false (proficiencyMed__s1' 
+							(true (0.0))
+							(false (1.0)))))))))))
+	hintDelayVar__s0
+		(hintDelayVar__s0' 
 			(true (0.0))
 			(false (1.0)))
-	hintedRight__s1
-		(hintedRight__s1' 
-			(true (0.0))
-			(false (1.0)))
-	answeredRight__s0
-		(proficiencyMed__s0 
-			(true (updateTurn__s0 
-				(true (answeredRight__s0' 
-					(true (0.0))
-					(false (1.0))))
-				(false (updateTurn__s1 
-					(true (answeredRight__s0' 
-						(true (0.0))
-						(false (1.0))))
-					(false (proficiencyHigh__s0 
-						(true (answeredRight__s0' 
-							(true (0.9396442))
-							(false (0.06035579999999996))))
-						(false (answeredRight__s0' 
-							(true (0.73913246))
-							(false (0.26086754))))))))))
-			(false (updateTurn__s0 
-				(true (answeredRight__s0' 
-					(true (0.0))
-					(false (1.0))))
-				(false (updateTurn__s1 
-					(true (answeredRight__s0' 
-						(true (0.0))
-						(false (1.0))))
-					(false (proficiencyHigh__s0 
-						(true (answeredRight__s0' 
-							(true (0.9396442))
-							(false (0.06035579999999996))))
-						(false (answeredRight__s0' 
-							(true (0.63431984))
-							(false (0.36568016000000003)))))))))))
-	answeredRight__s1
-		(answeredRight__s1' 
+	hintDelayVar__s1
+		(hintDelayVar__s1' 
 			(true (0.0))
 			(false (1.0)))
 	observe 
-		answeredRightObs__s0
-			(answeredRight__s0' 
-				(true (answeredRightObs__s0' 
-					(true (1.0))
-					(false (0.0))))
-				(false (answeredRightObs__s0' 
-					(true (0.0))
-					(false (1.0)))))
-		answeredRightObs__s1
-			(answeredRight__s1' 
-				(true (answeredRightObs__s1' 
-					(true (1.0))
-					(false (0.0))))
-				(false (answeredRightObs__s1' 
-					(true (0.0))
-					(false (1.0)))))
 		updateTurnObs__s0
 			(updateTurn__s0' 
 				(true (updateTurnObs__s0' 
@@ -416,136 +308,120 @@ action askProb__s0
 				(false (updateTurnObs__s1' 
 					(true (0.0))
 					(false (1.0)))))
+		answeredRightObs__s0
+			(answeredRight__s0' 
+				(true (answeredRightObs__s0' 
+					(true (1.0))
+					(false (0.0))))
+				(false (answeredRightObs__s0' 
+					(true (0.0))
+					(false (1.0)))))
+		answeredRightObs__s1
+			(answeredRight__s1' 
+				(true (answeredRightObs__s1' 
+					(true (1.0))
+					(false (0.0))))
+				(false (answeredRightObs__s1' 
+					(true (0.0))
+					(false (1.0)))))
 	endobserve
 	cost [+ 
 		(proficiencyHigh__s0 
-			(true (-1.4593097))
+			(true (-1.1397905))
 			(false (0.0)))
 		(proficiencyHigh__s1 
-			(true (-1.3163352))
+			(true (-1.401068))
 			(false (0.0)))
 		(proficiencyMed__s0 
 			(true (0.0))
-			(false (1.4593097)))
+			(false (1.1397905)))
 		(proficiencyMed__s1 
 			(true (0.0))
-			(false (1.3163352)))
+			(false (1.401068)))
 	]
 endaction
 
 action askProb__s1
-	proficiencyMed__s0
-		(proficiencyMed__s0 
+	proficiencyHigh__s0
+		(proficiencyHigh__s0 
 			(true (updateTurn__s0 
-				(true (hintDelayVar__s0 
-					(true (proficiencyMed__s0' 
+				(true (answeredRight__s0 
+					(true (proficiencyHigh__s0' 
 						(true (1.0))
 						(false (0.0))))
-					(false (proficiencyHigh__s0 
-						(true (proficiencyMed__s0' 
+					(false (hintDelayVar__s0 
+						(true (proficiencyHigh__s0' 
 							(true (1.0))
 							(false (0.0))))
-						(false (hintedRight__s0 
-							(true (proficiencyMed__s0' 
-								(true (1.0))
-								(false (0.0))))
-							(false (answeredRight__s0 
-								(true (proficiencyMed__s0' 
-									(true (1.0))
-									(false (0.0))))
-								(false (proficiencyMed__s0' 
-									(true (0.0))
-									(false (1.0))))))))))))
-				(false (proficiencyMed__s0' 
+						(false (proficiencyHigh__s0' 
+							(true (0.0))
+							(false (1.0))))))))
+				(false (proficiencyHigh__s0' 
 					(true (1.0))
 					(false (0.0))))))
 			(false (updateTurn__s0 
-				(true (proficiencyHigh__s0 
-					(true (proficiencyMed__s0' 
-						(true (1.0))
-						(false (0.0))))
-					(false (fpos__s0 
-						(true (hintedRight__s0 
-							(true (proficiencyMed__s0' 
+				(true (answeredRight__s0 
+					(true (fpos__s0 
+						(true (proficiencyHigh__s0' 
+							(true (0.0))
+							(false (1.0))))
+						(false (proficiencyMed__s0 
+							(true (proficiencyHigh__s0' 
 								(true (1.0))
 								(false (0.0))))
-							(false (proficiencyMed__s0' 
+							(false (proficiencyHigh__s0' 
 								(true (0.0))
-								(false (1.0))))))
-						(false (hintedRight__s0 
-							(true (proficiencyMed__s0' 
-								(true (1.0))
-								(false (0.0))))
-							(false (answeredRight__s0 
-								(true (proficiencyMed__s0' 
-									(true (1.0))
-									(false (0.0))))
-								(false (proficiencyMed__s0' 
-									(true (0.0))
-									(false (1.0))))))))))))
-				(false (proficiencyHigh__s0 
-					(true (proficiencyMed__s0' 
-						(true (1.0))
-						(false (0.0))))
-					(false (proficiencyMed__s0' 
+								(false (1.0))))))))
+					(false (proficiencyHigh__s0' 
 						(true (0.0))
-						(false (1.0)))))))))
-	proficiencyMed__s1
-		(proficiencyMed__s1 
+						(false (1.0))))))
+				(false (proficiencyHigh__s0' 
+					(true (0.0))
+					(false (1.0)))))))
+	proficiencyHigh__s1
+		(proficiencyHigh__s1 
 			(true (updateTurn__s1 
-				(true (hintDelayVar__s1 
-					(true (proficiencyMed__s1' 
+				(true (answeredRight__s1 
+					(true (proficiencyHigh__s1' 
 						(true (1.0))
 						(false (0.0))))
-					(false (proficiencyHigh__s1 
-						(true (proficiencyMed__s1' 
+					(false (hintDelayVar__s1 
+						(true (proficiencyHigh__s1' 
 							(true (1.0))
 							(false (0.0))))
-						(false (hintedRight__s1 
-							(true (proficiencyMed__s1' 
-								(true (1.0))
-								(false (0.0))))
-							(false (answeredRight__s1 
-								(true (proficiencyMed__s1' 
-									(true (1.0))
-									(false (0.0))))
-								(false (proficiencyMed__s1' 
-									(true (0.0))
-									(false (1.0))))))))))))
-				(false (proficiencyMed__s1' 
+						(false (proficiencyHigh__s1' 
+							(true (0.0))
+							(false (1.0))))))))
+				(false (proficiencyHigh__s1' 
 					(true (1.0))
 					(false (0.0))))))
 			(false (updateTurn__s1 
-				(true (proficiencyHigh__s1 
-					(true (proficiencyMed__s1' 
-						(true (1.0))
-						(false (0.0))))
-					(false (fpos__s1 
-						(true (hintedRight__s1 
-							(true (proficiencyMed__s1' 
+				(true (answeredRight__s1 
+					(true (fpos__s1 
+						(true (proficiencyHigh__s1' 
+							(true (0.0))
+							(false (1.0))))
+						(false (proficiencyMed__s1 
+							(true (proficiencyHigh__s1' 
 								(true (1.0))
 								(false (0.0))))
-							(false (proficiencyMed__s1' 
+							(false (proficiencyHigh__s1' 
 								(true (0.0))
-								(false (1.0))))))
-						(false (hintedRight__s1 
-							(true (proficiencyMed__s1' 
-								(true (1.0))
-								(false (0.0))))
-							(false (answeredRight__s1 
-								(true (proficiencyMed__s1' 
-									(true (1.0))
-									(false (0.0))))
-								(false (proficiencyMed__s1' 
-									(true (0.0))
-									(false (1.0))))))))))))
-				(false (proficiencyHigh__s1 
-					(true (proficiencyMed__s1' 
-						(true (1.0))
-						(false (0.0))))
-					(false (proficiencyMed__s1' 
+								(false (1.0))))))))
+					(false (proficiencyHigh__s1' 
 						(true (0.0))
-						(false (1.0)))))))))
+						(false (1.0))))))
+				(false (proficiencyHigh__s1' 
+					(true (0.0))
+					(false (1.0)))))))
+	hintedRight__s0
+		(hintedRight__s0' 
+			(true (0.0))
+			(false (1.0)))
+	hintedRight__s1
+		(hintedRight__s1' 
+			(true (0.0))
+			(false (1.0)))
 	updateTurn__s0
 		(updateTurn__s0' 
 			(true (0.0))
@@ -562,158 +438,38 @@ action askProb__s1
 				(false (updateTurn__s1' 
 					(true (1.0))
 					(false (0.0)))))))
-	hintDelayVar__s0
-		(hintDelayVar__s0' 
+	answeredRight__s0
+		(answeredRight__s0' 
 			(true (0.0))
 			(false (1.0)))
-	hintDelayVar__s1
-		(hintDelayVar__s1' 
-			(true (0.0))
-			(false (1.0)))
-	proficiencyHigh__s0
-		(proficiencyMed__s0 
+	answeredRight__s1
+		(proficiencyHigh__s1 
 			(true (updateTurn__s0 
-				(true (hintDelayVar__s0 
-					(true (proficiencyHigh__s0 
-						(true (proficiencyHigh__s0' 
-							(true (1.0))
-							(false (0.0))))
-						(false (fpos__s0 
-							(true (proficiencyHigh__s0' 
-								(true (0.0))
-								(false (1.0))))
-							(false (answeredRight__s0 
-								(true (proficiencyHigh__s0' 
-									(true (1.0))
-									(false (0.0))))
-								(false (proficiencyHigh__s0' 
-									(true (0.0))
-									(false (1.0))))))))))
-					(false (proficiencyHigh__s0 
-						(true (answeredRight__s0 
-							(true (proficiencyHigh__s0' 
-								(true (1.0))
-								(false (0.0))))
-							(false (proficiencyHigh__s0' 
-								(true (0.0))
-								(false (1.0))))))
-						(false (fpos__s0 
-							(true (proficiencyHigh__s0' 
-								(true (0.0))
-								(false (1.0))))
-							(false (answeredRight__s0 
-								(true (proficiencyHigh__s0' 
-									(true (1.0))
-									(false (0.0))))
-								(false (proficiencyHigh__s0' 
-									(true (0.0))
-									(false (1.0))))))))))))
-				(false (proficiencyHigh__s0 
-					(true (proficiencyHigh__s0' 
-						(true (1.0))
-						(false (0.0))))
-					(false (proficiencyHigh__s0' 
+				(true (answeredRight__s1' 
+					(true (0.0))
+					(false (1.0))))
+				(false (updateTurn__s1 
+					(true (answeredRight__s1' 
 						(true (0.0))
-						(false (1.0))))))))
+						(false (1.0))))
+					(false (answeredRight__s1' 
+						(true (0.93270004))
+						(false (0.06729996000000005))))))))
 			(false (updateTurn__s0 
-				(true (hintDelayVar__s0 
-					(true (proficiencyHigh__s0 
-						(true (proficiencyHigh__s0' 
-							(true (1.0))
-							(false (0.0))))
-						(false (proficiencyHigh__s0' 
-							(true (0.0))
-							(false (1.0))))))
-					(false (proficiencyHigh__s0 
-						(true (answeredRight__s0 
-							(true (proficiencyHigh__s0' 
-								(true (1.0))
-								(false (0.0))))
-							(false (proficiencyHigh__s0' 
-								(true (0.0))
-								(false (1.0))))))
-						(false (proficiencyHigh__s0' 
-							(true (0.0))
-							(false (1.0))))))))
-				(false (proficiencyHigh__s0 
-					(true (proficiencyHigh__s0' 
-						(true (1.0))
-						(false (0.0))))
-					(false (proficiencyHigh__s0' 
+				(true (answeredRight__s1' 
+					(true (0.0))
+					(false (1.0))))
+				(false (updateTurn__s1 
+					(true (answeredRight__s1' 
 						(true (0.0))
-						(false (1.0)))))))))
-	proficiencyHigh__s1
-		(proficiencyMed__s1 
-			(true (updateTurn__s1 
-				(true (hintDelayVar__s1 
-					(true (proficiencyHigh__s1 
-						(true (proficiencyHigh__s1' 
-							(true (1.0))
-							(false (0.0))))
-						(false (fpos__s1 
-							(true (proficiencyHigh__s1' 
-								(true (0.0))
-								(false (1.0))))
-							(false (answeredRight__s1 
-								(true (proficiencyHigh__s1' 
-									(true (1.0))
-									(false (0.0))))
-								(false (proficiencyHigh__s1' 
-									(true (0.0))
-									(false (1.0))))))))))
-					(false (proficiencyHigh__s1 
-						(true (answeredRight__s1 
-							(true (proficiencyHigh__s1' 
-								(true (1.0))
-								(false (0.0))))
-							(false (proficiencyHigh__s1' 
-								(true (0.0))
-								(false (1.0))))))
-						(false (fpos__s1 
-							(true (proficiencyHigh__s1' 
-								(true (0.0))
-								(false (1.0))))
-							(false (answeredRight__s1 
-								(true (proficiencyHigh__s1' 
-									(true (1.0))
-									(false (0.0))))
-								(false (proficiencyHigh__s1' 
-									(true (0.0))
-									(false (1.0))))))))))))
-				(false (proficiencyHigh__s1 
-					(true (proficiencyHigh__s1' 
-						(true (1.0))
-						(false (0.0))))
-					(false (proficiencyHigh__s1' 
-						(true (0.0))
-						(false (1.0))))))))
-			(false (updateTurn__s1 
-				(true (hintDelayVar__s1 
-					(true (proficiencyHigh__s1 
-						(true (proficiencyHigh__s1' 
-							(true (1.0))
-							(false (0.0))))
-						(false (proficiencyHigh__s1' 
-							(true (0.0))
-							(false (1.0))))))
-					(false (proficiencyHigh__s1 
-						(true (answeredRight__s1 
-							(true (proficiencyHigh__s1' 
-								(true (1.0))
-								(false (0.0))))
-							(false (proficiencyHigh__s1' 
-								(true (0.0))
-								(false (1.0))))))
-						(false (proficiencyHigh__s1' 
-							(true (0.0))
-							(false (1.0))))))))
-				(false (proficiencyHigh__s1 
-					(true (proficiencyHigh__s1' 
-						(true (1.0))
-						(false (0.0))))
-					(false (proficiencyHigh__s1' 
-						(true (0.0))
-						(false (1.0)))))))))
+						(false (1.0))))
+					(false (proficiencyMed__s1 
+						(true (answeredRight__s1' 
+							(true (0.7881144))
+							(false (0.2118856))))
+						(false (answeredRight__s1' 
+							(true (0.58869505))
+							(false (0.41130495)))))))))))
 	fpos__s0
 		(fpos__s0' 
 			(true (0.0))
@@ -728,69 +484,113 @@ action askProb__s1
 					(true (0.0))
 					(false (1.0))))
 				(false (fpos__s1' 
-					(true (0.03653874))
-					(false (0.96346126)))))))
-	hintedRight__s0
-		(hintedRight__s0' 
-			(true (0.0))
-			(false (1.0)))
-	hintedRight__s1
-		(hintedRight__s1' 
-			(true (0.0))
-			(false (1.0)))
-	answeredRight__s0
-		(answeredRight__s0' 
-			(true (0.0))
-			(false (1.0)))
-	answeredRight__s1
-		(proficiencyMed__s1 
-			(true (updateTurn__s0 
-				(true (answeredRight__s1' 
-					(true (0.0))
-					(false (1.0))))
+					(true (0.042122692))
+					(false (0.957877308)))))))
+	proficiencyMed__s0
+		(proficiencyHigh__s0 
+			(true (proficiencyMed__s0' 
+				(true (1.0))
+				(false (0.0))))
+			(false (hintedRight__s0 
+				(true (updateTurn__s0 
+					(true (proficiencyMed__s0' 
+						(true (1.0))
+						(false (0.0))))
+					(false (proficiencyMed__s0 
+						(true (proficiencyMed__s0' 
+							(true (1.0))
+							(false (0.0))))
+						(false (proficiencyMed__s0' 
+							(true (0.0))
+							(false (1.0))))))))
+				(false (updateTurn__s0 
+					(true (answeredRight__s0 
+						(true (fpos__s0 
+							(true (proficiencyMed__s0 
+								(true (proficiencyMed__s0' 
+									(true (1.0))
+									(false (0.0))))
+								(false (proficiencyMed__s0' 
+									(true (0.0))
+									(false (1.0))))))
+							(false (proficiencyMed__s0' 
+								(true (1.0))
+								(false (0.0))))))
+						(false (proficiencyMed__s0 
+							(true (hintDelayVar__s0 
+								(true (proficiencyMed__s0' 
+									(true (1.0))
+									(false (0.0))))
+								(false (proficiencyMed__s0' 
+									(true (0.0))
+									(false (1.0))))))
+							(false (proficiencyMed__s0' 
+								(true (0.0))
+								(false (1.0))))))))
+					(false (proficiencyMed__s0 
+						(true (proficiencyMed__s0' 
+							(true (1.0))
+							(false (0.0))))
+						(false (proficiencyMed__s0' 
+							(true (0.0))
+							(false (1.0)))))))))))
+	proficiencyMed__s1
+		(proficiencyHigh__s1 
+			(true (proficiencyMed__s1' 
+				(true (1.0))
+				(false (0.0))))
+			(false (hintedRight__s1 
+				(true (updateTurn__s1 
+					(true (proficiencyMed__s1' 
+						(true (1.0))
+						(false (0.0))))
+					(false (proficiencyMed__s1 
+						(true (proficiencyMed__s1' 
+							(true (1.0))
+							(false (0.0))))
+						(false (proficiencyMed__s1' 
+							(true (0.0))
+							(false (1.0))))))))
 				(false (updateTurn__s1 
-					(true (answeredRight__s1' 
-						(true (0.0))
-						(false (1.0))))
-					(false (proficiencyHigh__s1 
-						(true (answeredRight__s1' 
-							(true (0.8803806))
-							(false (0.11961940000000004))))
-						(false (answeredRight__s1' 
-							(true (0.78681326))
-							(false (0.21318674000000004))))))))))
-			(false (updateTurn__s0 
-				(true (answeredRight__s1' 
-					(true (0.0))
-					(false (1.0))))
-				(false (updateTurn__s1 
-					(true (answeredRight__s1' 
-						(true (0.0))
-						(false (1.0))))
-					(false (proficiencyHigh__s1 
-						(true (answeredRight__s1' 
-							(true (0.8803806))
-							(false (0.11961940000000004))))
-						(false (answeredRight__s1' 
-							(true (0.6943879))
-							(false (0.30561210000000005)))))))))))
+					(true (answeredRight__s1 
+						(true (fpos__s1 
+							(true (proficiencyMed__s1 
+								(true (proficiencyMed__s1' 
+									(true (1.0))
+									(false (0.0))))
+								(false (proficiencyMed__s1' 
+									(true (0.0))
+									(false (1.0))))))
+							(false (proficiencyMed__s1' 
+								(true (1.0))
+								(false (0.0))))))
+						(false (proficiencyMed__s1 
+							(true (hintDelayVar__s1 
+								(true (proficiencyMed__s1' 
+									(true (1.0))
+									(false (0.0))))
+								(false (proficiencyMed__s1' 
+									(true (0.0))
+									(false (1.0))))))
+							(false (proficiencyMed__s1' 
+								(true (0.0))
+								(false (1.0))))))))
+					(false (proficiencyMed__s1 
+						(true (proficiencyMed__s1' 
+							(true (1.0))
+							(false (0.0))))
+						(false (proficiencyMed__s1' 
+							(true (0.0))
+							(false (1.0)))))))))))
+	hintDelayVar__s0
+		(hintDelayVar__s0' 
+			(true (0.0))
+			(false (1.0)))
+	hintDelayVar__s1
+		(hintDelayVar__s1' 
+			(true (0.0))
+			(false (1.0)))
 	observe 
-		answeredRightObs__s0
-			(answeredRight__s0' 
-				(true (answeredRightObs__s0' 
-					(true (1.0))
-					(false (0.0))))
-				(false (answeredRightObs__s0' 
-					(true (0.0))
-					(false (1.0)))))
-		answeredRightObs__s1
-			(answeredRight__s1' 
-				(true (answeredRightObs__s1' 
-					(true (1.0))
-					(false (0.0))))
-				(false (answeredRightObs__s1' 
-					(true (0.0))
-					(false (1.0)))))
 		updateTurnObs__s0
 			(updateTurn__s0' 
 				(true (updateTurnObs__s0' 
@@ -807,320 +607,112 @@ action askProb__s1
 				(false (updateTurnObs__s1' 
 					(true (0.0))
 					(false (1.0)))))
+		answeredRightObs__s0
+			(answeredRight__s0' 
+				(true (answeredRightObs__s0' 
+					(true (1.0))
+					(false (0.0))))
+				(false (answeredRightObs__s0' 
+					(true (0.0))
+					(false (1.0)))))
+		answeredRightObs__s1
+			(answeredRight__s1' 
+				(true (answeredRightObs__s1' 
+					(true (1.0))
+					(false (0.0))))
+				(false (answeredRightObs__s1' 
+					(true (0.0))
+					(false (1.0)))))
 	endobserve
 	cost [+ 
 		(proficiencyHigh__s0 
-			(true (-1.4593097))
+			(true (-1.1397905))
 			(false (0.0)))
 		(proficiencyHigh__s1 
-			(true (-1.3163352))
+			(true (-1.401068))
 			(false (0.0)))
 		(proficiencyMed__s0 
 			(true (0.0))
-			(false (1.4593097)))
+			(false (1.1397905)))
 		(proficiencyMed__s1 
 			(true (0.0))
-			(false (1.3163352)))
+			(false (1.401068)))
 	]
 endaction
 
 action giveHint__s0
-	proficiencyMed__s0
-		(proficiencyMed__s0 
-			(true (updateTurn__s0 
-				(true (hintDelayVar__s0 
-					(true (proficiencyMed__s0' 
-						(true (1.0))
-						(false (0.0))))
-					(false (proficiencyHigh__s0 
-						(true (proficiencyMed__s0' 
-							(true (1.0))
-							(false (0.0))))
-						(false (hintedRight__s0 
-							(true (proficiencyMed__s0' 
-								(true (1.0))
-								(false (0.0))))
-							(false (answeredRight__s0 
-								(true (proficiencyMed__s0' 
-									(true (1.0))
-									(false (0.0))))
-								(false (proficiencyMed__s0' 
-									(true (0.0))
-									(false (1.0))))))))))))
-				(false (proficiencyMed__s0' 
-					(true (1.0))
-					(false (0.0))))))
-			(false (updateTurn__s0 
-				(true (proficiencyHigh__s0 
-					(true (proficiencyMed__s0' 
-						(true (1.0))
-						(false (0.0))))
-					(false (fpos__s0 
-						(true (hintedRight__s0 
-							(true (proficiencyMed__s0' 
-								(true (1.0))
-								(false (0.0))))
-							(false (proficiencyMed__s0' 
-								(true (0.0))
-								(false (1.0))))))
-						(false (hintedRight__s0 
-							(true (proficiencyMed__s0' 
-								(true (1.0))
-								(false (0.0))))
-							(false (answeredRight__s0 
-								(true (proficiencyMed__s0' 
-									(true (1.0))
-									(false (0.0))))
-								(false (proficiencyMed__s0' 
-									(true (0.0))
-									(false (1.0))))))))))))
-				(false (proficiencyHigh__s0 
-					(true (proficiencyMed__s0' 
-						(true (1.0))
-						(false (0.0))))
-					(false (proficiencyMed__s0' 
-						(true (0.0))
-						(false (1.0)))))))))
-	proficiencyMed__s1
-		(proficiencyMed__s1 
-			(true (updateTurn__s1 
-				(true (hintDelayVar__s1 
-					(true (proficiencyMed__s1' 
-						(true (1.0))
-						(false (0.0))))
-					(false (proficiencyHigh__s1 
-						(true (proficiencyMed__s1' 
-							(true (1.0))
-							(false (0.0))))
-						(false (hintedRight__s1 
-							(true (proficiencyMed__s1' 
-								(true (1.0))
-								(false (0.0))))
-							(false (answeredRight__s1 
-								(true (proficiencyMed__s1' 
-									(true (1.0))
-									(false (0.0))))
-								(false (proficiencyMed__s1' 
-									(true (0.0))
-									(false (1.0))))))))))))
-				(false (proficiencyMed__s1' 
-					(true (1.0))
-					(false (0.0))))))
-			(false (updateTurn__s1 
-				(true (proficiencyHigh__s1 
-					(true (proficiencyMed__s1' 
-						(true (1.0))
-						(false (0.0))))
-					(false (fpos__s1 
-						(true (hintedRight__s1 
-							(true (proficiencyMed__s1' 
-								(true (1.0))
-								(false (0.0))))
-							(false (proficiencyMed__s1' 
-								(true (0.0))
-								(false (1.0))))))
-						(false (hintedRight__s1 
-							(true (proficiencyMed__s1' 
-								(true (1.0))
-								(false (0.0))))
-							(false (answeredRight__s1 
-								(true (proficiencyMed__s1' 
-									(true (1.0))
-									(false (0.0))))
-								(false (proficiencyMed__s1' 
-									(true (0.0))
-									(false (1.0))))))))))))
-				(false (proficiencyHigh__s1 
-					(true (proficiencyMed__s1' 
-						(true (1.0))
-						(false (0.0))))
-					(false (proficiencyMed__s1' 
-						(true (0.0))
-						(false (1.0)))))))))
-	updateTurn__s0
-		(updateTurn__s0 
-			(true (updateTurn__s0' 
-				(true (0.0))
-				(false (1.0))))
-			(false (updateTurn__s1 
-				(true (updateTurn__s0' 
-					(true (0.0))
-					(false (1.0))))
-				(false (updateTurn__s0' 
-					(true (1.0))
-					(false (0.0)))))))
-	updateTurn__s1
-		(updateTurn__s1' 
-			(true (0.0))
-			(false (1.0)))
-	hintDelayVar__s0
-		(updateTurn__s0 
-			(true (hintDelayVar__s0' 
-				(true (0.0))
-				(false (1.0))))
-			(false (updateTurn__s1 
-				(true (hintDelayVar__s0' 
-					(true (0.0))
-					(false (1.0))))
-				(false (hintDelayVar__s0' 
-					(true (1.0))
-					(false (0.0)))))))
-	hintDelayVar__s1
-		(hintDelayVar__s1' 
-			(true (0.0))
-			(false (1.0)))
 	proficiencyHigh__s0
-		(proficiencyMed__s0 
+		(proficiencyHigh__s0 
 			(true (updateTurn__s0 
-				(true (hintDelayVar__s0 
-					(true (proficiencyHigh__s0 
-						(true (proficiencyHigh__s0' 
-							(true (1.0))
-							(false (0.0))))
-						(false (fpos__s0 
-							(true (proficiencyHigh__s0' 
-								(true (0.0))
-								(false (1.0))))
-							(false (answeredRight__s0 
-								(true (proficiencyHigh__s0' 
-									(true (1.0))
-									(false (0.0))))
-								(false (proficiencyHigh__s0' 
-									(true (0.0))
-									(false (1.0))))))))))
-					(false (proficiencyHigh__s0 
-						(true (answeredRight__s0 
-							(true (proficiencyHigh__s0' 
-								(true (1.0))
-								(false (0.0))))
-							(false (proficiencyHigh__s0' 
-								(true (0.0))
-								(false (1.0))))))
-						(false (fpos__s0 
-							(true (proficiencyHigh__s0' 
-								(true (0.0))
-								(false (1.0))))
-							(false (answeredRight__s0 
-								(true (proficiencyHigh__s0' 
-									(true (1.0))
-									(false (0.0))))
-								(false (proficiencyHigh__s0' 
-									(true (0.0))
-									(false (1.0))))))))))))
-				(false (proficiencyHigh__s0 
+				(true (answeredRight__s0 
 					(true (proficiencyHigh__s0' 
 						(true (1.0))
 						(false (0.0))))
-					(false (proficiencyHigh__s0' 
-						(true (0.0))
-						(false (1.0))))))))
+					(false (hintDelayVar__s0 
+						(true (proficiencyHigh__s0' 
+							(true (1.0))
+							(false (0.0))))
+						(false (proficiencyHigh__s0' 
+							(true (0.0))
+							(false (1.0))))))))
+				(false (proficiencyHigh__s0' 
+					(true (1.0))
+					(false (0.0))))))
 			(false (updateTurn__s0 
-				(true (hintDelayVar__s0 
-					(true (proficiencyHigh__s0 
+				(true (answeredRight__s0 
+					(true (fpos__s0 
 						(true (proficiencyHigh__s0' 
-							(true (1.0))
-							(false (0.0))))
-						(false (proficiencyHigh__s0' 
 							(true (0.0))
-							(false (1.0))))))
-					(false (proficiencyHigh__s0 
-						(true (answeredRight__s0 
+							(false (1.0))))
+						(false (proficiencyMed__s0 
 							(true (proficiencyHigh__s0' 
 								(true (1.0))
 								(false (0.0))))
 							(false (proficiencyHigh__s0' 
 								(true (0.0))
-								(false (1.0))))))
-						(false (proficiencyHigh__s0' 
-							(true (0.0))
-							(false (1.0))))))))
-				(false (proficiencyHigh__s0 
-					(true (proficiencyHigh__s0' 
-						(true (1.0))
-						(false (0.0))))
+								(false (1.0))))))))
 					(false (proficiencyHigh__s0' 
 						(true (0.0))
-						(false (1.0)))))))))
+						(false (1.0))))))
+				(false (proficiencyHigh__s0' 
+					(true (0.0))
+					(false (1.0)))))))
 	proficiencyHigh__s1
-		(proficiencyMed__s1 
+		(proficiencyHigh__s1 
 			(true (updateTurn__s1 
-				(true (hintDelayVar__s1 
-					(true (proficiencyHigh__s1 
-						(true (proficiencyHigh__s1' 
-							(true (1.0))
-							(false (0.0))))
-						(false (fpos__s1 
-							(true (proficiencyHigh__s1' 
-								(true (0.0))
-								(false (1.0))))
-							(false (answeredRight__s1 
-								(true (proficiencyHigh__s1' 
-									(true (1.0))
-									(false (0.0))))
-								(false (proficiencyHigh__s1' 
-									(true (0.0))
-									(false (1.0))))))))))
-					(false (proficiencyHigh__s1 
-						(true (answeredRight__s1 
-							(true (proficiencyHigh__s1' 
-								(true (1.0))
-								(false (0.0))))
-							(false (proficiencyHigh__s1' 
-								(true (0.0))
-								(false (1.0))))))
-						(false (fpos__s1 
-							(true (proficiencyHigh__s1' 
-								(true (0.0))
-								(false (1.0))))
-							(false (answeredRight__s1 
-								(true (proficiencyHigh__s1' 
-									(true (1.0))
-									(false (0.0))))
-								(false (proficiencyHigh__s1' 
-									(true (0.0))
-									(false (1.0))))))))))))
-				(false (proficiencyHigh__s1 
+				(true (answeredRight__s1 
 					(true (proficiencyHigh__s1' 
 						(true (1.0))
 						(false (0.0))))
-					(false (proficiencyHigh__s1' 
-						(true (0.0))
-						(false (1.0))))))))
-			(false (updateTurn__s1 
-				(true (hintDelayVar__s1 
-					(true (proficiencyHigh__s1 
+					(false (hintDelayVar__s1 
 						(true (proficiencyHigh__s1' 
 							(true (1.0))
 							(false (0.0))))
-						(false (proficiencyHigh__s1' 
-							(true (0.0))
-							(false (1.0))))))
-					(false (proficiencyHigh__s1 
-						(true (answeredRight__s1 
-							(true (proficiencyHigh__s1' 
-								(true (1.0))
-								(false (0.0))))
-							(false (proficiencyHigh__s1' 
-								(true (0.0))
-								(false (1.0))))))
 						(false (proficiencyHigh__s1' 
 							(true (0.0))
 							(false (1.0))))))))
-				(false (proficiencyHigh__s1 
-					(true (proficiencyHigh__s1' 
-						(true (1.0))
-						(false (0.0))))
+				(false (proficiencyHigh__s1' 
+					(true (1.0))
+					(false (0.0))))))
+			(false (updateTurn__s1 
+				(true (answeredRight__s1 
+					(true (fpos__s1 
+						(true (proficiencyHigh__s1' 
+							(true (0.0))
+							(false (1.0))))
+						(false (proficiencyMed__s1 
+							(true (proficiencyHigh__s1' 
+								(true (1.0))
+								(false (0.0))))
+							(false (proficiencyHigh__s1' 
+								(true (0.0))
+								(false (1.0))))))))
 					(false (proficiencyHigh__s1' 
 						(true (0.0))
-						(false (1.0)))))))))
-	fpos__s0
-		(fpos__s0' 
-			(true (0.0))
-			(false (1.0)))
-	fpos__s1
-		(fpos__s1' 
-			(true (0.0))
-			(false (1.0)))
+						(false (1.0))))))
+				(false (proficiencyHigh__s1' 
+					(true (0.0))
+					(false (1.0)))))))
 	hintedRight__s0
 		(updateTurn__s0 
 			(true (hintedRight__s0' 
@@ -1137,6 +729,22 @@ action giveHint__s0
 		(hintedRight__s1' 
 			(true (0.0))
 			(false (1.0)))
+	updateTurn__s0
+		(updateTurn__s0 
+			(true (updateTurn__s0' 
+				(true (0.0))
+				(false (1.0))))
+			(false (updateTurn__s1 
+				(true (updateTurn__s0' 
+					(true (0.0))
+					(false (1.0))))
+				(false (updateTurn__s0' 
+					(true (1.0))
+					(false (0.0)))))))
+	updateTurn__s1
+		(updateTurn__s1' 
+			(true (0.0))
+			(false (1.0)))
 	answeredRight__s0
 		(answeredRight__s0' 
 			(true (0.0))
@@ -1145,23 +753,127 @@ action giveHint__s0
 		(answeredRight__s1' 
 			(true (0.0))
 			(false (1.0)))
+	fpos__s0
+		(fpos__s0' 
+			(true (0.0))
+			(false (1.0)))
+	fpos__s1
+		(fpos__s1' 
+			(true (0.0))
+			(false (1.0)))
+	proficiencyMed__s0
+		(proficiencyHigh__s0 
+			(true (proficiencyMed__s0' 
+				(true (1.0))
+				(false (0.0))))
+			(false (hintedRight__s0 
+				(true (updateTurn__s0 
+					(true (proficiencyMed__s0' 
+						(true (1.0))
+						(false (0.0))))
+					(false (proficiencyMed__s0 
+						(true (proficiencyMed__s0' 
+							(true (1.0))
+							(false (0.0))))
+						(false (proficiencyMed__s0' 
+							(true (0.0))
+							(false (1.0))))))))
+				(false (updateTurn__s0 
+					(true (answeredRight__s0 
+						(true (fpos__s0 
+							(true (proficiencyMed__s0 
+								(true (proficiencyMed__s0' 
+									(true (1.0))
+									(false (0.0))))
+								(false (proficiencyMed__s0' 
+									(true (0.0))
+									(false (1.0))))))
+							(false (proficiencyMed__s0' 
+								(true (1.0))
+								(false (0.0))))))
+						(false (proficiencyMed__s0 
+							(true (hintDelayVar__s0 
+								(true (proficiencyMed__s0' 
+									(true (1.0))
+									(false (0.0))))
+								(false (proficiencyMed__s0' 
+									(true (0.0))
+									(false (1.0))))))
+							(false (proficiencyMed__s0' 
+								(true (0.0))
+								(false (1.0))))))))
+					(false (proficiencyMed__s0 
+						(true (proficiencyMed__s0' 
+							(true (1.0))
+							(false (0.0))))
+						(false (proficiencyMed__s0' 
+							(true (0.0))
+							(false (1.0)))))))))))
+	proficiencyMed__s1
+		(proficiencyHigh__s1 
+			(true (proficiencyMed__s1' 
+				(true (1.0))
+				(false (0.0))))
+			(false (hintedRight__s1 
+				(true (updateTurn__s1 
+					(true (proficiencyMed__s1' 
+						(true (1.0))
+						(false (0.0))))
+					(false (proficiencyMed__s1 
+						(true (proficiencyMed__s1' 
+							(true (1.0))
+							(false (0.0))))
+						(false (proficiencyMed__s1' 
+							(true (0.0))
+							(false (1.0))))))))
+				(false (updateTurn__s1 
+					(true (answeredRight__s1 
+						(true (fpos__s1 
+							(true (proficiencyMed__s1 
+								(true (proficiencyMed__s1' 
+									(true (1.0))
+									(false (0.0))))
+								(false (proficiencyMed__s1' 
+									(true (0.0))
+									(false (1.0))))))
+							(false (proficiencyMed__s1' 
+								(true (1.0))
+								(false (0.0))))))
+						(false (proficiencyMed__s1 
+							(true (hintDelayVar__s1 
+								(true (proficiencyMed__s1' 
+									(true (1.0))
+									(false (0.0))))
+								(false (proficiencyMed__s1' 
+									(true (0.0))
+									(false (1.0))))))
+							(false (proficiencyMed__s1' 
+								(true (0.0))
+								(false (1.0))))))))
+					(false (proficiencyMed__s1 
+						(true (proficiencyMed__s1' 
+							(true (1.0))
+							(false (0.0))))
+						(false (proficiencyMed__s1' 
+							(true (0.0))
+							(false (1.0)))))))))))
+	hintDelayVar__s0
+		(updateTurn__s0 
+			(true (hintDelayVar__s0' 
+				(true (0.0))
+				(false (1.0))))
+			(false (updateTurn__s1 
+				(true (hintDelayVar__s0' 
+					(true (0.0))
+					(false (1.0))))
+				(false (hintDelayVar__s0' 
+					(true (1.0))
+					(false (0.0)))))))
+	hintDelayVar__s1
+		(hintDelayVar__s1' 
+			(true (0.0))
+			(false (1.0)))
 	observe 
-		answeredRightObs__s0
-			(answeredRight__s0' 
-				(true (answeredRightObs__s0' 
-					(true (1.0))
-					(false (0.0))))
-				(false (answeredRightObs__s0' 
-					(true (0.0))
-					(false (1.0)))))
-		answeredRightObs__s1
-			(answeredRight__s1' 
-				(true (answeredRightObs__s1' 
-					(true (1.0))
-					(false (0.0))))
-				(false (answeredRightObs__s1' 
-					(true (0.0))
-					(false (1.0)))))
 		updateTurnObs__s0
 			(updateTurn__s0' 
 				(true (updateTurnObs__s0' 
@@ -1178,320 +890,112 @@ action giveHint__s0
 				(false (updateTurnObs__s1' 
 					(true (0.0))
 					(false (1.0)))))
+		answeredRightObs__s0
+			(answeredRight__s0' 
+				(true (answeredRightObs__s0' 
+					(true (1.0))
+					(false (0.0))))
+				(false (answeredRightObs__s0' 
+					(true (0.0))
+					(false (1.0)))))
+		answeredRightObs__s1
+			(answeredRight__s1' 
+				(true (answeredRightObs__s1' 
+					(true (1.0))
+					(false (0.0))))
+				(false (answeredRightObs__s1' 
+					(true (0.0))
+					(false (1.0)))))
 	endobserve
 	cost [+ 
 		(proficiencyHigh__s0 
-			(true (-1.4593097))
+			(true (-1.1397905))
 			(false (0.0)))
 		(proficiencyHigh__s1 
-			(true (-1.3163352))
+			(true (-1.401068))
 			(false (0.0)))
 		(proficiencyMed__s0 
 			(true (0.0))
-			(false (1.4593097)))
+			(false (1.1397905)))
 		(proficiencyMed__s1 
 			(true (0.0))
-			(false (1.3163352)))
+			(false (1.401068)))
 	]
 endaction
 
 action giveHint__s1
-	proficiencyMed__s0
-		(proficiencyMed__s0 
-			(true (updateTurn__s0 
-				(true (hintDelayVar__s0 
-					(true (proficiencyMed__s0' 
-						(true (1.0))
-						(false (0.0))))
-					(false (proficiencyHigh__s0 
-						(true (proficiencyMed__s0' 
-							(true (1.0))
-							(false (0.0))))
-						(false (hintedRight__s0 
-							(true (proficiencyMed__s0' 
-								(true (1.0))
-								(false (0.0))))
-							(false (answeredRight__s0 
-								(true (proficiencyMed__s0' 
-									(true (1.0))
-									(false (0.0))))
-								(false (proficiencyMed__s0' 
-									(true (0.0))
-									(false (1.0))))))))))))
-				(false (proficiencyMed__s0' 
-					(true (1.0))
-					(false (0.0))))))
-			(false (updateTurn__s0 
-				(true (proficiencyHigh__s0 
-					(true (proficiencyMed__s0' 
-						(true (1.0))
-						(false (0.0))))
-					(false (fpos__s0 
-						(true (hintedRight__s0 
-							(true (proficiencyMed__s0' 
-								(true (1.0))
-								(false (0.0))))
-							(false (proficiencyMed__s0' 
-								(true (0.0))
-								(false (1.0))))))
-						(false (hintedRight__s0 
-							(true (proficiencyMed__s0' 
-								(true (1.0))
-								(false (0.0))))
-							(false (answeredRight__s0 
-								(true (proficiencyMed__s0' 
-									(true (1.0))
-									(false (0.0))))
-								(false (proficiencyMed__s0' 
-									(true (0.0))
-									(false (1.0))))))))))))
-				(false (proficiencyHigh__s0 
-					(true (proficiencyMed__s0' 
-						(true (1.0))
-						(false (0.0))))
-					(false (proficiencyMed__s0' 
-						(true (0.0))
-						(false (1.0)))))))))
-	proficiencyMed__s1
-		(proficiencyMed__s1 
-			(true (updateTurn__s1 
-				(true (hintDelayVar__s1 
-					(true (proficiencyMed__s1' 
-						(true (1.0))
-						(false (0.0))))
-					(false (proficiencyHigh__s1 
-						(true (proficiencyMed__s1' 
-							(true (1.0))
-							(false (0.0))))
-						(false (hintedRight__s1 
-							(true (proficiencyMed__s1' 
-								(true (1.0))
-								(false (0.0))))
-							(false (answeredRight__s1 
-								(true (proficiencyMed__s1' 
-									(true (1.0))
-									(false (0.0))))
-								(false (proficiencyMed__s1' 
-									(true (0.0))
-									(false (1.0))))))))))))
-				(false (proficiencyMed__s1' 
-					(true (1.0))
-					(false (0.0))))))
-			(false (updateTurn__s1 
-				(true (proficiencyHigh__s1 
-					(true (proficiencyMed__s1' 
-						(true (1.0))
-						(false (0.0))))
-					(false (fpos__s1 
-						(true (hintedRight__s1 
-							(true (proficiencyMed__s1' 
-								(true (1.0))
-								(false (0.0))))
-							(false (proficiencyMed__s1' 
-								(true (0.0))
-								(false (1.0))))))
-						(false (hintedRight__s1 
-							(true (proficiencyMed__s1' 
-								(true (1.0))
-								(false (0.0))))
-							(false (answeredRight__s1 
-								(true (proficiencyMed__s1' 
-									(true (1.0))
-									(false (0.0))))
-								(false (proficiencyMed__s1' 
-									(true (0.0))
-									(false (1.0))))))))))))
-				(false (proficiencyHigh__s1 
-					(true (proficiencyMed__s1' 
-						(true (1.0))
-						(false (0.0))))
-					(false (proficiencyMed__s1' 
-						(true (0.0))
-						(false (1.0)))))))))
-	updateTurn__s0
-		(updateTurn__s0' 
-			(true (0.0))
-			(false (1.0)))
-	updateTurn__s1
-		(updateTurn__s0 
-			(true (updateTurn__s1' 
-				(true (0.0))
-				(false (1.0))))
-			(false (updateTurn__s1 
-				(true (updateTurn__s1' 
-					(true (0.0))
-					(false (1.0))))
-				(false (updateTurn__s1' 
-					(true (1.0))
-					(false (0.0)))))))
-	hintDelayVar__s0
-		(hintDelayVar__s0' 
-			(true (0.0))
-			(false (1.0)))
-	hintDelayVar__s1
-		(updateTurn__s0 
-			(true (hintDelayVar__s1' 
-				(true (0.0))
-				(false (1.0))))
-			(false (updateTurn__s1 
-				(true (hintDelayVar__s1' 
-					(true (0.0))
-					(false (1.0))))
-				(false (hintDelayVar__s1' 
-					(true (1.0))
-					(false (0.0)))))))
 	proficiencyHigh__s0
-		(proficiencyMed__s0 
+		(proficiencyHigh__s0 
 			(true (updateTurn__s0 
-				(true (hintDelayVar__s0 
-					(true (proficiencyHigh__s0 
-						(true (proficiencyHigh__s0' 
-							(true (1.0))
-							(false (0.0))))
-						(false (fpos__s0 
-							(true (proficiencyHigh__s0' 
-								(true (0.0))
-								(false (1.0))))
-							(false (answeredRight__s0 
-								(true (proficiencyHigh__s0' 
-									(true (1.0))
-									(false (0.0))))
-								(false (proficiencyHigh__s0' 
-									(true (0.0))
-									(false (1.0))))))))))
-					(false (proficiencyHigh__s0 
-						(true (answeredRight__s0 
-							(true (proficiencyHigh__s0' 
-								(true (1.0))
-								(false (0.0))))
-							(false (proficiencyHigh__s0' 
-								(true (0.0))
-								(false (1.0))))))
-						(false (fpos__s0 
-							(true (proficiencyHigh__s0' 
-								(true (0.0))
-								(false (1.0))))
-							(false (answeredRight__s0 
-								(true (proficiencyHigh__s0' 
-									(true (1.0))
-									(false (0.0))))
-								(false (proficiencyHigh__s0' 
-									(true (0.0))
-									(false (1.0))))))))))))
-				(false (proficiencyHigh__s0 
+				(true (answeredRight__s0 
 					(true (proficiencyHigh__s0' 
 						(true (1.0))
 						(false (0.0))))
-					(false (proficiencyHigh__s0' 
-						(true (0.0))
-						(false (1.0))))))))
+					(false (hintDelayVar__s0 
+						(true (proficiencyHigh__s0' 
+							(true (1.0))
+							(false (0.0))))
+						(false (proficiencyHigh__s0' 
+							(true (0.0))
+							(false (1.0))))))))
+				(false (proficiencyHigh__s0' 
+					(true (1.0))
+					(false (0.0))))))
 			(false (updateTurn__s0 
-				(true (hintDelayVar__s0 
-					(true (proficiencyHigh__s0 
+				(true (answeredRight__s0 
+					(true (fpos__s0 
 						(true (proficiencyHigh__s0' 
-							(true (1.0))
-							(false (0.0))))
-						(false (proficiencyHigh__s0' 
 							(true (0.0))
-							(false (1.0))))))
-					(false (proficiencyHigh__s0 
-						(true (answeredRight__s0 
+							(false (1.0))))
+						(false (proficiencyMed__s0 
 							(true (proficiencyHigh__s0' 
 								(true (1.0))
 								(false (0.0))))
 							(false (proficiencyHigh__s0' 
 								(true (0.0))
-								(false (1.0))))))
-						(false (proficiencyHigh__s0' 
-							(true (0.0))
-							(false (1.0))))))))
-				(false (proficiencyHigh__s0 
-					(true (proficiencyHigh__s0' 
-						(true (1.0))
-						(false (0.0))))
+								(false (1.0))))))))
 					(false (proficiencyHigh__s0' 
 						(true (0.0))
-						(false (1.0)))))))))
+						(false (1.0))))))
+				(false (proficiencyHigh__s0' 
+					(true (0.0))
+					(false (1.0)))))))
 	proficiencyHigh__s1
-		(proficiencyMed__s1 
+		(proficiencyHigh__s1 
 			(true (updateTurn__s1 
-				(true (hintDelayVar__s1 
-					(true (proficiencyHigh__s1 
-						(true (proficiencyHigh__s1' 
-							(true (1.0))
-							(false (0.0))))
-						(false (fpos__s1 
-							(true (proficiencyHigh__s1' 
-								(true (0.0))
-								(false (1.0))))
-							(false (answeredRight__s1 
-								(true (proficiencyHigh__s1' 
-									(true (1.0))
-									(false (0.0))))
-								(false (proficiencyHigh__s1' 
-									(true (0.0))
-									(false (1.0))))))))))
-					(false (proficiencyHigh__s1 
-						(true (answeredRight__s1 
-							(true (proficiencyHigh__s1' 
-								(true (1.0))
-								(false (0.0))))
-							(false (proficiencyHigh__s1' 
-								(true (0.0))
-								(false (1.0))))))
-						(false (fpos__s1 
-							(true (proficiencyHigh__s1' 
-								(true (0.0))
-								(false (1.0))))
-							(false (answeredRight__s1 
-								(true (proficiencyHigh__s1' 
-									(true (1.0))
-									(false (0.0))))
-								(false (proficiencyHigh__s1' 
-									(true (0.0))
-									(false (1.0))))))))))))
-				(false (proficiencyHigh__s1 
+				(true (answeredRight__s1 
 					(true (proficiencyHigh__s1' 
 						(true (1.0))
 						(false (0.0))))
-					(false (proficiencyHigh__s1' 
-						(true (0.0))
-						(false (1.0))))))))
-			(false (updateTurn__s1 
-				(true (hintDelayVar__s1 
-					(true (proficiencyHigh__s1 
+					(false (hintDelayVar__s1 
 						(true (proficiencyHigh__s1' 
 							(true (1.0))
 							(false (0.0))))
-						(false (proficiencyHigh__s1' 
-							(true (0.0))
-							(false (1.0))))))
-					(false (proficiencyHigh__s1 
-						(true (answeredRight__s1 
-							(true (proficiencyHigh__s1' 
-								(true (1.0))
-								(false (0.0))))
-							(false (proficiencyHigh__s1' 
-								(true (0.0))
-								(false (1.0))))))
 						(false (proficiencyHigh__s1' 
 							(true (0.0))
 							(false (1.0))))))))
-				(false (proficiencyHigh__s1 
-					(true (proficiencyHigh__s1' 
-						(true (1.0))
-						(false (0.0))))
+				(false (proficiencyHigh__s1' 
+					(true (1.0))
+					(false (0.0))))))
+			(false (updateTurn__s1 
+				(true (answeredRight__s1 
+					(true (fpos__s1 
+						(true (proficiencyHigh__s1' 
+							(true (0.0))
+							(false (1.0))))
+						(false (proficiencyMed__s1 
+							(true (proficiencyHigh__s1' 
+								(true (1.0))
+								(false (0.0))))
+							(false (proficiencyHigh__s1' 
+								(true (0.0))
+								(false (1.0))))))))
 					(false (proficiencyHigh__s1' 
 						(true (0.0))
-						(false (1.0)))))))))
-	fpos__s0
-		(fpos__s0' 
-			(true (0.0))
-			(false (1.0)))
-	fpos__s1
-		(fpos__s1' 
-			(true (0.0))
-			(false (1.0)))
+						(false (1.0))))))
+				(false (proficiencyHigh__s1' 
+					(true (0.0))
+					(false (1.0)))))))
 	hintedRight__s0
 		(hintedRight__s0' 
 			(true (0.0))
@@ -1508,6 +1012,22 @@ action giveHint__s1
 				(false (hintedRight__s1' 
 					(true (1.0))
 					(false (0.0)))))))
+	updateTurn__s0
+		(updateTurn__s0' 
+			(true (0.0))
+			(false (1.0)))
+	updateTurn__s1
+		(updateTurn__s0 
+			(true (updateTurn__s1' 
+				(true (0.0))
+				(false (1.0))))
+			(false (updateTurn__s1 
+				(true (updateTurn__s1' 
+					(true (0.0))
+					(false (1.0))))
+				(false (updateTurn__s1' 
+					(true (1.0))
+					(false (0.0)))))))
 	answeredRight__s0
 		(answeredRight__s0' 
 			(true (0.0))
@@ -1516,329 +1036,6 @@ action giveHint__s1
 		(answeredRight__s1' 
 			(true (0.0))
 			(false (1.0)))
-	observe 
-		answeredRightObs__s0
-			(answeredRight__s0' 
-				(true (answeredRightObs__s0' 
-					(true (1.0))
-					(false (0.0))))
-				(false (answeredRightObs__s0' 
-					(true (0.0))
-					(false (1.0)))))
-		answeredRightObs__s1
-			(answeredRight__s1' 
-				(true (answeredRightObs__s1' 
-					(true (1.0))
-					(false (0.0))))
-				(false (answeredRightObs__s1' 
-					(true (0.0))
-					(false (1.0)))))
-		updateTurnObs__s0
-			(updateTurn__s0' 
-				(true (updateTurnObs__s0' 
-					(true (1.0))
-					(false (0.0))))
-				(false (updateTurnObs__s0' 
-					(true (0.0))
-					(false (1.0)))))
-		updateTurnObs__s1
-			(updateTurn__s1' 
-				(true (updateTurnObs__s1' 
-					(true (1.0))
-					(false (0.0))))
-				(false (updateTurnObs__s1' 
-					(true (0.0))
-					(false (1.0)))))
-	endobserve
-	cost [+ 
-		(proficiencyHigh__s0 
-			(true (-1.4593097))
-			(false (0.0)))
-		(proficiencyHigh__s1 
-			(true (-1.3163352))
-			(false (0.0)))
-		(proficiencyMed__s0 
-			(true (0.0))
-			(false (1.4593097)))
-		(proficiencyMed__s1 
-			(true (0.0))
-			(false (1.3163352)))
-	]
-endaction
-
-action noop
-	proficiencyMed__s0
-		(proficiencyMed__s0 
-			(true (updateTurn__s0 
-				(true (hintDelayVar__s0 
-					(true (proficiencyMed__s0' 
-						(true (1.0))
-						(false (0.0))))
-					(false (proficiencyHigh__s0 
-						(true (proficiencyMed__s0' 
-							(true (1.0))
-							(false (0.0))))
-						(false (hintedRight__s0 
-							(true (proficiencyMed__s0' 
-								(true (1.0))
-								(false (0.0))))
-							(false (answeredRight__s0 
-								(true (proficiencyMed__s0' 
-									(true (1.0))
-									(false (0.0))))
-								(false (proficiencyMed__s0' 
-									(true (0.0))
-									(false (1.0))))))))))))
-				(false (proficiencyMed__s0' 
-					(true (1.0))
-					(false (0.0))))))
-			(false (updateTurn__s0 
-				(true (proficiencyHigh__s0 
-					(true (proficiencyMed__s0' 
-						(true (1.0))
-						(false (0.0))))
-					(false (fpos__s0 
-						(true (hintedRight__s0 
-							(true (proficiencyMed__s0' 
-								(true (1.0))
-								(false (0.0))))
-							(false (proficiencyMed__s0' 
-								(true (0.0))
-								(false (1.0))))))
-						(false (hintedRight__s0 
-							(true (proficiencyMed__s0' 
-								(true (1.0))
-								(false (0.0))))
-							(false (answeredRight__s0 
-								(true (proficiencyMed__s0' 
-									(true (1.0))
-									(false (0.0))))
-								(false (proficiencyMed__s0' 
-									(true (0.0))
-									(false (1.0))))))))))))
-				(false (proficiencyHigh__s0 
-					(true (proficiencyMed__s0' 
-						(true (1.0))
-						(false (0.0))))
-					(false (proficiencyMed__s0' 
-						(true (0.0))
-						(false (1.0)))))))))
-	proficiencyMed__s1
-		(proficiencyMed__s1 
-			(true (updateTurn__s1 
-				(true (hintDelayVar__s1 
-					(true (proficiencyMed__s1' 
-						(true (1.0))
-						(false (0.0))))
-					(false (proficiencyHigh__s1 
-						(true (proficiencyMed__s1' 
-							(true (1.0))
-							(false (0.0))))
-						(false (hintedRight__s1 
-							(true (proficiencyMed__s1' 
-								(true (1.0))
-								(false (0.0))))
-							(false (answeredRight__s1 
-								(true (proficiencyMed__s1' 
-									(true (1.0))
-									(false (0.0))))
-								(false (proficiencyMed__s1' 
-									(true (0.0))
-									(false (1.0))))))))))))
-				(false (proficiencyMed__s1' 
-					(true (1.0))
-					(false (0.0))))))
-			(false (updateTurn__s1 
-				(true (proficiencyHigh__s1 
-					(true (proficiencyMed__s1' 
-						(true (1.0))
-						(false (0.0))))
-					(false (fpos__s1 
-						(true (hintedRight__s1 
-							(true (proficiencyMed__s1' 
-								(true (1.0))
-								(false (0.0))))
-							(false (proficiencyMed__s1' 
-								(true (0.0))
-								(false (1.0))))))
-						(false (hintedRight__s1 
-							(true (proficiencyMed__s1' 
-								(true (1.0))
-								(false (0.0))))
-							(false (answeredRight__s1 
-								(true (proficiencyMed__s1' 
-									(true (1.0))
-									(false (0.0))))
-								(false (proficiencyMed__s1' 
-									(true (0.0))
-									(false (1.0))))))))))))
-				(false (proficiencyHigh__s1 
-					(true (proficiencyMed__s1' 
-						(true (1.0))
-						(false (0.0))))
-					(false (proficiencyMed__s1' 
-						(true (0.0))
-						(false (1.0)))))))))
-	updateTurn__s0
-		(updateTurn__s0' 
-			(true (0.0))
-			(false (1.0)))
-	updateTurn__s1
-		(updateTurn__s1' 
-			(true (0.0))
-			(false (1.0)))
-	hintDelayVar__s0
-		(hintDelayVar__s0' 
-			(true (0.0))
-			(false (1.0)))
-	hintDelayVar__s1
-		(hintDelayVar__s1' 
-			(true (0.0))
-			(false (1.0)))
-	proficiencyHigh__s0
-		(proficiencyMed__s0 
-			(true (updateTurn__s0 
-				(true (hintDelayVar__s0 
-					(true (proficiencyHigh__s0 
-						(true (proficiencyHigh__s0' 
-							(true (1.0))
-							(false (0.0))))
-						(false (fpos__s0 
-							(true (proficiencyHigh__s0' 
-								(true (0.0))
-								(false (1.0))))
-							(false (answeredRight__s0 
-								(true (proficiencyHigh__s0' 
-									(true (1.0))
-									(false (0.0))))
-								(false (proficiencyHigh__s0' 
-									(true (0.0))
-									(false (1.0))))))))))
-					(false (proficiencyHigh__s0 
-						(true (answeredRight__s0 
-							(true (proficiencyHigh__s0' 
-								(true (1.0))
-								(false (0.0))))
-							(false (proficiencyHigh__s0' 
-								(true (0.0))
-								(false (1.0))))))
-						(false (fpos__s0 
-							(true (proficiencyHigh__s0' 
-								(true (0.0))
-								(false (1.0))))
-							(false (answeredRight__s0 
-								(true (proficiencyHigh__s0' 
-									(true (1.0))
-									(false (0.0))))
-								(false (proficiencyHigh__s0' 
-									(true (0.0))
-									(false (1.0))))))))))))
-				(false (proficiencyHigh__s0 
-					(true (proficiencyHigh__s0' 
-						(true (1.0))
-						(false (0.0))))
-					(false (proficiencyHigh__s0' 
-						(true (0.0))
-						(false (1.0))))))))
-			(false (updateTurn__s0 
-				(true (hintDelayVar__s0 
-					(true (proficiencyHigh__s0 
-						(true (proficiencyHigh__s0' 
-							(true (1.0))
-							(false (0.0))))
-						(false (proficiencyHigh__s0' 
-							(true (0.0))
-							(false (1.0))))))
-					(false (proficiencyHigh__s0 
-						(true (answeredRight__s0 
-							(true (proficiencyHigh__s0' 
-								(true (1.0))
-								(false (0.0))))
-							(false (proficiencyHigh__s0' 
-								(true (0.0))
-								(false (1.0))))))
-						(false (proficiencyHigh__s0' 
-							(true (0.0))
-							(false (1.0))))))))
-				(false (proficiencyHigh__s0 
-					(true (proficiencyHigh__s0' 
-						(true (1.0))
-						(false (0.0))))
-					(false (proficiencyHigh__s0' 
-						(true (0.0))
-						(false (1.0)))))))))
-	proficiencyHigh__s1
-		(proficiencyMed__s1 
-			(true (updateTurn__s1 
-				(true (hintDelayVar__s1 
-					(true (proficiencyHigh__s1 
-						(true (proficiencyHigh__s1' 
-							(true (1.0))
-							(false (0.0))))
-						(false (fpos__s1 
-							(true (proficiencyHigh__s1' 
-								(true (0.0))
-								(false (1.0))))
-							(false (answeredRight__s1 
-								(true (proficiencyHigh__s1' 
-									(true (1.0))
-									(false (0.0))))
-								(false (proficiencyHigh__s1' 
-									(true (0.0))
-									(false (1.0))))))))))
-					(false (proficiencyHigh__s1 
-						(true (answeredRight__s1 
-							(true (proficiencyHigh__s1' 
-								(true (1.0))
-								(false (0.0))))
-							(false (proficiencyHigh__s1' 
-								(true (0.0))
-								(false (1.0))))))
-						(false (fpos__s1 
-							(true (proficiencyHigh__s1' 
-								(true (0.0))
-								(false (1.0))))
-							(false (answeredRight__s1 
-								(true (proficiencyHigh__s1' 
-									(true (1.0))
-									(false (0.0))))
-								(false (proficiencyHigh__s1' 
-									(true (0.0))
-									(false (1.0))))))))))))
-				(false (proficiencyHigh__s1 
-					(true (proficiencyHigh__s1' 
-						(true (1.0))
-						(false (0.0))))
-					(false (proficiencyHigh__s1' 
-						(true (0.0))
-						(false (1.0))))))))
-			(false (updateTurn__s1 
-				(true (hintDelayVar__s1 
-					(true (proficiencyHigh__s1 
-						(true (proficiencyHigh__s1' 
-							(true (1.0))
-							(false (0.0))))
-						(false (proficiencyHigh__s1' 
-							(true (0.0))
-							(false (1.0))))))
-					(false (proficiencyHigh__s1 
-						(true (answeredRight__s1 
-							(true (proficiencyHigh__s1' 
-								(true (1.0))
-								(false (0.0))))
-							(false (proficiencyHigh__s1' 
-								(true (0.0))
-								(false (1.0))))))
-						(false (proficiencyHigh__s1' 
-							(true (0.0))
-							(false (1.0))))))))
-				(false (proficiencyHigh__s1 
-					(true (proficiencyHigh__s1' 
-						(true (1.0))
-						(false (0.0))))
-					(false (proficiencyHigh__s1' 
-						(true (0.0))
-						(false (1.0)))))))))
 	fpos__s0
 		(fpos__s0' 
 			(true (0.0))
@@ -1847,39 +1044,119 @@ action noop
 		(fpos__s1' 
 			(true (0.0))
 			(false (1.0)))
-	hintedRight__s0
-		(hintedRight__s0' 
+	proficiencyMed__s0
+		(proficiencyHigh__s0 
+			(true (proficiencyMed__s0' 
+				(true (1.0))
+				(false (0.0))))
+			(false (hintedRight__s0 
+				(true (updateTurn__s0 
+					(true (proficiencyMed__s0' 
+						(true (1.0))
+						(false (0.0))))
+					(false (proficiencyMed__s0 
+						(true (proficiencyMed__s0' 
+							(true (1.0))
+							(false (0.0))))
+						(false (proficiencyMed__s0' 
+							(true (0.0))
+							(false (1.0))))))))
+				(false (updateTurn__s0 
+					(true (answeredRight__s0 
+						(true (fpos__s0 
+							(true (proficiencyMed__s0 
+								(true (proficiencyMed__s0' 
+									(true (1.0))
+									(false (0.0))))
+								(false (proficiencyMed__s0' 
+									(true (0.0))
+									(false (1.0))))))
+							(false (proficiencyMed__s0' 
+								(true (1.0))
+								(false (0.0))))))
+						(false (proficiencyMed__s0 
+							(true (hintDelayVar__s0 
+								(true (proficiencyMed__s0' 
+									(true (1.0))
+									(false (0.0))))
+								(false (proficiencyMed__s0' 
+									(true (0.0))
+									(false (1.0))))))
+							(false (proficiencyMed__s0' 
+								(true (0.0))
+								(false (1.0))))))))
+					(false (proficiencyMed__s0 
+						(true (proficiencyMed__s0' 
+							(true (1.0))
+							(false (0.0))))
+						(false (proficiencyMed__s0' 
+							(true (0.0))
+							(false (1.0)))))))))))
+	proficiencyMed__s1
+		(proficiencyHigh__s1 
+			(true (proficiencyMed__s1' 
+				(true (1.0))
+				(false (0.0))))
+			(false (hintedRight__s1 
+				(true (updateTurn__s1 
+					(true (proficiencyMed__s1' 
+						(true (1.0))
+						(false (0.0))))
+					(false (proficiencyMed__s1 
+						(true (proficiencyMed__s1' 
+							(true (1.0))
+							(false (0.0))))
+						(false (proficiencyMed__s1' 
+							(true (0.0))
+							(false (1.0))))))))
+				(false (updateTurn__s1 
+					(true (answeredRight__s1 
+						(true (fpos__s1 
+							(true (proficiencyMed__s1 
+								(true (proficiencyMed__s1' 
+									(true (1.0))
+									(false (0.0))))
+								(false (proficiencyMed__s1' 
+									(true (0.0))
+									(false (1.0))))))
+							(false (proficiencyMed__s1' 
+								(true (1.0))
+								(false (0.0))))))
+						(false (proficiencyMed__s1 
+							(true (hintDelayVar__s1 
+								(true (proficiencyMed__s1' 
+									(true (1.0))
+									(false (0.0))))
+								(false (proficiencyMed__s1' 
+									(true (0.0))
+									(false (1.0))))))
+							(false (proficiencyMed__s1' 
+								(true (0.0))
+								(false (1.0))))))))
+					(false (proficiencyMed__s1 
+						(true (proficiencyMed__s1' 
+							(true (1.0))
+							(false (0.0))))
+						(false (proficiencyMed__s1' 
+							(true (0.0))
+							(false (1.0)))))))))))
+	hintDelayVar__s0
+		(hintDelayVar__s0' 
 			(true (0.0))
 			(false (1.0)))
-	hintedRight__s1
-		(hintedRight__s1' 
-			(true (0.0))
-			(false (1.0)))
-	answeredRight__s0
-		(answeredRight__s0' 
-			(true (0.0))
-			(false (1.0)))
-	answeredRight__s1
-		(answeredRight__s1' 
-			(true (0.0))
-			(false (1.0)))
+	hintDelayVar__s1
+		(updateTurn__s0 
+			(true (hintDelayVar__s1' 
+				(true (0.0))
+				(false (1.0))))
+			(false (updateTurn__s1 
+				(true (hintDelayVar__s1' 
+					(true (0.0))
+					(false (1.0))))
+				(false (hintDelayVar__s1' 
+					(true (1.0))
+					(false (0.0)))))))
 	observe 
-		answeredRightObs__s0
-			(answeredRight__s0' 
-				(true (answeredRightObs__s0' 
-					(true (1.0))
-					(false (0.0))))
-				(false (answeredRightObs__s0' 
-					(true (0.0))
-					(false (1.0)))))
-		answeredRightObs__s1
-			(answeredRight__s1' 
-				(true (answeredRightObs__s1' 
-					(true (1.0))
-					(false (0.0))))
-				(false (answeredRightObs__s1' 
-					(true (0.0))
-					(false (1.0)))))
 		updateTurnObs__s0
 			(updateTurn__s0' 
 				(true (updateTurnObs__s0' 
@@ -1896,20 +1173,295 @@ action noop
 				(false (updateTurnObs__s1' 
 					(true (0.0))
 					(false (1.0)))))
+		answeredRightObs__s0
+			(answeredRight__s0' 
+				(true (answeredRightObs__s0' 
+					(true (1.0))
+					(false (0.0))))
+				(false (answeredRightObs__s0' 
+					(true (0.0))
+					(false (1.0)))))
+		answeredRightObs__s1
+			(answeredRight__s1' 
+				(true (answeredRightObs__s1' 
+					(true (1.0))
+					(false (0.0))))
+				(false (answeredRightObs__s1' 
+					(true (0.0))
+					(false (1.0)))))
 	endobserve
 	cost [+ 
 		(proficiencyHigh__s0 
-			(true (-1.4593097))
+			(true (-1.1397905))
 			(false (0.0)))
 		(proficiencyHigh__s1 
-			(true (-1.3163352))
+			(true (-1.401068))
 			(false (0.0)))
 		(proficiencyMed__s0 
 			(true (0.0))
-			(false (1.4593097)))
+			(false (1.1397905)))
 		(proficiencyMed__s1 
 			(true (0.0))
-			(false (1.3163352)))
+			(false (1.401068)))
+	]
+endaction
+
+action noop
+	proficiencyHigh__s0
+		(proficiencyHigh__s0 
+			(true (updateTurn__s0 
+				(true (answeredRight__s0 
+					(true (proficiencyHigh__s0' 
+						(true (1.0))
+						(false (0.0))))
+					(false (hintDelayVar__s0 
+						(true (proficiencyHigh__s0' 
+							(true (1.0))
+							(false (0.0))))
+						(false (proficiencyHigh__s0' 
+							(true (0.0))
+							(false (1.0))))))))
+				(false (proficiencyHigh__s0' 
+					(true (1.0))
+					(false (0.0))))))
+			(false (updateTurn__s0 
+				(true (answeredRight__s0 
+					(true (fpos__s0 
+						(true (proficiencyHigh__s0' 
+							(true (0.0))
+							(false (1.0))))
+						(false (proficiencyMed__s0 
+							(true (proficiencyHigh__s0' 
+								(true (1.0))
+								(false (0.0))))
+							(false (proficiencyHigh__s0' 
+								(true (0.0))
+								(false (1.0))))))))
+					(false (proficiencyHigh__s0' 
+						(true (0.0))
+						(false (1.0))))))
+				(false (proficiencyHigh__s0' 
+					(true (0.0))
+					(false (1.0)))))))
+	proficiencyHigh__s1
+		(proficiencyHigh__s1 
+			(true (updateTurn__s1 
+				(true (answeredRight__s1 
+					(true (proficiencyHigh__s1' 
+						(true (1.0))
+						(false (0.0))))
+					(false (hintDelayVar__s1 
+						(true (proficiencyHigh__s1' 
+							(true (1.0))
+							(false (0.0))))
+						(false (proficiencyHigh__s1' 
+							(true (0.0))
+							(false (1.0))))))))
+				(false (proficiencyHigh__s1' 
+					(true (1.0))
+					(false (0.0))))))
+			(false (updateTurn__s1 
+				(true (answeredRight__s1 
+					(true (fpos__s1 
+						(true (proficiencyHigh__s1' 
+							(true (0.0))
+							(false (1.0))))
+						(false (proficiencyMed__s1 
+							(true (proficiencyHigh__s1' 
+								(true (1.0))
+								(false (0.0))))
+							(false (proficiencyHigh__s1' 
+								(true (0.0))
+								(false (1.0))))))))
+					(false (proficiencyHigh__s1' 
+						(true (0.0))
+						(false (1.0))))))
+				(false (proficiencyHigh__s1' 
+					(true (0.0))
+					(false (1.0)))))))
+	hintedRight__s0
+		(hintedRight__s0' 
+			(true (0.0))
+			(false (1.0)))
+	hintedRight__s1
+		(hintedRight__s1' 
+			(true (0.0))
+			(false (1.0)))
+	updateTurn__s0
+		(updateTurn__s0' 
+			(true (0.0))
+			(false (1.0)))
+	updateTurn__s1
+		(updateTurn__s1' 
+			(true (0.0))
+			(false (1.0)))
+	answeredRight__s0
+		(answeredRight__s0' 
+			(true (0.0))
+			(false (1.0)))
+	answeredRight__s1
+		(answeredRight__s1' 
+			(true (0.0))
+			(false (1.0)))
+	fpos__s0
+		(fpos__s0' 
+			(true (0.0))
+			(false (1.0)))
+	fpos__s1
+		(fpos__s1' 
+			(true (0.0))
+			(false (1.0)))
+	proficiencyMed__s0
+		(proficiencyHigh__s0 
+			(true (proficiencyMed__s0' 
+				(true (1.0))
+				(false (0.0))))
+			(false (hintedRight__s0 
+				(true (updateTurn__s0 
+					(true (proficiencyMed__s0' 
+						(true (1.0))
+						(false (0.0))))
+					(false (proficiencyMed__s0 
+						(true (proficiencyMed__s0' 
+							(true (1.0))
+							(false (0.0))))
+						(false (proficiencyMed__s0' 
+							(true (0.0))
+							(false (1.0))))))))
+				(false (updateTurn__s0 
+					(true (answeredRight__s0 
+						(true (fpos__s0 
+							(true (proficiencyMed__s0 
+								(true (proficiencyMed__s0' 
+									(true (1.0))
+									(false (0.0))))
+								(false (proficiencyMed__s0' 
+									(true (0.0))
+									(false (1.0))))))
+							(false (proficiencyMed__s0' 
+								(true (1.0))
+								(false (0.0))))))
+						(false (proficiencyMed__s0 
+							(true (hintDelayVar__s0 
+								(true (proficiencyMed__s0' 
+									(true (1.0))
+									(false (0.0))))
+								(false (proficiencyMed__s0' 
+									(true (0.0))
+									(false (1.0))))))
+							(false (proficiencyMed__s0' 
+								(true (0.0))
+								(false (1.0))))))))
+					(false (proficiencyMed__s0 
+						(true (proficiencyMed__s0' 
+							(true (1.0))
+							(false (0.0))))
+						(false (proficiencyMed__s0' 
+							(true (0.0))
+							(false (1.0)))))))))))
+	proficiencyMed__s1
+		(proficiencyHigh__s1 
+			(true (proficiencyMed__s1' 
+				(true (1.0))
+				(false (0.0))))
+			(false (hintedRight__s1 
+				(true (updateTurn__s1 
+					(true (proficiencyMed__s1' 
+						(true (1.0))
+						(false (0.0))))
+					(false (proficiencyMed__s1 
+						(true (proficiencyMed__s1' 
+							(true (1.0))
+							(false (0.0))))
+						(false (proficiencyMed__s1' 
+							(true (0.0))
+							(false (1.0))))))))
+				(false (updateTurn__s1 
+					(true (answeredRight__s1 
+						(true (fpos__s1 
+							(true (proficiencyMed__s1 
+								(true (proficiencyMed__s1' 
+									(true (1.0))
+									(false (0.0))))
+								(false (proficiencyMed__s1' 
+									(true (0.0))
+									(false (1.0))))))
+							(false (proficiencyMed__s1' 
+								(true (1.0))
+								(false (0.0))))))
+						(false (proficiencyMed__s1 
+							(true (hintDelayVar__s1 
+								(true (proficiencyMed__s1' 
+									(true (1.0))
+									(false (0.0))))
+								(false (proficiencyMed__s1' 
+									(true (0.0))
+									(false (1.0))))))
+							(false (proficiencyMed__s1' 
+								(true (0.0))
+								(false (1.0))))))))
+					(false (proficiencyMed__s1 
+						(true (proficiencyMed__s1' 
+							(true (1.0))
+							(false (0.0))))
+						(false (proficiencyMed__s1' 
+							(true (0.0))
+							(false (1.0)))))))))))
+	hintDelayVar__s0
+		(hintDelayVar__s0' 
+			(true (0.0))
+			(false (1.0)))
+	hintDelayVar__s1
+		(hintDelayVar__s1' 
+			(true (0.0))
+			(false (1.0)))
+	observe 
+		updateTurnObs__s0
+			(updateTurn__s0' 
+				(true (updateTurnObs__s0' 
+					(true (1.0))
+					(false (0.0))))
+				(false (updateTurnObs__s0' 
+					(true (0.0))
+					(false (1.0)))))
+		updateTurnObs__s1
+			(updateTurn__s1' 
+				(true (updateTurnObs__s1' 
+					(true (1.0))
+					(false (0.0))))
+				(false (updateTurnObs__s1' 
+					(true (0.0))
+					(false (1.0)))))
+		answeredRightObs__s0
+			(answeredRight__s0' 
+				(true (answeredRightObs__s0' 
+					(true (1.0))
+					(false (0.0))))
+				(false (answeredRightObs__s0' 
+					(true (0.0))
+					(false (1.0)))))
+		answeredRightObs__s1
+			(answeredRight__s1' 
+				(true (answeredRightObs__s1' 
+					(true (1.0))
+					(false (0.0))))
+				(false (answeredRightObs__s1' 
+					(true (0.0))
+					(false (1.0)))))
+	endobserve
+	cost [+ 
+		(proficiencyHigh__s0 
+			(true (-1.1397905))
+			(false (0.0)))
+		(proficiencyHigh__s1 
+			(true (-1.401068))
+			(false (0.0)))
+		(proficiencyMed__s0 
+			(true (0.0))
+			(false (1.1397905)))
+		(proficiencyMed__s1 
+			(true (0.0))
+			(false (1.401068)))
 	]
 endaction
 

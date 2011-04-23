@@ -103,25 +103,25 @@ action close_door__e0
 							(true (1.0))
 							(false (0.0))))
 						(false (person_waiting_up__f1' 
-							(true (0.10383577))
-							(false (0.89616423))))))
+							(true (0.07218209))
+							(false (0.92781791))))))
 					(false (person_waiting_up__f1' 
-						(true (0.10383577))
-						(false (0.89616423))))))
+						(true (0.07218209))
+						(false (0.92781791))))))
 				(false (person_waiting_up__f1 
 					(true (person_waiting_up__f1' 
 						(true (1.0))
 						(false (0.0))))
 					(false (person_waiting_up__f1' 
-						(true (0.10383577))
-						(false (0.89616423))))))))
+						(true (0.07218209))
+						(false (0.92781791))))))))
 			(false (person_waiting_up__f1 
 				(true (person_waiting_up__f1' 
 					(true (1.0))
 					(false (0.0))))
 				(false (person_waiting_up__f1' 
-					(true (0.10383577))
-					(false (0.89616423)))))))
+					(true (0.07218209))
+					(false (0.92781791)))))))
 	person_waiting_up__f2
 		(elevator_dir_up__e0 
 			(true (elevator_at_floor__e0_f2 
@@ -561,8 +561,8 @@ action close_door__e0
 					(true (1.0))
 					(false (0.0))))
 				(false (person_waiting_down__f1' 
-					(true (0.10383577))
-					(false (0.89616423))))))
+					(true (0.07218209))
+					(false (0.92781791))))))
 			(false (elevator_at_floor__e0_f1 
 				(true (person_waiting_down__f1 
 					(true (elevator_closed__e0 
@@ -570,18 +570,18 @@ action close_door__e0
 							(true (1.0))
 							(false (0.0))))
 						(false (person_waiting_down__f1' 
-							(true (0.10383577))
-							(false (0.89616423))))))
+							(true (0.07218209))
+							(false (0.92781791))))))
 					(false (person_waiting_down__f1' 
-						(true (0.10383577))
-						(false (0.89616423))))))
+						(true (0.07218209))
+						(false (0.92781791))))))
 				(false (person_waiting_down__f1 
 					(true (person_waiting_down__f1' 
 						(true (1.0))
 						(false (0.0))))
 					(false (person_waiting_down__f1' 
-						(true (0.10383577))
-						(false (0.89616423)))))))))
+						(true (0.07218209))
+						(false (0.92781791)))))))))
 	person_waiting_down__f2
 		(elevator_dir_up__e0 
 			(true (person_waiting_down__f2 
@@ -813,25 +813,25 @@ action move_current_dir__e0
 							(true (1.0))
 							(false (0.0))))
 						(false (person_waiting_up__f1' 
-							(true (0.10383577))
-							(false (0.89616423))))))
+							(true (0.07218209))
+							(false (0.92781791))))))
 					(false (person_waiting_up__f1' 
-						(true (0.10383577))
-						(false (0.89616423))))))
+						(true (0.07218209))
+						(false (0.92781791))))))
 				(false (person_waiting_up__f1 
 					(true (person_waiting_up__f1' 
 						(true (1.0))
 						(false (0.0))))
 					(false (person_waiting_up__f1' 
-						(true (0.10383577))
-						(false (0.89616423))))))))
+						(true (0.07218209))
+						(false (0.92781791))))))))
 			(false (person_waiting_up__f1 
 				(true (person_waiting_up__f1' 
 					(true (1.0))
 					(false (0.0))))
 				(false (person_waiting_up__f1' 
-					(true (0.10383577))
-					(false (0.89616423)))))))
+					(true (0.07218209))
+					(false (0.92781791)))))))
 	person_waiting_up__f2
 		(elevator_dir_up__e0 
 			(true (elevator_at_floor__e0_f2 
@@ -1271,8 +1271,8 @@ action move_current_dir__e0
 					(true (1.0))
 					(false (0.0))))
 				(false (person_waiting_down__f1' 
-					(true (0.10383577))
-					(false (0.89616423))))))
+					(true (0.07218209))
+					(false (0.92781791))))))
 			(false (elevator_at_floor__e0_f1 
 				(true (person_waiting_down__f1 
 					(true (elevator_closed__e0 
@@ -1280,18 +1280,18 @@ action move_current_dir__e0
 							(true (1.0))
 							(false (0.0))))
 						(false (person_waiting_down__f1' 
-							(true (0.10383577))
-							(false (0.89616423))))))
+							(true (0.07218209))
+							(false (0.92781791))))))
 					(false (person_waiting_down__f1' 
-						(true (0.10383577))
-						(false (0.89616423))))))
+						(true (0.07218209))
+						(false (0.92781791))))))
 				(false (person_waiting_down__f1 
 					(true (person_waiting_down__f1' 
 						(true (1.0))
 						(false (0.0))))
 					(false (person_waiting_down__f1' 
-						(true (0.10383577))
-						(false (0.89616423)))))))))
+						(true (0.07218209))
+						(false (0.92781791)))))))))
 	person_waiting_down__f2
 		(elevator_dir_up__e0 
 			(true (person_waiting_down__f2 
@@ -1443,25 +1443,25 @@ action noop
 							(true (1.0))
 							(false (0.0))))
 						(false (person_waiting_up__f1' 
-							(true (0.10383577))
-							(false (0.89616423))))))
+							(true (0.07218209))
+							(false (0.92781791))))))
 					(false (person_waiting_up__f1' 
-						(true (0.10383577))
-						(false (0.89616423))))))
+						(true (0.07218209))
+						(false (0.92781791))))))
 				(false (person_waiting_up__f1 
 					(true (person_waiting_up__f1' 
 						(true (1.0))
 						(false (0.0))))
 					(false (person_waiting_up__f1' 
-						(true (0.10383577))
-						(false (0.89616423))))))))
+						(true (0.07218209))
+						(false (0.92781791))))))))
 			(false (person_waiting_up__f1 
 				(true (person_waiting_up__f1' 
 					(true (1.0))
 					(false (0.0))))
 				(false (person_waiting_up__f1' 
-					(true (0.10383577))
-					(false (0.89616423)))))))
+					(true (0.07218209))
+					(false (0.92781791)))))))
 	person_waiting_up__f2
 		(elevator_dir_up__e0 
 			(true (elevator_at_floor__e0_f2 
@@ -1901,8 +1901,8 @@ action noop
 					(true (1.0))
 					(false (0.0))))
 				(false (person_waiting_down__f1' 
-					(true (0.10383577))
-					(false (0.89616423))))))
+					(true (0.07218209))
+					(false (0.92781791))))))
 			(false (elevator_at_floor__e0_f1 
 				(true (person_waiting_down__f1 
 					(true (elevator_closed__e0 
@@ -1910,18 +1910,18 @@ action noop
 							(true (1.0))
 							(false (0.0))))
 						(false (person_waiting_down__f1' 
-							(true (0.10383577))
-							(false (0.89616423))))))
+							(true (0.07218209))
+							(false (0.92781791))))))
 					(false (person_waiting_down__f1' 
-						(true (0.10383577))
-						(false (0.89616423))))))
+						(true (0.07218209))
+						(false (0.92781791))))))
 				(false (person_waiting_down__f1 
 					(true (person_waiting_down__f1' 
 						(true (1.0))
 						(false (0.0))))
 					(false (person_waiting_down__f1' 
-						(true (0.10383577))
-						(false (0.89616423)))))))))
+						(true (0.07218209))
+						(false (0.92781791)))))))))
 	person_waiting_down__f2
 		(elevator_dir_up__e0 
 			(true (person_waiting_down__f2 
@@ -2069,25 +2069,25 @@ action open_door_going_down__e0
 							(true (1.0))
 							(false (0.0))))
 						(false (person_waiting_up__f1' 
-							(true (0.10383577))
-							(false (0.89616423))))))
+							(true (0.07218209))
+							(false (0.92781791))))))
 					(false (person_waiting_up__f1' 
-						(true (0.10383577))
-						(false (0.89616423))))))
+						(true (0.07218209))
+						(false (0.92781791))))))
 				(false (person_waiting_up__f1 
 					(true (person_waiting_up__f1' 
 						(true (1.0))
 						(false (0.0))))
 					(false (person_waiting_up__f1' 
-						(true (0.10383577))
-						(false (0.89616423))))))))
+						(true (0.07218209))
+						(false (0.92781791))))))))
 			(false (person_waiting_up__f1 
 				(true (person_waiting_up__f1' 
 					(true (1.0))
 					(false (0.0))))
 				(false (person_waiting_up__f1' 
-					(true (0.10383577))
-					(false (0.89616423)))))))
+					(true (0.07218209))
+					(false (0.92781791)))))))
 	person_waiting_up__f2
 		(elevator_dir_up__e0 
 			(true (elevator_at_floor__e0_f2 
@@ -2527,8 +2527,8 @@ action open_door_going_down__e0
 					(true (1.0))
 					(false (0.0))))
 				(false (person_waiting_down__f1' 
-					(true (0.10383577))
-					(false (0.89616423))))))
+					(true (0.07218209))
+					(false (0.92781791))))))
 			(false (elevator_at_floor__e0_f1 
 				(true (person_waiting_down__f1 
 					(true (elevator_closed__e0 
@@ -2536,18 +2536,18 @@ action open_door_going_down__e0
 							(true (1.0))
 							(false (0.0))))
 						(false (person_waiting_down__f1' 
-							(true (0.10383577))
-							(false (0.89616423))))))
+							(true (0.07218209))
+							(false (0.92781791))))))
 					(false (person_waiting_down__f1' 
-						(true (0.10383577))
-						(false (0.89616423))))))
+						(true (0.07218209))
+						(false (0.92781791))))))
 				(false (person_waiting_down__f1 
 					(true (person_waiting_down__f1' 
 						(true (1.0))
 						(false (0.0))))
 					(false (person_waiting_down__f1' 
-						(true (0.10383577))
-						(false (0.89616423)))))))))
+						(true (0.07218209))
+						(false (0.92781791)))))))))
 	person_waiting_down__f2
 		(elevator_dir_up__e0 
 			(true (person_waiting_down__f2 
@@ -2691,25 +2691,25 @@ action open_door_going_up__e0
 							(true (1.0))
 							(false (0.0))))
 						(false (person_waiting_up__f1' 
-							(true (0.10383577))
-							(false (0.89616423))))))
+							(true (0.07218209))
+							(false (0.92781791))))))
 					(false (person_waiting_up__f1' 
-						(true (0.10383577))
-						(false (0.89616423))))))
+						(true (0.07218209))
+						(false (0.92781791))))))
 				(false (person_waiting_up__f1 
 					(true (person_waiting_up__f1' 
 						(true (1.0))
 						(false (0.0))))
 					(false (person_waiting_up__f1' 
-						(true (0.10383577))
-						(false (0.89616423))))))))
+						(true (0.07218209))
+						(false (0.92781791))))))))
 			(false (person_waiting_up__f1 
 				(true (person_waiting_up__f1' 
 					(true (1.0))
 					(false (0.0))))
 				(false (person_waiting_up__f1' 
-					(true (0.10383577))
-					(false (0.89616423)))))))
+					(true (0.07218209))
+					(false (0.92781791)))))))
 	person_waiting_up__f2
 		(elevator_dir_up__e0 
 			(true (elevator_at_floor__e0_f2 
@@ -3149,8 +3149,8 @@ action open_door_going_up__e0
 					(true (1.0))
 					(false (0.0))))
 				(false (person_waiting_down__f1' 
-					(true (0.10383577))
-					(false (0.89616423))))))
+					(true (0.07218209))
+					(false (0.92781791))))))
 			(false (elevator_at_floor__e0_f1 
 				(true (person_waiting_down__f1 
 					(true (elevator_closed__e0 
@@ -3158,18 +3158,18 @@ action open_door_going_up__e0
 							(true (1.0))
 							(false (0.0))))
 						(false (person_waiting_down__f1' 
-							(true (0.10383577))
-							(false (0.89616423))))))
+							(true (0.07218209))
+							(false (0.92781791))))))
 					(false (person_waiting_down__f1' 
-						(true (0.10383577))
-						(false (0.89616423))))))
+						(true (0.07218209))
+						(false (0.92781791))))))
 				(false (person_waiting_down__f1 
 					(true (person_waiting_down__f1' 
 						(true (1.0))
 						(false (0.0))))
 					(false (person_waiting_down__f1' 
-						(true (0.10383577))
-						(false (0.89616423)))))))))
+						(true (0.07218209))
+						(false (0.92781791)))))))))
 	person_waiting_down__f2
 		(elevator_dir_up__e0 
 			(true (person_waiting_down__f2 

@@ -43,222 +43,102 @@ init [*
 action noop
 	running__c1
 		(running__c1 
-			(true (running__c2 
-				(true (running__c4 
-					(true (running__c6 
-						(true (running__c9 
-							(true (running__c10 
-								(true (running__c1' 
-									(true (0.95))
-									(false (0.050000000000000044))))
-								(false (running__c1' 
-									(true (0.8666666666666667))
-									(false (0.1333333333333333))))))
-							(false (running__c10 
-								(true (running__c1' 
-									(true (0.8666666666666667))
-									(false (0.1333333333333333))))
-								(false (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))))))
-						(false (running__c9 
-							(true (running__c10 
-								(true (running__c1' 
-									(true (0.8666666666666667))
-									(false (0.1333333333333333))))
-								(false (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))))
-							(false (running__c10 
-								(true (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))
-								(false (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))))))))
-					(false (running__c6 
-						(true (running__c9 
-							(true (running__c10 
-								(true (running__c1' 
-									(true (0.8666666666666667))
-									(false (0.1333333333333333))))
-								(false (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))))
-							(false (running__c10 
-								(true (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))
-								(false (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))))))
-						(false (running__c9 
-							(true (running__c10 
-								(true (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))
-								(false (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))))
-							(false (running__c10 
-								(true (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))
-								(false (running__c1' 
-									(true (0.6166666666666667))
-									(false (0.3833333333333333))))))))))))
-				(false (running__c4 
-					(true (running__c6 
-						(true (running__c9 
-							(true (running__c10 
-								(true (running__c1' 
-									(true (0.8666666666666667))
-									(false (0.1333333333333333))))
-								(false (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))))
-							(false (running__c10 
-								(true (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))
-								(false (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))))))
-						(false (running__c9 
-							(true (running__c10 
-								(true (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))
-								(false (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))))
-							(false (running__c10 
-								(true (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))
-								(false (running__c1' 
-									(true (0.6166666666666667))
-									(false (0.3833333333333333))))))))))
-					(false (running__c6 
-						(true (running__c9 
-							(true (running__c10 
-								(true (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))
-								(false (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))))
-							(false (running__c10 
-								(true (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))
-								(false (running__c1' 
-									(true (0.6166666666666667))
-									(false (0.3833333333333333))))))))
-						(false (running__c9 
-							(true (running__c10 
-								(true (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))
-								(false (running__c1' 
-									(true (0.6166666666666667))
-									(false (0.3833333333333333))))))
-							(false (running__c10 
-								(true (running__c1' 
-									(true (0.6166666666666667))
-									(false (0.3833333333333333))))
-								(false (running__c1' 
-									(true (0.5333333333333333))
-									(false (0.4666666666666667))))))))))))))
+			(true (running__c5 
+				(true (running__c6 
+					(true (running__c9 
+						(true (running__c1' 
+							(true (0.95))
+							(false (0.050000000000000044))))
+						(false (running__c1' 
+							(true (0.825))
+							(false (0.17500000000000004))))))
+					(false (running__c9 
+						(true (running__c1' 
+							(true (0.825))
+							(false (0.17500000000000004))))
+						(false (running__c1' 
+							(true (0.7))
+							(false (0.30000000000000004))))))))
+				(false (running__c6 
+					(true (running__c9 
+						(true (running__c1' 
+							(true (0.825))
+							(false (0.17500000000000004))))
+						(false (running__c1' 
+							(true (0.7))
+							(false (0.30000000000000004))))))
+					(false (running__c9 
+						(true (running__c1' 
+							(true (0.7))
+							(false (0.30000000000000004))))
+						(false (running__c1' 
+							(true (0.575))
+							(false (0.42500000000000004))))))))))
 			(false (running__c1' 
 				(true (0.02))
 				(false (0.98)))))
 	running__c2
-		(running__c1 
-			(true (running__c2 
-				(true (running__c4 
-					(true (running__c2' 
-						(true (0.95))
-						(false (0.050000000000000044))))
-					(false (running__c2' 
-						(true (0.7833333333333333))
-						(false (0.21666666666666667))))))
-				(false (running__c2' 
-					(true (0.02))
-					(false (0.98))))))
-			(false (running__c2 
-				(true (running__c4 
-					(true (running__c2' 
-						(true (0.7833333333333333))
-						(false (0.21666666666666667))))
-					(false (running__c2' 
-						(true (0.6166666666666667))
-						(false (0.3833333333333333))))))
-				(false (running__c2' 
-					(true (0.02))
-					(false (0.98)))))))
+		(running__c2 
+			(true (running__c2' 
+				(true (0.95))
+				(false (0.050000000000000044))))
+			(false (running__c2' 
+				(true (0.02))
+				(false (0.98)))))
 	running__c3
 		(running__c3 
-			(true (running__c9 
-				(true (running__c3' 
-					(true (0.95))
-					(false (0.050000000000000044))))
-				(false (running__c3' 
-					(true (0.7))
-					(false (0.30000000000000004))))))
+			(true (running__c3' 
+				(true (0.95))
+				(false (0.050000000000000044))))
 			(false (running__c3' 
 				(true (0.02))
 				(false (0.98)))))
 	running__c4
 		(running__c4 
-			(true (running__c5 
-				(true (running__c4' 
-					(true (0.95))
-					(false (0.050000000000000044))))
-				(false (running__c4' 
-					(true (0.7))
-					(false (0.30000000000000004))))))
+			(true (running__c4' 
+				(true (0.95))
+				(false (0.050000000000000044))))
 			(false (running__c4' 
 				(true (0.02))
 				(false (0.98)))))
 	running__c5
-		(running__c3 
+		(running__c2 
 			(true (running__c5 
-				(true (running__c8 
-					(true (running__c5' 
-						(true (0.95))
-						(false (0.050000000000000044))))
-					(false (running__c5' 
-						(true (0.7833333333333333))
-						(false (0.21666666666666667))))))
+				(true (running__c5' 
+					(true (0.95))
+					(false (0.050000000000000044))))
 				(false (running__c5' 
 					(true (0.02))
 					(false (0.98))))))
 			(false (running__c5 
-				(true (running__c8 
-					(true (running__c5' 
-						(true (0.7833333333333333))
-						(false (0.21666666666666667))))
-					(false (running__c5' 
-						(true (0.6166666666666667))
-						(false (0.3833333333333333))))))
+				(true (running__c5' 
+					(true (0.7))
+					(false (0.30000000000000004))))
 				(false (running__c5' 
 					(true (0.02))
 					(false (0.98)))))))
 	running__c6
 		(running__c6 
-			(true (running__c7 
-				(true (running__c6' 
-					(true (0.95))
-					(false (0.050000000000000044))))
-				(false (running__c6' 
-					(true (0.7))
-					(false (0.30000000000000004))))))
+			(true (running__c8 
+				(true (running__c9 
+					(true (running__c6' 
+						(true (0.95))
+						(false (0.050000000000000044))))
+					(false (running__c6' 
+						(true (0.7833333333333333))
+						(false (0.21666666666666667))))))
+				(false (running__c9 
+					(true (running__c6' 
+						(true (0.7833333333333333))
+						(false (0.21666666666666667))))
+					(false (running__c6' 
+						(true (0.6166666666666667))
+						(false (0.3833333333333333))))))))
 			(false (running__c6' 
 				(true (0.02))
 				(false (0.98)))))
 	running__c7
-		(running__c6 
+		(running__c3 
 			(true (running__c7 
 				(true (running__c7' 
 					(true (0.95))
@@ -274,71 +154,311 @@ action noop
 					(true (0.02))
 					(false (0.98)))))))
 	running__c8
-		(running__c5 
-			(true (running__c8 
-				(true (running__c8' 
-					(true (0.95))
-					(false (0.050000000000000044))))
-				(false (running__c8' 
-					(true (0.02))
-					(false (0.98))))))
-			(false (running__c8 
-				(true (running__c8' 
-					(true (0.7))
-					(false (0.30000000000000004))))
-				(false (running__c8' 
-					(true (0.02))
-					(false (0.98)))))))
-	running__c9
-		(running__c1 
-			(true (running__c8 
-				(true (running__c9 
+		(running__c2 
+			(true (running__c7 
+				(true (running__c8 
 					(true (running__c10 
-						(true (running__c9' 
+						(true (running__c8' 
 							(true (0.95))
 							(false (0.050000000000000044))))
-						(false (running__c9' 
+						(false (running__c8' 
 							(true (0.825))
 							(false (0.17500000000000004))))))
-					(false (running__c9' 
+					(false (running__c8' 
 						(true (0.02))
 						(false (0.98))))))
-				(false (running__c9 
+				(false (running__c8 
 					(true (running__c10 
-						(true (running__c9' 
+						(true (running__c8' 
 							(true (0.825))
 							(false (0.17500000000000004))))
-						(false (running__c9' 
+						(false (running__c8' 
 							(true (0.7))
 							(false (0.30000000000000004))))))
-					(false (running__c9' 
+					(false (running__c8' 
 						(true (0.02))
 						(false (0.98))))))))
-			(false (running__c8 
-				(true (running__c9 
+			(false (running__c7 
+				(true (running__c8 
 					(true (running__c10 
-						(true (running__c9' 
+						(true (running__c8' 
 							(true (0.825))
 							(false (0.17500000000000004))))
-						(false (running__c9' 
+						(false (running__c8' 
 							(true (0.7))
 							(false (0.30000000000000004))))))
-					(false (running__c9' 
+					(false (running__c8' 
 						(true (0.02))
 						(false (0.98))))))
-				(false (running__c9 
+				(false (running__c8 
 					(true (running__c10 
-						(true (running__c9' 
+						(true (running__c8' 
 							(true (0.7))
 							(false (0.30000000000000004))))
-						(false (running__c9' 
+						(false (running__c8' 
 							(true (0.575))
 							(false (0.42500000000000004))))))
-					(false (running__c9' 
+					(false (running__c8' 
 						(true (0.02))
 						(false (0.98)))))))))
+	running__c9
+		(running__c1 
+			(true (running__c4 
+				(true (running__c5 
+					(true (running__c6 
+						(true (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.95))
+									(false (0.050000000000000044))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.8666666666666667))
+									(false (0.1333333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))
+						(false (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.8666666666666667))
+									(false (0.1333333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))))
+					(false (running__c6 
+						(true (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.8666666666666667))
+									(false (0.1333333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))
+						(false (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))))))
+				(false (running__c5 
+					(true (running__c6 
+						(true (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.8666666666666667))
+									(false (0.1333333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))
+						(false (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))))
+					(false (running__c6 
+						(true (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))
+						(false (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.6166666666666667))
+									(false (0.3833333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))))))))
+			(false (running__c4 
+				(true (running__c5 
+					(true (running__c6 
+						(true (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.8666666666666667))
+									(false (0.1333333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))
+						(false (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))))
+					(false (running__c6 
+						(true (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))
+						(false (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.6166666666666667))
+									(false (0.3833333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))))))
+				(false (running__c5 
+					(true (running__c6 
+						(true (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))
+						(false (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.6166666666666667))
+									(false (0.3833333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))))
+					(false (running__c6 
+						(true (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.6166666666666667))
+									(false (0.3833333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))
+						(false (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.6166666666666667))
+									(false (0.3833333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.5333333333333333))
+									(false (0.4666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98)))))))))))))))
 	running__c10
-		(running__c3 
+		(running__c4 
 			(true (running__c10 
 				(true (running__c10' 
 					(true (0.95))
@@ -475,91 +595,67 @@ action reboot__c1
 			(true (1.0))
 			(false (0.0)))
 	running__c2
-		(running__c1 
-			(true (running__c2 
-				(true (running__c4 
-					(true (running__c2' 
-						(true (0.95))
-						(false (0.050000000000000044))))
-					(false (running__c2' 
-						(true (0.7833333333333333))
-						(false (0.21666666666666667))))))
-				(false (running__c2' 
-					(true (0.02))
-					(false (0.98))))))
-			(false (running__c2 
-				(true (running__c4 
-					(true (running__c2' 
-						(true (0.7833333333333333))
-						(false (0.21666666666666667))))
-					(false (running__c2' 
-						(true (0.6166666666666667))
-						(false (0.3833333333333333))))))
-				(false (running__c2' 
-					(true (0.02))
-					(false (0.98)))))))
+		(running__c2 
+			(true (running__c2' 
+				(true (0.95))
+				(false (0.050000000000000044))))
+			(false (running__c2' 
+				(true (0.02))
+				(false (0.98)))))
 	running__c3
 		(running__c3 
-			(true (running__c9 
-				(true (running__c3' 
-					(true (0.95))
-					(false (0.050000000000000044))))
-				(false (running__c3' 
-					(true (0.7))
-					(false (0.30000000000000004))))))
+			(true (running__c3' 
+				(true (0.95))
+				(false (0.050000000000000044))))
 			(false (running__c3' 
 				(true (0.02))
 				(false (0.98)))))
 	running__c4
 		(running__c4 
-			(true (running__c5 
-				(true (running__c4' 
-					(true (0.95))
-					(false (0.050000000000000044))))
-				(false (running__c4' 
-					(true (0.7))
-					(false (0.30000000000000004))))))
+			(true (running__c4' 
+				(true (0.95))
+				(false (0.050000000000000044))))
 			(false (running__c4' 
 				(true (0.02))
 				(false (0.98)))))
 	running__c5
-		(running__c3 
+		(running__c2 
 			(true (running__c5 
-				(true (running__c8 
-					(true (running__c5' 
-						(true (0.95))
-						(false (0.050000000000000044))))
-					(false (running__c5' 
-						(true (0.7833333333333333))
-						(false (0.21666666666666667))))))
+				(true (running__c5' 
+					(true (0.95))
+					(false (0.050000000000000044))))
 				(false (running__c5' 
 					(true (0.02))
 					(false (0.98))))))
 			(false (running__c5 
-				(true (running__c8 
-					(true (running__c5' 
-						(true (0.7833333333333333))
-						(false (0.21666666666666667))))
-					(false (running__c5' 
-						(true (0.6166666666666667))
-						(false (0.3833333333333333))))))
+				(true (running__c5' 
+					(true (0.7))
+					(false (0.30000000000000004))))
 				(false (running__c5' 
 					(true (0.02))
 					(false (0.98)))))))
 	running__c6
 		(running__c6 
-			(true (running__c7 
-				(true (running__c6' 
-					(true (0.95))
-					(false (0.050000000000000044))))
-				(false (running__c6' 
-					(true (0.7))
-					(false (0.30000000000000004))))))
+			(true (running__c8 
+				(true (running__c9 
+					(true (running__c6' 
+						(true (0.95))
+						(false (0.050000000000000044))))
+					(false (running__c6' 
+						(true (0.7833333333333333))
+						(false (0.21666666666666667))))))
+				(false (running__c9 
+					(true (running__c6' 
+						(true (0.7833333333333333))
+						(false (0.21666666666666667))))
+					(false (running__c6' 
+						(true (0.6166666666666667))
+						(false (0.3833333333333333))))))))
 			(false (running__c6' 
 				(true (0.02))
 				(false (0.98)))))
 	running__c7
-		(running__c6 
+		(running__c3 
 			(true (running__c7 
 				(true (running__c7' 
 					(true (0.95))
@@ -575,71 +671,311 @@ action reboot__c1
 					(true (0.02))
 					(false (0.98)))))))
 	running__c8
-		(running__c5 
-			(true (running__c8 
-				(true (running__c8' 
-					(true (0.95))
-					(false (0.050000000000000044))))
-				(false (running__c8' 
-					(true (0.02))
-					(false (0.98))))))
-			(false (running__c8 
-				(true (running__c8' 
-					(true (0.7))
-					(false (0.30000000000000004))))
-				(false (running__c8' 
-					(true (0.02))
-					(false (0.98)))))))
-	running__c9
-		(running__c1 
-			(true (running__c8 
-				(true (running__c9 
+		(running__c2 
+			(true (running__c7 
+				(true (running__c8 
 					(true (running__c10 
-						(true (running__c9' 
+						(true (running__c8' 
 							(true (0.95))
 							(false (0.050000000000000044))))
-						(false (running__c9' 
+						(false (running__c8' 
 							(true (0.825))
 							(false (0.17500000000000004))))))
-					(false (running__c9' 
+					(false (running__c8' 
 						(true (0.02))
 						(false (0.98))))))
-				(false (running__c9 
+				(false (running__c8 
 					(true (running__c10 
-						(true (running__c9' 
+						(true (running__c8' 
 							(true (0.825))
 							(false (0.17500000000000004))))
-						(false (running__c9' 
+						(false (running__c8' 
 							(true (0.7))
 							(false (0.30000000000000004))))))
-					(false (running__c9' 
+					(false (running__c8' 
 						(true (0.02))
 						(false (0.98))))))))
-			(false (running__c8 
-				(true (running__c9 
+			(false (running__c7 
+				(true (running__c8 
 					(true (running__c10 
-						(true (running__c9' 
+						(true (running__c8' 
 							(true (0.825))
 							(false (0.17500000000000004))))
-						(false (running__c9' 
+						(false (running__c8' 
 							(true (0.7))
 							(false (0.30000000000000004))))))
-					(false (running__c9' 
+					(false (running__c8' 
 						(true (0.02))
 						(false (0.98))))))
-				(false (running__c9 
+				(false (running__c8 
 					(true (running__c10 
-						(true (running__c9' 
+						(true (running__c8' 
 							(true (0.7))
 							(false (0.30000000000000004))))
-						(false (running__c9' 
+						(false (running__c8' 
 							(true (0.575))
 							(false (0.42500000000000004))))))
-					(false (running__c9' 
+					(false (running__c8' 
 						(true (0.02))
 						(false (0.98)))))))))
+	running__c9
+		(running__c1 
+			(true (running__c4 
+				(true (running__c5 
+					(true (running__c6 
+						(true (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.95))
+									(false (0.050000000000000044))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.8666666666666667))
+									(false (0.1333333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))
+						(false (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.8666666666666667))
+									(false (0.1333333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))))
+					(false (running__c6 
+						(true (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.8666666666666667))
+									(false (0.1333333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))
+						(false (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))))))
+				(false (running__c5 
+					(true (running__c6 
+						(true (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.8666666666666667))
+									(false (0.1333333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))
+						(false (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))))
+					(false (running__c6 
+						(true (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))
+						(false (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.6166666666666667))
+									(false (0.3833333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))))))))
+			(false (running__c4 
+				(true (running__c5 
+					(true (running__c6 
+						(true (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.8666666666666667))
+									(false (0.1333333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))
+						(false (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))))
+					(false (running__c6 
+						(true (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))
+						(false (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.6166666666666667))
+									(false (0.3833333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))))))
+				(false (running__c5 
+					(true (running__c6 
+						(true (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))
+						(false (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.6166666666666667))
+									(false (0.3833333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))))
+					(false (running__c6 
+						(true (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.6166666666666667))
+									(false (0.3833333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))
+						(false (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.6166666666666667))
+									(false (0.3833333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.5333333333333333))
+									(false (0.4666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98)))))))))))))))
 	running__c10
-		(running__c3 
+		(running__c4 
 			(true (running__c10 
 				(true (running__c10' 
 					(true (0.95))
@@ -773,222 +1109,102 @@ endaction
 action reboot__c10
 	running__c1
 		(running__c1 
-			(true (running__c2 
-				(true (running__c4 
-					(true (running__c6 
-						(true (running__c9 
-							(true (running__c10 
-								(true (running__c1' 
-									(true (0.95))
-									(false (0.050000000000000044))))
-								(false (running__c1' 
-									(true (0.8666666666666667))
-									(false (0.1333333333333333))))))
-							(false (running__c10 
-								(true (running__c1' 
-									(true (0.8666666666666667))
-									(false (0.1333333333333333))))
-								(false (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))))))
-						(false (running__c9 
-							(true (running__c10 
-								(true (running__c1' 
-									(true (0.8666666666666667))
-									(false (0.1333333333333333))))
-								(false (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))))
-							(false (running__c10 
-								(true (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))
-								(false (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))))))))
-					(false (running__c6 
-						(true (running__c9 
-							(true (running__c10 
-								(true (running__c1' 
-									(true (0.8666666666666667))
-									(false (0.1333333333333333))))
-								(false (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))))
-							(false (running__c10 
-								(true (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))
-								(false (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))))))
-						(false (running__c9 
-							(true (running__c10 
-								(true (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))
-								(false (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))))
-							(false (running__c10 
-								(true (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))
-								(false (running__c1' 
-									(true (0.6166666666666667))
-									(false (0.3833333333333333))))))))))))
-				(false (running__c4 
-					(true (running__c6 
-						(true (running__c9 
-							(true (running__c10 
-								(true (running__c1' 
-									(true (0.8666666666666667))
-									(false (0.1333333333333333))))
-								(false (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))))
-							(false (running__c10 
-								(true (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))
-								(false (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))))))
-						(false (running__c9 
-							(true (running__c10 
-								(true (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))
-								(false (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))))
-							(false (running__c10 
-								(true (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))
-								(false (running__c1' 
-									(true (0.6166666666666667))
-									(false (0.3833333333333333))))))))))
-					(false (running__c6 
-						(true (running__c9 
-							(true (running__c10 
-								(true (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))
-								(false (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))))
-							(false (running__c10 
-								(true (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))
-								(false (running__c1' 
-									(true (0.6166666666666667))
-									(false (0.3833333333333333))))))))
-						(false (running__c9 
-							(true (running__c10 
-								(true (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))
-								(false (running__c1' 
-									(true (0.6166666666666667))
-									(false (0.3833333333333333))))))
-							(false (running__c10 
-								(true (running__c1' 
-									(true (0.6166666666666667))
-									(false (0.3833333333333333))))
-								(false (running__c1' 
-									(true (0.5333333333333333))
-									(false (0.4666666666666667))))))))))))))
+			(true (running__c5 
+				(true (running__c6 
+					(true (running__c9 
+						(true (running__c1' 
+							(true (0.95))
+							(false (0.050000000000000044))))
+						(false (running__c1' 
+							(true (0.825))
+							(false (0.17500000000000004))))))
+					(false (running__c9 
+						(true (running__c1' 
+							(true (0.825))
+							(false (0.17500000000000004))))
+						(false (running__c1' 
+							(true (0.7))
+							(false (0.30000000000000004))))))))
+				(false (running__c6 
+					(true (running__c9 
+						(true (running__c1' 
+							(true (0.825))
+							(false (0.17500000000000004))))
+						(false (running__c1' 
+							(true (0.7))
+							(false (0.30000000000000004))))))
+					(false (running__c9 
+						(true (running__c1' 
+							(true (0.7))
+							(false (0.30000000000000004))))
+						(false (running__c1' 
+							(true (0.575))
+							(false (0.42500000000000004))))))))))
 			(false (running__c1' 
 				(true (0.02))
 				(false (0.98)))))
 	running__c2
-		(running__c1 
-			(true (running__c2 
-				(true (running__c4 
-					(true (running__c2' 
-						(true (0.95))
-						(false (0.050000000000000044))))
-					(false (running__c2' 
-						(true (0.7833333333333333))
-						(false (0.21666666666666667))))))
-				(false (running__c2' 
-					(true (0.02))
-					(false (0.98))))))
-			(false (running__c2 
-				(true (running__c4 
-					(true (running__c2' 
-						(true (0.7833333333333333))
-						(false (0.21666666666666667))))
-					(false (running__c2' 
-						(true (0.6166666666666667))
-						(false (0.3833333333333333))))))
-				(false (running__c2' 
-					(true (0.02))
-					(false (0.98)))))))
+		(running__c2 
+			(true (running__c2' 
+				(true (0.95))
+				(false (0.050000000000000044))))
+			(false (running__c2' 
+				(true (0.02))
+				(false (0.98)))))
 	running__c3
 		(running__c3 
-			(true (running__c9 
-				(true (running__c3' 
-					(true (0.95))
-					(false (0.050000000000000044))))
-				(false (running__c3' 
-					(true (0.7))
-					(false (0.30000000000000004))))))
+			(true (running__c3' 
+				(true (0.95))
+				(false (0.050000000000000044))))
 			(false (running__c3' 
 				(true (0.02))
 				(false (0.98)))))
 	running__c4
 		(running__c4 
-			(true (running__c5 
-				(true (running__c4' 
-					(true (0.95))
-					(false (0.050000000000000044))))
-				(false (running__c4' 
-					(true (0.7))
-					(false (0.30000000000000004))))))
+			(true (running__c4' 
+				(true (0.95))
+				(false (0.050000000000000044))))
 			(false (running__c4' 
 				(true (0.02))
 				(false (0.98)))))
 	running__c5
-		(running__c3 
+		(running__c2 
 			(true (running__c5 
-				(true (running__c8 
-					(true (running__c5' 
-						(true (0.95))
-						(false (0.050000000000000044))))
-					(false (running__c5' 
-						(true (0.7833333333333333))
-						(false (0.21666666666666667))))))
+				(true (running__c5' 
+					(true (0.95))
+					(false (0.050000000000000044))))
 				(false (running__c5' 
 					(true (0.02))
 					(false (0.98))))))
 			(false (running__c5 
-				(true (running__c8 
-					(true (running__c5' 
-						(true (0.7833333333333333))
-						(false (0.21666666666666667))))
-					(false (running__c5' 
-						(true (0.6166666666666667))
-						(false (0.3833333333333333))))))
+				(true (running__c5' 
+					(true (0.7))
+					(false (0.30000000000000004))))
 				(false (running__c5' 
 					(true (0.02))
 					(false (0.98)))))))
 	running__c6
 		(running__c6 
-			(true (running__c7 
-				(true (running__c6' 
-					(true (0.95))
-					(false (0.050000000000000044))))
-				(false (running__c6' 
-					(true (0.7))
-					(false (0.30000000000000004))))))
+			(true (running__c8 
+				(true (running__c9 
+					(true (running__c6' 
+						(true (0.95))
+						(false (0.050000000000000044))))
+					(false (running__c6' 
+						(true (0.7833333333333333))
+						(false (0.21666666666666667))))))
+				(false (running__c9 
+					(true (running__c6' 
+						(true (0.7833333333333333))
+						(false (0.21666666666666667))))
+					(false (running__c6' 
+						(true (0.6166666666666667))
+						(false (0.3833333333333333))))))))
 			(false (running__c6' 
 				(true (0.02))
 				(false (0.98)))))
 	running__c7
-		(running__c6 
+		(running__c3 
 			(true (running__c7 
 				(true (running__c7' 
 					(true (0.95))
@@ -1004,69 +1220,309 @@ action reboot__c10
 					(true (0.02))
 					(false (0.98)))))))
 	running__c8
-		(running__c5 
-			(true (running__c8 
-				(true (running__c8' 
-					(true (0.95))
-					(false (0.050000000000000044))))
-				(false (running__c8' 
-					(true (0.02))
-					(false (0.98))))))
-			(false (running__c8 
-				(true (running__c8' 
-					(true (0.7))
-					(false (0.30000000000000004))))
-				(false (running__c8' 
-					(true (0.02))
-					(false (0.98)))))))
-	running__c9
-		(running__c1 
-			(true (running__c8 
-				(true (running__c9 
+		(running__c2 
+			(true (running__c7 
+				(true (running__c8 
 					(true (running__c10 
-						(true (running__c9' 
+						(true (running__c8' 
 							(true (0.95))
 							(false (0.050000000000000044))))
-						(false (running__c9' 
+						(false (running__c8' 
 							(true (0.825))
 							(false (0.17500000000000004))))))
-					(false (running__c9' 
+					(false (running__c8' 
 						(true (0.02))
 						(false (0.98))))))
-				(false (running__c9 
+				(false (running__c8 
 					(true (running__c10 
-						(true (running__c9' 
+						(true (running__c8' 
 							(true (0.825))
 							(false (0.17500000000000004))))
-						(false (running__c9' 
+						(false (running__c8' 
 							(true (0.7))
 							(false (0.30000000000000004))))))
-					(false (running__c9' 
+					(false (running__c8' 
 						(true (0.02))
 						(false (0.98))))))))
-			(false (running__c8 
-				(true (running__c9 
+			(false (running__c7 
+				(true (running__c8 
 					(true (running__c10 
-						(true (running__c9' 
+						(true (running__c8' 
 							(true (0.825))
 							(false (0.17500000000000004))))
-						(false (running__c9' 
+						(false (running__c8' 
 							(true (0.7))
 							(false (0.30000000000000004))))))
-					(false (running__c9' 
+					(false (running__c8' 
 						(true (0.02))
 						(false (0.98))))))
-				(false (running__c9 
+				(false (running__c8 
 					(true (running__c10 
-						(true (running__c9' 
+						(true (running__c8' 
 							(true (0.7))
 							(false (0.30000000000000004))))
-						(false (running__c9' 
+						(false (running__c8' 
 							(true (0.575))
 							(false (0.42500000000000004))))))
-					(false (running__c9' 
+					(false (running__c8' 
 						(true (0.02))
 						(false (0.98)))))))))
+	running__c9
+		(running__c1 
+			(true (running__c4 
+				(true (running__c5 
+					(true (running__c6 
+						(true (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.95))
+									(false (0.050000000000000044))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.8666666666666667))
+									(false (0.1333333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))
+						(false (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.8666666666666667))
+									(false (0.1333333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))))
+					(false (running__c6 
+						(true (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.8666666666666667))
+									(false (0.1333333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))
+						(false (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))))))
+				(false (running__c5 
+					(true (running__c6 
+						(true (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.8666666666666667))
+									(false (0.1333333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))
+						(false (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))))
+					(false (running__c6 
+						(true (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))
+						(false (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.6166666666666667))
+									(false (0.3833333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))))))))
+			(false (running__c4 
+				(true (running__c5 
+					(true (running__c6 
+						(true (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.8666666666666667))
+									(false (0.1333333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))
+						(false (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))))
+					(false (running__c6 
+						(true (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))
+						(false (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.6166666666666667))
+									(false (0.3833333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))))))
+				(false (running__c5 
+					(true (running__c6 
+						(true (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))
+						(false (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.6166666666666667))
+									(false (0.3833333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))))
+					(false (running__c6 
+						(true (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.6166666666666667))
+									(false (0.3833333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))
+						(false (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.6166666666666667))
+									(false (0.3833333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.5333333333333333))
+									(false (0.4666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98)))))))))))))))
 	running__c10
 		(running__c10' 
 			(true (1.0))
@@ -1190,133 +1646,37 @@ endaction
 action reboot__c2
 	running__c1
 		(running__c1 
-			(true (running__c2 
-				(true (running__c4 
-					(true (running__c6 
-						(true (running__c9 
-							(true (running__c10 
-								(true (running__c1' 
-									(true (0.95))
-									(false (0.050000000000000044))))
-								(false (running__c1' 
-									(true (0.8666666666666667))
-									(false (0.1333333333333333))))))
-							(false (running__c10 
-								(true (running__c1' 
-									(true (0.8666666666666667))
-									(false (0.1333333333333333))))
-								(false (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))))))
-						(false (running__c9 
-							(true (running__c10 
-								(true (running__c1' 
-									(true (0.8666666666666667))
-									(false (0.1333333333333333))))
-								(false (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))))
-							(false (running__c10 
-								(true (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))
-								(false (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))))))))
-					(false (running__c6 
-						(true (running__c9 
-							(true (running__c10 
-								(true (running__c1' 
-									(true (0.8666666666666667))
-									(false (0.1333333333333333))))
-								(false (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))))
-							(false (running__c10 
-								(true (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))
-								(false (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))))))
-						(false (running__c9 
-							(true (running__c10 
-								(true (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))
-								(false (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))))
-							(false (running__c10 
-								(true (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))
-								(false (running__c1' 
-									(true (0.6166666666666667))
-									(false (0.3833333333333333))))))))))))
-				(false (running__c4 
-					(true (running__c6 
-						(true (running__c9 
-							(true (running__c10 
-								(true (running__c1' 
-									(true (0.8666666666666667))
-									(false (0.1333333333333333))))
-								(false (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))))
-							(false (running__c10 
-								(true (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))
-								(false (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))))))
-						(false (running__c9 
-							(true (running__c10 
-								(true (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))
-								(false (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))))
-							(false (running__c10 
-								(true (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))
-								(false (running__c1' 
-									(true (0.6166666666666667))
-									(false (0.3833333333333333))))))))))
-					(false (running__c6 
-						(true (running__c9 
-							(true (running__c10 
-								(true (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))
-								(false (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))))
-							(false (running__c10 
-								(true (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))
-								(false (running__c1' 
-									(true (0.6166666666666667))
-									(false (0.3833333333333333))))))))
-						(false (running__c9 
-							(true (running__c10 
-								(true (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))
-								(false (running__c1' 
-									(true (0.6166666666666667))
-									(false (0.3833333333333333))))))
-							(false (running__c10 
-								(true (running__c1' 
-									(true (0.6166666666666667))
-									(false (0.3833333333333333))))
-								(false (running__c1' 
-									(true (0.5333333333333333))
-									(false (0.4666666666666667))))))))))))))
+			(true (running__c5 
+				(true (running__c6 
+					(true (running__c9 
+						(true (running__c1' 
+							(true (0.95))
+							(false (0.050000000000000044))))
+						(false (running__c1' 
+							(true (0.825))
+							(false (0.17500000000000004))))))
+					(false (running__c9 
+						(true (running__c1' 
+							(true (0.825))
+							(false (0.17500000000000004))))
+						(false (running__c1' 
+							(true (0.7))
+							(false (0.30000000000000004))))))))
+				(false (running__c6 
+					(true (running__c9 
+						(true (running__c1' 
+							(true (0.825))
+							(false (0.17500000000000004))))
+						(false (running__c1' 
+							(true (0.7))
+							(false (0.30000000000000004))))))
+					(false (running__c9 
+						(true (running__c1' 
+							(true (0.7))
+							(false (0.30000000000000004))))
+						(false (running__c1' 
+							(true (0.575))
+							(false (0.42500000000000004))))))))))
 			(false (running__c1' 
 				(true (0.02))
 				(false (0.98)))))
@@ -1326,66 +1686,58 @@ action reboot__c2
 			(false (0.0)))
 	running__c3
 		(running__c3 
-			(true (running__c9 
-				(true (running__c3' 
-					(true (0.95))
-					(false (0.050000000000000044))))
-				(false (running__c3' 
-					(true (0.7))
-					(false (0.30000000000000004))))))
+			(true (running__c3' 
+				(true (0.95))
+				(false (0.050000000000000044))))
 			(false (running__c3' 
 				(true (0.02))
 				(false (0.98)))))
 	running__c4
 		(running__c4 
-			(true (running__c5 
-				(true (running__c4' 
-					(true (0.95))
-					(false (0.050000000000000044))))
-				(false (running__c4' 
-					(true (0.7))
-					(false (0.30000000000000004))))))
+			(true (running__c4' 
+				(true (0.95))
+				(false (0.050000000000000044))))
 			(false (running__c4' 
 				(true (0.02))
 				(false (0.98)))))
 	running__c5
-		(running__c3 
+		(running__c2 
 			(true (running__c5 
-				(true (running__c8 
-					(true (running__c5' 
-						(true (0.95))
-						(false (0.050000000000000044))))
-					(false (running__c5' 
-						(true (0.7833333333333333))
-						(false (0.21666666666666667))))))
+				(true (running__c5' 
+					(true (0.95))
+					(false (0.050000000000000044))))
 				(false (running__c5' 
 					(true (0.02))
 					(false (0.98))))))
 			(false (running__c5 
-				(true (running__c8 
-					(true (running__c5' 
-						(true (0.7833333333333333))
-						(false (0.21666666666666667))))
-					(false (running__c5' 
-						(true (0.6166666666666667))
-						(false (0.3833333333333333))))))
+				(true (running__c5' 
+					(true (0.7))
+					(false (0.30000000000000004))))
 				(false (running__c5' 
 					(true (0.02))
 					(false (0.98)))))))
 	running__c6
 		(running__c6 
-			(true (running__c7 
-				(true (running__c6' 
-					(true (0.95))
-					(false (0.050000000000000044))))
-				(false (running__c6' 
-					(true (0.7))
-					(false (0.30000000000000004))))))
+			(true (running__c8 
+				(true (running__c9 
+					(true (running__c6' 
+						(true (0.95))
+						(false (0.050000000000000044))))
+					(false (running__c6' 
+						(true (0.7833333333333333))
+						(false (0.21666666666666667))))))
+				(false (running__c9 
+					(true (running__c6' 
+						(true (0.7833333333333333))
+						(false (0.21666666666666667))))
+					(false (running__c6' 
+						(true (0.6166666666666667))
+						(false (0.3833333333333333))))))))
 			(false (running__c6' 
 				(true (0.02))
 				(false (0.98)))))
 	running__c7
-		(running__c6 
+		(running__c3 
 			(true (running__c7 
 				(true (running__c7' 
 					(true (0.95))
@@ -1401,71 +1753,311 @@ action reboot__c2
 					(true (0.02))
 					(false (0.98)))))))
 	running__c8
-		(running__c5 
-			(true (running__c8 
-				(true (running__c8' 
-					(true (0.95))
-					(false (0.050000000000000044))))
-				(false (running__c8' 
-					(true (0.02))
-					(false (0.98))))))
-			(false (running__c8 
-				(true (running__c8' 
-					(true (0.7))
-					(false (0.30000000000000004))))
-				(false (running__c8' 
-					(true (0.02))
-					(false (0.98)))))))
-	running__c9
-		(running__c1 
-			(true (running__c8 
-				(true (running__c9 
+		(running__c2 
+			(true (running__c7 
+				(true (running__c8 
 					(true (running__c10 
-						(true (running__c9' 
+						(true (running__c8' 
 							(true (0.95))
 							(false (0.050000000000000044))))
-						(false (running__c9' 
+						(false (running__c8' 
 							(true (0.825))
 							(false (0.17500000000000004))))))
-					(false (running__c9' 
+					(false (running__c8' 
 						(true (0.02))
 						(false (0.98))))))
-				(false (running__c9 
+				(false (running__c8 
 					(true (running__c10 
-						(true (running__c9' 
+						(true (running__c8' 
 							(true (0.825))
 							(false (0.17500000000000004))))
-						(false (running__c9' 
+						(false (running__c8' 
 							(true (0.7))
 							(false (0.30000000000000004))))))
-					(false (running__c9' 
+					(false (running__c8' 
 						(true (0.02))
 						(false (0.98))))))))
-			(false (running__c8 
-				(true (running__c9 
+			(false (running__c7 
+				(true (running__c8 
 					(true (running__c10 
-						(true (running__c9' 
+						(true (running__c8' 
 							(true (0.825))
 							(false (0.17500000000000004))))
-						(false (running__c9' 
+						(false (running__c8' 
 							(true (0.7))
 							(false (0.30000000000000004))))))
-					(false (running__c9' 
+					(false (running__c8' 
 						(true (0.02))
 						(false (0.98))))))
-				(false (running__c9 
+				(false (running__c8 
 					(true (running__c10 
-						(true (running__c9' 
+						(true (running__c8' 
 							(true (0.7))
 							(false (0.30000000000000004))))
-						(false (running__c9' 
+						(false (running__c8' 
 							(true (0.575))
 							(false (0.42500000000000004))))))
-					(false (running__c9' 
+					(false (running__c8' 
 						(true (0.02))
 						(false (0.98)))))))))
+	running__c9
+		(running__c1 
+			(true (running__c4 
+				(true (running__c5 
+					(true (running__c6 
+						(true (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.95))
+									(false (0.050000000000000044))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.8666666666666667))
+									(false (0.1333333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))
+						(false (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.8666666666666667))
+									(false (0.1333333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))))
+					(false (running__c6 
+						(true (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.8666666666666667))
+									(false (0.1333333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))
+						(false (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))))))
+				(false (running__c5 
+					(true (running__c6 
+						(true (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.8666666666666667))
+									(false (0.1333333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))
+						(false (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))))
+					(false (running__c6 
+						(true (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))
+						(false (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.6166666666666667))
+									(false (0.3833333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))))))))
+			(false (running__c4 
+				(true (running__c5 
+					(true (running__c6 
+						(true (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.8666666666666667))
+									(false (0.1333333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))
+						(false (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))))
+					(false (running__c6 
+						(true (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))
+						(false (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.6166666666666667))
+									(false (0.3833333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))))))
+				(false (running__c5 
+					(true (running__c6 
+						(true (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))
+						(false (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.6166666666666667))
+									(false (0.3833333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))))
+					(false (running__c6 
+						(true (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.6166666666666667))
+									(false (0.3833333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))
+						(false (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.6166666666666667))
+									(false (0.3833333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.5333333333333333))
+									(false (0.4666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98)))))))))))))))
 	running__c10
-		(running__c3 
+		(running__c4 
 			(true (running__c10 
 				(true (running__c10' 
 					(true (0.95))
@@ -1599,214 +2191,98 @@ endaction
 action reboot__c3
 	running__c1
 		(running__c1 
-			(true (running__c2 
-				(true (running__c4 
-					(true (running__c6 
-						(true (running__c9 
-							(true (running__c10 
-								(true (running__c1' 
-									(true (0.95))
-									(false (0.050000000000000044))))
-								(false (running__c1' 
-									(true (0.8666666666666667))
-									(false (0.1333333333333333))))))
-							(false (running__c10 
-								(true (running__c1' 
-									(true (0.8666666666666667))
-									(false (0.1333333333333333))))
-								(false (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))))))
-						(false (running__c9 
-							(true (running__c10 
-								(true (running__c1' 
-									(true (0.8666666666666667))
-									(false (0.1333333333333333))))
-								(false (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))))
-							(false (running__c10 
-								(true (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))
-								(false (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))))))))
-					(false (running__c6 
-						(true (running__c9 
-							(true (running__c10 
-								(true (running__c1' 
-									(true (0.8666666666666667))
-									(false (0.1333333333333333))))
-								(false (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))))
-							(false (running__c10 
-								(true (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))
-								(false (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))))))
-						(false (running__c9 
-							(true (running__c10 
-								(true (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))
-								(false (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))))
-							(false (running__c10 
-								(true (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))
-								(false (running__c1' 
-									(true (0.6166666666666667))
-									(false (0.3833333333333333))))))))))))
-				(false (running__c4 
-					(true (running__c6 
-						(true (running__c9 
-							(true (running__c10 
-								(true (running__c1' 
-									(true (0.8666666666666667))
-									(false (0.1333333333333333))))
-								(false (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))))
-							(false (running__c10 
-								(true (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))
-								(false (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))))))
-						(false (running__c9 
-							(true (running__c10 
-								(true (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))
-								(false (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))))
-							(false (running__c10 
-								(true (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))
-								(false (running__c1' 
-									(true (0.6166666666666667))
-									(false (0.3833333333333333))))))))))
-					(false (running__c6 
-						(true (running__c9 
-							(true (running__c10 
-								(true (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))
-								(false (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))))
-							(false (running__c10 
-								(true (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))
-								(false (running__c1' 
-									(true (0.6166666666666667))
-									(false (0.3833333333333333))))))))
-						(false (running__c9 
-							(true (running__c10 
-								(true (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))
-								(false (running__c1' 
-									(true (0.6166666666666667))
-									(false (0.3833333333333333))))))
-							(false (running__c10 
-								(true (running__c1' 
-									(true (0.6166666666666667))
-									(false (0.3833333333333333))))
-								(false (running__c1' 
-									(true (0.5333333333333333))
-									(false (0.4666666666666667))))))))))))))
+			(true (running__c5 
+				(true (running__c6 
+					(true (running__c9 
+						(true (running__c1' 
+							(true (0.95))
+							(false (0.050000000000000044))))
+						(false (running__c1' 
+							(true (0.825))
+							(false (0.17500000000000004))))))
+					(false (running__c9 
+						(true (running__c1' 
+							(true (0.825))
+							(false (0.17500000000000004))))
+						(false (running__c1' 
+							(true (0.7))
+							(false (0.30000000000000004))))))))
+				(false (running__c6 
+					(true (running__c9 
+						(true (running__c1' 
+							(true (0.825))
+							(false (0.17500000000000004))))
+						(false (running__c1' 
+							(true (0.7))
+							(false (0.30000000000000004))))))
+					(false (running__c9 
+						(true (running__c1' 
+							(true (0.7))
+							(false (0.30000000000000004))))
+						(false (running__c1' 
+							(true (0.575))
+							(false (0.42500000000000004))))))))))
 			(false (running__c1' 
 				(true (0.02))
 				(false (0.98)))))
 	running__c2
-		(running__c1 
-			(true (running__c2 
-				(true (running__c4 
-					(true (running__c2' 
-						(true (0.95))
-						(false (0.050000000000000044))))
-					(false (running__c2' 
-						(true (0.7833333333333333))
-						(false (0.21666666666666667))))))
-				(false (running__c2' 
-					(true (0.02))
-					(false (0.98))))))
-			(false (running__c2 
-				(true (running__c4 
-					(true (running__c2' 
-						(true (0.7833333333333333))
-						(false (0.21666666666666667))))
-					(false (running__c2' 
-						(true (0.6166666666666667))
-						(false (0.3833333333333333))))))
-				(false (running__c2' 
-					(true (0.02))
-					(false (0.98)))))))
+		(running__c2 
+			(true (running__c2' 
+				(true (0.95))
+				(false (0.050000000000000044))))
+			(false (running__c2' 
+				(true (0.02))
+				(false (0.98)))))
 	running__c3
 		(running__c3' 
 			(true (1.0))
 			(false (0.0)))
 	running__c4
 		(running__c4 
-			(true (running__c5 
-				(true (running__c4' 
-					(true (0.95))
-					(false (0.050000000000000044))))
-				(false (running__c4' 
-					(true (0.7))
-					(false (0.30000000000000004))))))
+			(true (running__c4' 
+				(true (0.95))
+				(false (0.050000000000000044))))
 			(false (running__c4' 
 				(true (0.02))
 				(false (0.98)))))
 	running__c5
-		(running__c3 
+		(running__c2 
 			(true (running__c5 
-				(true (running__c8 
-					(true (running__c5' 
-						(true (0.95))
-						(false (0.050000000000000044))))
-					(false (running__c5' 
-						(true (0.7833333333333333))
-						(false (0.21666666666666667))))))
+				(true (running__c5' 
+					(true (0.95))
+					(false (0.050000000000000044))))
 				(false (running__c5' 
 					(true (0.02))
 					(false (0.98))))))
 			(false (running__c5 
-				(true (running__c8 
-					(true (running__c5' 
-						(true (0.7833333333333333))
-						(false (0.21666666666666667))))
-					(false (running__c5' 
-						(true (0.6166666666666667))
-						(false (0.3833333333333333))))))
+				(true (running__c5' 
+					(true (0.7))
+					(false (0.30000000000000004))))
 				(false (running__c5' 
 					(true (0.02))
 					(false (0.98)))))))
 	running__c6
 		(running__c6 
-			(true (running__c7 
-				(true (running__c6' 
-					(true (0.95))
-					(false (0.050000000000000044))))
-				(false (running__c6' 
-					(true (0.7))
-					(false (0.30000000000000004))))))
+			(true (running__c8 
+				(true (running__c9 
+					(true (running__c6' 
+						(true (0.95))
+						(false (0.050000000000000044))))
+					(false (running__c6' 
+						(true (0.7833333333333333))
+						(false (0.21666666666666667))))))
+				(false (running__c9 
+					(true (running__c6' 
+						(true (0.7833333333333333))
+						(false (0.21666666666666667))))
+					(false (running__c6' 
+						(true (0.6166666666666667))
+						(false (0.3833333333333333))))))))
 			(false (running__c6' 
 				(true (0.02))
 				(false (0.98)))))
 	running__c7
-		(running__c6 
+		(running__c3 
 			(true (running__c7 
 				(true (running__c7' 
 					(true (0.95))
@@ -1822,71 +2298,311 @@ action reboot__c3
 					(true (0.02))
 					(false (0.98)))))))
 	running__c8
-		(running__c5 
-			(true (running__c8 
-				(true (running__c8' 
-					(true (0.95))
-					(false (0.050000000000000044))))
-				(false (running__c8' 
-					(true (0.02))
-					(false (0.98))))))
-			(false (running__c8 
-				(true (running__c8' 
-					(true (0.7))
-					(false (0.30000000000000004))))
-				(false (running__c8' 
-					(true (0.02))
-					(false (0.98)))))))
-	running__c9
-		(running__c1 
-			(true (running__c8 
-				(true (running__c9 
+		(running__c2 
+			(true (running__c7 
+				(true (running__c8 
 					(true (running__c10 
-						(true (running__c9' 
+						(true (running__c8' 
 							(true (0.95))
 							(false (0.050000000000000044))))
-						(false (running__c9' 
+						(false (running__c8' 
 							(true (0.825))
 							(false (0.17500000000000004))))))
-					(false (running__c9' 
+					(false (running__c8' 
 						(true (0.02))
 						(false (0.98))))))
-				(false (running__c9 
+				(false (running__c8 
 					(true (running__c10 
-						(true (running__c9' 
+						(true (running__c8' 
 							(true (0.825))
 							(false (0.17500000000000004))))
-						(false (running__c9' 
+						(false (running__c8' 
 							(true (0.7))
 							(false (0.30000000000000004))))))
-					(false (running__c9' 
+					(false (running__c8' 
 						(true (0.02))
 						(false (0.98))))))))
-			(false (running__c8 
-				(true (running__c9 
+			(false (running__c7 
+				(true (running__c8 
 					(true (running__c10 
-						(true (running__c9' 
+						(true (running__c8' 
 							(true (0.825))
 							(false (0.17500000000000004))))
-						(false (running__c9' 
+						(false (running__c8' 
 							(true (0.7))
 							(false (0.30000000000000004))))))
-					(false (running__c9' 
+					(false (running__c8' 
 						(true (0.02))
 						(false (0.98))))))
-				(false (running__c9 
+				(false (running__c8 
 					(true (running__c10 
-						(true (running__c9' 
+						(true (running__c8' 
 							(true (0.7))
 							(false (0.30000000000000004))))
-						(false (running__c9' 
+						(false (running__c8' 
 							(true (0.575))
 							(false (0.42500000000000004))))))
-					(false (running__c9' 
+					(false (running__c8' 
 						(true (0.02))
 						(false (0.98)))))))))
+	running__c9
+		(running__c1 
+			(true (running__c4 
+				(true (running__c5 
+					(true (running__c6 
+						(true (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.95))
+									(false (0.050000000000000044))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.8666666666666667))
+									(false (0.1333333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))
+						(false (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.8666666666666667))
+									(false (0.1333333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))))
+					(false (running__c6 
+						(true (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.8666666666666667))
+									(false (0.1333333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))
+						(false (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))))))
+				(false (running__c5 
+					(true (running__c6 
+						(true (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.8666666666666667))
+									(false (0.1333333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))
+						(false (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))))
+					(false (running__c6 
+						(true (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))
+						(false (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.6166666666666667))
+									(false (0.3833333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))))))))
+			(false (running__c4 
+				(true (running__c5 
+					(true (running__c6 
+						(true (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.8666666666666667))
+									(false (0.1333333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))
+						(false (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))))
+					(false (running__c6 
+						(true (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))
+						(false (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.6166666666666667))
+									(false (0.3833333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))))))
+				(false (running__c5 
+					(true (running__c6 
+						(true (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))
+						(false (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.6166666666666667))
+									(false (0.3833333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))))
+					(false (running__c6 
+						(true (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.6166666666666667))
+									(false (0.3833333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))
+						(false (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.6166666666666667))
+									(false (0.3833333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.5333333333333333))
+									(false (0.4666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98)))))))))))))))
 	running__c10
-		(running__c3 
+		(running__c4 
 			(true (running__c10 
 				(true (running__c10' 
 					(true (0.95))
@@ -2020,169 +2736,53 @@ endaction
 action reboot__c4
 	running__c1
 		(running__c1 
-			(true (running__c2 
-				(true (running__c4 
-					(true (running__c6 
-						(true (running__c9 
-							(true (running__c10 
-								(true (running__c1' 
-									(true (0.95))
-									(false (0.050000000000000044))))
-								(false (running__c1' 
-									(true (0.8666666666666667))
-									(false (0.1333333333333333))))))
-							(false (running__c10 
-								(true (running__c1' 
-									(true (0.8666666666666667))
-									(false (0.1333333333333333))))
-								(false (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))))))
-						(false (running__c9 
-							(true (running__c10 
-								(true (running__c1' 
-									(true (0.8666666666666667))
-									(false (0.1333333333333333))))
-								(false (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))))
-							(false (running__c10 
-								(true (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))
-								(false (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))))))))
-					(false (running__c6 
-						(true (running__c9 
-							(true (running__c10 
-								(true (running__c1' 
-									(true (0.8666666666666667))
-									(false (0.1333333333333333))))
-								(false (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))))
-							(false (running__c10 
-								(true (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))
-								(false (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))))))
-						(false (running__c9 
-							(true (running__c10 
-								(true (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))
-								(false (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))))
-							(false (running__c10 
-								(true (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))
-								(false (running__c1' 
-									(true (0.6166666666666667))
-									(false (0.3833333333333333))))))))))))
-				(false (running__c4 
-					(true (running__c6 
-						(true (running__c9 
-							(true (running__c10 
-								(true (running__c1' 
-									(true (0.8666666666666667))
-									(false (0.1333333333333333))))
-								(false (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))))
-							(false (running__c10 
-								(true (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))
-								(false (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))))))
-						(false (running__c9 
-							(true (running__c10 
-								(true (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))
-								(false (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))))
-							(false (running__c10 
-								(true (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))
-								(false (running__c1' 
-									(true (0.6166666666666667))
-									(false (0.3833333333333333))))))))))
-					(false (running__c6 
-						(true (running__c9 
-							(true (running__c10 
-								(true (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))
-								(false (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))))
-							(false (running__c10 
-								(true (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))
-								(false (running__c1' 
-									(true (0.6166666666666667))
-									(false (0.3833333333333333))))))))
-						(false (running__c9 
-							(true (running__c10 
-								(true (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))
-								(false (running__c1' 
-									(true (0.6166666666666667))
-									(false (0.3833333333333333))))))
-							(false (running__c10 
-								(true (running__c1' 
-									(true (0.6166666666666667))
-									(false (0.3833333333333333))))
-								(false (running__c1' 
-									(true (0.5333333333333333))
-									(false (0.4666666666666667))))))))))))))
+			(true (running__c5 
+				(true (running__c6 
+					(true (running__c9 
+						(true (running__c1' 
+							(true (0.95))
+							(false (0.050000000000000044))))
+						(false (running__c1' 
+							(true (0.825))
+							(false (0.17500000000000004))))))
+					(false (running__c9 
+						(true (running__c1' 
+							(true (0.825))
+							(false (0.17500000000000004))))
+						(false (running__c1' 
+							(true (0.7))
+							(false (0.30000000000000004))))))))
+				(false (running__c6 
+					(true (running__c9 
+						(true (running__c1' 
+							(true (0.825))
+							(false (0.17500000000000004))))
+						(false (running__c1' 
+							(true (0.7))
+							(false (0.30000000000000004))))))
+					(false (running__c9 
+						(true (running__c1' 
+							(true (0.7))
+							(false (0.30000000000000004))))
+						(false (running__c1' 
+							(true (0.575))
+							(false (0.42500000000000004))))))))))
 			(false (running__c1' 
 				(true (0.02))
 				(false (0.98)))))
 	running__c2
-		(running__c1 
-			(true (running__c2 
-				(true (running__c4 
-					(true (running__c2' 
-						(true (0.95))
-						(false (0.050000000000000044))))
-					(false (running__c2' 
-						(true (0.7833333333333333))
-						(false (0.21666666666666667))))))
-				(false (running__c2' 
-					(true (0.02))
-					(false (0.98))))))
-			(false (running__c2 
-				(true (running__c4 
-					(true (running__c2' 
-						(true (0.7833333333333333))
-						(false (0.21666666666666667))))
-					(false (running__c2' 
-						(true (0.6166666666666667))
-						(false (0.3833333333333333))))))
-				(false (running__c2' 
-					(true (0.02))
-					(false (0.98)))))))
+		(running__c2 
+			(true (running__c2' 
+				(true (0.95))
+				(false (0.050000000000000044))))
+			(false (running__c2' 
+				(true (0.02))
+				(false (0.98)))))
 	running__c3
 		(running__c3 
-			(true (running__c9 
-				(true (running__c3' 
-					(true (0.95))
-					(false (0.050000000000000044))))
-				(false (running__c3' 
-					(true (0.7))
-					(false (0.30000000000000004))))))
+			(true (running__c3' 
+				(true (0.95))
+				(false (0.050000000000000044))))
 			(false (running__c3' 
 				(true (0.02))
 				(false (0.98)))))
@@ -2191,43 +2791,43 @@ action reboot__c4
 			(true (1.0))
 			(false (0.0)))
 	running__c5
-		(running__c3 
+		(running__c2 
 			(true (running__c5 
-				(true (running__c8 
-					(true (running__c5' 
-						(true (0.95))
-						(false (0.050000000000000044))))
-					(false (running__c5' 
-						(true (0.7833333333333333))
-						(false (0.21666666666666667))))))
+				(true (running__c5' 
+					(true (0.95))
+					(false (0.050000000000000044))))
 				(false (running__c5' 
 					(true (0.02))
 					(false (0.98))))))
 			(false (running__c5 
-				(true (running__c8 
-					(true (running__c5' 
-						(true (0.7833333333333333))
-						(false (0.21666666666666667))))
-					(false (running__c5' 
-						(true (0.6166666666666667))
-						(false (0.3833333333333333))))))
+				(true (running__c5' 
+					(true (0.7))
+					(false (0.30000000000000004))))
 				(false (running__c5' 
 					(true (0.02))
 					(false (0.98)))))))
 	running__c6
 		(running__c6 
-			(true (running__c7 
-				(true (running__c6' 
-					(true (0.95))
-					(false (0.050000000000000044))))
-				(false (running__c6' 
-					(true (0.7))
-					(false (0.30000000000000004))))))
+			(true (running__c8 
+				(true (running__c9 
+					(true (running__c6' 
+						(true (0.95))
+						(false (0.050000000000000044))))
+					(false (running__c6' 
+						(true (0.7833333333333333))
+						(false (0.21666666666666667))))))
+				(false (running__c9 
+					(true (running__c6' 
+						(true (0.7833333333333333))
+						(false (0.21666666666666667))))
+					(false (running__c6' 
+						(true (0.6166666666666667))
+						(false (0.3833333333333333))))))))
 			(false (running__c6' 
 				(true (0.02))
 				(false (0.98)))))
 	running__c7
-		(running__c6 
+		(running__c3 
 			(true (running__c7 
 				(true (running__c7' 
 					(true (0.95))
@@ -2243,71 +2843,311 @@ action reboot__c4
 					(true (0.02))
 					(false (0.98)))))))
 	running__c8
-		(running__c5 
-			(true (running__c8 
-				(true (running__c8' 
-					(true (0.95))
-					(false (0.050000000000000044))))
-				(false (running__c8' 
-					(true (0.02))
-					(false (0.98))))))
-			(false (running__c8 
-				(true (running__c8' 
-					(true (0.7))
-					(false (0.30000000000000004))))
-				(false (running__c8' 
-					(true (0.02))
-					(false (0.98)))))))
-	running__c9
-		(running__c1 
-			(true (running__c8 
-				(true (running__c9 
+		(running__c2 
+			(true (running__c7 
+				(true (running__c8 
 					(true (running__c10 
-						(true (running__c9' 
+						(true (running__c8' 
 							(true (0.95))
 							(false (0.050000000000000044))))
-						(false (running__c9' 
+						(false (running__c8' 
 							(true (0.825))
 							(false (0.17500000000000004))))))
-					(false (running__c9' 
+					(false (running__c8' 
 						(true (0.02))
 						(false (0.98))))))
-				(false (running__c9 
+				(false (running__c8 
 					(true (running__c10 
-						(true (running__c9' 
+						(true (running__c8' 
 							(true (0.825))
 							(false (0.17500000000000004))))
-						(false (running__c9' 
+						(false (running__c8' 
 							(true (0.7))
 							(false (0.30000000000000004))))))
-					(false (running__c9' 
+					(false (running__c8' 
 						(true (0.02))
 						(false (0.98))))))))
-			(false (running__c8 
-				(true (running__c9 
+			(false (running__c7 
+				(true (running__c8 
 					(true (running__c10 
-						(true (running__c9' 
+						(true (running__c8' 
 							(true (0.825))
 							(false (0.17500000000000004))))
-						(false (running__c9' 
+						(false (running__c8' 
 							(true (0.7))
 							(false (0.30000000000000004))))))
-					(false (running__c9' 
+					(false (running__c8' 
 						(true (0.02))
 						(false (0.98))))))
-				(false (running__c9 
+				(false (running__c8 
 					(true (running__c10 
-						(true (running__c9' 
+						(true (running__c8' 
 							(true (0.7))
 							(false (0.30000000000000004))))
-						(false (running__c9' 
+						(false (running__c8' 
 							(true (0.575))
 							(false (0.42500000000000004))))))
-					(false (running__c9' 
+					(false (running__c8' 
 						(true (0.02))
 						(false (0.98)))))))))
+	running__c9
+		(running__c1 
+			(true (running__c4 
+				(true (running__c5 
+					(true (running__c6 
+						(true (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.95))
+									(false (0.050000000000000044))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.8666666666666667))
+									(false (0.1333333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))
+						(false (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.8666666666666667))
+									(false (0.1333333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))))
+					(false (running__c6 
+						(true (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.8666666666666667))
+									(false (0.1333333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))
+						(false (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))))))
+				(false (running__c5 
+					(true (running__c6 
+						(true (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.8666666666666667))
+									(false (0.1333333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))
+						(false (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))))
+					(false (running__c6 
+						(true (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))
+						(false (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.6166666666666667))
+									(false (0.3833333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))))))))
+			(false (running__c4 
+				(true (running__c5 
+					(true (running__c6 
+						(true (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.8666666666666667))
+									(false (0.1333333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))
+						(false (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))))
+					(false (running__c6 
+						(true (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))
+						(false (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.6166666666666667))
+									(false (0.3833333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))))))
+				(false (running__c5 
+					(true (running__c6 
+						(true (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))
+						(false (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.6166666666666667))
+									(false (0.3833333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))))
+					(false (running__c6 
+						(true (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.6166666666666667))
+									(false (0.3833333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))
+						(false (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.6166666666666667))
+									(false (0.3833333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.5333333333333333))
+									(false (0.4666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98)))))))))))))))
 	running__c10
-		(running__c3 
+		(running__c4 
 			(true (running__c10 
 				(true (running__c10' 
 					(true (0.95))
@@ -2441,181 +3281,61 @@ endaction
 action reboot__c5
 	running__c1
 		(running__c1 
-			(true (running__c2 
-				(true (running__c4 
-					(true (running__c6 
-						(true (running__c9 
-							(true (running__c10 
-								(true (running__c1' 
-									(true (0.95))
-									(false (0.050000000000000044))))
-								(false (running__c1' 
-									(true (0.8666666666666667))
-									(false (0.1333333333333333))))))
-							(false (running__c10 
-								(true (running__c1' 
-									(true (0.8666666666666667))
-									(false (0.1333333333333333))))
-								(false (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))))))
-						(false (running__c9 
-							(true (running__c10 
-								(true (running__c1' 
-									(true (0.8666666666666667))
-									(false (0.1333333333333333))))
-								(false (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))))
-							(false (running__c10 
-								(true (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))
-								(false (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))))))))
-					(false (running__c6 
-						(true (running__c9 
-							(true (running__c10 
-								(true (running__c1' 
-									(true (0.8666666666666667))
-									(false (0.1333333333333333))))
-								(false (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))))
-							(false (running__c10 
-								(true (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))
-								(false (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))))))
-						(false (running__c9 
-							(true (running__c10 
-								(true (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))
-								(false (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))))
-							(false (running__c10 
-								(true (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))
-								(false (running__c1' 
-									(true (0.6166666666666667))
-									(false (0.3833333333333333))))))))))))
-				(false (running__c4 
-					(true (running__c6 
-						(true (running__c9 
-							(true (running__c10 
-								(true (running__c1' 
-									(true (0.8666666666666667))
-									(false (0.1333333333333333))))
-								(false (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))))
-							(false (running__c10 
-								(true (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))
-								(false (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))))))
-						(false (running__c9 
-							(true (running__c10 
-								(true (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))
-								(false (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))))
-							(false (running__c10 
-								(true (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))
-								(false (running__c1' 
-									(true (0.6166666666666667))
-									(false (0.3833333333333333))))))))))
-					(false (running__c6 
-						(true (running__c9 
-							(true (running__c10 
-								(true (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))
-								(false (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))))
-							(false (running__c10 
-								(true (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))
-								(false (running__c1' 
-									(true (0.6166666666666667))
-									(false (0.3833333333333333))))))))
-						(false (running__c9 
-							(true (running__c10 
-								(true (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))
-								(false (running__c1' 
-									(true (0.6166666666666667))
-									(false (0.3833333333333333))))))
-							(false (running__c10 
-								(true (running__c1' 
-									(true (0.6166666666666667))
-									(false (0.3833333333333333))))
-								(false (running__c1' 
-									(true (0.5333333333333333))
-									(false (0.4666666666666667))))))))))))))
+			(true (running__c5 
+				(true (running__c6 
+					(true (running__c9 
+						(true (running__c1' 
+							(true (0.95))
+							(false (0.050000000000000044))))
+						(false (running__c1' 
+							(true (0.825))
+							(false (0.17500000000000004))))))
+					(false (running__c9 
+						(true (running__c1' 
+							(true (0.825))
+							(false (0.17500000000000004))))
+						(false (running__c1' 
+							(true (0.7))
+							(false (0.30000000000000004))))))))
+				(false (running__c6 
+					(true (running__c9 
+						(true (running__c1' 
+							(true (0.825))
+							(false (0.17500000000000004))))
+						(false (running__c1' 
+							(true (0.7))
+							(false (0.30000000000000004))))))
+					(false (running__c9 
+						(true (running__c1' 
+							(true (0.7))
+							(false (0.30000000000000004))))
+						(false (running__c1' 
+							(true (0.575))
+							(false (0.42500000000000004))))))))))
 			(false (running__c1' 
 				(true (0.02))
 				(false (0.98)))))
 	running__c2
-		(running__c1 
-			(true (running__c2 
-				(true (running__c4 
-					(true (running__c2' 
-						(true (0.95))
-						(false (0.050000000000000044))))
-					(false (running__c2' 
-						(true (0.7833333333333333))
-						(false (0.21666666666666667))))))
-				(false (running__c2' 
-					(true (0.02))
-					(false (0.98))))))
-			(false (running__c2 
-				(true (running__c4 
-					(true (running__c2' 
-						(true (0.7833333333333333))
-						(false (0.21666666666666667))))
-					(false (running__c2' 
-						(true (0.6166666666666667))
-						(false (0.3833333333333333))))))
-				(false (running__c2' 
-					(true (0.02))
-					(false (0.98)))))))
+		(running__c2 
+			(true (running__c2' 
+				(true (0.95))
+				(false (0.050000000000000044))))
+			(false (running__c2' 
+				(true (0.02))
+				(false (0.98)))))
 	running__c3
 		(running__c3 
-			(true (running__c9 
-				(true (running__c3' 
-					(true (0.95))
-					(false (0.050000000000000044))))
-				(false (running__c3' 
-					(true (0.7))
-					(false (0.30000000000000004))))))
+			(true (running__c3' 
+				(true (0.95))
+				(false (0.050000000000000044))))
 			(false (running__c3' 
 				(true (0.02))
 				(false (0.98)))))
 	running__c4
 		(running__c4 
-			(true (running__c5 
-				(true (running__c4' 
-					(true (0.95))
-					(false (0.050000000000000044))))
-				(false (running__c4' 
-					(true (0.7))
-					(false (0.30000000000000004))))))
+			(true (running__c4' 
+				(true (0.95))
+				(false (0.050000000000000044))))
 			(false (running__c4' 
 				(true (0.02))
 				(false (0.98)))))
@@ -2625,18 +3345,26 @@ action reboot__c5
 			(false (0.0)))
 	running__c6
 		(running__c6 
-			(true (running__c7 
-				(true (running__c6' 
-					(true (0.95))
-					(false (0.050000000000000044))))
-				(false (running__c6' 
-					(true (0.7))
-					(false (0.30000000000000004))))))
+			(true (running__c8 
+				(true (running__c9 
+					(true (running__c6' 
+						(true (0.95))
+						(false (0.050000000000000044))))
+					(false (running__c6' 
+						(true (0.7833333333333333))
+						(false (0.21666666666666667))))))
+				(false (running__c9 
+					(true (running__c6' 
+						(true (0.7833333333333333))
+						(false (0.21666666666666667))))
+					(false (running__c6' 
+						(true (0.6166666666666667))
+						(false (0.3833333333333333))))))))
 			(false (running__c6' 
 				(true (0.02))
 				(false (0.98)))))
 	running__c7
-		(running__c6 
+		(running__c3 
 			(true (running__c7 
 				(true (running__c7' 
 					(true (0.95))
@@ -2652,71 +3380,311 @@ action reboot__c5
 					(true (0.02))
 					(false (0.98)))))))
 	running__c8
-		(running__c5 
-			(true (running__c8 
-				(true (running__c8' 
-					(true (0.95))
-					(false (0.050000000000000044))))
-				(false (running__c8' 
-					(true (0.02))
-					(false (0.98))))))
-			(false (running__c8 
-				(true (running__c8' 
-					(true (0.7))
-					(false (0.30000000000000004))))
-				(false (running__c8' 
-					(true (0.02))
-					(false (0.98)))))))
-	running__c9
-		(running__c1 
-			(true (running__c8 
-				(true (running__c9 
+		(running__c2 
+			(true (running__c7 
+				(true (running__c8 
 					(true (running__c10 
-						(true (running__c9' 
+						(true (running__c8' 
 							(true (0.95))
 							(false (0.050000000000000044))))
-						(false (running__c9' 
+						(false (running__c8' 
 							(true (0.825))
 							(false (0.17500000000000004))))))
-					(false (running__c9' 
+					(false (running__c8' 
 						(true (0.02))
 						(false (0.98))))))
-				(false (running__c9 
+				(false (running__c8 
 					(true (running__c10 
-						(true (running__c9' 
+						(true (running__c8' 
 							(true (0.825))
 							(false (0.17500000000000004))))
-						(false (running__c9' 
+						(false (running__c8' 
 							(true (0.7))
 							(false (0.30000000000000004))))))
-					(false (running__c9' 
+					(false (running__c8' 
 						(true (0.02))
 						(false (0.98))))))))
-			(false (running__c8 
-				(true (running__c9 
+			(false (running__c7 
+				(true (running__c8 
 					(true (running__c10 
-						(true (running__c9' 
+						(true (running__c8' 
 							(true (0.825))
 							(false (0.17500000000000004))))
-						(false (running__c9' 
+						(false (running__c8' 
 							(true (0.7))
 							(false (0.30000000000000004))))))
-					(false (running__c9' 
+					(false (running__c8' 
 						(true (0.02))
 						(false (0.98))))))
-				(false (running__c9 
+				(false (running__c8 
 					(true (running__c10 
-						(true (running__c9' 
+						(true (running__c8' 
 							(true (0.7))
 							(false (0.30000000000000004))))
-						(false (running__c9' 
+						(false (running__c8' 
 							(true (0.575))
 							(false (0.42500000000000004))))))
-					(false (running__c9' 
+					(false (running__c8' 
 						(true (0.02))
 						(false (0.98)))))))))
+	running__c9
+		(running__c1 
+			(true (running__c4 
+				(true (running__c5 
+					(true (running__c6 
+						(true (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.95))
+									(false (0.050000000000000044))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.8666666666666667))
+									(false (0.1333333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))
+						(false (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.8666666666666667))
+									(false (0.1333333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))))
+					(false (running__c6 
+						(true (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.8666666666666667))
+									(false (0.1333333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))
+						(false (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))))))
+				(false (running__c5 
+					(true (running__c6 
+						(true (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.8666666666666667))
+									(false (0.1333333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))
+						(false (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))))
+					(false (running__c6 
+						(true (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))
+						(false (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.6166666666666667))
+									(false (0.3833333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))))))))
+			(false (running__c4 
+				(true (running__c5 
+					(true (running__c6 
+						(true (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.8666666666666667))
+									(false (0.1333333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))
+						(false (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))))
+					(false (running__c6 
+						(true (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))
+						(false (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.6166666666666667))
+									(false (0.3833333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))))))
+				(false (running__c5 
+					(true (running__c6 
+						(true (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))
+						(false (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.6166666666666667))
+									(false (0.3833333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))))
+					(false (running__c6 
+						(true (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.6166666666666667))
+									(false (0.3833333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))
+						(false (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.6166666666666667))
+									(false (0.3833333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.5333333333333333))
+									(false (0.4666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98)))))))))))))))
 	running__c10
-		(running__c3 
+		(running__c4 
 			(true (running__c10 
 				(true (running__c10' 
 					(true (0.95))
@@ -2850,205 +3818,77 @@ endaction
 action reboot__c6
 	running__c1
 		(running__c1 
-			(true (running__c2 
-				(true (running__c4 
-					(true (running__c6 
-						(true (running__c9 
-							(true (running__c10 
-								(true (running__c1' 
-									(true (0.95))
-									(false (0.050000000000000044))))
-								(false (running__c1' 
-									(true (0.8666666666666667))
-									(false (0.1333333333333333))))))
-							(false (running__c10 
-								(true (running__c1' 
-									(true (0.8666666666666667))
-									(false (0.1333333333333333))))
-								(false (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))))))
-						(false (running__c9 
-							(true (running__c10 
-								(true (running__c1' 
-									(true (0.8666666666666667))
-									(false (0.1333333333333333))))
-								(false (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))))
-							(false (running__c10 
-								(true (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))
-								(false (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))))))))
-					(false (running__c6 
-						(true (running__c9 
-							(true (running__c10 
-								(true (running__c1' 
-									(true (0.8666666666666667))
-									(false (0.1333333333333333))))
-								(false (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))))
-							(false (running__c10 
-								(true (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))
-								(false (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))))))
-						(false (running__c9 
-							(true (running__c10 
-								(true (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))
-								(false (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))))
-							(false (running__c10 
-								(true (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))
-								(false (running__c1' 
-									(true (0.6166666666666667))
-									(false (0.3833333333333333))))))))))))
-				(false (running__c4 
-					(true (running__c6 
-						(true (running__c9 
-							(true (running__c10 
-								(true (running__c1' 
-									(true (0.8666666666666667))
-									(false (0.1333333333333333))))
-								(false (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))))
-							(false (running__c10 
-								(true (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))
-								(false (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))))))
-						(false (running__c9 
-							(true (running__c10 
-								(true (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))
-								(false (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))))
-							(false (running__c10 
-								(true (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))
-								(false (running__c1' 
-									(true (0.6166666666666667))
-									(false (0.3833333333333333))))))))))
-					(false (running__c6 
-						(true (running__c9 
-							(true (running__c10 
-								(true (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))
-								(false (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))))
-							(false (running__c10 
-								(true (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))
-								(false (running__c1' 
-									(true (0.6166666666666667))
-									(false (0.3833333333333333))))))))
-						(false (running__c9 
-							(true (running__c10 
-								(true (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))
-								(false (running__c1' 
-									(true (0.6166666666666667))
-									(false (0.3833333333333333))))))
-							(false (running__c10 
-								(true (running__c1' 
-									(true (0.6166666666666667))
-									(false (0.3833333333333333))))
-								(false (running__c1' 
-									(true (0.5333333333333333))
-									(false (0.4666666666666667))))))))))))))
+			(true (running__c5 
+				(true (running__c6 
+					(true (running__c9 
+						(true (running__c1' 
+							(true (0.95))
+							(false (0.050000000000000044))))
+						(false (running__c1' 
+							(true (0.825))
+							(false (0.17500000000000004))))))
+					(false (running__c9 
+						(true (running__c1' 
+							(true (0.825))
+							(false (0.17500000000000004))))
+						(false (running__c1' 
+							(true (0.7))
+							(false (0.30000000000000004))))))))
+				(false (running__c6 
+					(true (running__c9 
+						(true (running__c1' 
+							(true (0.825))
+							(false (0.17500000000000004))))
+						(false (running__c1' 
+							(true (0.7))
+							(false (0.30000000000000004))))))
+					(false (running__c9 
+						(true (running__c1' 
+							(true (0.7))
+							(false (0.30000000000000004))))
+						(false (running__c1' 
+							(true (0.575))
+							(false (0.42500000000000004))))))))))
 			(false (running__c1' 
 				(true (0.02))
 				(false (0.98)))))
 	running__c2
-		(running__c1 
-			(true (running__c2 
-				(true (running__c4 
-					(true (running__c2' 
-						(true (0.95))
-						(false (0.050000000000000044))))
-					(false (running__c2' 
-						(true (0.7833333333333333))
-						(false (0.21666666666666667))))))
-				(false (running__c2' 
-					(true (0.02))
-					(false (0.98))))))
-			(false (running__c2 
-				(true (running__c4 
-					(true (running__c2' 
-						(true (0.7833333333333333))
-						(false (0.21666666666666667))))
-					(false (running__c2' 
-						(true (0.6166666666666667))
-						(false (0.3833333333333333))))))
-				(false (running__c2' 
-					(true (0.02))
-					(false (0.98)))))))
+		(running__c2 
+			(true (running__c2' 
+				(true (0.95))
+				(false (0.050000000000000044))))
+			(false (running__c2' 
+				(true (0.02))
+				(false (0.98)))))
 	running__c3
 		(running__c3 
-			(true (running__c9 
-				(true (running__c3' 
-					(true (0.95))
-					(false (0.050000000000000044))))
-				(false (running__c3' 
-					(true (0.7))
-					(false (0.30000000000000004))))))
+			(true (running__c3' 
+				(true (0.95))
+				(false (0.050000000000000044))))
 			(false (running__c3' 
 				(true (0.02))
 				(false (0.98)))))
 	running__c4
 		(running__c4 
-			(true (running__c5 
-				(true (running__c4' 
-					(true (0.95))
-					(false (0.050000000000000044))))
-				(false (running__c4' 
-					(true (0.7))
-					(false (0.30000000000000004))))))
+			(true (running__c4' 
+				(true (0.95))
+				(false (0.050000000000000044))))
 			(false (running__c4' 
 				(true (0.02))
 				(false (0.98)))))
 	running__c5
-		(running__c3 
+		(running__c2 
 			(true (running__c5 
-				(true (running__c8 
-					(true (running__c5' 
-						(true (0.95))
-						(false (0.050000000000000044))))
-					(false (running__c5' 
-						(true (0.7833333333333333))
-						(false (0.21666666666666667))))))
+				(true (running__c5' 
+					(true (0.95))
+					(false (0.050000000000000044))))
 				(false (running__c5' 
 					(true (0.02))
 					(false (0.98))))))
 			(false (running__c5 
-				(true (running__c8 
-					(true (running__c5' 
-						(true (0.7833333333333333))
-						(false (0.21666666666666667))))
-					(false (running__c5' 
-						(true (0.6166666666666667))
-						(false (0.3833333333333333))))))
+				(true (running__c5' 
+					(true (0.7))
+					(false (0.30000000000000004))))
 				(false (running__c5' 
 					(true (0.02))
 					(false (0.98)))))))
@@ -3057,7 +3897,7 @@ action reboot__c6
 			(true (1.0))
 			(false (0.0)))
 	running__c7
-		(running__c6 
+		(running__c3 
 			(true (running__c7 
 				(true (running__c7' 
 					(true (0.95))
@@ -3073,71 +3913,311 @@ action reboot__c6
 					(true (0.02))
 					(false (0.98)))))))
 	running__c8
-		(running__c5 
-			(true (running__c8 
-				(true (running__c8' 
-					(true (0.95))
-					(false (0.050000000000000044))))
-				(false (running__c8' 
-					(true (0.02))
-					(false (0.98))))))
-			(false (running__c8 
-				(true (running__c8' 
-					(true (0.7))
-					(false (0.30000000000000004))))
-				(false (running__c8' 
-					(true (0.02))
-					(false (0.98)))))))
-	running__c9
-		(running__c1 
-			(true (running__c8 
-				(true (running__c9 
+		(running__c2 
+			(true (running__c7 
+				(true (running__c8 
 					(true (running__c10 
-						(true (running__c9' 
+						(true (running__c8' 
 							(true (0.95))
 							(false (0.050000000000000044))))
-						(false (running__c9' 
+						(false (running__c8' 
 							(true (0.825))
 							(false (0.17500000000000004))))))
-					(false (running__c9' 
+					(false (running__c8' 
 						(true (0.02))
 						(false (0.98))))))
-				(false (running__c9 
+				(false (running__c8 
 					(true (running__c10 
-						(true (running__c9' 
+						(true (running__c8' 
 							(true (0.825))
 							(false (0.17500000000000004))))
-						(false (running__c9' 
+						(false (running__c8' 
 							(true (0.7))
 							(false (0.30000000000000004))))))
-					(false (running__c9' 
+					(false (running__c8' 
 						(true (0.02))
 						(false (0.98))))))))
-			(false (running__c8 
-				(true (running__c9 
+			(false (running__c7 
+				(true (running__c8 
 					(true (running__c10 
-						(true (running__c9' 
+						(true (running__c8' 
 							(true (0.825))
 							(false (0.17500000000000004))))
-						(false (running__c9' 
+						(false (running__c8' 
 							(true (0.7))
 							(false (0.30000000000000004))))))
-					(false (running__c9' 
+					(false (running__c8' 
 						(true (0.02))
 						(false (0.98))))))
-				(false (running__c9 
+				(false (running__c8 
 					(true (running__c10 
-						(true (running__c9' 
+						(true (running__c8' 
 							(true (0.7))
 							(false (0.30000000000000004))))
-						(false (running__c9' 
+						(false (running__c8' 
 							(true (0.575))
 							(false (0.42500000000000004))))))
-					(false (running__c9' 
+					(false (running__c8' 
 						(true (0.02))
 						(false (0.98)))))))))
+	running__c9
+		(running__c1 
+			(true (running__c4 
+				(true (running__c5 
+					(true (running__c6 
+						(true (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.95))
+									(false (0.050000000000000044))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.8666666666666667))
+									(false (0.1333333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))
+						(false (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.8666666666666667))
+									(false (0.1333333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))))
+					(false (running__c6 
+						(true (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.8666666666666667))
+									(false (0.1333333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))
+						(false (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))))))
+				(false (running__c5 
+					(true (running__c6 
+						(true (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.8666666666666667))
+									(false (0.1333333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))
+						(false (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))))
+					(false (running__c6 
+						(true (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))
+						(false (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.6166666666666667))
+									(false (0.3833333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))))))))
+			(false (running__c4 
+				(true (running__c5 
+					(true (running__c6 
+						(true (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.8666666666666667))
+									(false (0.1333333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))
+						(false (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))))
+					(false (running__c6 
+						(true (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))
+						(false (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.6166666666666667))
+									(false (0.3833333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))))))
+				(false (running__c5 
+					(true (running__c6 
+						(true (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))
+						(false (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.6166666666666667))
+									(false (0.3833333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))))
+					(false (running__c6 
+						(true (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.6166666666666667))
+									(false (0.3833333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))
+						(false (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.6166666666666667))
+									(false (0.3833333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.5333333333333333))
+									(false (0.4666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98)))))))))))))))
 	running__c10
-		(running__c3 
+		(running__c4 
 			(true (running__c10 
 				(true (running__c10' 
 					(true (0.95))
@@ -3271,217 +4351,97 @@ endaction
 action reboot__c7
 	running__c1
 		(running__c1 
-			(true (running__c2 
-				(true (running__c4 
-					(true (running__c6 
-						(true (running__c9 
-							(true (running__c10 
-								(true (running__c1' 
-									(true (0.95))
-									(false (0.050000000000000044))))
-								(false (running__c1' 
-									(true (0.8666666666666667))
-									(false (0.1333333333333333))))))
-							(false (running__c10 
-								(true (running__c1' 
-									(true (0.8666666666666667))
-									(false (0.1333333333333333))))
-								(false (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))))))
-						(false (running__c9 
-							(true (running__c10 
-								(true (running__c1' 
-									(true (0.8666666666666667))
-									(false (0.1333333333333333))))
-								(false (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))))
-							(false (running__c10 
-								(true (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))
-								(false (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))))))))
-					(false (running__c6 
-						(true (running__c9 
-							(true (running__c10 
-								(true (running__c1' 
-									(true (0.8666666666666667))
-									(false (0.1333333333333333))))
-								(false (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))))
-							(false (running__c10 
-								(true (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))
-								(false (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))))))
-						(false (running__c9 
-							(true (running__c10 
-								(true (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))
-								(false (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))))
-							(false (running__c10 
-								(true (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))
-								(false (running__c1' 
-									(true (0.6166666666666667))
-									(false (0.3833333333333333))))))))))))
-				(false (running__c4 
-					(true (running__c6 
-						(true (running__c9 
-							(true (running__c10 
-								(true (running__c1' 
-									(true (0.8666666666666667))
-									(false (0.1333333333333333))))
-								(false (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))))
-							(false (running__c10 
-								(true (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))
-								(false (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))))))
-						(false (running__c9 
-							(true (running__c10 
-								(true (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))
-								(false (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))))
-							(false (running__c10 
-								(true (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))
-								(false (running__c1' 
-									(true (0.6166666666666667))
-									(false (0.3833333333333333))))))))))
-					(false (running__c6 
-						(true (running__c9 
-							(true (running__c10 
-								(true (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))
-								(false (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))))
-							(false (running__c10 
-								(true (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))
-								(false (running__c1' 
-									(true (0.6166666666666667))
-									(false (0.3833333333333333))))))))
-						(false (running__c9 
-							(true (running__c10 
-								(true (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))
-								(false (running__c1' 
-									(true (0.6166666666666667))
-									(false (0.3833333333333333))))))
-							(false (running__c10 
-								(true (running__c1' 
-									(true (0.6166666666666667))
-									(false (0.3833333333333333))))
-								(false (running__c1' 
-									(true (0.5333333333333333))
-									(false (0.4666666666666667))))))))))))))
+			(true (running__c5 
+				(true (running__c6 
+					(true (running__c9 
+						(true (running__c1' 
+							(true (0.95))
+							(false (0.050000000000000044))))
+						(false (running__c1' 
+							(true (0.825))
+							(false (0.17500000000000004))))))
+					(false (running__c9 
+						(true (running__c1' 
+							(true (0.825))
+							(false (0.17500000000000004))))
+						(false (running__c1' 
+							(true (0.7))
+							(false (0.30000000000000004))))))))
+				(false (running__c6 
+					(true (running__c9 
+						(true (running__c1' 
+							(true (0.825))
+							(false (0.17500000000000004))))
+						(false (running__c1' 
+							(true (0.7))
+							(false (0.30000000000000004))))))
+					(false (running__c9 
+						(true (running__c1' 
+							(true (0.7))
+							(false (0.30000000000000004))))
+						(false (running__c1' 
+							(true (0.575))
+							(false (0.42500000000000004))))))))))
 			(false (running__c1' 
 				(true (0.02))
 				(false (0.98)))))
 	running__c2
-		(running__c1 
-			(true (running__c2 
-				(true (running__c4 
-					(true (running__c2' 
-						(true (0.95))
-						(false (0.050000000000000044))))
-					(false (running__c2' 
-						(true (0.7833333333333333))
-						(false (0.21666666666666667))))))
-				(false (running__c2' 
-					(true (0.02))
-					(false (0.98))))))
-			(false (running__c2 
-				(true (running__c4 
-					(true (running__c2' 
-						(true (0.7833333333333333))
-						(false (0.21666666666666667))))
-					(false (running__c2' 
-						(true (0.6166666666666667))
-						(false (0.3833333333333333))))))
-				(false (running__c2' 
-					(true (0.02))
-					(false (0.98)))))))
+		(running__c2 
+			(true (running__c2' 
+				(true (0.95))
+				(false (0.050000000000000044))))
+			(false (running__c2' 
+				(true (0.02))
+				(false (0.98)))))
 	running__c3
 		(running__c3 
-			(true (running__c9 
-				(true (running__c3' 
-					(true (0.95))
-					(false (0.050000000000000044))))
-				(false (running__c3' 
-					(true (0.7))
-					(false (0.30000000000000004))))))
+			(true (running__c3' 
+				(true (0.95))
+				(false (0.050000000000000044))))
 			(false (running__c3' 
 				(true (0.02))
 				(false (0.98)))))
 	running__c4
 		(running__c4 
-			(true (running__c5 
-				(true (running__c4' 
-					(true (0.95))
-					(false (0.050000000000000044))))
-				(false (running__c4' 
-					(true (0.7))
-					(false (0.30000000000000004))))))
+			(true (running__c4' 
+				(true (0.95))
+				(false (0.050000000000000044))))
 			(false (running__c4' 
 				(true (0.02))
 				(false (0.98)))))
 	running__c5
-		(running__c3 
+		(running__c2 
 			(true (running__c5 
-				(true (running__c8 
-					(true (running__c5' 
-						(true (0.95))
-						(false (0.050000000000000044))))
-					(false (running__c5' 
-						(true (0.7833333333333333))
-						(false (0.21666666666666667))))))
+				(true (running__c5' 
+					(true (0.95))
+					(false (0.050000000000000044))))
 				(false (running__c5' 
 					(true (0.02))
 					(false (0.98))))))
 			(false (running__c5 
-				(true (running__c8 
-					(true (running__c5' 
-						(true (0.7833333333333333))
-						(false (0.21666666666666667))))
-					(false (running__c5' 
-						(true (0.6166666666666667))
-						(false (0.3833333333333333))))))
+				(true (running__c5' 
+					(true (0.7))
+					(false (0.30000000000000004))))
 				(false (running__c5' 
 					(true (0.02))
 					(false (0.98)))))))
 	running__c6
 		(running__c6 
-			(true (running__c7 
-				(true (running__c6' 
-					(true (0.95))
-					(false (0.050000000000000044))))
-				(false (running__c6' 
-					(true (0.7))
-					(false (0.30000000000000004))))))
+			(true (running__c8 
+				(true (running__c9 
+					(true (running__c6' 
+						(true (0.95))
+						(false (0.050000000000000044))))
+					(false (running__c6' 
+						(true (0.7833333333333333))
+						(false (0.21666666666666667))))))
+				(false (running__c9 
+					(true (running__c6' 
+						(true (0.7833333333333333))
+						(false (0.21666666666666667))))
+					(false (running__c6' 
+						(true (0.6166666666666667))
+						(false (0.3833333333333333))))))))
 			(false (running__c6' 
 				(true (0.02))
 				(false (0.98)))))
@@ -3490,71 +4450,311 @@ action reboot__c7
 			(true (1.0))
 			(false (0.0)))
 	running__c8
-		(running__c5 
-			(true (running__c8 
-				(true (running__c8' 
-					(true (0.95))
-					(false (0.050000000000000044))))
-				(false (running__c8' 
-					(true (0.02))
-					(false (0.98))))))
-			(false (running__c8 
-				(true (running__c8' 
-					(true (0.7))
-					(false (0.30000000000000004))))
-				(false (running__c8' 
-					(true (0.02))
-					(false (0.98)))))))
-	running__c9
-		(running__c1 
-			(true (running__c8 
-				(true (running__c9 
+		(running__c2 
+			(true (running__c7 
+				(true (running__c8 
 					(true (running__c10 
-						(true (running__c9' 
+						(true (running__c8' 
 							(true (0.95))
 							(false (0.050000000000000044))))
-						(false (running__c9' 
+						(false (running__c8' 
 							(true (0.825))
 							(false (0.17500000000000004))))))
-					(false (running__c9' 
+					(false (running__c8' 
 						(true (0.02))
 						(false (0.98))))))
-				(false (running__c9 
+				(false (running__c8 
 					(true (running__c10 
-						(true (running__c9' 
+						(true (running__c8' 
 							(true (0.825))
 							(false (0.17500000000000004))))
-						(false (running__c9' 
+						(false (running__c8' 
 							(true (0.7))
 							(false (0.30000000000000004))))))
-					(false (running__c9' 
+					(false (running__c8' 
 						(true (0.02))
 						(false (0.98))))))))
-			(false (running__c8 
-				(true (running__c9 
+			(false (running__c7 
+				(true (running__c8 
 					(true (running__c10 
-						(true (running__c9' 
+						(true (running__c8' 
 							(true (0.825))
 							(false (0.17500000000000004))))
-						(false (running__c9' 
+						(false (running__c8' 
 							(true (0.7))
 							(false (0.30000000000000004))))))
-					(false (running__c9' 
+					(false (running__c8' 
 						(true (0.02))
 						(false (0.98))))))
-				(false (running__c9 
+				(false (running__c8 
 					(true (running__c10 
-						(true (running__c9' 
+						(true (running__c8' 
 							(true (0.7))
 							(false (0.30000000000000004))))
-						(false (running__c9' 
+						(false (running__c8' 
 							(true (0.575))
 							(false (0.42500000000000004))))))
-					(false (running__c9' 
+					(false (running__c8' 
 						(true (0.02))
 						(false (0.98)))))))))
+	running__c9
+		(running__c1 
+			(true (running__c4 
+				(true (running__c5 
+					(true (running__c6 
+						(true (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.95))
+									(false (0.050000000000000044))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.8666666666666667))
+									(false (0.1333333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))
+						(false (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.8666666666666667))
+									(false (0.1333333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))))
+					(false (running__c6 
+						(true (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.8666666666666667))
+									(false (0.1333333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))
+						(false (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))))))
+				(false (running__c5 
+					(true (running__c6 
+						(true (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.8666666666666667))
+									(false (0.1333333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))
+						(false (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))))
+					(false (running__c6 
+						(true (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))
+						(false (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.6166666666666667))
+									(false (0.3833333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))))))))
+			(false (running__c4 
+				(true (running__c5 
+					(true (running__c6 
+						(true (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.8666666666666667))
+									(false (0.1333333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))
+						(false (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))))
+					(false (running__c6 
+						(true (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))
+						(false (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.6166666666666667))
+									(false (0.3833333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))))))
+				(false (running__c5 
+					(true (running__c6 
+						(true (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))
+						(false (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.6166666666666667))
+									(false (0.3833333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))))
+					(false (running__c6 
+						(true (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.6166666666666667))
+									(false (0.3833333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))
+						(false (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.6166666666666667))
+									(false (0.3833333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.5333333333333333))
+									(false (0.4666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98)))))))))))))))
 	running__c10
-		(running__c3 
+		(running__c4 
 			(true (running__c10 
 				(true (running__c10' 
 					(true (0.95))
@@ -3688,222 +4888,102 @@ endaction
 action reboot__c8
 	running__c1
 		(running__c1 
-			(true (running__c2 
-				(true (running__c4 
-					(true (running__c6 
-						(true (running__c9 
-							(true (running__c10 
-								(true (running__c1' 
-									(true (0.95))
-									(false (0.050000000000000044))))
-								(false (running__c1' 
-									(true (0.8666666666666667))
-									(false (0.1333333333333333))))))
-							(false (running__c10 
-								(true (running__c1' 
-									(true (0.8666666666666667))
-									(false (0.1333333333333333))))
-								(false (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))))))
-						(false (running__c9 
-							(true (running__c10 
-								(true (running__c1' 
-									(true (0.8666666666666667))
-									(false (0.1333333333333333))))
-								(false (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))))
-							(false (running__c10 
-								(true (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))
-								(false (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))))))))
-					(false (running__c6 
-						(true (running__c9 
-							(true (running__c10 
-								(true (running__c1' 
-									(true (0.8666666666666667))
-									(false (0.1333333333333333))))
-								(false (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))))
-							(false (running__c10 
-								(true (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))
-								(false (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))))))
-						(false (running__c9 
-							(true (running__c10 
-								(true (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))
-								(false (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))))
-							(false (running__c10 
-								(true (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))
-								(false (running__c1' 
-									(true (0.6166666666666667))
-									(false (0.3833333333333333))))))))))))
-				(false (running__c4 
-					(true (running__c6 
-						(true (running__c9 
-							(true (running__c10 
-								(true (running__c1' 
-									(true (0.8666666666666667))
-									(false (0.1333333333333333))))
-								(false (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))))
-							(false (running__c10 
-								(true (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))
-								(false (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))))))
-						(false (running__c9 
-							(true (running__c10 
-								(true (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))
-								(false (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))))
-							(false (running__c10 
-								(true (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))
-								(false (running__c1' 
-									(true (0.6166666666666667))
-									(false (0.3833333333333333))))))))))
-					(false (running__c6 
-						(true (running__c9 
-							(true (running__c10 
-								(true (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))
-								(false (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))))
-							(false (running__c10 
-								(true (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))
-								(false (running__c1' 
-									(true (0.6166666666666667))
-									(false (0.3833333333333333))))))))
-						(false (running__c9 
-							(true (running__c10 
-								(true (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))
-								(false (running__c1' 
-									(true (0.6166666666666667))
-									(false (0.3833333333333333))))))
-							(false (running__c10 
-								(true (running__c1' 
-									(true (0.6166666666666667))
-									(false (0.3833333333333333))))
-								(false (running__c1' 
-									(true (0.5333333333333333))
-									(false (0.4666666666666667))))))))))))))
+			(true (running__c5 
+				(true (running__c6 
+					(true (running__c9 
+						(true (running__c1' 
+							(true (0.95))
+							(false (0.050000000000000044))))
+						(false (running__c1' 
+							(true (0.825))
+							(false (0.17500000000000004))))))
+					(false (running__c9 
+						(true (running__c1' 
+							(true (0.825))
+							(false (0.17500000000000004))))
+						(false (running__c1' 
+							(true (0.7))
+							(false (0.30000000000000004))))))))
+				(false (running__c6 
+					(true (running__c9 
+						(true (running__c1' 
+							(true (0.825))
+							(false (0.17500000000000004))))
+						(false (running__c1' 
+							(true (0.7))
+							(false (0.30000000000000004))))))
+					(false (running__c9 
+						(true (running__c1' 
+							(true (0.7))
+							(false (0.30000000000000004))))
+						(false (running__c1' 
+							(true (0.575))
+							(false (0.42500000000000004))))))))))
 			(false (running__c1' 
 				(true (0.02))
 				(false (0.98)))))
 	running__c2
-		(running__c1 
-			(true (running__c2 
-				(true (running__c4 
-					(true (running__c2' 
-						(true (0.95))
-						(false (0.050000000000000044))))
-					(false (running__c2' 
-						(true (0.7833333333333333))
-						(false (0.21666666666666667))))))
-				(false (running__c2' 
-					(true (0.02))
-					(false (0.98))))))
-			(false (running__c2 
-				(true (running__c4 
-					(true (running__c2' 
-						(true (0.7833333333333333))
-						(false (0.21666666666666667))))
-					(false (running__c2' 
-						(true (0.6166666666666667))
-						(false (0.3833333333333333))))))
-				(false (running__c2' 
-					(true (0.02))
-					(false (0.98)))))))
+		(running__c2 
+			(true (running__c2' 
+				(true (0.95))
+				(false (0.050000000000000044))))
+			(false (running__c2' 
+				(true (0.02))
+				(false (0.98)))))
 	running__c3
 		(running__c3 
-			(true (running__c9 
-				(true (running__c3' 
-					(true (0.95))
-					(false (0.050000000000000044))))
-				(false (running__c3' 
-					(true (0.7))
-					(false (0.30000000000000004))))))
+			(true (running__c3' 
+				(true (0.95))
+				(false (0.050000000000000044))))
 			(false (running__c3' 
 				(true (0.02))
 				(false (0.98)))))
 	running__c4
 		(running__c4 
-			(true (running__c5 
-				(true (running__c4' 
-					(true (0.95))
-					(false (0.050000000000000044))))
-				(false (running__c4' 
-					(true (0.7))
-					(false (0.30000000000000004))))))
+			(true (running__c4' 
+				(true (0.95))
+				(false (0.050000000000000044))))
 			(false (running__c4' 
 				(true (0.02))
 				(false (0.98)))))
 	running__c5
-		(running__c3 
+		(running__c2 
 			(true (running__c5 
-				(true (running__c8 
-					(true (running__c5' 
-						(true (0.95))
-						(false (0.050000000000000044))))
-					(false (running__c5' 
-						(true (0.7833333333333333))
-						(false (0.21666666666666667))))))
+				(true (running__c5' 
+					(true (0.95))
+					(false (0.050000000000000044))))
 				(false (running__c5' 
 					(true (0.02))
 					(false (0.98))))))
 			(false (running__c5 
-				(true (running__c8 
-					(true (running__c5' 
-						(true (0.7833333333333333))
-						(false (0.21666666666666667))))
-					(false (running__c5' 
-						(true (0.6166666666666667))
-						(false (0.3833333333333333))))))
+				(true (running__c5' 
+					(true (0.7))
+					(false (0.30000000000000004))))
 				(false (running__c5' 
 					(true (0.02))
 					(false (0.98)))))))
 	running__c6
 		(running__c6 
-			(true (running__c7 
-				(true (running__c6' 
-					(true (0.95))
-					(false (0.050000000000000044))))
-				(false (running__c6' 
-					(true (0.7))
-					(false (0.30000000000000004))))))
+			(true (running__c8 
+				(true (running__c9 
+					(true (running__c6' 
+						(true (0.95))
+						(false (0.050000000000000044))))
+					(false (running__c6' 
+						(true (0.7833333333333333))
+						(false (0.21666666666666667))))))
+				(false (running__c9 
+					(true (running__c6' 
+						(true (0.7833333333333333))
+						(false (0.21666666666666667))))
+					(false (running__c6' 
+						(true (0.6166666666666667))
+						(false (0.3833333333333333))))))))
 			(false (running__c6' 
 				(true (0.02))
 				(false (0.98)))))
 	running__c7
-		(running__c6 
+		(running__c3 
 			(true (running__c7 
 				(true (running__c7' 
 					(true (0.95))
@@ -3924,54 +5004,262 @@ action reboot__c8
 			(false (0.0)))
 	running__c9
 		(running__c1 
-			(true (running__c8 
-				(true (running__c9 
-					(true (running__c10 
-						(true (running__c9' 
-							(true (0.95))
-							(false (0.050000000000000044))))
-						(false (running__c9' 
-							(true (0.825))
-							(false (0.17500000000000004))))))
-					(false (running__c9' 
-						(true (0.02))
-						(false (0.98))))))
-				(false (running__c9 
-					(true (running__c10 
-						(true (running__c9' 
-							(true (0.825))
-							(false (0.17500000000000004))))
-						(false (running__c9' 
-							(true (0.7))
-							(false (0.30000000000000004))))))
-					(false (running__c9' 
-						(true (0.02))
-						(false (0.98))))))))
-			(false (running__c8 
-				(true (running__c9 
-					(true (running__c10 
-						(true (running__c9' 
-							(true (0.825))
-							(false (0.17500000000000004))))
-						(false (running__c9' 
-							(true (0.7))
-							(false (0.30000000000000004))))))
-					(false (running__c9' 
-						(true (0.02))
-						(false (0.98))))))
-				(false (running__c9 
-					(true (running__c10 
-						(true (running__c9' 
-							(true (0.7))
-							(false (0.30000000000000004))))
-						(false (running__c9' 
-							(true (0.575))
-							(false (0.42500000000000004))))))
-					(false (running__c9' 
-						(true (0.02))
-						(false (0.98)))))))))
+			(true (running__c4 
+				(true (running__c5 
+					(true (running__c6 
+						(true (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.95))
+									(false (0.050000000000000044))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.8666666666666667))
+									(false (0.1333333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))
+						(false (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.8666666666666667))
+									(false (0.1333333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))))
+					(false (running__c6 
+						(true (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.8666666666666667))
+									(false (0.1333333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))
+						(false (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))))))
+				(false (running__c5 
+					(true (running__c6 
+						(true (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.8666666666666667))
+									(false (0.1333333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))
+						(false (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))))
+					(false (running__c6 
+						(true (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))
+						(false (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.6166666666666667))
+									(false (0.3833333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))))))))
+			(false (running__c4 
+				(true (running__c5 
+					(true (running__c6 
+						(true (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.8666666666666667))
+									(false (0.1333333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))
+						(false (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))))
+					(false (running__c6 
+						(true (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))
+						(false (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.6166666666666667))
+									(false (0.3833333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))))))
+				(false (running__c5 
+					(true (running__c6 
+						(true (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7833333333333333))
+									(false (0.21666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))
+						(false (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.6166666666666667))
+									(false (0.3833333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))))
+					(false (running__c6 
+						(true (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.7))
+									(false (0.30000000000000004))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.6166666666666667))
+									(false (0.3833333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))))
+						(false (running__c7 
+							(true (running__c9 
+								(true (running__c9' 
+									(true (0.6166666666666667))
+									(false (0.3833333333333333))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98))))))
+							(false (running__c9 
+								(true (running__c9' 
+									(true (0.5333333333333333))
+									(false (0.4666666666666667))))
+								(false (running__c9' 
+									(true (0.02))
+									(false (0.98)))))))))))))))
 	running__c10
-		(running__c3 
+		(running__c4 
 			(true (running__c10 
 				(true (running__c10' 
 					(true (0.95))
@@ -4105,222 +5393,102 @@ endaction
 action reboot__c9
 	running__c1
 		(running__c1 
-			(true (running__c2 
-				(true (running__c4 
-					(true (running__c6 
-						(true (running__c9 
-							(true (running__c10 
-								(true (running__c1' 
-									(true (0.95))
-									(false (0.050000000000000044))))
-								(false (running__c1' 
-									(true (0.8666666666666667))
-									(false (0.1333333333333333))))))
-							(false (running__c10 
-								(true (running__c1' 
-									(true (0.8666666666666667))
-									(false (0.1333333333333333))))
-								(false (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))))))
-						(false (running__c9 
-							(true (running__c10 
-								(true (running__c1' 
-									(true (0.8666666666666667))
-									(false (0.1333333333333333))))
-								(false (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))))
-							(false (running__c10 
-								(true (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))
-								(false (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))))))))
-					(false (running__c6 
-						(true (running__c9 
-							(true (running__c10 
-								(true (running__c1' 
-									(true (0.8666666666666667))
-									(false (0.1333333333333333))))
-								(false (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))))
-							(false (running__c10 
-								(true (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))
-								(false (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))))))
-						(false (running__c9 
-							(true (running__c10 
-								(true (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))
-								(false (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))))
-							(false (running__c10 
-								(true (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))
-								(false (running__c1' 
-									(true (0.6166666666666667))
-									(false (0.3833333333333333))))))))))))
-				(false (running__c4 
-					(true (running__c6 
-						(true (running__c9 
-							(true (running__c10 
-								(true (running__c1' 
-									(true (0.8666666666666667))
-									(false (0.1333333333333333))))
-								(false (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))))
-							(false (running__c10 
-								(true (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))
-								(false (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))))))
-						(false (running__c9 
-							(true (running__c10 
-								(true (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))
-								(false (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))))
-							(false (running__c10 
-								(true (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))
-								(false (running__c1' 
-									(true (0.6166666666666667))
-									(false (0.3833333333333333))))))))))
-					(false (running__c6 
-						(true (running__c9 
-							(true (running__c10 
-								(true (running__c1' 
-									(true (0.7833333333333333))
-									(false (0.21666666666666667))))
-								(false (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))))
-							(false (running__c10 
-								(true (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))
-								(false (running__c1' 
-									(true (0.6166666666666667))
-									(false (0.3833333333333333))))))))
-						(false (running__c9 
-							(true (running__c10 
-								(true (running__c1' 
-									(true (0.7))
-									(false (0.30000000000000004))))
-								(false (running__c1' 
-									(true (0.6166666666666667))
-									(false (0.3833333333333333))))))
-							(false (running__c10 
-								(true (running__c1' 
-									(true (0.6166666666666667))
-									(false (0.3833333333333333))))
-								(false (running__c1' 
-									(true (0.5333333333333333))
-									(false (0.4666666666666667))))))))))))))
+			(true (running__c5 
+				(true (running__c6 
+					(true (running__c9 
+						(true (running__c1' 
+							(true (0.95))
+							(false (0.050000000000000044))))
+						(false (running__c1' 
+							(true (0.825))
+							(false (0.17500000000000004))))))
+					(false (running__c9 
+						(true (running__c1' 
+							(true (0.825))
+							(false (0.17500000000000004))))
+						(false (running__c1' 
+							(true (0.7))
+							(false (0.30000000000000004))))))))
+				(false (running__c6 
+					(true (running__c9 
+						(true (running__c1' 
+							(true (0.825))
+							(false (0.17500000000000004))))
+						(false (running__c1' 
+							(true (0.7))
+							(false (0.30000000000000004))))))
+					(false (running__c9 
+						(true (running__c1' 
+							(true (0.7))
+							(false (0.30000000000000004))))
+						(false (running__c1' 
+							(true (0.575))
+							(false (0.42500000000000004))))))))))
 			(false (running__c1' 
 				(true (0.02))
 				(false (0.98)))))
 	running__c2
-		(running__c1 
-			(true (running__c2 
-				(true (running__c4 
-					(true (running__c2' 
-						(true (0.95))
-						(false (0.050000000000000044))))
-					(false (running__c2' 
-						(true (0.7833333333333333))
-						(false (0.21666666666666667))))))
-				(false (running__c2' 
-					(true (0.02))
-					(false (0.98))))))
-			(false (running__c2 
-				(true (running__c4 
-					(true (running__c2' 
-						(true (0.7833333333333333))
-						(false (0.21666666666666667))))
-					(false (running__c2' 
-						(true (0.6166666666666667))
-						(false (0.3833333333333333))))))
-				(false (running__c2' 
-					(true (0.02))
-					(false (0.98)))))))
+		(running__c2 
+			(true (running__c2' 
+				(true (0.95))
+				(false (0.050000000000000044))))
+			(false (running__c2' 
+				(true (0.02))
+				(false (0.98)))))
 	running__c3
 		(running__c3 
-			(true (running__c9 
-				(true (running__c3' 
-					(true (0.95))
-					(false (0.050000000000000044))))
-				(false (running__c3' 
-					(true (0.7))
-					(false (0.30000000000000004))))))
+			(true (running__c3' 
+				(true (0.95))
+				(false (0.050000000000000044))))
 			(false (running__c3' 
 				(true (0.02))
 				(false (0.98)))))
 	running__c4
 		(running__c4 
-			(true (running__c5 
-				(true (running__c4' 
-					(true (0.95))
-					(false (0.050000000000000044))))
-				(false (running__c4' 
-					(true (0.7))
-					(false (0.30000000000000004))))))
+			(true (running__c4' 
+				(true (0.95))
+				(false (0.050000000000000044))))
 			(false (running__c4' 
 				(true (0.02))
 				(false (0.98)))))
 	running__c5
-		(running__c3 
+		(running__c2 
 			(true (running__c5 
-				(true (running__c8 
-					(true (running__c5' 
-						(true (0.95))
-						(false (0.050000000000000044))))
-					(false (running__c5' 
-						(true (0.7833333333333333))
-						(false (0.21666666666666667))))))
+				(true (running__c5' 
+					(true (0.95))
+					(false (0.050000000000000044))))
 				(false (running__c5' 
 					(true (0.02))
 					(false (0.98))))))
 			(false (running__c5 
-				(true (running__c8 
-					(true (running__c5' 
-						(true (0.7833333333333333))
-						(false (0.21666666666666667))))
-					(false (running__c5' 
-						(true (0.6166666666666667))
-						(false (0.3833333333333333))))))
+				(true (running__c5' 
+					(true (0.7))
+					(false (0.30000000000000004))))
 				(false (running__c5' 
 					(true (0.02))
 					(false (0.98)))))))
 	running__c6
 		(running__c6 
-			(true (running__c7 
-				(true (running__c6' 
-					(true (0.95))
-					(false (0.050000000000000044))))
-				(false (running__c6' 
-					(true (0.7))
-					(false (0.30000000000000004))))))
+			(true (running__c8 
+				(true (running__c9 
+					(true (running__c6' 
+						(true (0.95))
+						(false (0.050000000000000044))))
+					(false (running__c6' 
+						(true (0.7833333333333333))
+						(false (0.21666666666666667))))))
+				(false (running__c9 
+					(true (running__c6' 
+						(true (0.7833333333333333))
+						(false (0.21666666666666667))))
+					(false (running__c6' 
+						(true (0.6166666666666667))
+						(false (0.3833333333333333))))))))
 			(false (running__c6' 
 				(true (0.02))
 				(false (0.98)))))
 	running__c7
-		(running__c6 
+		(running__c3 
 			(true (running__c7 
 				(true (running__c7' 
 					(true (0.95))
@@ -4336,27 +5504,59 @@ action reboot__c9
 					(true (0.02))
 					(false (0.98)))))))
 	running__c8
-		(running__c5 
-			(true (running__c8 
-				(true (running__c8' 
-					(true (0.95))
-					(false (0.050000000000000044))))
-				(false (running__c8' 
-					(true (0.02))
-					(false (0.98))))))
-			(false (running__c8 
-				(true (running__c8' 
-					(true (0.7))
-					(false (0.30000000000000004))))
-				(false (running__c8' 
-					(true (0.02))
-					(false (0.98)))))))
+		(running__c2 
+			(true (running__c7 
+				(true (running__c8 
+					(true (running__c10 
+						(true (running__c8' 
+							(true (0.95))
+							(false (0.050000000000000044))))
+						(false (running__c8' 
+							(true (0.825))
+							(false (0.17500000000000004))))))
+					(false (running__c8' 
+						(true (0.02))
+						(false (0.98))))))
+				(false (running__c8 
+					(true (running__c10 
+						(true (running__c8' 
+							(true (0.825))
+							(false (0.17500000000000004))))
+						(false (running__c8' 
+							(true (0.7))
+							(false (0.30000000000000004))))))
+					(false (running__c8' 
+						(true (0.02))
+						(false (0.98))))))))
+			(false (running__c7 
+				(true (running__c8 
+					(true (running__c10 
+						(true (running__c8' 
+							(true (0.825))
+							(false (0.17500000000000004))))
+						(false (running__c8' 
+							(true (0.7))
+							(false (0.30000000000000004))))))
+					(false (running__c8' 
+						(true (0.02))
+						(false (0.98))))))
+				(false (running__c8 
+					(true (running__c10 
+						(true (running__c8' 
+							(true (0.7))
+							(false (0.30000000000000004))))
+						(false (running__c8' 
+							(true (0.575))
+							(false (0.42500000000000004))))))
+					(false (running__c8' 
+						(true (0.02))
+						(false (0.98)))))))))
 	running__c9
 		(running__c9' 
 			(true (1.0))
 			(false (0.0)))
 	running__c10
-		(running__c3 
+		(running__c4 
 			(true (running__c10 
 				(true (running__c10' 
 					(true (0.95))
