@@ -30,9 +30,11 @@ public class RandomBoolPolicy extends Policy {
 		
 		if (s == null) {
 			// This should only occur on the **first step** of a POMDP trial
-			// when no observations have been generated, for now, we don't
-			// handle this differently since we're just choosing a random
-			// action.
+			// when no observations have been generated, for now, we simply
+			// send a noop.  An approach that actually reads the domain
+			// should probably execute a different legal action since the
+			// initial state is assumed known.
+			return new ArrayList<PVAR_INST_DEF>();
 		}
 
 		// Get a map of { legal action names -> RDDL action definition }  
