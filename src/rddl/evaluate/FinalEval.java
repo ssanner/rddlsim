@@ -36,6 +36,21 @@ public class FinalEval {
 	public static DecimalFormat df = new DecimalFormat("#.##");
 	public static DecimalFormat df4 = new DecimalFormat("#.####");
 
+	public static HashSet<String> IGNORE_POLICIES = new HashSet<String>();
+	static {
+		IGNORE_POLICIES.add("bogustest");
+		IGNORE_POLICIES.add("a0");
+		IGNORE_POLICIES.add("Beaver-Real-Attempt-2");
+		IGNORE_POLICIES.add("Beaver");
+		IGNORE_POLICIES.add("MyClientName");
+		IGNORE_POLICIES.add("mcgilltest");
+		IGNORE_POLICIES.add("TestClient");
+		IGNORE_POLICIES.add("TestingClient");
+		IGNORE_POLICIES.add("Beaver");
+		IGNORE_POLICIES.add("PoupartBogusClient");
+		IGNORE_POLICIES.add("PoupartRandomTest");
+	}
+
 	/**
 	 * @param args
 	 */
@@ -87,6 +102,9 @@ public class FinalEval {
 			if (client_name == null) {
 				System.err.println("Client name was null for " + e + "... skipping");
 				continue;
+			} else if (IGNORE_POLICIES.contains(client_name)) {
+				System.out.println("Ignoring " + client_name + "... skipping");
+				continue;
 			}
 			clients.add(client_name);
 			
@@ -106,7 +124,7 @@ public class FinalEval {
 				if (MinMaxEval.BASELINE_POLICIES.contains(client_name.toLowerCase())
 						&& rewards.size() != NUM_EXPECTED_TRIALS) {
 						System.err.println("INCORRECT NUMBER OF TRIALS [" + rewards.size() + "/"
-								+ NUM_EXPECTED_TRIALS + "] for " + client_name);
+								+ NUM_EXPECTED_TRIALS + "] for " + client_name + " on " + instance_name);
 						System.exit(1);
 				}
 				
@@ -283,7 +301,7 @@ public class FinalEval {
 	
 	public static void main(String[] args) throws Exception {
 		
-		String directory = "TestComp/MDP";
+		String directory = "FinalComp/POMDP";
 		if (args.length == 1)
 			directory = args[0];
 		else

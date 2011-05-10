@@ -40,6 +40,21 @@ public class MinMaxEval {
 		BASELINE_POLICIES.add("NoopPolicy".toLowerCase());
 	}
 	
+	public static HashSet<String> IGNORE_POLICIES = new HashSet<String>();
+	static {
+		IGNORE_POLICIES.add("bogustest");
+		IGNORE_POLICIES.add("a0");
+		IGNORE_POLICIES.add("Beaver-Real-Attempt-2");
+		IGNORE_POLICIES.add("Beaver");
+		IGNORE_POLICIES.add("MyClientName");
+		IGNORE_POLICIES.add("mcgilltest");
+		IGNORE_POLICIES.add("TestClient");
+		IGNORE_POLICIES.add("TestingClient");
+		IGNORE_POLICIES.add("Beaver");
+		IGNORE_POLICIES.add("PoupartBogusClient");
+		IGNORE_POLICIES.add("PoupartRandomTest");
+	}
+	
 	public static DecimalFormat df = new DecimalFormat("#.##");
 	
 	/**
@@ -48,6 +63,7 @@ public class MinMaxEval {
 	public static void Eval(File f) throws Exception {
 		
 		HashMap<String,MapList> client2data = new HashMap<String,MapList>();
+		HashSet<String> client_names = new HashSet<String>();
 		
 		if (f.isDirectory()) {
 			for (File f2 : f.listFiles())
@@ -74,6 +90,12 @@ public class MinMaxEval {
 		TreeSet<String> instances = new TreeSet<String>(new InstNameComparator());
 		for (Map.Entry<String, MapList> e : client2data.entrySet()) {
 			String client_name = e.getKey();
+			
+			if (IGNORE_POLICIES.contains(client_name)) {
+				continue;
+			}
+			client_names.add(client_name);
+			
 			HashSet<String> instances_encountered = new HashSet<String>();
 			for (Object o : e.getValue().keySet()) {
 				String instance_name = (String)o;
@@ -141,6 +163,8 @@ public class MinMaxEval {
 			ps.println(instance_name + "\t" + min_val_srcNoopRandom + "\t" + df.format(min_valNoopRandom) + "\t" + max_val_src + "\t" + df.format(max_val));
 		}
 		ps.close();
+		
+		System.out.println("\nClients evaluated: " + client_names);
 	}
 	
 	public static class InstNameComparator implements Comparator {
@@ -162,7 +186,7 @@ public class MinMaxEval {
 	
 	public static void main(String[] args) throws Exception {
 		
-		String directory = "TestComp/POMDP";
+		String directory = "FinalComp/POMDP";
 		if (args.length == 1)
 			directory = args[0];
 		else

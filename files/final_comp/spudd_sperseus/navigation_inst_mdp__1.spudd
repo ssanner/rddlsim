@@ -1,0 +1,838 @@
+// Automatically produced by rddl.translate.RDDL2Format
+// SPUDD / Symbolic Perseus Format for 'navigation_mdp.navigation_inst_mdp__1'
+
+(variables 
+	(robot_at__x6_y12 true false)
+	(robot_at__x6_y20 true false)
+	(robot_at__x6_y15 true false)
+	(robot_at__x14_y12 true false)
+	(robot_at__x14_y20 true false)
+	(robot_at__x14_y15 true false)
+	(robot_at__x21_y12 true false)
+	(robot_at__x21_y20 true false)
+	(robot_at__x21_y15 true false)
+	(robot_at__x9_y12 true false)
+	(robot_at__x9_y20 true false)
+	(robot_at__x9_y15 true false)
+)
+
+init [*
+	(robot_at__x6_y12 (true (0.0)) (false (1.0)))
+	(robot_at__x6_y20 (true (0.0)) (false (1.0)))
+	(robot_at__x6_y15 (true (0.0)) (false (1.0)))
+	(robot_at__x14_y12 (true (0.0)) (false (1.0)))
+	(robot_at__x14_y20 (true (0.0)) (false (1.0)))
+	(robot_at__x14_y15 (true (0.0)) (false (1.0)))
+	(robot_at__x21_y12 (true (1.0)) (false (0.0)))
+	(robot_at__x21_y20 (true (0.0)) (false (1.0)))
+	(robot_at__x21_y15 (true (0.0)) (false (1.0)))
+	(robot_at__x9_y12 (true (0.0)) (false (1.0)))
+	(robot_at__x9_y20 (true (0.0)) (false (1.0)))
+	(robot_at__x9_y15 (true (0.0)) (false (1.0)))
+]
+
+action move_east
+	robot_at__x6_y12
+		(robot_at__x6_y12' 
+			(true (0.0))
+			(false (1.0)))
+	robot_at__x6_y20
+		(robot_at__x6_y20' 
+			(true (0.0))
+			(false (1.0)))
+	robot_at__x6_y15
+		(robot_at__x6_y15' 
+			(true (0.0))
+			(false (1.0)))
+	robot_at__x14_y12
+		(robot_at__x14_y12 
+			(true (robot_at__x14_y12' 
+				(true (0.0))
+				(false (1.0))))
+			(false (robot_at__x21_y20 
+				(true (robot_at__x14_y12' 
+					(true (0.0))
+					(false (1.0))))
+				(false (robot_at__x9_y12 
+					(true (robot_at__x14_y12' 
+						(true (1.0))
+						(false (0.0))))
+					(false (robot_at__x14_y12' 
+						(true (0.0))
+						(false (1.0)))))))))
+	robot_at__x14_y20
+		(robot_at__x14_y20 
+			(true (robot_at__x14_y20' 
+				(true (0.0))
+				(false (1.0))))
+			(false (robot_at__x21_y20 
+				(true (robot_at__x14_y20' 
+					(true (0.0))
+					(false (1.0))))
+				(false (robot_at__x9_y20 
+					(true (robot_at__x14_y20' 
+						(true (1.0))
+						(false (0.0))))
+					(false (robot_at__x14_y20' 
+						(true (0.0))
+						(false (1.0)))))))))
+	robot_at__x14_y15
+		(robot_at__x14_y15 
+			(true (robot_at__x14_y15' 
+				(true (0.0))
+				(false (1.0))))
+			(false (robot_at__x21_y20 
+				(true (robot_at__x14_y15' 
+					(true (0.0))
+					(false (1.0))))
+				(false (robot_at__x9_y15 
+					(true (robot_at__x14_y15' 
+						(true (0.36300482104221976))
+						(false (0.6369951789577802))))
+					(false (robot_at__x14_y15' 
+						(true (0.0))
+						(false (1.0)))))))))
+	robot_at__x21_y12
+		(robot_at__x14_y12 
+			(true (robot_at__x21_y20 
+				(true (robot_at__x21_y12' 
+					(true (0.0))
+					(false (1.0))))
+				(false (robot_at__x21_y12' 
+					(true (1.0))
+					(false (0.0))))))
+			(false (robot_at__x21_y12 
+				(true (robot_at__x21_y20 
+					(true (robot_at__x21_y12' 
+						(true (0.0))
+						(false (1.0))))
+					(false (robot_at__x21_y12' 
+						(true (1.0))
+						(false (0.0))))))
+				(false (robot_at__x21_y12' 
+					(true (0.0))
+					(false (1.0)))))))
+	robot_at__x21_y20
+		(robot_at__x14_y20 
+			(true (robot_at__x21_y20' 
+				(true (1.0))
+				(false (0.0))))
+			(false (robot_at__x21_y20 
+				(true (robot_at__x21_y20' 
+					(true (1.0))
+					(false (0.0))))
+				(false (robot_at__x21_y20' 
+					(true (0.0))
+					(false (1.0)))))))
+	robot_at__x21_y15
+		(robot_at__x14_y15 
+			(true (robot_at__x21_y20 
+				(true (robot_at__x21_y15' 
+					(true (0.0))
+					(false (1.0))))
+				(false (robot_at__x21_y15' 
+					(true (0.07184155347446597))
+					(false (0.928158446525534))))))
+			(false (robot_at__x21_y20 
+				(true (robot_at__x21_y15' 
+					(true (0.0))
+					(false (1.0))))
+				(false (robot_at__x21_y15 
+					(true (robot_at__x21_y15' 
+						(true (1.0))
+						(false (0.0))))
+					(false (robot_at__x21_y15' 
+						(true (0.0))
+						(false (1.0)))))))))
+	robot_at__x9_y12
+		(robot_at__x6_y12 
+			(true (robot_at__x21_y20 
+				(true (robot_at__x9_y12' 
+					(true (0.0))
+					(false (1.0))))
+				(false (robot_at__x9_y12 
+					(true (robot_at__x9_y12' 
+						(true (0.0))
+						(false (1.0))))
+					(false (robot_at__x9_y12' 
+						(true (1.0))
+						(false (0.0))))))))
+			(false (robot_at__x9_y12' 
+				(true (0.0))
+				(false (1.0)))))
+	robot_at__x9_y20
+		(robot_at__x6_y20 
+			(true (robot_at__x21_y20 
+				(true (robot_at__x9_y20' 
+					(true (0.0))
+					(false (1.0))))
+				(false (robot_at__x9_y20 
+					(true (robot_at__x9_y20' 
+						(true (0.0))
+						(false (1.0))))
+					(false (robot_at__x9_y20' 
+						(true (1.0))
+						(false (0.0))))))))
+			(false (robot_at__x9_y20' 
+				(true (0.0))
+				(false (1.0)))))
+	robot_at__x9_y15
+		(robot_at__x6_y15 
+			(true (robot_at__x21_y20 
+				(true (robot_at__x9_y15' 
+					(true (0.0))
+					(false (1.0))))
+				(false (robot_at__x9_y15 
+					(true (robot_at__x9_y15' 
+						(true (0.0))
+						(false (1.0))))
+					(false (robot_at__x9_y15' 
+						(true (0.6545628601064284))
+						(false (0.3454371398935716))))))))
+			(false (robot_at__x9_y15' 
+				(true (0.0))
+				(false (1.0)))))
+	cost [+ 
+		(robot_at__x21_y20 
+			(true (0.0))
+			(false (1.0)))
+	]
+endaction
+
+action move_north
+	robot_at__x6_y12
+		(robot_at__x6_y12' 
+			(true (0.0))
+			(false (1.0)))
+	robot_at__x6_y20
+		(robot_at__x6_y20 
+			(true (robot_at__x21_y20 
+				(true (robot_at__x6_y20' 
+					(true (0.0))
+					(false (1.0))))
+				(false (robot_at__x6_y20' 
+					(true (1.0))
+					(false (0.0))))))
+			(false (robot_at__x6_y15 
+				(true (robot_at__x21_y20 
+					(true (robot_at__x6_y20' 
+						(true (0.0))
+						(false (1.0))))
+					(false (robot_at__x6_y20' 
+						(true (1.0))
+						(false (0.0))))))
+				(false (robot_at__x6_y20' 
+					(true (0.0))
+					(false (1.0)))))))
+	robot_at__x6_y15
+		(robot_at__x6_y12 
+			(true (robot_at__x6_y15 
+				(true (robot_at__x6_y15' 
+					(true (0.0))
+					(false (1.0))))
+				(false (robot_at__x21_y20 
+					(true (robot_at__x6_y15' 
+						(true (0.0))
+						(false (1.0))))
+					(false (robot_at__x6_y15' 
+						(true (0.9510332886129618))
+						(false (0.04896671138703823))))))))
+			(false (robot_at__x6_y15' 
+				(true (0.0))
+				(false (1.0)))))
+	robot_at__x14_y12
+		(robot_at__x14_y12' 
+			(true (0.0))
+			(false (1.0)))
+	robot_at__x14_y20
+		(robot_at__x14_y20 
+			(true (robot_at__x21_y20 
+				(true (robot_at__x14_y20' 
+					(true (0.0))
+					(false (1.0))))
+				(false (robot_at__x14_y20' 
+					(true (1.0))
+					(false (0.0))))))
+			(false (robot_at__x14_y15 
+				(true (robot_at__x21_y20 
+					(true (robot_at__x14_y20' 
+						(true (0.0))
+						(false (1.0))))
+					(false (robot_at__x14_y20' 
+						(true (1.0))
+						(false (0.0))))))
+				(false (robot_at__x14_y20' 
+					(true (0.0))
+					(false (1.0)))))))
+	robot_at__x14_y15
+		(robot_at__x14_y12 
+			(true (robot_at__x14_y15 
+				(true (robot_at__x14_y15' 
+					(true (0.0))
+					(false (1.0))))
+				(false (robot_at__x21_y20 
+					(true (robot_at__x14_y15' 
+						(true (0.0))
+						(false (1.0))))
+					(false (robot_at__x14_y15' 
+						(true (0.36300482104221976))
+						(false (0.6369951789577802))))))))
+			(false (robot_at__x14_y15' 
+				(true (0.0))
+				(false (1.0)))))
+	robot_at__x21_y12
+		(robot_at__x21_y12' 
+			(true (0.0))
+			(false (1.0)))
+	robot_at__x21_y20
+		(robot_at__x21_y20 
+			(true (robot_at__x21_y20' 
+				(true (1.0))
+				(false (0.0))))
+			(false (robot_at__x21_y15 
+				(true (robot_at__x21_y20' 
+					(true (1.0))
+					(false (0.0))))
+				(false (robot_at__x21_y20' 
+					(true (0.0))
+					(false (1.0)))))))
+	robot_at__x21_y15
+		(robot_at__x21_y12 
+			(true (robot_at__x21_y20 
+				(true (robot_at__x21_y15' 
+					(true (0.0))
+					(false (1.0))))
+				(false (robot_at__x21_y15 
+					(true (robot_at__x21_y15' 
+						(true (0.0))
+						(false (1.0))))
+					(false (robot_at__x21_y15' 
+						(true (0.07184155347446597))
+						(false (0.928158446525534))))))))
+			(false (robot_at__x21_y15' 
+				(true (0.0))
+				(false (1.0)))))
+	robot_at__x9_y12
+		(robot_at__x9_y12' 
+			(true (0.0))
+			(false (1.0)))
+	robot_at__x9_y20
+		(robot_at__x21_y20 
+			(true (robot_at__x9_y20' 
+				(true (0.0))
+				(false (1.0))))
+			(false (robot_at__x9_y20 
+				(true (robot_at__x9_y20' 
+					(true (1.0))
+					(false (0.0))))
+				(false (robot_at__x9_y15 
+					(true (robot_at__x9_y20' 
+						(true (1.0))
+						(false (0.0))))
+					(false (robot_at__x9_y20' 
+						(true (0.0))
+						(false (1.0)))))))))
+	robot_at__x9_y15
+		(robot_at__x21_y20 
+			(true (robot_at__x9_y15' 
+				(true (0.0))
+				(false (1.0))))
+			(false (robot_at__x9_y12 
+				(true (robot_at__x9_y15 
+					(true (robot_at__x9_y15' 
+						(true (0.0))
+						(false (1.0))))
+					(false (robot_at__x9_y15' 
+						(true (0.6545628601064284))
+						(false (0.3454371398935716))))))
+				(false (robot_at__x9_y15' 
+					(true (0.0))
+					(false (1.0)))))))
+	cost [+ 
+		(robot_at__x21_y20 
+			(true (0.0))
+			(false (1.0)))
+	]
+endaction
+
+action move_south
+	robot_at__x6_y12
+		(robot_at__x6_y12 
+			(true (robot_at__x21_y20 
+				(true (robot_at__x6_y12' 
+					(true (0.0))
+					(false (1.0))))
+				(false (robot_at__x6_y12' 
+					(true (1.0))
+					(false (0.0))))))
+			(false (robot_at__x6_y15 
+				(true (robot_at__x21_y20 
+					(true (robot_at__x6_y12' 
+						(true (0.0))
+						(false (1.0))))
+					(false (robot_at__x6_y12' 
+						(true (1.0))
+						(false (0.0))))))
+				(false (robot_at__x6_y12' 
+					(true (0.0))
+					(false (1.0)))))))
+	robot_at__x6_y20
+		(robot_at__x6_y20' 
+			(true (0.0))
+			(false (1.0)))
+	robot_at__x6_y15
+		(robot_at__x6_y20 
+			(true (robot_at__x6_y15 
+				(true (robot_at__x6_y15' 
+					(true (0.0))
+					(false (1.0))))
+				(false (robot_at__x21_y20 
+					(true (robot_at__x6_y15' 
+						(true (0.0))
+						(false (1.0))))
+					(false (robot_at__x6_y15' 
+						(true (0.9510332886129618))
+						(false (0.04896671138703823))))))))
+			(false (robot_at__x6_y15' 
+				(true (0.0))
+				(false (1.0)))))
+	robot_at__x14_y12
+		(robot_at__x14_y12 
+			(true (robot_at__x21_y20 
+				(true (robot_at__x14_y12' 
+					(true (0.0))
+					(false (1.0))))
+				(false (robot_at__x14_y12' 
+					(true (1.0))
+					(false (0.0))))))
+			(false (robot_at__x14_y15 
+				(true (robot_at__x21_y20 
+					(true (robot_at__x14_y12' 
+						(true (0.0))
+						(false (1.0))))
+					(false (robot_at__x14_y12' 
+						(true (1.0))
+						(false (0.0))))))
+				(false (robot_at__x14_y12' 
+					(true (0.0))
+					(false (1.0)))))))
+	robot_at__x14_y20
+		(robot_at__x14_y20' 
+			(true (0.0))
+			(false (1.0)))
+	robot_at__x14_y15
+		(robot_at__x14_y20 
+			(true (robot_at__x14_y15 
+				(true (robot_at__x14_y15' 
+					(true (0.0))
+					(false (1.0))))
+				(false (robot_at__x21_y20 
+					(true (robot_at__x14_y15' 
+						(true (0.0))
+						(false (1.0))))
+					(false (robot_at__x14_y15' 
+						(true (0.36300482104221976))
+						(false (0.6369951789577802))))))))
+			(false (robot_at__x14_y15' 
+				(true (0.0))
+				(false (1.0)))))
+	robot_at__x21_y12
+		(robot_at__x21_y12 
+			(true (robot_at__x21_y20 
+				(true (robot_at__x21_y12' 
+					(true (0.0))
+					(false (1.0))))
+				(false (robot_at__x21_y12' 
+					(true (1.0))
+					(false (0.0))))))
+			(false (robot_at__x21_y20 
+				(true (robot_at__x21_y12' 
+					(true (0.0))
+					(false (1.0))))
+				(false (robot_at__x21_y15 
+					(true (robot_at__x21_y12' 
+						(true (1.0))
+						(false (0.0))))
+					(false (robot_at__x21_y12' 
+						(true (0.0))
+						(false (1.0)))))))))
+	robot_at__x21_y20
+		(robot_at__x21_y20 
+			(true (robot_at__x21_y20' 
+				(true (1.0))
+				(false (0.0))))
+			(false (robot_at__x21_y20' 
+				(true (0.0))
+				(false (1.0)))))
+	robot_at__x21_y15
+		(robot_at__x21_y15' 
+			(true (0.0))
+			(false (1.0)))
+	robot_at__x9_y12
+		(robot_at__x21_y20 
+			(true (robot_at__x9_y12' 
+				(true (0.0))
+				(false (1.0))))
+			(false (robot_at__x9_y12 
+				(true (robot_at__x9_y12' 
+					(true (1.0))
+					(false (0.0))))
+				(false (robot_at__x9_y15 
+					(true (robot_at__x9_y12' 
+						(true (1.0))
+						(false (0.0))))
+					(false (robot_at__x9_y12' 
+						(true (0.0))
+						(false (1.0)))))))))
+	robot_at__x9_y20
+		(robot_at__x9_y20' 
+			(true (0.0))
+			(false (1.0)))
+	robot_at__x9_y15
+		(robot_at__x21_y20 
+			(true (robot_at__x9_y15' 
+				(true (0.0))
+				(false (1.0))))
+			(false (robot_at__x9_y20 
+				(true (robot_at__x9_y15 
+					(true (robot_at__x9_y15' 
+						(true (0.0))
+						(false (1.0))))
+					(false (robot_at__x9_y15' 
+						(true (0.6545628601064284))
+						(false (0.3454371398935716))))))
+				(false (robot_at__x9_y15' 
+					(true (0.0))
+					(false (1.0)))))))
+	cost [+ 
+		(robot_at__x21_y20 
+			(true (0.0))
+			(false (1.0)))
+	]
+endaction
+
+action move_west
+	robot_at__x6_y12
+		(robot_at__x6_y12 
+			(true (robot_at__x21_y20 
+				(true (robot_at__x6_y12' 
+					(true (0.0))
+					(false (1.0))))
+				(false (robot_at__x6_y12' 
+					(true (1.0))
+					(false (0.0))))))
+			(false (robot_at__x21_y20 
+				(true (robot_at__x6_y12' 
+					(true (0.0))
+					(false (1.0))))
+				(false (robot_at__x9_y12 
+					(true (robot_at__x6_y12' 
+						(true (1.0))
+						(false (0.0))))
+					(false (robot_at__x6_y12' 
+						(true (0.0))
+						(false (1.0)))))))))
+	robot_at__x6_y20
+		(robot_at__x6_y20 
+			(true (robot_at__x21_y20 
+				(true (robot_at__x6_y20' 
+					(true (0.0))
+					(false (1.0))))
+				(false (robot_at__x6_y20' 
+					(true (1.0))
+					(false (0.0))))))
+			(false (robot_at__x21_y20 
+				(true (robot_at__x6_y20' 
+					(true (0.0))
+					(false (1.0))))
+				(false (robot_at__x9_y20 
+					(true (robot_at__x6_y20' 
+						(true (1.0))
+						(false (0.0))))
+					(false (robot_at__x6_y20' 
+						(true (0.0))
+						(false (1.0)))))))))
+	robot_at__x6_y15
+		(robot_at__x6_y15 
+			(true (robot_at__x21_y20 
+				(true (robot_at__x6_y15' 
+					(true (0.0))
+					(false (1.0))))
+				(false (robot_at__x9_y15 
+					(true (robot_at__x6_y15' 
+						(true (0.9510332886129618))
+						(false (0.04896671138703823))))
+					(false (robot_at__x6_y15' 
+						(true (1.0))
+						(false (0.0))))))))
+			(false (robot_at__x21_y20 
+				(true (robot_at__x6_y15' 
+					(true (0.0))
+					(false (1.0))))
+				(false (robot_at__x9_y15 
+					(true (robot_at__x6_y15' 
+						(true (0.9510332886129618))
+						(false (0.04896671138703823))))
+					(false (robot_at__x6_y15' 
+						(true (0.0))
+						(false (1.0)))))))))
+	robot_at__x14_y12
+		(robot_at__x14_y12 
+			(true (robot_at__x14_y12' 
+				(true (0.0))
+				(false (1.0))))
+			(false (robot_at__x21_y12 
+				(true (robot_at__x21_y20 
+					(true (robot_at__x14_y12' 
+						(true (0.0))
+						(false (1.0))))
+					(false (robot_at__x14_y12' 
+						(true (1.0))
+						(false (0.0))))))
+				(false (robot_at__x14_y12' 
+					(true (0.0))
+					(false (1.0)))))))
+	robot_at__x14_y20
+		(robot_at__x14_y20' 
+			(true (0.0))
+			(false (1.0)))
+	robot_at__x14_y15
+		(robot_at__x14_y15 
+			(true (robot_at__x14_y15' 
+				(true (0.0))
+				(false (1.0))))
+			(false (robot_at__x21_y20 
+				(true (robot_at__x14_y15' 
+					(true (0.0))
+					(false (1.0))))
+				(false (robot_at__x21_y15 
+					(true (robot_at__x14_y15' 
+						(true (0.36300482104221976))
+						(false (0.6369951789577802))))
+					(false (robot_at__x14_y15' 
+						(true (0.0))
+						(false (1.0)))))))))
+	robot_at__x21_y12
+		(robot_at__x21_y12' 
+			(true (0.0))
+			(false (1.0)))
+	robot_at__x21_y20
+		(robot_at__x21_y20 
+			(true (robot_at__x21_y20' 
+				(true (1.0))
+				(false (0.0))))
+			(false (robot_at__x21_y20' 
+				(true (0.0))
+				(false (1.0)))))
+	robot_at__x21_y15
+		(robot_at__x21_y15' 
+			(true (0.0))
+			(false (1.0)))
+	robot_at__x9_y12
+		(robot_at__x14_y12 
+			(true (robot_at__x21_y20 
+				(true (robot_at__x9_y12' 
+					(true (0.0))
+					(false (1.0))))
+				(false (robot_at__x9_y12 
+					(true (robot_at__x9_y12' 
+						(true (0.0))
+						(false (1.0))))
+					(false (robot_at__x9_y12' 
+						(true (1.0))
+						(false (0.0))))))))
+			(false (robot_at__x9_y12' 
+				(true (0.0))
+				(false (1.0)))))
+	robot_at__x9_y20
+		(robot_at__x14_y20 
+			(true (robot_at__x21_y20 
+				(true (robot_at__x9_y20' 
+					(true (0.0))
+					(false (1.0))))
+				(false (robot_at__x9_y20 
+					(true (robot_at__x9_y20' 
+						(true (0.0))
+						(false (1.0))))
+					(false (robot_at__x9_y20' 
+						(true (1.0))
+						(false (0.0))))))))
+			(false (robot_at__x9_y20' 
+				(true (0.0))
+				(false (1.0)))))
+	robot_at__x9_y15
+		(robot_at__x14_y15 
+			(true (robot_at__x21_y20 
+				(true (robot_at__x9_y15' 
+					(true (0.0))
+					(false (1.0))))
+				(false (robot_at__x9_y15 
+					(true (robot_at__x9_y15' 
+						(true (0.0))
+						(false (1.0))))
+					(false (robot_at__x9_y15' 
+						(true (0.6545628601064284))
+						(false (0.3454371398935716))))))))
+			(false (robot_at__x9_y15' 
+				(true (0.0))
+				(false (1.0)))))
+	cost [+ 
+		(robot_at__x21_y20 
+			(true (0.0))
+			(false (1.0)))
+	]
+endaction
+
+action noop
+	robot_at__x6_y12
+		(robot_at__x6_y12 
+			(true (robot_at__x21_y20 
+				(true (robot_at__x6_y12' 
+					(true (0.0))
+					(false (1.0))))
+				(false (robot_at__x6_y12' 
+					(true (1.0))
+					(false (0.0))))))
+			(false (robot_at__x6_y12' 
+				(true (0.0))
+				(false (1.0)))))
+	robot_at__x6_y20
+		(robot_at__x6_y20 
+			(true (robot_at__x21_y20 
+				(true (robot_at__x6_y20' 
+					(true (0.0))
+					(false (1.0))))
+				(false (robot_at__x6_y20' 
+					(true (1.0))
+					(false (0.0))))))
+			(false (robot_at__x6_y20' 
+				(true (0.0))
+				(false (1.0)))))
+	robot_at__x6_y15
+		(robot_at__x6_y15 
+			(true (robot_at__x21_y20 
+				(true (robot_at__x6_y15' 
+					(true (0.0))
+					(false (1.0))))
+				(false (robot_at__x6_y15' 
+					(true (1.0))
+					(false (0.0))))))
+			(false (robot_at__x6_y15' 
+				(true (0.0))
+				(false (1.0)))))
+	robot_at__x14_y12
+		(robot_at__x14_y12 
+			(true (robot_at__x21_y20 
+				(true (robot_at__x14_y12' 
+					(true (0.0))
+					(false (1.0))))
+				(false (robot_at__x14_y12' 
+					(true (1.0))
+					(false (0.0))))))
+			(false (robot_at__x14_y12' 
+				(true (0.0))
+				(false (1.0)))))
+	robot_at__x14_y20
+		(robot_at__x14_y20 
+			(true (robot_at__x21_y20 
+				(true (robot_at__x14_y20' 
+					(true (0.0))
+					(false (1.0))))
+				(false (robot_at__x14_y20' 
+					(true (1.0))
+					(false (0.0))))))
+			(false (robot_at__x14_y20' 
+				(true (0.0))
+				(false (1.0)))))
+	robot_at__x14_y15
+		(robot_at__x14_y15 
+			(true (robot_at__x21_y20 
+				(true (robot_at__x14_y15' 
+					(true (0.0))
+					(false (1.0))))
+				(false (robot_at__x14_y15' 
+					(true (1.0))
+					(false (0.0))))))
+			(false (robot_at__x14_y15' 
+				(true (0.0))
+				(false (1.0)))))
+	robot_at__x21_y12
+		(robot_at__x21_y12 
+			(true (robot_at__x21_y20 
+				(true (robot_at__x21_y12' 
+					(true (0.0))
+					(false (1.0))))
+				(false (robot_at__x21_y12' 
+					(true (1.0))
+					(false (0.0))))))
+			(false (robot_at__x21_y12' 
+				(true (0.0))
+				(false (1.0)))))
+	robot_at__x21_y20
+		(robot_at__x21_y20 
+			(true (robot_at__x21_y20' 
+				(true (1.0))
+				(false (0.0))))
+			(false (robot_at__x21_y20' 
+				(true (0.0))
+				(false (1.0)))))
+	robot_at__x21_y15
+		(robot_at__x21_y20 
+			(true (robot_at__x21_y15' 
+				(true (0.0))
+				(false (1.0))))
+			(false (robot_at__x21_y15 
+				(true (robot_at__x21_y15' 
+					(true (1.0))
+					(false (0.0))))
+				(false (robot_at__x21_y15' 
+					(true (0.0))
+					(false (1.0)))))))
+	robot_at__x9_y12
+		(robot_at__x21_y20 
+			(true (robot_at__x9_y12' 
+				(true (0.0))
+				(false (1.0))))
+			(false (robot_at__x9_y12 
+				(true (robot_at__x9_y12' 
+					(true (1.0))
+					(false (0.0))))
+				(false (robot_at__x9_y12' 
+					(true (0.0))
+					(false (1.0)))))))
+	robot_at__x9_y20
+		(robot_at__x21_y20 
+			(true (robot_at__x9_y20' 
+				(true (0.0))
+				(false (1.0))))
+			(false (robot_at__x9_y20 
+				(true (robot_at__x9_y20' 
+					(true (1.0))
+					(false (0.0))))
+				(false (robot_at__x9_y20' 
+					(true (0.0))
+					(false (1.0)))))))
+	robot_at__x9_y15
+		(robot_at__x21_y20 
+			(true (robot_at__x9_y15' 
+				(true (0.0))
+				(false (1.0))))
+			(false (robot_at__x9_y15 
+				(true (robot_at__x9_y15' 
+					(true (1.0))
+					(false (0.0))))
+				(false (robot_at__x9_y15' 
+					(true (0.0))
+					(false (1.0)))))))
+	cost [+ 
+		(robot_at__x21_y20 
+			(true (0.0))
+			(false (1.0)))
+	]
+endaction
+
+reward
+	(0.0)
+
+discount 1.0
+horizon 40

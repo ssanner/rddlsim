@@ -48,7 +48,7 @@ import util.Timer;
 
 public class Server implements Runnable {
 	
-	public static final boolean SHOW_ACTIONS = false;
+	public static final boolean SHOW_ACTIONS = true;
 	public static final boolean SHOW_XML = false;
 	public static final boolean SHOW_MSG = false;
 	public static final boolean SHOW_TIMING = false;
@@ -453,17 +453,28 @@ public class Server implements Runnable {
 			return Double.valueOf(pvalue);
 		}	
 		
-		if ( state._hmObject2Consts.containsKey(tname)) {
+		// TODO: should really verify tname is an enum val here by looking up
+		// it's definition
+		if ( pvalue.startsWith("@") ) {
+			// Must be an enum
+			return new ENUM_VAL(pvalue);
+		} else {			
+			// TODO: who calls this method?  Is it only for fluent values?  Or also args?
+			// for now we'll allow objects
 			return new OBJECT_VAL(pvalue);
+		}
+		
+		//if ( state._hmObject2Consts.containsKey(tname)) {
+		//	return new OBJECT_VAL(pvalue);
 			//for( LCONST lc : state._hmObject2Consts.get(tname)) {
 			//	if ( lc.toString().equals(pvalue)) {
 			//		return lc;
 			//	}
 			//}
-		}
+		//}
 		
-		if ( state._hmTypes.containsKey(tname)) {
-			return new ENUM_VAL(pvalue);
+		//if ( state._hmTypes.containsKey(tname)) {
+		//	return new ENUM_VAL(pvalue);
 			//if ( state._hmTypes.get(tname) instanceof ENUM_TYPE_DEF ) {
 			//	ENUM_TYPE_DEF etype = (ENUM_TYPE_DEF)state._hmTypes.get(tname);
 			//	for ( ENUM_VAL ev : etype._alPossibleValues) {
@@ -472,9 +483,9 @@ public class Server implements Runnable {
 			//		}
 			//	}
 			//}
-		}
+		//}
 		
-		return null;
+		//return null;
 	}
 	
 	static ArrayList<PVAR_INST_DEF> processXMLAction(DOMParser p, InputSource isrc,
@@ -489,8 +500,9 @@ public class Server implements Runnable {
 			}
 			if ( !e.getNodeName().equals(ACTIONS) ) {
 				System.out.println("ERROR: NO ACTIONS NODE");
-				System.exit(1);
-				return null;
+				System.out.println("Received action msg:");
+				printXMLNode(e);
+				throw new Exception("ERROR: NO ACTIONS NODE");
 			}
 			NodeList nl = e.getElementsByTagName(ACTION);
 //			System.out.println(nl);
@@ -502,6 +514,7 @@ public class Server implements Runnable {
 					ArrayList<String> args = getTextValue(el, ACTION_ARG);
 					ArrayList<LCONST> lcArgs = new ArrayList<LCONST>();
 					for( String arg : args ) {
+						//System.out.println("arg: " + arg);
 						if (arg.startsWith("@"))
 							lcArgs.add(new RDDL.ENUM_VAL(arg));
 						else 
@@ -551,12 +564,15 @@ public class Server implements Runnable {
 		try {
 		
 			int cur_pos = 0; 
+			//System.out.println("\n===\n");
 			while (true && cur_pos < MAX_BYTES) {
 				cur_pos += isr.read( bytes, cur_pos, 1 );
 				if (/* Socket closed  */ cur_pos == -1 || 
 					/* End of message */ bytes[cur_pos - 1] == '\0')
 					break;
+				//System.out.print(cur_pos + "[" + Byte.toString(bytes[cur_pos - 1]) + "]");
 			}
+			//System.out.println("\n===\n");
 			
 			//while((character = isr.read()) != '\0' && character != -1) { 
 			//	message.append((char)character);

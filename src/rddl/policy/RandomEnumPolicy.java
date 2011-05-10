@@ -16,6 +16,8 @@ import rddl.RDDL.*;
 
 public class RandomEnumPolicy extends Policy {
 	
+	static int time = 0;
+	
 	public RandomEnumPolicy () {
 		
 	}
@@ -24,23 +26,32 @@ public class RandomEnumPolicy extends Policy {
 		super(instance_name);
 	}
 
+	public void roundInit(double time_left, int horizon, int round_number, int total_rounds) {
+		time = 0;
+	}
+	
 	// TODO: does not necessarily respect state constraints, so may generate
 	//       illegal actions, should fix in future
 	public ArrayList<PVAR_INST_DEF> getActions(State s) throws EvalException {
+	
+		++time;
 		
 		// Get an action (assuming all actions are enum type)
 		PVAR_NAME p = s._alActionNames.get(new Random().nextInt(s._alActionNames.size()));
+		System.out.println("Action name: " + p);
 		
 		// Get list of enum values for this action
 		PVARIABLE_DEF pdef = s._hmPVariables.get(p);
 		ENUM_TYPE_DEF tdef = (ENUM_TYPE_DEF)s._hmTypes.get(pdef._sRange);
 		ArrayList<ENUM_VAL> enums = tdef._alPossibleValues;
+		System.out.println("Possible values: " + enums);
 		
 		// Get term instantations for that action and select *one*
 		ArrayList<ArrayList<LCONST>> inst = s.generateAtoms(p);
 		ArrayList<PVAR_INST_DEF> actions = new ArrayList<PVAR_INST_DEF>();
 		for(ArrayList<LCONST> terms: inst){
 			ENUM_VAL r = enums.get(new Random().nextInt(enums.size()));
+			System.out.println("Action @ " + time + ": " + p._sPVarName + terms + " = " + r);
 			PVAR_INST_DEF d = new PVAR_INST_DEF(p._sPVarName, r, terms);
 			actions.add(d);
 		}

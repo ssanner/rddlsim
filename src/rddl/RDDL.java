@@ -2111,9 +2111,9 @@ public class RDDL {
 			// Handle special case of enum comparison
 			if (o1 instanceof ENUM_VAL || o2 instanceof ENUM_VAL) {
 				if (!(o1 instanceof ENUM_VAL && o2 instanceof ENUM_VAL))
-					throw new EvalException("RDDL.COMP_EXPR: both values in enum comparison must be enum" + _comp + "\n" + this);
+					throw new EvalException("RDDL.COMP_EXPR: both values in enum comparison (" + o1 + "/" + o1.getClass() + "/" + _e1.getClass() + "," + o2 + "/" + o2.getClass() + "/" + _e2.getClass() + ") must be enum" + _comp + "\n" + this);
 				if (!(_comp == NEQ || _comp == EQUAL))
-					throw new EvalException("RDDL.COMP_EXPR: can only compare enums with == or ~=: " + _comp + "\n" + this);
+					throw new EvalException("RDDL.COMP_EXPR: can only compare enums (" + o1 + "/" + o1.getClass() + "," + o2 + "/" + o2.getClass() + ") with == or ~=: " + _comp + "\n" + this);
 				return (_comp == EQUAL) ? o1.equals(o2) : !o1.equals(o2);
 			}
 			
