@@ -211,7 +211,7 @@ instance is4 {
 	};
   
 	//really would like a min as well
-	max-nondef-actions = 2;
+	max-nondef-actions = 4;
   
 	//for now
 	horizon  = 20;

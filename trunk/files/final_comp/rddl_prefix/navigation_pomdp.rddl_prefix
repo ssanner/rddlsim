@@ -1,0 +1,61 @@
+domain navigation_pomdp {
+  requirements = {
+    reward-deterministic,
+    constrained-state,
+    partially-observed
+  };
+  types {
+    xpos : object;
+    ypos : object;
+  };
+  pvariables {
+    sw-corner : {observ-fluent, bool};
+    MIN-YPOS(ypos) : {non-fluent, bool, default = false};
+    nw-corner : {observ-fluent, bool};
+    robot-at(xpos, ypos) : {state-fluent, bool, default = false};
+    MIN-XPOS(xpos) : {non-fluent, bool, default = false};
+    first-step : {state-fluent, bool, default = false};
+    NORTH(ypos, ypos) : {non-fluent, bool, default = false};
+    MAX-XPOS(xpos) : {non-fluent, bool, default = false};
+    se-corner : {observ-fluent, bool};
+    GOAL(xpos, ypos) : {non-fluent, bool, default = false};
+    move-east : {action-fluent, bool, default = false};
+    move-west : {action-fluent, bool, default = false};
+    second-step : {state-fluent, bool, default = false};
+    move-south : {action-fluent, bool, default = false};
+    MAX-YPOS(ypos) : {non-fluent, bool, default = false};
+    P(xpos, ypos) : {non-fluent, real, default = 0.0};
+    min-x : {state-fluent, bool, default = false};
+    SOUTH(ypos, ypos) : {non-fluent, bool, default = false};
+    move-north : {action-fluent, bool, default = false};
+    ne-corner : {observ-fluent, bool};
+    EAST(xpos, xpos) : {non-fluent, bool, default = false};
+    WEST(xpos, xpos) : {non-fluent, bool, default = false};
+  };
+  cpfs {
+    (sw-corner) = (KronDelta (exists ( (?x : xpos) (?y : ypos) ) (^ (MIN-XPOS ?x) (MAX-YPOS ?y) (robot-at' ?x ?y) )));
+    (nw-corner) = (KronDelta (exists ( (?x : xpos) (?y : ypos) ) (^ (MIN-XPOS ?x) (MIN-YPOS ?y) (robot-at' ?x ?y) )));
+    (robot-at' ?x ?y) = (if (~ (first-step)) then (KronDelta false) else (if (~ (second-step)) then (if (^ (min-x) (MIN-YPOS ?y) (exists ( (?x2 : xpos) ) (^ (WEST ?x ?x2) (MIN-XPOS ?x2) )) ) then (KronDelta true) else (if (^ (~ (min-x)) (MIN-YPOS ?y) (exists ( (?x2 : xpos) ) (^ (EAST ?x ?x2) (MAX-XPOS ?x2) )) ) then (KronDelta true) else (KronDelta false))) else (if (^ (GOAL ?x ?y) (robot-at ?x ?y) ) then (KronDelta true) else (if (| (exists ( (?x2 : xpos) (?y2 : ypos) ) (^ (GOAL ?x2 ?y2) (robot-at ?x2 ?y2) )) (^ (move-north) (exists ( (?y2 : ypos) ) (^ (NORTH ?y ?y2) (robot-at ?x ?y) )) ) (^ (move-south) (exists ( (?y2 : ypos) ) (^ (SOUTH ?y ?y2) (robot-at ?x ?y) )) ) (^ (move-east) (exists ( (?x2 : xpos) ) (^ (EAST ?x ?x2) (robot-at ?x ?y) )) ) (^ (move-west) (exists ( (?x2 : xpos) ) (^ (WEST ?x ?x2) (robot-at ?x ?y) )) ) ) then (KronDelta false) else (if (| (^ (move-north) (exists ( (?y2 : ypos) ) (^ (NORTH ?y2 ?y) (robot-at ?x ?y2) )) ) (^ (move-south) (exists ( (?y2 : ypos) ) (^ (SOUTH ?y2 ?y) (robot-at ?x ?y2) )) ) (^ (move-east) (exists ( (?x2 : xpos) ) (^ (EAST ?x2 ?x) (robot-at ?x2 ?y) )) ) (^ (move-west) (exists ( (?x2 : xpos) ) (^ (WEST ?x2 ?x) (robot-at ?x2 ?y) )) ) ) then (Bernoulli (- 1.0 (P ?x ?y))) else (KronDelta (robot-at ?x ?y)))))));
+    (ne-corner) = (KronDelta (exists ( (?x : xpos) (?y : ypos) ) (^ (MAX-XPOS ?x) (MIN-YPOS ?y) (robot-at' ?x ?y) )));
+    (se-corner) = (KronDelta (exists ( (?x : xpos) (?y : ypos) ) (^ (MAX-XPOS ?x) (MAX-YPOS ?y) (robot-at' ?x ?y) )));
+    (second-step') = (KronDelta (first-step));
+    (first-step') = (KronDelta true);
+    (min-x') = (Bernoulli 0.51);
+  };
+  reward = (sum ( (?x : xpos) (?y : ypos) ) (- 0 (^ (GOAL ?x ?y) (~ (robot-at ?x ?y)) )));
+  state-action-constraints {
+    (<= (sum ( (?x : xpos) (?y : ypos) ) (robot-at ?x ?y)) 1);
+    (forall ( (?x1 : xpos) ) (<= (sum ( (?x2 : xpos) ) (WEST ?x1 ?x2)) 1));
+    (forall ( (?x1 : xpos) ) (<= (sum ( (?x2 : xpos) ) (EAST ?x1 ?x2)) 1));
+    (forall ( (?y1 : ypos) ) (<= (sum ( (?y2 : ypos) ) (NORTH ?y1 ?y2)) 1));
+    (forall ( (?y1 : ypos) ) (<= (sum ( (?y2 : ypos) ) (SOUTH ?y1 ?y2)) 1));
+    (forall ( (?x1 : xpos) (?x2 : xpos) ) (<=> (EAST ?x1 ?x2) (WEST ?x2 ?x1) ));
+    (forall ( (?y1 : ypos) (?y2 : ypos) ) (<=> (SOUTH ?y1 ?y2) (NORTH ?y2 ?y1) ));
+    (== (sum ( (?x : xpos) ) (MIN-XPOS ?x)) 1);
+    (== (sum ( (?x : xpos) ) (MAX-XPOS ?x)) 1);
+    (== (sum ( (?y : ypos) ) (MIN-YPOS ?y)) 1);
+    (== (sum ( (?y : ypos) ) (MAX-YPOS ?y)) 1);
+    (== (sum ( (?x : xpos) (?y : ypos) ) (GOAL ?x ?y)) 1);
+  };
+}
+
