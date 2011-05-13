@@ -418,7 +418,9 @@ public class RDDL2Format {
 					if (use_when) {
 						PW.print("(when (and ");
 						for ( String a : assign ) {
-							if(_var2observDD.size() != 0){ //DB: No priming in POPDDL
+							if(_var2observDD.size() != 0){ 
+								// DB: No priming in POPDDL
+								// SS: WARNING: this means that current state and next state vars are conflated
 								boolean not = a.startsWith("~");
 								int beginIndex = (not) ? 1 : 0;
 								int endIndex = (a.endsWith("'")) ? (a.length() - 1) : a.length();
@@ -505,50 +507,50 @@ public class RDDL2Format {
 			pw.println("\t\t:observation (and ");
 			for (String s : _alObservVars) {
 				S = s.substring(0, s.length() - 1);
-				for (String o : _alObservVars) {
-					Integer dd = _var2observDD.get(new Pair(action_name, o));
-					_context.enumeratePaths(dd, 
-							new ADD.ADDLeafOperation() {
-						public void processADDLeaf(ArrayList<String> assign,
-								double leaf_val) {
-							// Sungwook: I've made a few changes to correct and 
-							//           simplify the effects produced.  -Scott
-							boolean print_true_effect = (!assign.contains(S) && (leaf_val > 0d));
-							boolean print_false_effect = (!assign.contains("~" + S) && (leaf_val < 1d));
-							if (!print_true_effect && !print_false_effect)
-								return;
-							
-							PW.print("\t\t\t");
-							boolean use_when = (assign.size() > 0);
-							if (use_when) {
-								PW.print("(when (and ");
-								for ( String a : assign ) {
-									boolean not = a.startsWith("~");
-									int beginIndex = (not) ? 1 : 0;
-									int endIndex = (a.endsWith("'")) ? (a.length() - 1) : a.length();
-									String prop = a.substring(beginIndex, endIndex);
-									if (not) {
-										PW.print(" (not (" + prop + "))");
-									} else {
-										PW.print(" (" + prop + ")");
-									}
+				Integer dd = _var2observDD.get(new Pair(action_name, s));
+				_context.enumeratePaths(dd, 
+						new ADD.ADDLeafOperation() {
+					public void processADDLeaf(ArrayList<String> assign,
+							double leaf_val) {
+						// Sungwook: I've made a few changes to correct and 
+						//           simplify the effects produced.  -Scott
+						boolean print_true_effect = (!assign.contains(S) && (leaf_val > 0d));
+						boolean print_false_effect = (!assign.contains("~" + S) && (leaf_val < 1d));
+						if (!print_true_effect && !print_false_effect)
+							return;
+						
+						PW.print("\t\t\t");
+						boolean use_when = (assign.size() > 0);
+						if (use_when) {
+							PW.print("(when (and ");
+							for ( String a : assign ) {
+								// DB: No priming in POPDDL
+								// SS: WARNING: this means that current state and next state vars are conflated
+								boolean not = a.startsWith("~");
+								int beginIndex = (not) ? 1 : 0;
+								int endIndex = (a.endsWith("'")) ? (a.length() - 1) : a.length();
+								String prop = a.substring(beginIndex, endIndex);
+								if (not) {
+									PW.print(" (not (" + prop + "))");
+								} else {
+									PW.print(" (" + prop + ")");
 								}
-								PW.print(") ");
 							}
-							
-							PW.print("(probabilistic ");
-							if (print_true_effect)
-								PW.print(leaf_val + " (" + S + ") ");
-							if (print_false_effect)
-								PW.print((1d-leaf_val) + " (not " +"(" + S + ")"+ ")");
-							
-							if (use_when)
-								PW.println("))");
-							else
-								PW.println(")"); // Don't need to close when
+							PW.print(") ");
 						}
-					});
-				}
+						
+						PW.print("(probabilistic ");
+						if (print_true_effect)
+							PW.print(leaf_val + " (" + S + ") ");
+						if (print_false_effect)
+							PW.print((1d-leaf_val) + " (not " +"(" + S + ")"+ ")");
+						
+						if (use_when)
+							PW.println("))");
+						else
+							PW.println(")"); // Don't need to close when
+					}
+				});
 			}
 			pw.println("\t\t)");
 		} // End observations
