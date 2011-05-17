@@ -1,7 +1,6 @@
 domain recon_mdp {
   requirements = {
-    reward-deterministic,
-    constrained-state
+    reward-deterministic
   };
   types {
     y_pos : object;
@@ -53,9 +52,6 @@ domain recon_mdp {
   };
   reward = (+ (sum ( (?o : obj) ) (* (GOOD_PIC_WEIGHT) (^ (~ (pictureTaken ?o)) (lifeDetected ?o) (exists ( (?x : x_pos) (?y : y_pos) (?a : agent) (?t : tool) ) (^ (agentAt ?a ?x ?y) (objAt ?o ?x ?y) (useToolOn ?a ?t ?o) (CAMERA_TOOL ?t) (~ (damaged ?t)) )) ))) (sum ( (?o : obj) ) (- 0 (* (BAD_PIC_WEIGHT) (^ (~ (lifeDetected ?o)) (exists ( (?x : x_pos) (?y : y_pos) (?a : agent) (?t : tool) ) (^ (agentAt ?a ?x ?y) (objAt ?o ?x ?y) (useToolOn ?a ?t ?o) (CAMERA_TOOL ?t) )) )))));
   state-action-constraints {
-    (>= (sum ( (?t : tool) ) (WATER_TOOL ?t)) 1);
-    (>= (sum ( (?t : tool) ) (CAMERA_TOOL ?t)) 1);
-    (>= (sum ( (?t : tool) ) (LIFE_TOOL ?t)) 1);
   };
 }
 

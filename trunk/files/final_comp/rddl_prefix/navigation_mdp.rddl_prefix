@@ -1,7 +1,6 @@
 domain navigation_mdp {
   requirements = {
-    reward-deterministic,
-    constrained-state
+    reward-deterministic
   };
   types {
     xpos : object;
@@ -29,18 +28,6 @@ domain navigation_mdp {
   };
   reward = (sum ( (?x : xpos) (?y : ypos) ) (- 0 (^ (GOAL ?x ?y) (~ (robot-at ?x ?y)) )));
   state-action-constraints {
-    (<= (sum ( (?x : xpos) (?y : ypos) ) (robot-at ?x ?y)) 1);
-    (forall ( (?x1 : xpos) ) (<= (sum ( (?x2 : xpos) ) (WEST ?x1 ?x2)) 1));
-    (forall ( (?x1 : xpos) ) (<= (sum ( (?x2 : xpos) ) (EAST ?x1 ?x2)) 1));
-    (forall ( (?y1 : ypos) ) (<= (sum ( (?y2 : ypos) ) (NORTH ?y1 ?y2)) 1));
-    (forall ( (?y1 : ypos) ) (<= (sum ( (?y2 : ypos) ) (SOUTH ?y1 ?y2)) 1));
-    (forall ( (?x1 : xpos) (?x2 : xpos) ) (<=> (EAST ?x1 ?x2) (WEST ?x2 ?x1) ));
-    (forall ( (?y1 : ypos) (?y2 : ypos) ) (<=> (SOUTH ?y1 ?y2) (NORTH ?y2 ?y1) ));
-    (== (sum ( (?x : xpos) ) (MIN-XPOS ?x)) 1);
-    (== (sum ( (?x : xpos) ) (MAX-XPOS ?x)) 1);
-    (== (sum ( (?y : ypos) ) (MIN-YPOS ?y)) 1);
-    (== (sum ( (?y : ypos) ) (MAX-YPOS ?y)) 1);
-    (== (sum ( (?x : xpos) (?y : ypos) ) (GOAL ?x ?y)) 1);
   };
 }
 
