@@ -1,0 +1,24 @@
+This file lists bugs and errors found in the final competition
+domains.  These errata will *not* be fixed in order to keep a single
+standard version of each domain that everyone can use and compare on
+(including to IPPC 2011 final competition results).
+
+===
+
+Elevators Domain, from Alan Olsen:
+
+It's not a problem, just makes the domain easier: passengers are able
+to exit their elevators once they reach their destination whether the
+doors are open or not (see elevators_pomdp.rddl lines 121 and 131).
+The following lines should be changed from
+
+   then KronDelta( ~exists_{?f : floor} [elevator-at-floor(?e, ?f) ^ TOP-FLOOR(?f)] )
+...
+   then KronDelta( ~exists_{?f : floor} [elevator-at-floor(?e, ?f) ^ BOTTOM-FLOOR(?f)] )
+
+to
+
+   then KronDelta( ~exists_{?f : floor} [elevator-at-floor(?e, ?f) ^ TOP-FLOOR(?f) ^ ~elevator-closed(?e)] )
+...
+   then KronDelta( ~exists_{?f : floor} [elevator-at-floor(?e, ?f) ^ BOTTOM-FLOOR(?f) ^ ~elevator-closed(?e)] )
+
