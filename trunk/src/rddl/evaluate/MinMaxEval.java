@@ -186,7 +186,7 @@ public class MinMaxEval {
 	
 	public static void main(String[] args) throws Exception {
 		
-		String directory = "FinalComp/POMDP";
+		String directory = "FinalComp/MDP";
 		if (args.length == 1)
 			directory = args[0];
 		else
