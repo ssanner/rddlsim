@@ -60,7 +60,7 @@ public class FinalEval {
 		
 		if (f.isDirectory()) {
 			for (File f2 : f.listFiles())
-				if (f2.getName().endsWith(".log")) {
+				if (f2.getName().endsWith(".log")/* && f2.getName().startsWith("aswin")*/) {
 					System.out.println("Loading log file: " + f2 + "...");
 					LogReader lr = new LogReader(f2);
 					System.out.println(lr._client2data);
