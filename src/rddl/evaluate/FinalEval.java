@@ -199,6 +199,7 @@ public class FinalEval {
 				double stderr  = instance2stderr.get(key);
 				
 				// Don't allow scores below instance_min
+				double pre_min_avg = avg; 
 				if (avg < instance_min)
 					avg = instance_min;
 
@@ -217,8 +218,8 @@ public class FinalEval {
 					domain_client2normvalAll.putValue(new Pair<String,String>(domain_name,client_name), norm_reward);
 				}
 				
-				System.out.print(client_name + "\t" + count + "\t" + format4(norm_score) + "\t" + format(avg) + "\t+/- " + format(stderr) + "\t[ " + format(min_val) + "\t" + format(max_val) + " ]\t");
-				all_results.print(client_name + "\t" + count + "\t" + format4(norm_score) + "\t" + format(avg) + "\t" + format(stderr) + "\t" + format(min_val) + "\t" + format(max_val) + "\t");
+				System.out.print(client_name + "\t" + count + "\t" + format4(norm_score) + "\t" + format(pre_min_avg) + "\t+/- " + format(stderr) + "\t[ " + format(min_val) + "\t" + format(max_val) + " ]\t");
+				all_results.print(client_name + "\t" + count + "\t" + format4(norm_score) + "\t" + format(pre_min_avg) + "\t" + format(stderr) + "\t" + format(min_val) + "\t" + format(max_val) + "\t");
 			}
 			System.out.println();
 			all_results.println();
@@ -301,7 +302,7 @@ public class FinalEval {
 	
 	public static void main(String[] args) throws Exception {
 		
-		String directory = "FinalComp/POMDP";
+		String directory = "FinalComp/MDP";
 		if (args.length == 1)
 			directory = args[0];
 		else
