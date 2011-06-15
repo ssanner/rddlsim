@@ -112,6 +112,21 @@ public class MinMaxEval {
 				
 				ArrayList<Double> rewards = new ArrayList<Double>(e.getValue().getValues(instance_name));
 				
+				if (rewards.size() > FinalEval.NUM_EXPECTED_TRIALS) {
+					// Take the last NUM_EXPECTED_TRIALS
+					Object[] temp_rewards = rewards.toArray();
+					rewards.clear();
+					for (int i = temp_rewards.length - FinalEval.NUM_EXPECTED_TRIALS; i < temp_rewards.length; i++)
+						rewards.add((Double)temp_rewards[i]);
+					
+				} 
+
+				if (rewards.size() != FinalEval.NUM_EXPECTED_TRIALS) {
+					System.err.println("INCORRECT NUMBER OF TRIALS [" + rewards.size() + "/ expected: "
+							+ FinalEval.NUM_EXPECTED_TRIALS + "] for " + client_name + " on " +
+							instance_name + ": continuing with average on these trials.");
+				}		
+				
 				double min_val = instance2minR.get(instance_name);
 				double max_val = instance2maxR.get(instance_name);	
 				double min_valNoopRandom = instance2minRNoopRandom.get(instance_name);
@@ -186,7 +201,7 @@ public class MinMaxEval {
 	
 	public static void main(String[] args) throws Exception {
 		
-		String directory = "FinalComp/MDP";
+		String directory = "FinalComp/POMDP";
 		if (args.length == 1)
 			directory = args[0];
 		else
