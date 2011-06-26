@@ -61,6 +61,8 @@ public class Simulator {
 
 	public Result run(Policy p, StateViz v, long rand_seed) throws EvalException {
 		
+		//_i._nHorizon = 400;
+		
 		// Reset to initial state
 		resetState();
 		
