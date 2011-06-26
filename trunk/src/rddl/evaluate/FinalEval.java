@@ -302,7 +302,7 @@ public class FinalEval {
 	
 	public static void main(String[] args) throws Exception {
 		
-		String directory = "FinalComp/MDP";
+		String directory = "FinalComp/POMDP";
 		if (args.length == 1)
 			directory = args[0];
 		else
