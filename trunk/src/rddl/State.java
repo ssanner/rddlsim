@@ -279,6 +279,10 @@ public class State {
 			}
 		}
 		
+		// Make sure observations are cleared prior to computing new ones
+		for (PVAR_NAME p : _observ.keySet())
+			_observ.get(p).clear();
+
 		// Do same for observations... note that this occurs after the next state
 		// update because observations in a POMDP may be modeled on the current
 		// and next state, i.e., P(o|s,a,s').
@@ -311,6 +315,12 @@ public class State {
 	}
 	
 	public void advanceNextState() throws EvalException {
+		// For backward compatibility with code that has previously called this
+		// method with 0 parameters, we'll assume observations are cleared by default
+		advanceNextState(true /* clear observations */);
+	}
+	
+	public void advanceNextState(boolean clear_observations) throws EvalException {
 		HashMap<PVAR_NAME,HashMap<ArrayList<LCONST>,Object>> temp = _state;
 		_state = _nextState;
 		_nextState = temp;
@@ -320,8 +330,9 @@ public class State {
 			_nextState.get(p).clear();
 		for (PVAR_NAME p : _interm.keySet())
 			_interm.get(p).clear();
-		for (PVAR_NAME p : _observ.keySet())
-			_observ.get(p).clear();
+		if (clear_observations)  
+			for (PVAR_NAME p : _observ.keySet())
+				_observ.get(p).clear();
 	}
 	
 	public void clearPVariables(HashMap<PVAR_NAME,HashMap<ArrayList<LCONST>,Object>> assign) {

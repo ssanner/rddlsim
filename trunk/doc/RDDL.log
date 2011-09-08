@@ -1,8 +1,8 @@
-This is pdfeTeXk, Version 3.141592-1.21a-2.2 (Web2C 7.5.4) (format=pdflatex 2008.12.23)  6 NOV 2010 22:40
+This is pdfeTeXk, Version 3.141592-1.21a-2.2 (Web2C 7.5.4) (format=pdflatex 2008.12.23)  13 JUN 2011 15:08
 entering extended mode
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**RDDL
+**RDDL.tex
 (./RDDL.tex
 LaTeX2e <2003/12/01>
 Babel <v3.8d> and hyphenation patterns for american, french, german, ngerman, b
@@ -559,29 +559,86 @@ Missing character: There is no ä in font cmr10!
 Missing character: There is no ü in font cmr10!
 Missing character: There is no à in font cmr10!
 Missing character: There is no é in font cmr10!
-) (Commented text...) [22] (./RDDL.aux) ) 
+) (Commented text...)
+Overfull \hbox (12.29813pt too wide) in paragraph at lines 1081--1082
+[][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (12.29813pt too wide) in paragraph at lines 1088--1089
+[][][][][][][][][][] 
+ []
+
+[22]
+Overfull \hbox (62.69803pt too wide) in paragraph at lines 1092--1093
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][
+][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (75.298pt too wide) in paragraph at lines 1104--1106
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][
+][][] 
+ []
+
+
+Overfull \hbox (12.29813pt too wide) in paragraph at lines 1106--1108
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
+
+ []
+
+
+Overfull \hbox (12.29813pt too wide) in paragraph at lines 1108--1109
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
+
+ []
+
+
+Overfull \hbox (75.298pt too wide) in paragraph at lines 1114--1115
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][
+][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (62.69803pt too wide) in paragraph at lines 1115--1116
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][
+][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (81.59799pt too wide) in paragraph at lines 1117--1118
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (81.59799pt too wide) in paragraph at lines 1122--1123
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
+
+ []
+
+[23] (./RDDL.aux) ) 
 Here is how much of TeX's memory you used:
- 4658 strings out of 94500
- 64501 string characters out of 1176765
+ 4713 strings out of 94500
+ 65272 string characters out of 1176765
  148401 words of memory out of 1000000
- 7480 multiletter control sequences out of 10000+50000
+ 7489 multiletter control sequences out of 10000+50000
  13789 words of font info for 48 fonts, out of 500000 for 2000
  580 hyphenation exceptions out of 1000
- 27i,8n,42p,471b,1473s stack positions out of 1500i,500n,5000p,200000b,5000s
+ 27i,8n,42p,475b,1475s stack positions out of 1500i,500n,5000p,200000b,5000s
 PDF statistics:
- 565 PDF objects out of 300000
- 309 named destinations out of 131072
+ 614 PDF objects out of 300000
+ 355 named destinations out of 131072
  144 words of extra memory for PDF output out of 65536
-</usr/share/texmf/fonts/type1/bluesky/
-cm/cmmi8.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmsy7.pfb></usr/share/tex
-mf/fonts/type1/bluesky/cm/cmsy8.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cm
-ex10.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmmi10.pfb></usr/share/texmf/
-fonts/type1/bluesky/cm/cmsy10.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmti
-9.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmr9.pfb></usr/share/texmf/fonts
-/type1/bluesky/cm/cmr6.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmr8.pfb></
-usr/share/texmf/fonts/type1/bluesky/cm/cmti10.pfb></usr/share/texmf/fonts/type1
-/bluesky/cm/cmtt10.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmr10.pfb></usr
-/share/texmf/fonts/type1/bluesky/cm/cmbx10.pfb></usr/share/texmf/fonts/type1/bl
-uesky/cm/cmtt12.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmr12.pfb></usr/sh
-are/texmf/fonts/type1/bluesky/cm/cmbx12.pfb>
-Output written on RDDL.pdf (22 pages, 276828 bytes).
+</usr/share/texmf/fonts/type1/bluesky/cm/cmmi8.pfb></usr/sha
+re/texmf/fonts/type1/bluesky/cm/cmsy7.pfb></usr/share/texmf/fonts/type1/bluesky
+/cm/cmsy8.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmex10.pfb></usr/share/t
+exmf/fonts/type1/bluesky/cm/cmmi10.pfb></usr/share/texmf/fonts/type1/bluesky/cm
+/cmsy10.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmti9.pfb></usr/share/texm
+f/fonts/type1/bluesky/cm/cmr9.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmr6
+.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmr8.pfb></usr/share/texmf/fonts/
+type1/bluesky/cm/cmti10.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmtt10.pfb
+></usr/share/texmf/fonts/type1/bluesky/cm/cmr10.pfb></usr/share/texmf/fonts/typ
+e1/bluesky/cm/cmbx10.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmtt12.pfb></
+usr/share/texmf/fonts/type1/bluesky/cm/cmr12.pfb></usr/share/texmf/fonts/type1/
+bluesky/cm/cmbx12.pfb>
+Output written on RDDL.pdf (23 pages, 287826 bytes).
