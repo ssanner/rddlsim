@@ -1,4 +1,4 @@
-This is pdfeTeXk, Version 3.141592-1.21a-2.2 (Web2C 7.5.4) (format=pdflatex 2008.12.23)  13 JUN 2011 15:08
+This is pdfeTeXk, Version 3.141592-1.21a-2.2 (Web2C 7.5.4) (format=pdflatex 2008.12.23)  8 SEP 2011 15:28
 entering extended mode
  file:line:error style messages enabled.
  %&-line parsing enabled.
@@ -559,59 +559,59 @@ Missing character: There is no ä in font cmr10!
 Missing character: There is no ü in font cmr10!
 Missing character: There is no à in font cmr10!
 Missing character: There is no é in font cmr10!
-) (Commented text...)
-Overfull \hbox (12.29813pt too wide) in paragraph at lines 1081--1082
+) (Commented text...) [22]
+Overfull \hbox (12.29813pt too wide) in paragraph at lines 1083--1084
 [][][][][][][][][][] 
  []
 
 
-Overfull \hbox (12.29813pt too wide) in paragraph at lines 1088--1089
+Overfull \hbox (12.29813pt too wide) in paragraph at lines 1090--1091
 [][][][][][][][][][] 
  []
 
-[22]
-Overfull \hbox (62.69803pt too wide) in paragraph at lines 1092--1093
+
+Overfull \hbox (62.69803pt too wide) in paragraph at lines 1094--1095
 [][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][
 ][][][][][][][][][][][][][][][][][][][][][][][][] 
  []
 
 
-Overfull \hbox (75.298pt too wide) in paragraph at lines 1104--1106
+Overfull \hbox (75.298pt too wide) in paragraph at lines 1106--1108
 [][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][
 ][][] 
  []
 
 
-Overfull \hbox (12.29813pt too wide) in paragraph at lines 1106--1108
+Overfull \hbox (12.29813pt too wide) in paragraph at lines 1108--1110
 [][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
 
  []
 
 
-Overfull \hbox (12.29813pt too wide) in paragraph at lines 1108--1109
+Overfull \hbox (12.29813pt too wide) in paragraph at lines 1110--1111
 [][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
 
  []
 
 
-Overfull \hbox (75.298pt too wide) in paragraph at lines 1114--1115
+Overfull \hbox (75.298pt too wide) in paragraph at lines 1116--1117
 [][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][
 ][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
  []
 
 
-Overfull \hbox (62.69803pt too wide) in paragraph at lines 1115--1116
+Overfull \hbox (62.69803pt too wide) in paragraph at lines 1117--1118
 [][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][
 ][][][][][][][][][][][][][][][][][][] 
  []
 
 
-Overfull \hbox (81.59799pt too wide) in paragraph at lines 1117--1118
+Overfull \hbox (81.59799pt too wide) in paragraph at lines 1119--1120
 [][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
  []
 
 
-Overfull \hbox (81.59799pt too wide) in paragraph at lines 1122--1123
+Overfull \hbox (81.59799pt too wide) in paragraph at lines 1124--1125
 [][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
 
  []
@@ -624,7 +624,7 @@ Here is how much of TeX's memory you used:
  7489 multiletter control sequences out of 10000+50000
  13789 words of font info for 48 fonts, out of 500000 for 2000
  580 hyphenation exceptions out of 1000
- 27i,8n,42p,475b,1475s stack positions out of 1500i,500n,5000p,200000b,5000s
+ 27i,8n,42p,475b,1473s stack positions out of 1500i,500n,5000p,200000b,5000s
 PDF statistics:
  614 PDF objects out of 300000
  355 named destinations out of 131072
@@ -641,4 +641,4 @@ type1/bluesky/cm/cmti10.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmtt10.pfb
 e1/bluesky/cm/cmbx10.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmtt12.pfb></
 usr/share/texmf/fonts/type1/bluesky/cm/cmr12.pfb></usr/share/texmf/fonts/type1/
 bluesky/cm/cmbx12.pfb>
-Output written on RDDL.pdf (23 pages, 287826 bytes).
+Output written on RDDL.pdf (23 pages, 287618 bytes).
