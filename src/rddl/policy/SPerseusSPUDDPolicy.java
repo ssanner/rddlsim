@@ -47,6 +47,8 @@ public class SPerseusSPUDDPolicy extends Policy {
 	///////////////////////////////////////////////////////////////////////////
 
 	public ArrayList<PVAR_INST_DEF> getActions(State s) throws EvalException {
+		
+		//System.out.println("FULL STATE:\n\n" + getStateDescription(s));
 
 		if (s == null) {
 			// This should only occur on the **first step** of a POMDP trial
@@ -60,13 +62,19 @@ public class SPerseusSPUDDPolicy extends Policy {
 		// otherwise if it is fully observed, we see the state
 		String fluent_type = s._alObservNames.size() > 0 ? "observ" : "states";
 		
-		//System.out.println("FULL STATE:\n\n" + getStateDescription(s));
-		
 		// Get a set of all true observation or state variables
+		// Note: for a POMDP, the agent should only see the observations and
+		//       *never* have access to the underlying state.  State information 
+		//       is not provided to a Policy when using the Client/Server interface 
+		//       (to prevent cheating in a competition setting); it *is* provided 
+		//       via the Simulator interface, but it should be ignored for purposes 
+		//       of policy evaluation.
 		TreeSet<String> true_vars = getTrueFluents(s, fluent_type);
 		if (SHOW_STATE) {
 			System.out.println("\n==============================================");
-			System.out.println("\nTrue state/observation variables:");
+			System.out.println("\nTrue " + 
+					           (fluent_type.equals("states") ? "state" : "observation") + 
+							   " variables:");
 			for (String prop_var : true_vars)
 				System.out.println(" - " + prop_var);
 		}
@@ -88,6 +96,31 @@ public class SPerseusSPUDDPolicy extends Policy {
 			System.out.println("\n--> Action taken: " + action_taken);
 		
 		return action_map.get(action_taken);
+	}
+
+	///////////////////////////////////////////////////////////////////////////
+	//                             Trial Signals
+	//
+	// If you need to keep track of state information across rounds or sessions, 
+	// just modify these methods.  (Each session consists of total_rounds rounds.)
+	///////////////////////////////////////////////////////////////////////////
+
+	public void roundInit(double time_left, int horizon, int round_number, int total_rounds) {
+		System.out.println("\n*********************************************************");
+		System.out.println(">>> ROUND INIT " + round_number + "/" + total_rounds + "; time remaining = " + time_left + ", horizon = " + horizon);
+		System.out.println("*********************************************************");
+	}
+	
+	public void roundEnd(double reward) {
+		System.out.println("\n*********************************************************");
+		System.out.println(">>> ROUND END, reward = " + reward);
+		System.out.println("*********************************************************");
+	}
+	
+	public void sessionEnd(double total_reward) {
+		System.out.println("\n*********************************************************");
+		System.out.println(">>> SESSION END, total reward = " + total_reward);
+		System.out.println("*********************************************************");
 	}
 
 	///////////////////////////////////////////////////////////////////////////

@@ -237,7 +237,7 @@ public class Client {
 					ArrayList<PVAR_INST_DEF> obs = processXMLTurn(p,isrc,state);
 					if (SHOW_MSG) System.out.println("Done parsing turn message");
 					if ( obs == null ) {
-						System.err.println("No state/observations received.");
+						if (SHOW_MSG) System.out.println("No state/observations received.");
 						if (SHOW_XML)
 							Server.printXMLNode(p.getDocument()); // DEBUG
 					} else if (domain._bPartiallyObserved) {
@@ -505,7 +505,8 @@ public class Client {
 			} else
 				return new ArrayList<PVAR_INST_DEF>();
 		}
-		return null;
+		throw new RDDLXMLException("Client.processXMLTurn: Should not reach this point");
+		//return null;
 	}
 	
 	static double processXMLRoundEnd(DOMParser p, InputSource isrc) throws RDDLXMLException {

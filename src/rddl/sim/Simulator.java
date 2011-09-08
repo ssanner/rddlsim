@@ -74,9 +74,14 @@ public class Simulator {
 		
 		// Run problem for specified horizon
 		for (int t = 0; t < _i._nHorizon; t++) {
-			
-			// Get action from policy
-			ArrayList<PVAR_INST_DEF> action_list = p.getActions(_state);
+
+			// Display state/observations that the agent sees
+			v.display(_state, t);
+
+			// Get action from policy 
+			// (if POMDP and first state, no observations available yet so a null is passed)
+			State state_info = ((_state._alObservNames.size() > 0) && t == 0) ? null : _state;
+			ArrayList<PVAR_INST_DEF> action_list = p.getActions(state_info);
 			
 			// Check state-action constraints
 			_state.checkStateActionConstraints(action_list);
@@ -90,11 +95,8 @@ public class Simulator {
 			accum_reward += cur_discount * reward;
 			cur_discount *= _i._dDiscount;
 			
-			// Display current state before advanced
-			v.display(_state, t);
-			
 			// Done with this iteration, advance to next round
-			_state.advanceNextState();
+			_state.advanceNextState(false /* do not clear observations */);
 		}
 		
 		// Problem over, return objective and list of rewards (e.g., for std error calc)
