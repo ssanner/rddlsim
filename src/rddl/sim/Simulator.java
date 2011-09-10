@@ -61,6 +61,9 @@ public class Simulator {
 
 	public Result run(Policy p, StateViz v, long rand_seed) throws EvalException {
 		
+		// Signal start of new session-independent round
+		p.roundInit(Double.MAX_VALUE, _i._nHorizon, 1, 1);
+		
 		// Reset to initial state
 		resetState();
 		
@@ -98,7 +101,10 @@ public class Simulator {
 			// Done with this iteration, advance to next round
 			_state.advanceNextState(false /* do not clear observations */);
 		}
-		
+
+		// Signal start of new session-independent round
+		p.roundEnd(accum_reward);
+
 		// Problem over, return objective and list of rewards (e.g., for std error calc)
 		v.close();
 		return new Result(accum_reward, rewards);
@@ -109,19 +115,22 @@ public class Simulator {
 	public static void main(String[] args) throws Exception {
 		
 		//try {	
-			if (args.length < 3 || args.length > 5) {
-				System.out.println("usage: RDDL-file policy-class-name instance-name [state-viz-class-name] [rand seed]");
+			if (args.length < 3 || args.length > 6) {
+				System.out.println("usage: RDDL-file policy-class-name instance-name [state-viz-class-name] [rand seed simulator] [rand seed policy]");
 				System.exit(1);
 			}
 			String rddl_file = args[0];
 			String policy_class_name = args[1];
 			String instance_name = args[2];
 			String state_viz_class_name = "rddl.viz.GenericScreenDisplay";
-			int rand_seed = 123456;
 			if (args.length >= 4)
 				state_viz_class_name = args[3];
+			int rand_seed_sim = 123456;
 			if (args.length == 5)
-				rand_seed = new Integer(args[4]);
+				rand_seed_sim = new Integer(args[4]);
+			int rand_seed_policy = 123456;
+			if (args.length == 6)
+				rand_seed_policy = new Integer(args[5]);
 			
 			// Load RDDL files
 			RDDL rddl = new RDDL();
@@ -136,7 +145,11 @@ public class Simulator {
 				rddl.addOtherRDDL(parser.parse(f));
 			
 			Simulator sim = new Simulator(rddl, instance_name);
-			Policy pol = (Policy)Class.forName(policy_class_name).newInstance();
+			Policy pol = (Policy)Class.forName(policy_class_name).getConstructor(
+					new Class[]{String.class}).newInstance(new Object[]{instance_name});
+			pol.setRandSeed(rand_seed_policy);
+			pol.setRDDL(rddl);
+			
 			StateViz viz = (StateViz)Class.forName(state_viz_class_name).newInstance();
 		
 			// Parse file
@@ -153,7 +166,7 @@ public class Simulator {
 			//String instance_name = rddl._tmInstanceNodes.firstKey();
 			
 			// Reset, pass a policy, a visualization interface, a random seed, and simulate!
-			Result r = sim.run(pol, viz, rand_seed);
+			Result r = sim.run(pol, viz, rand_seed_sim);
 //				new RandomBoolPolicy(instance_name),
 //				new RandomEnumPolicy(instance_name),
 //				new FixedBoolPolicy(instance_name), 

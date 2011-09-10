@@ -129,7 +129,7 @@ public class SPerseusSPUDDPolicy extends Policy {
 	// You likely won't need to understand the code below, only the above code.
 	///////////////////////////////////////////////////////////////////////////
 	
-	public TreeSet<String> getTrueFluents(State s, String fluent_type) {
+	public static TreeSet<String> getTrueFluents(State s, String fluent_type) {
 				
 		// Go through all variable types (state, interm, observ, action, nonfluent)
 		TreeSet<String> true_fluents = new TreeSet<String>();
@@ -151,7 +151,7 @@ public class SPerseusSPUDDPolicy extends Policy {
 		return true_fluents;
 	}
 
-	public String getStateDescription(State s) {
+	public static String getStateDescription(State s) {
 		StringBuilder sb = new StringBuilder();
 		
 		// Go through all variable types (state, interm, observ, action, nonfluent)
