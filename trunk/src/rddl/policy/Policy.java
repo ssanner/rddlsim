@@ -15,17 +15,28 @@ import rddl.RDDL.*;
 
 public abstract class Policy {
 	
-	public Random _random = new Random();
 	public long RAND_SEED = -1;	
+
+	public Random _random = new Random();
 	public String _sInstanceName;
+	public RDDL _rddl;
 
 	public Policy() {
 		
 	}
+	
 	public Policy(String instance_name) {
 		_sInstanceName = instance_name;
 	}
 	
+	public void setInstance(String instance_name) {
+		_sInstanceName = instance_name;
+	}
+
+	public void setRDDL(RDDL rddl) {
+		_rddl = rddl;
+	}
+
 	public void setRandSeed(long rand_seed) {
 		RAND_SEED = rand_seed;
 		_random = new Random(RAND_SEED);
