@@ -439,10 +439,20 @@ public class State {
 			return null;
 		}
 		
-		if (pvar_def instanceof PVARIABLE_STATE_DEF) // state & non_fluents
+		if (pvar_def instanceof PVARIABLE_STATE_DEF) { // state & non_fluents
 			def_value = ((PVARIABLE_STATE_DEF) pvar_def)._oDefValue;
-		else if (pvar_def instanceof RDDL.PVARIABLE_ACTION_DEF) // actions
+			//if (def_value == null) {
+			//	System.out.println("ERROR: Default value should not be null for state fluent " + pvar_def);
+			//	System.exit(1);
+			//}
+		} else if (pvar_def instanceof RDDL.PVARIABLE_ACTION_DEF) { // actions
 			def_value = ((PVARIABLE_ACTION_DEF) pvar_def)._oDefValue;
+			//if (def_value == null) {
+			//	System.out.println("ERROR: Default value should not be null for action fluent " + pvar_def);
+			//	System.exit(1);
+			//}
+		}
+		//System.out.println("Default value: " + def_value);
 
 		// Get correct variable assignments
 		HashMap<ArrayList<LCONST>,Object> var_src = null;
