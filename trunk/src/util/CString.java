@@ -6,10 +6,13 @@
  */
 package util;
 
+import java.util.ArrayList;
+import java.util.TreeSet;
+
 public class CString implements Comparable {
 
-	int _hashCode;
-	String _string;
+	private int _hashCode;
+	public String _string;
 	
 	public CString(String s) {
 		_string = s.intern();
@@ -37,5 +40,19 @@ public class CString implements Comparable {
 	
 	public String toString() {
 		return _string;
+	}
+	
+	public static TreeSet<CString> Convert2CString(TreeSet<String> a) {
+		TreeSet<CString> ret = new TreeSet<CString>();
+		for (String s : a)
+			ret.add(new CString(s));
+		return ret;
+	}
+	
+	public static ArrayList<CString> Convert2CString(ArrayList<String> a) {
+		ArrayList<CString> ret = new ArrayList<CString>();
+		for (String s : a)
+			ret.add(new CString(s));
+		return ret;
 	}
 }

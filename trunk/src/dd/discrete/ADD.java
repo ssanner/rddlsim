@@ -1048,6 +1048,11 @@ public class ADD extends DD {
 					gid = ((ADDINode) n1)._nTestVarID;
 				}
 			} else {
+				if (!(n2 instanceof ADDINode)) {
+					System.err.println("ERROR: should not reach here with two non-ADDINodes, IDs " + a1 + " and " + a2);
+					System.err.println("\n" + printNode(a1) + "\n\n" + printNode(a2));
+					System.exit(1);
+				}
 				gid = ((ADDINode) n2)._nTestVarID;
 			}
 
