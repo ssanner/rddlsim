@@ -239,23 +239,22 @@ public class VI extends Policy {
 						break;
 				}				
 			}
-		}
-		
-		// Call value iteration solver for SOLVER_TIME_LIMIT seconds
-		try {
-			resetSolver();
-			solve(SOLVER_TIME_LIMIT);
-		} catch (TimeOutException e) {
-			System.out.println("TIME LIMIT EXCEEDED at " + _nIter + " iterations.");
-		} catch (Exception e) {
-			System.err.println("ERROR at " + _nIter + " iterations.");
-			e.printStackTrace(System.err);
-			System.exit(1);
-		} finally {
-			System.out.println("Solution in VI exit at iteration " + _nIter + ": " + 
-					_context.countExactNodes(_valueDD) + " nodes.");
-		}
-		
+			
+			// Call value iteration solver for SOLVER_TIME_LIMIT seconds
+			try {
+				resetSolver();
+				solve(SOLVER_TIME_LIMIT);
+			} catch (TimeOutException e) {
+				System.out.println("TIME LIMIT EXCEEDED at " + _nIter + " iterations.");
+			} catch (Exception e) {
+				System.err.println("ERROR at " + _nIter + " iterations.");
+				e.printStackTrace(System.err);
+				System.exit(1);
+			} finally {
+				System.out.println("Solution in VI exit at iteration " + _nIter + ": " + 
+						_context.countExactNodes(_valueDD) + " nodes.");
+			}
+		}		
 	}
 	
 	public void roundEnd(double reward) {
