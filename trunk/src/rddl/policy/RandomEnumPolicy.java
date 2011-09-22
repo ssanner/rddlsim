@@ -46,7 +46,7 @@ public class RandomEnumPolicy extends Policy {
 		ArrayList<ENUM_VAL> enums = tdef._alPossibleValues;
 		System.out.println("Possible values: " + enums);
 		
-		// Get term instantations for that action and select *one*
+		// Get term instantions for that action and select *one*
 		ArrayList<ArrayList<LCONST>> inst = s.generateAtoms(p);
 		ArrayList<PVAR_INST_DEF> actions = new ArrayList<PVAR_INST_DEF>();
 		for(ArrayList<LCONST> terms: inst){

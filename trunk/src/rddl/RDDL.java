@@ -24,24 +24,52 @@ public class RDDL {
 	public RDDL() { }
 
 	public RDDL(RDDL rddl) { 
-		_tmDomainNodes.putAll(rddl._tmDomainNodes);
-		_tmInstanceNodes.putAll(rddl._tmInstanceNodes);	
-		_tmNonFluentNodes.putAll(rddl._tmNonFluentNodes);
+		addOtherRDDL(rddl);
 	}
 
 	public void addDomain(DOMAIN d) {
+		if (_tmDomainNodes.containsKey(d._sDomainName)) {
+			System.err.println("ERROR: conflicting (duplicate) domain names: " + d._sDomainName);
+			System.exit(1);
+		}
 		_tmDomainNodes.put(d._sDomainName, d);
 	}
 
 	public void addInstance(INSTANCE i) {
+		if (_tmInstanceNodes.containsKey(i._sName)) {
+			System.err.println("ERROR: conflicting (duplicate) instance names: " + i._sName);
+			System.exit(1);
+		}
 		_tmInstanceNodes.put(i._sName, i);		
 	}
 
 	public void addNonFluents(NONFLUENTS n) {
+		if (_tmNonFluentNodes.containsKey(n._sName)) {
+			System.err.println("ERROR: conflicting (duplicate) nonfluent names: " + n._sName);
+			System.exit(1);
+		}
 		_tmNonFluentNodes.put(n._sName, n);		
 	}
 	
 	public void addOtherRDDL(RDDL rddl) {
+		Set<String> overlap_d = new TreeSet<String>(_tmDomainNodes.keySet());
+		Set<String> overlap_n = new TreeSet<String>(_tmNonFluentNodes.keySet());
+		Set<String> overlap_i = new TreeSet<String>(_tmInstanceNodes.keySet());
+		overlap_d.retainAll(rddl._tmDomainNodes.keySet());
+		overlap_n.retainAll(rddl._tmNonFluentNodes.keySet());
+		overlap_i.retainAll(rddl._tmInstanceNodes.keySet());
+		if (overlap_d.size() != 0) {
+			System.err.println("ERROR: conflicting (duplicate) domain names: " + overlap_d);
+			System.exit(1);
+		}
+		if (overlap_n.size() != 0) {
+			System.err.println("ERROR: conflicting (duplicate) nonfluent names: " + overlap_n);
+			System.exit(1);
+		}
+		if (overlap_i.size() != 0) {
+			System.err.println("ERROR: conflicting (duplicate) instance names: " + overlap_i);
+			System.exit(1);
+		}
 		_tmDomainNodes.putAll(rddl._tmDomainNodes);
 		_tmInstanceNodes.putAll(rddl._tmInstanceNodes);	
 		_tmNonFluentNodes.putAll(rddl._tmNonFluentNodes);

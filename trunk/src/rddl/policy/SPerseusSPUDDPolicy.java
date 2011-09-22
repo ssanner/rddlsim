@@ -5,6 +5,9 @@
  *       then randomly takes an action.  State-action constraints are
  *       not checked.
  * 
+ * NOTE: This just skeleton code... to see a full solver implementation,
+ *       see the implementation of Value Iteration in rddl.solver.mdp.vi.VI.
+ * 
  * @author Scott Sanner (ssanner [at] gmail.com)
  * @version 12/18/10
  *
