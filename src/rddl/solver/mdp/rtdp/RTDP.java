@@ -2,7 +2,7 @@
  * RDDL: Factored RTDP Implementation.
  * 
  * @author Scott Sanner (ssanner [at] gmail.com)
- * @version 9/11/11
+ * @version 9/24/11
  *
  * ./run rddl.sim.Simulator files/rddl/test/ rddl.solver.mdp.rtdp.RTDP sysadmin_test1 rddl.viz.SysAdminScreenDisplay
  **/
@@ -364,9 +364,10 @@ public class RTDP extends Policy {
 	
 		CString best_action_init_state = null;
 		
-		//////////////////////////////////////////////////////////////
-		// Iterate until convergence (or max iterations)
-		//////////////////////////////////////////////////////////////
+		////////////////////////////////////////////////////////////////////////////
+		// Simulate a trial from here to the horizon (updating along the way), then 
+		// backtrack and update in reverse.
+		////////////////////////////////////////////////////////////////////////////
 		ArrayList cur_state = init_state;
 		ArrayList<ArrayList> visited_states = new ArrayList<ArrayList>(_nRemainingHorizon);
 		for (int steps_to_go = _nRemainingHorizon; steps_to_go > 0; steps_to_go--) {
@@ -426,6 +427,7 @@ public class RTDP extends Policy {
 		}
 	}
 
+	// Find best Q-value/action for given state
 	public QUpdateResult getBestQValue(ArrayList cur_state) {
 		
 		int prime_vfun = _context.remapGIDsInt(_valueDD, _translation._hmPrimeRemap);
@@ -444,6 +446,7 @@ public class RTDP extends Policy {
 		return result;
 	}
 
+	// Find Q-value for action in given state
 	public double getQValue(int prime_vfun, ArrayList cur_state, CString action) {
 		
 		Action a = _hmActionName2Action.get(action);
