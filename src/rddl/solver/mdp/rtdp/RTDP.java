@@ -4,27 +4,34 @@
  * @author Scott Sanner (ssanner [at] gmail.com)
  * @version 9/11/11
  *
+ * ./run rddl.sim.Simulator files/rddl/test/ rddl.solver.mdp.rtdp.RTDP sysadmin_test1 rddl.viz.SysAdminScreenDisplay
  **/
 
 package rddl.solver.mdp.rtdp;
 
+import graph.Graph;
+
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.*;
 
+import dd.discrete.DD;
 import dd.discrete.ADD;
 
 import rddl.*;
 import rddl.RDDL.*;
 import rddl.policy.Policy;
 import rddl.policy.SPerseusSPUDDPolicy;
+import rddl.solver.DDUtils;
+import rddl.solver.TimeOutException;
+import rddl.solver.mdp.Action;
 import rddl.translate.RDDL2Format;
 import util.CString;
 import util.Pair;
 
-///////////////////////////////////////////////////////////////////////////
-//                             Helper Functions
-///////////////////////////////////////////////////////////////////////////
-
 public class RTDP extends Policy {
+	
+	public final static int SOLVER_TIME_LIMIT_PER_TURN = 2; // Solver time limit (seconds)
 	
 	public final static boolean SHOW_STATE   = true;
 	public final static boolean SHOW_ACTIONS = true;
@@ -32,42 +39,26 @@ public class RTDP extends Policy {
 	
 	// Only for diagnostics, comment this out when evaluating
 	public final static boolean DISPLAY_SPUDD_ADDS_GRAPHVIZ = false;
-	public final static boolean DISPLAY_SPUDD_ADDS_TEXT = true;
+	public final static boolean DISPLAY_SPUDD_ADDS_TEXT = false;
 	
 	public RDDL2Format _translation = null;
 	
 	// Using CString wrapper to speedup hash lookups
 	public ADD _context;
+	public ArrayList<Integer> _allMDPADDs;
 	public ArrayList<CString> _alStateVars;
+	public ArrayList<CString> _alPrimeStateVars;
 	public ArrayList<CString> _alActionNames;
 	public HashMap<CString, Action> _hmActionName2Action; // Holds transition function
-	public int _value  = -1; // Value function ADD
+	
+	// State variables
+	public int _nRemainingHorizon = -1;
 	
 	// Just use the default random seed
 	public Random _rand = new Random();
-	
-	// Action class for MDP definition
-	public class Action {
-		public HashMap<CString,Integer> _hmStateVar2CPT = null; // Map of CPT ADDs
-		public int _reward = -1; // Action-specific reward function ADD
-
-		public Action(HashMap<CString,Integer> cpts, Integer reward) {
-			_hmStateVar2CPT = cpts;
-			_reward = reward;
-		}
 		
-		public String toString() {
-			StringBuilder sb = new StringBuilder();
-			for (CString var : _alStateVars)
-				sb.append("- CPT for state var '" + var + "'\n" + 
-						_context.printNode(_hmStateVar2CPT.get(var)) + "\n");
-			sb.append("- Reward: " + _context.printNode(_reward) + "\n");
-			return sb.toString();
-		}
-	}
-	
 	// Constructors
-	public RTDP () { }
+	public RTDP() { }
 	
 	public RTDP(String instance_name) {
 		super(instance_name);
@@ -75,10 +66,6 @@ public class RTDP extends Policy {
 
 	///////////////////////////////////////////////////////////////////////////
 	//                      Main Action Selection Method
-	//
-	// If you're using Java and the SPUDD / Symbolic Perseus Format, this 
-	// method is the only client method you need to understand to implement
-	// your own custom policy.
 	///////////////////////////////////////////////////////////////////////////
 
 	public ArrayList<PVAR_INST_DEF> getActions(State s) throws EvalException {
@@ -87,59 +74,51 @@ public class RTDP extends Policy {
 
 		if (s == null) {
 			// This should only occur on the **first step** of a POMDP trial
-			// when no observations have been generated, for now, we just
-			// return a 'noop'
-			System.out.println("NO STATE/OBS: taking noop\n\n");
-			return new ArrayList<PVAR_INST_DEF>();
+			System.err.println("ERROR: NO STATE/OBS: MDP must have state.");
+			System.exit(1);
 		}
 		
-		// If the domain is partially observed, we only see observations,
-		// otherwise if it is fully observed, we see the state
-		String fluent_type = s._alObservNames.size() > 0 ? "observ" : "states";
-		
 		// Get a set of all true observation or state variables
-		// Note: for a POMDP, the agent should only see the observations and
-		//       *never* have access to the underlying state.  State information 
-		//       is not provided to a Policy when using the Client/Server interface 
-		//       (to prevent cheating in a competition setting); it *is* provided 
-		//       via the Simulator interface, but it should be ignored for purposes 
-		//       of policy evaluation.
-		TreeSet<String> true_vars = SPerseusSPUDDPolicy.getTrueFluents(s, fluent_type);
+		TreeSet<CString> true_vars = 
+			CString.Convert2CString(SPerseusSPUDDPolicy.getTrueFluents(s, "states"));
 		if (SHOW_STATE) {
 			System.out.println("\n==============================================");
-			System.out.println("\nTrue " + 
-					           (fluent_type.equals("states") ? "state" : "observation") + 
-							   " variables:");
-			for (String prop_var : true_vars)
+			System.out.println("\nTrue state variables:");
+			for (CString prop_var : true_vars)
 				System.out.println(" - " + prop_var);
 		}
 		
 		// Get a map of { legal action names -> RDDL action definition }  
 		Map<String,ArrayList<PVAR_INST_DEF>> action_map = 
 			ActionGenerator.getLegalBoolActionMap(s);
-
-		if (SHOW_STATE) {
-			System.out.println("\nLegal action names:");
-			for (String action_name : action_map.keySet())
-				System.out.println(" - " + action_name);
-		}
 		
-		//////////////////////////// BEGIN RTDP ///////////////////////////////
-		// TODO: We're at a state in a trial, implement RTDP algorithm here
-		//       for value function update and action selection
-		///////////////////////////////////////////////////////////////////////
+		// RTDP algorithm
+		//
+		// Everytime we reach a state, do a number of trials starting from this
+		// state and going to end of horizon.  At each step of trial, compute
+		// local backups and in the process the best action (especially
+		// keep track of for starting state).  Use trick to evaluate then
+		// correct ADD for ADD value update.
 		
-		// (For now, returning a random action selection)
-		ArrayList<String> actions = new ArrayList<String>(action_map.keySet());
-		String action_taken = actions.get(_rand.nextInt(actions.size()));
-		if (SHOW_ACTION_TAKEN)
-			System.out.println("\n--> Action taken: " + action_taken);
+		// Use the precomputed q-functions (cached when the value function
+		// was computed) to determine the best action for this state
+		ArrayList add_state_assign = DDUtils.ConvertTrueVars2DDAssign(_context, true_vars, _alStateVars);
+		String action_taken = doRTDP(SOLVER_TIME_LIMIT_PER_TURN, add_state_assign);
+		if (action_taken == null) {
+			// No RTDP results available, just take random action
+			ArrayList<String> actions = new ArrayList<String>(action_map.keySet());
+			action_taken = actions.get(_rand.nextInt(actions.size()));			
+			if (SHOW_ACTION_TAKEN)
+				System.out.println("\n--> [Random] action taken: " + action_taken);
+		} else if (SHOW_ACTION_TAKEN)
+			System.out.println("\n--> [RTDP] best action taken: " + action_taken);
 		
+		--_nRemainingHorizon; // One less action to take
 		return action_map.get(action_taken);
 	}
 
 	///////////////////////////////////////////////////////////////////////////
-	//                             Trial Signals
+	//                         Round / Session Signals
 	//
 	// If you need to keep track of state information across rounds or sessions, 
 	// just modify these methods.  (Each session consists of total_rounds rounds.)
@@ -150,6 +129,9 @@ public class RTDP extends Policy {
 		System.out.println(">>> ROUND INIT " + round_number + "/" + total_rounds + "; time remaining = " + time_left + ", horizon = " + horizon);
 		System.out.println("*********************************************************");
 				
+		// Reset horizon
+		_nRemainingHorizon = horizon;
+		
 		// Build ADDs for transition, reward and value function (if not already built)
 		if (_translation == null) {
 			
@@ -163,13 +145,16 @@ public class RTDP extends Policy {
 			}
 
 			// Get ADD context and initialize value function ADD
+			_allMDPADDs = new ArrayList<Integer>();
 			_context = _translation._context;
-			_value = _context.getConstantNode(0d); // Initialize to 0			
 
 			// Get the state var and action names
 			_alStateVars = new ArrayList<CString>();
-			for (String s : _translation._alStateVars)
+			_alPrimeStateVars = new ArrayList<CString>();
+			for (String s : _translation._alStateVars) {
 				_alStateVars.add(new CString(s));
+				_alPrimeStateVars.add(new CString(s + "'"));
+			}
 			
 			_alActionNames = new ArrayList<CString>();
 			for (String a : _translation._hmActionMap.keySet())
@@ -185,6 +170,7 @@ public class RTDP extends Policy {
 				ArrayList<Integer> reward_summands = _translation._act2rewardDD.get(a);
 				for (int summand : reward_summands)
 					reward = _context.applyInt(reward, summand, ADD.ARITH_SUM);
+				_allMDPADDs.add(reward);
 				
 				// Build CPTs
 				for (String s : _translation._alStateVars) {
@@ -203,12 +189,14 @@ public class RTDP extends Policy {
 					// Now have "dual action diagram" cpt DD
 					int cpt = _context.applyInt(dd_true, dd_false, ADD.ARITH_SUM);
 
-					cpts.put(new CString(s), cpt);
+					cpts.put(new CString(s + "'"), cpt);
+					_allMDPADDs.add(cpt);
 				}
 				
 				// Build Action and add to HashMap
-				Action action = new Action(cpts, reward);
-				_hmActionName2Action.put(new CString(a), action);
+				CString action_name = new CString(a);
+				Action action = new Action(_context, action_name, cpts, reward);
+				_hmActionName2Action.put(action_name, action);
 			}
 			
 			// Display ADDs on terminal?
@@ -220,16 +208,13 @@ public class RTDP extends Policy {
 					Action action = _hmActionName2Action.get(a);
 					System.out.println("Content of action '" + a + "'\n" + action);
 				}
-				
-				System.out.println("Value ADD: " + _context.printNode(_value));
 			}
 			
 			// Display ADDs in graph visualization window?
 			// (only show a subset... 100's to display otherwise)
 			final int MAX_DISPLAY = 10;
 			if (DISPLAY_SPUDD_ADDS_GRAPHVIZ) {
-				_context.getGraph(_value).launchViewer();
-				int displayed = 1;
+				int displayed = 0;
 				for (CString a : _alActionNames) {
 					Action action = _hmActionName2Action.get(a);
 					
@@ -248,13 +233,20 @@ public class RTDP extends Policy {
 						break;
 				}				
 			}
+			
+			// Initialize RTDP solver
+			resetSolver();
 		}
+		
+		_nRemainingHorizon = _nHorizon;
 	}
 	
 	public void roundEnd(double reward) {
 		System.out.println("\n*********************************************************");
 		System.out.println(">>> ROUND END, reward = " + reward);
 		System.out.println("*********************************************************");
+		
+		//_context.getGraph(_valueDD).launchViewer(1300, 770);
 	}
 	
 	public void sessionEnd(double total_reward) {
@@ -262,4 +254,360 @@ public class RTDP extends Policy {
 		System.out.println(">>> SESSION END, total reward = " + total_reward);
 		System.out.println("*********************************************************");
 	}
+	
+	///////////////////////////////////////////////////////////////////////////
+	//                      Factored Value Iteration Solver
+	///////////////////////////////////////////////////////////////////////////
+	
+	// Local constants
+	public final static int VERBOSE_LEVEL = 0; // Determines how much output is displayed
+	
+	public final static boolean ALWAYS_FLUSH = false; // Always flush DD caches?
+	public final static double FLUSH_PERCENT_MINIMUM = 0.3d; // Won't flush until < this amt
+
+	// For printing
+	public final static DecimalFormat _df = new DecimalFormat("#.###");
+
+	// Timing variables
+	public long _lStartTime; // For timing purposes
+	public int  _nTimeLimitSecs;
+	public static Runtime RUNTIME = Runtime.getRuntime();
+
+	// Local vars
+	public INSTANCE _rddlInstance = null;
+	public int _valueDD;
+	public int _nDDType; // Type of DD to use
+	public int _nTrials;
+	public double _dRewardRange; // Important if approximating
+	public double _dDiscount;
+	public int _nHorizon;
+	public HashMap<Integer,Integer> _hmPrimeVarID2VarID;
+
+	// Initialize all variables (call before starting value iteration)
+	public void resetSolver() {
+		_nTrials = -1;
+		_rddlInstance = _rddl._tmInstanceNodes.get(this._sInstanceName);
+		if (_rddlInstance == null) {
+			System.err.println("ERROR: Could not fine RDDL instance '" + _rddlInstance + "'");
+			System.exit(1);
+		}
+		_dDiscount = _rddlInstance._dDiscount;
+		if (_dDiscount == 1d)
+			_dDiscount = 0.99d;
+		_nHorizon  = _rddlInstance._nHorizon;
+		
+		// In RTDP we need to map from CPT head var (primed) into non-prime state variable
+		_hmPrimeVarID2VarID = new HashMap<Integer,Integer>();
+		for (Map.Entry<String, String> me : _translation._hmPrimeRemap.entrySet()) {
+			String var = me.getKey();
+			String var_prime = me.getValue();
+			Integer var_id = (Integer)_context._hmVarName2ID.get(var);
+			Integer var_prime_id = (Integer)_context._hmVarName2ID.get(var_prime);
+			if (var_id == null || var_prime_id == null) {
+				System.err.println("ERROR: Could not get var IDs " 
+						+ var_id + "/" + var_prime_id
+						+ " for " + var + "/" + var_prime);
+				System.exit(1);
+			}
+			_hmPrimeVarID2VarID.put(var_prime_id, var_id);
+		}
+		
+		_dRewardRange = 0d;
+		for (Action a : _hmActionName2Action.values())
+			_dRewardRange = Math.max(_dRewardRange, 
+					_context.getMaxValue(a._reward) - 
+			        _context.getMinValue(a._reward));
+		
+		// IMPORTANT: RTDP needs **optimistic upper bound initialization**
+		double value_range = (_dDiscount < 1d) 
+			? _dRewardRange / (1d - _dDiscount) // being lazy: assume infinite horizon
+			: _nHorizon * _dRewardRange;        // assume max reward over horizon
+		_valueDD = _context.getConstantNode(value_range);			
+	}
+
+	// Main RTDP Algorithm
+	public String doRTDP(int time_limit_secs, ArrayList init_state) {
+
+		System.out.println("RTDP: Time limit: " + _nTimeLimitSecs + 
+				" seconds, discount: " + _dDiscount + ", horizon: " + 
+				_nRemainingHorizon + "/" + _nHorizon);
+
+		_nTimeLimitSecs = time_limit_secs;
+		_lStartTime = System.currentTimeMillis();
+		CString best_action_init_state = null;
+		
+		try {
+			// Trial depth should be exactly equal to remaining horizon-to-go on this round
+			_nTrials = 0;
+			while(true) {
+				best_action_init_state = doRTDPTrial(_nRemainingHorizon, init_state);
+				_nTrials++;
+			}
+		} catch (TimeOutException e) {
+			System.out.println("RTDP: TIME LIMIT EXCEEDED after " + _nTrials + " trials.");
+		} catch (Exception e) {
+			System.err.println("RTDP: ERROR at " + _nTrials + " trials.");
+			e.printStackTrace(System.err);
+			System.exit(1);
+		} finally {
+			System.out.println("RTDP: Vfun at trial " + _nTrials + ": " + 
+					_context.countExactNodes(_valueDD) + " nodes, best action: " + 
+					best_action_init_state);
+		}
+		
+		// Return the best action for the initial state from the last completed trial
+		return best_action_init_state == null ? null : best_action_init_state._string;
+	}
+	
+	// Run a single RTDP trial, return best action as seen from initial state
+	public CString doRTDPTrial(int trial_depth, ArrayList init_state) throws TimeOutException {
+	
+		CString best_action_init_state = null;
+		
+		//////////////////////////////////////////////////////////////
+		// Iterate until convergence (or max iterations)
+		//////////////////////////////////////////////////////////////
+		ArrayList cur_state = init_state;
+		ArrayList<ArrayList> visited_states = new ArrayList<ArrayList>(_nRemainingHorizon);
+		for (int steps_to_go = _nRemainingHorizon; steps_to_go > 0; steps_to_go--) {
+			
+			//System.out.println("Forward step [" + steps_to_go + "]: " + cur_state);
+			
+			// Flush caches and check time limit
+			flushCaches(); // Only thing to keep is MDP def. and current vfun
+			checkTimeLimit();
+
+			visited_states.add(cur_state);
+			
+			// Compute best action for current state (along with Q-value to backup)
+			QUpdateResult res = getBestQValue(cur_state);
+			if (best_action_init_state == null) // first time through will update
+				best_action_init_state = res._csBestAction;
+			
+			// Update Q-value
+			_valueDD = DDUtils.UpdateValue(_context, _valueDD, cur_state, res._dBestQValue);
+			
+			// Sample next state
+			cur_state = sampleNextState(cur_state, res._csBestAction);
+		}
+		
+		// Do final updates *in reverse* on return
+		for (int depth = visited_states.size() - 1; depth >= 0; depth--) {
+
+			//System.out.println("Reverse step [" + depth + "]: " + cur_state);
+
+			// Flush caches and check time limit
+			flushCaches(); // Only thing to keep is MDP def. and current vfun
+			checkTimeLimit();
+
+			cur_state = visited_states.get(depth);
+
+			// Update Q-value for each state
+			QUpdateResult res = getBestQValue(cur_state);
+			_valueDD = DDUtils.UpdateValue(_context, _valueDD, cur_state, res._dBestQValue);
+			
+			// If back to initial state then update best action
+			if (depth == 0) 
+				best_action_init_state = res._csBestAction;
+		}
+
+		// All of the RTDP updates were just to find out best action from initial state
+		// (as a byproduct, we've updated the value function via asychronous DP for
+		//  reuse on the next step of this trial and other trials)
+		return best_action_init_state;
+	}
+	
+	public static class QUpdateResult {
+		public CString _csBestAction;
+		public double  _dBestQValue;
+		public QUpdateResult(CString best_action, double best_qvalue) {
+			_csBestAction = best_action;
+			_dBestQValue  = best_qvalue;
+		}
+	}
+
+	public QUpdateResult getBestQValue(ArrayList cur_state) {
+		
+		int prime_vfun = _context.remapGIDsInt(_valueDD, _translation._hmPrimeRemap);
+
+		QUpdateResult result = new QUpdateResult(null, -Double.MAX_VALUE); 
+		for (Map.Entry<CString, Action> me : _hmActionName2Action.entrySet()) {
+			Action a = me.getValue();
+			double qvalue = getQValue(prime_vfun, cur_state, a._csActionName);
+			if (result._csBestAction == null || qvalue > result._dBestQValue) { 
+				result._csBestAction = a._csActionName;
+				result._dBestQValue = qvalue;
+			}
+			//System.out.println("- " +a._csActionName + "(" + qvalue + ")");
+		}
+		//System.out.println("=> " + result._csBestAction + "(" + result._dBestQValue + ")");
+		return result;
+	}
+
+	public double getQValue(int prime_vfun, ArrayList cur_state, CString action) {
+		
+		Action a = _hmActionName2Action.get(action);
+		
+		// Find what gids (ADD level assignments of variables) are currently in vfun
+		Set vfun_gids = _context.getGIDs(prime_vfun);
+
+		// Show debug info if required
+		if (VERBOSE_LEVEL >= 1) {
+			System.out.println("Regressing action: " + a._csActionName + "\nGIDs: " + vfun_gids);
+			System.out.println("Before sum out: " + _context.printNode(prime_vfun));
+		}
+
+		// Get CPT for each next state variable, restrict out current
+		// state and multiply into dd_ret... result should be a constant
+		// that is discounted, added to reward and returned
+
+		//////////////////////////////////////////////////////////////
+		// For each next-state variable in DBN for action 'a'
+		//////////////////////////////////////////////////////////////
+		for (Map.Entry<Integer, Integer> me : a._hmVarID2CPT.entrySet()) {
+			
+			int head_var_gid = me.getKey();
+			int cpt_dd = me.getValue();
+			
+			// No need to regress variables not in the value function  
+			if (!vfun_gids.contains(head_var_gid)) {
+				if (VERBOSE_LEVEL >= 1) {
+					System.out.println("Skipping " + _context._hmID2VarName.get(head_var_gid) + " / " + head_var_gid);
+					System.out.println("... not in " + vfun_gids);
+				}
+				continue;
+			}
+
+			// For each CPT, evaluate in current state for next state variable true
+			int level_prime = (Integer)_context._hmGVarToLevel.get(head_var_gid);
+			cur_state.set(level_prime, true);
+			double prob_true = _context.evaluate(cpt_dd, cur_state);
+			if (Double.isNaN(prob_true)) {
+				System.err.println("ERROR in RTDP.sampleNextState: Expected single value when evaluating: " + cur_state);
+				//System.err.println("in " + context.printNode(cpt_dd));
+				System.exit(1);
+			}
+			cur_state.set(level_prime, null); // Undo so as not to change current_state
+			int restricted_cpt_dd = _context.getVarNode(head_var_gid, 1d - prob_true, prob_true);
+
+			// Show debug info if required
+			if (VERBOSE_LEVEL >= 2)
+				System.out.println("  - Summing out: " + _context._hmID2VarName.get(head_var_gid));
+
+			///////////////////////////////////////////////////////////////////
+			// Multiply next state variable DBN into current value function
+			///////////////////////////////////////////////////////////////////
+			prime_vfun = _context.applyInt(prime_vfun, restricted_cpt_dd, DD.ARITH_PROD);
+
+			///////////////////////////////////////////////////////////////////
+			// Sum out next state variable
+			///////////////////////////////////////////////////////////////////
+			prime_vfun = _context.opOut(prime_vfun, head_var_gid, DD.ARITH_SUM);
+		}
+		
+		if (VERBOSE_LEVEL >= 1) 
+			System.out.println("After sum out: " + _context.printNode(prime_vfun));
+
+		// Get action-dependent reward
+		double exp_future_val = 
+			_context.evaluate(prime_vfun, (ArrayList)null) /* constant - no var assign needed */; 
+		double reward = _context.evaluate(a._reward, cur_state);
+		
+		// Return regressed value for current state
+		return reward + _dDiscount * exp_future_val;
+	}
+
+	// For now we assume that the ADD transition functions for all
+	// actions apply in every state... will have to revisit this later
+	// w.r.t. RDDL's state-action constraints
+	public ArrayList sampleNextState(ArrayList current_state, CString action) {
+		
+		Action a = _hmActionName2Action.get(action);
+		ArrayList next_state = (ArrayList)current_state.clone(); // ensure correct size
+		
+		// Sample each next state variable to build a new state
+		for (Map.Entry<Integer, Integer> me : a._hmVarID2CPT.entrySet()) {
+			int prime_var_id = me.getKey();
+			int cpt_dd = me.getValue();
+			
+			// For each CPT, evaluate in current state for next state variable true
+			int level_prime = (Integer)_context._hmGVarToLevel.get(prime_var_id);
+			current_state.set(level_prime, true);
+			double prob_true = _context.evaluate(cpt_dd, current_state);
+			if (Double.isNaN(prob_true)) {
+				System.err.println("ERROR in RTDP.sampleNextState: Expected single value when evaluating: " + current_state);
+				//System.err.println("in " + context.printNode(cpt_dd));
+				System.exit(1);
+			}
+			current_state.set(level_prime, null); // Undo so as not to change current_state
+			
+			// Draw sample
+			boolean is_true = _random.nextDouble() < prob_true; 
+			
+			// Assign truth value to level for unprimed variable
+			int var_id = _hmPrimeVarID2VarID.get(prime_var_id);
+			int level_unprime = (Integer)_context._hmGVarToLevel.get(var_id);
+			next_state.set(level_unprime, is_true);
+		}
+		
+		return next_state;
+	}
+		
+	////////////////////////////////////////////////////////////////////////////
+	// DD Cache Maintenance for MDPs
+	////////////////////////////////////////////////////////////////////////////
+
+	// Frees up memory... only do this if near limit?
+	public void flushCaches() {
+		if (!ALWAYS_FLUSH
+				&& ((double) RUNTIME.freeMemory() / (double) RUNTIME
+						.totalMemory()) > FLUSH_PERCENT_MINIMUM) {
+			return; // Still enough free mem to exceed minimum requirements
+		}
+
+		_context.clearSpecialNodes();
+		for (Integer dd : _allMDPADDs)
+			_context.addSpecialNode(dd);
+		_context.addSpecialNode(_valueDD);
+
+		_context.flushCaches(false);
+	}
+	
+	////////////////////////////////////////////////////////////////////////////
+	// Miscellaneous helper methods
+	////////////////////////////////////////////////////////////////////////////
+
+	public void checkTimeLimit() throws TimeOutException {
+		double elapsed_time = (System.currentTimeMillis() - _lStartTime) / 1000d;
+		if (elapsed_time > (double)_nTimeLimitSecs)
+			throw new TimeOutException("Elapsed time " + elapsed_time + " (s) exceeded time limit of " + _nTimeLimitSecs + " (s)");
+	}
+	
+	public static String MemDisplay() {
+		long total = RUNTIME.totalMemory();
+		long free = RUNTIME.freeMemory();
+		return total - free + ":" + total;
+	}
+
+	///////////////////////////////////////////////////////////////////////
+	// Notes on RDDL translation and how it affects RTDP/other algorithms:
+	//
+	// RDDL2Format's SPUDD translation enforces that only legal
+	// joint actions are generated if the problem is concurrent
+	// * need to think about how concurrent translation will work
+	//
+	// In future will need to generate masks for legal actions
+	// and states:
+	//
+	// * the translator currently *ignores* whether actions
+	// are not legal in certain states (generic ADD transition
+	// does not know this)... two choices
+	// - need a legal action mask for states
+	// - never define joint state-action constraints
+	//
+	// * state constraints like (robot only in one location)
+	// are currently *ignored* and lead to inefficiency for
+	// algorithms like VI where initial state information not
+	// exploited (really need to generate a legal state mask)
+	///////////////////////////////////////////////////////////////////////
 }

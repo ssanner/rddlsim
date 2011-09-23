@@ -1,0 +1,225 @@
+////////////////////////////////////////////////////////////////////
+// TRAFFIC MODEL (WITH MERGE, DIVERGE AND CONTROL SIGNAL)
+// 
+// @author Tan Nguyen (tan1889@gmail.com)
+// @version 6-May-11
+////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////  
+// ONE WAY GRID OF 3x3 INTERSECTIONS
+////////////////////////////////////////////////////////////////////  
+ 
+non-fluents grid_h_h {
+	domain = traffic;
+	objects {
+		cell : {
+			R_0_5, R_0_11, R_0_17, R_1_5, R_1_11, R_1_17, R_2_5, R_2_11, 
+			R_2_17, R_3_5, R_3_11, R_3_17, R_4_5, R_4_11, R_4_17, D_5_0, 
+			D_5_1, D_5_2, D_5_3, D_5_4, D_5_6, D_5_7, D_5_8, D_5_9, D_5_10, 
+			D_5_12, D_5_13, D_5_14, D_5_15, D_5_16, D_5_18, D_5_19, D_5_20, 
+			D_5_21, D_5_22, R_6_5, R_6_11, R_6_17, R_7_5, R_7_11, R_7_17, 
+			R_8_5, R_8_11, R_8_17, R_9_5, R_9_11, R_9_17, R_10_5, R_10_11, 
+			R_10_17, D_11_0, D_11_1, D_11_2, D_11_3, D_11_4, D_11_6, D_11_7, 
+			D_11_8, D_11_9, D_11_10, D_11_12, D_11_13, D_11_14, D_11_15, 
+			D_11_16, D_11_18, D_11_19, D_11_20, D_11_21, D_11_22, R_12_5, 
+			R_12_11, R_12_17, R_13_5, R_13_11, R_13_17, R_14_5, R_14_11, 
+			R_14_17, R_15_5, R_15_11, R_15_17, R_16_5, R_16_11, R_16_17, 
+			D_17_0, D_17_1, D_17_2, D_17_3, D_17_4, D_17_6, D_17_7, D_17_8, 
+			D_17_9, D_17_10, D_17_12, D_17_13, D_17_14, D_17_15, D_17_16, 
+			D_17_18, D_17_19, D_17_20, D_17_21, D_17_22, R_18_5, R_18_11, 
+			R_18_17, R_19_5, R_19_11, R_19_17, R_20_5, R_20_11, R_20_17, 
+			R_21_5, R_21_11, R_21_17, R_22_5, R_22_11, R_22_17
+		};
+		intersection : {
+			I_5_5, I_11_5, I_17_5, I_5_11, I_11_11, I_17_11, I_5_17, I_11_17, I_17_17
+		};
+	};
+
+	non-fluents {
+		FIRST(R_0_5);
+		k(R_0_5) = 10000.0;
+		NEXT(R_0_5, R_1_5);
+		FIRST(R_0_11);
+		k(R_0_11) = 10000.0;
+		NEXT(R_0_11, R_1_11);
+		FIRST(R_0_17);
+		k(R_0_17) = 10000.0;
+		NEXT(R_0_17, R_1_17);
+		NEXT(R_1_5, R_2_5);
+		NEXT(R_1_11, R_2_11);
+		NEXT(R_1_17, R_2_17);
+		NEXT(R_2_5, R_3_5);
+		NEXT(R_2_11, R_3_11);
+		NEXT(R_2_17, R_3_17);
+		NEXT(R_3_5, R_4_5);
+		NEXT(R_3_11, R_4_11);
+		NEXT(R_3_17, R_4_17);
+		NEXT(R_4_5, R_6_5);
+		NEXT(R_4_11, R_6_11);
+		NEXT(R_4_17, R_6_17);
+		FIRST(D_5_0);
+		k(D_5_0) = 10000.0;
+		NEXT(D_5_0, D_5_1);
+		NEXT(D_5_1, D_5_2);
+		NEXT(D_5_2, D_5_3);
+		NEXT(D_5_3, D_5_4);
+		NEXT(D_5_4, D_5_6);
+		NEXT(D_5_6, D_5_7);
+		NEXT(D_5_7, D_5_8);
+		NEXT(D_5_8, D_5_9);
+		NEXT(D_5_9, D_5_10);
+		NEXT(D_5_10, D_5_12);
+		NEXT(D_5_12, D_5_13);
+		NEXT(D_5_13, D_5_14);
+		NEXT(D_5_14, D_5_15);
+		NEXT(D_5_15, D_5_16);
+		NEXT(D_5_16, D_5_18);
+		NEXT(D_5_18, D_5_19);
+		NEXT(D_5_19, D_5_20);
+		NEXT(D_5_20, D_5_21);
+		NEXT(D_5_21, D_5_22);
+		LAST(D_5_22);
+		k(D_5_22) = 9999.0;
+		NEXT(R_6_5, R_7_5);
+		NEXT(R_6_11, R_7_11);
+		NEXT(R_6_17, R_7_17);
+		NEXT(R_7_5, R_8_5);
+		NEXT(R_7_11, R_8_11);
+		NEXT(R_7_17, R_8_17);
+		NEXT(R_8_5, R_9_5);
+		NEXT(R_8_11, R_9_11);
+		NEXT(R_8_17, R_9_17);
+		NEXT(R_9_5, R_10_5);
+		NEXT(R_9_11, R_10_11);
+		NEXT(R_9_17, R_10_17);
+		NEXT(R_10_5, R_12_5);
+		NEXT(R_10_11, R_12_11);
+		NEXT(R_10_17, R_12_17);
+		FIRST(D_11_0);
+		k(D_11_0) = 10000.0;
+		NEXT(D_11_0, D_11_1);
+		NEXT(D_11_1, D_11_2);
+		NEXT(D_11_2, D_11_3);
+		NEXT(D_11_3, D_11_4);
+		NEXT(D_11_4, D_11_6);
+		NEXT(D_11_6, D_11_7);
+		NEXT(D_11_7, D_11_8);
+		NEXT(D_11_8, D_11_9);
+		NEXT(D_11_9, D_11_10);
+		NEXT(D_11_10, D_11_12);
+		NEXT(D_11_12, D_11_13);
+		NEXT(D_11_13, D_11_14);
+		NEXT(D_11_14, D_11_15);
+		NEXT(D_11_15, D_11_16);
+		NEXT(D_11_16, D_11_18);
+		NEXT(D_11_18, D_11_19);
+		NEXT(D_11_19, D_11_20);
+		NEXT(D_11_20, D_11_21);
+		NEXT(D_11_21, D_11_22);
+		LAST(D_11_22);
+		k(D_11_22) = 9999.0;
+		NEXT(R_12_5, R_13_5);
+		NEXT(R_12_11, R_13_11);
+		NEXT(R_12_17, R_13_17);
+		NEXT(R_13_5, R_14_5);
+		NEXT(R_13_11, R_14_11);
+		NEXT(R_13_17, R_14_17);
+		NEXT(R_14_5, R_15_5);
+		NEXT(R_14_11, R_15_11);
+		NEXT(R_14_17, R_15_17);
+		NEXT(R_15_5, R_16_5);
+		NEXT(R_15_11, R_16_11);
+		NEXT(R_15_17, R_16_17);
+		NEXT(R_16_5, R_18_5);
+		NEXT(R_16_11, R_18_11);
+		NEXT(R_16_17, R_18_17);
+		FIRST(D_17_0);
+		k(D_17_0) = 10000.0;
+		NEXT(D_17_0, D_17_1);
+		NEXT(D_17_1, D_17_2);
+		NEXT(D_17_2, D_17_3);
+		NEXT(D_17_3, D_17_4);
+		NEXT(D_17_4, D_17_6);
+		NEXT(D_17_6, D_17_7);
+		NEXT(D_17_7, D_17_8);
+		NEXT(D_17_8, D_17_9);
+		NEXT(D_17_9, D_17_10);
+		NEXT(D_17_10, D_17_12);
+		NEXT(D_17_12, D_17_13);
+		NEXT(D_17_13, D_17_14);
+		NEXT(D_17_14, D_17_15);
+		NEXT(D_17_15, D_17_16);
+		NEXT(D_17_16, D_17_18);
+		NEXT(D_17_18, D_17_19);
+		NEXT(D_17_19, D_17_20);
+		NEXT(D_17_20, D_17_21);
+		NEXT(D_17_21, D_17_22);
+		LAST(D_17_22);
+		k(D_17_22) = 9999.0;
+		NEXT(R_18_5, R_19_5);
+		NEXT(R_18_11, R_19_11);
+		NEXT(R_18_17, R_19_17);
+		NEXT(R_19_5, R_20_5);
+		NEXT(R_19_11, R_20_11);
+		NEXT(R_19_17, R_20_17);
+		NEXT(R_20_5, R_21_5);
+		NEXT(R_20_11, R_21_11);
+		NEXT(R_20_17, R_21_17);
+		NEXT(R_21_5, R_22_5);
+		NEXT(R_21_11, R_22_11);
+		NEXT(R_21_17, R_22_17);
+		LAST(R_22_5);
+		k(R_22_5) = 9999.0;
+		LAST(R_22_11);
+		k(R_22_11) = 9999.0;
+		LAST(R_22_17);
+		k(R_22_17) = 9999.0;
+
+		FLOWS-TO-INTERSECTION (R_4_5, I_5_5, @WEST-EAST);
+		FLOWS-TO-INTERSECTION (D_5_4, I_5_5, @NORTH-SOUTH);
+		FLOWS-TO-INTERSECTION (R_10_5, I_11_5, @WEST-EAST);
+		FLOWS-TO-INTERSECTION (D_11_4, I_11_5, @NORTH-SOUTH);
+		FLOWS-TO-INTERSECTION (R_16_5, I_17_5, @WEST-EAST);
+		FLOWS-TO-INTERSECTION (D_17_4, I_17_5, @NORTH-SOUTH);
+
+		FLOWS-TO-INTERSECTION (R_4_11, I_5_11, @WEST-EAST);
+		FLOWS-TO-INTERSECTION (D_5_10, I_5_11, @NORTH-SOUTH);
+		FLOWS-TO-INTERSECTION (R_10_11, I_11_11, @WEST-EAST);
+		FLOWS-TO-INTERSECTION (D_11_10, I_11_11, @NORTH-SOUTH);
+		FLOWS-TO-INTERSECTION (R_16_11, I_17_11, @WEST-EAST);
+		FLOWS-TO-INTERSECTION (D_17_10, I_17_11, @NORTH-SOUTH);
+		
+		FLOWS-TO-INTERSECTION (R_4_17, I_5_17, @WEST-EAST);
+		FLOWS-TO-INTERSECTION (D_5_16, I_5_17, @NORTH-SOUTH);
+		FLOWS-TO-INTERSECTION (R_10_17, I_11_17, @WEST-EAST);
+		FLOWS-TO-INTERSECTION (D_11_16, I_11_17, @NORTH-SOUTH);
+		FLOWS-TO-INTERSECTION (R_16_17, I_17_17, @WEST-EAST);
+		FLOWS-TO-INTERSECTION (D_17_16, I_17_17, @NORTH-SOUTH);
+
+		k(R_1_5) = 0.3;
+		k(R_1_11) = 0.3;
+		k(R_1_17) = 0.3;
+		k(D_5_1) = 0.3;
+		k(D_17_1) = 0.3;
+		k(D_11_1) = 0.3;
+
+	};
+}
+
+instance is_trf_grid_h_h {
+
+	domain = traffic;	
+	non-fluents = grid_h_h;
+	init-state { 
+		n(R_0_5) = 50000.0; 
+		n(R_0_11) = 50000.0; 
+		n(R_0_17) = 50000.0; 
+		n(D_5_0) = 50000.0; 
+		n(D_11_0) = 50000.0; 
+		n(D_17_0) = 50000.0; 
+	};
+  
+	max-nondef-actions = 10;
+	horizon  = 2000;
+	discount = 1.0;
+}

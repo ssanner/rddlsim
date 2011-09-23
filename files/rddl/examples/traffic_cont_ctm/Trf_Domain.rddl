@@ -1,0 +1,130 @@
+////////////////////////////////////////////////////////////////////
+// TRAFFIC MODEL (WITH MERGE, DIVERGE AND CONTROL SIGNAL)
+// 
+// @author Tan Nguyen (tan1889@gmail.com)
+// @version 6-May-11
+////////////////////////////////////////////////////////////////////
+
+domain traffic {
+  	
+	requirements = { 
+		cpf-deterministic, 
+		reward-deterministic,
+		integer-valued,
+		continuous,
+		intermediate-nodes };
+
+	types { 
+		cell : object;
+		intersection : object;
+		signal-phase : {@ALL-RED, @WEST-EAST, @ALL-RED2, @NORTH-SOUTH};
+	};
+      	
+	pvariables {
+
+		w(cell) : { non-fluent, real, default = 40.0 };		// shock-wave speed (m/s) w>v
+		v(cell) : { non-fluent, real, default = 20.0 };		// free-flow speed (m/s)
+		l(cell) : { non-fluent, real, default = 80.0 };		// Length of the cell (m) 
+		k(cell): { non-fluent, real, default = 0.3 };		// Jam (max) density of the cell (cars/m), here assuming 3 lanes
+		p(cell, cell): { non-fluent, real, default = 0.0 };	// only for merges and diverges: probability of flow from c1 -> c2, 
+				
+		NEXT(cell, cell) : { non-fluent, bool, default = false };	// does cell x flow to cell y		
+		FIRST(cell) : { non-fluent, bool, default = false };		// is cell x the first cell (sending traffic)
+		LAST(cell) : { non-fluent, bool, default = false };			// is cell y the last cell (receving traffic)
+		MERGE-CELL(cell) : { non-fluent, bool, default = false };	// is cell x the merge cell
+		DIVERGE-CELL(cell) : { non-fluent, bool, default = false };	// is cell x the diverge cell
+			
+		signal(intersection) : { action-fluent, signal-phase, default = @ALL-RED };
+		FLOWS-TO-INTERSECTION(cell, intersection, signal-phase)  : { non-fluent, bool, default = false };
+
+		n(cell) : { state-fluent, real, default = 0.0 };		// Actual number of cars in cell
+		
+		send(cell) : { interm-fluent, real, level = 1 }; 		// Sending capacity
+		recv(cell) : { interm-fluent, real, level = 1 };		// Receiving capacity
+		flow(cell, cell) : { interm-fluent, real, level = 2 };	// Flow into a cell
+	};
+  
+	cdfs {
+		
+		// calculate the send capacity of each cell
+		send(?c) = 	if (v(?c) * n(?c)/l(?c)< v(?c) * k(?c)) then 
+						v(?c) * n(?c)/l(?c)
+					else  
+						v(?c) * k(?c);
+		
+		// calculate the receiving capacity of each cell				 	 
+		recv(?c) = 	if (v(?c) * k(?c) < w(?c) * (k(?c) - (n(?c)/l(?c)))) then 
+						v(?c) * k(?c) 
+					else 
+						w(?c) * (k(?c) - (n(?c)/l(?c)));
+
+		// calculate the actual flow from cell c1 to cell c2
+		flow(?c1, ?c2) = 	if (NEXT(?c1, ?c2)) then (
+		
+								// cell flows to intersection without green light -> flow = 0
+								if (exists_{?i : intersection, ?s : signal-phase} [FLOWS-TO-INTERSECTION(?c1,?i,?s) ^ (?s ~= signal(?i))]) then
+									0.0 
+									
+								// cell flows to a merge cell (exactly two cells flow into a merge cell!)								
+								else if (MERGE-CELL(?c2)) then (
+									if (exists_{?c3 : cell} NEXT(?c3,?c2) ^ (?c3 ~= ?c1)) then (
+										if (p(?c1, ?c2) == 0) then
+											0.0
+										else if (recv(?c2) > send(?c1) + [sum_{?c3: cell} send(?c3) * (NEXT(?c3,?c2) ^ (?c3 ~= ?c1))]) then
+											send(?c1)
+										else if (((send(?c1) >= recv(?c2) - [sum_{?c3: cell} send(?c3) * (NEXT(?c3,?c2) ^ (?c3 ~= ?c1))]) 
+													^ (recv(?c2) - [sum_{?c3: cell} send(?c3) * (NEXT(?c3,?c2) ^ (?c3 ~= ?c1))] >= p(?c1, ?c2)*recv(?c2)))
+												 | ((p(?c1, ?c2)*recv(?c2) >= recv(?c2) - [sum_{?c3: cell} send(?c3) * (NEXT(?c3,?c2) ^ (?c3 ~= ?c1))]) 
+													^ (recv(?c2) - [sum_{?c3: cell} send(?c3) * (NEXT(?c3,?c2) ^ (?c3 ~= ?c1))] >= send(?c1)))) then
+											recv(?c2) - [sum_{?c3: cell} send(?c3) * (NEXT(?c3,?c2) ^ (?c3 ~= ?c1))]
+										else if (((recv(?c2) - [sum_{?c3: cell} send(?c3) * (NEXT(?c3,?c2) ^ (?c3 ~= ?c1))] >= send(?c1)) 
+													^ (send(?c1) >= p(?c1, ?c2)*recv(?c2)))
+												| ((p(?c1, ?c2)*recv(?c2) >= send(?c1)) 
+													^ (send(?c1) >= recv(?c2) - [sum_{?c3: cell} send(?c3) * (NEXT(?c3,?c2) ^ (?c3 ~= ?c1))]))) then
+											send(?c1)
+										else
+											p(?c1, ?c2) * recv(?c2)										
+						 			)
+						 			else 
+						 				0.0
+						 		)
+						 		
+						 		// flow of a diverge cell = predefined percentage
+						 		else if (DIVERGE-CELL(?c1)) then (
+									if (p(?c1, ?c2) * send(?c1) < recv(?c2)) then 
+										p(?c1, ?c2) * send(?c1)
+									else 
+										recv(?c2)		 			
+						 		)
+						 		
+						 		// other cases = normal cell -> min {send, receive}
+								else (
+									if (send(?c1) < recv(?c2)) then 
+										send(?c1)
+									else 
+										recv(?c2)
+								)
+							)
+							else 
+								0.0;				
+				
+	    n'(?c) = n(?c) 	+ [sum_{?c1 : cell} flow(?c1, ?c) * NEXT(?c1, ?c)]
+	    				- [sum_{?c2 : cell} flow(?c, ?c2) * NEXT(?c, ?c2)];	    					    				
+	    				
+	};
+    	
+	state-action-constraints {
+		// ensure exactly two cells flow into a merge cell
+		forall_{?c : cell} [MERGE-CELL(?c) 
+				=> ((sum_{?c1 : cell} NEXT(?c1, ?c)) == 2)];
+		// ensure a diverge cell flows into exactly two cells
+		forall_{?c : cell} [DIVERGE-CELL(?c) 
+				=> ((sum_{?c2 : cell} NEXT(?c, ?c2)) == 2)];
+		// ensure other (normal) cells flow into exactly one cell
+		forall_{?c : cell} [(~DIVERGE-CELL(?c) ^ ~MERGE-CELL(?c) ^ ~LAST(?c)) 
+				=> ((sum_{?c2 : cell} NEXT(?c, ?c2)) == 1)];
+	};    	    	
+    	
+    // reward is number of cars gone through (arrived at last cell)
+	reward = sum_{?c : cell} n(?c) * (LAST(?c));
+}
