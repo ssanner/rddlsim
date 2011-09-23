@@ -4,6 +4,7 @@
  * @author Scott Sanner (ssanner [at] gmail.com)
  * @version 9/18/11
  *
+ * ./run rddl.sim.Simulator files/rddl/test/ rddl.solver.mdp.vi.VI sysadmin_test1 rddl.viz.SysAdminScreenDisplay
  **/
 
 package rddl.solver.mdp.vi;
@@ -274,7 +275,7 @@ public class VI extends Policy {
 	///////////////////////////////////////////////////////////////////////////
 	
 	// Local constants
-	public final static int VERBOSE_LEVEL = 0; // Determines how much output is displayed
+	public final static int VERBOSE_LEVEL = 1; // Determines how much output is displayed
 	
 	public final static boolean ALWAYS_FLUSH = false; // Always flush DD caches?
 	public final static double FLUSH_PERCENT_MINIMUM = 0.3d; // Won't flush until < this amt
@@ -422,17 +423,10 @@ public class VI extends Policy {
 							+ _context.getCacheSize() + " cache");
 				}
 			}
-			
-			//////////////////////////////////////////////////////////////
-			// Discount the max'ed value function
-			//////////////////////////////////////////////////////////////
-			if (_dDiscount < 1d)
-				_valueDD = _context.scalarMultiply(_maxDD, _dDiscount);
-			else 
-				_valueDD = _maxDD;
 
 			// We've done a full update of value DD, increment iteration counter
 			// and update the cached Q-functions with the new ones
+			_valueDD = _maxDD;
 			_hmAct2Regr = temp_regr;
 			_nIter++;
 			
@@ -487,21 +481,15 @@ public class VI extends Policy {
 		//////////////////////////////////////////////////////////////
 		// For each next-state variable in DBN for action 'a'
 		//////////////////////////////////////////////////////////////
-		for (Map.Entry<CString, Integer> me : a._hmStateVar2CPT.entrySet()) {
+		for (Map.Entry<Integer, Integer> me : a._hmVarID2CPT.entrySet()) {
 			
-			CString cpt_head_var_name = me.getKey();
 			Integer cpt_dd  = me.getValue();
-
-			Integer head_var_gid = (Integer)_context._hmVarName2ID.get(cpt_head_var_name.toString());
-			if (head_var_gid == null) {
-				System.err.println("ERROR: No gid for CPT head variable " + cpt_head_var_name);
-				System.exit(1);
-			}
+			Integer head_var_gid = me.getKey();
 			
 			// No need to regress variables not in the value function  
 			if (!vfun_gids.contains(head_var_gid)) {
 				if (VERBOSE_LEVEL >= 1) {
-					System.out.println("Skipping " + cpt_head_var_name + " / " + head_var_gid);
+					System.out.println("Skipping " + _context._hmID2VarName.get(head_var_gid) + " / " + head_var_gid);
 					System.out.println("... not in " + vfun_gids);
 				}
 				continue;
@@ -509,7 +497,7 @@ public class VI extends Policy {
 
 			// Show debug info if required
 			if (VERBOSE_LEVEL >= 2)
-				System.out.println("  - Summing out: " + cpt_head_var_name);
+				System.out.println("  - Summing out: " + _context._hmID2VarName.get(head_var_gid));
 
 			///////////////////////////////////////////////////////////////////
 			// Multiply next state variable DBN into current value function
@@ -529,6 +517,10 @@ public class VI extends Policy {
 			flushCaches();
 			checkTimeLimit();
 		}
+		
+		// Discount the regressed function (if needed)
+		if (_dDiscount < 1d)
+			dd_ret = _context.scalarMultiply(dd_ret, _dDiscount);
 
 		// Add in action-dependent reward
 		dd_ret = _context.applyInt(dd_ret, a._reward, DD.ARITH_SUM);

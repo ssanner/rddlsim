@@ -1,6 +1,7 @@
 package rddl.solver.mdp;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import dd.discrete.DD;
 
@@ -12,6 +13,7 @@ public class Action {
 	public DD _context;
 	public CString _csActionName;
 	public HashMap<CString,Integer> _hmStateVar2CPT = null; // Map of CPT ADDs
+	public HashMap<Integer,Integer> _hmVarID2CPT    = null; // Map of CPT ADDs
 	public int _reward = -1; // Action-specific reward function ADD
 
 	public Action(DD context, CString name, 
@@ -20,6 +22,17 @@ public class Action {
 		_csActionName = name;
 		_hmStateVar2CPT = cpts;
 		_reward = reward;
+		
+		// Create a second map by VarID (saves hash lookups in some cases)
+		_hmVarID2CPT = new HashMap<Integer,Integer>();
+		for (Map.Entry<CString, Integer> me : _hmStateVar2CPT.entrySet()) {
+			Integer var_id = (Integer)context._hmVarName2ID.get(me.getKey()._string);
+			if (var_id == null) {
+				System.err.println("ERROR in Action(): could not find var ID for " + me.getKey());
+				System.exit(1);
+			}
+			_hmVarID2CPT.put(var_id, me.getValue());
+		}
 	}
 	
 	public String toString() {

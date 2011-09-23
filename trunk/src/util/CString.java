@@ -1,6 +1,6 @@
 /** This class is for interned strings -- it hashes and tests equality much
  *  faster than the standard String class.  (Speeds up code up to 7x in my
- *  exprience).
+ *  experience).
  *  
  *  @author ssanner@gmail.com
  */
