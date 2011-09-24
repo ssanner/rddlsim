@@ -37,7 +37,7 @@ import util.Pair;
 
 public class VI extends Policy {
 	
-	public final static int SOLVER_TIME_LIMIT = 10; // Solver time limit (seconds)
+	public final static int SOLVER_TIME_LIMIT = 40; // Solver time limit (seconds)
 	
 	public final static boolean SHOW_STATE   = true;
 	public final static boolean SHOW_ACTIONS = true;
