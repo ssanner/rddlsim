@@ -30,8 +30,8 @@ public class CString implements Comparable {
 			return false;
 	}
 
-	@Override
 	public int compareTo(Object o) {
+		// TODO Auto-generated method stub
 		if (o instanceof CString)
 			return this._string.compareTo(((CString)o)._string);
 		else
@@ -55,4 +55,5 @@ public class CString implements Comparable {
 			ret.add(new CString(s));
 		return ret;
 	}
+
 }

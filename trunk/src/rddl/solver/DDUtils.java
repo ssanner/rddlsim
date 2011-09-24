@@ -3,7 +3,15 @@ package rddl.solver;
 import java.util.ArrayList;
 import java.util.Set;
 
+import java.util.HashMap;
+import java.util.Iterator;
+
 import dd.discrete.DD;
+import dd.discrete.ADDDNode;
+import dd.discrete.ADDNode;
+import dd.discrete.ADDINode;
+import dd.discrete.ADDBNode;
+import dd.discrete.ADD;
 
 import util.CString;
 
@@ -69,4 +77,60 @@ public class DDUtils {
 		}
 		return dd;
 	}
+	
+    /*Insert a number in an ADD branch given a list of variable assignments
+     *  
+     */
+	public static int insertValueInDD(int F, ArrayList state, double value, Iterator it, HashMap<String,String> hmPrimeRemap, ADD _context) {
+		int Fh, Fl;
+		if (!it.hasNext()){//means that we are in a leaf then we need to replace the value
+			return _context.getConstantNode(value);
+		}
+		String varStr = (String)it.next();
+		Integer var=(Integer)_context._hmVarName2ID.get(varStr);
+		Object valueVar =state.get((Integer)_context._hmGVarToLevel.get(var));
+		Boolean val=(valueVar != null) && (Boolean)valueVar;
+		Integer varPrime= (Integer)_context._hmVarName2ID.get(hmPrimeRemap.get(varStr));
+		if(varPrime==null){ // this was inserted for RTDPEnum and BRTDPEnum in order to use it for states with prime or non-prime variables
+			varPrime=var;
+		}
+		ADDNode cur = _context.getNode(F);
+		if((cur instanceof ADDDNode) || (cur instanceof ADDBNode)){
+			// means that we need to create the nodes with the remain variables
+			if (val==true){
+				Fh = insertValueInDD(F, state, value, it, hmPrimeRemap, _context);
+				Fl = F;
+			}
+			else {
+				Fh = F;
+				Fl = insertValueInDD(F, state, value, it,hmPrimeRemap, _context);
+			}
+			return _context.getINode(varPrime, Fl, Fh, true);
+		}
+		ADDINode cur1 =  (ADDINode)_context.getNode(F);
+		Integer Fvar= cur1._nTestVarID;
+		if(Fvar.compareTo(varPrime)==0){
+			if (val==true){
+				Fh = insertValueInDD(cur1._nHigh, state, value, it,hmPrimeRemap, _context);
+				Fl = cur1._nLow;
+			}
+			else {
+				Fh =cur1._nHigh;
+				Fl = insertValueInDD(cur1._nLow, state, value, it,hmPrimeRemap, _context);
+			}			
+			return _context.getINode(varPrime,Fl,Fh, true);
+
+		}
+		if (val==true){
+			Fh = insertValueInDD(F, state, value, it,hmPrimeRemap, _context);
+			Fl = F;
+		}
+		else {
+			Fh = F;
+			Fl = insertValueInDD(F, state, value, it,hmPrimeRemap, _context);
+		}
+		return _context.getINode(varPrime,Fl,Fh, true);
+	}
+
 }
+
