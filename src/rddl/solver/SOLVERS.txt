@@ -1,11 +1,18 @@
 Author: Scott Sanner (ssanner@gmail.com)
 
 Note: all solvers that are subpackages of this package are
-currently under development and may not be complete or
+currently under development and may not be complete or fully
 verified for correctness.  As different solvers mature and
 are believed ready for public use, they will be listed below.
 
-SOLVERS READY FOR GENERAL USE (use at your own risk)
+SOLVERS COMPLETED (use at your own risk)
 ===
-* rddl.solver.mdp.vi
+* rddl.solver.mdp.vi.VI
   Factored value iteration solver (Java version of SPUDD)
+  (constant SOLVER_TIME_LIMIT should be tuned depending
+   on intended usage)
+
+* rddl.solver.mdp.rtdp.RTDP
+  Factored version of RTDP (a.k.a. Symbolic RTDP)
+  (constant SOLVER_TIME_LIMIT_PER_TURN should be tuned 
+   depending on intended usage)

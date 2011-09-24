@@ -4,6 +4,16 @@
  * @author Scott Sanner (ssanner [at] gmail.com)
  * @version 9/24/11
  *
+ * For references on some of the underlying ideas, please see:
+ *
+ *   A. Barto, S. J. Bradtke, S. P. Singh.
+ *   Learning to act using real-time dynamic programming.
+ *   Artificial Intelligence.  72 (1-2), 81--138, 1995.
+ * 
+ *   Z. Feng, E. Hansen, S. Zilberstein.
+ *   Symbolic generalization for on-line planning.
+ *   UAI 2003.
+ *
  * ./run rddl.sim.Simulator files/rddl/test/ rddl.solver.mdp.rtdp.RTDP sysadmin_test1 rddl.viz.SysAdminScreenDisplay
  **/
 
