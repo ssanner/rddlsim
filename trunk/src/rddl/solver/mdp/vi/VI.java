@@ -4,6 +4,12 @@
  * @author Scott Sanner (ssanner [at] gmail.com)
  * @version 9/18/11
  *
+ * This is essentially a Java version of SPUDD:
+ * 
+ *   J. Hoey, R. St-Aubin, A. J. Hu and C. Boutilier.
+ *   SPUDD: Stochastic Planning Using Decision Diagrams. 
+ *   UAI 1999.
+ *
  * ./run rddl.sim.Simulator files/rddl/test/ rddl.solver.mdp.vi.VI sysadmin_test1 rddl.viz.SysAdminScreenDisplay
  **/
 
