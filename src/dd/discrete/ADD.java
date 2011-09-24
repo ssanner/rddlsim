@@ -1328,7 +1328,7 @@ public class ADD extends DD {
 		while (cur instanceof ADDINode) {
 			int level = ((Integer) _hmGVarToLevel.get(new Integer(
 					((ADDINode) cur)._nTestVarID))).intValue();
-
+			//System.out.println(level +" "+ assign.get(level));
 			// If we need a var this is unassigned, return null
 			if ((level < assign.size())
 					&& ((b = (Boolean) assign.get(level)) != null)) {
