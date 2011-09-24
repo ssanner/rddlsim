@@ -41,7 +41,7 @@ import util.Pair;
 
 public class RTDP extends Policy {
 	
-	public final static int SOLVER_TIME_LIMIT_PER_TURN = 1; // Solver time limit (seconds)
+	public final static int SOLVER_TIME_LIMIT_PER_TURN = 2; // Solver time limit (seconds)
 	
 	public final static boolean SHOW_STATE   = true;
 	public final static boolean SHOW_ACTIONS = true;

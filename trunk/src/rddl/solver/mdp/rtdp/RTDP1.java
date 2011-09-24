@@ -407,6 +407,9 @@ public class RTDP1 extends Policy {
             _dDiscount = _rddlInstance._dDiscount;
             _nHorizon  = _rddlInstance._nHorizon;
             
+            if (_dDiscount == 1d)
+    			_dDiscount = 0.99d;
+            
 //          In RTDP we need to map from CPT head var (primed) into non-prime state variable
             _hmPrimeVarID2VarID = new HashMap<Integer,Integer>();
             for (Map.Entry<String, String> me : _translation._hmPrimeRemap.entrySet()) {
@@ -453,25 +456,23 @@ public class RTDP1 extends Policy {
 				
 		ArrayList<ArrayList> visited_states = new ArrayList<ArrayList>();
 		QUpdateResult result=null;
-		int depth=0;
-		flushCaches();
+		int depth=0;		
 		visited_states.clear();// clear visited states stack		
 		//do trial 
 		while((cur_state !=null)&& depth<trial_depth){
+			flushCaches();
+			checkTimeLimit();
 			depth++;
 			visited_states.add(cur_state);
-			
 			result = getBestQValue(cur_state); //compute Best Q value and action
 			cur_state = sampleNextState(cur_state, result._csBestAction);
-		}
-		
-		flushCaches();
-		checkTimeLimit();
+		}		
 		//do optimization
 		for (int i = 0; i<visited_states.size();i++){
+			
 			cur_state=visited_states.get(i);
 			getBestQValue(cur_state);
-		}
+		}	
 		flushCaches();
 		checkTimeLimit();
 	}

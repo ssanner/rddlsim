@@ -46,6 +46,50 @@ public class DDUtils {
 
 	
 	// Update the value for path 
+	public static int UpdateValue(DD context, int dd, ArrayList assign, double new_value, HashMap<String, String> hmPrimeRemap) {
+		ArrayList assignprime = new ArrayList();
+		for (int j = 0; j< assign.size();j++)
+			assignprime.add(null);
+		for (int i = 0; i< assign.size();i++){        			
+			Object val = assign.get(i);
+			if(val != null)	{
+				int id = (Integer)context._alOrder.get(i);
+				int idprime = (Integer)context._hmVarName2ID.get(hmPrimeRemap.get(context._hmID2VarName.get(id)))-1;
+				assignprime.set(idprime, val);
+			}
+		}
+        Double cur_value = context.evaluate(dd, assignprime);
+		if (Double.isNaN(cur_value)) {
+			System.err.println("ERROR in DDUtils.UpdateValue: Expected single value when evaluating: " + assignprime);
+			//System.err.println("in " + context.printNode(dd));
+			System.exit(1);
+		}
+		double diff = new_value - cur_value;
+		int indicator = BuildIndicator(context, assign, hmPrimeRemap);
+		indicator = context.scalarMultiply(indicator, diff);		
+		return context.applyInt(dd, indicator, DD.ARITH_SUM);
+	}
+	
+	// Build the indicator DD that gives 1 for assign and 0 elsewhere
+	public static int BuildIndicator(DD context, ArrayList assign,HashMap hmPrimeRemap) {
+		int dd = context.getConstantNode(1d);
+		for (int level = 0; level < assign.size(); level++) {
+			Boolean is_true = (Boolean)assign.get(level);
+			if (is_true == null)
+				continue;
+			int idprime = (Integer)context._hmVarName2ID.get(hmPrimeRemap.get(context._hmID2VarName.get((Integer)context._alOrder.get(level))));
+			if (is_true)
+				dd = context.applyInt(dd, 
+						((ADD)context).getINode(idprime/*(Integer)context._alOrder.get(level) /*var id*/, 
+						0 /*low*/, 1 /*high*/, true), DD.ARITH_PROD);
+			else // swap high/low branches to invert indicator function
+				dd = context.applyInt(dd, 
+						((ADD)context).getINode(idprime/*(Integer)context._alOrder.get(level) /*var id*/, 
+						1 /*low*/, 0 /*high*/, true), DD.ARITH_PROD);
+		}
+		return dd;
+	}
+	
 	public static int UpdateValue(DD context, int dd, ArrayList assign, double new_value) {
 		Double cur_value = context.evaluate(dd, assign);
 		if (Double.isNaN(cur_value)) {
@@ -55,7 +99,7 @@ public class DDUtils {
 		}
 		double diff = new_value - cur_value;
 		int indicator = BuildIndicator(context, assign);
-		indicator = context.scalarMultiply(indicator, diff);
+		indicator = context.scalarMultiply(indicator, diff);		
 		return context.applyInt(dd, indicator, DD.ARITH_SUM);
 	}
 	
@@ -65,19 +109,18 @@ public class DDUtils {
 		for (int level = 0; level < assign.size(); level++) {
 			Boolean is_true = (Boolean)assign.get(level);
 			if (is_true == null)
-				continue;
+				continue;	
 			if (is_true)
 				dd = context.applyInt(dd, 
-						context.getVarNode((Integer)context._alOrder.get(level) /*var id*/, 
-						0d /*low*/, 1d /*high*/), DD.ARITH_PROD);
+						((ADD)context).getINode((Integer)context._alOrder.get(level) /*var id*/, 
+						0 /*low*/, 1 /*high*/, true), DD.ARITH_PROD);
 			else // swap high/low branches to invert indicator function
 				dd = context.applyInt(dd, 
-						context.getVarNode((Integer)context._alOrder.get(level) /*var id*/, 
-						1d /*low*/, 0d /*high*/), DD.ARITH_PROD);
+						((ADD)context).getINode((Integer)context._alOrder.get(level) /*var id*/, 
+						1 /*low*/, 0 /*high*/, true), DD.ARITH_PROD);
 		}
 		return dd;
 	}
-	
     /*Insert a number in an ADD branch given a list of variable assignments
      *  
      */

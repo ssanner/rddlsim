@@ -322,6 +322,7 @@ public class VI extends Policy {
 		_dDiscount = _rddlInstance._dDiscount;
 		_nHorizon  = _rddlInstance._nHorizon;
 		
+		
 		_hmAct2Regr   = null;
 		_alSaveNodes  = new ArrayList<Integer>();
 		
