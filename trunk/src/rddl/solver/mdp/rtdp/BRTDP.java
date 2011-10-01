@@ -25,8 +25,12 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.*;
 
+
+import dd.discrete.ADDDNode;
+import dd.discrete.ADDINode;
 import dd.discrete.DD;
 import dd.discrete.ADD;
+import dd.discrete.ADDNode;
 
 import rddl.*;
 import rddl.RDDL.*;
@@ -39,13 +43,14 @@ import rddl.translate.RDDL2Format;
 import util.CString;
 import util.Pair;
 
-public class RTDP extends Policy {
+public class BRTDP extends Policy {
 	
-	public final static int SOLVER_TIME_LIMIT_PER_TURN = 2; // Solver time limit (seconds)
+	public static int SOLVER_TIME_LIMIT_PER_TURN = 5000000; // Solver time limit (seconds)
 	
 	public final static boolean SHOW_STATE   = true;
 	public final static boolean SHOW_ACTIONS = true;
 	public final static boolean SHOW_ACTION_TAKEN = true;
+	public static int nulls =0;
 	
 	// Only for diagnostics, comment this out when evaluating
 	public final static boolean DISPLAY_SPUDD_ADDS_GRAPHVIZ = false;
@@ -59,7 +64,6 @@ public class RTDP extends Policy {
 	public ArrayList<CString> _alStateVars;
 	public ArrayList<CString> _alPrimeStateVars;
 	public ArrayList<CString> _alActionNames;
-	public static int nulls =0;
 	public int contUpperUpdates;
 	public HashMap<CString, Action> _hmActionName2Action; // Holds transition function
 	
@@ -70,9 +74,9 @@ public class RTDP extends Policy {
 	public Random _rand = new Random();
 		
 	// Constructors
-	public RTDP() { }
+	public BRTDP() { }
 	
-	public RTDP(String instance_name) {
+	public BRTDP(String instance_name) {
 		super(instance_name);
 	}
 
@@ -127,8 +131,8 @@ public class RTDP extends Policy {
 				System.out.println("\n--> [Random] action taken: " + action_taken);
 		} else if (SHOW_ACTION_TAKEN)
 			System.out.println("\n--> [RTDP] best action taken: " + action_taken);
-		System.out.println("Number of nulls: "+nulls);
-		System.out.println("Number of VUpper Updates: "+contUpperUpdates);
+		System.out.println("Number of nulls:" + nulls);
+		System.out.println("Number of Vupper Updates:" + contUpperUpdates);
 		--_nRemainingHorizon; // One less action to take
 		return action_map.get(action_taken);
 	}
@@ -291,14 +295,21 @@ public class RTDP extends Policy {
 
 	// Local vars
 	public INSTANCE _rddlInstance = null;
-	public int _valueDD;
+	public int _VUpper, _VLower, _VGap;
 	public int _nDDType; // Type of DD to use
 	public int _nTrials;
 	public double _dRewardRange; // Important if approximating
+	public double _dMinRewardRange;
 	public double _dDiscount;
-	public int _nHorizon;
+	public ArrayList _InitialState;
+	public double gapInitial;
 	public CString best_action_init_state = null;
+	public double _Tau;
+	public Boolean _firstTime;
+	public int _nHorizon;
+	public HashMap<Integer, Pair<Double, Double>> _hmNodeWeight;//weights for lower and upper branch Vgap
 	public HashMap<Integer,Integer> _hmPrimeVarID2VarID;
+	private double maxUpperUpdated,maxLowerUpdated;
 
 	// Initialize all variables (call before starting value iteration)
 	public void resetSolver() {
@@ -312,7 +323,7 @@ public class RTDP extends Policy {
 		if (_dDiscount == 1d)
 			_dDiscount = 0.99d;
 		_nHorizon  = _rddlInstance._nHorizon;
-		
+		_Tau = 40;
 		// In RTDP we need to map from CPT head var (primed) into non-prime state variable
 		_hmPrimeVarID2VarID = new HashMap<Integer,Integer>();
 		for (Map.Entry<String, String> me : _translation._hmPrimeRemap.entrySet()) {
@@ -329,17 +340,85 @@ public class RTDP extends Policy {
 			_hmPrimeVarID2VarID.put(var_prime_id, var_id);
 		}
 		
-		_dRewardRange = 0d;
-		for (Action a : _hmActionName2Action.values())
+		_dRewardRange = -Double.MAX_VALUE;
+		_dMinRewardRange = Double.MAX_VALUE;
+		for (Action a : _hmActionName2Action.values()){
+			double MinValue = _context.getMinValue(a._reward); 
 			_dRewardRange = Math.max(_dRewardRange, 
 					_context.getMaxValue(a._reward) - 
-			        _context.getMinValue(a._reward));
-		
+			        MinValue);
+			_dMinRewardRange = Math.min(_dMinRewardRange, MinValue);
+		}
 		// IMPORTANT: RTDP needs **optimistic upper bound initialization**
 		double value_range = (_dDiscount < 1d) 
 			? _dRewardRange / (1d - _dDiscount) // being lazy: assume infinite horizon
 			: _nHorizon * _dRewardRange;        // assume max reward over horizon
-		_valueDD = _context.getConstantNode(value_range);			
+		double min_value_range = (_dDiscount < 1d) 
+			? _dMinRewardRange / (1d - _dDiscount) // being lazy: assume infinite horizon
+			: _nHorizon * _dMinRewardRange;        // assume max reward over horizon
+		_VUpper = _context.getConstantNode(value_range);
+		_VLower = _context.getConstantNode(min_value_range);
+		_VGap = _context.getConstantNode(value_range - min_value_range);
+	}
+
+	private ArrayList remapWithPrimes(ArrayList nextState) {
+		ArrayList state = new ArrayList();
+		for (int j = 0; j< nextState.size();j++)
+			state.add(null);
+		for (int i = 0; i< nextState.size();i++){        			
+			Object val = nextState.get(i);
+			if(val != null)	{
+				int id = (Integer)_context._alOrder.get(i);
+				int idprime = (Integer)_context._hmGVarToLevel.get(_context._hmVarName2ID.get(_translation._hmPrimeRemap.get(_context._hmID2VarName.get(id))));
+				state.set(idprime, val);
+			}
+		}
+		return state;
+	}
+	
+	
+	private ArrayList samplingVGap(Integer beginF) {
+		ArrayList assign = new ArrayList();
+		for (int i = 0; i <= _context._alOrder.size(); i++)
+			assign.add(null);
+		Integer F=beginF;
+		for (CString s : _alStateVars) {
+			double ran=_random.nextDouble();
+			Integer index = (Integer)_context._hmVarName2ID.get(s._string); // if null, var not in var2ID
+			Integer level = (Integer)_context._hmGVarToLevel.get(index);
+			ADDNode Node =_context.getNode(F);
+			if(Node instanceof ADDINode){
+				ADDINode intNodeKey=(ADDINode)Node;
+				Integer Fvar= intNodeKey._nTestVarID;
+				if(Fvar.compareTo(index)==0){ //var is in the ADD
+					Pair<Double, Double> pair = _hmNodeWeight.get(F);
+					double wH=pair._o1;
+					double wL=pair._o2;
+					Boolean condition = ran>(wL/(wH + wL));
+					assign.set(level,condition);
+					if (condition)
+						F=intNodeKey._nHigh;					
+					else
+						F=intNodeKey._nLow;
+				}
+				else //var is not in the ADD sample equality
+					assign.set(level,ran>0.5);
+			}
+			else //is terminal node and there are more state variables to sample
+				assign.set(level,ran>0.5);
+		}
+		return assign;
+	}
+	
+	private void updateVLower(ArrayList state) {
+		double max=Double.NEGATIVE_INFINITY;
+		for (CString actionName:_alActionNames){			
+			double Qt = getQValue(_VLower,state,actionName);
+			max=Math.max(max,Qt);
+		}
+	    //update the ADD
+		_VLower = DDUtils.UpdateValue(_context, _VLower, state, max);
+		maxLowerUpdated=max;
 	}
 
 	// Main RTDP Algorithm
@@ -351,7 +430,7 @@ public class RTDP extends Policy {
 
 		_nTimeLimitSecs = time_limit_secs;
 		_lStartTime = System.currentTimeMillis();
-		//CString best_action_init_state = null;
+		_InitialState = init_state;
 		
 		try {
 			// Trial depth should be exactly equal to remaining horizon-to-go on this round
@@ -368,7 +447,7 @@ public class RTDP extends Policy {
 			System.exit(1);
 		} finally {
 			System.out.println("RTDP: Vfun at trial " + _nTrials + ": " + 
-					_context.countExactNodes(_valueDD) + " nodes, best action: " + 
+					_context.countExactNodes(_VUpper) + " nodes, best action: " + 
 					best_action_init_state);
 		}
 		
@@ -378,8 +457,8 @@ public class RTDP extends Policy {
 	
 	// Run a single RTDP trial, return best action as seen from initial state
 	public CString doRTDPTrial(int trial_depth, ArrayList init_state) throws TimeOutException {
-	
-		//CString best_action_init_state = null;
+			
+		_firstTime = true;
 		best_action_init_state = null;
 		////////////////////////////////////////////////////////////////////////////
 		// Simulate a trial from here to the horizon (updating along the way), then 
@@ -387,7 +466,7 @@ public class RTDP extends Policy {
 		////////////////////////////////////////////////////////////////////////////
 		ArrayList cur_state = init_state;
 		ArrayList<ArrayList> visited_states = new ArrayList<ArrayList>(_nRemainingHorizon);
-		for (int steps_to_go = _nRemainingHorizon; steps_to_go > 0; steps_to_go--) {
+		for (int steps_to_go = _nRemainingHorizon; steps_to_go > 0 && cur_state != null; steps_to_go--) {
 			
 			//System.out.println("Forward step [" + steps_to_go + "]: " + cur_state);
 			
@@ -398,15 +477,18 @@ public class RTDP extends Policy {
 			visited_states.add(cur_state);
 			
 			// Compute best action for current state (along with Q-value to backup)
-			QUpdateResult res = getBestQValue(cur_state);
+			QUpdateResult resU = getBestQValue(cur_state,_VUpper);
+			QUpdateResult resL = getBestQValue(cur_state, _VLower);
 			if (best_action_init_state == null) // first time through will update
-				best_action_init_state = res._csBestAction;
+				best_action_init_state = resU._csBestAction;
 			
 			// Update Q-value
-			_valueDD = DDUtils.UpdateValue(_context, _valueDD, cur_state, res._dBestQValue);
+			_VUpper = DDUtils.UpdateValue(_context, _VUpper, cur_state, resU._dBestQValue);
 			contUpperUpdates++;
+			_VLower = DDUtils.UpdateValue(_context, _VLower, cur_state, resL._dBestQValue);
+			_VGap = DDUtils.UpdateValue(_context, _VGap, cur_state, resU._dBestQValue - resL._dBestQValue);
 			// Sample next state
-			cur_state = sampleNextState(cur_state, res._csBestAction);
+			cur_state = sampleNextState(cur_state, resU._csBestAction);
 		}
 		
 		// Do final updates *in reverse* on return
@@ -421,12 +503,16 @@ public class RTDP extends Policy {
 			cur_state = visited_states.get(depth);
 
 			// Update Q-value for each state
-			QUpdateResult res = getBestQValue(cur_state);
-			_valueDD = DDUtils.UpdateValue(_context, _valueDD, cur_state, res._dBestQValue);
+			QUpdateResult resU = getBestQValue(cur_state,_VUpper);
+			QUpdateResult resL = getBestQValue(cur_state, _VLower);
+			_VUpper = DDUtils.UpdateValue(_context, _VUpper, cur_state, resU._dBestQValue);
 			contUpperUpdates++;
+			_VLower = DDUtils.UpdateValue(_context, _VLower, cur_state, resL._dBestQValue);
+		
+			//IMPORTANT: for BRTDP you use the VLower to do the simulations
 			// If back to initial state then update best action
 			if (depth == 0) 
-				best_action_init_state = res._csBestAction;
+				best_action_init_state = resL._csBestAction;
 		}
 
 		// All of the RTDP updates were just to find out best action from initial state
@@ -445,9 +531,9 @@ public class RTDP extends Policy {
 	}
 
 	// Find best Q-value/action for given state
-	public QUpdateResult getBestQValue(ArrayList cur_state) {
+	public QUpdateResult getBestQValue(ArrayList cur_state,int _Value) {
 		
-		int prime_vfun = _context.remapGIDsInt(_valueDD, _translation._hmPrimeRemap);
+		int prime_vfun = _context.remapGIDsInt(_Value, _translation._hmPrimeRemap);
 
 		QUpdateResult result = new QUpdateResult(null, -Double.MAX_VALUE); 
 		for (Map.Entry<CString, Action> me : _hmActionName2Action.entrySet()) {
@@ -536,6 +622,49 @@ public class RTDP extends Policy {
 		// Return regressed value for current state
 		return reward + _dDiscount * exp_future_val;
 	}
+	
+	public Double setProbWeightVGap(Integer F,ArrayList state, HashMap<Integer, Integer> iD2ADD) {
+		// TODO: if F is not dirty, just return without updating further
+		//       make sure to mark node as not dirty after update
+		
+		ADDNode Node = _context.getNode(F);
+	   	if(Node instanceof ADDDNode){
+	   		//ADDDNode node=(ADDDNode)Node;
+	   		//node.setprobWeightH(node.getValue());
+	   		//node.setprobWeightL(0);
+	   		return _context.evaluate(F, (ArrayList)null);
+    	}
+    	if(!_hmNodeWeight.containsKey(F)){
+     		ADDINode intNodeKey=(ADDINode)Node;
+     		Double highWeight = setProbWeightVGap(intNodeKey._nHigh,state,iD2ADD);
+     		Double lowWeight = setProbWeightVGap(intNodeKey._nLow,state,iD2ADD);
+     		String old_str = (String)_context._hmID2VarName.get(intNodeKey._nTestVarID);
+			String new_str = (String)_translation._hmPrimeRemap.get(old_str);
+			Integer new_id = null;
+			if (new_str == null)
+				new_id = intNodeKey._nTestVarID;
+			else
+				new_id = (Integer)_context._hmVarName2ID.get(new_str);
+    		Integer cpt_a_xiprime=iD2ADD.get(new_id);
+    		if(cpt_a_xiprime==null){
+    			System.out.println("Prime var not found");
+    			System.exit(1);
+    		}
+    		int level_prime = (Integer)_context._hmGVarToLevel.get(new_id);
+			state.set(level_prime, true);
+    		double probTrue=_context.evaluate(cpt_a_xiprime,state);
+    		state.set(level_prime, null);
+			double probFalse=1-probTrue;
+			double weightH=probTrue*(highWeight);
+			double weightL=probFalse*(lowWeight);
+    		_hmNodeWeight.put(F, new Pair<Double, Double>(weightH, weightL));
+    		return weightH+weightL;
+    	}
+    	else{
+    		Pair<Double, Double> pair = _hmNodeWeight.get(F); 
+    		return pair._o1+pair._o2;
+    	}
+	}
 
 	// For now we assume that the ADD transition functions for all
 	// actions apply in every state... will have to revisit this later
@@ -543,34 +672,25 @@ public class RTDP extends Policy {
 	public ArrayList sampleNextState(ArrayList current_state, CString action) {
 		
 		Action a = _hmActionName2Action.get(action);
-		ArrayList next_state = (ArrayList)current_state.clone(); // ensure correct size
-		
-		// Sample each next state variable to build a new state
-		for (Map.Entry<Integer, Integer> me : a._hmVarID2CPT.entrySet()) {
-			int prime_var_id = me.getKey();
-			int cpt_dd = me.getValue();
-			
-			// For each CPT, evaluate in current state for next state variable true
-			int level_prime = (Integer)_context._hmGVarToLevel.get(prime_var_id);
-			current_state.set(level_prime, true);
-			double prob_true = _context.evaluate(cpt_dd, current_state);
-			if (Double.isNaN(prob_true)) {
-				System.err.println("ERROR in RTDP.sampleNextState: Expected single value when evaluating: " + current_state);
-				//System.err.println("in " + context.printNode(cpt_dd));
-				System.exit(1);
+		_hmNodeWeight = new HashMap<Integer, Pair<Double,Double>>();
+		//	compute B
+		Double B = setProbWeightVGap(_VGap, current_state, a._hmVarID2CPT);
+		System.out.println(_hmNodeWeight);
+		_context.getGraph(_VGap).launchViewer();
+		//	check end trial/////////////////////
+		ADDNode Node = _context.getNode(_VGap);
+		if(Node instanceof ADDINode){
+			// could precompute and store gInitial for each trial
+			if (_firstTime){
+				gapInitial=_context.evaluate((Integer)_VGap, _InitialState);
+				_firstTime = false;
 			}
-			current_state.set(level_prime, null); // Undo so as not to change current_state
-			
-			// Draw sample
-			boolean is_true = _random.nextDouble() < prob_true; 
-			
-			// Assign truth value to level for unprimed variable
-			int var_id = _hmPrimeVarID2VarID.get(prime_var_id);
-			int level_unprime = (Integer)_context._hmGVarToLevel.get(var_id);
-			next_state.set(level_unprime, is_true);
+			if(B< gapInitial/_Tau){
+				return null;
+			}
 		}
-		
-		return next_state;
+		//sampling each state variable from top to bottom using the weighted probabilities
+		return samplingVGap(_VGap);
 	}
 		
 	////////////////////////////////////////////////////////////////////////////
@@ -588,7 +708,9 @@ public class RTDP extends Policy {
 		_context.clearSpecialNodes();
 		for (Integer dd : _allMDPADDs)
 			_context.addSpecialNode(dd);
-		_context.addSpecialNode(_valueDD);
+		_context.addSpecialNode(_VUpper);
+		_context.addSpecialNode(_VLower);
+		_context.addSpecialNode(_VGap);
 
 		_context.flushCaches(false);
 	}
@@ -607,6 +729,10 @@ public class RTDP extends Policy {
 		long total = RUNTIME.totalMemory();
 		long free = RUNTIME.freeMemory();
 		return total - free + ":" + total;
+	}
+	
+	public void setLimitTime(int time) {
+		SOLVER_TIME_LIMIT_PER_TURN = time;
 	}
 
 	///////////////////////////////////////////////////////////////////////
