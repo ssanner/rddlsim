@@ -112,12 +112,12 @@ public class DDUtils {
 				continue;	
 			if (is_true)
 				dd = context.applyInt(dd, 
-						((ADD)context).getINode((Integer)context._alOrder.get(level) /*var id*/, 
-						0 /*low*/, 1 /*high*/, true), DD.ARITH_PROD);
+						context.getVarNode((Integer)context._alOrder.get(level) /*var id*/, 
+						0d /*low*/, 1d /*high*/), DD.ARITH_PROD);
 			else // swap high/low branches to invert indicator function
 				dd = context.applyInt(dd, 
-						((ADD)context).getINode((Integer)context._alOrder.get(level) /*var id*/, 
-						1 /*low*/, 0 /*high*/, true), DD.ARITH_PROD);
+						context.getVarNode((Integer)context._alOrder.get(level) /*var id*/, 
+						1d /*low*/, 0d /*high*/), DD.ARITH_PROD);
 		}
 		return dd;
 	}
