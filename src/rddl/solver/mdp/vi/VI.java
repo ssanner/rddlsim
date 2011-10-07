@@ -37,7 +37,7 @@ import util.Pair;
 
 public class VI extends Policy {
 	
-	public final static int SOLVER_TIME_LIMIT = 40; // Solver time limit (seconds)
+	public static int SOLVER_TIME_LIMIT = 40; // Solver time limit (seconds)
 	
 	public final static boolean SHOW_STATE   = true;
 	public final static boolean SHOW_ACTIONS = true;
@@ -591,6 +591,9 @@ public class VI extends Policy {
 		long total = RUNTIME.totalMemory();
 		long free = RUNTIME.freeMemory();
 		return total - free + ":" + total;
+	}
+	public void setLimitTime(Integer time) {
+		SOLVER_TIME_LIMIT=time;
 	}
 
 }

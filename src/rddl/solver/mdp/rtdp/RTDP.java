@@ -41,7 +41,7 @@ import util.Pair;
 
 public class RTDP extends Policy {
 	
-	public final static int SOLVER_TIME_LIMIT_PER_TURN = 2; // Solver time limit (seconds)
+	public static int SOLVER_TIME_LIMIT_PER_TURN = 2; // Solver time limit (seconds)
 	
 	public final static boolean SHOW_STATE   = true;
 	public final static boolean SHOW_ACTIONS = true;
@@ -59,8 +59,7 @@ public class RTDP extends Policy {
 	public ArrayList<CString> _alStateVars;
 	public ArrayList<CString> _alPrimeStateVars;
 	public ArrayList<CString> _alActionNames;
-	public static int nulls =0;
-	public int contUpperUpdates;
+	public int _nContUpperUpdates; //For computing the number of value function updates
 	public HashMap<CString, Action> _hmActionName2Action; // Holds transition function
 	
 	// State variables
@@ -115,20 +114,18 @@ public class RTDP extends Policy {
 		// Use the precomputed q-functions (cached when the value function
 		// was computed) to determine the best action for this state
 		ArrayList add_state_assign = DDUtils.ConvertTrueVars2DDAssign(_context, true_vars, _alStateVars);
-		best_action_init_state = null;
+		_csBestActionInitState = null;
 		doRTDP(SOLVER_TIME_LIMIT_PER_TURN, add_state_assign);
-		String action_taken = (best_action_init_state == null? null: best_action_init_state._string);
+		String action_taken = (_csBestActionInitState == null? null: _csBestActionInitState._string);
 		if (action_taken == null) {
 			// No RTDP results available, just take random action
 			ArrayList<String> actions = new ArrayList<String>(action_map.keySet());
 			action_taken = actions.get(_rand.nextInt(actions.size()));
-			nulls++;
 			if (SHOW_ACTION_TAKEN)
 				System.out.println("\n--> [Random] action taken: " + action_taken);
 		} else if (SHOW_ACTION_TAKEN)
 			System.out.println("\n--> [RTDP] best action taken: " + action_taken);
-		System.out.println("Number of nulls: "+nulls);
-		System.out.println("Number of VUpper Updates: "+contUpperUpdates);
+		System.out.println("Number of VUpper Updates: "+_nContUpperUpdates);
 		--_nRemainingHorizon; // One less action to take
 		return action_map.get(action_taken);
 	}
@@ -147,6 +144,7 @@ public class RTDP extends Policy {
 				
 		// Reset horizon
 		_nRemainingHorizon = horizon;
+		_nContUpperUpdates = 0;
 		
 		// Build ADDs for transition, reward and value function (if not already built)
 		if (_translation == null) {
@@ -297,7 +295,7 @@ public class RTDP extends Policy {
 	public double _dRewardRange; // Important if approximating
 	public double _dDiscount;
 	public int _nHorizon;
-	public CString best_action_init_state = null;
+	public CString _csBestActionInitState = null;
 	public HashMap<Integer,Integer> _hmPrimeVarID2VarID;
 
 	// Initialize all variables (call before starting value iteration)
@@ -343,7 +341,7 @@ public class RTDP extends Policy {
 	}
 
 	// Main RTDP Algorithm
-	public String doRTDP(int time_limit_secs, ArrayList init_state) {
+	public void doRTDP(int time_limit_secs, ArrayList init_state) {
 
 		System.out.println("RTDP: Time limit: " + _nTimeLimitSecs + 
 				" seconds, discount: " + _dDiscount + ", horizon: " + 
@@ -357,7 +355,7 @@ public class RTDP extends Policy {
 			// Trial depth should be exactly equal to remaining horizon-to-go on this round
 			_nTrials = 0;
 			while(true) {
-				best_action_init_state = doRTDPTrial(_nRemainingHorizon, init_state);
+				doRTDPTrial(_nRemainingHorizon, init_state);
 				_nTrials++;
 			}
 		} catch (TimeOutException e) {
@@ -369,18 +367,18 @@ public class RTDP extends Policy {
 		} finally {
 			System.out.println("RTDP: Vfun at trial " + _nTrials + ": " + 
 					_context.countExactNodes(_valueDD) + " nodes, best action: " + 
-					best_action_init_state);
+					_csBestActionInitState);
 		}
 		
 		// Return the best action for the initial state from the last completed trial
-		return best_action_init_state == null ? null : best_action_init_state._string;
+		//return best_action_init_state == null ? null : best_action_init_state._string;
 	}
 	
 	// Run a single RTDP trial, return best action as seen from initial state
-	public CString doRTDPTrial(int trial_depth, ArrayList init_state) throws TimeOutException {
+	public void doRTDPTrial(int trial_depth, ArrayList init_state) throws TimeOutException {
 	
 		//CString best_action_init_state = null;
-		best_action_init_state = null;
+		CString best_action = null;
 		////////////////////////////////////////////////////////////////////////////
 		// Simulate a trial from here to the horizon (updating along the way), then 
 		// backtrack and update in reverse.
@@ -399,12 +397,14 @@ public class RTDP extends Policy {
 			
 			// Compute best action for current state (along with Q-value to backup)
 			QUpdateResult res = getBestQValue(cur_state);
-			if (best_action_init_state == null) // first time through will update
-				best_action_init_state = res._csBestAction;
+			if (best_action == null){ // first time through will update
+				_csBestActionInitState = res._csBestAction;
+				best_action = _csBestActionInitState;
+			}
 			
 			// Update Q-value
 			_valueDD = DDUtils.UpdateValue(_context, _valueDD, cur_state, res._dBestQValue);
-			contUpperUpdates++;
+			_nContUpperUpdates++;
 			// Sample next state
 			cur_state = sampleNextState(cur_state, res._csBestAction);
 		}
@@ -423,16 +423,16 @@ public class RTDP extends Policy {
 			// Update Q-value for each state
 			QUpdateResult res = getBestQValue(cur_state);
 			_valueDD = DDUtils.UpdateValue(_context, _valueDD, cur_state, res._dBestQValue);
-			contUpperUpdates++;
+			_nContUpperUpdates++;
 			// If back to initial state then update best action
 			if (depth == 0) 
-				best_action_init_state = res._csBestAction;
+				_csBestActionInitState = res._csBestAction;
 		}
 
 		// All of the RTDP updates were just to find out best action from initial state
 		// (as a byproduct, we've updated the value function via asychronous DP for
 		//  reuse on the next step of this trial and other trials)
-		return best_action_init_state;
+		//return best_action_init_state;
 	}
 	
 	public static class QUpdateResult {
@@ -608,7 +608,13 @@ public class RTDP extends Policy {
 		long free = RUNTIME.freeMemory();
 		return total - free + ":" + total;
 	}
-
+	
+	public void setLimitTime(Integer time) {
+		SOLVER_TIME_LIMIT_PER_TURN=time;
+	}
+	public int getNumberUpdate() {
+		return _nContUpperUpdates;
+	}
 	///////////////////////////////////////////////////////////////////////
 	// Notes on RDDL translation and how it affects RTDP/other algorithms:
 	//

@@ -37,7 +37,7 @@ import util.Pair;
 
 public class RTDP1 extends Policy {
 
-	public final static int SOLVER_TIME_LIMIT = 60; // Solver time limit (seconds)
+	public final static int SOLVER_TIME_LIMIT = 20; // Solver time limit (seconds)
 	
 	public final static boolean SHOW_STATE   = false;
 	public final static boolean SHOW_ACTIONS = false;
@@ -407,8 +407,8 @@ public class RTDP1 extends Policy {
             _dDiscount = _rddlInstance._dDiscount;
             _nHorizon  = _rddlInstance._nHorizon;
             
-            if (_dDiscount == 1d)
-    			_dDiscount = 0.99d;
+            //if (_dDiscount == 1d)
+    		//	_dDiscount = 0.99d;
             
 //          In RTDP we need to map from CPT head var (primed) into non-prime state variable
             _hmPrimeVarID2VarID = new HashMap<Integer,Integer>();
@@ -480,7 +480,7 @@ public class RTDP1 extends Policy {
 	// Insert a number in a Value ADD branch
 	private void updateValueBranch(/*char c,*/ double value, ArrayList state) {
 		//if (c=='u'){
-		Iterator it = _translation._hmPrimeRemap.keySet().iterator();
+		Iterator it = _translation._alStateVars.iterator();
 		_value = DDUtils.insertValueInDD(_value, state,  value, it, _translation._hmPrimeRemap, _context);
 		//}
 	    //This will be used for BRTDP
