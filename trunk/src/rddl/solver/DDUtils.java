@@ -6,6 +6,10 @@ import java.util.Set;
 import java.util.HashMap;
 import java.util.Iterator;
 
+//import rddl.solver.mdp.rtdp.BRTDP2.doubleOutPut;
+
+import com.sun.xml.internal.bind.CycleRecoverable.Context;
+
 import dd.discrete.DD;
 import dd.discrete.ADDDNode;
 import dd.discrete.ADDNode;
@@ -14,9 +18,25 @@ import dd.discrete.ADDBNode;
 import dd.discrete.ADD;
 
 import util.CString;
+import util.Pair;
 
 public class DDUtils {
-	
+	public static class doubleOutPut {
+		public double  _dWeight;
+		public ArrayList<Double> _alWeights;
+		public doubleOutPut(double weight, ArrayList<Double> Weights) {
+			_dWeight = weight;
+			_alWeights = Weights;
+		}
+	}
+	public static class doubleOutPut2 {
+		public double  _dWeight;
+		public int _nWeights;
+		public doubleOutPut2(double weight, Integer Weights) {
+			_dWeight = weight;
+			_nWeights = Weights;
+		}
+	}
 	// Converts the list of true state fluents to an ArrayList of assignments
 	// that can be passed to ADD evaluate (avoids the need to constantly pass
 	// a HashMap of Strings -> assignments)
@@ -124,56 +144,217 @@ public class DDUtils {
     /*Insert a number in an ADD branch given a list of variable assignments
      *  
      */
-	public static int insertValueInDD(int F, ArrayList state, double value, Iterator it, HashMap<String,String> hmPrimeRemap, ADD _context) {
+	public static Pair<Double, ArrayList<Double>> JoinBranches(Pair<Pair<Double, ArrayList<Double>>, Pair<Double, ArrayList<Double>>> weightsNode){
+		ArrayList<Double> listRequest= new ArrayList<Double>();
+		ArrayList<Double> listH = weightsNode._o1._o2;
+		Double weightRequest = weightsNode._o1._o1 * listH.size();
+		for (Double wH: listH)
+			listRequest.add(wH);
+		ArrayList<Double> listL = weightsNode._o2._o2;
+		for (Double wL: listL)
+			if (!listRequest.contains(wL)){
+				weightRequest += wL;
+				listRequest.add(wL);
+			}
+		weightRequest /= listRequest.size();
+		return new Pair<Double, ArrayList<Double>>(weightRequest, listRequest);
+	}
+	public static Pair<Double, Integer> JoinBranches2(Pair<Pair<Double, Integer>, Pair<Double, Integer>> weightsNode){
+		Pair<Double, Integer> highPair = weightsNode._o1;
+		Pair<Double, Integer> lowPair = weightsNode._o2;
+		double num = (highPair._o1*highPair._o2) +(lowPair._o1*lowPair._o2);
+		int den = highPair._o2+lowPair._o2;
+		return new Pair<Double, Integer>(num/den, den);
+	}
+	
+	public static int insertValueInDD(int F, ArrayList state, double value, Iterator<CString> it, HashMap<String,String> hmPrimeRemap, ADD _context, HashMap<Integer, Integer> iD2ADD,HashMap<Integer, Pair<Pair<Double, ArrayList<Double>>, Pair<Double, ArrayList<Double>>>> hmNodeWeight, doubleOutPut weight) {
 		int Fh, Fl;
+		//There are no more elements in the alStateVars 	
+		if (!it.hasNext()){//means that we are in a leaf then we need to replace the value
+			weight._dWeight = value;
+			weight._alWeights = new ArrayList<Double>();
+			weight._alWeights.add(value);
+			//int newF = _context.getConstantNode(value);
+			//hmNodeWeight.put(newF, new Pair<Double, Double>(value, 0d));
+			return _context.getConstantNode(value);//newF;
+		}
+		else{
+			String varStr = ((CString)it.next())._string;
+			Integer var=(Integer)_context._hmVarName2ID.get(varStr);
+			Object valueVar =state.get((Integer)_context._hmGVarToLevel.get(var));
+			Boolean val=(valueVar != null) && (Boolean)valueVar;
+			ADDNode cur = _context.getNode(F);
+			Boolean unchangedBranchLow = false;
+			//If F is a leaf and there are more elements in alStateVars or the variable is not in the ADD
+			// means that we need to create the node(s) with the remain variable(s)
+			int FforH = F, FforL = F;
+			Boolean create = true;
+			//If f is a internal Node and id state variable is equal to id Node
+			if(cur instanceof ADDINode && var.compareTo(((ADDINode)cur)._nTestVarID) == 0){
+				FforH = ((ADDINode)cur)._nHigh;
+				FforL = ((ADDINode)cur)._nLow;
+				create =  false;
+			}
+			if (val==true){
+				Fh = insertValueInDD(FforH, state, value, it, hmPrimeRemap, _context, iD2ADD, hmNodeWeight, weight);
+				unchangedBranchLow = true;
+				Fl = FforL;
+			}
+			else {
+				Fh = FforH;
+				Fl = insertValueInDD(FforL, state, value, it,hmPrimeRemap, _context, iD2ADD, hmNodeWeight, weight);
+			}
+			//Computing the weight
+			int fRequest = unchangedBranchLow? Fl : Fh;
+			ADDNode nodeRequest = _context.getNode(fRequest);
+			double weightRequest=0;
+			ArrayList<Double> listRequest=new ArrayList<Double>();
+			if (nodeRequest instanceof ADDDNode){
+				weightRequest = ((ADDDNode)nodeRequest)._dLower;
+				listRequest.add(weightRequest);
+			}
+			else{
+				Pair<Double, ArrayList<Double>> newBranch = JoinBranches(hmNodeWeight.get(fRequest));
+				listRequest = newBranch._o2;
+				weightRequest = newBranch._o1;
+			}
+			Double highWeight = unchangedBranchLow? weight._dWeight : weightRequest;
+			ArrayList<Double> highList = unchangedBranchLow? weight._alWeights : listRequest;
+			Double lowWeight = unchangedBranchLow? weightRequest: weight._dWeight;
+			ArrayList<Double> lowList = unchangedBranchLow? listRequest: weight._alWeights;
+			if (create)
+				F = _context.getINode(var,Fl,Fh, true);
+			else{
+				((ADDINode)cur)._nHigh =  Fh;
+				((ADDINode)cur)._nLow = Fl;
+			}				
+			if (hmNodeWeight.containsKey(F))
+				hmNodeWeight.remove(F);
+			Pair<Pair<Double, ArrayList<Double>>, Pair<Double, ArrayList<Double>>> branch = new Pair<Pair<Double, ArrayList<Double>>, Pair<Double, ArrayList<Double>>>(new Pair<Double, ArrayList<Double>>(highWeight, highList), new Pair<Double, ArrayList<Double>>(lowWeight, lowList));
+			hmNodeWeight.put(F, branch);
+			Pair<Double, ArrayList<Double>> newBranch = JoinBranches(branch);
+			weight._alWeights = newBranch._o2;
+			weight._dWeight = newBranch._o1;
+			return F;
+		}
+	}
+
+	public static int insertValueInDD2(int F, ArrayList state, double value, Iterator<CString> it, HashMap<String,String> hmPrimeRemap, ADD _context, HashMap<Integer, Integer> iD2ADD,HashMap<Integer, Pair<Pair<Double, Integer>, Pair<Double, Integer>>> hmNodeWeight, doubleOutPut2 weight) {
+		int Fh, Fl;
+		//There are no more elements in the alStateVars 	
+		if (!it.hasNext()){//means that we are in a leaf then we need to replace the value
+			weight._dWeight = value;
+			weight._nWeights = 1;
+			//int newF = _context.getConstantNode(value);
+			//hmNodeWeight.put(newF, new Pair<Double, Double>(value, 0d));
+			return _context.getConstantNode(value);//newF;
+		}
+		else{
+			String varStr = ((CString)it.next())._string;
+			Integer var=(Integer)_context._hmVarName2ID.get(varStr);
+			Object valueVar =state.get((Integer)_context._hmGVarToLevel.get(var));
+			Boolean val=(valueVar != null) && (Boolean)valueVar;
+			ADDNode cur = _context.getNode(F);
+			Boolean unchangedBranchLow = false;
+			//If F is a leaf and there are more elements in alStateVars or the variable is not in the ADD
+			// means that we need to create the node(s) with the remain variable(s)
+			int FforH = F, FforL = F;
+			Boolean create = true;
+			//If f is a internal Node and id state variable is equal to id Node
+			if(cur instanceof ADDINode && var.compareTo(((ADDINode)cur)._nTestVarID) == 0){
+				FforH = ((ADDINode)cur)._nHigh;
+				FforL = ((ADDINode)cur)._nLow;
+				create =  false;
+			}
+			if (val==true){
+				Fh = insertValueInDD2(FforH, state, value, it, hmPrimeRemap, _context, iD2ADD, hmNodeWeight, weight);
+				unchangedBranchLow = true;
+				Fl = FforL;
+			}
+			else {
+				Fh = FforH;
+				Fl = insertValueInDD2(FforL, state, value, it,hmPrimeRemap, _context, iD2ADD, hmNodeWeight, weight);
+			}
+			//Computing the weight
+			int fRequest = unchangedBranchLow? Fl : Fh;
+			ADDNode nodeRequest = _context.getNode(fRequest);
+			double weightRequest=0;
+			int nRequest= 0;
+			if (nodeRequest instanceof ADDDNode){
+				weightRequest = ((ADDDNode)nodeRequest)._dLower;
+				nRequest = 1;
+			}
+			else{
+				Pair<Double, Integer> newBranch = JoinBranches2(hmNodeWeight.get(fRequest));
+				nRequest = newBranch._o2;
+				weightRequest = newBranch._o1;
+			}
+			Double highWeight = unchangedBranchLow? weight._dWeight : weightRequest;
+			Integer highNum = unchangedBranchLow? weight._nWeights : nRequest;
+			Double lowWeight = unchangedBranchLow? weightRequest: weight._dWeight;
+			Integer lowNum = unchangedBranchLow? nRequest: weight._nWeights;
+			if (create)
+				F = _context.getINode(var,Fl,Fh, true);
+			else{
+				((ADDINode)cur)._nHigh =  Fh;
+				((ADDINode)cur)._nLow = Fl;
+			}				
+			if (hmNodeWeight.containsKey(F))
+				hmNodeWeight.remove(F);
+			Pair<Pair<Double, Integer>, Pair<Double, Integer>> branch = new Pair<Pair<Double, Integer>, Pair<Double, Integer>>(new Pair<Double, Integer>(highWeight, highNum), new Pair<Double, Integer>(lowWeight, lowNum));
+			hmNodeWeight.put(F, branch);
+			Pair<Double, Integer> newBranch = JoinBranches2(branch);
+			weight._nWeights = newBranch._o2;
+			weight._dWeight = newBranch._o1;
+			return F;
+		}
+	}
+
+	public static int insertValueInDD(int F, ArrayList state, double value, Iterator<String> it, HashMap<String,String> hmPrimeRemap, ADD _context) {
+		int Fh, Fl;
+		//There are no more elements in the alStateVars 	
 		if (!it.hasNext()){//means that we are in a leaf then we need to replace the value
 			return _context.getConstantNode(value);
 		}
-		String varStr = (String)it.next();
-		Integer var=(Integer)_context._hmVarName2ID.get(varStr);
-		Object valueVar =state.get((Integer)_context._hmGVarToLevel.get(var));
-		Boolean val=(valueVar != null) && (Boolean)valueVar;
-		Integer varPrime= (Integer)_context._hmVarName2ID.get(hmPrimeRemap.get(varStr));
-		if(varPrime==null){ // this was inserted for RTDPEnum and BRTDPEnum in order to use it for states with prime or non-prime variables
-			varPrime=var;
-		}
-		ADDNode cur = _context.getNode(F);
-		if((cur instanceof ADDDNode) || (cur instanceof ADDBNode)){
-			// means that we need to create the nodes with the remain variables
+		else{
+			String varStr = (String)it.next();
+			Integer var = (Integer)_context._hmVarName2ID.get(varStr);
+			Object valueVar =state.get((Integer)_context._hmGVarToLevel.get(var));
+			Boolean val=(valueVar != null) && (Boolean)valueVar;
+			Integer varPrime= (Integer)_context._hmVarName2ID.get(hmPrimeRemap.get(varStr));
+			if(varPrime==null){ // this was inserted for RTDPEnum and BRTDPEnum in order to use it for states with prime or non-prime variables
+				varPrime=var;
+			}
+			ADDNode cur = _context.getNode(F);
+			//If F is a leaf and there are more elements in alStateVars or the variable is not in the ADD
+			// means that we need to create the node(s) with the remain variable(s)
+			int FforH = F, FforL = F;
+			Boolean create = true;
+			//If f is a internal Node and id state variable is equal to id Node
+			if(cur instanceof ADDINode && varPrime.compareTo(((ADDINode)cur)._nTestVarID) == 0){
+				FforH = ((ADDINode)cur)._nHigh;
+				FforL = ((ADDINode)cur)._nLow;
+				create =  false;
+			}
 			if (val==true){
-				Fh = insertValueInDD(F, state, value, it, hmPrimeRemap, _context);
-				Fl = F;
+				Fh = insertValueInDD(FforH, state, value, it, hmPrimeRemap, _context);
+				Fl = FforL;
 			}
 			else {
-				Fh = F;
-				Fl = insertValueInDD(F, state, value, it,hmPrimeRemap, _context);
+				Fh = FforH;
+				Fl = insertValueInDD(FforL, state, value, it,hmPrimeRemap, _context);
 			}
-			return _context.getINode(varPrime, Fl, Fh, true);
-		}
-		ADDINode cur1 =  (ADDINode)_context.getNode(F);
-		Integer Fvar= cur1._nTestVarID;
-		if(Fvar.compareTo(varPrime)==0){
-			if (val==true){
-				Fh = insertValueInDD(cur1._nHigh, state, value, it,hmPrimeRemap, _context);
-				Fl = cur1._nLow;
+			if (create)
+				F = _context.getINode(var,Fl,Fh, true);
+			else{
+				((ADDINode)cur)._nHigh =  Fh;
+				((ADDINode)cur)._nLow = Fl;
 			}
-			else {
-				Fh =cur1._nHigh;
-				Fl = insertValueInDD(cur1._nLow, state, value, it,hmPrimeRemap, _context);
-			}			
-			return _context.getINode(varPrime,Fl,Fh, true);
-
+			return F;
 		}
-		if (val==true){
-			Fh = insertValueInDD(F, state, value, it,hmPrimeRemap, _context);
-			Fl = F;
-		}
-		else {
-			Fh = F;
-			Fl = insertValueInDD(F, state, value, it,hmPrimeRemap, _context);
-		}
-		return _context.getINode(varPrime,Fl,Fh, true);
 	}
 
+	/*
+	*/
 }
 

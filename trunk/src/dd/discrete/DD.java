@@ -80,7 +80,7 @@ public abstract class DD {
     public static int GLOBAL_ID_COUNT  = 0;
 
     // For printing
-    public static DecimalFormat _df = new DecimalFormat("#.###");
+    public static DecimalFormat _df = new DecimalFormat("#.##############");
 
     // For timing
     public static long _lTime;

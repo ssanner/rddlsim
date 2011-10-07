@@ -37,6 +37,13 @@ public abstract class Policy {
 		_rddl = rddl;
 	}
 
+	public void setLimitTime(Integer time) {
+	}
+	
+	public int getNumberUpdate() {
+		return 0;
+	}
+	
 	public void setRandSeed(long rand_seed) {
 		RAND_SEED = rand_seed;
 		_random = new Random(RAND_SEED);
@@ -69,4 +76,5 @@ public abstract class Policy {
 	public String toString() {
 		return "Policy for '" + _sInstanceName + "'";
 	}
+	
 }
