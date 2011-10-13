@@ -10,7 +10,6 @@ import dd.discrete.DD;
 import dd.discrete.ADDDNode;
 import dd.discrete.ADDNode;
 import dd.discrete.ADDINode;
-import dd.discrete.ADDBNode;
 import dd.discrete.ADD;
 
 import util.CString;
@@ -162,7 +161,11 @@ public class DDUtils {
 		int den = highPair._o2+lowPair._o2;
 		return new Pair<Double, Integer>(num/den, den);
 	}
-	
+	public static Double JoinBranches3(Pair<Double, Double> weightsNode){
+		Double high = weightsNode._o1;
+		Double low = weightsNode._o2;
+		return Math.max(high, low);
+	}
 	public static int insertValueInDD(int F, ArrayList state, double value, Iterator<CString> it, HashMap<String,String> hmPrimeRemap, ADD _context, HashMap<Integer, Integer> iD2ADD,HashMap<Integer, Pair<Pair<Double, ArrayList<Double>>, Pair<Double, ArrayList<Double>>>> hmNodeWeight, doubleOutPut weight) {
 		int Fh, Fl;
 		//There are no more elements in the alStateVars 	
@@ -302,6 +305,68 @@ public class DDUtils {
 			Pair<Double, Integer> newBranch = JoinBranches2(branch);
 			weight._nWeights = newBranch._o2;
 			weight._dWeight = newBranch._o1;
+			return F;
+		}
+	}
+
+	public static int insertValueInDD3(int F, ArrayList state, double value, Iterator<CString> it, HashMap<String,String> hmPrimeRemap, ADD _context, HashMap<Integer, Integer> iD2ADD,HashMap<Integer, Pair<Double, Double>> hmNodeWeight, doubleOutPut2 weight) {
+		int Fh, Fl;
+		//There are no more elements in the alStateVars 	
+		if (!it.hasNext()){//means that we are in a leaf then we need to replace the value
+			weight._dWeight = value;
+			weight._nWeights = 1;
+			//int newF = _context.getConstantNode(value);
+			//hmNodeWeight.put(newF, new Pair<Double, Double>(value, 0d));
+			return _context.getConstantNode(value);//newF;
+		}
+		else{
+			String varStr = ((CString)it.next())._string;
+			Integer var=(Integer)_context._hmVarName2ID.get(varStr);
+			Object valueVar =state.get((Integer)_context._hmGVarToLevel.get(var));
+			Boolean val=(valueVar != null) && (Boolean)valueVar;
+			ADDNode cur = _context.getNode(F);
+			Boolean unchangedBranchLow = false;
+			//If F is a leaf and there are more elements in alStateVars or the variable is not in the ADD
+			// means that we need to create the node(s) with the remain variable(s)
+			int FforH = F, FforL = F;
+			Boolean create = true;
+			//If f is a internal Node and id state variable is equal to id Node
+			if(cur instanceof ADDINode && var.compareTo(((ADDINode)cur)._nTestVarID) == 0){
+				FforH = ((ADDINode)cur)._nHigh;
+				FforL = ((ADDINode)cur)._nLow;
+				create =  false;
+			}
+			if (val==true){
+				Fh = insertValueInDD3(FforH, state, value, it, hmPrimeRemap, _context, iD2ADD, hmNodeWeight, weight);
+				unchangedBranchLow = true;
+				Fl = FforL;
+			}
+			else {
+				Fh = FforH;
+				Fl = insertValueInDD3(FforL, state, value, it,hmPrimeRemap, _context, iD2ADD, hmNodeWeight, weight);
+			}
+			//Computing the weight
+			int fRequest = unchangedBranchLow? Fl : Fh;
+			ADDNode nodeRequest = _context.getNode(fRequest);
+			double weightRequest=0;
+			if (nodeRequest instanceof ADDDNode)
+				weightRequest = ((ADDDNode)nodeRequest)._dLower;
+			else
+				weightRequest = JoinBranches3(hmNodeWeight.get(fRequest));			
+			Double highWeight = unchangedBranchLow? weight._dWeight : weightRequest;
+			Double lowWeight = unchangedBranchLow? weightRequest: weight._dWeight;			
+			if (create)
+				F = _context.getINode(var,Fl,Fh, true);
+			else{
+				((ADDINode)cur)._nHigh =  Fh;
+				((ADDINode)cur)._nLow = Fl;
+			}				
+			if (hmNodeWeight.containsKey(F))
+				hmNodeWeight.remove(F);
+			Pair<Double, Double> branch = new Pair<Double, Double>(highWeight, lowWeight);
+			hmNodeWeight.put(F, branch);
+			Double newBranch = JoinBranches3(branch);
+			weight._dWeight = newBranch;
 			return F;
 		}
 	}
