@@ -38,14 +38,16 @@ import rddl.policy.Policy;
 import rddl.policy.SPerseusSPUDDPolicy;
 import rddl.solver.DDUtils;
 import rddl.solver.TimeOutException;
+import rddl.solver.DDUtils.doubleOutPut;
+import rddl.solver.DDUtils.doubleOutPut2;
 import rddl.solver.mdp.Action;
 import rddl.translate.RDDL2Format;
 import util.CString;
 import util.Pair;
 
-public class BRTDP extends Policy {
+public class sBRTDP_MaxVar extends Policy {
 	
-	public static int SOLVER_TIME_LIMIT_PER_TURN = 2; // Solver time limit (seconds)
+	public static double SOLVER_TIME_LIMIT_PER_TURN = 2d; // Solver time limit (seconds)
 	
 	public final static boolean SHOW_STATE   = true;
 	public final static boolean SHOW_ACTIONS = true;
@@ -73,9 +75,9 @@ public class BRTDP extends Policy {
 	public Random _rand = new Random();
 		
 	// Constructors
-	public BRTDP() { }
+	public sBRTDP_MaxVar() { }
 	
-	public BRTDP(String instance_name) {
+	public sBRTDP_MaxVar(String instance_name) {
 		super(instance_name);
 	}
 
@@ -149,6 +151,7 @@ public class BRTDP extends Policy {
 		// Reset horizon
 		_nRemainingHorizon = horizon;
 		_nContUpperUpdates = 0;
+		
 		// Build ADDs for transition, reward and value function (if not already built)
 		if (_translation == null) {
 			
@@ -287,7 +290,7 @@ public class BRTDP extends Policy {
 
 	// Timing variables
 	public long _lStartTime; // For timing purposes
-	public int  _nTimeLimitSecs;
+	public double  _nTimeLimitSecs;
 	public static Runtime RUNTIME = Runtime.getRuntime();
 
 	// Local vars
@@ -304,7 +307,9 @@ public class BRTDP extends Policy {
 	public double _Tau;
 	public Boolean _firstTime;
 	public int _nHorizon;
-	public HashMap<Integer, Pair<Double, Double>> _hmNodeWeight;//weights for lower and upper branch Vgap
+	public HashMap<Integer, Pair<Double, Double>> _hmVarWeight;//weights for lower and upper branch Vgap
+	public HashMap<Integer, Pair<Double, Double>> _hmNodeWeight;
+	public HashMap<Integer, Pair<Double, Double>> _hmNodeWeight2;//weights for lower and upper branch Vgap
 	public HashMap<Integer,Integer> _hmPrimeVarID2VarID;
 	private double maxUpperUpdated,maxLowerUpdated;
 
@@ -356,6 +361,9 @@ public class BRTDP extends Policy {
 		_VUpper = _context.getConstantNode(value_range);
 		_VLower = _context.getConstantNode(min_value_range);
 		_VGap = _context.getConstantNode(value_range - min_value_range);
+		_hmVarWeight = new HashMap<Integer, Pair<Double, Double>>();
+		_hmNodeWeight= new HashMap<Integer, Pair<Double, Double>>();
+		//_hmNodeWeight.put(_VGap, new Pair<Double, Double>(value_range - min_value_range, 0d));
 	}
 
 	private ArrayList remapWithPrimes(ArrayList nextState) {
@@ -374,7 +382,7 @@ public class BRTDP extends Policy {
 	}
 	
 	
-	private ArrayList samplingVGap(Integer beginF) {
+	private ArrayList samplingVGap(Integer beginF, HashMap<Integer, Integer> iD2ADD, ArrayList state) {
 		ArrayList assign = new ArrayList();
 		for (int i = 0; i <= _context._alOrder.size(); i++)
 			assign.add(null);
@@ -383,26 +391,27 @@ public class BRTDP extends Policy {
 			double ran=_random.nextDouble();
 			Integer index = (Integer)_context._hmVarName2ID.get(s._string); // if null, var not in var2ID
 			Integer level = (Integer)_context._hmGVarToLevel.get(index);
-			ADDNode Node =_context.getNode(F);
-			if(Node instanceof ADDINode){
-				ADDINode intNodeKey=(ADDINode)Node;
-				Integer Fvar= intNodeKey._nTestVarID;
-				if(Fvar.compareTo(index)==0){ //var is in the ADD
-					Pair<Double, Double> pair = _hmNodeWeight.get(F);
-					double wH=pair._o1;
-					double wL=pair._o2;
-					Boolean condition = ran>(wL/(wH + wL));
-					assign.set(level,condition);
-					if (condition)
-						F=intNodeKey._nHigh;					
-					else
-						F=intNodeKey._nLow;
-				}
-				else //var is not in the ADD sample equality
-					assign.set(level,ran>0.5);
-			}
-			else //is terminal node and there are more state variables to sample
-				assign.set(level,ran>0.5);
+			String new_str = (String)_translation._hmPrimeRemap.get(s._string);
+			Integer new_id = null;
+			if (new_str == null)
+				new_id = index;
+			else
+				new_id = (Integer)_context._hmVarName2ID.get(new_str);
+		    Integer cpt_a_xiprime=iD2ADD.get(new_id);
+		    if(cpt_a_xiprime==null){
+		    	System.out.println("Prime var not found");
+		    	System.exit(1);
+		    }
+		    int level_prime = (Integer)_context._hmGVarToLevel.get(new_id);
+			state.set(level_prime, true);
+		    double probTrue=_context.evaluate(cpt_a_xiprime,state);
+		    state.set(level_prime, null);
+			double probFalse=1-probTrue;
+			Pair<Double, Double> pair = _hmVarWeight.get(index);
+			double wH=pair._o1 * probTrue;
+			double wL=pair._o2 * probFalse;
+			Boolean condition = ran>(wL/(wH + wL));
+			assign.set(level,condition);
 		}
 		return assign;
 	}
@@ -419,7 +428,7 @@ public class BRTDP extends Policy {
 	}
 
 	// Main RTDP Algorithm
-	public void doRTDP(int time_limit_secs, ArrayList init_state) {
+	public void doRTDP(double time_limit_secs, ArrayList init_state) {
 
 		System.out.println("RTDP: Time limit: " + _nTimeLimitSecs + 
 				" seconds, discount: " + _dDiscount + ", horizon: " + 
@@ -472,7 +481,7 @@ public class BRTDP extends Policy {
 			checkTimeLimit();
 
 			visited_states.add(cur_state);
-			
+			//System.out.println(cur_state);
 			// Compute best action for current state (along with Q-value to backup)
 			QUpdateResult resU = getBestQValue(cur_state,_VUpper);
 			QUpdateResult resL = getBestQValue(cur_state, _VLower);
@@ -484,13 +493,16 @@ public class BRTDP extends Policy {
 			_VUpper = DDUtils.UpdateValue(_context, _VUpper, cur_state, resU._dBestQValue);
 			_nContUpperUpdates++;
 			_VLower = DDUtils.UpdateValue(_context, _VLower, cur_state, resL._dBestQValue);
+			Iterator<CString> it  = _alStateVars.iterator();
+			doubleOutPut2 weight = new doubleOutPut2(0d, 0);
 			//long inicio = System.currentTimeMillis();
-			_VGap = DDUtils.UpdateValue(_context, _VGap, cur_state, resU._dBestQValue - resL._dBestQValue);
+			_VGap = DDUtils.insertValueInDD3(_VGap, cur_state, resU._dBestQValue - resL._dBestQValue, it, _translation._hmPrimeRemap, _context, _hmActionName2Action.get(resU._csBestAction)._hmVarID2CPT, _hmNodeWeight , weight,_hmVarWeight);
+			
 			//System.out.println("Update: "+ (System.currentTimeMillis()-inicio));
 			// Sample next state
 			//inicio = System.currentTimeMillis();
-			cur_state = sampleNextState(cur_state, resU._csBestAction);
-			//System.out.println("Sampĺe: "+ (System.currentTimeMillis()-inicio));
+			cur_state = sampleNextState(cur_state, resU._csBestAction, weight._dWeight);
+			//System.out.println("Sample: "+ (System.currentTimeMillis()-inicio));
 		}
 		
 		// Do final updates *in reverse* on return
@@ -531,7 +543,7 @@ public class BRTDP extends Policy {
 			_dBestQValue  = best_qvalue;
 		}
 	}
-
+	
 	// Find best Q-value/action for given state
 	public QUpdateResult getBestQValue(ArrayList cur_state,int _Value) {
 		
@@ -636,7 +648,7 @@ public class BRTDP extends Policy {
 	   		//node.setprobWeightL(0);
 	   		return _context.evaluate(F, (ArrayList)null);
     	}
-    	if(!_hmNodeWeight.containsKey(F)){
+    	if(!_hmNodeWeight2.containsKey(F)){
      		ADDINode intNodeKey=(ADDINode)Node;
      		Double highWeight = setProbWeightVGap(intNodeKey._nHigh,state,iD2ADD);
      		Double lowWeight = setProbWeightVGap(intNodeKey._nLow,state,iD2ADD);
@@ -659,11 +671,11 @@ public class BRTDP extends Policy {
 			double probFalse=1-probTrue;
 			double weightH=probTrue*(highWeight);
 			double weightL=probFalse*(lowWeight);
-    		_hmNodeWeight.put(F, new Pair<Double, Double>(weightH, weightL));
+    		_hmNodeWeight2.put(F, new Pair<Double, Double>(weightH, weightL));
     		return weightH+weightL;
     	}
     	else{
-    		Pair<Double, Double> pair = _hmNodeWeight.get(F); 
+    		Pair<Double, Double> pair = _hmNodeWeight2.get(F); 
     		return pair._o1+pair._o2;
     	}
 	}
@@ -671,13 +683,14 @@ public class BRTDP extends Policy {
 	// For now we assume that the ADD transition functions for all
 	// actions apply in every state... will have to revisit this later
 	// w.r.t. RDDL's state-action constraints
-	public ArrayList sampleNextState(ArrayList current_state, CString action) {
+	public ArrayList sampleNextState(ArrayList current_state, CString action, Double B) {
 		
 		Action a = _hmActionName2Action.get(action);
-		_hmNodeWeight = new HashMap<Integer, Pair<Double,Double>>();
+		//_hmNodeWeight2 = new HashMap<Integer, Pair<Double,Double>>();
 		//	compute B
-		Double B = setProbWeightVGap(_VGap, current_state, a._hmVarID2CPT);
+		//Double B2 = setProbWeightVGap(_VGap, current_state, a._hmVarID2CPT);
 		//System.out.println(_hmNodeWeight);
+		//System.out.println(_hmNodeWeight2);
 		//_context.getGraph(_VGap).launchViewer();
 		//	check end trial/////////////////////
 		ADDNode Node = _context.getNode(_VGap);
@@ -692,7 +705,7 @@ public class BRTDP extends Policy {
 			}
 		}
 		//sampling each state variable from top to bottom using the weighted probabilities
-		return samplingVGap(_VGap);
+		return samplingVGap(_VGap, a._hmVarID2CPT, current_state);
 	}
 		
 	////////////////////////////////////////////////////////////////////////////
@@ -731,7 +744,7 @@ public class BRTDP extends Policy {
 		long total = RUNTIME.totalMemory();
 		long free = RUNTIME.freeMemory();
 		return total - free + ":" + total;
-	}	
+	}
 	
 	public void setLimitTime(Integer time) {
 		SOLVER_TIME_LIMIT_PER_TURN = time;
@@ -739,6 +752,7 @@ public class BRTDP extends Policy {
 	public int getNumberUpdate() {
 		return _nContUpperUpdates;
 	}
+
 	///////////////////////////////////////////////////////////////////////
 	// Notes on RDDL translation and how it affects RTDP/other algorithms:
 	//

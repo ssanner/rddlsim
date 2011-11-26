@@ -45,7 +45,7 @@ import rddl.translate.RDDL2Format;
 import util.CString;
 import util.Pair;
 
-public class BRTDP3 extends Policy {
+public class sBRTDP_Max extends Policy {
 	
 	public static int SOLVER_TIME_LIMIT_PER_TURN = 2; // Solver time limit (seconds)
 	
@@ -75,9 +75,9 @@ public class BRTDP3 extends Policy {
 	public Random _rand = new Random();
 		
 	// Constructors
-	public BRTDP3() { }
+	public sBRTDP_Max() { }
 	
-	public BRTDP3(String instance_name) {
+	public sBRTDP_Max(String instance_name) {
 		super(instance_name);
 	}
 
@@ -307,7 +307,7 @@ public class BRTDP3 extends Policy {
 	public double _Tau;
 	public Boolean _firstTime;
 	public int _nHorizon;
-	public HashMap<Integer, Pair<Pair<Double, Integer>, Pair<Double, Integer>>> _hmNodeWeight;//weights for lower and upper branch Vgap
+	public HashMap<Integer, Pair<Double, Double>> _hmNodeWeight;//weights for lower and upper branch Vgap
 	public HashMap<Integer, Pair<Double, Double>> _hmNodeWeight2;//weights for lower and upper branch Vgap
 	public HashMap<Integer,Integer> _hmPrimeVarID2VarID;
 	private double maxUpperUpdated,maxLowerUpdated;
@@ -360,7 +360,7 @@ public class BRTDP3 extends Policy {
 		_VUpper = _context.getConstantNode(value_range);
 		_VLower = _context.getConstantNode(min_value_range);
 		_VGap = _context.getConstantNode(value_range - min_value_range);
-		_hmNodeWeight = new HashMap<Integer, Pair<Pair<Double, Integer>, Pair<Double, Integer>>>();
+		_hmNodeWeight = new HashMap<Integer, Pair<Double, Double>>();
 		//_hmNodeWeight.put(_VGap, new Pair<Double, Double>(value_range - min_value_range, 0d));
 	}
 
@@ -410,9 +410,9 @@ public class BRTDP3 extends Policy {
 		    		double probTrue=_context.evaluate(cpt_a_xiprime,state);
 		    		state.set(level_prime, null);
 					double probFalse=1-probTrue;
-					Pair<Pair<Double, Integer>, Pair<Double, Integer>> pair = _hmNodeWeight.get(F);
-					double wH=pair._o1._o1 * probTrue;
-					double wL=pair._o2._o1 * probFalse;
+					Pair<Double, Double> pair = _hmNodeWeight.get(F);
+					double wH=pair._o1 * probTrue;
+					double wL=pair._o2 * probFalse;
 					Boolean condition = ran>(wL/(wH + wL));
 					assign.set(level,condition);
 					if (condition)
@@ -507,14 +507,10 @@ public class BRTDP3 extends Policy {
 			_nContUpperUpdates++;
 			_VLower = DDUtils.UpdateValue(_context, _VLower, cur_state, resL._dBestQValue);
 			Iterator<CString> it  = _alStateVars.iterator();
-			doubleOutPut2 weight = new doubleOutPut2(0d, 0);
-			//long inicio = System.currentTimeMillis();
-			_VGap = DDUtils.insertValueInDD2(_VGap, cur_state, resU._dBestQValue - resL._dBestQValue, it, _translation._hmPrimeRemap, _context, _hmActionName2Action.get(resU._csBestAction)._hmVarID2CPT, _hmNodeWeight, weight);
-			//System.out.println("Update: "+ (System.currentTimeMillis()-inicio));
+			doubleOutPut2 weight = new doubleOutPut2(0d, 0);			
+			_VGap = DDUtils.insertValueInDD3(_VGap, cur_state, resU._dBestQValue - resL._dBestQValue, it, _translation._hmPrimeRemap, _context, _hmActionName2Action.get(resU._csBestAction)._hmVarID2CPT, _hmNodeWeight, weight, null);
 			// Sample next state
-			//inicio = System.currentTimeMillis();
 			cur_state = sampleNextState(cur_state, resU._csBestAction, weight._dWeight);
-			//System.out.println("Sample: "+ (System.currentTimeMillis()-inicio));
 		}
 		
 		// Do final updates *in reverse* on return
