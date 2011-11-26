@@ -39,13 +39,12 @@ import rddl.policy.SPerseusSPUDDPolicy;
 import rddl.solver.DDUtils;
 import rddl.solver.TimeOutException;
 import rddl.solver.DDUtils.doubleOutPut;
-import rddl.solver.DDUtils.doubleOutPut2;
 import rddl.solver.mdp.Action;
 import rddl.translate.RDDL2Format;
 import util.CString;
 import util.Pair;
 
-public class BRTDP4 extends Policy {
+public class sBRTDP_DistinctAvg extends Policy {
 	
 	public static int SOLVER_TIME_LIMIT_PER_TURN = 2; // Solver time limit (seconds)
 	
@@ -75,9 +74,9 @@ public class BRTDP4 extends Policy {
 	public Random _rand = new Random();
 		
 	// Constructors
-	public BRTDP4() { }
+	public sBRTDP_DistinctAvg() { }
 	
-	public BRTDP4(String instance_name) {
+	public sBRTDP_DistinctAvg(String instance_name) {
 		super(instance_name);
 	}
 
@@ -130,7 +129,7 @@ public class BRTDP4 extends Policy {
 			if (SHOW_ACTION_TAKEN)
 				System.out.println("\n--> [Random] action taken: " + action_taken);
 		} else if (SHOW_ACTION_TAKEN)
-			System.out.println("\n--> [RTDP] best action taken: " + action_taken);
+			System.out.println("\n--> [RTDP] best action taken: " + action_taken);	
 		System.out.println("Number of Vupper Updates:" + _nContUpperUpdates);
 		--_nRemainingHorizon; // One less action to take
 		return action_map.get(action_taken);
@@ -151,7 +150,6 @@ public class BRTDP4 extends Policy {
 		// Reset horizon
 		_nRemainingHorizon = horizon;
 		_nContUpperUpdates = 0;
-		
 		// Build ADDs for transition, reward and value function (if not already built)
 		if (_translation == null) {
 			
@@ -307,7 +305,7 @@ public class BRTDP4 extends Policy {
 	public double _Tau;
 	public Boolean _firstTime;
 	public int _nHorizon;
-	public HashMap<Integer, Pair<Double, Double>> _hmNodeWeight;//weights for lower and upper branch Vgap
+	public HashMap<Integer, Pair<Pair<Double, ArrayList<Double>>, Pair<Double, ArrayList<Double>>>> _hmNodeWeight;//weights for lower and upper branch Vgap
 	public HashMap<Integer, Pair<Double, Double>> _hmNodeWeight2;//weights for lower and upper branch Vgap
 	public HashMap<Integer,Integer> _hmPrimeVarID2VarID;
 	private double maxUpperUpdated,maxLowerUpdated;
@@ -360,7 +358,7 @@ public class BRTDP4 extends Policy {
 		_VUpper = _context.getConstantNode(value_range);
 		_VLower = _context.getConstantNode(min_value_range);
 		_VGap = _context.getConstantNode(value_range - min_value_range);
-		_hmNodeWeight = new HashMap<Integer, Pair<Double, Double>>();
+		_hmNodeWeight = new HashMap<Integer, Pair<Pair<Double, ArrayList<Double>>, Pair<Double, ArrayList<Double>>>>();
 		//_hmNodeWeight.put(_VGap, new Pair<Double, Double>(value_range - min_value_range, 0d));
 	}
 
@@ -410,9 +408,9 @@ public class BRTDP4 extends Policy {
 		    		double probTrue=_context.evaluate(cpt_a_xiprime,state);
 		    		state.set(level_prime, null);
 					double probFalse=1-probTrue;
-					Pair<Double, Double> pair = _hmNodeWeight.get(F);
-					double wH=pair._o1 * probTrue;
-					double wL=pair._o2 * probFalse;
+					Pair<Pair<Double, ArrayList<Double>>, Pair<Double, ArrayList<Double>>> pair = _hmNodeWeight.get(F);
+					double wH=pair._o1._o1 * probTrue;
+					double wL=pair._o2._o1 * probFalse;
 					Boolean condition = ran>(wL/(wH + wL));
 					assign.set(level,condition);
 					if (condition)
@@ -507,10 +505,14 @@ public class BRTDP4 extends Policy {
 			_nContUpperUpdates++;
 			_VLower = DDUtils.UpdateValue(_context, _VLower, cur_state, resL._dBestQValue);
 			Iterator<CString> it  = _alStateVars.iterator();
-			doubleOutPut2 weight = new doubleOutPut2(0d, 0);			
-			_VGap = DDUtils.insertValueInDD3(_VGap, cur_state, resU._dBestQValue - resL._dBestQValue, it, _translation._hmPrimeRemap, _context, _hmActionName2Action.get(resU._csBestAction)._hmVarID2CPT, _hmNodeWeight, weight);
+			doubleOutPut weight = new doubleOutPut(0d, new ArrayList<Double>());
+			//long inicio = System.currentTimeMillis();
+			_VGap = DDUtils.insertValueInDD(_VGap, cur_state, resU._dBestQValue - resL._dBestQValue, it, _translation._hmPrimeRemap, _context, _hmActionName2Action.get(resU._csBestAction)._hmVarID2CPT, _hmNodeWeight, weight);
+			//System.out.println("Update: "+ (System.currentTimeMillis()-inicio));
 			// Sample next state
+			//inicio = System.currentTimeMillis();
 			cur_state = sampleNextState(cur_state, resU._csBestAction, weight._dWeight);
+			//System.out.println("Sample: "+ (System.currentTimeMillis()-inicio));
 		}
 		
 		// Do final updates *in reverse* on return
@@ -551,7 +553,15 @@ public class BRTDP4 extends Policy {
 			_dBestQValue  = best_qvalue;
 		}
 	}
-	
+
+	/*public static class doubleOutPut {
+		public double  _dWeight;
+		public ArrayList<Double> _alWeights;
+		public doubleOutPut(double weight, ArrayList<Double> Weights) {
+			_dWeight = weight;
+			_alWeights = Weights;
+		}
+	}*/
 	// Find best Q-value/action for given state
 	public QUpdateResult getBestQValue(ArrayList cur_state,int _Value) {
 		
@@ -760,7 +770,6 @@ public class BRTDP4 extends Policy {
 	public int getNumberUpdate() {
 		return _nContUpperUpdates;
 	}
-
 	///////////////////////////////////////////////////////////////////////
 	// Notes on RDDL translation and how it affects RTDP/other algorithms:
 	//

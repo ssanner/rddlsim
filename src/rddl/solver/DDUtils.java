@@ -32,6 +32,14 @@ public class DDUtils {
 			_nWeights = Weights;
 		}
 	}
+	public static class doubleOutPut3 {
+		public double _dMaxWeight;
+		public double _dMinWeight;
+		public doubleOutPut3(double maxWeight, double minWeight) {
+			_dMaxWeight = maxWeight;
+			_dMinWeight = minWeight;
+		}
+	}
 	// Converts the list of true state fluents to an ArrayList of assignments
 	// that can be passed to ADD evaluate (avoids the need to constantly pass
 	// a HashMap of Strings -> assignments)
@@ -166,6 +174,13 @@ public class DDUtils {
 		Double low = weightsNode._o2;
 		return Math.max(high, low);
 	}
+	public static Pair<Double, Double> JoinBranches4(Pair<Pair<Double, Double>, Pair<Double, Double>> weightsNode){
+		Pair<Double, Double> highPair = weightsNode._o1;
+		Pair<Double, Double> lowPair = weightsNode._o2;
+		double max = Math.max(highPair._o1, lowPair._o1);
+		double min = Math.min(highPair._o2, lowPair._o2);
+		return new Pair<Double, Double>(max, min);
+	}
 	public static int insertValueInDD(int F, ArrayList state, double value, Iterator<CString> it, HashMap<String,String> hmPrimeRemap, ADD _context, HashMap<Integer, Integer> iD2ADD,HashMap<Integer, Pair<Pair<Double, ArrayList<Double>>, Pair<Double, ArrayList<Double>>>> hmNodeWeight, doubleOutPut weight) {
 		int Fh, Fl;
 		//There are no more elements in the alStateVars 	
@@ -234,6 +249,77 @@ public class DDUtils {
 			Pair<Double, ArrayList<Double>> newBranch = JoinBranches(branch);
 			weight._alWeights = newBranch._o2;
 			weight._dWeight = newBranch._o1;
+			return F;
+		}
+	}
+
+	public static int insertValueInDD4(int F, ArrayList state, double value, Iterator<CString> it, HashMap<String,String> hmPrimeRemap, ADD _context, HashMap<Integer, Integer> iD2ADD,HashMap<Integer, Pair<Pair<Double, Double>, Pair<Double, Double>>> hmNodeWeight, doubleOutPut3 weight) {
+		int Fh, Fl;
+		//There are no more elements in the alStateVars 	
+		if (!it.hasNext()){//means that we are in a leaf then we need to replace the value
+			weight._dMaxWeight = value;
+			weight._dMinWeight = value;
+			//int newF = _context.getConstantNode(value);
+			//hmNodeWeight.put(newF, new Pair<Double, Double>(value, 0d));
+			return _context.getConstantNode(value);//newF;
+		}
+		else{
+			String varStr = ((CString)it.next())._string;
+			Integer var=(Integer)_context._hmVarName2ID.get(varStr);
+			Object valueVar =state.get((Integer)_context._hmGVarToLevel.get(var));
+			Boolean val=(valueVar != null) && (Boolean)valueVar;
+			ADDNode cur = _context.getNode(F);
+			Boolean unchangedBranchLow = false;
+			//If F is a leaf and there are more elements in alStateVars or the variable is not in the ADD
+			// means that we need to create the node(s) with the remain variable(s)
+			int FforH = F, FforL = F;
+			Boolean create = true;
+			//If f is a internal Node and id state variable is equal to id Node
+			if(cur instanceof ADDINode && var.compareTo(((ADDINode)cur)._nTestVarID) == 0){
+				FforH = ((ADDINode)cur)._nHigh;
+				FforL = ((ADDINode)cur)._nLow;
+				create =  false;
+			}
+			if (val==true){
+				Fh = insertValueInDD4(FforH, state, value, it, hmPrimeRemap, _context, iD2ADD, hmNodeWeight, weight);
+				unchangedBranchLow = true;
+				Fl = FforL;
+			}
+			else {
+				Fh = FforH;
+				Fl = insertValueInDD4(FforL, state, value, it,hmPrimeRemap, _context, iD2ADD, hmNodeWeight, weight);
+			}
+			//Computing the weight
+			int fRequest = unchangedBranchLow? Fl : Fh;
+			ADDNode nodeRequest = _context.getNode(fRequest);
+			double maxWeightRequest=0;
+			double minWeightRequest=0;
+			if (nodeRequest instanceof ADDDNode){
+				maxWeightRequest = ((ADDDNode)nodeRequest)._dLower;
+				minWeightRequest = ((ADDDNode)nodeRequest)._dLower;
+			}
+			else{
+				Pair<Double, Double> newBranch = JoinBranches4(hmNodeWeight.get(fRequest));
+				maxWeightRequest = newBranch._o1;
+				minWeightRequest = newBranch._o2;
+			}
+			Double highMaxWeight = unchangedBranchLow? weight._dMaxWeight : maxWeightRequest;
+			Double highMinWeight = unchangedBranchLow? weight._dMinWeight : minWeightRequest;
+			Double lowMaxWeight = unchangedBranchLow? maxWeightRequest: weight._dMaxWeight;
+			Double lowMinWeight = unchangedBranchLow? minWeightRequest: weight._dMinWeight;
+			if (create)
+				F = _context.getINode(var,Fl,Fh, true);
+			else{
+				((ADDINode)cur)._nHigh =  Fh;
+				((ADDINode)cur)._nLow = Fl;
+			}				
+			if (hmNodeWeight.containsKey(F))
+				hmNodeWeight.remove(F);
+			Pair<Pair<Double, Double>, Pair<Double, Double>> branch = new Pair<Pair<Double, Double>, Pair<Double, Double>>(new Pair<Double, Double>(highMaxWeight, highMinWeight), new Pair<Double, Double>(lowMaxWeight, lowMinWeight));
+			hmNodeWeight.put(F, branch);
+			Pair<Double, Double> newBranch = JoinBranches4(branch);
+			weight._dMinWeight = newBranch._o2;
+			weight._dMaxWeight = newBranch._o1;
 			return F;
 		}
 	}
@@ -309,7 +395,8 @@ public class DDUtils {
 		}
 	}
 
-	public static int insertValueInDD3(int F, ArrayList state, double value, Iterator<CString> it, HashMap<String,String> hmPrimeRemap, ADD _context, HashMap<Integer, Integer> iD2ADD,HashMap<Integer, Pair<Double, Double>> hmNodeWeight, doubleOutPut2 weight) {
+	
+	public static int insertValueInDD3(int F, ArrayList state, double value, Iterator<CString> it, HashMap<String,String> hmPrimeRemap, ADD _context, HashMap<Integer, Integer> iD2ADD,HashMap<Integer, Pair<Double, Double>> hmNodeWeight, doubleOutPut2 weight,HashMap<Integer, Pair<Double, Double>> hmVarWeight) {
 		int Fh, Fl;
 		//There are no more elements in the alStateVars 	
 		if (!it.hasNext()){//means that we are in a leaf then we need to replace the value
@@ -337,13 +424,13 @@ public class DDUtils {
 				create =  false;
 			}
 			if (val==true){
-				Fh = insertValueInDD3(FforH, state, value, it, hmPrimeRemap, _context, iD2ADD, hmNodeWeight, weight);
+				Fh = insertValueInDD3(FforH, state, value, it, hmPrimeRemap, _context, iD2ADD, hmNodeWeight, weight, hmVarWeight);
 				unchangedBranchLow = true;
 				Fl = FforL;
 			}
 			else {
 				Fh = FforH;
-				Fl = insertValueInDD3(FforL, state, value, it,hmPrimeRemap, _context, iD2ADD, hmNodeWeight, weight);
+				Fl = insertValueInDD3(FforL, state, value, it,hmPrimeRemap, _context, iD2ADD, hmNodeWeight, weight, hmVarWeight);
 			}
 			//Computing the weight
 			int fRequest = unchangedBranchLow? Fl : Fh;
@@ -352,7 +439,7 @@ public class DDUtils {
 			if (nodeRequest instanceof ADDDNode)
 				weightRequest = ((ADDDNode)nodeRequest)._dLower;
 			else
-				weightRequest = JoinBranches3(hmNodeWeight.get(fRequest));			
+				weightRequest = JoinBranches3(hmNodeWeight.get(fRequest));
 			Double highWeight = unchangedBranchLow? weight._dWeight : weightRequest;
 			Double lowWeight = unchangedBranchLow? weightRequest: weight._dWeight;			
 			if (create)
@@ -366,6 +453,18 @@ public class DDUtils {
 			Pair<Double, Double> branch = new Pair<Double, Double>(highWeight, lowWeight);
 			hmNodeWeight.put(F, branch);
 			Double newBranch = JoinBranches3(branch);
+			ADDINode nodeF = (ADDINode)_context.getNode(F); 
+			if (hmVarWeight!= null)
+			{
+				if (hmVarWeight.containsKey(nodeF._nTestVarID))
+				{
+					Pair<Double, Double> branchVar = hmVarWeight.get(nodeF._nTestVarID);
+					branch._o1 = JoinBranches3(new Pair<Double, Double>(branch._o1, branchVar._o1));
+					branch._o2 = JoinBranches3(new Pair<Double, Double>(branch._o2, branchVar._o2));
+					hmVarWeight.remove(nodeF._nTestVarID);
+				}
+				hmVarWeight.put(nodeF._nTestVarID, branch);
+			}
 			weight._dWeight = newBranch;
 			return F;
 		}
