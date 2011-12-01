@@ -944,7 +944,7 @@ public class RDDL {
 		}
 
 		public EXPR getDist(HashMap<LVAR,LCONST> subs, State s) throws EvalException {
-			Double d = ((Number)_exprRealValue.sample(subs, s, null)).doubleValue();
+			Double d = ConvertToNumber(_exprRealValue.sample(subs, s, null)).doubleValue();
 			return new DiracDelta(new REAL_CONST_EXPR(d));
 		}
 		
@@ -1396,6 +1396,15 @@ public class RDDL {
 
 	}
 
+	public static Number ConvertToNumber(Object o) throws EvalException {
+		if (o instanceof Boolean)
+			return ((Boolean)o == true ? 1 : 0);
+		else if (o instanceof Integer || o instanceof Double)
+			return (Number)o;
+		else
+			throw new EvalException("RDDL.OperExpr: Unrecognized number class: " + o.getClass());
+	}
+	
 	public static Object ComputeArithmeticResult(Object o1, Object o2, String op) throws EvalException {
 
 		if (o1 instanceof Boolean)
