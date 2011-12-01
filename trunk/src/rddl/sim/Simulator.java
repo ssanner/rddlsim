@@ -93,7 +93,8 @@ public class Simulator {
 			_state.computeNextState(action_list, _rand);
 			
 			// Calculate reward / objective and store
-			double reward = ((Number)_state._reward.sample(new HashMap<LVAR,LCONST>(), _state, _rand)).doubleValue();
+			double reward = RDDL.ConvertToNumber(
+					_state._reward.sample(new HashMap<LVAR,LCONST>(), _state, _rand)).doubleValue();
 			rewards.add(reward);
 			accum_reward += cur_discount * reward;
 			cur_discount *= _i._dDiscount;
@@ -113,7 +114,7 @@ public class Simulator {
 	//////////////////////////////////////////////////////////////////////////////
 	
 	public static void main(String[] args) throws Exception {
-		
+			
 		//try {	
 			if (args.length < 3 || args.length > 6) {
 				System.out.println("usage: RDDL-file policy-class-name instance-name [state-viz-class-name] [rand seed simulator] [rand seed policy]");
