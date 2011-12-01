@@ -1402,7 +1402,7 @@ public class RDDL {
 		else if (o instanceof Integer || o instanceof Double)
 			return (Number)o;
 		else
-			throw new EvalException("RDDL.OperExpr: Unrecognized number class: " + o.getClass());
+			throw new EvalException("RDDL.ConvertToNumber: Unrecognized number class: " + o.getClass());
 	}
 	
 	public static Object ComputeArithmeticResult(Object o1, Object o2, String op) throws EvalException {
