@@ -43,18 +43,18 @@ public class UCT extends EnumerableStatePolicy {
 		super(instance_name);
 	}
 	
-	private final int TIMEOUT_ORDER = 1000; //1000 milliseconds
-	private final int TIMEOUT = 2 * TIMEOUT_ORDER; //2 seconds
+	protected final int TIMEOUT_ORDER = 1000; //1000 milliseconds
+	protected int TIMEOUT = 160 * TIMEOUT_ORDER; 
 	//private final int TIMEOUT = 600 * TIMEOUT_ORDER; //10 minutes used for debug purposes
 	
 	/**
 	 * Constant used in UCB to increase/decrease exploration bias.
 	 */
-	private final double C = 1.0;
+	protected double C = 1.0;
 	
-	private List<HashMap<BigInteger, HashMap<String, Double>>> rewardsPerHorizon = null;
-	private List<HashMap<BigInteger, HashMap<String, Integer>>> pullsPerHorizon = null;
-	private List<HashMap<BigInteger, Integer>> visitsPerHorizon = null;
+	protected List<HashMap<BigInteger, HashMap<String, Double>>> rewardsPerHorizon = null;
+	protected List<HashMap<BigInteger, HashMap<String, Integer>>> pullsPerHorizon = null;
+	protected List<HashMap<BigInteger, Integer>> visitsPerHorizon = null;
 	
 	/**
 	 * Returns the best action given a state.
@@ -64,17 +64,12 @@ public class UCT extends EnumerableStatePolicy {
 		
 		BigInteger stateAsNumber = this.getStateLabel(s);
 		
-		long startTime = System.currentTimeMillis();
-		long elapsedTime = 0;
+		long timeout = this.getTimePerAction();
 		
-		int completedSearches = 0;
+		Pair<Integer, Long> searchResult = buildSearchTree(s, timeout); 
 		
-		do {
-			this.search(s, this.getRemainingHorizons());
-			
-			completedSearches++;
-			elapsedTime = System.currentTimeMillis() - startTime;
-		} while (elapsedTime < TIMEOUT);
+		int completedSearches = searchResult._o1;
+		long elapsedTime = searchResult._o2;
 		
 		String action = this.getUCTBestAction(stateAsNumber, this.getRemainingHorizons());
 		
@@ -94,11 +89,27 @@ public class UCT extends EnumerableStatePolicy {
 		
 		return action;
 	}
+
+	protected Pair<Integer, Long> buildSearchTree(State s, long timeout) {
+		int completedSearches = 0;
+		
+		long startTime = System.currentTimeMillis();
+		long elapsedTime = 0;
+		
+		do {
+			this.search(s, this.getRemainingHorizons());
+			
+			completedSearches++;
+			elapsedTime = System.currentTimeMillis() - startTime;
+		} while (elapsedTime < timeout);
+		
+		return new Pair<Integer, Long>(completedSearches, elapsedTime);
+	}
 	
 	/**
 	 * Execute and expands the Monte Carlo Search Tree.
 	 */
-	private double search(State state, int remainingHorizons) {
+	protected double search(State state, int remainingHorizons) {
 		if (remainingHorizons == 0) return 0.0;
 		
 		BigInteger stateAsNumber = this.getStateLabel(state);
@@ -123,7 +134,7 @@ public class UCT extends EnumerableStatePolicy {
 	/**
 	 * Update all internal tables with search results.
 	 */
-	private void updateValue(BigInteger stateAsNumber, String action, double q, int remainingHorizons) {
+	protected void updateValue(BigInteger stateAsNumber, String action, double q, int remainingHorizons) {
 		HashMap<BigInteger, HashMap<String, Double>> rewards = this.rewardsPerHorizon.get(remainingHorizons - 1);
 		HashMap<BigInteger, HashMap<String, Integer>> pulls = this.pullsPerHorizon.get(remainingHorizons - 1);
 		HashMap<BigInteger, Integer> visits = this.visitsPerHorizon.get(remainingHorizons - 1);
@@ -167,7 +178,7 @@ public class UCT extends EnumerableStatePolicy {
 	/**
 	 * Verify if a state is a leaf of the search tree.
 	 */
-	private boolean isLeaf(BigInteger state, int remainingHorizons) {
+	protected boolean isLeaf(BigInteger state, int remainingHorizons) {
 		HashMap<BigInteger, HashMap<String, Double>> rewards = this.rewardsPerHorizon.get(remainingHorizons - 1);
 		if (!rewards.containsKey(state)) return true;
 		
@@ -178,15 +189,17 @@ public class UCT extends EnumerableStatePolicy {
 	/**
 	 * Evaluate a leaf, executing a policy rollout in a random policy.
 	 */
-	private double evaluate(State state, BigInteger stateAsNumber, int remainingHorizons) {
+	protected double evaluate(State state, BigInteger stateAsNumber, int remainingHorizons) {
 		HashMap<String, Double> rewards = this.rewardsPerHorizon.get(remainingHorizons - 1).get(stateAsNumber);
 		
 		String action = null;
 		
 		//Find an action to execute
 		for (CString possibleAction : this.getActions()) {
-			if (rewards == null || !rewards.containsKey(possibleAction._string))
+			if (rewards == null || !rewards.containsKey(possibleAction._string)) {
 				action = possibleAction._string;
+				break;
+			}
 		}
 		
 		if (action == null) //if tested all actions, choose a random action 
@@ -222,7 +235,7 @@ public class UCT extends EnumerableStatePolicy {
 	/**
 	 * Sample an action to execute.
 	 */
-	private String selectAction(BigInteger state, int remainingHorizons) {
+	protected String selectAction(BigInteger state, int remainingHorizons) {
 		HashMap<BigInteger, HashMap<String, Double>> rewards = this.rewardsPerHorizon.get(remainingHorizons - 1);
 		
 		//select an unused action
@@ -238,7 +251,7 @@ public class UCT extends EnumerableStatePolicy {
 	/**
 	 * Simulate a state transition. (based in Simulator.run method)
 	 */
-	private Pair<State, Double> simulateSingleAction(State state, String action) {
+	protected Pair<State, Double> simulateSingleAction(State state, String action) {
 		
 		State s = cloneState(state);
 		double reward = 0.0;
@@ -379,21 +392,40 @@ public class UCT extends EnumerableStatePolicy {
 	}
 	
 	/**
+	 * Gets an amount of time to execute an single action in getBestAction method.
+	 * @return Amount of time to execute an single action in getBestAction method.
+	 */
+	private long getTimePerAction() {
+		int currentHorizon = this.getRemainingHorizons();
+		
+		double s = 0.0;
+		
+		for (int i=0; i < this.getTotalHorizons(); i++) 
+			s += i*i;
+		
+		double timeShare = currentHorizon * currentHorizon / s;
+		
+		return (long) (TIMEOUT * timeShare);
+	}
+	
+	/**
 	 * Initialize all class attributes.
 	 */
 	@Override
 	public void roundInit(double timeLeft, int horizon, int roundNumber, int totalRounds) {
 		super.roundInit(timeLeft, horizon, roundNumber, totalRounds);
 		
-		this.rewardsPerHorizon = new ArrayList<HashMap<BigInteger,HashMap<String,Double>>>();
-		this.visitsPerHorizon = new ArrayList<HashMap<BigInteger,Integer>>();
-		this.pullsPerHorizon = new ArrayList<HashMap<BigInteger,HashMap<String,Integer>>>();
-		
-		for (int i = 0; i < this.getRemainingHorizons(); i++) {
-			this.rewardsPerHorizon.add(new HashMap<BigInteger, HashMap<String,Double>>());
-			this.visitsPerHorizon.add(new HashMap<BigInteger, Integer>());
-			this.pullsPerHorizon.add(new HashMap<BigInteger, HashMap<String,Integer>>());
-		}	
+		if (this.rewardsPerHorizon == null) {
+			this.rewardsPerHorizon = new ArrayList<HashMap<BigInteger,HashMap<String,Double>>>();
+			this.visitsPerHorizon = new ArrayList<HashMap<BigInteger,Integer>>();
+			this.pullsPerHorizon = new ArrayList<HashMap<BigInteger,HashMap<String,Integer>>>();
+			
+			for (int i = 0; i < this.getRemainingHorizons(); i++) {
+				this.rewardsPerHorizon.add(new HashMap<BigInteger, HashMap<String,Double>>());
+				this.visitsPerHorizon.add(new HashMap<BigInteger, Integer>());
+				this.pullsPerHorizon.add(new HashMap<BigInteger, HashMap<String,Integer>>());
+			}	
+		}
 		
 		//Force a "random" seed for each round to avoid the same 
 		//pseudo random numbers used in the Simulator
