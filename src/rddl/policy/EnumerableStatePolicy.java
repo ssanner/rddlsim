@@ -63,7 +63,16 @@ public abstract class EnumerableStatePolicy extends Policy {
 	protected INSTANCE rddlInstance = null;
 	
 	private RDDL2Format translation = null;
+
+	/**
+	 * Gets a handler to RDDL data.
+	 * @return Handler to RDDL data.
+	 */
+	protected RDDL2Format getTranslation() {
+		return translation;
+	}
 	
+
 	/**
 	 * Gets the remaining horizons to end a round.
 	 * @return Remaining horizons to end a round
@@ -152,7 +161,22 @@ public abstract class EnumerableStatePolicy extends Policy {
 	 * @param s State to be labeled
 	 * @return Label of state s
 	 */
-	protected BigInteger getStateLabel(State s) {
+	protected BigInteger getStateLabel(State s) {	
+		ArrayList<Boolean> variableValues = this.getVariableValues(s);
+		
+		return convertVariableValuesToNumber(variableValues);
+	}
+	
+	protected ArrayList<Boolean> getVariableValues(BigInteger state) {
+		ArrayList<Boolean> variableValues = new ArrayList<Boolean>();
+		
+		for (int i = 0; i < stateVariableNames.size(); i++)
+			variableValues.add(state.testBit(i));
+		
+		return variableValues;
+	}
+	
+	protected ArrayList<Boolean> getVariableValues(State s) {
 		HashMap<String, Boolean> variableValuesAsHashMap = getStateVariableValues(s);
 		
 		ArrayList<Boolean> variableValues = new ArrayList<Boolean>();
@@ -171,7 +195,7 @@ public abstract class EnumerableStatePolicy extends Policy {
 			}
 		}
 		
-		return convertVariableValuesToNumber(variableValues);
+		return variableValues;
 	}
 	
 	/**
