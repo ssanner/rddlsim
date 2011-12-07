@@ -71,7 +71,8 @@ public class UCT extends EnumerableStatePolicy {
 		int completedSearches = searchResult._o1;
 		long elapsedTime = searchResult._o2;
 		
-		String action = this.getUCTBestAction(stateAsNumber, this.getRemainingHorizons());
+		//choose an action without the exploration bias
+		String action = this.getUCTBestAction(stateAsNumber, this.getRemainingHorizons(), 0.0);
 		
 		//Get the Search Tree Depth only to debug purposes
 		int searchTreeDepth = 0;
@@ -83,8 +84,10 @@ public class UCT extends EnumerableStatePolicy {
 			}
 		}
 		
-		System.out.printf("Action: [%s] selected after [%d] searches in [%f] seconds. Search tree depth: [%d]", 
-				action, completedSearches, ((double) elapsedTime) / TIMEOUT_ORDER, searchTreeDepth);
+		double reward = this.rewardsPerHorizon.get(this.getRemainingHorizons() - 1).get(stateAsNumber).get(action);
+		
+		System.out.printf("Action: [%s] selected with reward [%f] after [%d] searches in [%f] seconds. Search tree depth: [%d]", 
+				action, reward, completedSearches, ((double) elapsedTime) / TIMEOUT_ORDER, searchTreeDepth);
 		System.out.println();
 		
 		return action;
@@ -283,6 +286,13 @@ public class UCT extends EnumerableStatePolicy {
 	 * Apply the UCB algorithm to choose an action.
 	 */
 	private String getUCTBestAction(BigInteger stateAsNumber, int remainingHorizons) {
+		return this.getUCTBestAction(stateAsNumber, remainingHorizons, this.C);
+	}
+	
+	/**
+	 * Apply the UCB algorithm to choose an action.
+	 */
+	private String getUCTBestAction(BigInteger stateAsNumber, int remainingHorizons, double biasModifier) {
 		HashMap<BigInteger, HashMap<String, Double>> rewards = this.rewardsPerHorizon.get(remainingHorizons - 1);
 		HashMap<BigInteger, Integer> visits = this.visitsPerHorizon.get(remainingHorizons - 1);
 		HashMap<BigInteger, HashMap<String, Integer>> pulls = this.pullsPerHorizon.get(remainingHorizons - 1);
@@ -309,7 +319,7 @@ public class UCT extends EnumerableStatePolicy {
 			double bias = 0.0;
 			
 			if (pull != 0 && stateOccurrences != 0)
-				bias = C * Math.sqrt(Math.log(stateOccurrences) / pull);
+				bias = biasModifier * Math.sqrt(Math.log(stateOccurrences) / pull);
 			
 			double rewardWithRegret = averageReward + bias;
 			
@@ -396,14 +406,12 @@ public class UCT extends EnumerableStatePolicy {
 	 * @return Amount of time to execute an single action in getBestAction method.
 	 */
 	private long getTimePerAction() {
-		int currentHorizon = this.getRemainingHorizons();
+		int t = this.getRemainingHorizons();
+		int n = this.getTotalHorizons();
 		
-		double s = 0.0;
+		double s = n * (n+1) * (2*n + 1) / 6;
 		
-		for (int i=0; i < this.getTotalHorizons(); i++) 
-			s += i*i;
-		
-		double timeShare = currentHorizon * currentHorizon / s;
+		double timeShare = t * t / s;
 		
 		return (long) (TIMEOUT * timeShare);
 	}

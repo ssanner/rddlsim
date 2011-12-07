@@ -51,8 +51,7 @@ public class UCTWithBackup extends UCT {
 	 * Contains all ADDs used by this class.
 	 */
 	private List<Integer> allADDs = null;
-	
-	
+		
 	private final double MAX_FREE_MEMORY_ALLOWED = 0.3;
 	
 	/**
@@ -101,12 +100,21 @@ public class UCTWithBackup extends UCT {
 				Action action = new Action(this.getTranslation()._context, action_name, cpts, reward);
 				this.actionData.put(a, action);
 			}
+			
 			double rewardRange = 0d;
-			for (Action a : this.actionData.values())
-				rewardRange = Math.max(rewardRange,
+			double maxReward = Double.NEGATIVE_INFINITY;
+			
+			for (Action a : this.actionData.values()) {
+				rewardRange = Math.max(rewardRange, 
 						this.getTranslation()._context.getMaxValue(a._reward) - this.getTranslation()._context.getMinValue(a._reward));
+				
+				maxReward = Math.max(maxReward, this.getTranslation()._context.getMaxValue(a._reward));
+			}
+			
+			this.C = rewardRange;
+			
 			for (int i = 0; i < horizon; i++) {
-				double reward = rewardRange * (i + 1);
+				double reward = maxReward * (i + 1);
 
 				int valueADD = this.getTranslation()._context.getConstantNode(reward);
 				this.valueADDPerHorizon.add(valueADD);
@@ -138,9 +146,7 @@ public class UCTWithBackup extends UCT {
 	/**
 	 * Execute and expands the Monte Carlo Search Tree.
 	 */
-	protected double search(State state, int remainingHorizons) {
-		//this.flushCaches();
-		
+	protected double search(State state, int remainingHorizons) {	
 		if (remainingHorizons == 0) return 0.0;
 		
 		BigInteger stateAsNumber = this.getStateLabel(state);
@@ -156,7 +162,7 @@ public class UCTWithBackup extends UCT {
 		
 		this.search(nextState, remainingHorizons - 1);
 		
-		double q = this.computeBellmanBackup(state, remainingHorizons); 
+		double q = this.computeBellmanBackup(state, action, remainingHorizons); 
 		
 		updateValue(stateAsNumber, action, q, remainingHorizons);
 		
@@ -183,7 +189,7 @@ public class UCTWithBackup extends UCT {
 	 * Compute a Bellman Backup in a state given a horizon.
 	 * @return Best reward obtained in this state.
 	 */
-	private double computeBellmanBackup(State state, int horizon) {
+	private double computeBellmanBackup(State state, String action, int horizon) {
 		
 		ArrayList<Boolean> factoredState = this.getVariableValues(state);
 		
@@ -194,16 +200,9 @@ public class UCTWithBackup extends UCT {
 			prime_vfun = this.getTranslation()._context.remapGIDsInt(valueADD, this.getTranslation()._hmPrimeRemap);
 		}
 		
-		double bestReward = Double.NEGATIVE_INFINITY;
+		Action a = this.actionData.get(action);
 		
-		for (Action a : this.actionData.values()) {
-			double qvalue = getQValue(prime_vfun, factoredState, a);
-			
-			if (qvalue > bestReward) 
-				bestReward = qvalue;
-		}
-		
-		return bestReward;
+		return getQValue(prime_vfun, factoredState, a);
 	}
 	
 	public double getQValue(int prime_vfun, ArrayList<Boolean> cur_state, Action a) {
@@ -259,7 +258,7 @@ public class UCTWithBackup extends UCT {
 		return reward + this.getDiscountFactor() * expectedReward;
 	}
 
-	private void flushCaches() {		
+	private void flushCaches() {
 		Runtime runtime = Runtime.getRuntime();
 		
 		double freeMemoryPercentage = ((double) runtime.freeMemory() / (double) runtime.totalMemory());
