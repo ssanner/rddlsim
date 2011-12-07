@@ -260,16 +260,20 @@ public class VI extends Policy {
 				e.printStackTrace(System.err);
 				System.exit(1);
 			} finally {
+				
+				System.out.println("\n*********************************************************");
 				System.out.println("Solution in VI exit at iteration " + _nIter + ": " + 
 						_context.countExactNodes(_valueDD) + " nodes.");
-			}
-			
-			// Display value function if small enough
-			if (_context.countExactNodes(_valueDD) < 20) {
-				System.out.print("Value function DD:");
-				StringWriter sw = new StringWriter();
-				_context.exportTree(_valueDD, new PrintWriter(sw), true);
-				System.out.println(sw);
+
+				// Display value function if small enough
+				if (_context.countExactNodes(_valueDD) < 20) {
+					System.out.print("Value function DD:");
+					StringWriter sw = new StringWriter();
+					_context.exportTree(_valueDD, new PrintWriter(sw), true);
+					System.out.println(sw);
+				}
+				
+				System.out.println("*********************************************************");
 			}
 		}		
 	}
