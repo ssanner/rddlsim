@@ -193,7 +193,7 @@ non-fluents traffic_2lanes_2intersections {
 
 // Specify an actual problem instance (full object specification, initial state, 
 // and objective).
-instance is1 {
+instance inst_traffic_binary_ctm {
 
 	domain = traffic_binary_ctm;
 	

@@ -187,7 +187,7 @@ non-fluents smallPizza {
 
 // Specify an actual problem instance (full object specification, initial state, 
 // and objective).
-instance ip1 {
+instance inst_pizza {
 
 	domain = pizza;
 	

@@ -47,6 +47,8 @@ public class GenericScreenDisplay extends StateViz {
 			
 			if (_bSuppressNonFluents && e.getKey().equals("nonfluent"))
 				continue;
+			else if (e.getKey().equals("interm"))
+				continue;
 			
 			// Go through all variable names p for a variable type
 			for (PVAR_NAME p : e.getValue()) {

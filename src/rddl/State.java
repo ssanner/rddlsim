@@ -223,6 +223,8 @@ public class State {
 			for (ArrayList<LCONST> gfluent : gfluents) {
 				if (DISPLAY_UPDATES) System.out.print("- " + p + gfluent + " @ " + level + " := ");
 				CPF_DEF cpf = _hmCPFs.get(p);
+				if (cpf == null) 
+					throw new EvalException("Could not find cpf for: " + p);
 				
 				subs.clear();
 				for (int i = 0; i < cpf._exprVarName._alTerms.size(); i++) {
@@ -260,6 +262,9 @@ public class State {
 			for (ArrayList<LCONST> gfluent : gfluents) {
 				if (DISPLAY_UPDATES) System.out.print("- " + primed + gfluent + " := ");
 				CPF_DEF cpf = _hmCPFs.get(primed);
+				if (cpf == null) 
+					throw new EvalException("Could not find cpf for: " + primed + 
+							"... did you forget to prime (') the variable in the cpf definition?");
 				
 				subs.clear();
 				for (int i = 0; i < cpf._exprVarName._alTerms.size(); i++) {
@@ -296,7 +301,9 @@ public class State {
 			for (ArrayList<LCONST> gfluent : gfluents) {
 				if (DISPLAY_UPDATES) System.out.print("- " + p + gfluent + " := ");
 				CPF_DEF cpf = _hmCPFs.get(p);
-				
+				if (cpf == null) 
+					throw new EvalException("Could not find cpf for: " + p);
+	
 				subs.clear();
 				for (int i = 0; i < cpf._exprVarName._alTerms.size(); i++) {
 					LVAR v = (LVAR)cpf._exprVarName._alTerms.get(i);

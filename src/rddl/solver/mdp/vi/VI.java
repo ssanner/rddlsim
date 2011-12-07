@@ -17,6 +17,8 @@ package rddl.solver.mdp.vi;
 
 import graph.Graph;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.*;
@@ -260,6 +262,14 @@ public class VI extends Policy {
 			} finally {
 				System.out.println("Solution in VI exit at iteration " + _nIter + ": " + 
 						_context.countExactNodes(_valueDD) + " nodes.");
+			}
+			
+			// Display value function if small enough
+			if (_context.countExactNodes(_valueDD) < 20) {
+				System.out.print("Value function DD:");
+				StringWriter sw = new StringWriter();
+				_context.exportTree(_valueDD, new PrintWriter(sw), true);
+				System.out.println(sw);
 			}
 		}		
 	}
