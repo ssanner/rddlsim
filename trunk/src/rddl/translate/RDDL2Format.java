@@ -41,6 +41,7 @@ public class RDDL2Format {
 	public final static String UNKNOWN         = "unknown".intern();
 	public final static String SPUDD_ORIG      = "spudd_orig".intern();
 	public final static String SPUDD_CURR      = "spudd_sperseus".intern();
+	public final static String SPUDD_CURR_NOINIT = "spudd_sperseus_noinit".intern();
 	public final static String SPUDD_CONC      = "spudd_concurrent".intern();
 	public final static String SPUDD_CONT      = "spudd_continuous".intern();
 	public final static String SPUDD_CONT_CONC = "spudd_continuous_concurrent".intern();
@@ -160,8 +161,8 @@ public class RDDL2Format {
 		// Strings interned so can test equality here
 		if (_sTranslationType == SPUDD_ORIG)
 			exportSPUDD(pw, false, false);
-		else if (_sTranslationType == SPUDD_CURR)
-			exportSPUDD(pw, true, false);
+		else if (_sTranslationType == SPUDD_CURR || _sTranslationType == SPUDD_CURR_NOINIT)
+			exportSPUDD(pw, true, false, _sTranslationType == SPUDD_CURR /* export init block? */);
 		else if (_sTranslationType == SPUDD_CONC)
 			exportSPUDD(pw, false, true);
 		else if (_sTranslationType == PPDDL ) 
@@ -174,6 +175,10 @@ public class RDDL2Format {
 	}
 	
 	public void exportSPUDD(PrintWriter pw, boolean curr_format, boolean allow_conc) {
+		exportSPUDD(pw, curr_format, allow_conc, true);
+	}
+		
+	public void exportSPUDD(PrintWriter pw, boolean curr_format, boolean allow_conc, boolean export_init_block) {
 		pw.println("// Automatically produced by rddl.translate.RDDL2Format"/* + " using '" + _sTranslationType + "'"*/);
 		pw.println("// SPUDD / Symbolic Perseus Format for '" + _d._sDomainName + "." + _i._sName + "'");
 
@@ -196,27 +201,29 @@ public class RDDL2Format {
 		}
 
 		// Initial state
-		HashMap<String,Boolean> init_state_assign = new HashMap<String,Boolean>();
-		for (PVAR_INST_DEF def : _i._alInitState) {	
-			// Get the assignments for this PVAR
-			init_state_assign.put(CleanFluentName(def._sPredName.toString() + def._alTerms),
-					(Boolean)def._oValue);
-		}
-		pw.println("\ninit [*");
-		for (String s : _alStateVars) {
-			
-			Boolean bval = init_state_assign.get(s);
-			if (bval == null) { // No assignment, get default value
-				// This is a quick fix... a bit ugly
-				PVAR_NAME p = new PVAR_NAME(s.split("__")[0]);
-				bval = (Boolean)_state.getDefaultValue(p);
+		if (export_init_block) {
+			HashMap<String,Boolean> init_state_assign = new HashMap<String,Boolean>();
+			for (PVAR_INST_DEF def : _i._alInitState) {	
+				// Get the assignments for this PVAR
+				init_state_assign.put(CleanFluentName(def._sPredName.toString() + def._alTerms),
+						(Boolean)def._oValue);
 			}
-			if (bval)
-				pw.println("\t(" + s + " (true (1.0)) (false (0.0)))");
-			else
-				pw.println("\t(" + s + " (true (0.0)) (false (1.0)))");
+			pw.println("\ninit [*");
+			for (String s : _alStateVars) {
+				
+				Boolean bval = init_state_assign.get(s);
+				if (bval == null) { // No assignment, get default value
+					// This is a quick fix... a bit ugly
+					PVAR_NAME p = new PVAR_NAME(s.split("__")[0]);
+					bval = (Boolean)_state.getDefaultValue(p);
+				}
+				if (bval)
+					pw.println("\t(" + s + " (true (1.0)) (false (0.0)))");
+				else
+					pw.println("\t(" + s + " (true (0.0)) (false (1.0)))");
+			}
+			pw.println("]");
 		}
-		pw.println("]");
 
 		// Actions
 		if (allow_conc) {
@@ -1148,9 +1155,10 @@ public class RDDL2Format {
 
 	public static void ShowFileFormats() {
 		System.out.println("Supported languages are");
-		System.out.println("  spudd_sperseus");
-		System.out.println("  ppddl");
-		System.out.println("  spudd_orig (an older SPUDD format)");
+		System.out.println("  spudd_sperseus (required for latest versions of SPUDD, version used in IPPC 2011)"); 
+		System.out.println("  spudd_sperseus_noinit (same as above but omits initial state block for compatibility with some SPUDD parsers)"); 
+		System.out.println("  ppddl (version used in IPPC 2011)");
+		System.out.println("  spudd_orig (an older SPUDD format, not readable by latest versions of SPUDD)");
 		System.out.println("  spudd_conc (SPUDD format supporting concurrency)");
 	}
 	
@@ -1173,6 +1181,7 @@ public class RDDL2Format {
 		String arg2_intern = args[2].intern();
 		if ( arg2_intern != SPUDD_ORIG &&
 				arg2_intern != SPUDD_CURR &&
+				arg2_intern != SPUDD_CURR_NOINIT &&
 				arg2_intern != SPUDD_CONC &&
 				arg2_intern != PPDDL ) {
 			System.out.println("\nFile format '" + arg2_intern + "' not supported yet.\n");
@@ -1181,8 +1190,8 @@ public class RDDL2Format {
 		}
 		String rddl_file = args[0];
 		String output_dir = args[1];
-		if (output_dir.endsWith(File.separator))
-			output_dir = output_dir.substring(output_dir.length() - 1);
+		//if (output_dir.endsWith(File.separator))
+		//	output_dir = output_dir.substring(output_dir.length() - 1);
 		
 		// If RDDL file is a directory, add all files
 		ArrayList<File> rddl_files = new ArrayList<File>();

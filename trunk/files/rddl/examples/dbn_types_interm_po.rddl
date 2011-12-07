@@ -69,7 +69,7 @@ domain prop_dbn2 {
 	reward = p + q - r + 5*(i2 == @high); 
 }
         
-instance inst_dbn {
+instance inst_dbn_interm_po {
 
 	domain = prop_dbn2;	
 	init-state { 

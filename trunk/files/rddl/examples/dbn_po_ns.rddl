@@ -43,7 +43,7 @@ domain prop_dbn_po {
 	reward = p + q + r; 
 }
         
-instance inst_dbn {
+instance inst_dbn_po {
 
 	domain = prop_dbn_po;	
 	init-state { 

@@ -124,7 +124,7 @@ non-fluents pics3 {
 	};
 }
 
-instance is1 {
+instance inst_simple_mars_rover {
 
 	domain = simple_mars_rover;
 	

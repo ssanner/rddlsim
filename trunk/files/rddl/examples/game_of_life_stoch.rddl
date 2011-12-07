@@ -5,7 +5,7 @@
 //
 // Author: Scott Sanner (ssanner [at] gmail.com)
 ////////////////////////////////////////////////////////////////////
-domain game_of_life {
+domain game_of_life_stoch {
   	
 	requirements = { reward-deterministic };
 
@@ -64,9 +64,9 @@ domain game_of_life {
 	};
 }
    
-non-fluents game2x2 {
+non-fluents game2x2_stoch {
 
-	domain = game_of_life;
+	domain = game_of_life_stoch;
 	
 	objects { 
 		x_pos : {x1,x2};
@@ -94,9 +94,9 @@ non-fluents game2x2 {
 	};
 }
         
-non-fluents game3x3 {
+non-fluents game3x3_stoch {
 
-	domain = game_of_life;
+	domain = game_of_life_stoch;
 	
 	objects { 
 		x_pos : {x1,x2,x3};
@@ -155,10 +155,10 @@ non-fluents game3x3 {
 	};
 }
 
-instance is1 {
+instance is1_stoch {
 
-	domain = game_of_life;	
-	non-fluents = game3x3;
+	domain = game_of_life_stoch;	
+	non-fluents = game3x3_stoch;
 	
 	init-state { 
 		alive(x1,y1); 
