@@ -42,9 +42,9 @@ public class RDDL2Format {
 	public final static String SPUDD_ORIG      = "spudd_orig".intern();
 	public final static String SPUDD_CURR      = "spudd_sperseus".intern();
 	public final static String SPUDD_CURR_NOINIT = "spudd_sperseus_noinit".intern();
-	public final static String SPUDD_CONC      = "spudd_concurrent".intern();
-	public final static String SPUDD_CONT      = "spudd_continuous".intern();
-	public final static String SPUDD_CONT_CONC = "spudd_continuous_concurrent".intern();
+	public final static String SPUDD_CONC      = "spudd_conc".intern();
+	public final static String SPUDD_CONT      = "spudd_cont".intern();
+	public final static String SPUDD_CONT_CONC = "spudd_cont_conc".intern();
 	public final static String PPDDL           = "ppddl".intern();
 		
 	public State      _state;
@@ -247,7 +247,7 @@ public class RDDL2Format {
 	public void exportSPUDDAction(String action_name, boolean curr_format, PrintWriter pw) {
 		
 		pw.println("\naction " + 
-				(action_name.equals("<no action -- concurrent>") ? "" : action_name));
+				(action_name.equals("<no action -- concurrent>") ? "concurrent_action" : action_name));
 		for (String s : _alStateVars) {
 			pw.print("\t" + s);
 			
@@ -318,6 +318,7 @@ public class RDDL2Format {
 
 		// Always show action cost (can be zero)
 		// Reward is now fixed at zero
+		System.out.println(_act2rewardDD.keySet());
 		ArrayList<Integer> rewards = _act2rewardDD.get(action_name);
 		if (rewards.size() > 0) {
 			pw.print("\tcost [+ ");
@@ -641,10 +642,10 @@ public class RDDL2Format {
 			}
 		}
 		_alAllVars = new ArrayList<String>();
-		_alAllVars.addAll(_alStateVars);
-		_alAllVars.addAll(_alNextStateVars);
 		if (_sTranslationType == SPUDD_CONC || _sTranslationType == SPUDD_CONT_CONC)
 			_alAllVars.addAll(_hmActionMap.keySet());
+		_alAllVars.addAll(_alStateVars);
+		_alAllVars.addAll(_alNextStateVars);
 		_alAllVars.addAll(_alObservVars);
 
 //		////////////////////////////////////////////////////////////////////////////
@@ -840,6 +841,12 @@ public class RDDL2Format {
 							_var2transDD.put(new Pair("<no action -- concurrent>", cpt_var), cpt);
 						else
 							_var2observDD.put(new Pair("<no action -- concurrent>", cpt_var), cpt);
+						
+						// TODO: Build reward
+						EXPR rew_expr =  _state._reward;
+						ArrayList<Integer> rew_fun = convertAddExpr2ADD(rew_expr, false);
+						_act2rewardDD.put("<no action -- concurrent>", rew_fun);
+						_alSaveNodes.addAll(rew_fun);
 					}
 				}
 			}

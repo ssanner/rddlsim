@@ -22,7 +22,7 @@ instance sysadmin_test1 {
 		//running(c4);
 	};
 
-	max-nondef-actions = 1;
+	max-nondef-actions = 3;
 	horizon  = 10;
 	discount = 1.0;
 }
