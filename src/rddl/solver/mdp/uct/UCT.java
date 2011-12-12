@@ -72,7 +72,9 @@ public class UCT extends EnumerableStatePolicy {
 		long elapsedTime = searchResult._o2;
 		
 		//choose an action without the exploration bias
-		String action = this.getUCTBestAction(stateAsNumber, this.getRemainingHorizons(), 0.0);
+		Pair<String, Double> result = this.getUCTBestAction(stateAsNumber, this.getRemainingHorizons(), 0.0); 
+		String action = result._o1;
+		double reward = result._o2;
 		
 		//Get the Search Tree Depth only to debug purposes
 		int searchTreeDepth = 0;
@@ -83,8 +85,6 @@ public class UCT extends EnumerableStatePolicy {
 				break;
 			}
 		}
-		
-		double reward = this.rewardsPerHorizon.get(this.getRemainingHorizons() - 1).get(stateAsNumber).get(action);
 		
 		System.out.printf("Action: [%s] selected with reward [%f] after [%d] searches in [%f] seconds. Search tree depth: [%d]", 
 				action, reward, completedSearches, ((double) elapsedTime) / TIMEOUT_ORDER, searchTreeDepth);
@@ -248,7 +248,8 @@ public class UCT extends EnumerableStatePolicy {
 		}
 		
 		//select an action by UCB if tested all actions once
-		return this.getUCTBestAction(state, remainingHorizons);
+		Pair<String, Double> result = this.getUCTBestAction(state, remainingHorizons); 
+		return result._o1;
 	}
 	
 	/**
@@ -285,14 +286,14 @@ public class UCT extends EnumerableStatePolicy {
 	/**
 	 * Apply the UCB algorithm to choose an action.
 	 */
-	private String getUCTBestAction(BigInteger stateAsNumber, int remainingHorizons) {
+	protected Pair<String, Double> getUCTBestAction(BigInteger stateAsNumber, int remainingHorizons) {
 		return this.getUCTBestAction(stateAsNumber, remainingHorizons, this.C);
 	}
 	
 	/**
 	 * Apply the UCB algorithm to choose an action.
 	 */
-	private String getUCTBestAction(BigInteger stateAsNumber, int remainingHorizons, double biasModifier) {
+	protected Pair<String, Double> getUCTBestAction(BigInteger stateAsNumber, int remainingHorizons, double biasModifier) {
 		HashMap<BigInteger, HashMap<String, Double>> rewards = this.rewardsPerHorizon.get(remainingHorizons - 1);
 		HashMap<BigInteger, Integer> visits = this.visitsPerHorizon.get(remainingHorizons - 1);
 		HashMap<BigInteger, HashMap<String, Integer>> pulls = this.pullsPerHorizon.get(remainingHorizons - 1);
@@ -329,7 +330,7 @@ public class UCT extends EnumerableStatePolicy {
 			}
 		}
 		
-		return bestAction;
+		return new Pair<String, Double>(bestAction, bestActionReward);
 	}
 	
 	/**

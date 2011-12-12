@@ -12,18 +12,18 @@ import rddl.solver.mdp.Action;
 import util.CString;
 import util.Pair;
 
-public class UCTWithBackup extends UCT {
+public class UCTWithBackupAfterNVisits extends UCT {
 
 	/**
 	 * Default constructor.
 	 */
-	public UCTWithBackup() { }
+	public UCTWithBackupAfterNVisits() { }
 	
 	/**
 	 * Initialize this class with the instance name to be solved by this algorithm. 
 	 * @param instance_name Instance name to be solved by this algorithm
 	 */
-	public UCTWithBackup(String instance_name) {
+	public UCTWithBackupAfterNVisits(String instance_name) {
 		super(instance_name);
 	}
 
@@ -43,6 +43,8 @@ public class UCTWithBackup extends UCT {
 	private List<Integer> allADDs = null;
 		
 	private final double MAX_FREE_MEMORY_ALLOWED = 0.3;
+	
+	private final int VISITS_THRESHOLD = 30;
 	
 	/**
 	 * Initialize all class attributes.
@@ -149,10 +151,24 @@ public class UCTWithBackup extends UCT {
 		Pair<State, Double> simulationResult = this.simulateSingleAction(state, action);
 		
 		State nextState = simulationResult._o1;
+		Double reward = simulationResult._o2;
 		
-		this.search(nextState, remainingHorizons - 1);
+		int visits = 0;
 		
-		double q = this.computeBellmanBackup(state, action, remainingHorizons); 
+		HashMap<BigInteger, Integer> visitsPerState = this.visitsPerHorizon.get(remainingHorizons - 1);
+		
+		if (visitsPerState.containsKey(stateAsNumber))
+			visits = visitsPerState.get(stateAsNumber);
+		
+		double q = 0.0;
+		
+		if (visits > VISITS_THRESHOLD) {
+			this.search(nextState, remainingHorizons - 1);
+			q = this.computeBellmanBackup(state, action, remainingHorizons); 
+		}
+		else {
+			q = reward + this.getDiscountFactor() * this.search(nextState, remainingHorizons - 1);
+		}
 		
 		updateValue(stateAsNumber, action, q, remainingHorizons);
 		
@@ -271,3 +287,4 @@ public class UCTWithBackup extends UCT {
 		this.getTranslation()._context.flushCaches(false);
 	}
 }
+
