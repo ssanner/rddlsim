@@ -155,6 +155,14 @@ public class RDDL2Format {
 		if (_filename == null)
 			return;
 		
+		// Check any requirements before opening file
+		if ((_sTranslationType == SPUDD_CONC || _sTranslationType == SPUDD_CONT_CONC)
+				&& _i._nNonDefActions != _hmActionMap.size()) {
+			System.out.println("ERROR: for concurrent translation of '" + _i._sName + "', max-nondef-actions [" + _i._nNonDefActions + 
+					"] must match number of action vars [" + _hmActionMap.size() + "]");
+			return;
+		}
+
 		PrintWriter pw = new PrintWriter(new FileWriter(_filename));
 		//PrintWriter pw = new PrintWriter(System.out);
 		
@@ -620,6 +628,9 @@ public class RDDL2Format {
 		// TODO: how are action vars used
 		if (_sTranslationType == SPUDD_CONC || _sTranslationType == SPUDD_CONT_CONC) { 
 			_hmActionMap = new HashMap<String,ArrayList<PVAR_INST_DEF>>();
+			
+			// For concurrency, actions just amount to ground action vars with
+			// null mapping (only one CPT for concurrency)
 			for (Map.Entry<PVAR_NAME,ArrayList<ArrayList<LCONST>>> e : action_vars.entrySet()) {
 				PVAR_NAME p = e.getKey();
 				ArrayList<ArrayList<LCONST>> assignments = e.getValue();
@@ -980,25 +991,39 @@ public class RDDL2Format {
 	// TODO: Make an expression to additive expression converter to be called in buildCPTs()
 	// Returns Pair(HashMap subs, EXPR e)
 	public ArrayList<Pair> getAdditiveComponents(EXPR e) throws Exception {
+		return getAdditiveComponents(e, null);
+	}
+		
+	public ArrayList<Pair> getAdditiveComponents(EXPR e, HashMap<LVAR,LCONST> subs_in) throws Exception {
 
 		ArrayList<Pair> ret = new ArrayList<Pair>();
 		
-		if (e instanceof OPER_EXPR && ((OPER_EXPR)e)._op == OPER_EXPR.PLUS) {
+		if (e instanceof OPER_EXPR && 
+				((((OPER_EXPR)e)._op == OPER_EXPR.PLUS) || ((OPER_EXPR)e)._op == OPER_EXPR.MINUS)) {
 
 			OPER_EXPR o = (OPER_EXPR)e;
 
 			//System.out.println("\n- Oper Processing " + o._e1);
 			//System.out.println("\n- Oper Processing " + o._e2);
 			
-			ret.addAll(getAdditiveComponents(o._e1));
-			ret.addAll(getAdditiveComponents(o._e2));
+			ret.addAll(getAdditiveComponents(o._e1, subs_in));
+			if (o._op == OPER_EXPR.PLUS)
+				ret.addAll(getAdditiveComponents(o._e2, subs_in));
+			else {
+				// Need to negate all subtracted expressions before adding them to additive components
+				ArrayList<Pair> comps = getAdditiveComponents(o._e2, subs_in);
+				for (Pair p : comps) { 
+					OPER_EXPR new_expr = new OPER_EXPR(new REAL_CONST_EXPR(0d), (OPER_EXPR)p._o2, OPER_EXPR.MINUS);
+					ret.add(new Pair(p._o1, new_expr));
+				}
+			}
 						
 		} else if (e instanceof AGG_EXPR && ((AGG_EXPR)e)._op == AGG_EXPR.SUM) {
 			
 			AGG_EXPR a = (AGG_EXPR)e;
 			
 			ArrayList<ArrayList<LCONST>> possible_subs = _state.generateAtoms(a._alVariables);
-			HashMap<LVAR,LCONST> subs = new HashMap<LVAR,LCONST>();
+			HashMap<LVAR,LCONST> subs = (subs_in == null) ? new HashMap<LVAR,LCONST>() : (HashMap<LVAR,LCONST>)subs_in.clone();
 
 			//System.out.println("\n- Sum Processing " + a);
 
@@ -1009,15 +1034,16 @@ public class RDDL2Format {
 				}
 				
 				// Note: we are not currently decomposing additive structure below a sum aggregator
-				ret.add(new Pair(subs.clone(), a._e));			
+				//ret.add(new Pair(subs.clone(), a._e));
+				ret.addAll(getAdditiveComponents(a._e, subs));
 				
 				subs.clear();
 			}
 
 		} else {
 			//System.out.println("\n- General Processing " + e);
-			HashMap<LVAR,LCONST> empty_subs = new HashMap<LVAR,LCONST>();
-			ret.add(new Pair(empty_subs, e));
+			HashMap<LVAR,LCONST> subs = (subs_in == null) ? new HashMap<LVAR,LCONST>() : (HashMap<LVAR,LCONST>)subs_in.clone();
+			ret.add(new Pair(subs, e));
 		}
 		
 		return ret;

@@ -67,7 +67,7 @@ instance sysadmin_test2 {
 		running(c10);
 	};
 
-	max-nondef-actions = 1;
+	max-nondef-actions = 10;
 	horizon  = 40;
 	discount = 1.0;
 }
