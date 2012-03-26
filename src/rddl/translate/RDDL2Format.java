@@ -158,9 +158,11 @@ public class RDDL2Format {
 		// Check any requirements before opening file
 		if ((_sTranslationType == SPUDD_CONC || _sTranslationType == SPUDD_CONT_CONC)
 				&& _i._nNonDefActions != _hmActionMap.size()) {
-			System.out.println("ERROR: for concurrent translation of '" + _i._sName + "', max-nondef-actions [" + _i._nNonDefActions + 
-					"] must match number of action vars [" + _hmActionMap.size() + "]");
-			return;
+			System.out.println("WARNING: for concurrent translation of '" + _i._sName + "', max-nondef-actions [" + _i._nNonDefActions + 
+					"] usually should match number of action vars [" + _hmActionMap.size() + "]");
+			System.out.println("... not doing so typically means you need additional constraints on action variables to prevent illegal combinations.");
+			System.out.println("... press <ENTER> to continue.");
+			System.in.read();
 		}
 
 		PrintWriter pw = new PrintWriter(new FileWriter(_filename));
@@ -1013,7 +1015,7 @@ public class RDDL2Format {
 				// Need to negate all subtracted expressions before adding them to additive components
 				ArrayList<Pair> comps = getAdditiveComponents(o._e2, subs_in);
 				for (Pair p : comps) { 
-					OPER_EXPR new_expr = new OPER_EXPR(new REAL_CONST_EXPR(0d), (OPER_EXPR)p._o2, OPER_EXPR.MINUS);
+					OPER_EXPR new_expr = new OPER_EXPR(new REAL_CONST_EXPR(0d), (EXPR)p._o2, OPER_EXPR.MINUS);
 					ret.add(new Pair(p._o1, new_expr));
 				}
 			}
