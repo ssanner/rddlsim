@@ -41,7 +41,6 @@ import rddl.solver.TimeOutException;
 import rddl.solver.DDUtils.doubleOutPut;
 import rddl.solver.DDUtils.doubleOutPut2;
 import rddl.solver.mdp.Action;
-import rddl.solver.mdp.rtdp.sBRTDP_MaxVar_prunning.PrunningNode;
 import rddl.translate.RDDL2Format;
 import util.CString;
 import util.Pair;

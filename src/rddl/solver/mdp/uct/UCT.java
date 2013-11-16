@@ -221,7 +221,7 @@ public class UCT extends EnumerableStatePolicy {
 	/**
 	 * Simulate a random policy given an initial state and the remaining horizons.
 	 */
-	private double simulateRandomPolicy(State state, int remainingHorizons) {
+	protected double simulateRandomPolicy(State state, int remainingHorizons) {
 		double policyReward = 0;
 		
 		for (int h = remainingHorizons; h > 0; h--) {

@@ -27,8 +27,6 @@ import rddl.parser.parser;
 import util.MapList;
 import util.Pair;
 
-import com.sun.org.apache.xml.internal.dtm.ref.DTMDefaultBaseIterators.ChildrenIterator;
-
 public class FinalEval {
 	
 	public final static int NUM_EXPECTED_TRIALS = 30;
