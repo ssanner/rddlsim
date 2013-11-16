@@ -26,8 +26,6 @@ import rddl.parser.parser;
 
 import util.MapList;
 
-import com.sun.org.apache.xml.internal.dtm.ref.DTMDefaultBaseIterators.ChildrenIterator;
-
 
 public class MinMaxEval {
 	

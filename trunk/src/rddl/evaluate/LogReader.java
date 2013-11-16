@@ -23,8 +23,6 @@ import org.w3c.dom.NodeList;
 
 import util.MapList;
 
-import com.sun.org.apache.xml.internal.dtm.ref.DTMDefaultBaseIterators.ChildrenIterator;
-
 
 public class LogReader {
 
