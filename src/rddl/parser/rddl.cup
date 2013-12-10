@@ -93,22 +93,23 @@ parser code {:
 :}
 
 /* Define Terminals (and Java types if relevant) */
+/* Define Terminals (and Java types if relevant) */
 terminal DOMAIN, INSTANCE, HORIZON, DISCOUNT, OBJECTS, INIT_STATE, 
-		 REQUIREMENTS, CONCURRENT, CONTINUOUS, INTEGER_VALUED, LCURLY, RCURLY, 
-         MULTIVALUED, INTERMEDIATE_NODES, STATE_ACTION_CONSTRAINTS, UNDERSCORE, 
+		 REQUIREMENTS, LCURLY, RCURLY, 
+         STATE_ACTION_CONSTRAINTS, UNDERSCORE, 
          TYPES, NEG_INF, POS_INF, MAX_NONDEF_ACTIONS, 
 		 PVARIABLES, STATE, DEFAULT, NON_FLUENTS, CASE, 
-		 INTERMEDIATE, OBSERVATION, ACTION, LEVEL, MIN_NONDEF_INSTANCE,
-		 MAX_NONDEF_INSTANCE, SUM_OVER, PROD_OVER, REWARD, FORALL,
+		 INTERMEDIATE, OBSERVATION, ACTION, LEVEL, 
+		 SUM_OVER, PROD_OVER, REWARD, FORALL,
 		 EXISTS, AND, OR, NOT, KRON_DELTA, DIRAC_DELTA, UNIFORM, BERNOULLI, DISCRETE,
-		 NORMAL, POISSON, EXPONENTIAL, GEOMETRIC, PLUS, TIMES, MOD, DIV, MINUS, IF, THEN, 
+		 NORMAL, POISSON, EXPONENTIAL, GEOMETRIC, PLUS, TIMES, DIV, MINUS, IF, THEN, 
 		 ELSE, SWITCH;
 terminal SEMI, LPAREN, RPAREN, COMMA, LBRACK, COLON,
          RBRACK, LESS, LESSEQ, GREATER, GREATEREQ, IMPLY, EQUIV, 
          ASSIGN_EQUAL, COMP_EQUAL, TRUE, FALSE, NEQ, UMINUS; 
 terminal Integer INTEGER;
 terminal Double DOUBLE;
-terminal String IDENT, VAR, OBJECT, BOOL, ENUM, INT, REAL, NON_FLUENT, CPFS, CDFS, ENUM_VAL;
+terminal String IDENT, VAR, OBJECT, BOOL, INT, REAL, NON_FLUENT, CPFS, CDFS, ENUM_VAL;
 
 /* Define Non-terminals (and Java types) */
 non terminal RDDL RDDL_BLOCK;
@@ -144,7 +145,6 @@ non terminal Double DOUBLE_TYPE;
 non terminal String CPF_HEADER;
 non terminal RDDL.PVAR_EXPR PVAR_EXPR;
 non terminal RDDL.EXPR EXPR;
-non terminal RDDL.BOOL_EXPR BOOL_EXPR;
 non terminal ArrayList PVAR_INST_LIST;
 non terminal RDDL.PVAR_INST_DEF PVAR_INST_DEF;
 non terminal ArrayList LCONST_LIST;
@@ -157,8 +157,12 @@ non terminal ArrayList CASE_LIST;
 non terminal RDDL.CASE CASE_DEF;
 
 /* Precedence Definitions - Highest at bottom */
+precedence left IF;
 precedence left ASSIGN_EQUAL;
-precedence left EXISTS, FORALL;
+precedence left EXISTS;
+precedence left FORALL; /* COUNT */
+precedence left SUM_OVER;
+precedence left PROD_OVER;
 precedence left EQUIV;
 precedence left IMPLY;
 precedence left OR;
@@ -166,8 +170,9 @@ precedence left AND;
 precedence left NOT;
 precedence left COMP_EQUAL, NEQ, LESS, LESSEQ, GREATER, GREATEREQ;
 precedence left PLUS, MINUS;
-precedence left TIMES, DIV, MOD;
+precedence left TIMES, DIV; /* MOD; */
 precedence left UMINUS;
+/* precedence left HIGHEST; */
 
 /* Productions */
 start with RDDL_BLOCK;
@@ -238,8 +243,6 @@ DOUBLE_TYPE ::= DOUBLE:d {: RESULT = d; :}
 
 INT_TYPE ::= INTEGER:i {: RESULT = i; :}
 		| MINUS INTEGER:i {: RESULT = new Integer(-i.intValue()); :}
-		| POS_INF      {: RESULT = new Integer(Integer.MAX_VALUE); :}
-		| NEG_INF      {: RESULT = new Integer(Integer.MIN_VALUE); :}
 		;
 
 PARAM_LIST ::= COLON {: RESULT = new ArrayList(); :}
@@ -294,7 +297,7 @@ STATE_CONS_LIST ::= STATE_CONS_DEF:d             {: RESULT = new ArrayList(Array
 		| STATE_CONS_DEF:d STATE_CONS_LIST:list  {: list.add(0,d); RESULT = list; :} 
 		; 
 
-STATE_CONS_DEF ::= BOOL_EXPR:expr SEMI {: RESULT = new RDDL.STATE_CONS_DEF(expr); :}
+STATE_CONS_DEF ::= EXPR:expr SEMI {: RESULT = new RDDL.STATE_CONS_DEF(expr); :}
 		;
 
 /* For simplicity in the INSTANCE_BLOCK grammar, order matters. */
@@ -401,8 +404,7 @@ LCONST_LIST ::= IDENT:i                  {: RESULT = new ArrayList(Arrays.asList
 		| ENUM_VAL:e COMMA LCONST_LIST:list {: list.add(0,new RDDL.ENUM_VAL(e)); RESULT = list; :} 
 		;
 
-TERM ::= IDENT:i  {: RESULT = new RDDL.OBJECT_VAL(i); :}
-		| VAR:v   {: RESULT = new RDDL.LVAR(v); :}
+TERM ::= VAR:v   {: RESULT = new RDDL.LVAR(v); :}
 		| PVAR_EXPR:p  {: RESULT = new RDDL.TVAR_EXPR(p); :}
 		| ENUM_VAL:e   {: RESULT = new RDDL.ENUM_VAL(e); :}
 		;
@@ -433,11 +435,13 @@ CASE_LIST ::= CASE_DEF:e            {: RESULT = new ArrayList(Arrays.asList(new 
 CASE_DEF ::= CASE ENUM_VAL:v COLON EXPR:e   {: RESULT = new RDDL.CASE(new RDDL.ENUM_VAL(v),e); :}
 		;
 
-BOOL_EXPR ::= PVAR_EXPR:p  {: RESULT = p; :} /* we don't actually know the type yet*/
+EXPR ::= PVAR_EXPR:p  {: RESULT = p; :} /* we don't actually know the type yet*/
+/* --- BOOLEAN EXPRESSIONS --- */
+/* Treat boolean expressions as true=1, false=0 */
 		| TRUE   {: RESULT = new RDDL.BOOL_CONST_EXPR(true); :}
 		| FALSE  {: RESULT = new RDDL.BOOL_CONST_EXPR(false); :}
-		| LBRACK BOOL_EXPR:e RBRACK    {: RESULT = e; :}
-		| LPAREN BOOL_EXPR:e RPAREN    {: RESULT = e; :}
+		| LBRACK EXPR:e RBRACK    {: RESULT = e; :}
+		| LPAREN EXPR:e RPAREN    {: RESULT = e; :}
 		| VAR:t1  COMP_EQUAL TERM:t2 {: RESULT = new RDDL.OBJ_COMP_EXPR(new RDDL.LVAR(t1), t2, "=="); :} /* one has to be a var */
 /*		| TERM:t1 COMP_EQUAL VAR:t2  {: RESULT = new RDDL.OBJ_COMP_EXPR(t1, new RDDL.LVAR(t2), "=="); :} /* one has to be a var */
 		| VAR:t1  NEQ TERM:t2    {: RESULT = new RDDL.OBJ_COMP_EXPR(new RDDL.LVAR(t1), t2, "~="); :} /* one has to be a var */
@@ -448,33 +452,29 @@ BOOL_EXPR ::= PVAR_EXPR:p  {: RESULT = p; :} /* we don't actually know the type 
 		| EXPR:e1 GREATEREQ EXPR:e2 {: RESULT = new RDDL.COMP_EXPR(e1, e2, ">="); :}
 		| EXPR:e1 LESS EXPR:e2   {: RESULT = new RDDL.COMP_EXPR(e1, e2, "<"); :}
 		| EXPR:e1 LESSEQ EXPR:e2 {: RESULT = new RDDL.COMP_EXPR(e1, e2, "<="); :}  
-		| NOT BOOL_EXPR:b {: RESULT = new RDDL.NEG_EXPR(b); :} %prec UMINUS
-		| BOOL_EXPR:b1 AND BOOL_EXPR:b2 {: RESULT = new RDDL.CONN_EXPR(b1, b2, "^"); :}
-		| BOOL_EXPR:b1 OR BOOL_EXPR:b2  {: RESULT = new RDDL.CONN_EXPR(b1, b2, "|"); :}
-		| BOOL_EXPR:b1 IMPLY BOOL_EXPR:b2  {: RESULT = new RDDL.CONN_EXPR(b1, b2, "=>"); :}
-		| BOOL_EXPR:b1 EQUIV BOOL_EXPR:b2  {: RESULT = new RDDL.CONN_EXPR(b1, b2, "<=>"); :}
-		| FORALL UNDERSCORE LCURLY TYPED_VAR_LIST:list RCURLY BOOL_EXPR:b {: RESULT = new RDDL.QUANT_EXPR("forall", list, b); :}
-		| EXISTS UNDERSCORE LCURLY TYPED_VAR_LIST:list RCURLY BOOL_EXPR:b {: RESULT = new RDDL.QUANT_EXPR("exists", list, b); :}
+		| NOT EXPR:b {: RESULT = new RDDL.NEG_EXPR(b); :} %prec UMINUS
+		| EXPR:b1 AND EXPR:b2 {: RESULT = new RDDL.CONN_EXPR(b1, b2, "^"); :}
+		| EXPR:b1 OR EXPR:b2  {: RESULT = new RDDL.CONN_EXPR(b1, b2, "|"); :}
+		| EXPR:b1 IMPLY EXPR:b2  {: RESULT = new RDDL.CONN_EXPR(b1, b2, "=>"); :}
+		| EXPR:b1 EQUIV EXPR:b2  {: RESULT = new RDDL.CONN_EXPR(b1, b2, "<=>"); :}
+		| FORALL UNDERSCORE LCURLY TYPED_VAR_LIST:list RCURLY EXPR:b {: RESULT = new RDDL.QUANT_EXPR("forall", list, b); :} %prec FORALL
+		| EXISTS UNDERSCORE LCURLY TYPED_VAR_LIST:list RCURLY EXPR:b {: RESULT = new RDDL.QUANT_EXPR("exists", list, b); :} %prec EXISTS
 /* Now for the random variables */
 		| BERNOULLI LPAREN EXPR:prob RPAREN {: RESULT = new RDDL.Bernoulli(prob); :}
-/*		| NOISYOR UNDERSCORE LCURLY TYPED_VAR_LIST:list RCURLY BOOL_EXPR:e */
-		;
-
-EXPR ::= BOOL_EXPR:b   {: RESULT = b; :} /* Treat boolean expressions as true=1, false=0 */
+/*		| NOISYOR UNDERSCORE LCURLY TYPED_VAR_LIST:list RCURLY EXPR:e */
+/* --- NUMERICAL EXPRESSIONS --- */
 		| ENUM_VAL:e   {: RESULT = new RDDL.ENUM_VAL(e); :} /* both parameters and pvariable values, we don't actually know the type yet*/
 		| INTEGER:i    {: RESULT = new RDDL.INT_CONST_EXPR(i); :}
 		| DOUBLE:d     {: RESULT = new RDDL.REAL_CONST_EXPR(d); :}
-		| LBRACK EXPR:e RBRACK    {: RESULT = e; :}
-		| LPAREN EXPR:e RPAREN    {: RESULT = e; :}
 		| PLUS EXPR:e  {: RESULT = e; :} %prec UMINUS 
 		| MINUS EXPR:e {: RESULT = new RDDL.OPER_EXPR(new RDDL.INT_CONST_EXPR(0), e, "-"); :} %prec UMINUS
 		| EXPR:e1 TIMES EXPR:e2   {: RESULT = new RDDL.OPER_EXPR(e1, e2, "*"); :}
 		| EXPR:e1 DIV EXPR:e2     {: RESULT = new RDDL.OPER_EXPR(e1, e2, "/"); :}
 		| EXPR:e1 PLUS EXPR:e2    {: RESULT = new RDDL.OPER_EXPR(e1, e2, "+"); :}
 		| EXPR:e1 MINUS EXPR:e2   {: RESULT = new RDDL.OPER_EXPR(e1, e2, "-"); :}
-		| SUM_OVER UNDERSCORE LCURLY TYPED_VAR_LIST:list RCURLY EXPR:e   {: RESULT = new RDDL.AGG_EXPR("sum", list, e); :}
-		| PROD_OVER UNDERSCORE LCURLY TYPED_VAR_LIST:list RCURLY EXPR:e  {: RESULT = new RDDL.AGG_EXPR("prod", list, e); :}
-		| IF LPAREN BOOL_EXPR:b RPAREN THEN EXPR:e1 ELSE EXPR:e2         {: RESULT = new RDDL.IF_EXPR(b, e1, e2); :}
+		| SUM_OVER UNDERSCORE LCURLY TYPED_VAR_LIST:list RCURLY EXPR:e   {: RESULT = new RDDL.AGG_EXPR("sum", list, e); :} %prec SUM_OVER
+		| PROD_OVER UNDERSCORE LCURLY TYPED_VAR_LIST:list RCURLY EXPR:e  {: RESULT = new RDDL.AGG_EXPR("prod", list, e); :} %prec PROD_OVER
+		| IF LPAREN EXPR:b RPAREN THEN EXPR:e1 ELSE EXPR:e2         {: RESULT = new RDDL.IF_EXPR(b, e1, e2); :} %prec IF
 		| SWITCH LPAREN PVAR_EXPR:p RPAREN LCURLY CASE_LIST:list RCURLY  {: RESULT = new RDDL.SWITCH_EXPR(p, list); :}
 /* Now for the random variables */
 		| DIRAC_DELTA LPAREN EXPR:d RPAREN   {: RESULT = new RDDL.DiracDelta(d); :} 
