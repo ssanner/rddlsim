@@ -41,7 +41,6 @@ WHITE_SPACE_CHAR=[\r\n\ \t\b\012]
 "real" { return new Symbol(sym.REAL, yytext()); }
 "neg-inf" { return new Symbol(sym.NEG_INF, yytext()); }
 "pos-inf" { return new Symbol(sym.POS_INF, yytext()); }
-"constants" { return new Symbol(sym.CONSTANTS, yytext()); }
 "pvariables" { return new Symbol(sym.PVARIABLES, yytext()); }
 "non-fluent" { return new Symbol(sym.NON_FLUENT, yytext()); }
 "non-fluents" { return new Symbol(sym.NON_FLUENTS, yytext()); }
@@ -49,7 +48,6 @@ WHITE_SPACE_CHAR=[\r\n\ \t\b\012]
 "interm-fluent" { return new Symbol(sym.INTERMEDIATE, yytext()); }
 "observ-fluent" { return new Symbol(sym.OBSERVATION, yytext()); }
 "action-fluent" { return new Symbol(sym.ACTION, yytext()); }
-"type" { return new Symbol(sym.TYPE, yytext()); }
 "level" { return new Symbol(sym.LEVEL, yytext()); }
 "default" { return new Symbol(sym.DEFAULT, yytext()); }
 "max-nondef-actions" { return new Symbol(sym.MAX_NONDEF_ACTIONS, yytext()); }
@@ -84,8 +82,6 @@ WHITE_SPACE_CHAR=[\r\n\ \t\b\012]
 ")" { return new Symbol(sym.RPAREN, yytext()); }
 "{" { return new Symbol(sym.LCURLY, yytext()); }
 "}" { return new Symbol(sym.RCURLY, yytext()); }
-"." { return new Symbol(sym.DOT, yytext()); }
-"%" { return new Symbol(sym.MOD, yytext()); }
 "," { return new Symbol(sym.COMMA, yytext()); }
 "_" { return new Symbol(sym.UNDERSCORE, yytext()); }
 "[" { return new Symbol(sym.LBRACK, yytext()); }

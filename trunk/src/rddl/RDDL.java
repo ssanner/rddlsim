@@ -554,6 +554,10 @@ public class RDDL {
 
 	public static class STATE_CONS_DEF {
 	
+		public STATE_CONS_DEF(EXPR cons) {
+			this((BOOL_EXPR)cons); // PARSER RESTRICTION
+		}
+
 		public STATE_CONS_DEF(BOOL_EXPR cons) {
 			_exprStateCons = cons;
 		}
@@ -1639,6 +1643,10 @@ public class RDDL {
 	//       variable so that it is consistent over repeated evaluations.
 	public static class IF_EXPR extends EXPR { 
 
+		public IF_EXPR(EXPR test, EXPR true_branch, EXPR false_branch) {
+			this((BOOL_EXPR)test, true_branch, false_branch); // PARSE RESTRICTION
+		}
+
 		public IF_EXPR(BOOL_EXPR test, EXPR true_branch, EXPR false_branch) {
 			_test = test;
 			_trueBranch = true_branch;
@@ -1826,6 +1834,10 @@ public class RDDL {
 		public final static String EXISTS = "exists".intern();
 		public final static String FORALL = "forall".intern();
 		
+		public QUANT_EXPR(String quant, ArrayList vars, EXPR expr) throws Exception {
+			this(quant, vars, (BOOL_EXPR)expr); // PARSER RESTRICTION
+		}
+		
 		public QUANT_EXPR(String quant, ArrayList vars, BOOL_EXPR expr) throws Exception {
 			if (!quant.equals(EXISTS) && !quant.equals(FORALL))
 				throw new Exception("Unrecognized quantifier type: " + quant);
@@ -1940,6 +1952,10 @@ public class RDDL {
 		public static final String EQUIV = "<=>".intern();
 		public static final String AND   = "^".intern();
 		public static final String OR    = "|".intern();
+
+		public CONN_EXPR(EXPR b1, EXPR b2, String conn) throws Exception {
+			this((BOOL_EXPR)b1, (BOOL_EXPR)b2, conn); // PARSER RESTRICTION
+		}
 		
 		public CONN_EXPR(BOOL_EXPR b1, BOOL_EXPR b2, String conn) throws Exception {
 			if (!conn.equals(IMPLY) && !conn.equals(EQUIV) && 
@@ -2053,6 +2069,10 @@ public class RDDL {
 	//       a random sample should always be referenced by an intermediate
 	//       variable so that it is consistent over repeated evaluations.
 	public static class NEG_EXPR extends BOOL_EXPR {
+
+		public NEG_EXPR(EXPR b) {
+			this((BOOL_EXPR)b); // PARSER RESTRICTION
+		}
 
 		public NEG_EXPR(BOOL_EXPR b) {
 			_subnode = b;
