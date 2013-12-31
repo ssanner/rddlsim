@@ -153,7 +153,7 @@ public class UCTWithBackup2 extends UCT {
 			}
 		}
 		if (action == null) //if tested all actions, choose a random action 
-			action = this.getActions().get(_random.nextInt(this.getActions().size()))._string;
+			action = this.getActions().get(_random.nextInt(0, this.getActions().size() - 1))._string;
 		
 		Pair<State, Double> simulationResult = this.simulateSingleAction(state, action);
 		

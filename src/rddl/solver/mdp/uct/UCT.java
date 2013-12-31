@@ -206,7 +206,7 @@ public class UCT extends EnumerableStatePolicy {
 		}
 		
 		if (action == null) //if tested all actions, choose a random action 
-			action = this.getActions().get(_random.nextInt(this.getActions().size()))._string;
+			action = this.getActions().get(_random.nextInt(0, this.getActions().size() - 1))._string;
 		
 		Pair<State, Double> simulationResult = this.simulateSingleAction(state, action);
 		
@@ -226,7 +226,7 @@ public class UCT extends EnumerableStatePolicy {
 		
 		for (int h = remainingHorizons; h > 0; h--) {
 			//get a random action
-			String action = this.getActions().get(_random.nextInt(this.getActions().size()))._string;
+			String action = this.getActions().get(_random.nextInt(0, this.getActions().size() - 1))._string;
 			
 			Pair<State, Double> simulationResult = this.simulateSingleAction(state, action);
 			policyReward += this.getDiscountFactor() * simulationResult._o2;
@@ -389,7 +389,8 @@ public class UCT extends EnumerableStatePolicy {
 			s._observ.put(key, new HashMap<ArrayList<LCONST>, Object>(value));
 		}
 		
-		s._alConstraints = currentState._alConstraints;
+		s._alActionPreconditions = currentState._alActionPreconditions;
+		s._alStateInvariants = currentState._alStateInvariants;
 		s._reward = currentState._reward;
 		s._nMaxNondefActions = currentState._nMaxNondefActions;
 		

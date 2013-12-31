@@ -16,6 +16,8 @@ import java.util.Map;
 import java.util.Random;
 import java.util.TreeMap;
 
+import org.apache.commons.math3.random.RandomDataGenerator;
+
 import rddl.RDDL.BOOL_EXPR;
 import rddl.RDDL.CPF_DEF;
 import rddl.RDDL.ENUM_TYPE_DEF;
@@ -77,46 +79,63 @@ public class State {
 	public HashMap<PVAR_NAME,HashMap<ArrayList<LCONST>,Object>> _observ;
 
 	// Constraints
-	public ArrayList<BOOL_EXPR> _alConstraints;
+	//public ArrayList<BOOL_EXPR> _alConstraints;
+	public ArrayList<BOOL_EXPR> _alActionPreconditions;
+	public ArrayList<BOOL_EXPR> _alStateInvariants;
 	public EXPR _reward;
 	public int _nMaxNondefActions = -1;
 	
 	// Temporarily holds next state while it is being computed
 	public HashMap<PVAR_NAME,HashMap<ArrayList<LCONST>,Object>> _nextState;
 
-	public void init(HashMap<TYPE_NAME,OBJECTS_DEF> nonfluent_objects,
+	public void init(HashMap<TYPE_NAME,OBJECTS_DEF> domain_objects,
+					 HashMap<TYPE_NAME,OBJECTS_DEF> nonfluent_objects,
 					 HashMap<TYPE_NAME,OBJECTS_DEF> instance_objects,
 					 HashMap<TYPE_NAME,TYPE_DEF> typedefs,
 					 HashMap<PVAR_NAME,PVARIABLE_DEF> pvariables,
 					 HashMap<PVAR_NAME,CPF_DEF> cpfs,
 					 ArrayList<PVAR_INST_DEF> init_state,
 					 ArrayList<PVAR_INST_DEF> nonfluents,
-					 ArrayList<BOOL_EXPR> state_action_constraints,
+					 ArrayList<BOOL_EXPR> state_action_constraints, // deprecated but still usable
+					 ArrayList<BOOL_EXPR> action_preconditions,
+					 ArrayList<BOOL_EXPR> state_invariants,
 					 EXPR reward, 
 					 int max_nondef_actions) {
 		
 		_hmPVariables = pvariables;
 		_hmTypes = typedefs;
 		_hmCPFs = cpfs;
-		_alConstraints = state_action_constraints;
+		
+		//_alConstraints = state_action_constraints; 
+		_alActionPreconditions = new ArrayList<BOOL_EXPR>(); 
+		_alActionPreconditions.addAll(action_preconditions);
+		_alActionPreconditions.addAll(state_action_constraints); // deprecated but we still have to support
+
+		_alStateInvariants = new ArrayList<BOOL_EXPR>(); 
+		_alStateInvariants.addAll(state_invariants);
+		_alStateInvariants.addAll(state_action_constraints);
+		
 		_reward = reward;
 		_nMaxNondefActions = max_nondef_actions;
 		
-		// Map object class name to list
+		// Map object class name to list (NOTE: all enum and object value lists initialized here)
 		_hmObject2Consts = new HashMap<TYPE_NAME,ArrayList<LCONST>>();
+		if (domain_objects != null)
+			for (OBJECTS_DEF obj_def : domain_objects.values())
+				addConstants(obj_def._sObjectClass, obj_def._alObjects);
 		if (nonfluent_objects != null)
 			for (OBJECTS_DEF obj_def : nonfluent_objects.values())
-				_hmObject2Consts.put(obj_def._sObjectClass, obj_def._alObjects);
+				addConstants(obj_def._sObjectClass, obj_def._alObjects);
 		if (instance_objects != null)
 			for (OBJECTS_DEF obj_def : instance_objects.values())
-				_hmObject2Consts.put(obj_def._sObjectClass, obj_def._alObjects);
+				addConstants(obj_def._sObjectClass, obj_def._alObjects);
 		for (Map.Entry<TYPE_NAME,TYPE_DEF> e : typedefs.entrySet()) {
 			if (e.getValue() instanceof ENUM_TYPE_DEF) {
 				ENUM_TYPE_DEF etd = (ENUM_TYPE_DEF)e.getValue();
 				ArrayList<LCONST> values = new ArrayList<LCONST>();
-				for (ENUM_VAL v : etd._alPossibleValues)
+				for (LCONST v : etd._alPossibleValues)
 					values.add(v);
-				_hmObject2Consts.put(etd._sName, values);
+				addConstants(etd._sName, values);
 			}
 		}
 
@@ -166,8 +185,24 @@ public class State {
 		setPVariables(_state, init_state);
 		if (nonfluents != null)
 			setPVariables(_nonfluents, nonfluents);
+		
+		// Compute derived fluents from state
+		try {
+			computeDerivedFluents();
+		} catch (EvalException e) {
+			System.out.println("Could not initialize derived fluents in initial state:\n" + e);
+			System.exit(1);
+		}
 	}
 
+	public void addConstants(TYPE_NAME object_class, ArrayList<LCONST> constants) {
+		ArrayList<LCONST> new_constants = new ArrayList<LCONST>(constants);
+		ArrayList<LCONST> cur_constants = _hmObject2Consts.get(object_class);
+		if (cur_constants != null)
+			new_constants.addAll(cur_constants);
+		_hmObject2Consts.put(object_class, new_constants);
+	}
+	
 	public void checkStateActionConstraints(ArrayList<PVAR_INST_DEF> actions)  
 		throws EvalException {
 		
@@ -183,11 +218,11 @@ public class State {
 		
 		// Check state-action constraints
 		HashMap<LVAR,LCONST> subs = new HashMap<LVAR,LCONST>();
-		for (BOOL_EXPR constraint : _alConstraints) {
+		for (BOOL_EXPR constraint : _alActionPreconditions) {
 			// satisfied must be true if get here
 			try {
 				if (! (Boolean)constraint.sample(subs, this, null) )
-					throw new EvalException("Violated state-action constraint: " + constraint + "\n**in state**\n" + this);
+					throw new EvalException("Violated state invariant or action precondition constraint: " + constraint + "\n**in state**\n" + this);
 			} catch (NullPointerException e) {
 				System.out.println("\n***SIMULATOR ERROR EVALUATING: " + constraint);
 				throw e;
@@ -197,8 +232,32 @@ public class State {
 			}
 		}
 	}
-		
-	public void computeNextState(ArrayList<PVAR_INST_DEF> actions, Random r) 
+
+	public void checkStateInvariants()  
+			throws EvalException {
+			
+		// Check state invariants 
+		// (should not mention actions or next state variables -- 
+		//  nothing to substitute since current state known)
+		HashMap<LVAR,LCONST> subs = new HashMap<LVAR,LCONST>();
+		for (BOOL_EXPR constraint : _alStateInvariants) {
+			// satisfied must be true if get here
+			try {
+				if (! (Boolean)constraint.sample(subs, this, null) )
+					throw new EvalException("\nViolated state invariant constraint: " + constraint + 
+							"\nNOTE: state invariants should never be violated by a correctly defined transition model starting from a legal initial state.\n" + 
+							"**in state**\n" + this);
+			} catch (NullPointerException e) {
+				System.out.println("\n***SIMULATOR ERROR EVALUATING: " + constraint);
+				throw e;
+			} catch (ClassCastException e) {
+				System.out.println("\n***SIMULATOR ERROR EVALUATING: " + constraint);
+				throw e;
+			}
+		}
+	}
+
+	public void computeNextState(ArrayList<PVAR_INST_DEF> actions, RandomDataGenerator _rand) 
 		throws EvalException {
 
 		// Clear then set the actions
@@ -216,6 +275,11 @@ public class State {
 			int level   = (Integer)e.getKey()._o1;
 			PVAR_NAME p = e.getValue();
 			
+			// Derived variables should have already been computed at this point
+			PVARIABLE_INTERM_DEF def = (PVARIABLE_INTERM_DEF)_hmPVariables.get(p);
+			if (def._bDerived)
+				continue;
+
 			// Generate updates for each ground fluent
 			//System.out.println("Updating interm var " + p + " @ level " + level + ":");
 			ArrayList<ArrayList<LCONST>> gfluents = generateAtoms(p);
@@ -233,7 +297,7 @@ public class State {
 					subs.put(v,c);
 				}
 				
-				Object value = cpf._exprEquals.sample(subs, this, r);
+				Object value = cpf._exprEquals.sample(subs, this, _rand);
 				if (DISPLAY_UPDATES) System.out.println(value);
 				
 				// Update value
@@ -273,7 +337,7 @@ public class State {
 					subs.put(v,c);
 				}
 				
-				Object value = cpf._exprEquals.sample(subs, this, r);
+				Object value = cpf._exprEquals.sample(subs, this, _rand);
 				if (DISPLAY_UPDATES) System.out.println(value);
 				
 				// Update value if not default
@@ -290,7 +354,7 @@ public class State {
 
 		// Do same for observations... note that this occurs after the next state
 		// update because observations in a POMDP may be modeled on the current
-		// and next state, i.e., P(o|s,a,s').
+		// and next state, i.e., P(o'|s,a,s').
 		if (DISPLAY_UPDATES) System.out.println("Updating observations");
 		for (PVAR_NAME p : _alObservNames) {
 			
@@ -311,7 +375,7 @@ public class State {
 					subs.put(v,c);
 				}
 				
-				Object value = cpf._exprEquals.sample(subs, this, r);
+				Object value = cpf._exprEquals.sample(subs, this, _rand);
 				if (DISPLAY_UPDATES) System.out.println(value);
 				
 				// Update value
@@ -319,6 +383,49 @@ public class State {
 				pred_assign.put(gfluent, value);
 			}
 		}
+	}
+	
+	public void computeDerivedFluents() throws EvalException {
+		
+		// First compute derived variables, level-by-level
+		HashMap<LVAR,LCONST> subs = new HashMap<LVAR,LCONST>();
+		if (DISPLAY_UPDATES) System.out.println("Updating derived variables");
+		for (Map.Entry<Pair, PVAR_NAME> e : _tmIntermNames.entrySet()) {
+			int level   = (Integer)e.getKey()._o1;
+			PVAR_NAME p = e.getValue();
+			
+			// Only computing derived variables
+			PVARIABLE_INTERM_DEF def = (PVARIABLE_INTERM_DEF)_hmPVariables.get(p);
+			if (!def._bDerived)
+				continue;
+			
+			// Generate updates for each ground fluent
+			//System.out.println("Updating interm var " + p + " @ level " + level + ":");
+			ArrayList<ArrayList<LCONST>> gfluents = generateAtoms(p);
+			
+			for (ArrayList<LCONST> gfluent : gfluents) {
+				if (DISPLAY_UPDATES) System.out.print("- " + p + gfluent + " @ " + level + " := ");
+				CPF_DEF cpf = _hmCPFs.get(p);
+				if (cpf == null) 
+					throw new EvalException("Could not find cpf for: " + p);
+				
+				subs.clear();
+				for (int i = 0; i < cpf._exprVarName._alTerms.size(); i++) {
+					LVAR v = (LVAR)cpf._exprVarName._alTerms.get(i);
+					LCONST c = (LCONST)gfluent.get(i);
+					subs.put(v,c);
+				}
+				
+				// No randomness for derived fluents (can pass null)
+				Object value = cpf._exprEquals.sample(subs, this, null);
+				if (DISPLAY_UPDATES) System.out.println(value);
+				
+				// Update value
+				HashMap<ArrayList<LCONST>,Object> pred_assign = _interm.get(p);
+				pred_assign.put(gfluent, value);
+			}
+		}
+		
 	}
 	
 	public void advanceNextState() throws EvalException {
@@ -340,6 +447,9 @@ public class State {
 		if (clear_observations)  
 			for (PVAR_NAME p : _observ.keySet())
 				_observ.get(p).clear();
+		
+		// Compute derived fluents from new state
+		computeDerivedFluents();
 	}
 	
 	public void clearPVariables(HashMap<PVAR_NAME,HashMap<ArrayList<LCONST>,Object>> assign) {
@@ -434,7 +544,7 @@ public class State {
 		// Get default value if it exists
 		Object def_value = null;
 		boolean primed = p._bPrimed;
-		p = new PVAR_NAME(p._sPVarName);
+		p = p._pvarUnprimed; // We'll look up the unprimed version
 		PVARIABLE_DEF pvar_def = _hmPVariables.get(p);
 		
 		if (pvar_def == null) {
@@ -442,7 +552,7 @@ public class State {
 			return null;
 		} else if (pvar_def._alParamTypes.size() != terms.size()) {
 			System.out.println("ERROR: expected " + pvar_def._alParamTypes.size() + 
-					" for " + p + ", got " + terms.size());
+					" parameters for " + p + ", but got " + terms.size() + ": " + terms);
 			return null;
 		}
 		
@@ -500,7 +610,7 @@ public class State {
 			return false;
 		} else if (pvar_def._alParamTypes.size() != terms.size()) {
 			System.out.println("ERROR: expected " + pvar_def._alParamTypes.size() + 
-					" for " + p + ", got " + terms.size());
+					" parameters for " + p + ", but got " + terms.size() + ": " + terms);
 			return false;
 		}
 		
@@ -608,9 +718,12 @@ public class State {
 			for (PVAR_NAME p : e.getValue()) 
 				try {
 					// Go through all term groundings for variable p
+					PVARIABLE_DEF pvar_def = _hmPVariables.get(p);
+					boolean derived = (pvar_def instanceof PVARIABLE_INTERM_DEF) && ((PVARIABLE_INTERM_DEF)pvar_def)._bDerived;
+					
 					ArrayList<ArrayList<LCONST>> gfluents = generateAtoms(p);										
 					for (ArrayList<LCONST> gfluent : gfluents)
-						sb.append("- " + e.getKey() + ": " + p + 
+						sb.append("- " + (derived ? "derived" : e.getKey()) + ": " + p + 
 								(gfluent.size() > 0 ? gfluent : "") + " := " + 
 								getPVariableAssign(p, gfluent) + "\n");
 						

@@ -18,12 +18,14 @@ package util;
 
 import java.util.Random;
 
+import org.apache.commons.math3.random.RandomDataGenerator;
+
 public class Permutation { 
 	
    public static void main(String[] args) { 
 	   
 	   int N = 20;
-	   int[] a = Permutation.permute(N, new Random());
+	   int[] a = Permutation.permute(N, new RandomDataGenerator());
 		   
 	   // print permutation
 	   for (int i = 0; i < N; i++)
@@ -40,7 +42,7 @@ public class Permutation {
 	   }
    }
    
-   public static int[] permute(int N, Random rand) {
+   public static int[] permute(int N, RandomDataGenerator rand) {
 
       int[] a = new int[N];
 
@@ -50,7 +52,7 @@ public class Permutation {
 
       // shuffle
       for (int i = 0; i < N; i++) {
-         int r = rand.nextInt(i+1);     // int between 0 and i
+         int r = (i == 0 ? 0 : rand.nextInt(0,i));     // int between 0 and i
          int swap = a[r];
          a[r] = a[i];
          a[i] = swap;

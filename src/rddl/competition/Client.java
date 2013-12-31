@@ -171,10 +171,11 @@ public class Client {
 					e.printStackTrace();
 				}
 			}
-			state.init(nonFluents != null ? nonFluents._hmObjects : null, instance._hmObjects,
+			state.init(domain._hmObjects, nonFluents != null ? nonFluents._hmObjects : null, instance._hmObjects,
 					domain._hmTypes, domain._hmPVariables, domain._hmCPF,
 					instance._alInitState, nonFluents == null ? null : nonFluents._alNonFluents,
-					domain._alStateConstraints, domain._exprReward, instance._nNonDefActions);
+					domain._alStateConstraints, domain._alActionPreconditions, domain._alStateInvariants, 
+					domain._exprReward, instance._nNonDefActions);
 			
 			if ((domain._bPartiallyObserved && state._alObservNames.size() == 0)
 					|| (!domain._bPartiallyObserved && state._alObservNames.size() > 0)) {
@@ -217,10 +218,11 @@ public class Client {
 							_df.format(RUNTIME.totalMemory()/1e6d) + "Mb" + 
 							" = " + _df.format(((double) (RUNTIME.totalMemory() - RUNTIME.freeMemory()) / 
 											   (double) RUNTIME.totalMemory())) + " ]\n");
-				state.init(nonFluents != null ? nonFluents._hmObjects : null, instance._hmObjects,
+				state.init(domain._hmObjects, nonFluents != null ? nonFluents._hmObjects : null, instance._hmObjects,
 						domain._hmTypes, domain._hmPVariables, domain._hmCPF,
 						instance._alInitState, nonFluents == null ? null : nonFluents._alNonFluents,
-						domain._alStateConstraints, domain._exprReward, instance._nNonDefActions);
+						domain._alStateConstraints, domain._alActionPreconditions, domain._alStateInvariants,  
+						domain._exprReward, instance._nNonDefActions);
 				msg = createXMLRoundRequest();
 				Server.sendOneMessage(osw, msg);
 				isrc = Server.readOneMessage(isr);

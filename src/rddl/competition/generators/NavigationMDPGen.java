@@ -14,6 +14,8 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Random;
 
+import org.apache.commons.math3.random.RandomDataGenerator;
+
 import util.Permutation;
 
 public class NavigationMDPGen {
@@ -70,7 +72,7 @@ public class NavigationMDPGen {
 	}
 	
 	public String generateNormal(){
-		Random ran = new Random();
+		RandomDataGenerator ran = new RandomDataGenerator();
 		StringBuilder sb = new StringBuilder();
 		
 		sb.append("non-fluents nf_" + instance_name + " {\n");
@@ -123,7 +125,7 @@ public class NavigationMDPGen {
 		for (int i = 1; i <= size_x; i++)
 			for (int j = 2; j < size_y; j++)
 				dp.add("\t\tP(x" + i + ",y" + j + ") = " + 
-						((.01f + ((.9f*(i-1))/(double)(size_x - 1))) + 0.05f*ran.nextFloat()) + ";\n");
+						((.01f + ((.9f*(i-1))/(double)(size_x - 1))) + 0.05f*ran.nextUniform(0d,1d)) + ";\n");
 		int[] indices = Permutation.permute(dp.size(), ran);
 		for (int i = 0; i < dp.size(); i++)
 			sb.append(dp.get(/*indices[i]*/i));
@@ -149,7 +151,7 @@ public class NavigationMDPGen {
 	}
 	
 	public String generateObfuscate(){
-		Random ran = new Random();
+		RandomDataGenerator ran = new RandomDataGenerator();
 		StringBuilder sb = new StringBuilder();
 		
 		sb.append("non-fluents nf_" + instance_name + " {\n");
@@ -211,7 +213,7 @@ public class NavigationMDPGen {
 		for (int i = 1; i <= size_x; i++)
 			for (int j = 2; j < size_y; j++)
 				dp.add("\t\tP(x" + (i*i+5) + ",y" + (j*j+11) + ") = " + 
-						((.01f + ((.9f*(i-1))/(double)(size_x - 1))) + 0.05f*ran.nextFloat()) + ";\n");
+						((.01f + ((.9f*(i-1))/(double)(size_x - 1))) + 0.05f*ran.nextUniform(0d,1d)) + ";\n");
 		indices = Permutation.permute(dp.size(), ran);
 		
 		// Now export everything

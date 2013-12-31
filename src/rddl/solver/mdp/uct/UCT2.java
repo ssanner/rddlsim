@@ -271,7 +271,8 @@ public class UCT2 extends EnumerableStatePolicy {
 			s._observ.put(key, new HashMap<ArrayList<LCONST>, Object>(value));
 		}
 		
-		s._alConstraints = new ArrayList<RDDL.BOOL_EXPR>(currentState._alConstraints);
+		s._alActionPreconditions = currentState._alActionPreconditions;
+		s._alStateInvariants = currentState._alStateInvariants;
 		s._reward = currentState._reward;
 		s._nMaxNondefActions = currentState._nMaxNondefActions;
 		

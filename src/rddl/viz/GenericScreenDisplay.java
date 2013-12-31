@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import rddl.EvalException;
+import rddl.RDDL.PVARIABLE_DEF;
+import rddl.RDDL.PVARIABLE_INTERM_DEF;
 import rddl.State;
 import rddl.RDDL.LCONST;
 import rddl.RDDL.PVAR_NAME;
@@ -47,17 +49,24 @@ public class GenericScreenDisplay extends StateViz {
 			
 			if (_bSuppressNonFluents && e.getKey().equals("nonfluent"))
 				continue;
-			else if (e.getKey().equals("interm"))
-				continue;
 			
 			// Go through all variable names p for a variable type
 			for (PVAR_NAME p : e.getValue()) {
+
+				// Show interms only if they are derived
+				PVARIABLE_DEF def = s._hmPVariables.get(p._pvarUnprimed);
+				if (def instanceof PVARIABLE_INTERM_DEF
+					&& !((PVARIABLE_INTERM_DEF)def)._bDerived)
+					continue;
+				String var_type = e.getKey();
+				var_type = var_type.replace("interm", "derived");
+				
 				sb.append(p + "\n");
 				try {
 					// Go through all term groundings for variable p
 					ArrayList<ArrayList<LCONST>> gfluents = s.generateAtoms(p);										
 					for (ArrayList<LCONST> gfluent : gfluents)
-						sb.append("- " + e.getKey() + ": " + p + 
+						sb.append("- " + var_type + ": " + p + 
 								(gfluent.size() > 0 ? gfluent : "") + " := " + 
 								s.getPVariableAssign(p, gfluent) + "\n");
 						
