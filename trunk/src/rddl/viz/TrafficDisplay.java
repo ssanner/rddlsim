@@ -22,7 +22,7 @@ import rddl.RDDL.TYPE_NAME;
 public class TrafficDisplay extends StateViz {
 
 	public TrafficDisplay() {
-		_nTimeDelay = 0; // in milliseconds
+		_nTimeDelay = 200; // in milliseconds
 	}
 
 	public TrafficDisplay(int time_delay_per_frame) {
@@ -31,7 +31,7 @@ public class TrafficDisplay extends StateViz {
 	
 	public boolean _bSuppressNonFluents = true;
 	public BlockDisplay _bd = null;
-	public int _nTimeDelay = 0;
+	public int _nTimeDelay;
 	
 	public void display(State s, int time) {
 		System.out.println("TIME = " + time + ": " + getStateDescription(s));

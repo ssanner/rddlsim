@@ -10,6 +10,8 @@ package rddl.policy;
 
 import java.util.*;
 
+import org.apache.commons.math3.random.RandomDataGenerator;
+
 import rddl.*;
 import rddl.RDDL.*;
 
@@ -17,7 +19,7 @@ public abstract class Policy {
 	
 	public long RAND_SEED = -1;	
 
-	public Random _random = new Random();
+	public RandomDataGenerator _random = new RandomDataGenerator();
 	public String _sInstanceName;
 	public RDDL _rddl;
 
@@ -46,7 +48,8 @@ public abstract class Policy {
 	
 	public void setRandSeed(long rand_seed) {
 		RAND_SEED = rand_seed;
-		_random = new Random(RAND_SEED);
+		_random = new RandomDataGenerator();
+		_random.reSeed(RAND_SEED);
 	}
 	
 	// Override if needed

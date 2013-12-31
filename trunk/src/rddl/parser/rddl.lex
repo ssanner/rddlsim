@@ -34,6 +34,8 @@ WHITE_SPACE_CHAR=[\r\n\ \t\b\012]
 "init-state" { return new Symbol(sym.INIT_STATE, yytext()); }
 "requirements" { return new Symbol(sym.REQUIREMENTS, yytext()); }
 "state-action-constraints" { return new Symbol(sym.STATE_ACTION_CONSTRAINTS, yytext()); }
+"action-preconditions" { return new Symbol(sym.ACTION_PRECONDITIONS, yytext()); }
+"state-invariants" { return new Symbol(sym.STATE_INVARIANTS, yytext()); }
 "types" { return new Symbol(sym.TYPES, yytext()); }
 "object" { return new Symbol(sym.OBJECT, yytext()); }
 "bool" { return new Symbol(sym.BOOL, yytext()); }
@@ -46,6 +48,7 @@ WHITE_SPACE_CHAR=[\r\n\ \t\b\012]
 "non-fluents" { return new Symbol(sym.NON_FLUENTS, yytext()); }
 "state-fluent" { return new Symbol(sym.STATE, yytext()); }
 "interm-fluent" { return new Symbol(sym.INTERMEDIATE, yytext()); }
+"derived-fluent" { return new Symbol(sym.DERIVED_FLUENT, yytext()); }
 "observ-fluent" { return new Symbol(sym.OBSERVATION, yytext()); }
 "action-fluent" { return new Symbol(sym.ACTION, yytext()); }
 "level" { return new Symbol(sym.LEVEL, yytext()); }
@@ -65,6 +68,7 @@ WHITE_SPACE_CHAR=[\r\n\ \t\b\012]
 "else" { return new Symbol(sym.ELSE, yytext()); }
 "switch" { return new Symbol(sym.SWITCH, yytext()); }
 "case" { return new Symbol(sym.CASE, yytext()); }
+"otherwise" { return new Symbol(sym.OTHERWISE, yytext()); }
 "KronDelta" { return new Symbol(sym.KRON_DELTA, yytext()); }
 "DiracDelta" { return new Symbol(sym.DIRAC_DELTA, yytext()); }
 "Uniform" { return new Symbol(sym.UNIFORM, yytext()); }
@@ -73,6 +77,10 @@ WHITE_SPACE_CHAR=[\r\n\ \t\b\012]
 "Normal" { return new Symbol(sym.NORMAL, yytext()); }
 "Poisson" { return new Symbol(sym.POISSON, yytext()); }
 "Exponential" { return new Symbol(sym.EXPONENTIAL, yytext()); }
+"Weibull" { return new Symbol(sym.WEIBULL, yytext()); }
+"Gamma" { return new Symbol(sym.GAMMA, yytext()); }
+"Multinomial" { return new Symbol(sym.MULTINOMIAL, yytext()); }
+"Dirichlet" { return new Symbol(sym.DIRICHLET, yytext()); }
 "^" { return new Symbol(sym.AND, yytext()); }
 "|" { return new Symbol(sym.OR, yytext()); }
 "~" { return new Symbol(sym.NOT, yytext()); }
@@ -82,6 +90,7 @@ WHITE_SPACE_CHAR=[\r\n\ \t\b\012]
 ")" { return new Symbol(sym.RPAREN, yytext()); }
 "{" { return new Symbol(sym.LCURLY, yytext()); }
 "}" { return new Symbol(sym.RCURLY, yytext()); }
+"." { return new Symbol(sym.DOT, yytext()); }
 "," { return new Symbol(sym.COMMA, yytext()); }
 "_" { return new Symbol(sym.UNDERSCORE, yytext()); }
 "[" { return new Symbol(sym.LBRACK, yytext()); }
@@ -99,6 +108,7 @@ WHITE_SPACE_CHAR=[\r\n\ \t\b\012]
 "-" { return new Symbol(sym.MINUS, yytext()); }
 ":" { return new Symbol(sym.COLON, yytext()); }
 ";" { return new Symbol(sym.SEMI, yytext()); }
+"$" { return new Symbol(sym.DOLLAR_SIGN, yytext()); }
 
 ({ALPHA})(({ALPHA}|{DIGIT}|-|_)*({ALPHA}|{DIGIT}))?("'")? { return new Symbol(sym.IDENT, yytext()); }
 ("?")(({ALPHA}|{DIGIT}|-|_)*({ALPHA}|{DIGIT}))? { return new Symbol(sym.VAR, yytext()); }

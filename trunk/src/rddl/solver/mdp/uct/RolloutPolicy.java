@@ -37,7 +37,7 @@ public class RolloutPolicy extends EnumerableStatePolicy {
 		
 		if (!this.internalPolicy.containsKey(stateAsInteger)) {
 			ArrayList<String> actions = new ArrayList<String>(action_map.keySet());
-			this.internalPolicy.put(stateAsInteger, actions.get(this._random.nextInt(action_map.size())));
+			this.internalPolicy.put(stateAsInteger, actions.get(this._random.nextInt(0, action_map.size() - 1)));
 		}
 		
 		return this.internalPolicy.get(stateAsInteger);

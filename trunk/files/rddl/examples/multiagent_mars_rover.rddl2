@@ -1,0 +1,204 @@
+////////////////////////////////////////////////////////////////////
+// A simple continuous MDP for multiagent Mars Rover.  
+//
+// The goal here is to take as many high-value pictures (within their
+// designated radii) as possible within the time constraints.
+//
+// This version is in RDDL 2.0 format.
+//
+// Motivated by:
+//
+//   Bresina, J. L.; Dearden, R.; Meuleau, N.; Ramkrishnan, S.;
+//   Smith, D. E.; and Washington, R. 2002. Planning under continuous
+//   time and resource uncertainty: A challenge for AI. UAI 2002.
+//
+// Author: Scott Sanner (ssanner@gmail.com)
+//
+////////////////////////////////////////////////////////////////////
+domain simple_mars_rover {
+  
+	requirements = { 
+		concurrent,           // x and y directions move independently and simultaneously
+		reward-deterministic, // this domain does not use a stochastic reward
+		intermediate-nodes,   // this domain uses intermediate pvariable nodes
+		constrained-state     // this domain uses state constraints
+	};
+
+	types {
+		robot : object;
+		picture-point : object;
+		int-1-10 : int[1,10];
+		point-2d : <real x, real y>;
+	};
+
+	objects { 
+		picture-point : {p1};
+	};
+	
+	pvariables { 
+    		  		
+		// Rover constants
+		MOVE_VARIANCE      : { non-fluent, real, default = 0.5  };
+		MAX_MOVEMENT       : { non-fluent, real, default = 40.0 };
+		
+		// Each picture occurs in a different place and awards a different value
+		PICT_POS(picture-point)         : { non-fluent, point-2d, default = <x:0.0, y:0.0> };
+		PICT_VALUE(picture-point)       : { non-fluent, real,     default = 1.0 };
+		PICT_ERROR_ALLOW(picture-point) : { non-fluent, real,     default = 0.5 };
+		
+		// An object nonfluent
+		NEXT_PICT(picture-point)        : { non-fluent, picture-point, default = p1 }; // Only constants here so p1 is unambiguous as an object
+		
+		// Rover coordinates
+		pos(robot) : { state-fluent, point-2d, default = <x:0.0, y:0.0> };
+
+		// Rover actions -- for each robot, we can move and we can snap a picture 
+		//                  (constrained below to be mutually exclusive).
+		move(robot)        : { action-fluent, point-2d, default = <x:0.0, y:0.0> };
+		snapPicture(robot) : { action-fluent, bool,     default = false };
+		
+		// Derived fluents -- deterministic computations from state and action,
+		//                  unlike stochastic intermediate variables, these can
+		//                  be used in global action preconditions (below).
+		pictureRewardPossible(robot, picture-point) : { derived-fluent, bool, level = 1 };
+		
+		// A state object fluent... make this recursive later to go through
+		// all possibilities
+		curPict(robot) : { state-fluent, picture-point, default = p1 };
+		
+		// Just a random integer
+		randInt(int-1-10)  : { state-fluent, int-1-10, default = @1 };
+		randMult(int-1-10) : { state-fluent, int-1-10, default = @1 }; // TODO: Update type (is this ever checked?  should be)
+		randDir(int-1-10)  : { state-fluent, int-1-10, default = @1 }; // TODO: Update type (is this ever checked?  should be)
+	};
+	
+	cpfs {
+
+		// Update rover coordinates based on movement, we assume surface 
+		// of Mars has no coordinate constraints.  Can add if needed.
+		pos'(?r) = < x: pos(?r).x + move(?r).x + Normal(0.0, MOVE_VARIANCE) , 
+		             y: pos(?r).y + move(?r).y + Normal(0.0, MOVE_VARIANCE) >;
+
+		// If we wanted deterministic movement, we could just use vector operations
+		// pos'(?r) = pos(?r) + move(?r);
+		
+		// See if robot is within range of a picture
+		pictureRewardPossible(?r,?p) = 
+		        (pos(?r).x >= PICT_POS(?p).x - PICT_ERROR_ALLOW(?p))
+			  ^ (pos(?r).x <= PICT_POS(?p).x + PICT_ERROR_ALLOW(?p))
+			  ^ (pos(?r).y >= PICT_POS(?p).y - PICT_ERROR_ALLOW(?p))
+			  ^ (pos(?r).y <= PICT_POS(?p).y + PICT_ERROR_ALLOW(?p));
+			  
+		// Advance the current picture twice -- just testing object fluents and switch now
+		// (just think of the switch statement as its if-then-else expansion)
+		// Note: $ needed here to disambiguate object references since fluents are also allowed
+		curPict'(?r) = 
+			switch(curPict(?r)) {
+				case $p1:                               NEXT_PICT(curPict(?r)),
+				case NEXT_PICT(NEXT_PICT(curPict(?r))): curPict(?r),
+				default:                                NEXT_PICT(NEXT_PICT(NEXT_PICT(NEXT_PICT(curPict(?r)))))
+			};
+		
+		// Note: enum int values can be interpreted as integers in arithmetic expressions	
+		randInt'(?i) = Discrete(int-1-10,
+						@1: 0.02 * ?i,
+						@2: 0.03 * ?i,
+						@3: 0.01 * ?i,
+						@4: otherwise);
+						
+		randMult'(?i) = Multinomial(int-1-10, 10,
+						@1: 0.02 * ?i,
+						@2: 0.03 * ?i,
+						@3: 0.01 * ?i,
+						@4: otherwise);
+						
+		randDir'(?i) = Dirichlet(int-1-10, 0.1);
+	};
+  
+	// We get a reward for any picture taken within picture box error bounds 
+	// and we get penalized for all movements.  pos(?r) could be pos'(?r)
+	// since the reward can condition on the next state as well. 
+	reward = 
+       sum_{?p : picture-point} [
+          if (exists_{?r : robot} snapPicture(?r) ^ pictureRewardPossible(?r,?p)) 
+		  then PICT_VALUE(?p)
+		  else 0.0 ];
+	
+	// These cannot mention actions -- they are simply assertions to 
+	// verify that only legal states are reached.  When starting from
+	// a legal initial state, only legal states should be reached,
+	// violation of this indicates an error in the domain design.
+	state-invariants {
+
+		// Error should be a positive quantity
+		forall_{?p : picture-point} PICT_ERROR_ALLOW(?p) > 0;
+		
+		// This will be eventually violated by a random walk, but just to give another state-invariant example
+		forall_{?r : robot} (pos(?r).x >= -50) ^ (pos(?r).x <= 50) ^ (pos(?r).y >= -50) ^ (pos(?r).y <= 50);
+	};
+	
+	// Global action preconditions
+	action-preconditions {
+
+		// Cannot snap a picture and move at the same time
+		// Since move is a vector type, an action is considered a non-default value assignment
+		// (if we want a boolean for action execution, it can always be added as a vector element)
+		forall_{?r : robot} ~[snapPicture(?r) ^ (move(?r) ~= move.default)];
+	};
+}
+        
+non-fluents pics3 {
+
+	domain = simple_mars_rover;
+	
+	// Add two more pictures to p1
+	objects { 
+		picture-point : {p2, p3};
+	};
+  
+	non-fluents { 
+	
+		MOVE_VARIANCE = 1;
+		
+		PICT_POS(p1)  =  <x:5.0, y:-5.0>;
+		PICT_VALUE(p1) =  5.0;
+		PICT_ERROR_ALLOW(p1) = 4;
+
+		PICT_POS(p2)  =  <x:5.0, y:5.0>;
+		PICT_VALUE(p2) = 10.0;
+		PICT_ERROR_ALLOW(p2) = 6; // Fairly tight constraints given noise
+
+		PICT_POS(p3)  =  <x:-10.0, y:-10.0>;
+		PICT_VALUE(p3) =  7.0;
+		PICT_ERROR_ALLOW(p3) = 10; 
+		
+		// $ required to denote object, could otherwise be a fluent
+		NEXT_PICT(p1) = $p2; 
+		NEXT_PICT(p2) = $p3;
+		NEXT_PICT(p3) = $p1;
+
+	};
+}
+
+instance inst_simple_mars_rover {
+
+	domain = simple_mars_rover;
+	
+	non-fluents = pics3;
+
+	objects { 
+		robot : {r1, r2, r3};
+	};
+  
+	init-state { 
+		pos(r1) = <x:0.0,  y:0.0>; 
+		pos(r2) = <x:10.0, y:10.0>;
+		pos(r3) = <x:-10.0,  y:10.0>; 
+	};
+  
+  	// State-action constraints above are sufficient
+	max-nondef-actions = pos-inf;
+  
+	horizon  = 40;
+	discount = 1.0;
+}

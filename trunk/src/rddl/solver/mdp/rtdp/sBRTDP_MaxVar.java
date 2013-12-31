@@ -388,7 +388,7 @@ public class sBRTDP_MaxVar extends Policy {
 			assign.add(null);
 		Integer F=beginF;
 		for (CString s : _alStateVars) {
-			double ran=_random.nextDouble();
+			double ran=_random.nextUniform(0d,1d);
 			Integer index = (Integer)_context._hmVarName2ID.get(s._string); // if null, var not in var2ID
 			Integer level = (Integer)_context._hmGVarToLevel.get(index);
 			String new_str = (String)_translation._hmPrimeRemap.get(s._string);

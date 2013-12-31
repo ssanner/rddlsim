@@ -79,8 +79,8 @@ public class TrfFixedTimePolicy extends Policy {
 		else {		
 			// Get the list of enum values for this action
 			PVARIABLE_DEF pdef = s._hmPVariables.get(p);
-			ENUM_TYPE_DEF tdef = (ENUM_TYPE_DEF)s._hmTypes.get(pdef._sRange);
-			ArrayList<ENUM_VAL> enums = tdef._alPossibleValues;
+			ENUM_TYPE_DEF tdef = (ENUM_TYPE_DEF)s._hmTypes.get(pdef._typeRange);
+			ArrayList<ENUM_VAL> enums = new ArrayList<ENUM_VAL>((ArrayList)tdef._alPossibleValues);
 
 			for(ArrayList<LCONST> intersection: intersections){
 				if (intersection.toString().startsWith("[I_")) {

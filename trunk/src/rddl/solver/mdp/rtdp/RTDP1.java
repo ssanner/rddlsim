@@ -340,7 +340,7 @@ public class RTDP1 extends Policy {
                     current_state.set(level_prime, null); // Undo so as not to change current_state
                    
                     // Draw sample
-                    boolean is_true = _random.nextDouble() < prob_true;
+        			boolean is_true = _random.nextUniform(0d,1d) < prob_true; 
                    
                     // Assign truth value to level for unprimed variable
                     int var_id = _hmPrimeVarID2VarID.get(prime_var_id);
@@ -354,10 +354,11 @@ public class RTDP1 extends Policy {
     // Set the properties of the initial state 
 	public void resetState() {
 		_initState = new State();
-		_initState.init(_translation._n != null ? _translation._n._hmObjects : null, _translation._i._hmObjects,  
+		_initState.init(_translation._d._hmObjects, _translation._n != null ? _translation._n._hmObjects : null, _translation._i._hmObjects,  
 				_translation._d._hmTypes, _translation._d._hmPVariables, _translation._d._hmCPF,
 				_translation._i._alInitState, _translation._n == null ? null : _translation._n._alNonFluents,
-				_translation._d._alStateConstraints, _translation._d._exprReward, _translation._i._nNonDefActions);
+				_translation._d._alStateConstraints, _translation._d._alActionPreconditions, _translation._d._alStateInvariants, 
+				_translation._d._exprReward, _translation._i._nNonDefActions);
 	}
 	
 	

@@ -77,10 +77,11 @@ public class RDDL2Graph {
 		_bStrictLevels = strict_levels;
 		_bStrictGrouping = strict_grouping;
 		_bDirected = directed;
-		_state.init(_n != null ? _n._hmObjects : null, _i._hmObjects,  
+		_state.init(_d._hmObjects, _n != null ? _n._hmObjects : null, _i._hmObjects,  
 				_d._hmTypes, _d._hmPVariables, _d._hmCPF,
 				_i._alInitState, _n == null ? null : _n._alNonFluents, 
-				_d._alStateConstraints, _d._exprReward, _i._nNonDefActions);
+				_d._alStateConstraints, _d._alActionPreconditions, _d._alStateInvariants, 
+				_d._exprReward, _i._nNonDefActions);
 		
 		// Build the graph
 		_graph = rddl2graph();

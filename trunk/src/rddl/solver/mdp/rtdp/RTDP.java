@@ -562,7 +562,7 @@ public class RTDP extends Policy {
 			current_state.set(level_prime, null); // Undo so as not to change current_state
 			
 			// Draw sample
-			boolean is_true = _random.nextDouble() < prob_true; 
+			boolean is_true = _random.nextUniform(0d,1d) < prob_true; 
 			
 			// Assign truth value to level for unprimed variable
 			int var_id = _hmPrimeVarID2VarID.get(prime_var_id);

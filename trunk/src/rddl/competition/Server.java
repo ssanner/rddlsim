@@ -28,6 +28,7 @@ import java.util.Random;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.apache.commons.math3.random.RandomDataGenerator;
 import org.apache.xerces.parsers.DOMParser;
 import org.w3c.dom.*;
 import org.xml.sax.InputSource;
@@ -116,7 +117,7 @@ public class Server implements Runnable {
 	public int id;
 	public String clientName = null;
 	public String requestedInstance = null;
-	public Random rand;
+	public RandomDataGenerator rand;
 	
 	public State      state;
 	public INSTANCE   instance;
@@ -178,7 +179,9 @@ public class Server implements Runnable {
 			System.out.println("RDDL Server Initialized");
 			while (true) {
 				Socket connection = socket1.accept();
-				Runnable runnable = new Server(connection, ++ID, rddl, state_viz, port, new Random(rand_seed));
+				RandomDataGenerator rdg = new RandomDataGenerator();
+				rdg.reSeed(rand_seed);
+				Runnable runnable = new Server(connection, ++ID, rddl, state_viz, port, rdg);
 				Thread thread = new Thread(runnable);
 				thread.start();
 			}
@@ -188,7 +191,7 @@ public class Server implements Runnable {
 			e.printStackTrace();
 		}
 	}
-	Server (Socket s, int i, RDDL rddl, StateViz state_viz, int port, Random rgen) {
+	Server (Socket s, int i, RDDL rddl, StateViz state_viz, int port, RandomDataGenerator rgen) {
 		this.connection = s;
 		this.id = i;
 		this.rddl = rddl;
@@ -424,10 +427,11 @@ public class Server implements Runnable {
 	}
 	
 	void resetState () {
-		state.init(nonFluents != null ? nonFluents._hmObjects : null, instance._hmObjects, 
+		state.init(domain._hmObjects, nonFluents != null ? nonFluents._hmObjects : null, instance._hmObjects, 
 				domain._hmTypes, domain._hmPVariables, domain._hmCPF,
 				instance._alInitState, nonFluents == null ? null : nonFluents._alNonFluents,
-				domain._alStateConstraints, domain._exprReward, instance._nNonDefActions);
+				domain._alStateConstraints, domain._alActionPreconditions, domain._alStateInvariants, 
+				domain._exprReward, instance._nNonDefActions);
 		
 		if ((domain._bPartiallyObserved && state._alObservNames.size() == 0)
 				|| (!domain._bPartiallyObserved && state._alObservNames.size() > 0))
@@ -437,7 +441,7 @@ public class Server implements Runnable {
 	}
 	
 	static Object getValue(String pname, String pvalue, State state) {
-		TYPE_NAME tname = state._hmPVariables.get(new PVAR_NAME(pname))._sRange;
+		TYPE_NAME tname = state._hmPVariables.get(new PVAR_NAME(pname))._typeRange;
 		
 		// TYPE_NAMES are interned so that equality can be tested directly
 		// (also helps enforce better type safety)

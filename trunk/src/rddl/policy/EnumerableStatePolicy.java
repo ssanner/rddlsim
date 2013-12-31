@@ -261,7 +261,7 @@ public abstract class EnumerableStatePolicy extends Policy {
 		// Return a random action if a action cannot be taken
 		if (action_taken == null) {
 			ArrayList<String> actions = new ArrayList<String>(action_map.keySet());
-			action_taken = actions.get(_random.nextInt(action_map.size()));
+			action_taken = actions.get(_random.nextInt(0, action_map.size() - 1));
 		}
 		
 		return action_map.get(action_taken);

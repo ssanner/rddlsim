@@ -16,6 +16,8 @@ import rddl.viz.*;
 import rddl.policy.*;
 import rddl.RDDL.*;
 import rddl.parser.parser;
+import org.apache.commons.math3.*;
+import org.apache.commons.math3.random.*;
 
 public class Simulator {
 	
@@ -25,7 +27,7 @@ public class Simulator {
 	public DOMAIN     _d;
 	public Policy     _p;
 	public StateViz   _v;
-	public Random     _rand;
+	public RandomDataGenerator _rand;
 	
 	public Simulator(RDDL rddl, String instance_name) throws Exception {
 		_state = new State();
@@ -51,10 +53,11 @@ public class Simulator {
 		//		"\n  PVars:      " + _d._hmPVariables + 
 		//		"\n  InitState:  " + _i._alInitState + 
 		//		"\n  NonFluents: " + _n._alNonFluents);
-		_state.init(_n != null ? _n._hmObjects : null, _i._hmObjects,  
+		_state.init(_d._hmObjects, _n != null ? _n._hmObjects : null, _i._hmObjects,  
 				_d._hmTypes, _d._hmPVariables, _d._hmCPF,
 				_i._alInitState, _n == null ? null : _n._alNonFluents,
-				_d._alStateConstraints, _d._exprReward, _i._nNonDefActions);
+				_d._alStateConstraints, _d._alActionPreconditions, _d._alStateInvariants,  
+				_d._exprReward, _i._nNonDefActions);
 	}
 	
 	//////////////////////////////////////////////////////////////////////////////
@@ -68,7 +71,8 @@ public class Simulator {
 		resetState();
 		
 		// Set random seed for repeatability
-		_rand = new Random(rand_seed);
+		_rand = new RandomDataGenerator();
+		_rand.reSeed(rand_seed);
 
 		// Keep track of reward
 		double accum_reward = 0.0d;
@@ -78,20 +82,26 @@ public class Simulator {
 		// Run problem for specified horizon
 		for (int t = 0; t < _i._nHorizon; t++) {
 
-			// Display state/observations that the agent sees
-			v.display(_state, t);
+			// MOVED AFTER ACTION SELECTION
+			// v.display(_state, t);
 
 			// Get action from policy 
 			// (if POMDP and first state, no observations available yet so a null is passed)
 			State state_info = ((_state._alObservNames.size() > 0) && t == 0) ? null : _state;
 			ArrayList<PVAR_INST_DEF> action_list = p.getActions(state_info);
 			
-			// Check state-action constraints
+			// Check action preconditions / state-action constraints (latter deprecated) 
 			_state.checkStateActionConstraints(action_list);
 			
 			// Compute next state (and all intermediate / observation variables)
 			_state.computeNextState(action_list, _rand);
-			
+
+			// Check state invariants / state-action constraints (latter deprecated) 
+			_state.checkStateInvariants();
+
+			// Display state/observations that the agent sees
+			v.display(_state, t);
+
 			// Calculate reward / objective and store
 			double reward = RDDL.ConvertToNumber(
 					_state._reward.sample(new HashMap<LVAR,LCONST>(), _state, _rand)).doubleValue();
@@ -182,7 +192,7 @@ public class Simulator {
 		//	System.err.println(e);
 		//}
 			
-		if (RDDL.DEBUG_PVAR_NAMES)
-			System.out.println(RDDL.PVAR_SRC_SET);
+		//if (RDDL.DEBUG_PVAR_NAMES)
+		//	System.out.println(RDDL.PVAR_SRC_SET);
 	}
 }
