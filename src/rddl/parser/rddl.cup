@@ -146,6 +146,7 @@ non terminal RDDL.STATE_INVARIANT_DEF STATE_INVARIANT_DEF;
 non terminal ArrayList OBJECT_CONST_LIST;
 non terminal ArrayList OBJECTS_LIST;
 non terminal ArrayList OBJECTS_SECTION;
+non terminal ArrayList MEMBER_LIST;
 non terminal RDDL.OBJECTS_DEF OBJECTS_DEF;
 non terminal ArrayList STRING_LIST;
 non terminal Object RANGE_CONST;
@@ -240,6 +241,11 @@ TYPE_DEF ::= IDENT:i COLON OBJECT SEMI {: RESULT = new RDDL.OBJECT_TYPE_DEF(i); 
 		| IDENT:i COLON LESS STRUCT_MEMBER_LIST:members GREATER SEMI {: RESULT = new RDDL.STRUCT_TYPE_DEF(i,members); :} 
 		;
 
+/* RDDL2: The format for action arguments */
+STRUCT_MEMBER_LIST ::= TYPE_SPEC:t IDENT:name {: RESULT = new ArrayList(Arrays.asList(new Object[] { new RDDL.STRUCT_TYPE_DEF_MEMBER(t, name)})); :} 
+		| TYPE_SPEC:t IDENT:name COMMA STRUCT_MEMBER_LIST:list {: list.add(0, new RDDL.STRUCT_TYPE_DEF_MEMBER(t, name)); RESULT = list; :} 
+		;
+
 STRING_LIST ::= IDENT:i            {: RESULT = new ArrayList(Arrays.asList(new Object[] {i})); :} 
 		| IDENT:i COMMA STRING_LIST:list {: list.add(0,i); RESULT = list; :} 
 		;
@@ -278,11 +284,6 @@ INT_TYPE ::= INTEGER:i {: RESULT = i; :}
 /* RDDL2: positive integers or infinity (mainly for horizon and max_nondef_actions spec -- inf for unrestricted concurrency) */
 POS_INT_TYPE_OR_POS_INF ::= INTEGER:i {: RESULT = i; :}
 		| POS_INF         {: RESULT = new Integer(Integer.MAX_VALUE); :}
-		;
-
-/* RDDL2: The format for action arguments */
-STRUCT_MEMBER_LIST ::= TYPE_SPEC:t IDENT:name {: RESULT = new ArrayList(Arrays.asList(new Object[] { new RDDL.STRUCT_TYPE_DEF_MEMBER(t, name)})); :} 
-		| TYPE_SPEC:t IDENT:name COMMA STRUCT_MEMBER_LIST:list {: list.add(0, new RDDL.STRUCT_TYPE_DEF_MEMBER(t, name)); RESULT = list; :} 
 		;
 
 PARAM_LIST ::= COLON {: RESULT = new ArrayList(); :}
@@ -488,12 +489,16 @@ TERM ::= VAR:v   {: RESULT = new RDDL.LVAR(v); :}
 		;
 
 PVAR_EXPR ::= IDENT:i LPAREN TERM_LIST:l RPAREN {: RESULT = new RDDL.PVAR_EXPR(i, l); :}
-		| IDENT:i LPAREN TERM_LIST:l RPAREN DOT IDENT:member {: RESULT = new RDDL.PVAR_EXPR(i, l, member); :}
-		| IDENT:i {: RESULT = new RDDL.PVAR_EXPR(i, new ArrayList()); :}
-		| IDENT:i DOT IDENT:member {: RESULT = new RDDL.PVAR_EXPR(i, new ArrayList(), member); :}
-		| IDENT:i DOT DEFAULT {: RESULT = new RDDL.PVAR_EXPR(i, new ArrayList(), "default"); :}
+		| IDENT:i LPAREN TERM_LIST:l RPAREN MEMBER_LIST:list {: RESULT = new RDDL.PVAR_EXPR(i, l, list); :}
+		| IDENT:i                  {: RESULT = new RDDL.PVAR_EXPR(i, new ArrayList()); :}
+		| IDENT:i MEMBER_LIST:list {: RESULT = new RDDL.PVAR_EXPR(i, new ArrayList(), list); :}
+		| IDENT:i DOT DEFAULT      {: RESULT = new RDDL.PVAR_EXPR(i, new ArrayList(), new ArrayList(Arrays.asList(new Object[] {"default"}))); :}
 		;
 
+MEMBER_LIST ::= DOT IDENT:member                  {: RESULT = new ArrayList(Arrays.asList(new Object[] {member})); :} 
+		| DOT IDENT:member MEMBER_LIST:list {: list.add(0,member); RESULT = list; :} 
+		;
+		
 TERM_LIST ::= TERM:t            {: RESULT = new ArrayList(Arrays.asList(new Object[] {t})); :} 
 		| TERM:t COMMA TERM_LIST:list {: list.add(0,t); RESULT = list; :} 
 		;
@@ -577,7 +582,6 @@ EXPR ::= PVAR_EXPR:p   {: RESULT = p; :} /* we don't actually know the type yet*
 		| POISSON LPAREN EXPR:lambda RPAREN      {: RESULT = new RDDL.Poisson(lambda); :}
 		| WEIBULL LPAREN EXPR:shape COMMA EXPR:scale RPAREN      {: RESULT = new RDDL.Weibull(shape, scale); :}
 		| GAMMA   LPAREN EXPR:shape COMMA EXPR:scale RPAREN      {: RESULT = new RDDL.Gamma(shape, scale); :}
-/*		| INV_QUADRATIC {:  :} - for Ints, need to build a sampler for this one */
 		;
 
 

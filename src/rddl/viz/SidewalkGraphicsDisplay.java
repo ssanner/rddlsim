@@ -11,6 +11,7 @@ package rddl.viz;
 import java.awt.Color;
 import java.util.ArrayList;
 
+import rddl.EvalException;
 import rddl.State;
 import rddl.RDDL.LCONST;
 import rddl.RDDL.PVARIABLE_DEF;
@@ -32,12 +33,18 @@ public class SidewalkGraphicsDisplay extends StateViz {
 	public int _nTimeDelay = 0;
 	
 	public void display(State s, int time) {
-		System.out.println("TIME = " + time + ": " + getStateDescription(s));
+		try {
+			System.out.println("TIME = " + time + ": " + getStateDescription(s));
+		} catch (EvalException e) {
+			System.out.println("\n\nError during visualization:\n" + e);
+			e.printStackTrace();
+			System.exit(1);
+		}
 	}
 
 	//////////////////////////////////////////////////////////////////////
 
-	public String getStateDescription(State s) {
+	public String getStateDescription(State s) throws EvalException {
 		StringBuilder sb = new StringBuilder();
 
 		// Initialize display if not already

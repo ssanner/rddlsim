@@ -142,7 +142,7 @@ public class RandomConcurrentPolicy extends Policy {
 				STRUCT_TYPE_DEF sdef = (STRUCT_TYPE_DEF)tdef;
 				STRUCT_VAL sval = new STRUCT_VAL();
 				for (STRUCT_TYPE_DEF_MEMBER m : sdef._alMembers) {
-					sval.addMember(m._sName, getRandomValue(s, m._sType));
+					sval.addMember(m._sName, getRandomValue(s, m._type));
 				}
 				return sval;
 				

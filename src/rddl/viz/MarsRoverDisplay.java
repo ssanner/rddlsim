@@ -43,12 +43,18 @@ public class MarsRoverDisplay extends StateViz {
 	public HashMap<LCONST,STRUCT_VAL> robot2oldpos = new HashMap<LCONST,STRUCT_VAL>();
 	
 	public void display(State s, int time) {
-		System.out.println("TIME = " + time + ": " + getStateDescription(s));
+		try {
+			System.out.println("TIME = " + time + ": " + getStateDescription(s));
+		} catch (EvalException e) {
+			System.out.println("\n\nError during visualization:");
+			e.printStackTrace();
+			System.exit(1);
+		}
 	}
 
 	//////////////////////////////////////////////////////////////////////
 
-	public String getStateDescription(State s) {
+	public String getStateDescription(State s) throws EvalException {
 		StringBuilder sb = new StringBuilder();
 
 		TYPE_NAME robot_type = new TYPE_NAME("robot");
@@ -57,8 +63,8 @@ public class MarsRoverDisplay extends StateViz {
 		TYPE_NAME picture_point = new TYPE_NAME("picture-point");
 		ArrayList<LCONST> list_picture_points = s._hmObject2Consts.get(picture_point);
 
-		TYPE_NAME int_1_10 = new TYPE_NAME("int-1-10");
-		ArrayList<LCONST> list_int_1_10 = s._hmObject2Consts.get(int_1_10);
+		TYPE_NAME int_range = new TYPE_NAME("int-1-4");
+		ArrayList<LCONST> list_int_1_10 = s._hmObject2Consts.get(int_range);
 
 		PVAR_NAME PICT_POS = new PVAR_NAME("PICT_POS");
 		PVAR_NAME PICT_VALUE = new PVAR_NAME("PICT_VALUE");
@@ -72,14 +78,17 @@ public class MarsRoverDisplay extends StateViz {
 		PVAR_NAME RAND_INT  = new PVAR_NAME("randInt");
 		PVAR_NAME RAND_MULT = new PVAR_NAME("randMult");
 		PVAR_NAME RAND_DIR  = new PVAR_NAME("randDir");
+		PVAR_NAME RAND_MATRIX = new PVAR_NAME("randMatrix");
 		
 		if (_bd == null) {
 			_bd= new BlockDisplay("Multiagent Mars Rover", "Simulation", NUM_SCREEN_BLOCKS, NUM_SCREEN_BLOCKS);	
 		}
 		
-		// Set up arity-1 and arity-2 parameter lists
-		ArrayList<LCONST> params = new ArrayList<LCONST>(1);
-		params.add(null);
+		// Set up arity-0, arity-1 and arity-2 parameter lists
+		ArrayList<LCONST> params0 = new ArrayList<LCONST>(0);
+		
+		ArrayList<LCONST> params1 = new ArrayList<LCONST>(1);
+		params1.add(null);
 
 		ArrayList<LCONST> params2 = new ArrayList<LCONST>(2);
 		params2.add(null);
@@ -90,9 +99,9 @@ public class MarsRoverDisplay extends StateViz {
 		//_bd.clearAllLines();
 		int col_index = 0;
 		for (LCONST robot : list_robots) {
-			params.set(0, robot);
+			params1.set(0, robot);
 			STRUCT_VAL old_rpos = robot2oldpos.get(robot);
-			STRUCT_VAL new_rpos = (STRUCT_VAL)s.getPVariableAssign(POS, params);
+			STRUCT_VAL new_rpos = (STRUCT_VAL)s.getPVariableAssign(POS, params1);
 			Color col = _bd._colors[col_index++ % _bd._colors.length];
 			
 			double new_x = ((Number)new_rpos._alMembers.get(0)._oVal).doubleValue() + (NUM_SCREEN_BLOCKS/2);
@@ -104,7 +113,7 @@ public class MarsRoverDisplay extends StateViz {
 				_bd.addLine(col, old_x, old_y, new_x, new_y);
 			}
 				
-			if ((Boolean)s.getPVariableAssign(SNAP_PICTURE, params)) {
+			if ((Boolean)s.getPVariableAssign(SNAP_PICTURE, params1)) {
 				boolean picture_reward_possible = false;
 				for (LCONST pic_point : list_picture_points) {
 					params2.set(0, robot);
@@ -116,16 +125,16 @@ public class MarsRoverDisplay extends StateViz {
 			}
 				
 			System.out.println("Robot " + robot + " @ " + new_rpos + ", curPict: " + 
-					(OBJECT_VAL)s.getPVariableAssign(CUR_PICT, params));
+					(OBJECT_VAL)s.getPVariableAssign(CUR_PICT, params1));
 			
 			robot2oldpos.put(robot, new_rpos);
 		}
 		
 		for (LCONST pic_point : list_picture_points) {
-			params.set(0, pic_point);
-			STRUCT_VAL ppos   = (STRUCT_VAL)s.getPVariableAssign(PICT_POS, params);
-			double     pval   = ((Number)s.getPVariableAssign(PICT_VALUE, params)).doubleValue();
-			double     perror = ((Number)s.getPVariableAssign(PICT_ERROR_ALLOW, params)).doubleValue();
+			params1.set(0, pic_point);
+			STRUCT_VAL ppos   = (STRUCT_VAL)s.getPVariableAssign(PICT_POS, params1);
+			double     pval   = ((Number)s.getPVariableAssign(PICT_VALUE, params1)).doubleValue();
+			double     perror = ((Number)s.getPVariableAssign(PICT_ERROR_ALLOW, params1)).doubleValue();
 			Color col = _bd._colors[col_index++ % _bd._colors.length];
 			
 			// Text is erased
@@ -140,11 +149,12 @@ public class MarsRoverDisplay extends StateViz {
 			System.out.println("Picture point " + pic_point + " @ " + ppos + " +/- " + pval + " [" + pval + "]");
 		}
 			
+		System.out.println("randMatrix = "  + s.getPVariableAssign(RAND_MATRIX, params0));
 		for (LCONST i : list_int_1_10) {
-			params.set(0, i);
-			System.out.println("randInt[" + i + "] = "  + s.getPVariableAssign(RAND_INT, params));
-			System.out.println("randMult[" + i + "] = " + s.getPVariableAssign(RAND_MULT, params));
-			System.out.println("randDir[" + i + "] = "  + s.getPVariableAssign(RAND_DIR, params));
+			params1.set(0, i);
+			System.out.println("randInt[" + i + "] = "  + s.getPVariableAssign(RAND_INT, params1));
+			System.out.println("randMult[" + i + "] = " + s.getPVariableAssign(RAND_MULT, params1));
+			System.out.println("randDir[" + i + "] = "  + s.getPVariableAssign(RAND_DIR, params1));
 		}
 		
 		_bd.repaint();

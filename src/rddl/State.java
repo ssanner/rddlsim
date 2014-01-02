@@ -539,35 +539,29 @@ public class State {
 		return def_value;
 	}
 	
-	public Object getPVariableAssign(PVAR_NAME p, ArrayList<LCONST> terms) {
+	public Object getPVariableAssign(PVAR_NAME p, ArrayList<LCONST> terms) throws EvalException {
 
 		// Get default value if it exists
 		Object def_value = null;
 		boolean primed = p._bPrimed;
-		p = p._pvarUnprimed; // We'll look up the unprimed version
+		p = p._pvarUnprimed; // We'll look up the unprimed version, but check for priming later
 		PVARIABLE_DEF pvar_def = _hmPVariables.get(p);
 		
-		if (pvar_def == null) {
-			System.out.println("ERROR: undefined pvariable: " + p);
-			return null;
-		} else if (pvar_def._alParamTypes.size() != terms.size()) {
-			System.out.println("ERROR: expected " + pvar_def._alParamTypes.size() + 
+		if (pvar_def == null)
+			throw new EvalException("ERROR: undefined pvariable: " + p);
+		else if (pvar_def._alParamTypes.size() != terms.size()) 
+			throw new EvalException("ERROR: expected " + pvar_def._alParamTypes.size() + 
 					" parameters for " + p + ", but got " + terms.size() + ": " + terms);
-			return null;
-		}
 		
+		// Initialize with defaults in case not assigned
 		if (pvar_def instanceof PVARIABLE_STATE_DEF) { // state & non_fluents
 			def_value = ((PVARIABLE_STATE_DEF) pvar_def)._oDefValue;
-			//if (def_value == null) {
-			//	System.out.println("ERROR: Default value should not be null for state fluent " + pvar_def);
-			//	System.exit(1);
-			//}
+			if (def_value == null)
+				throw new EvalException("ERROR: Default value should not be null for state fluent " + pvar_def);
 		} else if (pvar_def instanceof RDDL.PVARIABLE_ACTION_DEF) { // actions
 			def_value = ((PVARIABLE_ACTION_DEF) pvar_def)._oDefValue;
-			//if (def_value == null) {
-			//	System.out.println("ERROR: Default value should not be null for action fluent " + pvar_def);
-			//	System.exit(1);
-			//}
+			if (def_value == null)
+				throw new EvalException("ERROR: Default value should not be null for action fluent " + pvar_def);
 		}
 		//System.out.println("Default value: " + def_value);
 
@@ -576,7 +570,7 @@ public class State {
 		if (pvar_def instanceof PVARIABLE_STATE_DEF && ((PVARIABLE_STATE_DEF)pvar_def)._bNonFluent)
 			var_src = _nonfluents.get(p);
 		else if (pvar_def instanceof PVARIABLE_STATE_DEF && !((PVARIABLE_STATE_DEF)pvar_def)._bNonFluent)
-			var_src = primed ? _nextState.get(p) : _state.get(p); // Note: (next) state index by non-primed pvar
+			var_src = /*CHECK PRIMED*/ primed ? _nextState.get(p) : _state.get(p); // Note: (next) state index by non-primed pvar
 		else if (pvar_def instanceof PVARIABLE_ACTION_DEF)
 			var_src = _actions.get(p);
 		else if (pvar_def instanceof PVARIABLE_INTERM_DEF)
@@ -584,10 +578,8 @@ public class State {
 		else if (pvar_def instanceof PVARIABLE_OBS_DEF)
 			var_src = _observ.get(p);
 			
-		if (var_src == null) {
-			System.out.println("ERROR: no variable source for " + p);
-			return null;
-		}
+		if (var_src == null)
+			throw new EvalException("ERROR: no variable source for " + p);
 		
 		// Lookup value, return default (if available) if value not found
 		Object ret = var_src.get(terms);
