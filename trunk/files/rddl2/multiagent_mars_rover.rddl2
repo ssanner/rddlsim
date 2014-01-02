@@ -27,8 +27,9 @@ domain simple_mars_rover {
 	types {
 		robot : object;
 		picture-point : object;
-		int-1-10 : int[1,10];
+		int-1-4 : int[1,4];
 		point-2d : <real x, real y>;
+		matrix-2d : <point-2d col1, point-2d col2>;
 	};
 
 	objects { 
@@ -66,10 +67,12 @@ domain simple_mars_rover {
 		// all possibilities
 		curPict(robot) : { state-fluent, picture-point, default = p1 };
 		
-		// Just a random integer
-		randInt(int-1-10)  : { state-fluent, int-1-10, default = @1 };
-		randMult(int-1-10) : { state-fluent, int-1-10, default = @1 }; // TODO: Update type (is this ever checked?  should be)
-		randDir(int-1-10)  : { state-fluent, int-1-10, default = @1 }; // TODO: Update type (is this ever checked?  should be)
+		// Some random variable checks
+		randInt(int-1-4)  : { state-fluent, int-1-4, default = @1 };
+		randMult(int-1-4) : { state-fluent, int-1-4, default = @1 }; // TODO: Update type (is this ever checked?  should be)
+		randDir(int-1-4)  : { state-fluent, int-1-4, default = @1 }; // TODO: Update type (is this ever checked?  should be)
+		randMatrix        : { state-fluent, matrix-2d, default = <col1:<x:1,y:2>, col2:<x:3,y:4>> };
+		
 	};
 	
 	cpfs {
@@ -100,19 +103,29 @@ domain simple_mars_rover {
 			};
 		
 		// Note: enum int values can be interpreted as integers in arithmetic expressions	
-		randInt'(?i) = Discrete(int-1-10,
+		randInt'(?i) = Discrete(int-1-4,
 						@1: 0.02 * ?i,
 						@2: 0.03 * ?i,
 						@3: 0.01 * ?i,
 						@4: otherwise);
 						
-		randMult'(?i) = Multinomial(int-1-10, 10,
+		randMult'(?i) = Multinomial(int-1-4, 10,
 						@1: 0.02 * ?i,
 						@2: 0.03 * ?i,
 						@3: 0.01 * ?i,
 						@4: otherwise);
 						
-		randDir'(?i) = Dirichlet(int-1-10, 0.1);
+		randDir'(?i) = Dirichlet(int-1-4, 20);
+		
+		// Annoyingly this causes a parse error for '+' (but not '*'!) when not using parentheses... not sure why 
+		// but parens fix it so not worrying about it.
+		//
+		// Note here the double dereferences for nested vectors, e.g., .col1.x
+		randMatrix' = (< col1: < x: Exponential(1), y: Poisson(5)   >,
+		                 col2: < x: Gamma(1,1),     y: Weibull(1,1) >  >)
+		            + (< col1: < x: Exponential(2.0) + randMatrix.col1.x, y: Poisson(10) + randMatrix.col1.y >,
+		                 col2: < x: Gamma(5.1,3.2) + randMatrix.col2.x,   y: Weibull(0.5,1.0) + randMatrix.col2.y >  >) 
+		            ;
 	};
   
 	// We get a reward for any picture taken within picture box error bounds 
@@ -137,7 +150,8 @@ domain simple_mars_rover {
 		forall_{?r : robot} (pos(?r).x >= -50) ^ (pos(?r).x <= 50) ^ (pos(?r).y >= -50) ^ (pos(?r).y <= 50);
 	};
 	
-	// Global action preconditions
+	// Global action preconditions... cannot execute a joint action
+	// if it violates any of these constraints.
 	action-preconditions {
 
 		// Cannot snap a picture and move at the same time

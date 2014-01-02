@@ -10,6 +10,7 @@ package rddl.viz;
 
 import java.util.ArrayList;
 
+import rddl.EvalException;
 import rddl.State;
 import rddl.RDDL.LCONST;
 import rddl.RDDL.PVARIABLE_DEF;
@@ -29,13 +30,18 @@ public class GameOfLifeScreenDisplay extends StateViz {
 	public boolean _bSuppressNonFluents = false;
 	
 	public void display(State s, int time) {
-		
-		System.out.println("TIME = " + time + ": " + getStateDescription(s));
+		try {
+			System.out.println("TIME = " + time + ": " + getStateDescription(s));
+		} catch (EvalException e) {
+			System.out.println("\n\nError during visualization:\n" + e);
+			e.printStackTrace();
+			System.exit(1);
+		}
 	}
 
 	//////////////////////////////////////////////////////////////////////
 
-	public String getStateDescription(State s) {
+	public String getStateDescription(State s) throws EvalException {
 		StringBuilder sb = new StringBuilder();
 		
 		PVAR_NAME alive = new PVAR_NAME("alive");

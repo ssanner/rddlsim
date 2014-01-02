@@ -13,6 +13,7 @@ import java.util.*;
 
 import org.apache.commons.math3.*;
 import org.apache.commons.math3.random.RandomDataGenerator;
+import org.apache.commons.math3.distribution.MultivariateNormalDistribution;
 
 import util.Pair;
 
@@ -429,27 +430,27 @@ public class RDDL {
 	public static class STRUCT_TYPE_DEF_MEMBER {
 		
 		public STRUCT_TYPE_DEF_MEMBER(String typename, String argname) {
-			_sType = new TYPE_NAME(typename);
+			_type = new TYPE_NAME(typename);
 			_sName = argname.intern();
 		}
 		
-		public TYPE_NAME _sType;
+		public TYPE_NAME _type;
 		public String _sName;
 
 		public int hashCode() {
-			return _sType.hashCode() + _sName.hashCode();
+			return _type.hashCode() + _sName.hashCode();
 		}
 		
 		public boolean equals(Object o) {
 			if (o instanceof STRUCT_TYPE_DEF_MEMBER) {
 				STRUCT_TYPE_DEF_MEMBER s = (STRUCT_TYPE_DEF_MEMBER)o;
-				return _sName == s._sName && _sType.equals(s._sType);
+				return _sName == s._sName && _type.equals(s._type);
 			} else
 				return false;
 		}
 
 		public String toString() {
-			return _sType + " " + _sName;
+			return _type + " " + _sName;
 		}
 	}
 
@@ -1310,7 +1311,7 @@ public class RDDL {
 			if (etd == null)
 				throw new EvalException("Could not find type for " + _sTypeName + "\nAvailable types: " + s._hmTypes.keySet());
 			
-			double sym_alpha = ((Double)((EXPR)_exprAlpha).sample(subs, s, r)).doubleValue();			
+			double sym_alpha = ((Number)((EXPR)_exprAlpha).sample(subs, s, r)).doubleValue();			
 			DirichletHelper dh = new DirichletHelper(sym_alpha, etd._alPossibleValues.size());
 			double[] sample_vec = dh.sample(r);
 			
@@ -1665,7 +1666,7 @@ public class RDDL {
 		
 		public Object sample(HashMap<LVAR,LCONST> subs, State s, RandomDataGenerator r) throws EvalException {
 			double mean = ((Number)_exprMean.sample(subs, s, null)).doubleValue();
-			return r.nextPoisson(mean);
+			return ((Long)r.nextPoisson(mean)).intValue();
 		}
 		
 		public EXPR getDist(HashMap<LVAR,LCONST> subs, State s) throws EvalException {
@@ -1958,8 +1959,9 @@ public class RDDL {
 			o2 = ((Boolean)o2 == true ? 1 : 0);
 		if (!((o1 instanceof Integer) || (o1 instanceof Double))
 			|| !((o2 instanceof Integer) || (o2 instanceof Double)))
-			throw new EvalException("Operands 1 '" + o1 + "' and 2 '" + o2 + "' must be castable to int or real");
+			throw new EvalException("Operands 1 '" + o1 + "' (type:" + o1.getClass() + ") and 2 '" + o2 + "' (type:" + o2.getClass() + ") must be castable to int or real");
 		
+		// Perform int operations where possible
 		if (o1 instanceof Integer && o2 instanceof Integer && op != OPER_EXPR.DIV) {
 			if (op == OPER_EXPR.PLUS)
 				return new Integer((Integer)o1 + (Integer)o2);
@@ -2091,16 +2093,18 @@ public class RDDL {
 			_alTerms = (ArrayList<LTERM>)terms;
 		}
 
-		public PVAR_EXPR(String s, ArrayList terms, String member) {
+		public PVAR_EXPR(String s, ArrayList terms, ArrayList members) {
 			_pName = new PVAR_NAME(s);
 			_alTerms = (ArrayList<LTERM>)terms;
-			_sMember = member.intern();
+			_alMembers = new ArrayList<String>();
+			for (Object o : members)
+				_alMembers.add(((String)o).intern());
 		}
 		
 		public PVAR_NAME _pName;
 		public ArrayList<LTERM>  _alTerms  = null;
 		public ArrayList<LCONST> _subTerms = new ArrayList<LCONST>(); // Used for evaluation
-		public String _sMember = null;
+		public ArrayList<String> _alMembers = null;
 		
 		public String toString() {
 			StringBuilder sb = new StringBuilder();
@@ -2120,16 +2124,17 @@ public class RDDL {
 				}
 				sb.append(")");
 			} else if (USE_PREFIX) // Prefix always parenthesized
-				sb.append(")");			
-			if (_sMember != null)
-				sb.append("." + _sMember);
+				sb.append(")");		
+			if (_alMembers != null)
+				for (String member : _alMembers)
+					sb.append("." + member);
 			return sb.toString();
 		}
 		
 		public Object sample(HashMap<LVAR,LCONST> subs, State s, RandomDataGenerator r) throws EvalException {
 			
 			// Special case for using a pvariable name with ".default"
-			if (_sMember == DEFAULT) {
+			if (_alMembers != null && (_alMembers.size() == 1) && (_alMembers.get(0) == DEFAULT)) {
 				PVARIABLE_DEF pvar_def = s._hmPVariables.get(_pName._pvarUnprimed /*unprimed version to look up range*/);
 				if (pvar_def instanceof PVARIABLE_STATE_DEF) {
 					return ((PVARIABLE_STATE_DEF)pvar_def)._oDefValue;
@@ -2164,11 +2169,7 @@ public class RDDL {
 				throw new EvalException("RDDL.PVAR_EXPR: No value assigned to pvariable '" + 
 						_pName + _subTerms + "'" + (_subTerms.size() == 0 ? "\n... did you intend an enum value @" + _pName+ "?" : "") + "");
 			
-			if (_sMember != null) {
-				if (!(ret_val instanceof STRUCT_VAL))
-					throw new EvalException("RDDL.PVAR_EXPR: expected a vector type to dereference '" + _sMember + "' but got " + ret_val);
-				
-				STRUCT_VAL sval = (STRUCT_VAL)ret_val;
+			if (_alMembers != null) {
 				
 				// Get the vector index of 'member' by looking it up in the type_def for the range value of this pvar
 				PVARIABLE_DEF pvar_def = s._hmPVariables.get(_pName._pvarUnprimed /*unprimed version to look up range*/);
@@ -2176,20 +2177,34 @@ public class RDDL {
 					System.err.println("RDDL.PVAR_EXPR: expected a type of '" + _pName._pvarUnprimed + "' but got " + pvar_def);
 					System.err.println(s._hmPVariables.keySet());
 				}
-				
 				TYPE_NAME range_type = pvar_def._typeRange;
-				STRUCT_TYPE_DEF range_struct_def = (STRUCT_TYPE_DEF)s._hmTypes.get(range_type);
-				int index = range_struct_def.getIndex(_sMember);
-				if (index < 0)
-					throw new EvalException("\nRDDL.PVAR_EXPR: could not find member'" + _sMember + "' for '" + range_type + "'");
-				if (sval._alMembers.get(index)._sLabel != _sMember)
-					throw new EvalException("\nRDDL.PVAR_EXPR: mismatch for ordering of '" + range_type + "', expected label '" + 
-							sval._alMembers.get(index)._sLabel + "', but found label '" + _sMember + "'." +
-							"\n- The type definition is " + range_struct_def + " while the current vector being indexed is: " + sval + "." + 
-							"\n- This error can result from a previous assignment in an < ... > expression that used an incorrect label ordering.");
-				
-				// Subselect the member from ret_val for return
-				ret_val = sval._alMembers.get(index)._oVal;
+		
+				// Dereference in the order they occur
+				for (String member : _alMembers) { 
+					
+					if (!(ret_val instanceof STRUCT_VAL))
+						throw new EvalException("RDDL.PVAR_EXPR: expected a vector type to dereference '" + member + "' but got " + ret_val);
+					
+					// The current evaluation is a STRUCT_VAL, the range type for this structure is a STRUCT_TYPE_DEF, and member should index both
+					STRUCT_VAL sval = (STRUCT_VAL)ret_val;
+					STRUCT_TYPE_DEF range_struct_def = (STRUCT_TYPE_DEF)s._hmTypes.get(range_type);
+					
+					int index = range_struct_def.getIndex(member);
+									
+					if (index < 0)
+						throw new EvalException("\nRDDL.PVAR_EXPR: could not find member'" + member + "' for '" + range_type + "'");
+					if (sval._alMembers.get(index)._sLabel != member) // Strings were interned so == possible
+						throw new EvalException("\nRDDL.PVAR_EXPR: mismatch for ordering of '" + range_type + "', expected label '" + 
+								sval._alMembers.get(index)._sLabel + "', but found label '" + member + "'." +
+								"\n- The type definition is " + range_struct_def + " while the current vector being indexed is: " + sval + "." + 
+								"\n- This error can result from a previous assignment in an < ... > expression that used an incorrect label ordering.");
+					
+					// Subselect the member from ret_val for return or further derefs
+					ret_val = sval._alMembers.get(index)._oVal;
+					
+					// Update the range_type for ret_val (in case more derefs needed)
+					range_type = range_struct_def._alMembers.get(index)._type; 
+				}
 			}
 			
 			return ret_val;

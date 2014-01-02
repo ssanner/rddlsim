@@ -26,11 +26,18 @@ public class TrfDisplay extends StateViz {
 	static final int delayTime = 1;
 	
 	public void display(State s, int time) {
-		System.out.println("TIME = " + time + ": " + getStateDescription(s, time));
-		System.out.print(getStateDescription(s, time));
+		try {
+			System.out.println("TIME = " + time + ": " + getStateDescription(s, time));
+		} catch (EvalException e) {
+			System.out.println("\n\nError during visualization:\n" + e);
+			e.printStackTrace();
+			System.exit(1);
+		}
+		//System.out.println("TIME = " + time + ": " + getStateDescription(s, time));
+		//System.out.print(getStateDescription(s, time));
 	}
 
-	public String getStateDescription(State s, int time) {
+	public String getStateDescription(State s, int time) throws EvalException {
 		StringBuilder sb = new StringBuilder();
 
 		PVAR_NAME send = new PVAR_NAME("send");
