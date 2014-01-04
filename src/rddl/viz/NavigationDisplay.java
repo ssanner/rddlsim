@@ -77,8 +77,8 @@ public class NavigationDisplay extends StateViz {
 		_bd.clearAllLines();
 		for (LCONST xpos : list_xpos) {
 			for (LCONST ypos : list_ypos) {
-				int col = new Integer(xpos.toString().substring(1, xpos.toString().length()));
-				int row = new Integer(ypos.toString().substring(1, ypos.toString().length()));
+				int col = new Integer(xpos.toString().substring(2, xpos.toString().length()));
+				int row = new Integer(ypos.toString().substring(2, ypos.toString().length()));
 				if (IS_OBFUSCATED) {
 					row = (int)Math.sqrt(row - 11);
 					col = (int)Math.sqrt(col - 5);

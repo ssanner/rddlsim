@@ -1,8 +1,7 @@
 RDDLSim -- A simulator for the relational dynamic influence diagram
            language (RDDL).
 
-Copyright (C) 2010, Scott Sanner (ssanner@gmail.com) and
-                    Sungwook Yoon (sungwook.yoon@gmail.com)
+Copyright (C) 2010--2014, Scott Sanner (ssanner@gmail.com)
 
 
 Basic RDDLSim Installation and Invocation
@@ -91,7 +90,7 @@ We currently provide the following rddlsim command line utilities:
         n.b., (1) default port number is 2323
 	      (2) policy-class-name:
         	  ...best example with comments: rddl.policy.SPerseusSPUDDPolicy 
-		  ...otherwise, any policy class name which derives from rddl.Policy
+        	  ...otherwise, any policy class name which derives from rddl.Policy
         	  ...for *your* client, just provide a policy derived from rddl.Policy
         
 	Examples (run from rddlsim directory, ./run for UNIX/Cygwin, run.bat for Windows):
@@ -107,14 +106,13 @@ We currently provide the following rddlsim command line utilities:
 
 		**Parser and translation examples**
 
-		./run rddl.parser.parser files/rddl/test/sysadmin.rddl 
-		./run rddl.parser.parser files/rddl/test/game_of_life.rddl 
+		./run rddl.parser.parser files/rddl/test/sysadmin_mdp.rddl 
 
                 Note: if you're building a parser for another language
                 use the following option to output RDDL expressions in
                 prefix format (rather than the current infix format):
                 
-		./run rddl.parser.parser files/rddl/test/sysadmin.rddl -prefix-output
+		./run rddl.parser.parser files/rddl/test/sysadmin_mdp.rddl -prefix-output
 		
 				Or do the prefix translations for an entire directory:				
 
@@ -135,26 +133,35 @@ We currently provide the following rddlsim command line utilities:
 		./run rddl.sim.Simulator files/final_comp/rddl rddl.policy.RandomBoolPolicy navigation_inst_mdp__10 rddl.viz.NavigationDisplay
 		./run rddl.sim.Simulator files/final_comp/rddl rddl.policy.RandomBoolPolicy navigation_inst_pomdp__10 rddl.viz.NavigationDisplay
 
-		./run rddl.sim.Simulator files/rddl/test/TrfModel.rddl rddl.policy.RandomEnumPolicy is_grid rddl.viz.TrfDisplay
+		./run rddl.sim.Simulator ./files/rddl/examples/traffic_cont_ctm/ rddl.policy.RandomEnumPolicy is_grid rddl.viz.trfctm.TrfDisplay
 
 		**RDDL DBN / Influence Diagram Visualization**
 
-		./run rddl.viz.RDDL2Graph files/rddl/test/dbn_prop.rddl inst_dbn
-		./run rddl.viz.RDDL2Graph files/rddl/test/dbn_types_interm_po.rddl inst_dbn
-		./run rddl.viz.RDDL2Graph files/rddl/test/game_of_life.rddl is1
+		./run rddl.viz.RDDL2Graph files/rddl/examples/dbn_prop.rddl inst_dbn
+		./run rddl.viz.RDDL2Graph files/rddl/examples/dbn_types_interm_po.rddl inst_dbn_interm_po
+		./run rddl.viz.RDDL2Graph files/rddl/examples/game_of_life_stoch.rddl is1_stoch
 
+	RDDL 2.0 (2013) -- A strict superset of RDDL 1.0
+
+		./run rddl.sim.Simulator files/rddl2/multiagent_mars_rover.rddl2 rddl.policy.RandomConcurrentPolicy inst_simple_mars_rover rddl.viz.MarsRoverDisplay 1 1
+		
 
 GraphViz RDDL Visualization
 ===========================
 
 Although not required to run the basic RDDL simulator facilities, some
-additional GraphViz visualization tools are provided.  
+additional GraphViz visualization tools are provided; see here for
+general info on GraphViz:
+
+    http://www.graphviz.org/
 
 To enable Java Graphviz visualization:
 
-- Download and install GraphViz on your system:
+- Download and install GraphViz version 2.28 (or earlier) on your system:
  
-  http://www.graphviz.org/
+    http://www.graphviz.org/pub/graphviz/stable/
+
+  (language changes after 2.28 are not compatible with the Java viewer)
 
 - Make sure "dot" and "neato" (including ".exe" if running on Windows)
   are in your PATH, i.e., you can execute them from any home directory
@@ -198,10 +205,6 @@ the **rddlsim/src/rddl/parser/** directory:
 followed by
 
     make parser
-
-You may have to change the number of expected production conflict
-errors for the parser in the Makefile if your modifications are
-substantial.  See the parser rule in the Makefile for this parameter.
 
 These commands only produce the Java files in the 
 rddlsim/src/rddl/parser/ directory, they must be compiled

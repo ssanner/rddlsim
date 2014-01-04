@@ -1243,6 +1243,7 @@ public class RDDL2Format {
 		HashMap<File,RDDL> file2rddl = new HashMap<File,RDDL>();
 		for (File f : (ArrayList<File>)rddl_files.clone()) {
 			try {
+				// This translator currently only works for a subset of RDDL 1.0
 				if (f.getName().endsWith(".rddl")) {
 					RDDL r = parser.parse(f);
 					file2rddl.put(f, r);

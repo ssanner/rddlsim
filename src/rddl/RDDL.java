@@ -9,11 +9,14 @@
 
 package rddl;
 
+import java.io.File;
 import java.util.*;
 
 import org.apache.commons.math3.*;
 import org.apache.commons.math3.random.RandomDataGenerator;
 import org.apache.commons.math3.distribution.MultivariateNormalDistribution;
+
+import rddl.parser.parser;
 
 import util.Pair;
 
@@ -29,6 +32,23 @@ public class RDDL {
 
 	public RDDL(RDDL rddl) { 
 		addOtherRDDL(rddl);
+	}
+	
+	public RDDL(String rddl_file_or_dir) {
+		try {
+			File f = new File(rddl_file_or_dir);
+			if (f.isDirectory()) {
+				for (File f2 : f.listFiles())
+					if (f2.getName().endsWith(".rddl") || f2.getName().endsWith(".rddl2")) {
+						System.out.println("Loading: " + f2);
+						addOtherRDDL(parser.parse(f2));
+					}
+			} else
+				addOtherRDDL(parser.parse(f));
+		} catch (Exception e) {
+			System.out.println("ERROR: Could not instantiate RDDL for '" + rddl_file_or_dir + "'\n" + e);
+			System.exit(1);
+		}
 	}
 
 	public void addDomain(DOMAIN d) {

@@ -65,7 +65,7 @@ public class Client {
 		ROUND,TURN,ROUND_END,END_TEST,NONAME
 	}
 
-	private static RDDL rddl = new RDDL();
+	private static RDDL rddl = null;
 
 	int numRounds;
 	double timeAllowed;
@@ -124,15 +124,7 @@ public class Client {
 			Class c = Class.forName(args[3]);
 			
 			// Load RDDL files
-			File f = new File(args[0]);
-			if (f.isDirectory()) {
-				for (File f2 : f.listFiles())
-					if (f2.getName().endsWith(".rddl")) {
-						System.out.println("Loading: " + f2);
-						rddl.addOtherRDDL(parser.parse(f2));
-					}
-			} else
-				rddl.addOtherRDDL(parser.parse(f));
+			rddl = new RDDL(args[0]);
 			
 			if ( args.length > 4 ) {
 				port = Integer.valueOf(args[4]);
@@ -144,14 +136,12 @@ public class Client {
 				instanceName = args[6];
 			}
 			if (!rddl._tmInstanceNodes.containsKey(instanceName)) {
-				System.out.println("Instance name '" + instanceName + "' not found in " + args[0]);
+				System.out.println("Instance name '" + instanceName + "' not found in " + args[0] + "\nPossible choices: " + rddl._tmInstanceNodes.keySet());
 				System.exit(1);
 			}
 			state = new State();
 			
-			//Policy policy = (Policy)c.newInstance();
-			//policy._sInstanceName = instanceName;
-			// Note: following line with the help from Alan Olsen
+			// Note: following constructor approach suggested by Alan Olsen
 			Policy policy = (Policy)c.getConstructor(
 					new Class[]{String.class}).newInstance(new Object[]{instanceName});
 			policy.setRDDL(rddl);
@@ -163,24 +153,22 @@ public class Client {
 			}
 			domain = rddl._tmDomainNodes.get(instance._sDomain);
 			if (nonFluents != null && !instance._sDomain.equals(nonFluents._sDomain)) {
-				try {
-					throw new Exception("Domain name of instance and fluents do not match: " + 
+				System.err.println("Domain name of instance and fluents do not match: " + 
 							instance._sDomain + " vs. " + nonFluents._sDomain);
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				System.exit(1);
 			}
+			
 			state.init(domain._hmObjects, nonFluents != null ? nonFluents._hmObjects : null, instance._hmObjects,
 					domain._hmTypes, domain._hmPVariables, domain._hmCPF,
 					instance._alInitState, nonFluents == null ? null : nonFluents._alNonFluents,
 					domain._alStateConstraints, domain._alActionPreconditions, domain._alStateInvariants, 
 					domain._exprReward, instance._nNonDefActions);
 			
-			if ((domain._bPartiallyObserved && state._alObservNames.size() == 0)
-					|| (!domain._bPartiallyObserved && state._alObservNames.size() > 0)) {
-				System.err.println("Domain '" + domain._sDomainName + "' partially observed flag and presence of observations mismatched.");
-			}
+			// Not strictly enforcing flags anymore... 
+			//if ((domain._bPartiallyObserved && state._alObservNames.size() == 0)
+			//		|| (!domain._bPartiallyObserved && state._alObservNames.size() > 0)) {
+			//	System.err.println("Domain '" + domain._sDomainName + "' partially observed flag and presence of observations mismatched.");
+			//}
 			
 			/** Obtain an address object of the server */
 			InetAddress address = InetAddress.getByName(host);

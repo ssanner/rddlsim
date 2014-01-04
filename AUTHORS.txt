@@ -1,2 +1,10 @@
+RDDL 1.0 (2010)
+
 Scott Sanner (ssanner@gmail.com)
-Sungwook Yoon (sungwook.yoon@gmail.com)
+Sungwook Yoon (sungwook.yoon@gmail.com) -- Client/Server
+Florent Teichteil-Königsbuch (florent.teichteil@onera.fr) -- Grammar Disambiguation and Language Extensions
+
+RDDL 2.0 (2013) -- A strict superset of RDDL 1.0
+
+Scott Sanner (ssanner@gmail.com)
+Thomas Keller (tkeller@informatik.uni-freiburg.de) -- Language Extensions
