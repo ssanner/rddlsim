@@ -149,16 +149,7 @@ public class Server implements Runnable {
 				
 		try {
 			// Load RDDL files
-			RDDL rddl = new RDDL();
-			File f = new File(args[0]);
-			if (f.isDirectory()) {
-				for (File f2 : f.listFiles())
-					if (f2.getName().endsWith(".rddl")) {
-						System.out.println("Loading: " + f2);
-						rddl.addOtherRDDL(parser.parse(f2));
-					}
-			} else
-				rddl.addOtherRDDL(parser.parse(f));
+			RDDL rddl = new RDDL(args[0]);
 
 			if ( args.length > 1) {
 				port = Integer.valueOf(args[1]);

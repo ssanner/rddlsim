@@ -396,20 +396,7 @@ public class RDDL2Graph {
 	 */
 	public static void main(String[] args) throws Exception {
 		
-		// Parse file
-		//RDDL rddl = parser.parse(new File("files/rddl/test/sysadmin.rddl"));
-		//RDDL rddl = parser.parse(new File("files/rddl/test/sysadmin_test.rddl"));
-		//RDDL rddl = parser.parse(new File("files/rddl/test/game_of_life.rddl"));
-		//RDDL rddl = parser.parse(new File("files/rddl/test/game_of_life_stoch.rddl"));
-		//RDDL rddl = parser.parse(new File("files/rddl/test/sidewalk.rddl"));
-		//RDDL rddl = parser.parse(new File("files/rddl/test/dbn_prop.rddl"));
-		//RDDL rddl = parser.parse(new File("files/rddl/test/dbn_types_interm_po.rddl"));
-		//RDDL rddl = parser.parse(new File("files/rddl/test/sysadmin.rddl"));
-		//RDDL rddl = parser.parse(new File("files/rddl/test/traffic_binary_ctm.rddl"));
-
-		// Get first instance name in file and create a simulator
-		//String instance_name = rddl._tmInstanceNodes.firstKey();
-	
+		// Parse arguments
 		if (args.length != 2 && args.length != 5) {
 			System.out.println("usage: RDDL-file instance-name [directed={true,false}] [strict-levels={true,false}] [strict-grouping={true,false}]");
 			System.exit(1);
@@ -434,23 +421,9 @@ public class RDDL2Graph {
 			rddl_files.add(file);
 		
 		// Load RDDL files
-		RDDL rddl = new RDDL();
-		HashMap<File,RDDL> file2rddl = new HashMap<File,RDDL>();
-		for (File f : (ArrayList<File>)rddl_files.clone()) {
-			try {
-				if (f.getName().endsWith(".rddl")) {
-					RDDL r = parser.parse(f);
-					file2rddl.put(f, r);
-					rddl.addOtherRDDL(r);
-				}
-			} catch (Exception e) {
-				System.out.println(e);
-				System.out.println("Error processing: " + f + ", skipping...");
-				rddl_files.remove(f);
-				continue;
-			}
-		}
-		
+		RDDL rddl = new RDDL(rddl_file);
+
+		// Build the graph for this RDDL file
 		RDDL2Graph r2g = new RDDL2Graph(rddl, instance_name, directed, strict_levels, strict_grouping);
 //				/*strict levels*/false, /*strict grouping*/false);
 //				/*strict levels*/true,  /*strict grouping*/true);
@@ -459,7 +432,7 @@ public class RDDL2Graph {
 		// Reset, pass a policy, a visualization interface, a random seed, and simulate!
 		r2g.launchViewer(1024, 768);
 		
-		// Can also use graph to get a low-treewidth ordering for this RDDL domain
+		// Print out some graph analysis...
 		System.out.println();
 		List order = r2g._graph.computeBestOrder(); // _graph.greedyTWSort(true);
 		System.out.println("\nBest Order:   " + order);

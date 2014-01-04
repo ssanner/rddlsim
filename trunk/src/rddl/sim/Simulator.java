@@ -43,11 +43,10 @@ public class Simulator {
 		_d = rddl._tmDomainNodes.get(_i._sDomain);
 		if (_n != null && !_i._sDomain.equals(_n._sDomain))
 			throw new Exception("Domain name of instance and fluents do not match: " + 
-					_i._sDomain + " vs. " + _n._sDomain);
-		
+					_i._sDomain + " vs. " + _n._sDomain);		
 	}
 	
-	public void resetState() {
+	public void resetState() throws EvalException {
 		//System.out.println("Resetting state:" +
 		//		"\n  Types:      " + _d._hmTypes + 
 		//		"\n  PVars:      " + _d._hmPVariables + 
@@ -125,74 +124,38 @@ public class Simulator {
 	
 	public static void main(String[] args) throws Exception {
 			
-		//try {	
-			if (args.length < 3 || args.length > 6) {
-				System.out.println("usage: RDDL-file policy-class-name instance-name [state-viz-class-name] [rand seed simulator] [rand seed policy]");
-				System.exit(1);
-			}
-			String rddl_file = args[0];
-			String policy_class_name = args[1];
-			String instance_name = args[2];
-			String state_viz_class_name = "rddl.viz.GenericScreenDisplay";
-			if (args.length >= 4)
-				state_viz_class_name = args[3];
-			int rand_seed_sim = 123456;
-			if (args.length == 5)
-				rand_seed_sim = new Integer(args[4]);
-			int rand_seed_policy = 123456;
-			if (args.length == 6)
-				rand_seed_policy = new Integer(args[5]);
-			
-			// Load RDDL files
-			RDDL rddl = new RDDL();
-			File f = new File(rddl_file);
-			if (f.isDirectory()) {
-				for (File f2 : f.listFiles())
-					if (f2.getName().endsWith(".rddl")) {
-						System.out.println("Loading: " + f2);
-						rddl.addOtherRDDL(parser.parse(f2));
-					}
-			} else
-				rddl.addOtherRDDL(parser.parse(f));
-			
-			Simulator sim = new Simulator(rddl, instance_name);
-			Policy pol = (Policy)Class.forName(policy_class_name).getConstructor(
-					new Class[]{String.class}).newInstance(new Object[]{instance_name});
-			pol.setRandSeed(rand_seed_policy);
-			pol.setRDDL(rddl);
-			
-			StateViz viz = (StateViz)Class.forName(state_viz_class_name).newInstance();
+		// Argument handling
+		if (args.length < 3 || args.length > 6) {
+			System.out.println("usage: RDDL-file policy-class-name instance-name [state-viz-class-name] [rand seed simulator] [rand seed policy]");
+			System.exit(1);
+		}
+		String rddl_file = args[0];
+		String policy_class_name = args[1];
+		String instance_name = args[2];
+		String state_viz_class_name = "rddl.viz.GenericScreenDisplay";
+		if (args.length >= 4)
+			state_viz_class_name = args[3];
+		int rand_seed_sim = 123456;
+		if (args.length == 5)
+			rand_seed_sim = new Integer(args[4]);
+		int rand_seed_policy = 123456;
+		if (args.length == 6)
+			rand_seed_policy = new Integer(args[5]);
 		
-			// Parse file
-			//RDDL rddl = parser.parse(new File("files/rddl/test/sysadmin.rddl"));
-			//RDDL rddl = parser.parse(new File("files/rddl/test/sysadmin_test.rddl"));
-			//RDDL rddl = parser.parse(new File("files/rddl/test/game_of_life.rddl"));
-			//RDDL rddl = parser.parse(new File("files/rddl/test/game_of_life_stoch.rddl"));
-			//RDDL rddl = parser.parse(new File("files/rddl/test/sidewalk.rddl"));
-			//RDDL rddl = parser.parse(new File("files/rddl/test/dbn_prop.rddl"));
-			//RDDL rddl = parser.parse(new File("files/rddl/test/dbn_types_interm_po.rddl"));
-			//RDDL rddl = parser.parse(new File("files/rddl/test/traffic_binary_ctm.rddl"));
+		// Load RDDL files
+		RDDL rddl = new RDDL(rddl_file);
 		
-			// Get first instance name in file and create a simulator
-			//String instance_name = rddl._tmInstanceNodes.firstKey();
+		// Initialize simulator, policy and state visualization
+		Simulator sim = new Simulator(rddl, instance_name);
+		Policy pol = (Policy)Class.forName(policy_class_name).getConstructor(
+				new Class[]{String.class}).newInstance(new Object[]{instance_name});
+		pol.setRandSeed(rand_seed_policy);
+		pol.setRDDL(rddl);
+		
+		StateViz viz = (StateViz)Class.forName(state_viz_class_name).newInstance();
 			
-			// Reset, pass a policy, a visualization interface, a random seed, and simulate!
-			Result r = sim.run(pol, viz, rand_seed_sim);
-//				new RandomBoolPolicy(instance_name),
-//				new RandomEnumPolicy(instance_name),
-//				new FixedBoolPolicy(instance_name), 
-//				new GameOfLifeScreenDisplay(true),
-//				new SidewalkGraphicsDisplay(200),
-//				new GenericScreenDisplay(true),
-//				new SysAdminScreenDisplay(true),
-//				new TrafficDisplay(300),
-//				123456);
-			System.out.println("==> " + r);
-		//} catch (EvalException e) {
-		//	System.err.println(e);
-		//}
-			
-		//if (RDDL.DEBUG_PVAR_NAMES)
-		//	System.out.println(RDDL.PVAR_SRC_SET);
+		// Reset, pass a policy, a visualization interface, a random seed, and simulate!
+		Result r = sim.run(pol, viz, rand_seed_sim);
+		System.out.println("==> " + r);
 	}
 }

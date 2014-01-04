@@ -38,17 +38,9 @@ public class DynamicValidator {
 		int rand_seed_policy = 123456;
 		
 		// Load RDDL files
-		RDDL rddl = new RDDL();
-		File f = new File(rddl_file);
-		if (f.isDirectory()) {
-			for (File f2 : f.listFiles())
-				if (f2.getName().endsWith(".rddl")) {
-					System.out.println("Loading: " + f2);
-					rddl.addOtherRDDL(parser.parse(f2));
-				}
-		} else
-			rddl.addOtherRDDL(parser.parse(f));
-		
+		RDDL rddl = new RDDL(rddl_file);
+
+		// Instantiate simulator, policy and state visualization
 		String instance_name = args.length > 1 ? args[1] : rddl._tmInstanceNodes.firstKey();;
 		Simulator sim = new Simulator(rddl, instance_name);
 		Policy pol = new NoopPolicy();
