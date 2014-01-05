@@ -198,8 +198,11 @@ RDDL_BLOCK ::= DOMAIN_BLOCK:d RDDL_BLOCK:rddl  {: rddl.addDomain(d);   RESULT = 
          | NONFLUENT_BLOCK:n     {: RDDL rddl = new RDDL(); rddl.addNonFluents(n); RESULT = rddl; :} 
          ;
 
+/* RDDL2: Requirements section now optional */
 DOMAIN_BLOCK ::= DOMAIN IDENT:name LCURLY REQ_SECTION:domain DOMAIN_LIST:list RCURLY 
 			{: domain.setName(name); domain.addDefs(list); RESULT = domain; :} 
+		| DOMAIN IDENT:name LCURLY DOMAIN_LIST:list RCURLY 
+			{: RDDL.DOMAIN domain = new RDDL.DOMAIN(new ArrayList()); domain.setName(name); domain.addDefs(list); RESULT = domain; :} 
 		 ;
 		 
 REQ_SECTION ::= REQUIREMENTS ASSIGN_EQUAL LCURLY STRING_LIST:list RCURLY SEMI {: RESULT = new RDDL.DOMAIN(list); :}
@@ -334,6 +337,7 @@ REW_SECTION ::= REWARD ASSIGN_EQUAL EXPR:expr SEMI {: RESULT = new RDDL.REWARD_D
 		;
 
 STATE_CONS_SECTION ::= STATE_ACTION_CONSTRAINTS LCURLY STATE_CONS_LIST:list RCURLY SEMI {: RESULT = list; :}
+		| STATE_ACTION_CONSTRAINTS LCURLY RCURLY SEMI {: RESULT = new ArrayList(); :}
 		;
 
 STATE_CONS_LIST ::= STATE_CONS_DEF:d             {: RESULT = new ArrayList(Arrays.asList(new Object[] {d})); :} 
@@ -345,6 +349,7 @@ STATE_CONS_DEF ::= EXPR:expr SEMI {: RESULT = new RDDL.STATE_CONS_DEF(expr); :}
 
 /* RDDL2 */
 ACTION_PRECOND_SECTION ::= ACTION_PRECONDITIONS LCURLY ACTION_PRECOND_LIST:list RCURLY SEMI {: RESULT = list; :}
+		| ACTION_PRECONDITIONS LCURLY RCURLY SEMI {: RESULT = new ArrayList(); :}
 		;
 
 /* RDDL2 */
@@ -358,6 +363,7 @@ ACTION_PRECOND_DEF ::= EXPR:expr SEMI {: RESULT = new RDDL.ACTION_PRECOND_DEF(ex
 
 /* RDDL2 */
 STATE_INVARIANT_SECTION ::= STATE_INVARIANTS LCURLY STATE_INVARIANT_LIST:list RCURLY SEMI {: RESULT = list; :}
+		| STATE_INVARIANTS LCURLY RCURLY SEMI {: RESULT = new ArrayList(); :}
 		;
 
 /* RDDL2 */
@@ -527,21 +533,19 @@ CASE_DEF ::= CASE TERM:v COLON EXPR:e   {: RESULT = new RDDL.CASE(v,e); :}
 		| DEFAULT COLON EXPR:e             {: RESULT = new RDDL.CASE(null,e); :}
 		;
 
-EXPR ::= PVAR_EXPR:p   {: RESULT = p; :} /* we don't actually know the type yet*/
-		| VAR:v        {: RESULT = new RDDL.LVAR(v); :}
+EXPR ::=  VAR:v   {: RESULT = new RDDL.LVAR(v); :}
+		| PVAR_EXPR:p  {: RESULT = p; :} /* Will be converted to TVAR_EXPR if nested in PVAR_EXPR */
 		| ENUM_VAL:e   {: RESULT = new RDDL.ENUM_VAL(e); :}
-		| DOLLAR_SIGN IDENT:i   {: RESULT = new RDDL.OBJECT_VAL(i); :} /* DOLLAR_SIGN required here to disambiguate from parameterless PVAR_EXPR */
-		| LESS EXPR_LIST:s {: RESULT = s; :}
-/* --- BOOLEAN EXPRESSIONS --- */
-/* Treat boolean expressions as true=1, false=0 */
-		| TRUE   {: RESULT = new RDDL.BOOL_CONST_EXPR(true); :}
-		| FALSE  {: RESULT = new RDDL.BOOL_CONST_EXPR(false); :}
+		| DOLLAR_SIGN IDENT:i      {: RESULT = new RDDL.OBJECT_VAL(i); :} /* DOLLAR_SIGN required here to disambiguate from parameterless PVAR_EXPR */
+/* --- (NESTED) VECTOR EXPRESSION --- */
+		| LESS EXPR_LIST:s {: RESULT = s; :} /* vector expressions */
+/* --- GROUPING EXPRESSIONS --- */
 		| LBRACK EXPR:e RBRACK    {: RESULT = e; :}
 		| LPAREN EXPR:e RPAREN    {: RESULT = e; :}
-		| VAR:t1  COMP_EQUAL TERM:t2 {: RESULT = new RDDL.COMP_EXPR(new RDDL.LVAR(t1), t2, "=="); :} /* one has to be a var */
-/*		| TERM:t1 COMP_EQUAL VAR:t2  {: RESULT = new RDDL.COMP_EXPR(t1, new RDDL.LVAR(t2), "=="); :} /* one has to be a var */
-		| VAR:t1  NEQ TERM:t2    {: RESULT = new RDDL.COMP_EXPR(new RDDL.LVAR(t1), t2, "~="); :} /* one has to be a var */
-/*		| TERM:t1 NEQ VAR:t2     {: RESULT = new RDDL.COMP_EXPR(t1, new RDDL.LVAR(t2), "~="); :} /* one has to be a var */
+/* --- BOOLEAN EXPRESSIONS --- */
+/* Treat boolean expressions as true=1, false=0 when nested in arithmetic expressions */
+		| TRUE   {: RESULT = new RDDL.BOOL_CONST_EXPR(true); :}
+		| FALSE  {: RESULT = new RDDL.BOOL_CONST_EXPR(false); :}
 		| EXPR:e1 COMP_EQUAL EXPR:e2  {: RESULT = new RDDL.COMP_EXPR(e1, e2, "=="); :}
 		| EXPR:e1 NEQ EXPR:e2    {: RESULT = new RDDL.COMP_EXPR(e1, e2, "~="); :}
 		| EXPR:e1 GREATER EXPR:e2   {: RESULT = new RDDL.COMP_EXPR(e1, e2, ">"); :}
@@ -555,9 +559,8 @@ EXPR ::= PVAR_EXPR:p   {: RESULT = p; :} /* we don't actually know the type yet*
 		| EXPR:b1 EQUIV EXPR:b2  {: RESULT = new RDDL.CONN_EXPR(b1, b2, "<=>"); :}
 		| FORALL UNDERSCORE LCURLY TYPED_VAR_LIST:list RCURLY EXPR:b {: RESULT = new RDDL.QUANT_EXPR("forall", list, b); :} %prec FORALL
 		| EXISTS UNDERSCORE LCURLY TYPED_VAR_LIST:list RCURLY EXPR:b {: RESULT = new RDDL.QUANT_EXPR("exists", list, b); :} %prec EXISTS
-/* Now for the random variables */
-		| BERNOULLI LPAREN EXPR:prob RPAREN {: RESULT = new RDDL.Bernoulli(prob); :}
 /* --- NUMERICAL EXPRESSIONS --- */
+/* Treat numerical expressions as (if val=0 then val=false else val=true) when nested in arithmetic expressions */
 		| INTEGER:i    {: RESULT = new RDDL.INT_CONST_EXPR(i); :}
 		| DOUBLE:d     {: RESULT = new RDDL.REAL_CONST_EXPR(d); :}
 		| PLUS EXPR:e  {: RESULT = e; :} %prec UMINUS 
@@ -570,7 +573,8 @@ EXPR ::= PVAR_EXPR:p   {: RESULT = p; :} /* we don't actually know the type yet*
 		| PROD_OVER UNDERSCORE LCURLY TYPED_VAR_LIST:list RCURLY EXPR:e  {: RESULT = new RDDL.AGG_EXPR("prod", list, e); :} %prec PROD_OVER
 		| IF LPAREN EXPR:b RPAREN THEN EXPR:e1 ELSE EXPR:e2         {: RESULT = new RDDL.IF_EXPR(b, e1, e2); :} %prec IF
 		| SWITCH LPAREN TERM:t RPAREN LCURLY CASE_LIST:list RCURLY  {: RESULT = new RDDL.SWITCH_EXPR(t, list); :}
-/* Now for the random variables */
+/* --- RANDOM VARIABLES --- */
+		| BERNOULLI LPAREN EXPR:prob RPAREN {: RESULT = new RDDL.Bernoulli(prob); :}
 		| DIRAC_DELTA LPAREN EXPR:d RPAREN   {: RESULT = new RDDL.DiracDelta(d); :} 
 		| KRON_DELTA LPAREN EXPR:k RPAREN    {: RESULT = new RDDL.KronDelta(k); :}
 		| UNIFORM LPAREN EXPR:l COMMA EXPR:u RPAREN    {: RESULT = new RDDL.Uniform(l,u); :}

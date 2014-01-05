@@ -974,7 +974,7 @@ public int yyline() { return yyline; }
 					case -3:
 						break;
 					case 3:
-						{ System.err.println("Illegal character: "+yytext()); }
+						{ System.err.println("Illegal character: "+yytext()+" at line "+(yyline()+1)); if (yytext().equals("'")) System.err.println("Note that ' comes before a parameter list as in var'(?x,?y)"); System.exit(1); }
 					case -4:
 						break;
 					case 4:

@@ -117,4 +117,4 @@ WHITE_SPACE_CHAR=[\r\n\ \t\b\012]
 {DIGIT}+ { return new Symbol(sym.INTEGER, new Integer(yytext())); }
 {WHITE_SPACE_CHAR}+ { /* ignore white space. */ }
 
-. { System.err.println("Illegal character: "+yytext()); }
+. { System.err.println("Illegal character: "+yytext()+" at line "+(yyline()+1)); if (yytext().equals("'")) System.err.println("Note that ' comes before a parameter list as in var'(?x,?y)"); System.exit(1); }

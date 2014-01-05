@@ -141,10 +141,15 @@ We currently provide the following rddlsim command line utilities:
 		./run rddl.viz.RDDL2Graph files/rddl/examples/dbn_types_interm_po.rddl inst_dbn_interm_po
 		./run rddl.viz.RDDL2Graph files/rddl/examples/game_of_life_stoch.rddl is1_stoch
 
-	RDDL 2.0 (2013) -- A strict superset of RDDL 1.0
+	Examples of RDDL 2.0 (2013) -- A strict superset of RDDL 1.0
+
+		See RDDL2 domain examples in files/rddl2/
+
+		To run some of these examples, use:
 
 		./run rddl.sim.Simulator files/rddl2/multiagent_mars_rover.rddl2 rddl.policy.RandomConcurrentPolicy inst_simple_mars_rover rddl.viz.MarsRoverDisplay 1 1
-		
+		./run rddl.sim.Simulator files/rddl2/lang_extension_examples.rddl2 rddl.policy.RandomConcurrentPolicy inst_lang_extension_examples rddl.viz.GenericScreenDisplay 1 1
+
 
 GraphViz RDDL Visualization
 ===========================

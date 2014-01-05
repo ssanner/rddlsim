@@ -109,16 +109,21 @@ public class State {
 		//_alConstraints = state_action_constraints; 
 		_alActionPreconditions = new ArrayList<BOOL_EXPR>(); 
 		_alActionPreconditions.addAll(action_preconditions);
-		_alActionPreconditions.addAll(state_action_constraints); // deprecated but we still have to support
+		
+		// Deprecated but we still have to support -- put them in action preconditions
+		// since action preconditions are checked at the same point where state-action
+		// constraints were previously checked
+		_alActionPreconditions.addAll(state_action_constraints); 
 
+		// State invariants are new in RDDL2 -- cannot mention actions or next-state variables
+		// (checked in every state upon initially reaching that state)
 		_alStateInvariants = new ArrayList<BOOL_EXPR>(); 
 		_alStateInvariants.addAll(state_invariants);
-		_alStateInvariants.addAll(state_action_constraints);
 		
 		_reward = reward;
 		_nMaxNondefActions = max_nondef_actions;
 		
-		// Map object class name to list (NOTE: all enum and object value lists initialized here)
+		// Map object/enum class name to list (NOTE: all enum and object value lists initialized here)
 		_hmObject2Consts = new HashMap<TYPE_NAME,ArrayList<LCONST>>();
 		if (domain_objects != null)
 			for (OBJECTS_DEF obj_def : domain_objects.values())
@@ -196,6 +201,16 @@ public class State {
 	}
 
 	public void addConstants(TYPE_NAME object_class, ArrayList<LCONST> constants) {
+		
+		// First check that object_class is defined 
+		if (!(_hmTypes.get(object_class) instanceof RDDL.OBJECT_TYPE_DEF) &&
+			!(_hmTypes.get(object_class) instanceof RDDL.ENUM_TYPE_DEF)) {
+			System.err.println("FATAL ERROR: '" + 
+					object_class + "' is not a defined object/enum type; " + 
+					"cannot initialize with " + constants + ".");
+			System.exit(1);
+		}
+		
 		ArrayList<LCONST> new_constants = new ArrayList<LCONST>(constants);
 		ArrayList<LCONST> cur_constants = _hmObject2Consts.get(object_class);
 		if (cur_constants != null)
@@ -662,6 +677,8 @@ public class State {
 			// Get the object list for this index
 			TYPE_NAME type = pvar_def._alParamTypes.get(index);
 			ArrayList<LCONST> objects = _hmObject2Consts.get(type);
+			if (objects == null)
+				throw new EvalException("ERROR: could not find definition of object type '" + type + "'\nwhen instantiating " + pvar_def);
 			for (LCONST obj : objects) {
 				ArrayList<LCONST> new_assign = (ArrayList<LCONST>)cur_assign.clone();
 				new_assign.add(obj);
