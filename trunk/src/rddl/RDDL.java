@@ -1289,9 +1289,13 @@ public class RDDL {
 					throw new EvalException("RDDL: Normal variance '" + var +  
 							"' must be greater 0");
 				// x ~ N(mean,sigma^2) is equivalent to x ~ sigma*N(0,1) + mean
-				return r.nextGaussian(mean, Math.sqrt(var)); 
+				double stddev = Math.sqrt(var);
+				if (stddev == 0d)
+					return mean;
+				else
+					return r.nextGaussian(mean, stddev);
 			} catch (Exception e) {
-				throw new EvalException("RDDL: Normal only applies to real (or castable to real) mean and variance.\n" + e + "\n" + this);
+				throw new EvalException("RDDL: Normal only applies to real (or castable to real) mean and positive variance.\n" + e + "\n" + this);
 			}
 		}
 		
@@ -2109,16 +2113,27 @@ public class RDDL {
 		public final static String DEFAULT = "default".intern();
 
 		public PVAR_EXPR(String s, ArrayList terms) {
-			_pName = new PVAR_NAME(s);
-			_alTerms = (ArrayList<LTERM>)terms;
+			this(s, terms, null);
 		}
 
 		public PVAR_EXPR(String s, ArrayList terms, ArrayList members) {
 			_pName = new PVAR_NAME(s);
-			_alTerms = (ArrayList<LTERM>)terms;
-			_alMembers = new ArrayList<String>();
-			for (Object o : members)
-				_alMembers.add(((String)o).intern());
+			_alTerms = new ArrayList<LTERM>();
+			for (Object o : terms) {
+				if (o instanceof LTERM)
+					_alTerms.add((LTERM)o);
+				else if (o instanceof PVAR_EXPR) 
+					_alTerms.add(new TVAR_EXPR((PVAR_EXPR)o));
+				else {
+					System.err.println(_pName + " argument must be an enum/object type, but " + o + " is not.");
+					System.exit(1);
+				}
+			}
+			if (members != null) {
+				_alMembers = new ArrayList<String>();
+				for (Object o : members)
+					_alMembers.add(((String)o).intern());
+			}
 		}
 		
 		public PVAR_NAME _pName;

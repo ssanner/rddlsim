@@ -63,9 +63,6 @@ public class MarsRoverDisplay extends StateViz {
 		TYPE_NAME picture_point = new TYPE_NAME("picture-point");
 		ArrayList<LCONST> list_picture_points = s._hmObject2Consts.get(picture_point);
 
-		TYPE_NAME int_range = new TYPE_NAME("int-1-4");
-		ArrayList<LCONST> list_int_1_10 = s._hmObject2Consts.get(int_range);
-
 		PVAR_NAME PICT_POS = new PVAR_NAME("PICT_POS");
 		PVAR_NAME PICT_VALUE = new PVAR_NAME("PICT_VALUE");
 		PVAR_NAME PICT_ERROR_ALLOW = new PVAR_NAME("PICT_ERROR_ALLOW");
@@ -73,12 +70,6 @@ public class MarsRoverDisplay extends StateViz {
 		
 		PVAR_NAME SNAP_PICTURE = new PVAR_NAME("snapPicture");
 		PVAR_NAME PICT_REWARD_POSSIBLE = new PVAR_NAME("pictureRewardPossible");
-
-		PVAR_NAME CUR_PICT  = new PVAR_NAME("curPict");
-		PVAR_NAME RAND_INT  = new PVAR_NAME("randInt");
-		PVAR_NAME RAND_MULT = new PVAR_NAME("randMult");
-		PVAR_NAME RAND_DIR  = new PVAR_NAME("randDir");
-		PVAR_NAME RAND_MATRIX = new PVAR_NAME("randMatrix");
 		
 		if (_bd == null) {
 			_bd= new BlockDisplay("Multiagent Mars Rover", "Simulation", NUM_SCREEN_BLOCKS, NUM_SCREEN_BLOCKS);	
@@ -123,9 +114,6 @@ public class MarsRoverDisplay extends StateViz {
 				}
 				_bd.addFillCircle(picture_reward_possible ? Color.RED : Color.BLACK, new_x, new_y, 0.5);
 			}
-				
-			System.out.println("Robot " + robot + " @ " + new_rpos + ", curPict: " + 
-					(OBJECT_VAL)s.getPVariableAssign(CUR_PICT, params1));
 			
 			robot2oldpos.put(robot, new_rpos);
 		}
@@ -146,15 +134,7 @@ public class MarsRoverDisplay extends StateViz {
 			if (_bFirstPaint)
 				_bd.addCircle(col, pict_x, pict_y, perror);
 			
-			System.out.println("Picture point " + pic_point + " @ " + ppos + " +/- " + pval + " [" + pval + "]");
-		}
-			
-		System.out.println("randMatrix = "  + s.getPVariableAssign(RAND_MATRIX, params0));
-		for (LCONST i : list_int_1_10) {
-			params1.set(0, i);
-			System.out.println("randInt[" + i + "] = "  + s.getPVariableAssign(RAND_INT, params1));
-			System.out.println("randMult[" + i + "] = " + s.getPVariableAssign(RAND_MULT, params1));
-			System.out.println("randDir[" + i + "] = "  + s.getPVariableAssign(RAND_DIR, params1));
+			System.out.println("Picture point " + pic_point + " @ " + ppos + " +/- " + perror + " [" + pval + "]");
 		}
 		
 		_bd.repaint();

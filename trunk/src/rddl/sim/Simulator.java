@@ -35,23 +35,22 @@ public class Simulator {
 		// Set up instance, nonfluent, and domain information
 		_i = rddl._tmInstanceNodes.get(instance_name);
 		if (_i == null)
-			throw new Exception("Instance '" + instance_name + 
+			throw new Exception("\nERROR: Instance '" + instance_name + 
 					"' not found, choices are " + rddl._tmInstanceNodes.keySet());
 		_n = null;
-		if (_i._sNonFluents != null)
+		if (_i._sNonFluents != null) {
 			_n = rddl._tmNonFluentNodes.get(_i._sNonFluents);
+			if (_n == null)
+				throw new Exception("\nERROR: Nonfluents '" + _i._sNonFluents + 
+						"' not found, choices are " + rddl._tmNonFluentNodes.keySet());
+		}
 		_d = rddl._tmDomainNodes.get(_i._sDomain);
 		if (_n != null && !_i._sDomain.equals(_n._sDomain))
-			throw new Exception("Domain name of instance and fluents do not match: " + 
+			throw new Exception("\nERROR: Domain name of instance and fluents do not match: " + 
 					_i._sDomain + " vs. " + _n._sDomain);		
 	}
 	
 	public void resetState() throws EvalException {
-		//System.out.println("Resetting state:" +
-		//		"\n  Types:      " + _d._hmTypes + 
-		//		"\n  PVars:      " + _d._hmPVariables + 
-		//		"\n  InitState:  " + _i._alInitState + 
-		//		"\n  NonFluents: " + _n._alNonFluents);
 		_state.init(_d._hmObjects, _n != null ? _n._hmObjects : null, _i._hmObjects,  
 				_d._hmTypes, _d._hmPVariables, _d._hmCPF,
 				_i._alInitState, _n == null ? null : _n._alNonFluents,
@@ -81,22 +80,21 @@ public class Simulator {
 		// Run problem for specified horizon
 		for (int t = 0; t < _i._nHorizon; t++) {
 
-			// MOVED AFTER ACTION SELECTION
-			// v.display(_state, t);
+			// Check state invariants to verify legal state -- can only reference current 
+			// state / derived fluents
+			_state.checkStateInvariants();
 
 			// Get action from policy 
 			// (if POMDP and first state, no observations available yet so a null is passed)
 			State state_info = ((_state._alObservNames.size() > 0) && t == 0) ? null : _state;
 			ArrayList<PVAR_INST_DEF> action_list = p.getActions(state_info);
 			
-			// Check action preconditions / state-action constraints (latter deprecated) 
+			// Check action preconditions / state-action constraints (latter now deprecated)
+			// (these constraints can mention actions and current state / derived fluents)
 			_state.checkStateActionConstraints(action_list);
 			
 			// Compute next state (and all intermediate / observation variables)
 			_state.computeNextState(action_list, _rand);
-
-			// Check state invariants / state-action constraints (latter deprecated) 
-			_state.checkStateInvariants();
 
 			// Display state/observations that the agent sees
 			v.display(_state, t);
