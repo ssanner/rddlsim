@@ -103,7 +103,7 @@ terminal DOMAIN, INSTANCE, HORIZON, DISCOUNT, OBJECTS, INIT_STATE,
 		 EXISTS, AND, OR, NOT, KRON_DELTA, DIRAC_DELTA, UNIFORM, BERNOULLI, DISCRETE,
 		 NORMAL, POISSON, EXPONENTIAL, PLUS, TIMES, DIV, MINUS, IF, THEN, 
 		 ELSE, SWITCH, DOT, OTHERWISE, WEIBULL, GAMMA, MULTINOMIAL, DIRICHLET;
-terminal SEMI, LPAREN, RPAREN, COMMA, LBRACK, COLON,
+terminal SEMI, LPAREN, RPAREN, COMMA, LBRACK, COLON, QUESTION, 
          RBRACK, LESS, LESSEQ, GREATER, GREATEREQ, IMPLY, EQUIV, 
          ASSIGN_EQUAL, COMP_EQUAL, TRUE, FALSE, NEQ, UMINUS; 
 terminal Integer INTEGER;
@@ -121,6 +121,7 @@ non terminal ArrayList TYPE_SECTION;
 non terminal ArrayList ENUM_LIST;
 non terminal ArrayList TYPE_LIST;
 non terminal RDDL.STRUCT_VAL STRUCT_RANGE_CONST;
+non terminal RDDL.STRUCT_VAL STRUCT_RANGE_CONST2;
 non terminal ArrayList PARAM_LIST;
 non terminal ArrayList PARAM_LIST2;
 non terminal ArrayList STRUCT_MEMBER_LIST;
@@ -163,6 +164,7 @@ non terminal ArrayList LCONST_LIST;
 non terminal RDDL.LCONST LCONST;
 non terminal ArrayList TERM_LIST;
 non terminal RDDL.LTERM TERM;
+non terminal RDDL.LTERM PTERM;
 non terminal ArrayList TYPED_VAR_LIST;
 non terminal RDDL.LTYPED_VAR TYPED_VAR;
 non terminal ArrayList LCONST_CASE_LIST;
@@ -240,13 +242,14 @@ TYPE_LIST ::= TYPE_DEF:def            {: RESULT = new ArrayList(Arrays.asList(ne
 
 TYPE_DEF ::= IDENT:i COLON OBJECT SEMI {: RESULT = new RDDL.OBJECT_TYPE_DEF(i); :}
 		| IDENT:i COLON LCURLY ENUM_LIST:el RCURLY SEMI {: RESULT = new RDDL.ENUM_TYPE_DEF(i,el); :} 
-		| IDENT:i COLON INT LBRACK INT_TYPE:min COMMA INT_TYPE:max RBRACK SEMI {: RESULT = new RDDL.ENUM_TYPE_DEF(i,min,max); :} 
-		| IDENT:i COLON LESS STRUCT_MEMBER_LIST:members GREATER SEMI {: RESULT = new RDDL.STRUCT_TYPE_DEF(i,members); :} 
+		| IDENT:i COLON LCURLY ENUM_VAL:min DOT DOT ENUM_VAL:max RCURLY SEMI {: RESULT = new RDDL.ENUM_TYPE_DEF(i,new RDDL.ENUM_VAL(min),new RDDL.ENUM_VAL(max)); :} 
+		| IDENT:i COLON LBRACK IDENT:type RBRACK LESS QUESTION COLON TYPE_SPEC:t GREATER SEMI {: RESULT = new RDDL.STRUCT_TYPE_DEF(type,i,t); :} /* enum or object */
+		| IDENT:i COLON LBRACK IDENT:type RBRACK LESS STRUCT_MEMBER_LIST:members GREATER SEMI {: RESULT = new RDDL.STRUCT_TYPE_DEF(type,i,members); :} /* enum only */ 
 		;
 
 /* RDDL2: The format for action arguments */
-STRUCT_MEMBER_LIST ::= TYPE_SPEC:t IDENT:name {: RESULT = new ArrayList(Arrays.asList(new Object[] { new RDDL.STRUCT_TYPE_DEF_MEMBER(t, name)})); :} 
-		| TYPE_SPEC:t IDENT:name COMMA STRUCT_MEMBER_LIST:list {: list.add(0, new RDDL.STRUCT_TYPE_DEF_MEMBER(t, name)); RESULT = list; :} 
+STRUCT_MEMBER_LIST ::= LCONST:name COLON TYPE_SPEC:t {: RESULT = new ArrayList(Arrays.asList(new Object[] { new RDDL.STRUCT_TYPE_DEF_MEMBER(new RDDL.TYPE_NAME(t), name)})); :} 
+		| LCONST:name COLON TYPE_SPEC:t COMMA STRUCT_MEMBER_LIST:list {: list.add(0, new RDDL.STRUCT_TYPE_DEF_MEMBER(new RDDL.TYPE_NAME(t), name)); RESULT = list; :} 
 		;
 
 STRING_LIST ::= IDENT:i            {: RESULT = new ArrayList(Arrays.asList(new Object[] {i})); :} 
@@ -257,10 +260,6 @@ ENUM_LIST ::= ENUM_VAL:i            {: RESULT = new ArrayList(Arrays.asList(new 
 		| ENUM_VAL:i COMMA ENUM_LIST:list {: list.add(0,new RDDL.ENUM_VAL(i)); RESULT = list; :} 
 		;
 
-STRUCT_RANGE_CONST ::= IDENT:label COLON RANGE_CONST:a                    {: RESULT = new RDDL.STRUCT_VAL(label, a); :} 
-		| IDENT:label COLON RANGE_CONST:a COMMA STRUCT_RANGE_CONST:s      {: s.addMemberAsFirst(label, a); RESULT = s; :} 
-		;
-
 RANGE_CONST ::= BOOL_TYPE:t {: RESULT = t; :}
 		| DOUBLE_TYPE:t  {: RESULT = t; :}
 		| INT_TYPE:t     {: RESULT = t; :}
@@ -268,6 +267,16 @@ RANGE_CONST ::= BOOL_TYPE:t {: RESULT = t; :}
 		| DOLLAR_SIGN IDENT:i {: RESULT = new RDDL.OBJECT_VAL(i); :}
 		| ENUM_VAL:e     {: RESULT = new RDDL.ENUM_VAL(e); :}
 		| LESS STRUCT_RANGE_CONST:s GREATER {: RESULT = s; :}
+		| LPAREN LESS STRUCT_RANGE_CONST:s GREATER RPAREN {: RESULT = s; :}
+		| LBRACK LESS STRUCT_RANGE_CONST:s GREATER RBRACK {: RESULT = s; :}
+		;
+
+STRUCT_RANGE_CONST ::= QUESTION COLON RANGE_CONST:a {: RESULT = new RDDL.STRUCT_VAL(a); :} 
+		| STRUCT_RANGE_CONST2:v                     {: RESULT = v; :}
+		;     
+
+STRUCT_RANGE_CONST2 ::= LCONST:label COLON RANGE_CONST:a                    {: RESULT = new RDDL.STRUCT_VAL(label, a); :} 
+		| LCONST:label COLON RANGE_CONST:a COMMA STRUCT_RANGE_CONST2:s      {: s.addMemberAsFirst(label, a); RESULT = s; :} 
 		;
 
 BOOL_TYPE ::= TRUE     {: RESULT = new Boolean(true); :}
@@ -498,19 +507,27 @@ PVAR_EXPR ::= IDENT:i LPAREN TERM_LIST:l RPAREN {: RESULT = new RDDL.PVAR_EXPR(i
 		| IDENT:i LPAREN TERM_LIST:l RPAREN MEMBER_LIST:list {: RESULT = new RDDL.PVAR_EXPR(i, l, list); :}
 		| IDENT:i                  {: RESULT = new RDDL.PVAR_EXPR(i, new ArrayList()); :}
 		| IDENT:i MEMBER_LIST:list {: RESULT = new RDDL.PVAR_EXPR(i, new ArrayList(), list); :}
-		| IDENT:i DOT DEFAULT      {: RESULT = new RDDL.PVAR_EXPR(i, new ArrayList(), new ArrayList(Arrays.asList(new Object[] {"default"}))); :}
+		| IDENT:i DOT DEFAULT      {: RESULT = new RDDL.PVAR_EXPR(i, new ArrayList(), new ArrayList(Arrays.asList(new Object[] {RDDL.PVAR_EXPR.DEFAULT}))); :}
 		;
 
-MEMBER_LIST ::= DOT IDENT:member                  {: RESULT = new ArrayList(Arrays.asList(new Object[] {member})); :} 
-		| DOT IDENT:member MEMBER_LIST:list {: list.add(0,member); RESULT = list; :} 
+/* Nested pvar_expr in . indices can have attachment ambiguity... must enclose in parens or brackets */
+PTERM ::= VAR:v   {: RESULT = new RDDL.LVAR(v); :}
+		| LPAREN PVAR_EXPR:p RPAREN {: RESULT = new RDDL.TVAR_EXPR(p); :}
+		| LBRACK PVAR_EXPR:p RBRACK {: RESULT = new RDDL.TVAR_EXPR(p); :}
+		| ENUM_VAL:e   {: RESULT = new RDDL.ENUM_VAL(e); :}
+		| DOLLAR_SIGN IDENT:i      {: RESULT = new RDDL.OBJECT_VAL(i); :} /* DOLLAR_SIGN required here to disambiguate from parameterless PVAR_EXPR */
+		;
+
+MEMBER_LIST ::= DOT PTERM:member    {: RESULT = new ArrayList(Arrays.asList(new Object[] {member})); :} 
+		| DOT PTERM:member MEMBER_LIST:list {: list.add(0,member); RESULT = list; :} 
 		;
 		
 TERM_LIST ::= TERM:t            {: RESULT = new ArrayList(Arrays.asList(new Object[] {t})); :} 
 		| TERM:t COMMA TERM_LIST:list {: list.add(0,t); RESULT = list; :} 
 		;
 
-EXPR_LIST ::= IDENT:label COLON EXPR:e GREATER            {: RESULT = new RDDL.STRUCT_EXPR(label, e); :} 
-		| IDENT:label COLON EXPR:e COMMA EXPR_LIST:s      {: s.addMemberAsFirst(label, e); RESULT = s; :} 
+EXPR_LIST ::= LCONST:label COLON EXPR:e GREATER            {: RESULT = new RDDL.STRUCT_EXPR(label, e); :} 
+		| LCONST:label COLON EXPR:e COMMA EXPR_LIST:s      {: s.addMemberAsFirst(label, e); RESULT = s; :} 
 		;
 
 TYPED_VAR_LIST ::= TYPED_VAR:t {: RESULT = new ArrayList(Arrays.asList(new Object[] {t})); :}
