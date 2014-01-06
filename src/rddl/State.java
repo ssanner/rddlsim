@@ -24,6 +24,7 @@ import rddl.RDDL.ENUM_TYPE_DEF;
 import rddl.RDDL.ENUM_VAL;
 import rddl.RDDL.EXPR;
 import rddl.RDDL.LCONST;
+import rddl.RDDL.LCONST_TYPE_DEF;
 import rddl.RDDL.LTYPED_VAR;
 import rddl.RDDL.LVAR;
 import rddl.RDDL.OBJECTS_DEF;
@@ -32,8 +33,11 @@ import rddl.RDDL.PVARIABLE_DEF;
 import rddl.RDDL.PVARIABLE_INTERM_DEF;
 import rddl.RDDL.PVARIABLE_OBS_DEF;
 import rddl.RDDL.PVARIABLE_STATE_DEF;
+import rddl.RDDL.PVARIABLE_WITH_DEFAULT_DEF;
 import rddl.RDDL.PVAR_INST_DEF;
 import rddl.RDDL.PVAR_NAME;
+import rddl.RDDL.STRUCT_TYPE_DEF;
+import rddl.RDDL.STRUCT_VAL;
 import rddl.RDDL.TYPE_DEF;
 import rddl.RDDL.TYPE_NAME;
 import util.Pair;
@@ -143,6 +147,20 @@ public class State {
 				addConstants(etd._sName, values);
 			}
 		}
+		
+		// TODO: Expand enum and object types according to the constants
+		for (Map.Entry<TYPE_NAME,TYPE_DEF> e : typedefs.entrySet()) {
+			if (e.getValue() instanceof STRUCT_TYPE_DEF && ((STRUCT_TYPE_DEF)e.getValue())._typeGeneric != null) {
+				STRUCT_TYPE_DEF ldef = (STRUCT_TYPE_DEF)e.getValue();
+				ArrayList<LCONST> constants = _hmObject2Consts.get(ldef._sLabelEnumOrObjectType);
+				if (constants == null) {
+					System.err.println("Could not instantiate object tuple\n" + ldef + 
+							"\nwith constants from '" + ldef._sLabelEnumOrObjectType+ "'");
+					System.exit(1);
+				}
+				ldef.initIndefiniteTypes(constants);
+			}
+		}
 
 		// Initialize assignments (missing means default)
 		_state      = new HashMap<PVAR_NAME,HashMap<ArrayList<LCONST>,Object>>();
@@ -151,8 +169,8 @@ public class State {
 		_observ     = new HashMap<PVAR_NAME,HashMap<ArrayList<LCONST>,Object>>();
 		_actions    = new HashMap<PVAR_NAME,HashMap<ArrayList<LCONST>,Object>>();
 		_nonfluents = new HashMap<PVAR_NAME,HashMap<ArrayList<LCONST>,Object>>();
-
-		// Initialize variable lists
+		
+		// Initialize variable lists and vector defaults (if needed)
 		_alStateNames.clear();
 		_alNonFluentNames.clear();
 		_alActionNames.clear();
@@ -161,6 +179,26 @@ public class State {
 		for (Map.Entry<PVAR_NAME,PVARIABLE_DEF> e : _hmPVariables.entrySet()) {
 			PVAR_NAME pname   = e.getKey();
 			PVARIABLE_DEF def = e.getValue();
+						
+			// Expand the default value definition if it is a vector containing <? : type>
+			if (def instanceof PVARIABLE_WITH_DEFAULT_DEF) {
+				PVARIABLE_WITH_DEFAULT_DEF ddef = (PVARIABLE_WITH_DEFAULT_DEF)def;
+						
+				// If the default value is a vector type, we should instantiate it
+				// (in case it contains a <? : val> expansion type)
+				if (ddef._oDefValue instanceof STRUCT_VAL) {
+					String msg_def_value = def + " with " + ddef._oDefValue.toString(); // Save in case of error since we overwrite
+					try {
+						((STRUCT_VAL)ddef._oDefValue).instantiate(ddef._typeRange, typedefs, _hmObject2Consts);
+					} catch (Exception e2) {
+						System.err.println("ERROR: Could not instantiate object tuple: " + msg_def_value +
+								"\n... check definition and that all subtypes and object/enum lists are defined.\n" + e2);
+						System.exit(1);
+					}
+				}
+			}
+			
+			// Book-keeping for all PVARIABLEs
 			if (def instanceof PVARIABLE_STATE_DEF && !((PVARIABLE_STATE_DEF)def)._bNonFluent) {
 				_alStateNames.add(pname);
 				_state.put(pname, new HashMap<ArrayList<LCONST>,Object>());

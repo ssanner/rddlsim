@@ -225,8 +225,9 @@ public class RDDL {
 		public String toString() {
 			StringBuilder sb = new StringBuilder();
 			sb.append("domain " + _sDomainName + " {\n");
-			sb.append("  requirements = {\n"
-					+ (_bCPFDeterministic ? "    cpf-deterministic,\n" : "") 
+			sb.append("  requirements = {\n");
+			int len = sb.length();
+			sb.append((_bCPFDeterministic ? "    cpf-deterministic,\n" : "") 
 					+ (_bRewardDeterministic ? "    reward-deterministic,\n" : "") 
 					+ (_bConcurrent ?  "    concurrent,\n" : "") 
 					+ (_bContinuous ?  "    continuous,\n" : "")
@@ -235,7 +236,8 @@ public class RDDL {
 					+ (_bIntermediateNodes ? "    intermediate-nodes,\n" : "")
 					+ (_bStateConstraints ?  "    constrained-state,\n" : "")
 					+ (_bPartiallyObserved ? "    partially-observed,\n" : ""));
-			sb.delete(sb.length() - 2, sb.length() - 1); // Remove last ,
+			if (sb.length() > len) // i.e, we've added some requirements 
+				sb.delete(sb.length() - 2, sb.length() - 1); // Remove last ,
 			sb.append("  };\n");
 			
 			sb.append("  types {\n");
@@ -346,12 +348,20 @@ public class RDDL {
 				}
 				sb.append("  };\n");
 			}
-			// TODO: will not handle non-boolean fluents
-			sb.append("  init-state {\n");
-			for (PVAR_INST_DEF isd : _alInitState) {
-				sb.append("    " + isd + "\n");
+			
+			if (_alInitState != null && _alInitState.size() > 0) {
+				sb.append("  init-state {\n");
+				for (PVAR_INST_DEF isd : _alInitState) {
+					// TODO: will not handle non-boolean fluents
+					if (!(isd._oValue instanceof Boolean)) {
+						System.out.println("FIXME: current non-boolean values not exported in instance");
+						new Exception().printStackTrace();
+						System.exit(1);
+					}
+					sb.append("    " + isd + "\n");
+				}
+				sb.append("  };\n");
 			}
-			sb.append("  };\n");
 			sb.append("  max-nondef-actions = "  + (_nNonDefActions == Integer.MAX_VALUE ? "pos-inf" : _nNonDefActions) + ";\n");
 			sb.append("  horizon = "  + _nHorizon + ";\n");
 			sb.append("  discount = " + _dDiscount + ";\n");
@@ -426,10 +436,13 @@ public class RDDL {
 			_alPossibleValues = values;
 		}
 		
-		public ENUM_TYPE_DEF(String name, int min, int max) throws Exception {
+		public ENUM_TYPE_DEF(String name, ENUM_VAL min, ENUM_VAL max) throws Exception {
 			super(name, "enum");
+			if (min._intVal == null || max._intVal == null || min._intVal > max._intVal)
+				throw new Exception("Could not instantiate integer range typedef for '" + name + 
+						"' for range min '" + min + "' and max '" + max + "'");
 			_alPossibleValues = new ArrayList();
-			for (int i = min; i <= max; i++)
+			for (int i = min._intVal; i <= max._intVal; i++)
 				_alPossibleValues.add(new ENUM_VAL("@" + i));
 		}
 		
@@ -449,13 +462,13 @@ public class RDDL {
 
 	public static class STRUCT_TYPE_DEF_MEMBER {
 		
-		public STRUCT_TYPE_DEF_MEMBER(String typename, String argname) {
-			_type = new TYPE_NAME(typename);
-			_sName = argname.intern();
+		public STRUCT_TYPE_DEF_MEMBER(TYPE_NAME typename, LCONST argname) {
+			_type = typename;
+			_sName = argname;
 		}
 		
 		public TYPE_NAME _type;
-		public String _sName;
+		public LCONST    _sName;
 
 		public int hashCode() {
 			return _type.hashCode() + _sName.hashCode();
@@ -464,44 +477,70 @@ public class RDDL {
 		public boolean equals(Object o) {
 			if (o instanceof STRUCT_TYPE_DEF_MEMBER) {
 				STRUCT_TYPE_DEF_MEMBER s = (STRUCT_TYPE_DEF_MEMBER)o;
-				return _sName == s._sName && _type.equals(s._type);
+				return _sName.equals(s._sName) && _type.equals(s._type);
 			} else
 				return false;
 		}
 
 		public String toString() {
-			return _type + " " + _sName;
+			return _sName + " : " + _type;
 		}
 	}
 
 	public static class STRUCT_TYPE_DEF extends TYPE_DEF {
 		
-		public STRUCT_TYPE_DEF(String name, ArrayList<STRUCT_TYPE_DEF_MEMBER> members) throws Exception {
+		public STRUCT_TYPE_DEF(String label_range, String name, ArrayList<STRUCT_TYPE_DEF_MEMBER> members) throws Exception {
 			super(name, "enum");
+			_sLabelEnumOrObjectType = new TYPE_NAME(label_range);
 			_alMembers = members;
-			_hmMemberIndex = new HashMap<String,Integer>();
+			_typeGeneric = null;
+			initMemberIndices();
+		}
+
+		public STRUCT_TYPE_DEF(String label_range, String name, String type_name) throws Exception {
+			super(name, "enum");
+			_sLabelEnumOrObjectType = new TYPE_NAME(label_range);
+			_alMembers = null;
+			_typeGeneric = new TYPE_NAME(type_name);
+			// cannot initialize members until we know the object enumeration
+		}
+
+		public TYPE_NAME _sLabelEnumOrObjectType; // Struct member labels must be drawn from an enum or object type  
+		public TYPE_NAME _typeGeneric = null;
+		public ArrayList<STRUCT_TYPE_DEF_MEMBER> _alMembers;
+		public HashMap<LCONST,Integer> _hmMemberIndex;
+		
+		public void initIndefiniteTypes(ArrayList<LCONST> labels) {
+			_alMembers = new ArrayList<STRUCT_TYPE_DEF_MEMBER>();
+			for (LCONST label : labels)
+				_alMembers.add(new STRUCT_TYPE_DEF_MEMBER(_typeGeneric, label));
+			initMemberIndices();
+		}
+		
+		public void initMemberIndices() {
+			_hmMemberIndex = new HashMap<LCONST,Integer>();
 			for (int i = 0; i < _alMembers.size(); i++) {
 				STRUCT_TYPE_DEF_MEMBER m = (STRUCT_TYPE_DEF_MEMBER)_alMembers.get(i);
 				_hmMemberIndex.put(m._sName, i);
 			}
 		}
-
-		public ArrayList<STRUCT_TYPE_DEF_MEMBER> _alMembers;
-		public HashMap<String,Integer> _hmMemberIndex;
 		
 		public String toString() {
 			StringBuilder sb = new StringBuilder();
-			sb.append(_sName + " : <");
-			boolean first = true;
-			for (STRUCT_TYPE_DEF_MEMBER s : _alMembers) {
-				sb.append((first ? "" : ", ") + s);
-				first = false;
-			}
+			sb.append(_sName + " : [" + _sLabelEnumOrObjectType + "]<");
+			if (_alMembers != null) {
+				boolean first = true;
+				for (STRUCT_TYPE_DEF_MEMBER s : _alMembers) {
+					sb.append((first ? "" : ", ") + s);
+					first = false;
+				}
+			} else
+				sb.append("? : " + _typeGeneric);
 			sb.append(">;");
 			return sb.toString();
 		}
 
-		public int getIndex(String member) {
+		public int getIndex(LCONST member) {
 			Integer index = _hmMemberIndex.get(member);
 			return (index == null) ? -1 : index.intValue();
 		}
@@ -509,12 +548,12 @@ public class RDDL {
 
 	public static class STRUCT_VAL_MEMBER {
 		
-		public STRUCT_VAL_MEMBER(String label, Object val) {
-			_sLabel = label.intern();
+		public STRUCT_VAL_MEMBER(LCONST label, Object val) {
+			_sLabel = label;
 			_oVal = val;
 		}
 		
-		public String _sLabel;
+		public LCONST _sLabel;
 		public Object _oVal;
 		
 		public int hashCode() {
@@ -524,7 +563,7 @@ public class RDDL {
 		public boolean equals(Object o) {
 			if (o instanceof STRUCT_VAL_MEMBER) {
 				STRUCT_VAL_MEMBER s = (STRUCT_VAL_MEMBER)o;
-				return _sLabel == s._sLabel && _oVal.equals(s._oVal);
+				return _sLabel.equals(s._sLabel) && _oVal.equals(s._oVal);
 			} else
 				return false;
 		}
@@ -544,19 +583,54 @@ public class RDDL {
 			_alMembers = members;
 		}
 
-		public STRUCT_VAL(String label, Object o) {
+		public STRUCT_VAL(Object o) {
+			_valueGeneric = o;
+			_alMembers = null;
+		}
+
+		public STRUCT_VAL(LCONST label, Object o) {
+			_valueGeneric = null;
 			_alMembers = new ArrayList<STRUCT_VAL_MEMBER>();
 			_alMembers.add(new STRUCT_VAL_MEMBER(label, o));
 		}
 
 		public ArrayList<STRUCT_VAL_MEMBER> _alMembers;
+		public Object _valueGeneric = null;
 		
-		public void addMember(String label, Object o) {
+		public void addMember(LCONST label, Object o) {
 			_alMembers.add(new STRUCT_VAL_MEMBER(label, o));
 		}
 		
-		public void addMemberAsFirst(String label, Object o) {
+		public void addMemberAsFirst(LCONST label, Object o) {
 			_alMembers.add(0, new STRUCT_VAL_MEMBER(label, o));
+		}
+		
+		// If initialization was < ? : 0 > then instantiate
+		public void instantiate(TYPE_NAME range_type, HashMap<TYPE_NAME,TYPE_DEF> type2def, HashMap<TYPE_NAME,ArrayList<LCONST>> type2lconsts) throws Exception {
+			STRUCT_TYPE_DEF range_def = (STRUCT_TYPE_DEF)type2def.get(range_type);
+			
+			// First instantiate this level (if needed) 
+			if (_valueGeneric != null) {
+				_alMembers = new ArrayList<STRUCT_VAL_MEMBER>();
+				ArrayList<LCONST> constants = type2lconsts.get(range_def._sLabelEnumOrObjectType);
+				if (constants == null)
+					throw new Exception("Could not find enum/object list for '" + range_def._sLabelEnumOrObjectType + "'");
+				for (LCONST label : constants)
+					_alMembers.add(new STRUCT_VAL_MEMBER(label, _valueGeneric));
+			}
+			
+			// Regardless of whether above was expanded, recursively instantiate any subvectors
+			for (int i = 0; i < _alMembers.size(); i++) {
+				STRUCT_VAL_MEMBER s = (STRUCT_VAL_MEMBER)_alMembers.get(i);
+				if (s._oVal instanceof STRUCT_VAL) {
+					
+					// Is this a generic type or a labeled type?
+					if (_valueGeneric == null) // generic
+						((STRUCT_VAL)s._oVal).instantiate(range_def._typeGeneric, type2def, type2lconsts);
+					else // not generic
+						((STRUCT_VAL)s._oVal).instantiate(range_def._alMembers.get(i)._type, type2def, type2lconsts);
+				}
+			}
 		}
 		
 		public int hashCode() {
@@ -580,12 +654,17 @@ public class RDDL {
 		public String toString() {
 			StringBuilder sb = new StringBuilder();
 			sb.append("< ");
-			boolean first = true;
-			for (STRUCT_VAL_MEMBER s : _alMembers) {
-				sb.append((first ? "" : ", ") + s);
-				first = false;
-			}
+			//sb.append("(< ");
+			if (_alMembers != null) {
+				boolean first = true;
+				for (STRUCT_VAL_MEMBER s : _alMembers) {
+					sb.append((first ? "" : ", ") + s);
+					first = false;
+				}
+			} else
+				sb.append("? : " + _valueGeneric);
 			sb.append(" >");
+			//sb.append(" >)");
 			return sb.toString();
 		}
 	}
@@ -625,7 +704,14 @@ public class RDDL {
 		public ArrayList<TYPE_NAME> _alParamTypes;		
 	}
 	
-	public static class PVARIABLE_STATE_DEF extends PVARIABLE_DEF {
+	public abstract static class PVARIABLE_WITH_DEFAULT_DEF extends PVARIABLE_DEF {
+		public PVARIABLE_WITH_DEFAULT_DEF(String name, String range, ArrayList param_types) {
+			super(name, range, param_types);
+		}
+		public Object  _oDefValue  = null;
+	}
+	
+	public static class PVARIABLE_STATE_DEF extends PVARIABLE_WITH_DEFAULT_DEF {
 		
 		public PVARIABLE_STATE_DEF(String name, boolean non_fluent, 
 				String range, ArrayList param_types, Object def_value) {
@@ -635,7 +721,6 @@ public class RDDL {
 		}
 		
 		public boolean _bNonFluent = false;
-		public Object  _oDefValue  = null;
 		
 		public String toString() {
 			StringBuilder sb = new StringBuilder();
@@ -710,7 +795,7 @@ public class RDDL {
 
 	}
 
-	public static class PVARIABLE_ACTION_DEF extends PVARIABLE_DEF {
+	public static class PVARIABLE_ACTION_DEF extends PVARIABLE_WITH_DEFAULT_DEF {
 		
 		public PVARIABLE_ACTION_DEF(String name, String range, 
 				ArrayList param_types, Object def_value) {
@@ -719,8 +804,6 @@ public class RDDL {
 			
 			// TODO: If this._sRange is a struct, validator should check that default arity matches
 		}
-
-		public Object _oDefValue;
 
 		public String toString() {
 			StringBuilder sb = new StringBuilder();
@@ -1343,7 +1426,7 @@ public class RDDL {
 			
 			int index = 0;
 			for (LCONST label : etd._alPossibleValues)
-				ret.addMember(label.toString(), sample_vec[index++]);
+				ret.addMember(label, sample_vec[index++]);
 						
 			return ret;
 		}
@@ -1362,7 +1445,7 @@ public class RDDL {
 			if (USE_PREFIX)
 				sb.append("(Dirichlet " + _sTypeName + " " + _exprAlpha + " )");
 			else
-				sb.append("Multinomial(" + _sTypeName + ", " + _exprAlpha + ")");
+				sb.append("Dirichlet(" + _sTypeName + ", " + _exprAlpha + ")");
 			return sb.toString();
 		}
 	}
@@ -1426,7 +1509,7 @@ public class RDDL {
 			
 			int index = 0;
 			for (LCONST label : etd._alPossibleValues) {
-				ret.addMember(label.toString(), new Integer(0));
+				ret.addMember(label, new Integer(0));
 				label2index.put(label, index++);
 			}
 			
@@ -1435,7 +1518,7 @@ public class RDDL {
 				LCONST sample_label = (LCONST)_distDiscrete.sample(subs, s, r);
 				int sample_index = label2index.get(sample_label);
 				STRUCT_VAL_MEMBER member = ret._alMembers.get(sample_index);
-				if (!member._sLabel.equals(sample_label.toString())) 
+				if (!member._sLabel.equals(sample_label)) 
 					throw new EvalException("Multinomial: internal error... incorrectly mapped label to index in STRUCT_VAL");
 				int cur_val = ((Integer)member._oVal).intValue();
 				member._oVal = new Integer(cur_val + 1);
@@ -1579,7 +1662,10 @@ public class RDDL {
 		public EXPR _exprMeanReal;
 		
 		public String toString() {
-			return "(Exponential " + _exprMeanReal + ")";
+			if (USE_PREFIX)
+				return "(Exponential " + _exprMeanReal + ")";
+			else
+				return "Exponential(" + _exprMeanReal + ")";
 		}
 		
 		public Object sample(HashMap<LVAR,LCONST> subs, State s, RandomDataGenerator r) throws EvalException {
@@ -1799,12 +1885,12 @@ public class RDDL {
 	
 	public static class STRUCT_EXPR_MEMBER {
 		
-		public STRUCT_EXPR_MEMBER(String label, EXPR expr) {
-			_sLabel = label.intern();
+		public STRUCT_EXPR_MEMBER(LCONST label, EXPR expr) {
+			_sLabel = label;
 			_expr   = expr;
 		}
 		
-		public String _sLabel;
+		public LCONST _sLabel;
 		public EXPR   _expr;
 		
 		public int hashCode() {
@@ -1814,7 +1900,7 @@ public class RDDL {
 		public boolean equals(Object o) {
 			if (o instanceof STRUCT_EXPR_MEMBER) {
 				STRUCT_EXPR_MEMBER s = (STRUCT_EXPR_MEMBER)o;
-				return _sLabel == s._sLabel && _expr.equals(s._expr);
+				return _sLabel.equals(s._sLabel) && _expr.equals(s._expr);
 			} else
 				return false;
 		}
@@ -1836,7 +1922,7 @@ public class RDDL {
 			_alSubExpr = (ArrayList<STRUCT_EXPR_MEMBER>)sub_expr;
 		}
 
-		public STRUCT_EXPR(String label, EXPR expr) {
+		public STRUCT_EXPR(LCONST label, EXPR expr) {
 			_sType     = STRUCT;
 			_alSubExpr = new ArrayList<STRUCT_EXPR_MEMBER>();
 			_alSubExpr.add(new STRUCT_EXPR_MEMBER(label, expr));
@@ -1844,16 +1930,16 @@ public class RDDL {
 
 		public ArrayList<STRUCT_EXPR_MEMBER> _alSubExpr;
 
-		public void addMember(String label, EXPR expr) {
+		public void addMember(LCONST label, EXPR expr) {
 			_alSubExpr.add(new STRUCT_EXPR_MEMBER(label, expr));
 		}
 
-		public void addMemberAsFirst(String label, EXPR expr) {
+		public void addMemberAsFirst(LCONST label, EXPR expr) {
 			_alSubExpr.add(0, new STRUCT_EXPR_MEMBER(label, expr));
 		}
 		
 		public String toString() {
-			StringBuilder sb = new StringBuilder("< ");
+			StringBuilder sb = new StringBuilder("(< ");
 			boolean first = true;
 			for (STRUCT_EXPR_MEMBER m : _alSubExpr) {
 				if (!first)
@@ -1861,7 +1947,7 @@ public class RDDL {
 				first = false;
 				sb.append("\n      " + m.toString());
 			}
-			sb.append("\n      >");
+			sb.append("\n      >)");
 			return sb.toString();
 		}
 		
@@ -2110,7 +2196,7 @@ public class RDDL {
 	// under BOOL_EXPR which is a subclass of EXPR.
 	public static class PVAR_EXPR extends BOOL_EXPR {
 
-		public final static String DEFAULT = "default".intern();
+		public final static LCONST DEFAULT = new ENUM_VAL("default");
 
 		public PVAR_EXPR(String s, ArrayList terms) {
 			this(s, terms, null);
@@ -2130,16 +2216,17 @@ public class RDDL {
 				}
 			}
 			if (members != null) {
-				_alMembers = new ArrayList<String>();
+				_alMembers = new ArrayList<LTERM>();
 				for (Object o : members)
-					_alMembers.add(((String)o).intern());
+					_alMembers.add((LTERM)o);
 			}
 		}
 		
 		public PVAR_NAME _pName;
 		public ArrayList<LTERM>  _alTerms  = null;
 		public ArrayList<LCONST> _subTerms = new ArrayList<LCONST>(); // Used for evaluation
-		public ArrayList<String> _alMembers = null;
+		public ArrayList<LTERM>  _alMembers = null;
+		public ArrayList<LCONST> _subMembers = new ArrayList<LCONST>(); // Used for evaluation
 		
 		public String toString() {
 			StringBuilder sb = new StringBuilder();
@@ -2161,43 +2248,29 @@ public class RDDL {
 			} else if (USE_PREFIX) // Prefix always parenthesized
 				sb.append(")");		
 			if (_alMembers != null)
-				for (String member : _alMembers)
-					sb.append("." + member);
+				for (LTERM member : _alMembers) {
+					if (member instanceof TVAR_EXPR)
+						sb.append(".[" + member + "]");
+					else
+						sb.append("." + member);
+				}
 			return sb.toString();
 		}
 		
 		public Object sample(HashMap<LVAR,LCONST> subs, State s, RandomDataGenerator r) throws EvalException {
 			
 			// Special case for using a pvariable name with ".default"
-			if (_alMembers != null && (_alMembers.size() == 1) && (_alMembers.get(0) == DEFAULT)) {
+			if (_alMembers != null && (_alMembers.size() == 1) && (_alMembers.get(0).equals(DEFAULT))) {
 				PVARIABLE_DEF pvar_def = s._hmPVariables.get(_pName._pvarUnprimed /*unprimed version to look up range*/);
-				if (pvar_def instanceof PVARIABLE_STATE_DEF) {
-					return ((PVARIABLE_STATE_DEF)pvar_def)._oDefValue;
-				} else if (pvar_def instanceof PVARIABLE_ACTION_DEF) {
-					return ((PVARIABLE_ACTION_DEF)pvar_def)._oDefValue;
+				if (pvar_def instanceof PVARIABLE_WITH_DEFAULT_DEF) {
+					return ((PVARIABLE_WITH_DEFAULT_DEF)pvar_def)._oDefValue;
 				} else {
 					throw new EvalException("No '.default' value associated with " + _pName);
 				}
 			}
 			
 			// Build parameter list based on pvar definition, substitutions for vars, and evaluation of object expressions
-			_subTerms.clear();
-			for (int i = 0; i < _alTerms.size(); i++) {
-				LTERM t = _alTerms.get(i);
-				if (t instanceof LCONST)
-					_subTerms.add((LCONST)t);
-				else if (t instanceof LVAR) {
-					LCONST sub = subs.get((LVAR)t);
-					if (sub == null)
-						throw new EvalException("RDDL.PVAR_EXPR: No substitution in " + subs + " for " + t + "\n" + this);
-					_subTerms.add(sub);
-				} else if (t instanceof TVAR_EXPR) {
-					// Here is where nested expressions are evaluated
-					TVAR_EXPR tvar = (TVAR_EXPR)t;
-					_subTerms.add((LCONST)tvar.sample(subs, s, r));
-				} else
-					throw new EvalException("RDDL.PVAR_EXPR: Unrecognized term " + t + "\n" + this);
-			}
+			sampleLTerms(_subTerms, _alTerms, subs, s, r);
 			
 			Object ret_val = s.getPVariableAssign(_pName, _subTerms);
 			if (ret_val == null)
@@ -2214,8 +2287,11 @@ public class RDDL {
 				}
 				TYPE_NAME range_type = pvar_def._typeRange;
 		
+				// Instantiate all members
+				sampleLTerms(_subMembers, _alMembers, subs, s, r);
+				
 				// Dereference in the order they occur
-				for (String member : _alMembers) { 
+				for (LCONST member : _subMembers) { 
 					
 					if (!(ret_val instanceof STRUCT_VAL))
 						throw new EvalException("RDDL.PVAR_EXPR: expected a vector type to dereference '" + member + "' but got " + ret_val);
@@ -2227,8 +2303,8 @@ public class RDDL {
 					int index = range_struct_def.getIndex(member);
 									
 					if (index < 0)
-						throw new EvalException("\nRDDL.PVAR_EXPR: could not find member'" + member + "' for '" + range_type + "'");
-					if (sval._alMembers.get(index)._sLabel != member) // Strings were interned so == possible
+						throw new EvalException("\nRDDL.PVAR_EXPR: could not find member '" + member + "' for '" + range_type + "'");
+					if (!sval._alMembers.get(index)._sLabel.equals(member)) // Strings were interned so == possible
 						throw new EvalException("\nRDDL.PVAR_EXPR: mismatch for ordering of '" + range_type + "', expected label '" + 
 								sval._alMembers.get(index)._sLabel + "', but found label '" + member + "'." +
 								"\n- The type definition is " + range_struct_def + " while the current vector being indexed is: " + sval + "." + 
@@ -2243,6 +2319,28 @@ public class RDDL {
 			}
 			
 			return ret_val;
+		}
+		
+		public void sampleLTerms(ArrayList<LCONST> ret_val, ArrayList<LTERM> to_sample, 
+				HashMap<LVAR,LCONST> subs, State s, RandomDataGenerator r) throws EvalException {
+			
+			ret_val.clear();
+			for (int i = 0; i < to_sample.size(); i++) {
+				LTERM t = to_sample.get(i);
+				if (t instanceof LCONST)
+					ret_val.add((LCONST)t);
+				else if (t instanceof LVAR) {
+					LCONST sub = subs.get((LVAR)t);
+					if (sub == null)
+						throw new EvalException("RDDL.PVAR_EXPR: No substitution in " + subs + " for " + t + "\n" + this);
+					ret_val.add(sub);
+				} else if (t instanceof TVAR_EXPR) {
+					// Here is where nested expressions are evaluated
+					TVAR_EXPR tvar = (TVAR_EXPR)t;
+					ret_val.add((LCONST)tvar.sample(subs, s, r));
+				} else
+					throw new EvalException("RDDL.PVAR_EXPR: Unrecognized term " + t + "\n" + this);
+			}				
 		}
 		
 		public EXPR getDist(HashMap<LVAR,LCONST> subs, State s) throws EvalException {

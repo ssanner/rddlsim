@@ -109,10 +109,11 @@ WHITE_SPACE_CHAR=[\r\n\ \t\b\012]
 ":" { return new Symbol(sym.COLON, yytext()); }
 ";" { return new Symbol(sym.SEMI, yytext()); }
 "$" { return new Symbol(sym.DOLLAR_SIGN, yytext()); }
+"?" { return new Symbol(sym.QUESTION, yytext()); }
 
 ({ALPHA})(({ALPHA}|{DIGIT}|-|_)*({ALPHA}|{DIGIT}))?("'")? { return new Symbol(sym.IDENT, yytext()); }
-("?")(({ALPHA}|{DIGIT}|-|_)*({ALPHA}|{DIGIT}))? { return new Symbol(sym.VAR, yytext()); }
-("@")(({ALPHA}|{DIGIT}|-|_)*({ALPHA}|{DIGIT}))? { return new Symbol(sym.ENUM_VAL, yytext()); }
+("?")({ALPHA}|{DIGIT}|-|_)*({ALPHA}|{DIGIT}) { return new Symbol(sym.VAR, yytext()); }
+("@")({ALPHA}|{DIGIT}|-|_)*({ALPHA}|{DIGIT}) { return new Symbol(sym.ENUM_VAL, yytext()); }
 {DIGIT}*"."{DIGIT}+ { return new Symbol(sym.DOUBLE, new Double(yytext())); }
 {DIGIT}+ { return new Symbol(sym.INTEGER, new Integer(yytext())); }
 {WHITE_SPACE_CHAR}+ { /* ignore white space. */ }
