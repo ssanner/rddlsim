@@ -65,7 +65,7 @@ public class MarsRoverDisplay extends StateViz {
 
 		PVAR_NAME PICT_POS = new PVAR_NAME("PICT_POS");
 		PVAR_NAME PICT_VALUE = new PVAR_NAME("PICT_VALUE");
-		PVAR_NAME PICT_ERROR_ALLOW = new PVAR_NAME("PICT_ERROR_ALLOW");
+		PVAR_NAME PICT_ERROR_ALLOW = new PVAR_NAME("PICT_RADIUS");
 		PVAR_NAME POS = new PVAR_NAME("pos");
 		
 		PVAR_NAME SNAP_PICTURE = new PVAR_NAME("snapPicture");
@@ -112,7 +112,7 @@ public class MarsRoverDisplay extends StateViz {
 					picture_reward_possible = picture_reward_possible ||
 							(Boolean)s.getPVariableAssign(PICT_REWARD_POSSIBLE, params2);
 				}
-				_bd.addFillCircle(picture_reward_possible ? Color.RED : Color.BLACK, new_x, new_y, 0.5);
+				_bd.addFillCircle(picture_reward_possible ? Color.RED : Color.BLACK, new_x, new_y, 0.3);
 			}
 			
 			robot2oldpos.put(robot, new_rpos);

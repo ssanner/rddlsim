@@ -356,7 +356,7 @@ public class RDDL {
 					if (!(isd._oValue instanceof Boolean)) {
 						System.out.println("FIXME: current non-boolean values not exported in instance");
 						new Exception().printStackTrace();
-						System.exit(1);
+						//System.exit(1);
 					}
 					sb.append("    " + isd + "\n");
 				}
@@ -1979,6 +1979,8 @@ public class RDDL {
 		public static final String MINUS = "-".intern();
 		public static final String TIMES = "*".intern();
 		public static final String DIV   = "/".intern();
+		public static final String MIN   = "min".intern();
+		public static final String MAX   = "max".intern();
 		
 		public OPER_EXPR(EXPR e1, EXPR e2, String op) throws Exception {
 			if (!op.equals(PLUS) && !op.equals(MINUS) && !op.equals(TIMES) && !op.equals(DIV))
@@ -2079,6 +2081,10 @@ public class RDDL {
 				return new Integer((Integer)o1 - (Integer)o2);
 			else if (op == OPER_EXPR.TIMES)
 				return new Integer((Integer)o1 * (Integer)o2);
+			else if (op == OPER_EXPR.MIN)
+				return new Integer(Math.min((Integer)o1, (Integer)o2));
+			else if (op == OPER_EXPR.MAX)
+				return new Integer(Math.max((Integer)o1, (Integer)o2));
 			else
 				throw new EvalException("RDDL.OperExpr: Unrecognized operation: " + op);
 		}
@@ -2092,6 +2098,10 @@ public class RDDL {
 			return new Double(((Number)o1).doubleValue() * ((Number)o2).doubleValue());
 		else if (op == OPER_EXPR.DIV)
 			return new Double(((Number)o1).doubleValue() / ((Number)o2).doubleValue());
+		else if (op == OPER_EXPR.MIN)
+			return new Double(Math.min(((Number)o1).doubleValue(), ((Number)o2).doubleValue()));
+		else if (op == OPER_EXPR.MAX)
+			return new Double(Math.max(((Number)o1).doubleValue(), ((Number)o2).doubleValue()));
 		else
 			throw new EvalException("RDDL.OperExpr: Unrecognized operation: " + op + " for " + o1 + " and " + o2); 
 	}
@@ -2100,9 +2110,11 @@ public class RDDL {
 	
 		public static final String SUM  = "sum".intern();
 		public static final String PROD = "prod".intern();
+		public static final String MIN  = "min".intern();
+		public static final String MAX  = "max".intern();
 		
 		public AGG_EXPR(String op, ArrayList<LTYPED_VAR> vars, EXPR e) throws Exception {
-			if (!op.equals(SUM) && !op.equals(PROD))
+			if (!op.equals(SUM) && !op.equals(PROD) && !op.equals(MIN) && !op.equals(MAX))
 				throw new Exception("Unrecognized aggregation operator: " + op);
 			_op = op.intern();
 			_alVariables = (ArrayList<LTYPED_VAR>)vars;
@@ -2121,14 +2133,14 @@ public class RDDL {
 					sb.append(term + " ");
 				sb.append(") " + _e + ")");			
 			} else {
-				sb.append("[" + _op);
+				sb.append("(" + _op);
 				boolean first = true;
 				sb.append("_{");
 				for (LTYPED_VAR term : _alVariables) {
 					sb.append((first ? "" : ", ") + term);
 					first = false;
 				}
-				sb.append("} " + _e + "]");
+				sb.append("} " + _e + ")");
 			}
 			return sb.toString();
 		}
@@ -2150,9 +2162,12 @@ public class RDDL {
 
 				if (result == null)
 					result = interm_result;
-				else 
-					result = ComputeArithmeticResult(result, interm_result, 
-							     _op == SUM ? OPER_EXPR.PLUS : OPER_EXPR.TIMES);
+				else if (_op == SUM)
+					result = ComputeArithmeticResult(result, interm_result, OPER_EXPR.PLUS);
+				else if (_op == PROD)
+					result = ComputeArithmeticResult(result, interm_result, OPER_EXPR.TIMES);
+				else // op == MIN || op == MAX
+					result = ComputeArithmeticResult(result, interm_result, _op); // same String
 			}
 		
 			// Clear all substitutions
@@ -2260,7 +2275,7 @@ public class RDDL {
 		public Object sample(HashMap<LVAR,LCONST> subs, State s, RandomDataGenerator r) throws EvalException {
 			
 			// Special case for using a pvariable name with ".default"
-			if (_alMembers != null && (_alMembers.size() == 1) && (_alMembers.get(0).equals(DEFAULT))) {
+			if (_alMembers != null && (_alMembers.size() == 1) && (_alMembers.get(0) instanceof LCONST) && (_alMembers.get(0).equals(DEFAULT))) {
 				PVARIABLE_DEF pvar_def = s._hmPVariables.get(_pName._pvarUnprimed /*unprimed version to look up range*/);
 				if (pvar_def instanceof PVARIABLE_WITH_DEFAULT_DEF) {
 					return ((PVARIABLE_WITH_DEFAULT_DEF)pvar_def)._oDefValue;
@@ -2374,6 +2389,199 @@ public class RDDL {
 			}
 			
 			gfluents.add(new Pair(_pName, _subTerms.clone()));
+		}
+
+	}
+
+	public static class FUN_EXPR extends EXPR {
+
+		// Integer functions -- two args
+		public static final String DIV  = "div".intern();
+		public static final String MOD  = "mod".intern();
+		
+		// Potentially integer functions -- two args
+		public static final String MIN  = "min".intern();
+		public static final String MAX  = "max".intern(); 
+
+		// Potentiall integer functions -- single arg
+		public static final String ABS  = "abs".intern();
+		public static final String SGN  = "sgn".intern();
+
+		// Real-valued functions -- two args
+		public static final String POW  = "pow".intern();
+		public static final String LOG  = "log".intern();
+
+		// Real-valued functions -- single arg
+		public static final String COS  = "cos".intern();
+		public static final String SIN  = "sin".intern();
+		public static final String TAN  = "tan".intern();
+		public static final String ACOS = "acos".intern();
+		public static final String ASIN = "asin".intern();
+		public static final String ATAN = "atan".intern();
+		public static final String COSH = "cosh".intern();
+		public static final String SINH = "sinh".intern();
+		public static final String TANH = "tanh".intern();
+		public static final String EXP  = "exp".intern();
+		public static final String LN   = "ln".intern();
+		public static final String SQRT = "sqrt".intern();
+		
+		public static TreeSet<String> KNOWN_FUNCTIONS = new TreeSet<String>(
+				Arrays.asList(new String[] {DIV, MOD, MIN, MAX, ABS, SGN, POW, LOG, COS, SIN, TAN, ACOS, ASIN, ATAN, COSH, SINH, TANH, EXP, LN, SQRT}));
+		
+		public FUN_EXPR(String s, ArrayList expressions) {
+				
+			_sName = s.intern();
+			_alArgs = new ArrayList<EXPR>();
+			for (Object o : expressions) {
+				if (o instanceof EXPR)
+					_alArgs.add((EXPR)o);
+				else {
+					System.err.println(_sName + " argument must be an EXPR type, but " + o + " is not.");
+					System.exit(1);
+				}
+			}
+		}
+		
+		public String _sName;
+		public ArrayList<EXPR>   _alArgs  = null;
+		public ArrayList<Object> _alArgEval = new ArrayList<Object>(); // Used for evaluation
+		
+		public String toString() {
+			StringBuilder sb = new StringBuilder();
+			if (USE_PREFIX) 
+				sb.append("[");
+			sb.append(_sName);
+			if (_alArgs.size() > 0) {
+				boolean first = true;
+				if (!USE_PREFIX)
+					sb.append("[");
+				for (EXPR e : _alArgs) {
+					if (USE_PREFIX)
+						sb.append(" " + e);
+					else
+						sb.append((first ? "" : ", ") + e);
+					first = false;
+				}
+				sb.append("]");
+			} else if (USE_PREFIX) // Prefix always parenthesized
+				sb.append("]");		
+			return sb.toString();
+		}
+		
+		public Object sample(HashMap<LVAR,LCONST> subs, State s, RandomDataGenerator r) throws EvalException {		
+			
+			if (!KNOWN_FUNCTIONS.contains(_sName))
+				throw new EvalException("Special function '" + _sName + "' is undefined, possible choices are\n" + KNOWN_FUNCTIONS); 
+
+			_alArgEval.clear();
+
+			// Sample all arguments
+			for (EXPR e : _alArgs)
+				_alArgEval.add(e.sample(subs, s, r));
+			
+			Object o1 = _alArgEval.get(0);
+			Object o2 = _alArgEval.size() < 2 ? null : _alArgEval.get(1);
+			
+			// DIV, MOD: Integer functions -- two args
+			if (_sName == DIV || _sName == MOD) {
+				if (_alArgEval.size() != 2 || !(o1 instanceof Integer) || !(o2 instanceof Integer))
+					throw new EvalException("Two operands of " + _sName + " must be integer, does not hold for: " + _alArgEval);
+				if (_sName == DIV) 
+					return ((Integer)o1) / ((Integer)o2);
+				else // MOD
+					return ((Integer)o1) % ((Integer)o2);
+			}
+
+			// MAX, MIN: Potentially integer functions -- two args
+			if (_sName == MAX || _sName == MIN) {
+				if (_alArgEval.size() != 2)
+					throw new EvalException("Operands of " + _sName + " takes two arguments, but " + _alArgEval + " provided.");
+
+				if (o1 instanceof Integer && o2 instanceof Integer) {
+					if (_sName == MAX) 
+						return Math.max((Integer)o1,(Integer)o2);
+					else // MIN
+						return Math.min((Integer)o1,(Integer)o2);
+				}
+				
+				if (_sName == MAX) 
+					return Math.max(((Number)o1).doubleValue(), ((Number)o2).doubleValue());
+				else // MIN
+					return Math.min(((Number)o1).doubleValue(), ((Number)o2).doubleValue());
+			}
+
+			// ABS, SGN: Potentially integer functions -- single arg
+			if (_sName == ABS || _sName == SGN) {
+				if (_alArgEval.size() != 1)
+					throw new EvalException("Operands of " + _sName + " take one argument, but " + _alArgEval + " provided.");
+
+				if (o1 instanceof Integer) {
+					Integer i1 = (Integer)o1;
+					if (_sName == ABS) 
+						return Math.abs(i1);
+					else // SGN
+						return (i1 > 0 ? 1 : (i1 < 0 ? -1 : 0));
+				}
+				
+				if (_sName == ABS) 
+					return Math.abs(((Number)o1).doubleValue());
+				else // SGN
+					return Math.signum(((Number)o1).doubleValue());
+			}
+
+			// POW(a,b), LOG(a,b): Real-valued functions of base b -- two args
+			if (_sName == POW || _sName == LOG) {
+				if (_alArgEval.size() != 2)
+					throw new EvalException("Operands of " + _sName + " takes two arguments, but " + _alArgEval + " provided.");
+
+				if (_sName == POW) 
+					return Math.pow(((Number)o1).doubleValue(), ((Number)o2).doubleValue());
+				else // LOG(a,b) = ln(a) / ln(b)
+					return Math.log(((Number)o1).doubleValue()) / Math.log(((Number)o2).doubleValue());
+			}
+							
+			// COS,SIN,TAN,ACOS,ASIN,ATAN,COSH,SINH,SINH,EXP,LN,SQRT
+			// Real-valued functions -- single arg
+			if (_alArgEval.size() != 1)
+				throw new EvalException("Operands of " + _sName + " take one argument, but " + _alArgEval + " provided.");
+
+			if (_sName == COS)
+				return Math.cos(((Number)o1).doubleValue());
+			else if (_sName == SIN)
+				return Math.sin(((Number)o1).doubleValue());
+			else if (_sName == TAN)
+				return Math.tan(((Number)o1).doubleValue());
+			else if (_sName == ACOS)
+				return Math.acos(((Number)o1).doubleValue());
+			else if (_sName == ASIN)
+				return Math.asin(((Number)o1).doubleValue());
+			else if (_sName == ATAN)
+				return Math.atan(((Number)o1).doubleValue());
+			else if (_sName == COSH)
+				return Math.cosh(((Number)o1).doubleValue());
+			else if (_sName == SINH)
+				return Math.sinh(((Number)o1).doubleValue());
+			else if (_sName == TANH)
+				return Math.tanh(((Number)o1).doubleValue());
+			else if (_sName == EXP)
+				return Math.exp(((Number)o1).doubleValue());
+			else if (_sName == LN)
+				return Math.log(((Number)o1).doubleValue());
+			else if (_sName == SQRT)
+				return Math.sqrt(((Number)o1).doubleValue());
+			
+			throw new EvalException("ERROR: should not have reached this point in the code, special function '" + _sName + "' is defined, but not evaluated"); 
+		}
+				
+		public EXPR getDist(HashMap<LVAR,LCONST> subs, State s) throws EvalException {
+			throw new EvalException("FUN_EXPR.getDist: Not a distribution.");
+		}
+
+		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<Pair> gfluents) 
+			throws EvalException {
+			
+			for (EXPR e : _alArgs)
+				e.collectGFluents(subs, s, gfluents);
 		}
 
 	}
