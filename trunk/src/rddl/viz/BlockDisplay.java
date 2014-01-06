@@ -245,8 +245,8 @@ public class BlockDisplay extends JPanel implements ActionListener {
 		g.setColor(c._color);
 		int x = (int)Math.floor((c._x + 1) * _nBlockSize);
 		int y = (int)Math.floor((c._y + 1) * _nBlockSize);
-		int r = (int)Math.floor((c._radius + 1) * _nBlockSize);
-		int rd2 = r/2;
+		int r = (int)Math.floor((c._radius) * _nBlockSize);
+		int rd2 = 2*r; //r/2;
 		if (c._fill)
 			g.fillArc(x, y, rd2, rd2, 0, 360);
 		else

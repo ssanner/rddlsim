@@ -56,6 +56,8 @@ WHITE_SPACE_CHAR=[\r\n\ \t\b\012]
 "max-nondef-actions" { return new Symbol(sym.MAX_NONDEF_ACTIONS, yytext()); }
 "sum" { return new Symbol(sym.SUM_OVER, yytext()); }
 "prod" { return new Symbol(sym.PROD_OVER, yytext()); }
+"min" { return new Symbol(sym.MIN_OVER, yytext()); }
+"max" { return new Symbol(sym.MAX_OVER, yytext()); }
 "cpfs" { return new Symbol(sym.CPFS, yytext()); }
 "cdfs" { return new Symbol(sym.CDFS, yytext()); }
 "reward" { return new Symbol(sym.REWARD, yytext()); }

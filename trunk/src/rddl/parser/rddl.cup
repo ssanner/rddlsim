@@ -97,9 +97,9 @@ terminal DOMAIN, INSTANCE, HORIZON, DISCOUNT, OBJECTS, INIT_STATE,
 		 REQUIREMENTS, LCURLY, RCURLY, DERIVED_FLUENT, UNDERSCORE, 
          STATE_ACTION_CONSTRAINTS, ACTION_PRECONDITIONS, STATE_INVARIANTS, 
          TYPES, NEG_INF, POS_INF, MAX_NONDEF_ACTIONS, 
-		 PVARIABLES, STATE, NON_FLUENTS, CASE, 
+		 PVARIABLES, STATE, NON_FLUENTS, CASE,  
 		 INTERMEDIATE, OBSERVATION, ACTION, LEVEL, DEFAULT, 
-		 SUM_OVER, PROD_OVER, REWARD, FORALL, DOLLAR_SIGN, 
+		 SUM_OVER, PROD_OVER, MIN_OVER, MAX_OVER, REWARD, FORALL, DOLLAR_SIGN, 
 		 EXISTS, AND, OR, NOT, KRON_DELTA, DIRAC_DELTA, UNIFORM, BERNOULLI, DISCRETE,
 		 NORMAL, POISSON, EXPONENTIAL, PLUS, TIMES, DIV, MINUS, IF, THEN, 
 		 ELSE, SWITCH, DOT, OTHERWISE, WEIBULL, GAMMA, MULTINOMIAL, DIRICHLET;
@@ -132,7 +132,7 @@ non terminal ArrayList PVAR_LIST;
 non terminal RDDL.PVARIABLE_DEF PVAR_DEF;
 non terminal ArrayList CPF_SECTION;
 non terminal ArrayList CPF_LIST;
-non terminal RDDL.STRUCT_EXPR EXPR_LIST;
+non terminal RDDL.STRUCT_EXPR STRUCT_EXPR_LIST;
 non terminal RDDL.CPF_DEF CPF_DEF;
 non terminal RDDL.REWARD_DEF REW_SECTION;
 non terminal ArrayList STATE_CONS_SECTION;
@@ -170,6 +170,7 @@ non terminal RDDL.LTYPED_VAR TYPED_VAR;
 non terminal ArrayList LCONST_CASE_LIST;
 non terminal ArrayList CASE_LIST;
 non terminal RDDL.CASE CASE_DEF;
+non terminal ArrayList EXPR_LIST;
 
 /* Precedence Definitions - Highest at bottom */
 precedence left IF;
@@ -178,6 +179,7 @@ precedence left EXISTS;
 precedence left FORALL; /* COUNT */
 precedence left SUM_OVER;
 precedence left PROD_OVER;
+precedence left MIN_OVER, MAX_OVER;
 precedence left EQUIV;
 precedence left IMPLY;
 precedence left OR;
@@ -526,8 +528,8 @@ TERM_LIST ::= TERM:t            {: RESULT = new ArrayList(Arrays.asList(new Obje
 		| TERM:t COMMA TERM_LIST:list {: list.add(0,t); RESULT = list; :} 
 		;
 
-EXPR_LIST ::= LCONST:label COLON EXPR:e GREATER            {: RESULT = new RDDL.STRUCT_EXPR(label, e); :} 
-		| LCONST:label COLON EXPR:e COMMA EXPR_LIST:s      {: s.addMemberAsFirst(label, e); RESULT = s; :} 
+STRUCT_EXPR_LIST ::= LCONST:label COLON EXPR:e GREATER            {: RESULT = new RDDL.STRUCT_EXPR(label, e); :} 
+		| LCONST:label COLON EXPR:e COMMA STRUCT_EXPR_LIST:s      {: s.addMemberAsFirst(label, e); RESULT = s; :} 
 		;
 
 TYPED_VAR_LIST ::= TYPED_VAR:t {: RESULT = new ArrayList(Arrays.asList(new Object[] {t})); :}
@@ -540,6 +542,10 @@ TYPED_VAR ::= VAR:var COLON IDENT:type {: RESULT = new RDDL.LTYPED_VAR(var, type
 LCONST_CASE_LIST ::= LCONST:label COLON EXPR:e {: RESULT = new ArrayList(Arrays.asList(new Object[] {label,e})); :} 
 		| LCONST:label COLON OTHERWISE       {: RESULT = new ArrayList(Arrays.asList(new Object[] {label, RDDL.Discrete.OTHERWISE_CASE})); :}
 		| LCONST:label COLON EXPR:e COMMA LCONST_CASE_LIST:list {: list.add(0,e); list.add(0,label); RESULT = list; :} 
+		;
+
+EXPR_LIST ::= EXPR:e                  {: RESULT = new ArrayList(Arrays.asList(new Object[] {e})); :} 
+		| EXPR:e COMMA EXPR_LIST:list {: list.add(0,e); RESULT = list; :}
 		;
 
 CASE_LIST ::= CASE_DEF:e            {: RESULT = new ArrayList(Arrays.asList(new Object[] {e})); :} 
@@ -555,10 +561,12 @@ EXPR ::=  VAR:v   {: RESULT = new RDDL.LVAR(v); :}
 		| ENUM_VAL:e   {: RESULT = new RDDL.ENUM_VAL(e); :}
 		| DOLLAR_SIGN IDENT:i      {: RESULT = new RDDL.OBJECT_VAL(i); :} /* DOLLAR_SIGN required here to disambiguate from parameterless PVAR_EXPR */
 /* --- (NESTED) VECTOR EXPRESSION --- */
-		| LESS EXPR_LIST:s {: RESULT = s; :} /* vector expressions */
+		| LESS STRUCT_EXPR_LIST:s {: RESULT = s; :} /* vector expressions */
 /* --- GROUPING EXPRESSIONS --- */
 		| LBRACK EXPR:e RBRACK    {: RESULT = e; :}
 		| LPAREN EXPR:e RPAREN    {: RESULT = e; :}
+/* --- SPECIAL FUNCTIONS --- */
+		| IDENT:i LBRACK EXPR_LIST:l RBRACK {: RESULT = new RDDL.FUN_EXPR(i, l); :}
 /* --- BOOLEAN EXPRESSIONS --- */
 /* Treat boolean expressions as true=1, false=0 when nested in arithmetic expressions */
 		| TRUE   {: RESULT = new RDDL.BOOL_CONST_EXPR(true); :}
@@ -588,6 +596,8 @@ EXPR ::=  VAR:v   {: RESULT = new RDDL.LVAR(v); :}
 		| EXPR:e1 MINUS EXPR:e2   {: RESULT = new RDDL.OPER_EXPR(e1, e2, "-"); :}
 		| SUM_OVER UNDERSCORE LCURLY TYPED_VAR_LIST:list RCURLY EXPR:e   {: RESULT = new RDDL.AGG_EXPR("sum", list, e); :} %prec SUM_OVER
 		| PROD_OVER UNDERSCORE LCURLY TYPED_VAR_LIST:list RCURLY EXPR:e  {: RESULT = new RDDL.AGG_EXPR("prod", list, e); :} %prec PROD_OVER
+		| MIN_OVER UNDERSCORE LCURLY TYPED_VAR_LIST:list RCURLY EXPR:e   {: RESULT = new RDDL.AGG_EXPR("min", list, e); :} %prec MIN_OVER
+		| MAX_OVER UNDERSCORE LCURLY TYPED_VAR_LIST:list RCURLY EXPR:e   {: RESULT = new RDDL.AGG_EXPR("max", list, e); :} %prec MAX_OVER
 		| IF LPAREN EXPR:b RPAREN THEN EXPR:e1 ELSE EXPR:e2         {: RESULT = new RDDL.IF_EXPR(b, e1, e2); :} %prec IF
 		| SWITCH LPAREN TERM:t RPAREN LCURLY CASE_LIST:list RCURLY  {: RESULT = new RDDL.SWITCH_EXPR(t, list); :}
 /* --- RANDOM VARIABLES --- */
@@ -604,6 +614,3 @@ EXPR ::=  VAR:v   {: RESULT = new RDDL.LVAR(v); :}
 		| WEIBULL LPAREN EXPR:shape COMMA EXPR:scale RPAREN      {: RESULT = new RDDL.Weibull(shape, scale); :}
 		| GAMMA   LPAREN EXPR:shape COMMA EXPR:scale RPAREN      {: RESULT = new RDDL.Gamma(shape, scale); :}
 		;
-
-
-
