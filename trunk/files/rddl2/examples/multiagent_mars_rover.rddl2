@@ -36,7 +36,7 @@ domain simple_mars_rover {
 		PICT_RADIUS(picture-point) : { non-fluent, real,     default = 0.5 };
 		
 		// Rover coordinates
-		pos(robot) : { state-fluent, point-2d, default = <x:0.0, y:0.0> };
+		pos(robot) : { state-fluent, point-2d, default = <@x:0.0, @y:0.0> };
 
 		// Rover actions -- for each robot, we can move and we can snap a picture 
 		//                  (constrained below to be mutually exclusive).
@@ -137,14 +137,14 @@ instance inst_simple_mars_rover {
 	};
   
 	init-state { 
-		pos(r1) = <@x:0.0,   @y:0.0>; 
-		pos(r2) = <@x:10.0,  @y:10.0>;
-		pos(r3) = <@x:-10.0, @y:10.0>; 
+		pos(r1) = <@x:5.0,  @y:5.0>; 
+		pos(r2) = <@x:0.0,  @y:0.0>;
+		pos(r3) = <@x:0.0,  @y:-5.0>; 
 	};
   
   	// State-action constraints above are sufficient
 	max-nondef-actions = pos-inf;
   
-	horizon  = 40;
+	horizon  = 80;
 	discount = 1.0;
 }
