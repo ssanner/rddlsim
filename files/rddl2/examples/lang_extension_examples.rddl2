@@ -1,0 +1,161 @@
+////////////////////////////////////////////////////////////////////
+//
+// Examples of language extensions in RDDL2.  
+//
+// Author: Scott Sanner (ssanner@gmail.com)
+//
+////////////////////////////////////////////////////////////////////
+domain lang_extension_examples {
+  
+	types {
+		int-1-4   : {@1..@4}; // An enumeration that is automatically expanded to {@1, @2, @3, @4}... int enums can be used as ints in expressions
+		label-2d  : {@x, @y};
+		col-2d    : object;
+		robot     : object;
+		picture-point : object;
+		
+		// TODO: prefix export
+		
+		// Some enum-labeled tuples -- all tuples draw their labels from either an enum type or an object type  
+		int-4d           : [int-1-4]<? : int>;  // Defines an int vector tuple type <@1 : int, @2 : int, @3 : int, @4 : int>
+		real-4d          : [int-1-4]<? : real>; // Defines a real vector tuple type <@1 : real, @2 : real, @3 : real, @4 : real>
+		point-2d         : [label-2d]<@x : real, @y : real>;  // Same as [label-2d]<? : real>... enum label vectors allow each label:type to be listed individually
+		mixed-type-tuple : [label-2d]<@x : real, @y : robot>; // Mixed types are OK  
+		
+		// Some object-labeled vectors -- these cannot be "mixed type" tuples since the object labels are not known a priori and cannot be listed here
+		simple-vector : [robot]<? : real>;      // Must use ? with object labels since values not known a priori, if robot = {r1, r2} then simple-vector = < r1 : real, r2: real >
+		matrix-2d     : [col-2d]<? : point-2d>; // Can nest vectors... a vector of vectors is a matrix... see following discussion:
+		// ... if col-2d = {col1, col2} then implicitly builds tuple type <col1 : point-2d, col2 : point-2d> 
+		// ... equivalently <col1 : <@x : real, @y : real>, 
+		//                   col2 : <@x : real, @y : real> >		
+	};
+
+	// Objects listed in a domain specification are objects that we want to be in every instance -- may reference them in CPF expressions
+	objects { 
+		picture-point : {p1};  
+		col-2d : {col1, col2};
+	};
+
+	pvariables { 
+    		  	
+		// An object nonfluent
+		NEXT_PICT(picture-point)        : { non-fluent, picture-point, default = p1 }; // Only constants here so p1 is unambiguous as an object
+		
+		// TODO: An object state fluent... make this recursive later to go through all possibilities
+		curPict(robot) : { state-fluent, picture-point, default = p1 };
+    		  		
+		// Some random variable checks
+		randVal           : { state-fluent, real, default = 0 };  
+		randInt(int-1-4)  : { state-fluent, int-1-4, default = @1 };
+		randMult(int-1-4) : { state-fluent, int-4d,  default = < @1 : 0, @2 : 0, @3 : 0, @4 : 0 > }; 
+		randDir(int-1-4)  : { state-fluent, real-4d, default = < ? : 2.0 > }; // TODO: eventually allow expressions for initialization?
+		randMatrix        : { state-fluent, matrix-2d, default = < ? : < ? : 3 > > }; // $ optional here for object types (unambiguous) 
+		
+		// FOR NOW: we'll assume that vectors are not recursively nested
+		// EVENTUALLY: allow nested tuple types which lead to trees... effectively mixed-type tuples for which we do not know the nesting depth;
+		//       use empty < > as no-tree; recursively type check according to vector labels... do we need tuple names, inheritance, i.e.,
+		//       multiple types of subtrees, recursive types, multiplicity of types for a label?  e.g., NP: < A NP >, NP: < N >
+		//tree(int-1-4) : { interm-fluent, tree, default = < > };
+	};
+	
+	cpfs {
+					  
+		// Advance the current picture twice -- just testing object fluents and switch now
+		// (just think of the switch statement as its if-then-else expansion)
+		// Note: $ needed here to disambiguate object references since fluents are also allowed
+		curPict'(?r) = 
+			switch(curPict(?r)) {
+				case $p1:                               NEXT_PICT(curPict(?r)),
+				case NEXT_PICT(NEXT_PICT(curPict(?r))): curPict(?r),
+				default:                                NEXT_PICT(NEXT_PICT(NEXT_PICT(NEXT_PICT(curPict(?r)))))
+			};
+		
+		// TODO: parameter types in the following that are vectors -- Disc, Mult, Dir
+		
+		// TODO: joint normal distribution
+		
+		// Note: enum int values can be interpreted as integers in arithmetic expressions	
+		randInt'(?i) = Discrete(int-1-4,
+						@1: 0.02 * ?i,
+						@2: 0.03 * ?i,
+						@3: 0.01 * ?i,
+						@4: otherwise);
+
+		randMult'(?i) = Multinomial(int-1-4, 10,
+						@1: 0.02 * ?i,
+						@2: 0.03 * ?i,
+						@3: 0.01 * ?i,
+						@4: otherwise);
+						
+		randDir' = Dirichlet(int-1-4, 20);
+		
+		// Annoyingly this causes a parse error for '+' (but not '*'!) when not using parentheses... not sure why 
+		// but parens fix it so not worrying about it.
+		//
+		// Note here the double dereferences for nested vectors, e.g., .$col1.@x... we need the "$" here for object
+		// indexing because any LTERM, even an object fluent can be used for indexing
+		randMatrix' = (< col1: < @x: Exponential(1), @y: Poisson(5)   >,
+		                 col2: < @x: Gamma(1,1),     @y: Weibull(1,1) >  >)
+		            + (< col1: < @x: Exponential(2.0) + randMatrix.$col1.@x, @y: Poisson(10) + randMatrix.$col1.@y >,
+		                 col2: < @x: Gamma(5.1,3.2) + randMatrix.$col2.@x,   @y: Weibull(0.5,1.0) + randMatrix.$col2.@y >  >);
+		            
+		// TODO: Inner product -- index vector members with variables, transpose, vector reshape, recursive nested tree
+		randVal' = sum_{?col : col-2d, ?d : label-2d} (randMatrix.?col.?d * randMatrix.?col.?d); // Matrix Inner Product
+		
+		// NOTE: can also do min and/or max aggregation
+		//randVal' = max_{?col : col-2d} min_{?d : label-2d} (randMatrix.?col.?d); // Matrix Inner Product
+		
+		// NOTE: the following second summation would violate type restrictions and throw an Exception
+		//randVal' = sum_{?col : col-2d, ?d : col-2d} (randMatrix.?col.?d * randMatrix.?col.?d); // Matrix Inner Product
+	};
+  
+	// Rewards can reference all fluents (action, interm, derived, current and next state) 
+	//reward = randMatrix'.$col1.@y;
+	reward = randMatrix.$col1.@y;
+	
+	// These cannot mention actions -- they are simply assertions to 
+	// verify that only legal states are reached.  When starting from
+	// a legal initial state, only legal states should be reached,
+	// violation of this indicates an error in the domain design.
+	state-invariants {
+	};
+	
+	// Global action preconditions... cannot execute a joint action
+	// if it violates any of these constraints.
+	action-preconditions {
+	};
+}
+        
+non-fluents nf_lang_extension_examples {
+
+	domain = lang_extension_examples;
+	
+	objects { 
+		picture-point : {p2, p3}; // Augments p1 in lang_extension_examples
+	};
+  
+	non-fluents { 
+	
+		// $ required to denote object, could otherwise be a fluent
+		NEXT_PICT(p1) = $p2; 
+		NEXT_PICT(p2) = $p3;
+		NEXT_PICT(p3) = $p1;
+
+	};
+}
+instance inst_lang_extension_examples {
+
+	domain = lang_extension_examples;
+  
+  	non-fluents = nf_lang_extension_examples;
+
+	objects { 
+		robot : {r1, r2, r3};
+	};
+  
+  	// State-action constraints above are sufficient
+	max-nondef-actions = pos-inf;
+  
+	horizon  = 4;
+	discount = 1.0;
+}
