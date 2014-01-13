@@ -133,8 +133,6 @@ We currently provide the following rddlsim command line utilities:
 		./run rddl.sim.Simulator files/final_comp/rddl rddl.policy.RandomBoolPolicy navigation_inst_mdp__10 rddl.viz.NavigationDisplay
 		./run rddl.sim.Simulator files/final_comp/rddl rddl.policy.RandomBoolPolicy navigation_inst_pomdp__10 rddl.viz.NavigationDisplay
 
-		./run rddl.sim.Simulator ./files/rddl/examples/traffic_cont_ctm/ rddl.policy.RandomConcurrentPolicy is_grid rddl.viz.trfctm.TrfDisplay
-
 		**RDDL DBN / Influence Diagram Visualization**
 
 		./run rddl.viz.RDDL2Graph files/rddl/examples/dbn_prop.rddl inst_dbn
@@ -148,6 +146,7 @@ We currently provide the following rddlsim command line utilities:
 		To run some of these examples, use:
 
 		./run rddl.sim.Simulator files/rddl2/examples/multiagent_mars_rover.rddl2 rddl.policy.RandomConcurrentPolicy inst_simple_mars_rover rddl.viz.MarsRoverDisplay 3 3
+		./run rddl.sim.Simulator ./files/rddl2/examples/traffic_control_ctm.rddl2 rddl.policy.RandomConcurrentPolicy inst_traffic_control_ctm rddl.viz.trfctm.TrfDisplay 2 2
 		./run rddl.sim.Simulator files/rddl2/examples/lang_extension_examples.rddl2 rddl.policy.RandomConcurrentPolicy inst_lang_extension_examples rddl.viz.GenericScreenDisplay 1 1
 
 
