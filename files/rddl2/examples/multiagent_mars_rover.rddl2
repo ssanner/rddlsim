@@ -15,13 +15,13 @@
 // Author: Scott Sanner (ssanner@gmail.com)
 //
 ////////////////////////////////////////////////////////////////////
-domain simple_mars_rover {
+domain multiagent_mars_rover {
 
 	types {
 		robot : object;
 		picture-point : object;
-		dim-2d : {@x, @y};
-		point-2d : [dim-2d]<@x : real, @y : real>;
+		dim-2d : {@x, @y}; // Define explicit labels for vector dimensions so can sum over
+		point-2d : <@x : real, @y : real>;
 	};
 	
 	pvariables { 
@@ -32,8 +32,11 @@ domain simple_mars_rover {
 		
 		// Each picture occurs in a different place and awards a different value
 		PICT_POS(picture-point)    : { non-fluent, point-2d, default = <@x:0.0, @y:0.0> };
-		PICT_VALUE(picture-point)  : { non-fluent, real,     default = 1.0 };
-		PICT_RADIUS(picture-point) : { non-fluent, real,     default = 0.5 };
+		PICT_VALUE(picture-point)  : { non-fluent, real,     default = 1 };
+		PICT_RADIUS(picture-point) : { non-fluent, real,     default = 5 };
+		
+		// Picture reward received?
+		pic-taken(picture-point) : { state-fluent, bool, default = false };
 		
 		// Rover coordinates
 		pos(robot) : { state-fluent, point-2d, default = <@x:0.0, @y:0.0> };
@@ -60,18 +63,24 @@ domain simple_mars_rover {
 		// NOTE: if we wanted deterministic movement, we could just use *vector* operations
 		// pos'(?r) = pos(?r) + move(?r);
 		
-		// Derived (helper) fluent to determine if robot is within required radius of a picture
-		pictureRewardPossible(?r,?p) = sqrt[ sum_{?d : dim-2d} pow[ PICT_POS(?p).?d - pos(?r).?d, 2 ] ] < PICT_RADIUS(?p);
+		// Derived (helper) fluent to determine if a picture has not been taken yet and a 
+		// robot is within the required radius to take a picture of it
+		pictureRewardPossible(?r,?p) = ~pic-taken(?p) ^ 
+			(sqrt[ sum_{?d : dim-2d} pow[ PICT_POS(?p).?d - pos(?r).?d, 2 ] ] < PICT_RADIUS(?p));
+			
+		// A picture is taken if (a) it is already taken or (b) it can be taken *and* a robot has snapped a pic
+		pic-taken'(?p) = pic-taken(?p) | exists_{?r : robot} (pictureRewardPossible(?r,?p) ^ snapPicture(?r)); 
 	};
   
-	// We get a reward for any picture taken within picture box error bounds 
-	// and we get penalized for all movements.  pos(?r) could be pos'(?r)
-	// since the reward can condition on the next state as well. 
+	// We get a reward for any picture taken within picture box error bounds and we
+	// get penalized for all movements and pictures taken. 
 	reward = 
-       sum_{?p : picture-point} [
+       (sum_{?p : picture-point} 
           if (exists_{?r : robot} snapPicture(?r) ^ pictureRewardPossible(?r,?p)) 
 		  then PICT_VALUE(?p)
-		  else 0.0 ];
+		  else 0.0 )
+	   - (sum_{?r : robot} snapPicture(?r)) // booleans are treated as 0-1 variables for arithmetic 
+	   - (sum_{?r : robot} sqrt[ sum_{?d : dim-2d} pow[ pos'(?r).?d - pos(?r).?d, 2 ] ]);
 	
 	// These cannot mention actions -- they are simply assertions to 
 	// verify that only legal states are reached.  When starting from
@@ -98,48 +107,55 @@ domain simple_mars_rover {
 }
         
 // Specify three picture-points
-non-fluents pics3 {
+non-fluents nf_multiagent_mars_rover {
 
-	domain = simple_mars_rover;
+	domain = multiagent_mars_rover;
 	
 	objects { 
-		picture-point : {p1, p2, p3};
+		picture-point : {p1, p2, p3, p4, p5};
 	};
   
 	non-fluents { 
 	
 		MOVE_VARIANCE = 1.0;
 		
-		PICT_POS(p1)  =  <@x:5.0, @y:-5.0>;
-		PICT_VALUE(p1) =  5.0;
-		PICT_RADIUS(p1) = 4; // Fairly tight constraints given noise
+		PICT_POS(p1)    = <@x:5.0, @y:-5.0>;
+		PICT_VALUE(p1)  = 25;
+		PICT_RADIUS(p1) = 5; // Fairly tight constraints given noise
 
-		PICT_POS(p2)  =  <@x:5.0, @y:5.0>;
-		PICT_VALUE(p2) = 10.0;
-		PICT_RADIUS(p2) = 6; 
+		PICT_POS(p2)    = <@x:5.0, @y:0.0>;
+		PICT_VALUE(p2)  = 70;
+		PICT_RADIUS(p2) = 15; 
 
-		PICT_POS(p3)  =  <@x:-10.0, @y:-10.0>;
-		PICT_VALUE(p3) =  7.0;
+		PICT_POS(p3)    = <@x:-10.0, @y:-10.0>;
+		PICT_VALUE(p3)  = 90;
 		PICT_RADIUS(p3) = 10; 
 
+		PICT_POS(p4)    = <@x:-15.0, @y:15.0>;
+		PICT_VALUE(p4)  = 120;
+		PICT_RADIUS(p4) = 7; 
+
+		PICT_POS(p5)    = <@x:15.0, @y:-15.0>;
+		PICT_VALUE(p5)  = 100;
+		PICT_RADIUS(p5) = 3; 
 	};
 }
 
 // Specify three robots using the the three picture points defined above
-instance inst_simple_mars_rover {
+instance inst_multiagent_mars_rover {
 
-	domain = simple_mars_rover;
+	domain = multiagent_mars_rover;
 	
-	non-fluents = pics3;
+	non-fluents = nf_multiagent_mars_rover;
 
 	objects { 
 		robot : {r1, r2, r3};
 	};
   
 	init-state { 
-		pos(r1) = <@x:5.0,  @y:5.0>; 
-		pos(r2) = <@x:0.0,  @y:0.0>;
-		pos(r3) = <@x:0.0,  @y:-5.0>; 
+		pos(r1) = <@x:5.0,   @y:-5.0>; 
+		pos(r2) = <@x:5.0,   @y:5.0>; 
+		pos(r3) = <@x:-10.0, @y:-10.0>;
 	};
   
   	// State-action constraints above are sufficient

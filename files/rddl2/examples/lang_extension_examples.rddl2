@@ -12,6 +12,7 @@ domain lang_extension_examples {
 		label-2d  : {@x, @y};
 		col-2d    : object;
 		robot     : object;
+		special-robot : robot; // A subclass of robots -- inherits individuals defined for robot
 		picture-point : object;
 		
 		// TODO: prefix export
@@ -19,10 +20,11 @@ domain lang_extension_examples {
 		// Some enum-labeled tuples -- all tuples draw their labels from either an enum type or an object type  
 		int-4d           : [int-1-4]<? : int>;  // Defines an int vector tuple type <@1 : int, @2 : int, @3 : int, @4 : int>
 		real-4d          : [int-1-4]<? : real>; // Defines a real vector tuple type <@1 : real, @2 : real, @3 : real, @4 : real>
-		point-2d         : [label-2d]<@x : real, @y : real>;  // Same as [label-2d]<? : real>... enum label vectors allow each label:type to be listed individually
-		mixed-type-tuple : [label-2d]<@x : real, @y : robot>; // Mixed types are OK  
+		point-2d         : <@x : real, @y : real>;  // Can explicitly enumerate tuple elements (if all labels known)
+		mixed-type-tuple : <@x : real, @y : robot>; // Mixed types are OK  
 		
-		// Some object-labeled vectors -- these cannot be "mixed type" tuples since the object labels are not known a priori and cannot be listed here
+		// Some object-labeled vectors 
+		another-tuple : < x : real,  y : robot>; // If we drop the "@", these are implicitly object (rather than enum) instance labels identical to $x and $y, but this is allowed  
 		simple-vector : [robot]<? : real>;      // Must use ? with object labels since values not known a priori, if robot = {r1, r2} then simple-vector = < r1 : real, r2: real >
 		matrix-2d     : [col-2d]<? : point-2d>; // Can nest vectors... a vector of vectors is a matrix... see following discussion:
 		// ... if col-2d = {col1, col2} then implicitly builds tuple type <col1 : point-2d, col2 : point-2d> 
@@ -48,8 +50,8 @@ domain lang_extension_examples {
 		randVal           : { state-fluent, real, default = 0 };  
 		randInt(int-1-4)  : { state-fluent, int-1-4, default = @1 };
 		randMult(int-1-4) : { state-fluent, int-4d,  default = < @1 : 0, @2 : 0, @3 : 0, @4 : 0 > }; 
-		randDir(int-1-4)  : { state-fluent, real-4d, default = < ? : 2.0 > }; // TODO: eventually allow expressions for initialization?
-		randMatrix        : { state-fluent, matrix-2d, default = < ? : < ? : 3 > > }; // $ optional here for object types (unambiguous) 
+		randDir(int-1-4)  : { state-fluent, real-4d, default = < ? : 2.0 > }; 
+		randMatrix        : { state-fluent, matrix-2d, default = < ? : < @x : 1, @y : 0 > > };  
 		
 		// FOR NOW: we'll assume that vectors are not recursively nested
 		// EVENTUALLY: allow nested tuple types which lead to trees... effectively mixed-type tuples for which we do not know the nesting depth;
@@ -156,6 +158,6 @@ instance inst_lang_extension_examples {
   	// State-action constraints above are sufficient
 	max-nondef-actions = pos-inf;
   
-	horizon  = 4;
+	horizon  = terminate-when (randVal > 10000);
 	discount = 1.0;
 }

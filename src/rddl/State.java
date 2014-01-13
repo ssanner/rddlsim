@@ -28,6 +28,7 @@ import rddl.RDDL.LCONST_TYPE_DEF;
 import rddl.RDDL.LTYPED_VAR;
 import rddl.RDDL.LVAR;
 import rddl.RDDL.OBJECTS_DEF;
+import rddl.RDDL.OBJECT_TYPE_DEF;
 import rddl.RDDL.PVARIABLE_ACTION_DEF;
 import rddl.RDDL.PVARIABLE_DEF;
 import rddl.RDDL.PVARIABLE_INTERM_DEF;
@@ -127,7 +128,12 @@ public class State {
 		_reward = reward;
 		_nMaxNondefActions = max_nondef_actions;
 		
+		// =============================
+		
 		// Map object/enum class name to list (NOTE: all enum and object value lists initialized here)
+		// (Now that we allow superclasses we first have to preprocess all object definitions and ensure
+		//  that we instantiate parents before children and then recursively instantiate children)
+		
 		_hmObject2Consts = new HashMap<TYPE_NAME,ArrayList<LCONST>>();
 		if (domain_objects != null)
 			for (OBJECTS_DEF obj_def : domain_objects.values())
@@ -147,6 +153,26 @@ public class State {
 				addConstants(etd._sName, values);
 			}
 		}
+		
+		// Now check for superclasses and add in those constants as well
+		for (TYPE_NAME tname : _hmObject2Consts.keySet()) {
+				
+			// Add superclass constants for each tname
+			TYPE_NAME cur_tname = tname;
+			while (true) {
+				// Terminate loop if enum or no superclass
+				TYPE_DEF def = typedefs.get(cur_tname);
+				if (!(def instanceof OBJECT_TYPE_DEF) || ((OBJECT_TYPE_DEF)def)._typeSuperclass == null)
+					break;
+
+				// We have a superclass, so add it's constants
+				cur_tname = ((OBJECT_TYPE_DEF)def)._typeSuperclass; // Update for future iterations
+				ArrayList<LCONST> constants = _hmObject2Consts.get(cur_tname);
+				addConstants(tname, constants);				
+			} 
+		}
+		
+		// =============================
 		
 		// TODO: Expand enum and object types according to the constants
 		for (Map.Entry<TYPE_NAME,TYPE_DEF> e : typedefs.entrySet()) {
@@ -310,6 +336,16 @@ public class State {
 		}
 	}
 
+	public boolean checkTerminationCondition(BOOL_EXPR cond) throws EvalException {
+		try {
+			HashMap<LVAR,LCONST> subs = new HashMap<LVAR,LCONST>();
+			return (Boolean)cond.sample(subs, this, null);
+		} catch (Exception e) {
+			System.out.println("\n***SIMULATOR ERROR EVALUATING TERMINATION CONDITION: " + cond);
+			throw e;
+		}
+	}
+	
 	public void computeNextState(ArrayList<PVAR_INST_DEF> actions, RandomDataGenerator _rand) 
 		throws EvalException {
 

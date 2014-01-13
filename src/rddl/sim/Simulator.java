@@ -75,11 +75,11 @@ public class Simulator {
 		// Keep track of reward
 		double accum_reward = 0.0d;
 		double cur_discount = 1.0d;
-		ArrayList<Double> rewards = new ArrayList<Double>(_i._nHorizon);
+		ArrayList<Double> rewards = new ArrayList<Double>(_i._nHorizon != Integer.MAX_VALUE ? _i._nHorizon : 1000);
 		
-		// Run problem for specified horizon
+		// Run problem for specified horizon 
 		for (int t = 0; t < _i._nHorizon; t++) {
-
+			
 			// Check state invariants to verify legal state -- can only reference current 
 			// state / derived fluents
 			_state.checkStateInvariants();
@@ -108,6 +108,10 @@ public class Simulator {
 			
 			// Done with this iteration, advance to next round
 			_state.advanceNextState(false /* do not clear observations */);
+			
+			// A "terminate-when" condition in the horizon specification may lead to early termination
+			if (_i._termCond != null && _state.checkTerminationCondition(_i._termCond))
+				break;
 		}
 
 		// Signal start of new session-independent round

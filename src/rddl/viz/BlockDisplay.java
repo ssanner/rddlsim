@@ -242,15 +242,25 @@ public class BlockDisplay extends JPanel implements ActionListener {
 
 	private void drawCircle(Graphics g, Circle c) {
 
+		// (x,y)
+		//  |
+		//  |  y
+		// \ / +
+		//
+		//    ------>
+		//       x +
+		//
+		// (x,y) specify upper-left corner of square with height/width 2*r
+		// so to get center at (x,y), upper left corner is (x-r,y-r).
 		g.setColor(c._color);
-		int x = (int)Math.floor((c._x + 1) * _nBlockSize);
-		int y = (int)Math.floor((c._y + 1) * _nBlockSize);
 		int r = (int)Math.floor((c._radius) * _nBlockSize);
-		int rd2 = 2*r; //r/2;
+		int x = (int)Math.floor((c._x + 1) * _nBlockSize) - r;
+		int y = (int)Math.floor((c._y + 1) * _nBlockSize) - r;
+		int diameter = 2*r; 
 		if (c._fill)
-			g.fillArc(x, y, rd2, rd2, 0, 360);
+			g.fillArc(x, y, diameter, diameter, 0, 360);
 		else
-			g.drawArc(x, y, rd2, rd2, 0, 360);
+			g.drawArc(x, y, diameter, diameter, 0, 360);
 	}
 
 	private void drawText(Graphics g, Text t) {

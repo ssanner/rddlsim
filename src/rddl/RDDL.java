@@ -46,7 +46,8 @@ public class RDDL {
 			} else
 				addOtherRDDL(parser.parse(f));
 		} catch (Exception e) {
-			System.out.println("ERROR: Could not instantiate RDDL for '" + rddl_file_or_dir + "'\n" + e);
+			System.out.println("ERROR: Could not instantiate RDDL for '" + rddl_file_or_dir + "'\n");// + e);
+			//e.printStackTrace();
 			System.exit(1);
 		}
 	}
@@ -312,12 +313,26 @@ public class RDDL {
 		// objects and non_fluents may be null
 		public INSTANCE(String name, String domain, String nonfluents, 
 						ArrayList objects, ArrayList init_state, 
-						int nondef_actions, int horizon, double discount) {
+						Integer nondef_actions, Object horizon, double discount) {
+			
+			// If max-nondef actions was not specified, assume no constraints (represented here by Integer.MAX_VALUE -- could not computationally simulate more than this)
+			if (nondef_actions == null)
+				nondef_actions = new Integer(Integer.MAX_VALUE);
+			
 			_sName     = name;
 			_sDomain   = domain;
 			_sNonFluents    = nonfluents;
 			_nNonDefActions = nondef_actions;
-			_nHorizon  = horizon;
+			if (horizon instanceof Integer) {
+				_nHorizon = (Integer)horizon;
+				_termCond = null;
+			} else if (horizon instanceof BOOL_EXPR) {
+				_nHorizon = Integer.MAX_VALUE;
+				_termCond = (BOOL_EXPR)horizon;
+			} else {
+				System.err.println("Horizon specification not of a recognized type:\n-integer\n-pos-inf\n-terminate-when (boolean expression)}");
+				System.exit(1);
+			}
 			_dDiscount = discount;
 			if (objects != null)
 				for (OBJECTS_DEF od : (ArrayList<OBJECTS_DEF>)objects)
@@ -330,6 +345,7 @@ public class RDDL {
 		public String _sNonFluents = null;
 		public int _nNonDefActions = -1;
 		public int    _nHorizon  = -1;
+		public BOOL_EXPR _termCond  = null;
 		public double _dDiscount = 0.9d;
 		
 		public HashMap<TYPE_NAME,OBJECTS_DEF> _hmObjects = new HashMap<TYPE_NAME,OBJECTS_DEF>();
@@ -363,7 +379,7 @@ public class RDDL {
 				sb.append("  };\n");
 			}
 			sb.append("  max-nondef-actions = "  + (_nNonDefActions == Integer.MAX_VALUE ? "pos-inf" : _nNonDefActions) + ";\n");
-			sb.append("  horizon = "  + _nHorizon + ";\n");
+			sb.append("  horizon = "  + (_termCond != null ? "terminate-when (" + _termCond + ")" : _nHorizon) + ";\n");
 			sb.append("  discount = " + _dDiscount + ";\n");
 			sb.append("}");
 
@@ -489,11 +505,11 @@ public class RDDL {
 
 	public static class STRUCT_TYPE_DEF extends TYPE_DEF {
 		
-		public STRUCT_TYPE_DEF(String label_range, String name, ArrayList<STRUCT_TYPE_DEF_MEMBER> members) throws Exception {
+		public STRUCT_TYPE_DEF(String name, ArrayList<STRUCT_TYPE_DEF_MEMBER> members) throws Exception {
 			super(name, "enum");
-			_sLabelEnumOrObjectType = new TYPE_NAME(label_range);
 			_alMembers = members;
 			_typeGeneric = null;
+			_sLabelEnumOrObjectType = null;
 			initMemberIndices();
 		}
 
@@ -527,7 +543,10 @@ public class RDDL {
 		
 		public String toString() {
 			StringBuilder sb = new StringBuilder();
-			sb.append(_sName + " : [" + _sLabelEnumOrObjectType + "]<");
+			sb.append(_sName + " : ");
+			if (_sLabelEnumOrObjectType != null) 
+				sb.append("[" + _sLabelEnumOrObjectType + "]");
+			sb.append("<");
 			if (_alMembers != null) {
 				boolean first = true;
 				for (STRUCT_TYPE_DEF_MEMBER s : _alMembers) {
@@ -683,6 +702,13 @@ public class RDDL {
 		public OBJECT_TYPE_DEF(String name) throws Exception {
 			super(name, "object");
 		}
+
+		public OBJECT_TYPE_DEF(String name, String superclass) throws Exception {
+			super(name, "object");
+			_typeSuperclass = new TYPE_NAME(superclass);
+		}
+		
+		public TYPE_NAME _typeSuperclass = null;
 		
 		public String toString() {
 			return _sName + " : " + _sType + ";";
@@ -1560,7 +1586,8 @@ public class RDDL {
 
 		// TODO: probs storage as alternating label and expression is sloppy, should make an array of (label,prob) pairs
 		public Discrete(String type, ArrayList probs) {
-			_sTypeName = new TYPE_NAME(type);
+			if (type != null)
+				_sTypeName = new TYPE_NAME(type);
 			_exprProbs = (ArrayList<EXPR>)probs;
 			
 			// Check last case for "otherwise" and build expression if necessary
@@ -1583,20 +1610,20 @@ public class RDDL {
 			}
 		}
 		
-		public TYPE_NAME       _sTypeName;
+		public TYPE_NAME       _sTypeName = null;
 		public ArrayList<EXPR> _exprProbs = null; // At runtime, check these sum to 1
 		
 		public String toString() {
 			StringBuilder sb = new StringBuilder();
 			if (USE_PREFIX) {
-				sb.append("(Discrete " + _sTypeName + " ( ");
+				sb.append("(Discrete " + (_sTypeName != null ? _sTypeName : "") + " ( ");
 				for (int i = 0; i < _exprProbs.size(); i+=2)
 					sb.append("(" + ((ENUM_VAL)_exprProbs.get(i)) + " : " + ((EXPR)_exprProbs.get(i+1)) + ") ");
 				sb.append(")");
 			} else {
-				sb.append("Discrete(" + _sTypeName);
+				sb.append("Discrete(" + (_sTypeName != null ? _sTypeName + ", ": ""));
 				for (int i = 0; i < _exprProbs.size(); i+=2)
-					sb.append(", " + ((ENUM_VAL)_exprProbs.get(i)) + " : " + ((EXPR)_exprProbs.get(i+1)));
+					sb.append(((i > 0) ? ", " : "") + ((ENUM_VAL)_exprProbs.get(i)) + " : " + ((EXPR)_exprProbs.get(i+1)));
 			}
 			sb.append(")");
 			return sb.toString();
@@ -1604,8 +1631,13 @@ public class RDDL {
 		
 		public Object sample(HashMap<LVAR,LCONST> subs, State s, RandomDataGenerator r) throws EvalException {
 			try {
-				LCONST_TYPE_DEF etd = (LCONST_TYPE_DEF)s._hmTypes.get(_sTypeName);
-				HashSet<LCONST> value_set = new HashSet<LCONST>(etd._alPossibleValues);
+				LCONST_TYPE_DEF etd = null;
+				HashSet<LCONST> value_set = null;
+				
+				if (_sTypeName != null) {
+					etd = (LCONST_TYPE_DEF)s._hmTypes.get(_sTypeName);
+					value_set = new HashSet<LCONST>(etd._alPossibleValues);
+				}
 				
 				ArrayList<LCONST> lconst_label = new ArrayList<LCONST>();
 				ArrayList<Double> lconst_probs = new ArrayList<Double>();
@@ -1618,7 +1650,7 @@ public class RDDL {
 					lconst_probs.add(case_prob);
 					
 					total += case_prob;
-					if (!value_set.contains(case_label))
+					if (_sTypeName != null && !value_set.contains(case_label))
 						throw new EvalException("'" + case_label + "' not found in " + etd._alPossibleValues + " for Discrete(" + _sTypeName + ", ... )");
 				}
 				//System.out.println(lconst_probs);
@@ -2449,7 +2481,7 @@ public class RDDL {
 		public String toString() {
 			StringBuilder sb = new StringBuilder();
 			if (USE_PREFIX) 
-				sb.append("[");
+				sb.append("(SPECIAL-FUN ");
 			sb.append(_sName);
 			if (_alArgs.size() > 0) {
 				boolean first = true;
@@ -2462,9 +2494,13 @@ public class RDDL {
 						sb.append((first ? "" : ", ") + e);
 					first = false;
 				}
+			}
+			
+			if (USE_PREFIX) 
+				sb.append(")");
+			else
 				sb.append("]");
-			} else if (USE_PREFIX) // Prefix always parenthesized
-				sb.append("]");		
+			
 			return sb.toString();
 		}
 		

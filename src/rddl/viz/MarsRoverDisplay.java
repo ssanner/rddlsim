@@ -112,7 +112,7 @@ public class MarsRoverDisplay extends StateViz {
 					picture_reward_possible = picture_reward_possible ||
 							(Boolean)s.getPVariableAssign(PICT_REWARD_POSSIBLE, params2);
 				}
-				_bd.addFillCircle(picture_reward_possible ? Color.RED : Color.BLACK, new_x, new_y, 0.3);
+				_bd.addFillCircle(picture_reward_possible ? Color.RED : Color.BLACK, new_x, new_y, picture_reward_possible ? 0.5 : 0.3);
 			}
 			
 			robot2oldpos.put(robot, new_rpos);
