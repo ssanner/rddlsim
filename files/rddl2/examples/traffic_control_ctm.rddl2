@@ -7,7 +7,8 @@
 //
 // @author Tan Nguyen (tan1889@gmail.com)
 //
-// Modified by Scott Sanner for RDDL2.
+// Modified by Scott Sanner for RDDL2 and to enforce proper signal
+// sequences and make stochastic.
 ////////////////////////////////////////////////////////////////////
 
 domain traffic_control_ctm {
@@ -42,7 +43,7 @@ domain traffic_control_ctm {
 		flow(cell, cell) : { interm-fluent, real, level = 2 };	// Flow into a cell
 	};
   
-	cdfs {
+	cpfs {
 		
 		// calculate the send capacity of each cell
 		send(?c) = 	if (v(?c) * n(?c)/l(?c)< v(?c) * k(?c)) then 
@@ -131,8 +132,8 @@ domain traffic_control_ctm {
 // One-way grid of 3x3 intersections
 ///////////////////////////////////////////////////////////////////
  
-non-fluents grid {
-	domain = traffic;
+non-fluents nf_traffic_control_ctm {
+	domain = traffic_control_ctm;
 	objects {
 		cell : {
 			R_0_5, R_0_11, R_0_17, R_1_5, R_1_11, R_1_17, R_2_5, R_2_11, 
@@ -311,10 +312,10 @@ non-fluents grid {
 	};
 }
 
-instance is_grid {
+instance inst_traffic_control_ctm {
 
-	domain = traffic;	
-	non-fluents = grid;
+	domain = traffic_control_ctm;	
+	non-fluents = nf_traffic_control_ctm;
 	init-state { 
 		n(R_0_5) = 10000.0; 
 		n(R_0_11) = 10000.0; 
