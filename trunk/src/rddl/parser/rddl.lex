@@ -54,6 +54,7 @@ WHITE_SPACE_CHAR=[\r\n\ \t\b\012]
 "level" { return new Symbol(sym.LEVEL, yytext()); }
 "default" { return new Symbol(sym.DEFAULT, yytext()); }
 "max-nondef-actions" { return new Symbol(sym.MAX_NONDEF_ACTIONS, yytext()); }
+"terminate-when" { return new Symbol(sym.TERMINATE_WHEN, yytext()); }
 "sum" { return new Symbol(sym.SUM_OVER, yytext()); }
 "prod" { return new Symbol(sym.PROD_OVER, yytext()); }
 "min" { return new Symbol(sym.MIN_OVER, yytext()); }
@@ -112,6 +113,7 @@ WHITE_SPACE_CHAR=[\r\n\ \t\b\012]
 ";" { return new Symbol(sym.SEMI, yytext()); }
 "$" { return new Symbol(sym.DOLLAR_SIGN, yytext()); }
 "?" { return new Symbol(sym.QUESTION, yytext()); }
+"&" { return new Symbol(sym.AMPERSAND, yytext()); }
 
 ({ALPHA})(({ALPHA}|{DIGIT}|-|_)*({ALPHA}|{DIGIT}))?("'")? { return new Symbol(sym.IDENT, yytext()); }
 ("?")({ALPHA}|{DIGIT}|-|_)*({ALPHA}|{DIGIT}) { return new Symbol(sym.VAR, yytext()); }

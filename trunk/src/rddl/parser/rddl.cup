@@ -46,7 +46,10 @@ parser code {:
 
             } catch (Exception e) {
                int cur_line = (lex != null) ? lex.yyline() + 1 : -1;
-               String cur_token = "#" + p.cur_token.sym + ": '" + p.cur_token.value + "'";
+               String cur_token = "[NOT AVAILABLE]";
+               try {
+            	   cur_token = "#" + p.cur_token.sym + ": '" + p.cur_token.value + "'";
+               } catch (Exception e2) { /* discard */ }
                String next_token = "[NOT AVAILABLE]";
                try {
                   Symbol s2 = lex.next_token();
@@ -73,16 +76,21 @@ parser code {:
 	           p = new parser(lex);
 		       rval = p.parse();
 
+            } catch (FileNotFoundException fne) {
+            	System.out.println("ERROR: Could not find file: '" + f + "'");
             } catch (Exception e) {
                int cur_line = (lex != null) ? lex.yyline() + 1 : -1;
-               String cur_token = "#" + p.cur_token.sym + ": '" + p.cur_token.value + "'";
+               String cur_token = "[NOT AVAILABLE]";
+               try {
+            	   cur_token = "#" + p.cur_token.sym + ": '" + p.cur_token.value + "'";
+               } catch (Exception e2) { /* discard */ }
                String next_token = "[NOT AVAILABLE]";
                try {
                   Symbol s2 = lex.next_token();
                   next_token = "#" + s2.sym + ": '" + s2.value + "'";
                } catch (Exception e2) { /* discard */ }
 	           System.out.println("Error on line " + 
-				      ((lex != null) ? ""+ cur_line + ", cur token: " + cur_token + ", next token: " + next_token : "") 
+				      ((lex != null) ? ""+ cur_line + ", cur token: " + cur_token + ", next token: " + next_token : "?") 
 	 			      + "\nException: " + e);
 		       //e.printStackTrace();
             }
@@ -100,8 +108,8 @@ terminal DOMAIN, INSTANCE, HORIZON, DISCOUNT, OBJECTS, INIT_STATE,
 		 PVARIABLES, STATE, NON_FLUENTS, CASE,  
 		 INTERMEDIATE, OBSERVATION, ACTION, LEVEL, DEFAULT, 
 		 SUM_OVER, PROD_OVER, MIN_OVER, MAX_OVER, REWARD, FORALL, DOLLAR_SIGN, 
-		 EXISTS, AND, OR, NOT, KRON_DELTA, DIRAC_DELTA, UNIFORM, BERNOULLI, DISCRETE,
-		 NORMAL, POISSON, EXPONENTIAL, PLUS, TIMES, DIV, MINUS, IF, THEN, 
+		 EXISTS, AND, AMPERSAND, OR, NOT, KRON_DELTA, DIRAC_DELTA, UNIFORM, BERNOULLI, DISCRETE,
+		 NORMAL, POISSON, EXPONENTIAL, PLUS, TIMES, DIV, MINUS, IF, THEN, TERMINATE_WHEN, 
 		 ELSE, SWITCH, DOT, OTHERWISE, WEIBULL, GAMMA, MULTINOMIAL, DIRICHLET;
 terminal SEMI, LPAREN, RPAREN, COMMA, LBRACK, COLON, QUESTION, 
          RBRACK, LESS, LESSEQ, GREATER, GREATEREQ, IMPLY, EQUIV, 
@@ -154,6 +162,7 @@ non terminal Object RANGE_CONST;
 non terminal Boolean BOOL_TYPE;
 non terminal Integer INT_TYPE;
 non terminal Integer POS_INT_TYPE_OR_POS_INF;
+non terminal Object HORIZON_SPEC;
 non terminal Double DOUBLE_TYPE;
 non terminal String CPF_HEADER;
 non terminal RDDL.PVAR_EXPR PVAR_EXPR;
@@ -183,7 +192,7 @@ precedence left MIN_OVER, MAX_OVER;
 precedence left EQUIV;
 precedence left IMPLY;
 precedence left OR;
-precedence left AND;
+precedence left AND, AMPERSAND; /* At Thomas Keller's insistence, we allow both ^ and & for AND */
 precedence left NOT;
 precedence left COMP_EQUAL, NEQ, LESS, LESSEQ, GREATER, GREATEREQ;
 precedence left PLUS, MINUS;
@@ -243,10 +252,11 @@ TYPE_LIST ::= TYPE_DEF:def            {: RESULT = new ArrayList(Arrays.asList(ne
 		;
 
 TYPE_DEF ::= IDENT:i COLON OBJECT SEMI {: RESULT = new RDDL.OBJECT_TYPE_DEF(i); :}
+		| IDENT:i COLON IDENT:superclass SEMI {: RESULT = new RDDL.OBJECT_TYPE_DEF(i, superclass); :}
 		| IDENT:i COLON LCURLY ENUM_LIST:el RCURLY SEMI {: RESULT = new RDDL.ENUM_TYPE_DEF(i,el); :} 
 		| IDENT:i COLON LCURLY ENUM_VAL:min DOT DOT ENUM_VAL:max RCURLY SEMI {: RESULT = new RDDL.ENUM_TYPE_DEF(i,new RDDL.ENUM_VAL(min),new RDDL.ENUM_VAL(max)); :} 
-		| IDENT:i COLON LBRACK IDENT:type RBRACK LESS QUESTION COLON TYPE_SPEC:t GREATER SEMI {: RESULT = new RDDL.STRUCT_TYPE_DEF(type,i,t); :} /* enum or object */
-		| IDENT:i COLON LBRACK IDENT:type RBRACK LESS STRUCT_MEMBER_LIST:members GREATER SEMI {: RESULT = new RDDL.STRUCT_TYPE_DEF(type,i,members); :} /* enum only */ 
+		| IDENT:i COLON LBRACK IDENT:type RBRACK LESS QUESTION COLON TYPE_SPEC:t GREATER SEMI {: RESULT = new RDDL.STRUCT_TYPE_DEF(type,i,t); :} /* labels match enum or object */
+		| IDENT:i COLON LESS STRUCT_MEMBER_LIST:members GREATER SEMI {: RESULT = new RDDL.STRUCT_TYPE_DEF(i,members); :} /* explicitly named entries -- should not aggregate */ 
 		;
 
 /* RDDL2: The format for action arguments */
@@ -298,6 +308,10 @@ INT_TYPE ::= INTEGER:i {: RESULT = i; :}
 /* RDDL2: positive integers or infinity (mainly for horizon and max_nondef_actions spec -- inf for unrestricted concurrency) */
 POS_INT_TYPE_OR_POS_INF ::= INTEGER:i {: RESULT = i; :}
 		| POS_INF         {: RESULT = new Integer(Integer.MAX_VALUE); :}
+		;
+
+HORIZON_SPEC ::= HORIZON ASSIGN_EQUAL POS_INT_TYPE_OR_POS_INF:h      {: RESULT = h; :}
+		| HORIZON ASSIGN_EQUAL TERMINATE_WHEN LPAREN EXPR:e RPAREN {: RESULT = e; :}
 		;
 
 PARAM_LIST ::= COLON {: RESULT = new ArrayList(); :}
@@ -384,85 +398,6 @@ STATE_INVARIANT_LIST ::= STATE_INVARIANT_DEF:d             {: RESULT = new Array
 
 /* RDDL2 */
 STATE_INVARIANT_DEF ::= EXPR:expr SEMI {: RESULT = new RDDL.STATE_INVARIANT_DEF(expr); :}
-		;
-
-/* For simplicity in the INSTANCE_BLOCK grammar, order matters. */
-/* Also, OBJECTS and NONFLUENTS are the only optional entries. */
-INSTANCE_BLOCK ::= INSTANCE IDENT:name LCURLY 
-                           DOMAIN ASSIGN_EQUAL IDENT:domain SEMI
-                           NON_FLUENTS ASSIGN_EQUAL IDENT:nonfluents SEMI 
-                           OBJECTS LCURLY OBJECTS_LIST:objects RCURLY SEMI 
-                           INIT_STATE LCURLY PVAR_INST_LIST:state_list RCURLY SEMI 
-                           MAX_NONDEF_ACTIONS ASSIGN_EQUAL POS_INT_TYPE_OR_POS_INF:a SEMI
-                           HORIZON ASSIGN_EQUAL POS_INT_TYPE_OR_POS_INF:h SEMI
-                           DISCOUNT ASSIGN_EQUAL DOUBLE:d SEMI RCURLY
-			{: RESULT = new RDDL.INSTANCE(name,domain,nonfluents,objects,state_list,a,h,d); :} 
-		| INSTANCE IDENT:name LCURLY 
-                           DOMAIN ASSIGN_EQUAL IDENT:domain SEMI
-                           OBJECTS LCURLY OBJECTS_LIST:objects RCURLY SEMI 
-                           INIT_STATE LCURLY PVAR_INST_LIST:state_list RCURLY SEMI 
-                           MAX_NONDEF_ACTIONS ASSIGN_EQUAL POS_INT_TYPE_OR_POS_INF:a SEMI
-                           HORIZON ASSIGN_EQUAL POS_INT_TYPE_OR_POS_INF:h SEMI
-                           DISCOUNT ASSIGN_EQUAL DOUBLE:d SEMI RCURLY
-			{: RESULT = new RDDL.INSTANCE(name,domain,null,objects,state_list,a,h,d); :} 
-		| INSTANCE IDENT:name LCURLY 
-                           DOMAIN ASSIGN_EQUAL IDENT:domain SEMI
-                           NON_FLUENTS ASSIGN_EQUAL IDENT:nonfluents SEMI 
-                           INIT_STATE LCURLY PVAR_INST_LIST:state_list RCURLY SEMI 
-                           MAX_NONDEF_ACTIONS ASSIGN_EQUAL POS_INT_TYPE_OR_POS_INF:a SEMI
-                           HORIZON ASSIGN_EQUAL POS_INT_TYPE_OR_POS_INF:h SEMI
-                           DISCOUNT ASSIGN_EQUAL DOUBLE:d SEMI RCURLY
-			{: RESULT = new RDDL.INSTANCE(name,domain,nonfluents,null,state_list,a,h,d); :} 
-		| INSTANCE IDENT:name LCURLY 
-                           DOMAIN ASSIGN_EQUAL IDENT:domain SEMI
-                           INIT_STATE LCURLY PVAR_INST_LIST:state_list RCURLY SEMI 
-                           MAX_NONDEF_ACTIONS ASSIGN_EQUAL POS_INT_TYPE_OR_POS_INF:a SEMI
-                           HORIZON ASSIGN_EQUAL POS_INT_TYPE_OR_POS_INF:h SEMI
-                           DISCOUNT ASSIGN_EQUAL DOUBLE:d SEMI RCURLY
-			{: RESULT = new RDDL.INSTANCE(name,domain,null,null,state_list,a,h,d); :} 
-		| INSTANCE IDENT:name LCURLY 
-                           DOMAIN ASSIGN_EQUAL IDENT:domain SEMI
-                           NON_FLUENTS ASSIGN_EQUAL IDENT:nonfluents SEMI 
-                           OBJECTS LCURLY OBJECTS_LIST:objects RCURLY SEMI 
-                           MAX_NONDEF_ACTIONS ASSIGN_EQUAL POS_INT_TYPE_OR_POS_INF:a SEMI
-                           HORIZON ASSIGN_EQUAL POS_INT_TYPE_OR_POS_INF:h SEMI
-                           DISCOUNT ASSIGN_EQUAL DOUBLE:d SEMI RCURLY
-			{: RESULT = new RDDL.INSTANCE(name,domain,nonfluents,objects,new ArrayList(),a,h,d); :} 
-		| INSTANCE IDENT:name LCURLY 
-                           DOMAIN ASSIGN_EQUAL IDENT:domain SEMI
-                           OBJECTS LCURLY OBJECTS_LIST:objects RCURLY SEMI 
-                           MAX_NONDEF_ACTIONS ASSIGN_EQUAL POS_INT_TYPE_OR_POS_INF:a SEMI
-                           HORIZON ASSIGN_EQUAL POS_INT_TYPE_OR_POS_INF:h SEMI
-                           DISCOUNT ASSIGN_EQUAL DOUBLE:d SEMI RCURLY
-			{: RESULT = new RDDL.INSTANCE(name,domain,null,objects,new ArrayList(),a,h,d); :} 
-		| INSTANCE IDENT:name LCURLY 
-                           DOMAIN ASSIGN_EQUAL IDENT:domain SEMI
-                           NON_FLUENTS ASSIGN_EQUAL IDENT:nonfluents SEMI 
-                           MAX_NONDEF_ACTIONS ASSIGN_EQUAL POS_INT_TYPE_OR_POS_INF:a SEMI
-                           HORIZON ASSIGN_EQUAL POS_INT_TYPE_OR_POS_INF:h SEMI
-                           DISCOUNT ASSIGN_EQUAL DOUBLE:d SEMI RCURLY
-			{: RESULT = new RDDL.INSTANCE(name,domain,nonfluents,null,new ArrayList(),a,h,d); :} 
-		| INSTANCE IDENT:name LCURLY 
-                           DOMAIN ASSIGN_EQUAL IDENT:domain SEMI
-                           MAX_NONDEF_ACTIONS ASSIGN_EQUAL POS_INT_TYPE_OR_POS_INF:a SEMI
-                           HORIZON ASSIGN_EQUAL POS_INT_TYPE_OR_POS_INF:h SEMI
-                           DISCOUNT ASSIGN_EQUAL DOUBLE:d SEMI RCURLY
-			{: RESULT = new RDDL.INSTANCE(name,domain,null,null,new ArrayList(),a,h,d); :} 
-		;
-
-/* For simplicity in the NONFLUENT_BLOCK grammar, order matters. */
-/* Also, OBJECTS is the only optional entry. */
-NONFLUENT_BLOCK ::= NON_FLUENTS IDENT:name LCURLY 
-                           DOMAIN ASSIGN_EQUAL IDENT:domain SEMI
-                           OBJECTS LCURLY OBJECTS_LIST:objects RCURLY SEMI 
-                           NON_FLUENTS LCURLY PVAR_INST_LIST:nonfluents_list RCURLY SEMI 
-                           RCURLY
-			{: RESULT = new RDDL.NONFLUENTS(name,domain,objects,nonfluents_list); :} 
-		| NON_FLUENTS IDENT:name LCURLY 
-                           DOMAIN ASSIGN_EQUAL IDENT:domain SEMI
-                           NON_FLUENTS PVAR_INST_LIST:nonfluents_list SEMI 
-                           RCURLY
-			{: RESULT = new RDDL.NONFLUENTS(name,domain,null,nonfluents_list); :} 
 		;
 
 OBJECTS_LIST ::= OBJECTS_DEF:d            {: RESULT = new ArrayList(Arrays.asList(new Object[] {d})); :}
@@ -579,6 +514,7 @@ EXPR ::=  VAR:v   {: RESULT = new RDDL.LVAR(v); :}
 		| EXPR:e1 LESSEQ EXPR:e2 {: RESULT = new RDDL.COMP_EXPR(e1, e2, "<="); :}  
 		| NOT EXPR:b {: RESULT = new RDDL.NEG_EXPR(b); :} %prec UMINUS
 		| EXPR:b1 AND EXPR:b2 {: RESULT = new RDDL.CONN_EXPR(b1, b2, "^"); :}
+		| EXPR:b1 AMPERSAND EXPR:b2 {: RESULT = new RDDL.CONN_EXPR(b1, b2, "^"); :} /* At Thomas Keller's insistence, we allow both ^ and & for AND */
 		| EXPR:b1 OR EXPR:b2  {: RESULT = new RDDL.CONN_EXPR(b1, b2, "|"); :}
 		| EXPR:b1 IMPLY EXPR:b2  {: RESULT = new RDDL.CONN_EXPR(b1, b2, "=>"); :}
 		| EXPR:b1 EQUIV EXPR:b2  {: RESULT = new RDDL.CONN_EXPR(b1, b2, "<=>"); :}
@@ -607,10 +543,144 @@ EXPR ::=  VAR:v   {: RESULT = new RDDL.LVAR(v); :}
 		| UNIFORM LPAREN EXPR:l COMMA EXPR:u RPAREN    {: RESULT = new RDDL.Uniform(l,u); :}
 		| NORMAL LPAREN EXPR:mu COMMA EXPR:var RPAREN  {: RESULT = new RDDL.Normal(mu, var); :}
 		| EXPONENTIAL LPAREN EXPR:lambda RPAREN  {: RESULT = new RDDL.Exponential(lambda); :} 
-		| DISCRETE LPAREN IDENT:type COMMA LCONST_CASE_LIST:list RPAREN  {: RESULT = new RDDL.Discrete(type, list); :}
-		| MULTINOMIAL LPAREN IDENT:type COMMA EXPR:count COMMA LCONST_CASE_LIST:list RPAREN  {: RESULT = new RDDL.Multinomial(type, count, list); :}
+		| DISCRETE LPAREN IDENT:type COMMA LCONST_CASE_LIST:list RPAREN  {: RESULT = new RDDL.Discrete(type, list); :} 
+		| MULTINOMIAL LPAREN IDENT:type COMMA EXPR:count COMMA LCONST_CASE_LIST:list RPAREN  {: RESULT = new RDDL.Multinomial(type, count, list); :} 
 		| DIRICHLET LPAREN IDENT:type COMMA EXPR:alpha RPAREN  {: RESULT = new RDDL.Dirichlet(type, alpha); :} /* For now, just symmetric case */
 		| POISSON LPAREN EXPR:lambda RPAREN      {: RESULT = new RDDL.Poisson(lambda); :}
 		| WEIBULL LPAREN EXPR:shape COMMA EXPR:scale RPAREN      {: RESULT = new RDDL.Weibull(shape, scale); :}
 		| GAMMA   LPAREN EXPR:shape COMMA EXPR:scale RPAREN      {: RESULT = new RDDL.Gamma(shape, scale); :}
 		;
+	
+/* For simplicity in the NONFLUENT_BLOCK grammar, order matters. */
+/* Also, OBJECTS is the only optional entry. */
+NONFLUENT_BLOCK ::= NON_FLUENTS IDENT:name LCURLY 
+                           DOMAIN ASSIGN_EQUAL IDENT:domain SEMI
+                           OBJECTS LCURLY OBJECTS_LIST:objects RCURLY SEMI 
+                           NON_FLUENTS LCURLY PVAR_INST_LIST:nonfluents_list RCURLY SEMI 
+                           RCURLY
+			{: RESULT = new RDDL.NONFLUENTS(name,domain,objects,nonfluents_list); :} 
+		| NON_FLUENTS IDENT:name LCURLY 
+                           DOMAIN ASSIGN_EQUAL IDENT:domain SEMI
+                           NON_FLUENTS PVAR_INST_LIST:nonfluents_list SEMI 
+                           RCURLY
+			{: RESULT = new RDDL.NONFLUENTS(name,domain,null,nonfluents_list); :} 
+		;
+
+/* For simplicity in the INSTANCE_BLOCK grammar, order matters. */
+/* Also, OBJECTS and NONFLUENTS are the only optional entries. */
+INSTANCE_BLOCK ::= INSTANCE IDENT:name LCURLY 
+                           DOMAIN ASSIGN_EQUAL IDENT:domain SEMI
+                           NON_FLUENTS ASSIGN_EQUAL IDENT:nonfluents SEMI 
+                           OBJECTS LCURLY OBJECTS_LIST:objects RCURLY SEMI 
+                           INIT_STATE LCURLY PVAR_INST_LIST:state_list RCURLY SEMI 
+                           MAX_NONDEF_ACTIONS ASSIGN_EQUAL POS_INT_TYPE_OR_POS_INF:a SEMI
+                           HORIZON_SPEC:h SEMI
+                           DISCOUNT ASSIGN_EQUAL DOUBLE:d SEMI RCURLY
+			{: RESULT = new RDDL.INSTANCE(name,domain,nonfluents,objects,state_list,a,h,d); :} 
+		| INSTANCE IDENT:name LCURLY 
+                           DOMAIN ASSIGN_EQUAL IDENT:domain SEMI
+                           OBJECTS LCURLY OBJECTS_LIST:objects RCURLY SEMI 
+                           INIT_STATE LCURLY PVAR_INST_LIST:state_list RCURLY SEMI 
+                           MAX_NONDEF_ACTIONS ASSIGN_EQUAL POS_INT_TYPE_OR_POS_INF:a SEMI
+                           HORIZON_SPEC:h SEMI
+                           DISCOUNT ASSIGN_EQUAL DOUBLE:d SEMI RCURLY
+			{: RESULT = new RDDL.INSTANCE(name,domain,null,objects,state_list,a,h,d); :} 
+		| INSTANCE IDENT:name LCURLY 
+                           DOMAIN ASSIGN_EQUAL IDENT:domain SEMI
+                           NON_FLUENTS ASSIGN_EQUAL IDENT:nonfluents SEMI 
+                           INIT_STATE LCURLY PVAR_INST_LIST:state_list RCURLY SEMI 
+                           MAX_NONDEF_ACTIONS ASSIGN_EQUAL POS_INT_TYPE_OR_POS_INF:a SEMI
+                           HORIZON_SPEC:h SEMI
+                           DISCOUNT ASSIGN_EQUAL DOUBLE:d SEMI RCURLY
+			{: RESULT = new RDDL.INSTANCE(name,domain,nonfluents,null,state_list,a,h,d); :} 
+		| INSTANCE IDENT:name LCURLY 
+                           DOMAIN ASSIGN_EQUAL IDENT:domain SEMI
+                           INIT_STATE LCURLY PVAR_INST_LIST:state_list RCURLY SEMI 
+                           MAX_NONDEF_ACTIONS ASSIGN_EQUAL POS_INT_TYPE_OR_POS_INF:a SEMI
+                           HORIZON_SPEC:h SEMI
+                           DISCOUNT ASSIGN_EQUAL DOUBLE:d SEMI RCURLY
+			{: RESULT = new RDDL.INSTANCE(name,domain,null,null,state_list,a,h,d); :} 
+		| INSTANCE IDENT:name LCURLY 
+                           DOMAIN ASSIGN_EQUAL IDENT:domain SEMI
+                           NON_FLUENTS ASSIGN_EQUAL IDENT:nonfluents SEMI 
+                           OBJECTS LCURLY OBJECTS_LIST:objects RCURLY SEMI 
+                           MAX_NONDEF_ACTIONS ASSIGN_EQUAL POS_INT_TYPE_OR_POS_INF:a SEMI
+                           HORIZON_SPEC:h SEMI
+                           DISCOUNT ASSIGN_EQUAL DOUBLE:d SEMI RCURLY
+			{: RESULT = new RDDL.INSTANCE(name,domain,nonfluents,objects,new ArrayList(),a,h,d); :} 
+		| INSTANCE IDENT:name LCURLY 
+                           DOMAIN ASSIGN_EQUAL IDENT:domain SEMI
+                           OBJECTS LCURLY OBJECTS_LIST:objects RCURLY SEMI 
+                           MAX_NONDEF_ACTIONS ASSIGN_EQUAL POS_INT_TYPE_OR_POS_INF:a SEMI
+                           HORIZON_SPEC:h SEMI
+                           DISCOUNT ASSIGN_EQUAL DOUBLE:d SEMI RCURLY
+			{: RESULT = new RDDL.INSTANCE(name,domain,null,objects,new ArrayList(),a,h,d); :} 
+		| INSTANCE IDENT:name LCURLY 
+                           DOMAIN ASSIGN_EQUAL IDENT:domain SEMI
+                           NON_FLUENTS ASSIGN_EQUAL IDENT:nonfluents SEMI 
+                           MAX_NONDEF_ACTIONS ASSIGN_EQUAL POS_INT_TYPE_OR_POS_INF:a SEMI
+                           HORIZON_SPEC:h SEMI
+                           DISCOUNT ASSIGN_EQUAL DOUBLE:d SEMI RCURLY
+			{: RESULT = new RDDL.INSTANCE(name,domain,nonfluents,null,new ArrayList(),a,h,d); :} 
+		| INSTANCE IDENT:name LCURLY 
+                           DOMAIN ASSIGN_EQUAL IDENT:domain SEMI
+                           MAX_NONDEF_ACTIONS ASSIGN_EQUAL POS_INT_TYPE_OR_POS_INF:a SEMI
+                           HORIZON_SPEC:h SEMI
+                           DISCOUNT ASSIGN_EQUAL DOUBLE:d SEMI RCURLY
+			{: RESULT = new RDDL.INSTANCE(name,domain,null,null,new ArrayList(),a,h,d); :}
+/* New section omits MAX_NONDEF_ACTIONS */ 
+		| INSTANCE IDENT:name LCURLY 
+                           DOMAIN ASSIGN_EQUAL IDENT:domain SEMI
+                           NON_FLUENTS ASSIGN_EQUAL IDENT:nonfluents SEMI 
+                           OBJECTS LCURLY OBJECTS_LIST:objects RCURLY SEMI 
+                           INIT_STATE LCURLY PVAR_INST_LIST:state_list RCURLY SEMI 
+                           HORIZON_SPEC:h SEMI
+                           DISCOUNT ASSIGN_EQUAL DOUBLE:d SEMI RCURLY
+			{: RESULT = new RDDL.INSTANCE(name,domain,nonfluents,objects,state_list,null,h,d); :} 
+		| INSTANCE IDENT:name LCURLY 
+                           DOMAIN ASSIGN_EQUAL IDENT:domain SEMI
+                           OBJECTS LCURLY OBJECTS_LIST:objects RCURLY SEMI 
+                           INIT_STATE LCURLY PVAR_INST_LIST:state_list RCURLY SEMI 
+                           HORIZON_SPEC:h SEMI
+                           DISCOUNT ASSIGN_EQUAL DOUBLE:d SEMI RCURLY
+			{: RESULT = new RDDL.INSTANCE(name,domain,null,objects,state_list,null,h,d); :} 
+		| INSTANCE IDENT:name LCURLY 
+                           DOMAIN ASSIGN_EQUAL IDENT:domain SEMI
+                           NON_FLUENTS ASSIGN_EQUAL IDENT:nonfluents SEMI 
+                           INIT_STATE LCURLY PVAR_INST_LIST:state_list RCURLY SEMI 
+                           HORIZON_SPEC:h SEMI
+                           DISCOUNT ASSIGN_EQUAL DOUBLE:d SEMI RCURLY
+			{: RESULT = new RDDL.INSTANCE(name,domain,nonfluents,null,state_list,null,h,d); :} 
+		| INSTANCE IDENT:name LCURLY 
+                           DOMAIN ASSIGN_EQUAL IDENT:domain SEMI
+                           INIT_STATE LCURLY PVAR_INST_LIST:state_list RCURLY SEMI 
+                           HORIZON_SPEC:h SEMI
+                           DISCOUNT ASSIGN_EQUAL DOUBLE:d SEMI RCURLY
+			{: RESULT = new RDDL.INSTANCE(name,domain,null,null,state_list,null,h,d); :} 
+		| INSTANCE IDENT:name LCURLY 
+                           DOMAIN ASSIGN_EQUAL IDENT:domain SEMI
+                           NON_FLUENTS ASSIGN_EQUAL IDENT:nonfluents SEMI 
+                           OBJECTS LCURLY OBJECTS_LIST:objects RCURLY SEMI 
+                           HORIZON_SPEC:h SEMI
+                           DISCOUNT ASSIGN_EQUAL DOUBLE:d SEMI RCURLY
+			{: RESULT = new RDDL.INSTANCE(name,domain,nonfluents,objects,new ArrayList(),null,h,d); :} 
+		| INSTANCE IDENT:name LCURLY 
+                           DOMAIN ASSIGN_EQUAL IDENT:domain SEMI
+                           OBJECTS LCURLY OBJECTS_LIST:objects RCURLY SEMI 
+                           HORIZON_SPEC:h SEMI
+                           DISCOUNT ASSIGN_EQUAL DOUBLE:d SEMI RCURLY
+			{: RESULT = new RDDL.INSTANCE(name,domain,null,objects,new ArrayList(),null,h,d); :} 
+		| INSTANCE IDENT:name LCURLY 
+                           DOMAIN ASSIGN_EQUAL IDENT:domain SEMI
+                           NON_FLUENTS ASSIGN_EQUAL IDENT:nonfluents SEMI 
+                           HORIZON_SPEC:h SEMI
+                           DISCOUNT ASSIGN_EQUAL DOUBLE:d SEMI RCURLY
+			{: RESULT = new RDDL.INSTANCE(name,domain,nonfluents,null,new ArrayList(),null,h,d); :} 
+		| INSTANCE IDENT:name LCURLY 
+                           DOMAIN ASSIGN_EQUAL IDENT:domain SEMI
+                           HORIZON_SPEC:h SEMI
+                           DISCOUNT ASSIGN_EQUAL DOUBLE:d SEMI RCURLY
+			{: RESULT = new RDDL.INSTANCE(name,domain,null,null,new ArrayList(),null,h,d); :} 
+		;
+
+		

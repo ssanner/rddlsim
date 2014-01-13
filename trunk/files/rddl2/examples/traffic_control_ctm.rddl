@@ -1,0 +1,330 @@
+////////////////////////////////////////////////////////////////////
+// Cell Transition Model (CTM) of Traffic with Signal Control
+//
+// Follows CTM specification and derivation in this report:
+// 
+//  http://users.cecs.anu.edu.au/~ssanner/Papers/TanNguyen_Report.pdf
+//
+// @author Tan Nguyen (tan1889@gmail.com)
+//
+// Modified by Scott Sanner for RDDL2.
+////////////////////////////////////////////////////////////////////
+
+domain traffic_control_ctm {
+
+	types { 
+		cell : object;
+		intersection : object;
+		signal-phase : {@ALL-RED, @WEST-EAST, @ALL-RED2, @NORTH-SOUTH};
+	};
+      	
+	pvariables {
+
+		w(cell) : { non-fluent, real, default = 40.0 };		// shock-wave speed (m/s) w>v
+		v(cell) : { non-fluent, real, default = 20.0 };		// free-flow speed (m/s)
+		l(cell) : { non-fluent, real, default = 80.0 };		// Length of the cell (m) 
+		k(cell): { non-fluent, real, default = 0.3 };		// Jam (max) density of the cell (cars/m), here assuming 3 lanes
+		p(cell, cell): { non-fluent, real, default = 0.0 };	// only for merges and diverges: probability of flow from c1 -> c2, 
+				
+		NEXT(cell, cell) : { non-fluent, bool, default = false };	// does cell x flow to cell y		
+		FIRST(cell) : { non-fluent, bool, default = false };		// is cell x the first cell (sending traffic)
+		LAST(cell) : { non-fluent, bool, default = false };			// is cell y the last cell (receving traffic)
+		MERGE-CELL(cell) : { non-fluent, bool, default = false };	// is cell x the merge cell
+		DIVERGE-CELL(cell) : { non-fluent, bool, default = false };	// is cell x the diverge cell
+			
+		signal(intersection) : { action-fluent, signal-phase, default = @ALL-RED };
+		FLOWS-TO-INTERSECTION(cell, intersection, signal-phase)  : { non-fluent, bool, default = false };
+
+		n(cell) : { state-fluent, real, default = 0.0 };		// Actual number of cars in cell
+		
+		send(cell) : { interm-fluent, real, level = 1 }; 		// Sending capacity
+		recv(cell) : { interm-fluent, real, level = 1 };		// Receiving capacity
+		flow(cell, cell) : { interm-fluent, real, level = 2 };	// Flow into a cell
+	};
+  
+	cdfs {
+		
+		// calculate the send capacity of each cell
+		send(?c) = 	if (v(?c) * n(?c)/l(?c)< v(?c) * k(?c)) then 
+						v(?c) * n(?c)/l(?c)
+					else  
+						v(?c) * k(?c);
+		
+		// calculate the receiving capacity of each cell				 	 
+		recv(?c) = 	if (v(?c) * k(?c) < w(?c) * (k(?c) - (n(?c)/l(?c)))) then 
+						v(?c) * k(?c) 
+					else 
+						w(?c) * (k(?c) - (n(?c)/l(?c)));
+
+		// calculate the actual flow from cell c1 to cell c2
+		flow(?c1, ?c2) = 	if (NEXT(?c1, ?c2)) then (
+		
+								// cell flows to intersection without green light -> flow = 0
+								if (exists_{?i : intersection, ?s : signal-phase} [FLOWS-TO-INTERSECTION(?c1,?i,?s) ^ (?s ~= signal(?i))]) then
+									0.0 
+									
+								// cell flows to a merge cell (exactly two cells flow into a merge cell!)								
+								else if (MERGE-CELL(?c2)) then (
+									if (exists_{?c3 : cell} NEXT(?c3,?c2) ^ (?c3 ~= ?c1)) then (
+										if (p(?c1, ?c2) == 0) then
+											0.0
+										else if (recv(?c2) > send(?c1) + [sum_{?c3: cell} send(?c3) * (NEXT(?c3,?c2) ^ (?c3 ~= ?c1))]) then
+											send(?c1)
+										else if (((send(?c1) >= recv(?c2) - [sum_{?c3: cell} send(?c3) * (NEXT(?c3,?c2) ^ (?c3 ~= ?c1))]) 
+													^ (recv(?c2) - [sum_{?c3: cell} send(?c3) * (NEXT(?c3,?c2) ^ (?c3 ~= ?c1))] >= p(?c1, ?c2)*recv(?c2)))
+												 | ((p(?c1, ?c2)*recv(?c2) >= recv(?c2) - [sum_{?c3: cell} send(?c3) * (NEXT(?c3,?c2) ^ (?c3 ~= ?c1))]) 
+													^ (recv(?c2) - [sum_{?c3: cell} send(?c3) * (NEXT(?c3,?c2) ^ (?c3 ~= ?c1))] >= send(?c1)))) then
+											recv(?c2) - [sum_{?c3: cell} send(?c3) * (NEXT(?c3,?c2) ^ (?c3 ~= ?c1))]
+										else if (((recv(?c2) - [sum_{?c3: cell} send(?c3) * (NEXT(?c3,?c2) ^ (?c3 ~= ?c1))] >= send(?c1)) 
+													^ (send(?c1) >= p(?c1, ?c2)*recv(?c2)))
+												| ((p(?c1, ?c2)*recv(?c2) >= send(?c1)) 
+													^ (send(?c1) >= recv(?c2) - [sum_{?c3: cell} send(?c3) * (NEXT(?c3,?c2) ^ (?c3 ~= ?c1))]))) then
+											send(?c1)
+										else
+											p(?c1, ?c2) * recv(?c2)										
+						 			)
+						 			else 
+						 				0.0
+						 		)
+						 		
+						 		// flow of a diverge cell = predefined percentage
+						 		else if (DIVERGE-CELL(?c1)) then (
+									if (p(?c1, ?c2) * send(?c1) < recv(?c2)) then 
+										p(?c1, ?c2) * send(?c1)
+									else 
+										recv(?c2)		 			
+						 		)
+						 		
+						 		// other cases = normal cell -> min {send, receive}
+								else (
+									if (send(?c1) < recv(?c2)) then 
+										send(?c1)
+									else 
+										recv(?c2)
+								)
+							)
+							else 
+								0.0;				
+				
+	    n'(?c) = n(?c) 	+ [sum_{?c1 : cell} flow(?c1, ?c) * NEXT(?c1, ?c)]
+	    				- [sum_{?c2 : cell} flow(?c, ?c2) * NEXT(?c, ?c2)];	    					    				
+	    				
+	};
+    	
+	state-action-constraints {
+		// ensure exactly two cells flow into a merge cell
+		forall_{?c : cell} [MERGE-CELL(?c) 
+				=> ((sum_{?c1 : cell} NEXT(?c1, ?c)) == 2)];
+		// ensure a diverge cell flows into exactly two cells
+		forall_{?c : cell} [DIVERGE-CELL(?c) 
+				=> ((sum_{?c2 : cell} NEXT(?c, ?c2)) == 2)];
+		// ensure other (normal) cells flow into exactly one cell
+		forall_{?c : cell} [(~DIVERGE-CELL(?c) ^ ~MERGE-CELL(?c) ^ ~LAST(?c)) 
+				=> ((sum_{?c2 : cell} NEXT(?c, ?c2)) == 1)];
+	};    	    	
+    	
+    // reward is number of cars gone through (arrived at last cell)
+	reward = sum_{?c : cell} n(?c) * (LAST(?c));
+}
+
+///////////////////////////////////////////////////////////////////  
+// One-way grid of 3x3 intersections
+///////////////////////////////////////////////////////////////////
+ 
+non-fluents grid {
+	domain = traffic;
+	objects {
+		cell : {
+			R_0_5, R_0_11, R_0_17, R_1_5, R_1_11, R_1_17, R_2_5, R_2_11, 
+			R_2_17, R_3_5, R_3_11, R_3_17, R_4_5, R_4_11, R_4_17, D_5_0, 
+			D_5_1, D_5_2, D_5_3, D_5_4, D_5_6, D_5_7, D_5_8, D_5_9, D_5_10, 
+			D_5_12, D_5_13, D_5_14, D_5_15, D_5_16, D_5_18, D_5_19, D_5_20, 
+			D_5_21, D_5_22, R_6_5, R_6_11, R_6_17, R_7_5, R_7_11, R_7_17, 
+			R_8_5, R_8_11, R_8_17, R_9_5, R_9_11, R_9_17, R_10_5, R_10_11, 
+			R_10_17, D_11_0, D_11_1, D_11_2, D_11_3, D_11_4, D_11_6, D_11_7, 
+			D_11_8, D_11_9, D_11_10, D_11_12, D_11_13, D_11_14, D_11_15, 
+			D_11_16, D_11_18, D_11_19, D_11_20, D_11_21, D_11_22, R_12_5, 
+			R_12_11, R_12_17, R_13_5, R_13_11, R_13_17, R_14_5, R_14_11, 
+			R_14_17, R_15_5, R_15_11, R_15_17, R_16_5, R_16_11, R_16_17, 
+			D_17_0, D_17_1, D_17_2, D_17_3, D_17_4, D_17_6, D_17_7, D_17_8, 
+			D_17_9, D_17_10, D_17_12, D_17_13, D_17_14, D_17_15, D_17_16, 
+			D_17_18, D_17_19, D_17_20, D_17_21, D_17_22, R_18_5, R_18_11, 
+			R_18_17, R_19_5, R_19_11, R_19_17, R_20_5, R_20_11, R_20_17, 
+			R_21_5, R_21_11, R_21_17, R_22_5, R_22_11, R_22_17
+		};
+		intersection : {
+			I_5_5, I_11_11
+		};
+	};
+
+	non-fluents {
+		FIRST(R_0_5);
+		k(R_0_5) = 10000.0;
+		NEXT(R_0_5, R_1_5);
+		k(R_1_5) = 0.15;
+		FIRST(R_0_11);
+		k(R_0_11) = 10000.0;
+		NEXT(R_0_11, R_1_11);
+		k(R_1_11) = 0.15;
+		FIRST(R_0_17);
+		k(R_0_17) = 10000.0;
+		NEXT(R_0_17, R_1_17);
+		k(R_1_17) = 0.15;
+		NEXT(R_1_5, R_2_5);
+		NEXT(R_1_11, R_2_11);
+		NEXT(R_1_17, R_2_17);
+		NEXT(R_2_5, R_3_5);
+		NEXT(R_2_11, R_3_11);
+		NEXT(R_2_17, R_3_17);
+		NEXT(R_3_5, R_4_5);
+		NEXT(R_3_11, R_4_11);
+		NEXT(R_3_17, R_4_17);
+		NEXT(R_4_5, R_6_5);
+		NEXT(R_4_11, R_6_11);
+		NEXT(R_4_17, R_6_17);
+		FIRST(D_5_0);
+		k(D_5_0) = 10000.0;
+		NEXT(D_5_0, D_5_1);
+		k(D_5_1) = 0.15;
+		NEXT(D_5_1, D_5_2);
+		NEXT(D_5_2, D_5_3);
+		NEXT(D_5_3, D_5_4);
+		NEXT(D_5_4, D_5_6);
+		NEXT(D_5_6, D_5_7);
+		NEXT(D_5_7, D_5_8);
+		NEXT(D_5_8, D_5_9);
+		NEXT(D_5_9, D_5_10);
+		NEXT(D_5_10, D_5_12);
+		NEXT(D_5_12, D_5_13);
+		NEXT(D_5_13, D_5_14);
+		NEXT(D_5_14, D_5_15);
+		NEXT(D_5_15, D_5_16);
+		NEXT(D_5_16, D_5_18);
+		NEXT(D_5_18, D_5_19);
+		NEXT(D_5_19, D_5_20);
+		NEXT(D_5_20, D_5_21);
+		NEXT(D_5_21, D_5_22);
+		LAST(D_5_22);
+		k(D_5_22) = 9999.0;
+		NEXT(R_6_5, R_7_5);
+		NEXT(R_6_11, R_7_11);
+		NEXT(R_6_17, R_7_17);
+		NEXT(R_7_5, R_8_5);
+		NEXT(R_7_11, R_8_11);
+		NEXT(R_7_17, R_8_17);
+		NEXT(R_8_5, R_9_5);
+		NEXT(R_8_11, R_9_11);
+		NEXT(R_8_17, R_9_17);
+		NEXT(R_9_5, R_10_5);
+		NEXT(R_9_11, R_10_11);
+		NEXT(R_9_17, R_10_17);
+		NEXT(R_10_5, R_12_5);
+		NEXT(R_10_11, R_12_11);
+		NEXT(R_10_17, R_12_17);
+		FIRST(D_11_0);
+		k(D_11_0) = 10000.0;
+		NEXT(D_11_0, D_11_1);
+		k(D_11_1) = 0.15;
+		NEXT(D_11_1, D_11_2);
+		NEXT(D_11_2, D_11_3);
+		NEXT(D_11_3, D_11_4);
+		NEXT(D_11_4, D_11_6);
+		NEXT(D_11_6, D_11_7);
+		NEXT(D_11_7, D_11_8);
+		NEXT(D_11_8, D_11_9);
+		NEXT(D_11_9, D_11_10);
+		NEXT(D_11_10, D_11_12);
+		NEXT(D_11_12, D_11_13);
+		NEXT(D_11_13, D_11_14);
+		NEXT(D_11_14, D_11_15);
+		NEXT(D_11_15, D_11_16);
+		NEXT(D_11_16, D_11_18);
+		NEXT(D_11_18, D_11_19);
+		NEXT(D_11_19, D_11_20);
+		NEXT(D_11_20, D_11_21);
+		NEXT(D_11_21, D_11_22);
+		LAST(D_11_22);
+		k(D_11_22) = 9999.0;
+		NEXT(R_12_5, R_13_5);
+		NEXT(R_12_11, R_13_11);
+		NEXT(R_12_17, R_13_17);
+		NEXT(R_13_5, R_14_5);
+		NEXT(R_13_11, R_14_11);
+		NEXT(R_13_17, R_14_17);
+		NEXT(R_14_5, R_15_5);
+		NEXT(R_14_11, R_15_11);
+		NEXT(R_14_17, R_15_17);
+		NEXT(R_15_5, R_16_5);
+		NEXT(R_15_11, R_16_11);
+		NEXT(R_15_17, R_16_17);
+		NEXT(R_16_5, R_18_5);
+		NEXT(R_16_11, R_18_11);
+		NEXT(R_16_17, R_18_17);
+		FIRST(D_17_0);
+		k(D_17_0) = 10000.0;
+		NEXT(D_17_0, D_17_1);
+		k(D_17_1) = 0.15;
+		NEXT(D_17_1, D_17_2);
+		NEXT(D_17_2, D_17_3);
+		NEXT(D_17_3, D_17_4);
+		NEXT(D_17_4, D_17_6);
+		NEXT(D_17_6, D_17_7);
+		NEXT(D_17_7, D_17_8);
+		NEXT(D_17_8, D_17_9);
+		NEXT(D_17_9, D_17_10);
+		NEXT(D_17_10, D_17_12);
+		NEXT(D_17_12, D_17_13);
+		NEXT(D_17_13, D_17_14);
+		NEXT(D_17_14, D_17_15);
+		NEXT(D_17_15, D_17_16);
+		NEXT(D_17_16, D_17_18);
+		NEXT(D_17_18, D_17_19);
+		NEXT(D_17_19, D_17_20);
+		NEXT(D_17_20, D_17_21);
+		NEXT(D_17_21, D_17_22);
+		LAST(D_17_22);
+		k(D_17_22) = 9999.0;
+		NEXT(R_18_5, R_19_5);
+		NEXT(R_18_11, R_19_11);
+		NEXT(R_18_17, R_19_17);
+		NEXT(R_19_5, R_20_5);
+		NEXT(R_19_11, R_20_11);
+		NEXT(R_19_17, R_20_17);
+		NEXT(R_20_5, R_21_5);
+		NEXT(R_20_11, R_21_11);
+		NEXT(R_20_17, R_21_17);
+		NEXT(R_21_5, R_22_5);
+		NEXT(R_21_11, R_22_11);
+		NEXT(R_21_17, R_22_17);
+		LAST(R_22_5);
+		k(R_22_5) = 9999.0;
+		LAST(R_22_11);
+		k(R_22_11) = 9999.0;
+		LAST(R_22_17);
+		k(R_22_17) = 9999.0;
+		FLOWS-TO-INTERSECTION (R_4_5, I_5_5, @WEST-EAST);
+		FLOWS-TO-INTERSECTION (D_5_4, I_5_5, @NORHT-SOUTH);
+		FLOWS-TO-INTERSECTION (R_10_11, I_11_11, @WEST-EAST);
+		FLOWS-TO-INTERSECTION (D_11_10, I_11_11, @NORHT-SOUTH);
+		//signal(I_5_5) = @WEST-EAST;
+		//signal(I_11_11) = @NORHT-SOUTH;
+	};
+}
+
+instance is_grid {
+
+	domain = traffic;	
+	non-fluents = grid;
+	init-state { 
+		n(R_0_5) = 10000.0; 
+		n(R_0_11) = 10000.0; 
+		n(R_0_17) = 10000.0; 
+		n(D_5_0) = 10000.0; 
+		n(D_11_0) = 10000.0; 
+		n(D_17_0) = 10000.0; 
+	};
+  
+	max-nondef-actions = 2;
+	horizon  = 100;
+	discount = 1.0;
+}
