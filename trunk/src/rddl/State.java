@@ -340,7 +340,7 @@ public class State {
 		try {
 			HashMap<LVAR,LCONST> subs = new HashMap<LVAR,LCONST>();
 			return (Boolean)cond.sample(subs, this, null);
-		} catch (Exception e) {
+		} catch (EvalException e) {
 			System.out.println("\n***SIMULATOR ERROR EVALUATING TERMINATION CONDITION: " + cond);
 			throw e;
 		}
