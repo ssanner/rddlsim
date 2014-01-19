@@ -2932,8 +2932,8 @@ public class RDDL {
 	// Special handling for count above a ground evaluable expression
 	// (no int/real vars).
 	public abstract static class BOOL_EXPR extends EXPR { 
-		public static final Boolean TRUE  = new Boolean(true);
-		public static final Boolean FALSE = new Boolean(false);
+		public static final Boolean TRUE  = Boolean.valueOf(true);
+		public static final Boolean FALSE = Boolean.valueOf(false);
 	}
 
 	// TODO: should never put a RandomDataGenerator variable directly under a quantifier,
