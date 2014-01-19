@@ -75,8 +75,7 @@ public class Graph {
 	}
 	
 	public Graph(boolean directed, boolean bottom_to_top, boolean left_right, boolean multi_edges) {
-		_bDirected = directed; // Just used for printing, does not restrict
-								// links
+		_bDirected = directed; // Just used for printing, does not restrict links
 		_bLeftRight = left_right;
 		_bSuppressRank = false;
 		_hmNodes = new HashMap(); // Maps to size
@@ -607,7 +606,12 @@ public class Graph {
 	}
 	
 	public void launchViewer(int width, int height) {
-		launchViewer(width, height, 0, 0, 20);
+		try {
+			launchViewer(width, height, 0, 0, 20);
+		} catch (Throwable t) {
+			System.err.println(t);
+			t.printStackTrace(System.err);
+		}
 	}
 		
 	public void launchViewer(int w, int h, int x_off, int y_off, int text_h) {
@@ -1091,6 +1095,157 @@ public class Graph {
 		order.addFirst(var);
 	}
 
+	public HashSet<Object> getSelfCycles() {
+		HashSet<Object> self_cycles = new HashSet<Object>();
+		Set vertices = _hmNodes.keySet();
+		for (Object v : vertices) {
+			Set edges = getLinkSet(v, false);
+			if (edges != null && edges.contains(v))
+				self_cycles.add(v);
+		}
+		return self_cycles;
+	}
+	
+	// Note: not thread safe unless algorithm is synchronized
+    int _scc_index = 0;
+    Stack<Object> _scc_stack = new Stack<Object>();
+    HashSet<HashSet<Object>> _scc_set        = new HashSet<HashSet<Object>>();
+    HashMap<Object, Integer> _scc_node_index = new HashMap<Object, Integer>();
+    HashMap<Object, Integer> _scc_low_link   = new HashMap<Object, Integer>();
+
+	// Retrieve sets of all strongly connected components in a graph
+	public HashSet<HashSet<Object>> getStronglyConnectedComponents() {
+
+		if (!_bDirected) {
+			System.err.println("WARNING: did you mean to evaluate strongly connected components on an undirected graph?");
+			return null;
+		}
+
+		_scc_index = 0;
+		_scc_stack.clear();
+		_scc_set.clear();
+		_scc_node_index.clear();
+		_scc_low_link.clear();
+		
+		Set vertices = _hmNodes.keySet();
+		for (Object v : vertices)
+			if (!countExists(_scc_node_index, v))
+				strongConnect(v);
+
+		return new HashSet<HashSet<Object>>(_scc_set); // _scc_set may be cleared on a subsequent call
+	}
+
+	private void strongConnect(Object v) {
+
+		setCount(_scc_node_index, v, _scc_index);
+		setCount(_scc_low_link, v, _scc_index);
+		++_scc_index;
+		_scc_stack.push(v);
+
+		Set edges = getLinkSet(v, false);
+		if (edges != null)
+			for (Object v2 : edges) {
+
+				if (!countExists(_scc_node_index, v2)) {
+					strongConnect(v2);
+					setCount(_scc_low_link, v,
+							Math.min(getCount(_scc_low_link, v),
+									getCount(_scc_low_link, v2)));
+				} else if (_scc_stack.contains(v2)) {
+					setCount(_scc_low_link, v,
+							Math.min(getCount(_scc_low_link, v),
+									getCount(_scc_node_index, v2)));
+				}
+			}
+
+		if (getCount(_scc_low_link, v) == getCount(_scc_node_index, v)) {
+			HashSet<Object> subset = new HashSet<Object>();
+			Object v2 = null;
+
+			while (!v.equals(v2)) {
+				v2 = _scc_stack.pop();
+				subset.add(v2);
+			}
+
+			_scc_set.add(subset);
+		}
+
+	}
+	
+	// Detects any cycle including self-cycles
+	// O(E+V) algorithm for cycle detection
+	public boolean hasCycle() {
+		
+		Set vertices = _hmNodes.keySet();
+		if (vertices.size() == 0)
+			return false; // No cycles in an empty graph
+		if (!_bDirected) {
+			System.err.println("WARNING: did you mean to do cycle detection on an undirected graph?");
+			return _hmLinks.size() > 0; // An undirected graph with any link has a cycle
+		}
+
+		Queue<Object> q; // The original code was written before Java generics existed!
+		long counter = 0;
+		HashMap<Object, Integer> in_degree = new HashMap<Object, Integer>();
+
+		// Calculate the in-degree of all vertices and store 
+		for (Object v : vertices) {
+			Set edges = getLinkSet(v, false);
+			if (edges == null)
+				continue;
+			for (Object dest : edges)
+				incCount(in_degree, dest, 1);
+		}
+		// Find all vertices with in-degree == 0 (fringe nodes) and put in queue
+		q = new LinkedList<Object>();
+		for (Object v : vertices) {
+			if (getCount(in_degree, v) == 0)
+				q.add(v);
+		}
+		if (q.size() == 0)
+			return true; // Cycle found not all vertices have in-bound edges
+
+		// Remove all edges from fringe_nodes and add the destinations of
+		// those edges if they themselves become fringe nodes.  If every
+		// node does not become a fringe node, it is because there is a
+		// cycle that prevents it from being added to the queue.
+		for (counter = 0; !q.isEmpty(); counter++) {
+			Object fringe_node = q.remove();
+			Set edges = getLinkSet(fringe_node, false);
+			if (edges == null)
+				continue;
+			for (Object dest : edges) {
+				if (incCount(in_degree, dest, -1) == 0) {
+					q.add(dest);
+				}
+			}
+		}
+		if (counter != vertices.size()) {
+			return true; // Cycle found
+		}
+		return false;
+	}
+
+	public void setCount(HashMap<Object, Integer> obj2int, Object v, int val) {
+		obj2int.put(v, val);
+	}
+
+	public int incCount(HashMap<Object, Integer> obj2int, Object v, int amount) {
+		Integer val = obj2int.get(v);
+		val = (val == null) ? amount : val + amount;
+		obj2int.put(v, val);
+		return val;
+	}
+	
+	public int getCount(HashMap<Object,Integer> obj2int, Object v) {
+		Integer val = obj2int.get(v);
+		return (val == null) ? 0 : val;
+	}
+	
+	public boolean countExists(HashMap<Object,Integer> obj2int, Object v) {
+		return (obj2int.get(v) != null);
+	}
+	   
 	// ///////////////////////////////////////////////////////////////////////////
 	// Test Code
 	// ///////////////////////////////////////////////////////////////////////////
@@ -1103,9 +1258,10 @@ public class Graph {
 		g.addUniLink("a", "b");
 		g.addUniLink("a", "d");
 		g.addUniLink("b", "c");
-		g.addUniLink("a", "c");
+		//g.addUniLink("a", "c");
 		g.addUniLink("b", "e");
 		g.addUniLink("a", "f");
+		g.addUniLink("c", "a");
 		g.addSameRank(Arrays.asList(new String[] {"f", "e", "c"}));
 		g.setSuppressRank(false);
 		g.genDotFile("graph_test.dot");
@@ -1114,6 +1270,8 @@ public class Graph {
 		System.out.println(g.format());
 		
 		System.out.println("Topological sort of nodes: " + g.topologicalSort(false));
+		System.out.println("Has cycle: " + g.hasCycle());
+		System.out.println("Strongly connected components: " + g.getStronglyConnectedComponents());
 	}
 		
 	public static void main2(String[] args) {
@@ -1154,6 +1312,8 @@ public class Graph {
 		g.computeTreeWidth(order);
 		System.out.println("MAX Bin Size: " + g._df.format(g._dMaxBinaryWidth));
 		System.out.println("TW:           " + g._nTreeWidth + "\n");
+		System.out.println("Has cycle: " + g.hasCycle());
+		System.out.println("Strongly connected components: " + g.getStronglyConnectedComponents());
 	}
 
 }

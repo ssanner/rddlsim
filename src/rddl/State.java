@@ -10,8 +10,12 @@
 
 package rddl;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.TreeMap;
@@ -41,6 +45,7 @@ import rddl.RDDL.STRUCT_TYPE_DEF;
 import rddl.RDDL.STRUCT_VAL;
 import rddl.RDDL.TYPE_DEF;
 import rddl.RDDL.TYPE_NAME;
+import rddl.viz.RDDL2Graph;
 import util.Pair;
 
 public class State {
@@ -83,12 +88,19 @@ public class State {
 	public HashMap<PVAR_NAME,HashMap<ArrayList<LCONST>,Object>> _interm;
 	public HashMap<PVAR_NAME,HashMap<ArrayList<LCONST>,Object>> _observ;
 
+	// Orderings for evaluating derived and intermediate fluents
+	public ArrayList<Pair> _alIntermGfluentOrdering  = new ArrayList<Pair>();
+	public ArrayList<Pair> _alDerivedGfluentOrdering = new ArrayList<Pair>();
+
 	// Constraints
 	//public ArrayList<BOOL_EXPR> _alConstraints;
 	public ArrayList<BOOL_EXPR> _alActionPreconditions;
 	public ArrayList<BOOL_EXPR> _alStateInvariants;
 	public EXPR _reward;
 	public int _nMaxNondefActions = -1;
+	
+	// Underlying graphical model
+	public RDDL2Graph _r2g = null;
 	
 	// Temporarily holds next state while it is being computed
 	public HashMap<PVAR_NAME,HashMap<ArrayList<LCONST>,Object>> _nextState;
@@ -202,6 +214,7 @@ public class State {
 		_alActionNames.clear();
 		_alObservNames.clear();
 		_alIntermNames.clear();
+		boolean undefined_levels = false;
 		for (Map.Entry<PVAR_NAME,PVARIABLE_DEF> e : _hmPVariables.entrySet()) {
 			PVAR_NAME pname   = e.getKey();
 			PVARIABLE_DEF def = e.getValue();
@@ -239,8 +252,11 @@ public class State {
 				_alObservNames.add(pname);
 				_observ.put(pname, new HashMap<ArrayList<LCONST>,Object>());
 			} else if (def instanceof PVARIABLE_INTERM_DEF) {
+				int level = ((PVARIABLE_INTERM_DEF)def)._nLevel;
+				if (level < 0)
+					undefined_levels = true; 
 				_alIntermNames.add(pname);
-				_tmIntermNames.put(new Pair(((PVARIABLE_INTERM_DEF)def)._nLevel, pname), pname);
+				_tmIntermNames.put(new Pair(level, pname), pname);
 				_interm.put(pname, new HashMap<ArrayList<LCONST>,Object>());
 			}
 		}
@@ -254,13 +270,66 @@ public class State {
 		setPVariables(_state, init_state);
 		if (nonfluents != null)
 			setPVariables(_nonfluents, nonfluents);
+			
+		// Derive fluent ordering
+		try {
+			_r2g = new RDDL2Graph(this);
+			deriveDAGOrdering();
+			//System.out.println("Derived: " + _alDerivedGfluentOrdering);
+			//System.out.println("Interm:  " + _alIntermGfluentOrdering);
+		} catch (Exception e) {
+			System.out.println("Could not derive legal fluent ordering:\n" + e);
+			e.printStackTrace();
+			System.exit(1);
+		}
 		
 		// Compute derived fluents from state
 		try {
 			computeDerivedFluents();
 		} catch (EvalException e) {
-			System.out.println("Could not initialize derived fluents in initial state:\n" + e);
+			System.out.println("Could not evaluate/initialize derived fluents in initial state:\n" + e);
+			System.out.println("**Ensure that derived fluents only depend on other derived fluents and state fluents (not intermediate or observation fluents)");
 			System.exit(1);
+		}
+	}
+	
+	private void deriveDAGOrdering() throws Exception {
+
+		// First we need to detect cycles and exit if we found any		
+		if (_r2g._graph.hasCycle()) {
+		
+			// General loops
+			StringBuilder msg = new StringBuilder();
+			msg.append("\nERROR: the DBN dependency graph contains one or more cycles as follows:");
+			HashSet<HashSet<Object>> sccs = _r2g._graph.getStronglyConnectedComponents();
+			for (HashSet<Object> connected_component : sccs)
+				if (connected_component.size() > 1)
+					System.err.println("- Cycle: " + connected_component);
+			
+			// Self-cycles 
+			HashSet<Object> self_cycles = _r2g._graph.getSelfCycles();
+			for (Object v : self_cycles)
+				msg.append("- Self-cycle: [" + v + "]");
+			
+			throw new Exception(msg.toString());
+		}
+		
+		// No cycles, extract an ordering
+		List ordering = _r2g._graph.topologicalSort(false);
+		for (Object fluent_name : ordering) {		
+			Pair gfluent = _r2g._hmName2IntermGfluent.get((String)fluent_name);
+
+			// We only want interms and derived predicates and only these are in the HashMap
+			if (gfluent != null) { 
+
+				PVARIABLE_INTERM_DEF def = (PVARIABLE_INTERM_DEF)_hmPVariables.get((PVAR_NAME)gfluent._o1);
+				
+				// Separate lists, eval derived then interm, add parents before children since we have to evaluate top-down
+				if (def._bDerived)
+					_alDerivedGfluentOrdering.add(gfluent); 
+				else						
+					_alIntermGfluentOrdering.add(gfluent); 
+			}
 		}
 	}
 
@@ -275,10 +344,13 @@ public class State {
 			System.exit(1);
 		}
 		
+		// Merge constants without duplication
 		ArrayList<LCONST> new_constants = new ArrayList<LCONST>(constants);
 		ArrayList<LCONST> cur_constants = _hmObject2Consts.get(object_class);
-		if (cur_constants != null)
-			new_constants.addAll(cur_constants);
+		if (cur_constants != null) 
+			for (LCONST c : cur_constants)
+				if (!new_constants.contains(c))
+					new_constants.add(c);
 		_hmObject2Consts.put(object_class, new_constants);
 	}
 	
@@ -357,42 +429,32 @@ public class State {
 		//System.out.println("Starting state: " + _state + "\n");
 		//System.out.println("Starting nonfluents: " + _nonfluents + "\n");
 		
-		// First compute intermediate variables, level-by-level
+		// First compute intermediate variables (derived should have already been computed)
 		HashMap<LVAR,LCONST> subs = new HashMap<LVAR,LCONST>();
 		if (DISPLAY_UPDATES) System.out.println("Updating intermediate variables");
-		for (Map.Entry<Pair, PVAR_NAME> e : _tmIntermNames.entrySet()) {
-			int level   = (Integer)e.getKey()._o1;
-			PVAR_NAME p = e.getValue();
+		for (Pair ifluent : _alIntermGfluentOrdering) {
 			
-			// Derived variables should have already been computed at this point
-			PVARIABLE_INTERM_DEF def = (PVARIABLE_INTERM_DEF)_hmPVariables.get(p);
-			if (def._bDerived)
-				continue;
-
-			// Generate updates for each ground fluent
-			//System.out.println("Updating interm var " + p + " @ level " + level + ":");
-			ArrayList<ArrayList<LCONST>> gfluents = generateAtoms(p);
+			PVAR_NAME p = (PVAR_NAME)ifluent._o1;
+			ArrayList<LCONST> gfluent = (ArrayList<LCONST>)ifluent._o2;
 			
-			for (ArrayList<LCONST> gfluent : gfluents) {
-				if (DISPLAY_UPDATES) System.out.print("- " + p + gfluent + " @ " + level + " := ");
-				CPF_DEF cpf = _hmCPFs.get(p);
-				if (cpf == null) 
-					throw new EvalException("Could not find cpf for: " + p);
-				
-				subs.clear();
-				for (int i = 0; i < cpf._exprVarName._alTerms.size(); i++) {
-					LVAR v = (LVAR)cpf._exprVarName._alTerms.get(i);
-					LCONST c = (LCONST)gfluent.get(i);
-					subs.put(v,c);
-				}
-				
-				Object value = cpf._exprEquals.sample(subs, this, _rand);
-				if (DISPLAY_UPDATES) System.out.println(value);
-				
-				// Update value
-				HashMap<ArrayList<LCONST>,Object> pred_assign = _interm.get(p);
-				pred_assign.put(gfluent, value);
+			if (DISPLAY_UPDATES) System.out.print("- " + p + gfluent);
+			CPF_DEF cpf = _hmCPFs.get(p);
+			if (cpf == null) 
+				throw new EvalException("Could not find cpf for: " + p + gfluent);
+			
+			subs.clear();
+			for (int i = 0; i < cpf._exprVarName._alTerms.size(); i++) {
+				LVAR v = (LVAR)cpf._exprVarName._alTerms.get(i);
+				LCONST c = (LCONST)gfluent.get(i);
+				subs.put(v,c);
 			}
+			
+			Object value = cpf._exprEquals.sample(subs, this, _rand);
+			if (DISPLAY_UPDATES) System.out.println(value);
+			
+			// Update value
+			HashMap<ArrayList<LCONST>,Object> pred_assign = _interm.get(p);
+			pred_assign.put(gfluent, value);
 		}
 		
 		// Do same for next-state (keeping in mind primed variables)
@@ -476,45 +538,37 @@ public class State {
 	
 	public void computeDerivedFluents() throws EvalException {
 		
-		// First compute derived variables, level-by-level
+		// Compute derived variables in order
 		HashMap<LVAR,LCONST> subs = new HashMap<LVAR,LCONST>();
-		if (DISPLAY_UPDATES) System.out.println("Updating derived variables");
-		for (Map.Entry<Pair, PVAR_NAME> e : _tmIntermNames.entrySet()) {
-			int level   = (Integer)e.getKey()._o1;
-			PVAR_NAME p = e.getValue();
+		if (DISPLAY_UPDATES) System.out.println("Updating intermediate variables");
+		for (Pair ifluent : _alDerivedGfluentOrdering) {
 			
-			// Only computing derived variables
-			PVARIABLE_INTERM_DEF def = (PVARIABLE_INTERM_DEF)_hmPVariables.get(p);
-			if (!def._bDerived)
-				continue;
+			PVAR_NAME p = (PVAR_NAME)ifluent._o1;
+			ArrayList<LCONST> gfluent = (ArrayList<LCONST>)ifluent._o2;
 			
-			// Generate updates for each ground fluent
-			//System.out.println("Updating interm var " + p + " @ level " + level + ":");
-			ArrayList<ArrayList<LCONST>> gfluents = generateAtoms(p);
+			if (DISPLAY_UPDATES) System.out.print("- " + p + gfluent);
+			CPF_DEF cpf = _hmCPFs.get(p);
+			if (cpf == null) 
+				throw new EvalException("Could not find cpf for: " + p + gfluent);
 			
-			for (ArrayList<LCONST> gfluent : gfluents) {
-				if (DISPLAY_UPDATES) System.out.print("- " + p + gfluent + " @ " + level + " := ");
-				CPF_DEF cpf = _hmCPFs.get(p);
-				if (cpf == null) 
-					throw new EvalException("Could not find cpf for: " + p);
-				
-				subs.clear();
-				for (int i = 0; i < cpf._exprVarName._alTerms.size(); i++) {
-					LVAR v = (LVAR)cpf._exprVarName._alTerms.get(i);
-					LCONST c = (LCONST)gfluent.get(i);
-					subs.put(v,c);
-				}
-				
-				// No randomness for derived fluents (can pass null)
-				Object value = cpf._exprEquals.sample(subs, this, null);
-				if (DISPLAY_UPDATES) System.out.println(value);
-				
-				// Update value
-				HashMap<ArrayList<LCONST>,Object> pred_assign = _interm.get(p);
-				pred_assign.put(gfluent, value);
+			subs.clear();
+			for (int i = 0; i < cpf._exprVarName._alTerms.size(); i++) {
+				LVAR v = (LVAR)cpf._exprVarName._alTerms.get(i);
+				LCONST c = (LCONST)gfluent.get(i);
+				subs.put(v,c);
 			}
-		}
-		
+			
+			if (!cpf._exprEquals._bDet)
+				throw new EvalException("Derived fluent " + p + gfluent + " cannot have stochastic definition: " + cpf._exprEquals);
+
+			// No randomness for derived fluents (can pass null)
+			Object value = cpf._exprEquals.sample(subs, this, null);
+			if (DISPLAY_UPDATES) System.out.println(value);
+			
+			// Update value
+			HashMap<ArrayList<LCONST>,Object> pred_assign = _interm.get(p);
+			pred_assign.put(gfluent, value);
+		}		
 	}
 	
 	public void advanceNextState() throws EvalException {

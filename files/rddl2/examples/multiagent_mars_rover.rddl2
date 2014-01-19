@@ -49,7 +49,7 @@ domain multiagent_mars_rover {
 		// Derived fluents -- deterministic computations from state and action,
 		//                  unlike stochastic intermediate variables, these can
 		//                  be used in global action preconditions (below).
-		pictureRewardPossible(robot, picture-point) : { derived-fluent, bool, level = 1 };
+		pictureRewardPossible(robot, picture-point) : { derived-fluent, bool };
 	};
 	
 	cpfs {
@@ -80,7 +80,7 @@ domain multiagent_mars_rover {
 		  then PICT_VALUE(?p)
 		  else 0.0 )
 	   - (sum_{?r : robot} snapPicture(?r)) // booleans are treated as 0-1 variables for arithmetic 
-	   - (sum_{?r : robot} sqrt[ sum_{?d : dim-2d} pow[ pos'(?r).?d - pos(?r).?d, 2 ] ]);
+	   - (sum_{?r : robot} sqrt[ sum_{?d : dim-2d} pow[ pos'(?r).?d - pos(?r).?d, 2 ] ]); // Euclidean distance moved
 	
 	// These cannot mention actions -- they are simply assertions to 
 	// verify that only legal states are reached.  When starting from

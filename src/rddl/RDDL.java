@@ -711,8 +711,12 @@ public class RDDL {
 		public TYPE_NAME _typeSuperclass = null;
 		
 		public String toString() {
-			return _sName + " : " + _sType + ";";
-		}
+            if(_typeSuperclass != null) {
+                return _sName + " : " + _typeSuperclass + ";";
+            } else {
+                return _sName + " : object;";
+            }
+        }
 	}
 	
 	public abstract static class PVARIABLE_DEF {
@@ -964,7 +968,8 @@ public class RDDL {
 		
 		public LVAR(String var_name) {
 			_sVarName  = var_name.intern();
-			_nHashCode = var_name.hashCode(); 
+			_nHashCode = var_name.hashCode();
+			_bDet = true;
 		}
 		
 		public String _sVarName;
@@ -1009,6 +1014,7 @@ public class RDDL {
 		public LTYPED_VAR(String var_name, String type) {
 			_sVarName = new LVAR(var_name);
 			_sType    = new TYPE_NAME(type);
+			_bDet     = true;
 		}
 		
 		public LVAR _sVarName;
@@ -1046,6 +1052,7 @@ public class RDDL {
 		
 		public TVAR_EXPR(PVAR_EXPR p) {
 			_pvarExpr = p;
+			_bDet = p._bDet;
 		}
 		
 		public PVAR_EXPR _pvarExpr;
@@ -1077,6 +1084,7 @@ public class RDDL {
 		public LCONST(String const_value) {
 			_sConstValue = const_value.intern();
 			_nHashCode = const_value.hashCode();
+			_bDet = true;
 		}
 		
 		public String _sConstValue;
@@ -1093,6 +1101,8 @@ public class RDDL {
 		
 		// Name was interned so can check reference equality
 		public boolean equals(Object o) {
+			if (!(o instanceof LCONST))
+				return false;
 			return _sConstValue == ((LCONST)o)._sConstValue; 
 		}
 
@@ -1149,6 +1159,11 @@ public class RDDL {
 		public Integer _intVal = null; 
 		public ENUM_VAL(String enum_name) {
 			super(enum_name);
+			
+			if (enum_name.charAt(0) != '@' && !enum_name.equals("default")) { // I don't recall why PVAR_EXPR.DEFAULT is an ENUM_VAL, but accept this as special case 
+				System.out.println("FATAL ERROR (LANGUAGE REQUIREMENT): Enum '" + enum_name + "' currently must defined with a leading @");
+				System.exit(1);
+			}
 			
 			// Allow enums to be interpreted as ints if the part after the @ is an int
 			try {
@@ -1233,7 +1248,7 @@ public class RDDL {
 		public static final String STRUCT = "[Struct]".intern();
 		
 		String  _sType = UNKNOWN; // real, int, bool, enum
-		Boolean _bDet  = null;    // deterministic?  (if not, then stochastic)
+		public boolean _bDet  = false;    // deterministic?  (if not, then stochastic)
 		
 		public abstract Object sample(HashMap<LVAR,LCONST> subs, State s, RandomDataGenerator r) throws EvalException;
 		
@@ -1252,6 +1267,7 @@ public class RDDL {
 		
 		public DiracDelta(EXPR expr) {
 			_exprRealValue = expr;
+			_bDet = expr._bDet;
 		}
 		
 		public EXPR _exprRealValue;
@@ -1285,6 +1301,7 @@ public class RDDL {
 		
 		public KronDelta(EXPR expr) {
 			_exprIntValue = expr;
+			_bDet = expr._bDet;
 		}
 		
 		public EXPR _exprIntValue;
@@ -1325,6 +1342,7 @@ public class RDDL {
 		public Uniform(EXPR lower, EXPR upper) {
 			_exprLowerReal = lower;
 			_exprUpperReal = upper;
+			_bDet = false;
 		}
 		
 		public EXPR _exprLowerReal;
@@ -1378,6 +1396,7 @@ public class RDDL {
 		public Normal(EXPR mean, EXPR var) {
 			_normalMeanReal = mean;
 			_normalVarReal  = var;
+			_bDet = false;
 		}
 		
 		public EXPR _normalMeanReal;
@@ -1431,6 +1450,7 @@ public class RDDL {
 		public Dirichlet(String type, EXPR alpha) {
 			_sTypeName = new TYPE_NAME(type);
 			_exprAlpha = alpha;
+			_bDet = false;
 		}
 		
 		public TYPE_NAME _sTypeName = null;
@@ -1515,6 +1535,7 @@ public class RDDL {
 		public Multinomial(String type, EXPR count, ArrayList probs) {
 			_distDiscrete = new Discrete(type, probs);
 			_exprCount = count;
+			_bDet = false;
 		}
 		
 		public Discrete _distDiscrete = null;
@@ -1586,6 +1607,7 @@ public class RDDL {
 
 		// TODO: probs storage as alternating label and expression is sloppy, should make an array of (label,prob) pairs
 		public Discrete(String type, ArrayList probs) {
+			_bDet = false;
 			if (type != null)
 				_sTypeName = new TYPE_NAME(type);
 			_exprProbs = (ArrayList<EXPR>)probs;
@@ -1689,6 +1711,7 @@ public class RDDL {
 		
 		public Exponential(EXPR mean) {
 			_exprMeanReal = mean;
+			_bDet = false;
 		}
 		
 		public EXPR _exprMeanReal;
@@ -1722,6 +1745,7 @@ public class RDDL {
 		public Weibull(EXPR shape, EXPR scale) {
 			_exprShape = shape;
 			_exprScale = scale;
+			_bDet = false;
 		}
 		
 		public EXPR _exprShape;
@@ -1759,6 +1783,7 @@ public class RDDL {
 		public Gamma(EXPR shape, EXPR scale) {
 			_exprShape = shape;
 			_exprScale = scale;
+			_bDet = false;
 		}
 		
 		public EXPR _exprShape;
@@ -1795,6 +1820,7 @@ public class RDDL {
 		
 		public Poisson(EXPR mean) {
 			_exprMean = mean;
+			_bDet = false;
 		}
 		
 		public EXPR _exprMean;
@@ -1826,6 +1852,7 @@ public class RDDL {
 		
 		public Bernoulli(EXPR prob) {
 			_exprProb = prob;
+			_bDet = false;
 		}
 		
 		public EXPR _exprProb;
@@ -1864,6 +1891,7 @@ public class RDDL {
 		public INT_CONST_EXPR(Integer i) {
 			_nValue = i;
 			_sType = INT;
+			_bDet = true;
 		}
 		
 		public Integer _nValue;
@@ -1892,6 +1920,7 @@ public class RDDL {
 		public REAL_CONST_EXPR(Double d) {
 			_dValue = d;
 			_sType  = REAL;
+			_bDet = true;
 		}
 		
 		public Double _dValue;
@@ -1947,27 +1976,34 @@ public class RDDL {
 		public STRUCT_EXPR() {
 			_sType     = STRUCT;
 			_alSubExpr = new ArrayList<STRUCT_EXPR_MEMBER>();
+			_bDet = true;
 		}
 
 		public STRUCT_EXPR(ArrayList sub_expr) {
 			_sType     = STRUCT;
 			_alSubExpr = (ArrayList<STRUCT_EXPR_MEMBER>)sub_expr;
+			_bDet = true;
+			for (STRUCT_EXPR_MEMBER m : _alSubExpr)
+				_bDet = _bDet && m._expr._bDet; // anything is false will make this false
 		}
 
 		public STRUCT_EXPR(LCONST label, EXPR expr) {
 			_sType     = STRUCT;
 			_alSubExpr = new ArrayList<STRUCT_EXPR_MEMBER>();
 			_alSubExpr.add(new STRUCT_EXPR_MEMBER(label, expr));
+			_bDet = expr._bDet;
 		}
 
 		public ArrayList<STRUCT_EXPR_MEMBER> _alSubExpr;
 
 		public void addMember(LCONST label, EXPR expr) {
 			_alSubExpr.add(new STRUCT_EXPR_MEMBER(label, expr));
+			_bDet = _bDet && expr._bDet;
 		}
 
 		public void addMemberAsFirst(LCONST label, EXPR expr) {
 			_alSubExpr.add(0, new STRUCT_EXPR_MEMBER(label, expr));
+			_bDet = _bDet && expr._bDet;
 		}
 		
 		public String toString() {
@@ -2014,12 +2050,18 @@ public class RDDL {
 		public static final String MIN   = "min".intern();
 		public static final String MAX   = "max".intern();
 		
+		public static final Double   D_ZERO = Double.valueOf(0d);
+		public static final Integer  I_ZERO = Integer.valueOf(0);
+		public static final Boolean  B_ZERO = Boolean.valueOf(false);
+		public static final ENUM_VAL E_ZERO = new ENUM_VAL("@0");
+		
 		public OPER_EXPR(EXPR e1, EXPR e2, String op) throws Exception {
 			if (!op.equals(PLUS) && !op.equals(MINUS) && !op.equals(TIMES) && !op.equals(DIV))
 				throw new Exception("Unrecognized arithmetic operator: " + op);
 			_op = op.intern();
 			_e1 = e1;
 			_e2 = e2;
+			_bDet = e1._bDet && e2._bDet;
 		}
 		
 		public EXPR _e1 = null;
@@ -2034,9 +2076,28 @@ public class RDDL {
 		}
 		
 		public Object sample(HashMap<LVAR,LCONST> subs, State s, RandomDataGenerator r) throws EvalException {
+			
+			// First check for early termination in case of TIMES and 0 -- needed to facilitate collectGfluents 
+			if (_op == OPER_EXPR.TIMES) {
+				
+				Object o1 = null;
+				try { // FIXME: using Exceptions here for standard control-flow, should allow sample to return null
+					o1 = _e1.sample(subs, s, r);
+				} catch (Exception e) { /* ignore here */ }
+				if (o1 != null && (o1.equals(OPER_EXPR.D_ZERO) || o1.equals(OPER_EXPR.I_ZERO) || o1.equals(OPER_EXPR.B_ZERO) || o1.equals(OPER_EXPR.E_ZERO))) 
+					return o1;
+				
+				Object o2 = null;
+				try { // FIXME: using Exceptions here for standard control-flow, should allow sample to return null
+					o2 = _e2.sample(subs, s, r);
+				} catch (Exception e) { /* ignore here */ }
+				if (o2 != null && (o2.equals(OPER_EXPR.D_ZERO) || o2.equals(OPER_EXPR.I_ZERO) || o2.equals(OPER_EXPR.B_ZERO) || o2.equals(OPER_EXPR.E_ZERO))) 
+					return o2;
+			}
+			
 			try {
 				Object o1 = _e1.sample(subs, s, r);
-				Object o2 = _e2.sample(subs, s, r);
+				Object o2 = _e2.sample(subs, s, r);				
 				return ComputeArithmeticResult(o1, o2, _op);
 			} catch (EvalException e) {
 				throw new EvalException(e + "\n" + this);
@@ -2049,8 +2110,32 @@ public class RDDL {
 
 		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<Pair> gfluents) 
 			throws EvalException {
-			_e1.collectGFluents(subs, s, gfluents);
-			_e2.collectGFluents(subs, s, gfluents);
+
+			HashSet<Pair> local_fluents = new HashSet<Pair>();
+			
+			Object e1_eval = null;
+			local_fluents.clear();
+			_e1.collectGFluents(subs, s, local_fluents);
+			boolean e1_is_indep_of_state = local_fluents.size() == 0;
+			if (e1_is_indep_of_state && _e1._bDet)
+				e1_eval = _e1.sample(subs, s, null);
+
+			Object e2_eval = null;
+			local_fluents.clear();
+			_e2.collectGFluents(subs, s, local_fluents);
+			boolean e2_is_indep_of_state = local_fluents.size() == 0;
+			if (e2_is_indep_of_state && _e2._bDet)
+				e2_eval = _e2.sample(subs, s, null);
+			
+			if (_op == OPER_EXPR.TIMES && 
+					((e1_eval != null && (e1_eval.equals(D_ZERO) || e1_eval.equals(I_ZERO) || e1_eval.equals(B_ZERO) || e1_eval.equals(E_ZERO))) ||
+					 (e2_eval != null && (e2_eval.equals(D_ZERO) || e2_eval.equals(I_ZERO) || e2_eval.equals(B_ZERO) || e2_eval.equals(E_ZERO)))))
+				return; // We have a state-independent 0 times some value... the result must be 0 so we need not collect fluents
+				
+			if (e1_eval == null)
+				_e1.collectGFluents(subs, s, gfluents);
+			if (e2_eval == null)
+				_e2.collectGFluents(subs, s, gfluents);
 		}
 
 	}
@@ -2151,6 +2236,7 @@ public class RDDL {
 			_op = op.intern();
 			_alVariables = (ArrayList<LTYPED_VAR>)vars;
 			_e  = e;
+			_bDet = e._bDet;
 		}
 		
 		public EXPR   _e = null;
@@ -2181,6 +2267,36 @@ public class RDDL {
 
 			ArrayList<ArrayList<LCONST>> possible_subs = s.generateAtoms(_alVariables);
 			Object result = null;
+			
+			// Check for a PROD with 0 even if all subexpressions not evaluable -- important for CollectGfluents
+			if (_op == PROD) {
+				
+				HashSet<Pair> local_fluents = new HashSet<Pair>();
+				
+				for (ArrayList<LCONST> sub_inst : possible_subs) {
+					for (int i = 0; i < _alVariables.size(); i++) {
+						subs.put(_alVariables.get(i)._sVarName, sub_inst.get(i));
+					}
+					
+					local_fluents.clear();
+
+					if (_e._bDet) { // (s.getPVariableType(p._pName) == State.NONFLUENT) {
+						Object eval = null;
+						try { // FIXME: using Exceptions here for standard control-flow, should allow sample to return null
+							eval = _e.sample(subs, s, null);
+						} catch (Exception e) { /* could not sample, ignore here */ }
+						if (eval != null && (eval.equals(OPER_EXPR.D_ZERO) || eval.equals(OPER_EXPR.I_ZERO) || eval.equals(OPER_EXPR.B_ZERO) || eval.equals(OPER_EXPR.E_ZERO))) {
+
+							// Clear all substitutions before early return
+							for (int i = 0; i < _alVariables.size(); i++) {
+								subs.remove(_alVariables.get(i)._sVarName);
+							}
+
+							return eval; // We can determine the result of this PROD due to a deterministic 0 value independent of state
+						}
+					}
+				}
+			}			
 			
 			// Evaluate all possible substitutions
 			for (ArrayList<LCONST> sub_inst : possible_subs) {
@@ -2218,7 +2334,35 @@ public class RDDL {
 			throws EvalException {
 			
 			ArrayList<ArrayList<LCONST>> possible_subs = s.generateAtoms(_alVariables);
-			Object result = null;
+
+			// Check for early termination on PROD
+			if (_op == PROD) {
+				
+				HashSet<Pair> local_fluents = new HashSet<Pair>();
+				
+				for (ArrayList<LCONST> sub_inst : possible_subs) {
+					for (int i = 0; i < _alVariables.size(); i++) {
+						subs.put(_alVariables.get(i)._sVarName, sub_inst.get(i));
+					}
+					
+					local_fluents.clear();
+					_e.collectGFluents(subs, s, local_fluents);
+					boolean expr_is_indep_of_state = local_fluents.size() == 0;
+
+					if (expr_is_indep_of_state && _e._bDet) { // (s.getPVariableType(p._pName) == State.NONFLUENT) {
+						Object eval = _e.sample(subs, s, null);
+						if (eval.equals(OPER_EXPR.D_ZERO) || eval.equals(OPER_EXPR.I_ZERO) || eval.equals(OPER_EXPR.B_ZERO) || eval.equals(OPER_EXPR.E_ZERO)) {
+
+							// Clear all substitutions before early return
+							for (int i = 0; i < _alVariables.size(); i++) {
+								subs.remove(_alVariables.get(i)._sVarName);
+							}
+
+							return; // We can determine the result of this PROD due to a deterministic 0 value independent of state
+						}
+					}
+				}
+			}			
 			
 			// Evaluate all possible substitutions
 			for (ArrayList<LCONST> sub_inst : possible_subs) {
@@ -2250,6 +2394,7 @@ public class RDDL {
 		}
 
 		public PVAR_EXPR(String s, ArrayList terms, ArrayList members) {
+			_bDet = true;
 			_pName = new PVAR_NAME(s);
 			_alTerms = new ArrayList<LTERM>();
 			for (Object o : terms) {
@@ -2322,7 +2467,7 @@ public class RDDL {
 			Object ret_val = s.getPVariableAssign(_pName, _subTerms);
 			if (ret_val == null)
 				throw new EvalException("RDDL.PVAR_EXPR: No value assigned to pvariable '" + 
-						_pName + _subTerms + "'" + (_subTerms.size() == 0 ? "\n... did you intend an enum value @" + _pName+ "?" : "") + "");
+						_pName + _subTerms + "'" + (_subTerms.size() == 0 ? "\n... did you intend an enum value @" + _pName+ " or object value $" + _pName + "?" : "") + "");
 			
 			if (_alMembers != null) {
 				
@@ -2461,13 +2606,15 @@ public class RDDL {
 				Arrays.asList(new String[] {DIV, MOD, MIN, MAX, ABS, SGN, POW, LOG, COS, SIN, TAN, ACOS, ASIN, ATAN, COSH, SINH, TANH, EXP, LN, SQRT}));
 		
 		public FUN_EXPR(String s, ArrayList expressions) {
-				
+			
+			_bDet = true;
 			_sName = s.intern();
 			_alArgs = new ArrayList<EXPR>();
 			for (Object o : expressions) {
-				if (o instanceof EXPR)
+				if (o instanceof EXPR) {
 					_alArgs.add((EXPR)o);
-				else {
+					_bDet = _bDet && ((EXPR)o)._bDet;
+				} else {
 					System.err.println(_sName + " argument must be an EXPR type, but " + o + " is not.");
 					System.exit(1);
 				}
@@ -2632,6 +2779,7 @@ public class RDDL {
 			_test = test;
 			_trueBranch = true_branch;
 			_falseBranch = false_branch;
+			_bDet = test._bDet && true_branch._bDet && false_branch._bDet;
 		}
 		
 		public BOOL_EXPR _test;
@@ -2667,15 +2815,26 @@ public class RDDL {
 
 		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<Pair> gfluents) 
 			throws EvalException {
-			//System.out.println("\nGfluents before " + "[" + gfluents.size() + "] " + _test + ": " + gfluents);
-			_test.collectGFluents(subs, s, gfluents);
-			//System.out.println("\nGfluents after " + "[" + gfluents.size() + "] " + _test + ": " + gfluents);
-			_trueBranch.collectGFluents(subs, s, gfluents);
-			//System.out.println("\nGfluents after true branch " + "[" + gfluents.size() + "] " + _test + ": " + gfluents);
-			_falseBranch.collectGFluents(subs, s, gfluents);
-			//System.out.println("\nGfluents after false branch " + "[" + gfluents.size() + "] " + _test + ": " + gfluents);
+			//System.out.println("\nGfluents before " + "[" + gfluents.size() + "] " + _test + ": " + gfluents + "... subs:" + subs + " / det:" + _test._bDet);
+			HashSet<Pair> test_gfluents = new HashSet<Pair>();
+			_test.collectGFluents(subs, s, test_gfluents);
+			boolean test_state_indep = test_gfluents.size() == 0;
+			gfluents.addAll(test_gfluents);
+			
+			// We can only pre-determine the test outcome if the test is independent of state
+			Boolean test_outcome = null;
+			if (test_state_indep && _test._bDet) 
+				test_outcome = (Boolean)_test.sample(subs, s, null);
+			
+			if (test_outcome == null || test_outcome == true) // could simplify, but this is explicit and obvious
+				_trueBranch.collectGFluents(subs, s, gfluents);
+			//System.out.println("\nGfluents after T[" + test_outcome + "]: " + "[" + gfluents.size() + "] " + _test + ": " + gfluents);
+			
+			if (test_outcome == null || test_outcome == false) // could simplify, but this is explicit and obvious
+				_falseBranch.collectGFluents(subs, s, gfluents);
+			//System.out.println("\nGfluents after F[" + test_outcome + "]: " + "[" + gfluents.size() + "] " + _test + ": " + gfluents);
+			
 		}
-
 	}
 
 	public static class CASE {
@@ -2702,8 +2861,11 @@ public class RDDL {
 	public static class SWITCH_EXPR extends EXPR {
 		
 		public SWITCH_EXPR(LTERM term, ArrayList cases) {
+			_bDet = term._bDet;
 			_term = term;
 			_cases = (ArrayList<CASE>)cases;
+			for (CASE c : _cases)
+				_bDet = _bDet && c._expr._bDet;
 		}
 		
 		public LTERM _term; 
@@ -2792,6 +2954,7 @@ public class RDDL {
 			_sQuantType = quant.intern();
 			_alVariables = (ArrayList<LTYPED_VAR>)vars;
 			_expr = expr;
+			_bDet = expr._bDet;
 		}
 		
 		public String _sQuantType = null;
@@ -2824,6 +2987,31 @@ public class RDDL {
 			//System.out.println("VARS: " + _alVariables);
 			ArrayList<ArrayList<LCONST>> possible_subs = s.generateAtoms(_alVariables);
 			//System.out.println(possible_subs);
+			
+			// First check for early termination even if some values are null -- to assist with collectGFluents
+			for (ArrayList<LCONST> sub_inst : possible_subs) {
+				for (int i = 0; i < _alVariables.size(); i++) {
+					subs.put(_alVariables.get(i)._sVarName, sub_inst.get(i));
+				}
+								
+				if (_expr._bDet) { // (s.getPVariableType(p._pName) == State.NONFLUENT) {
+					Boolean eval = null;
+					try { // FIXME: should not rely on Exception for control flow, sample should be able to return null
+						eval = (Boolean)_expr.sample(subs, s, null);
+					} catch (Exception e) { /* ignore here */ }
+
+					if (eval != null && ((_sQuantType == FORALL && eval == false) || (_sQuantType == EXISTS && eval == true))) {
+												
+						// Clear all substitutions before early return
+						for (int i = 0; i < _alVariables.size(); i++) {
+							subs.remove(_alVariables.get(i)._sVarName);
+						}
+
+						return eval; // Terminate fluent collection
+					}
+				}
+			}		
+			
 			Boolean result = null;
 			
 			// Evaluate all possible substitutions
@@ -2866,13 +3054,38 @@ public class RDDL {
 
 		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<Pair> gfluents) 
 			throws EvalException {
-
+			
 			//System.out.println("VARS: " + _alVariables);
 			ArrayList<ArrayList<LCONST>> possible_subs = s.generateAtoms(_alVariables);
-			//System.out.println(possible_subs);
-			Boolean result = null;
+
+			// First check for a fully deterministic or deterministic early termination outcome 
+			HashSet<Pair> local_fluents = new HashSet<Pair>();
+			for (ArrayList<LCONST> sub_inst : possible_subs) {
+				for (int i = 0; i < _alVariables.size(); i++) {
+					subs.put(_alVariables.get(i)._sVarName, sub_inst.get(i));
+				}
+				
+				local_fluents.clear();
+				_expr.collectGFluents(subs, s, local_fluents);
+				boolean expr_is_indep_of_state = local_fluents.size() == 0;		
+				
+				if (expr_is_indep_of_state && _expr._bDet) { // (s.getPVariableType(p._pName) == State.NONFLUENT) {
+					boolean eval = (Boolean)_expr.sample(subs, s, null);
+					// If can determine truth value of connective from nonfluents
+					// then any other fluents are irrelevant
+					if ((_sQuantType == FORALL && !eval) || (_sQuantType == EXISTS && eval)) {
+												
+						// Clear all substitutions before early return
+						for (int i = 0; i < _alVariables.size(); i++) {
+							subs.remove(_alVariables.get(i)._sVarName);
+						}
+
+						return; // Terminate fluent collection
+					}
+				}
+			}
 			
-			// Evaluate all possible substitutions
+			// No early termination -- evaluate all possible substitutions and collect gluents
 			for (ArrayList<LCONST> sub_inst : possible_subs) {
 				for (int i = 0; i < _alVariables.size(); i++) {
 					subs.put(_alVariables.get(i)._sVarName, sub_inst.get(i));
@@ -2918,6 +3131,10 @@ public class RDDL {
 				_alSubNodes.addAll(((CONN_EXPR)b2)._alSubNodes);
 			else
 				_alSubNodes.add(b2);
+			
+			_bDet = true;
+			for (BOOL_EXPR e : _alSubNodes)
+				_bDet = _bDet && e._bDet;
 		}
 		
 		public String _sConn;
@@ -2942,6 +3159,37 @@ public class RDDL {
 		
 		public Object sample(HashMap<LVAR,LCONST> subs, State s, RandomDataGenerator r) throws EvalException {
 			
+			// First check for early termination even if some args are null -- collectGfluents requires this
+			if (_sConn == IMPLY) {
+				Boolean b1 = null;
+				try { // FIXME: should not rely on Exception for control-flow, sample should be modified to return null
+					b1 = (Boolean)_alSubNodes.get(0).sample(subs, s, r);
+				} catch (Exception e) { /* ignore */ }
+
+				Boolean b2 = null;
+				try { // FIXME: should not rely on Exception for control-flow, sample should be modified to return null
+					b2 = (Boolean)_alSubNodes.get(1).sample(subs, s, r);
+				} catch (Exception e) { /* ignore */ }
+				
+				if ((b1 != null && b1 == false) || (b2 != null && b2 == true))
+					return BOOL_EXPR.TRUE; // F => ? and ? => T is always true
+					
+			} else if (_sConn != EQUIV) { // must be AND/OR
+				for (BOOL_EXPR b : _alSubNodes) {
+					Boolean interm_result = null;
+					try { // FIXME: should not rely on Exception for control-flow, sample should be modified to return null
+						interm_result = (Boolean)b.sample(subs, s, r);
+					} catch (Exception e) { /* ignore this */ }
+
+					// Early cutoff detection
+					if (interm_result != null && _sConn == AND && interm_result == false) // forall
+						return BOOL_EXPR.FALSE;
+					else if (interm_result != null && _sConn == OR && interm_result == true) // exists
+						return BOOL_EXPR.TRUE;
+				}
+			}
+			
+			// Now evaluate as normal
 			if (_sConn == IMPLY) {
 				Boolean b1 = (Boolean)_alSubNodes.get(0).sample(subs, s, r);
 				if (!b1)
@@ -2980,29 +3228,49 @@ public class RDDL {
 			throws EvalException {
 			
 			// First go through and check for early termination in the case of AND / OR
+			HashSet<Pair> local_fluents = new HashSet<Pair>();
 			if (_sConn == AND || _sConn == OR) {
+				boolean all_subnodes_state_indep = true;
 				for (BOOL_EXPR b : _alSubNodes) {
-					if (b instanceof PVAR_EXPR) {
-						PVAR_EXPR p = (PVAR_EXPR)b;
-						if (s.getPVariableType(p._pName) == State.NONFLUENT) {
-							boolean eval = (Boolean)p.sample(subs, s, null);
-							// If can determine truth value of connective from nonfluents
-							// then any other fluents are irrelevant
-							if ((_sConn == AND && !eval) || (_sConn == OR && eval)) {
-								//System.out.println("\n>> early termination on '" + subs + "'" + this);
-								return; // Terminate fluent collection
-							}
+					// The following is more general than check for non-fluents, but may not always deterministically evaluate
+					local_fluents.clear();
+					b.collectGFluents(subs, s, local_fluents);
+					boolean b_is_indep_of_state = local_fluents.size() == 0;
+					
+					if (b_is_indep_of_state && b._bDet) { // (s.getPVariableType(p._pName) == State.NONFLUENT) {
+						boolean eval = (Boolean)b.sample(subs, s, null);
+						// If can determine truth value of connective from nonfluents
+						// then any other fluents are irrelevant
+						if ((_sConn == AND && !eval) || (_sConn == OR && eval)) {
+							//System.out.println("\n>> early termination on '" + subs + "'" + this);
+							return; // Terminate fluent collection
 						}
+					} else {
+						all_subnodes_state_indep = false; // Stochastic so state dependent 
 					}
 				}
-			} else if (_sConn == IMPLY && _alSubNodes.get(0) instanceof PVAR_EXPR) {
-				PVAR_EXPR p = (PVAR_EXPR)_alSubNodes.get(0);
-				if (s.getPVariableType(p._pName) == State.NONFLUENT) {
-					boolean lhs_condition = (Boolean)p.sample(subs, s, null);
-					if (!lhs_condition)
-						return; // Terminate fluent collection, the LHS of this rule is false
-				}
-			}
+				if (all_subnodes_state_indep)
+					return; // This expressions value is not state dependent
+			} else if (_sConn == IMPLY || _sConn == EQUIV) {
+				Boolean lhs_condition = null;
+				local_fluents.clear();
+				_alSubNodes.get(0).collectGFluents(subs, s, local_fluents);
+				boolean arg0_is_indep_of_state = local_fluents.size() == 0;
+				if (arg0_is_indep_of_state && _alSubNodes.get(0)._bDet)// (s.getPVariableType(p._pName) == State.NONFLUENT) {
+					lhs_condition = (Boolean)_alSubNodes.get(0).sample(subs, s, null);
+				
+				Boolean rhs_condition = null;
+				local_fluents.clear();
+				_alSubNodes.get(1).collectGFluents(subs, s, local_fluents);
+				boolean arg1_is_indep_of_state = local_fluents.size() == 0;
+				if (arg1_is_indep_of_state && _alSubNodes.get(1)._bDet) // (s.getPVariableType(p._pName) == State.NONFLUENT) {
+					rhs_condition = (Boolean)_alSubNodes.get(1).sample(subs, s, null);
+
+				if (lhs_condition != null && rhs_condition != null)
+					return; // Can terminate since this statement's outcome is independent of state
+				else if (_sConn == IMPLY && (lhs_condition == false || rhs_condition == true)) 
+					return; // Can terminate => if LHS false or RHS true since this statement's outcome is independent of state
+			} 
 			
 			// Otherwise collect subnodes
 			for (BOOL_EXPR b : _alSubNodes)
@@ -3024,6 +3292,7 @@ public class RDDL {
 
 		public NEG_EXPR(BOOL_EXPR b) {
 			_subnode = b;
+			_bDet = b._bDet;
 		}
 		
 		public BOOL_EXPR _subnode;
@@ -3053,6 +3322,7 @@ public class RDDL {
 	public static class BOOL_CONST_EXPR extends BOOL_EXPR {
 		
 		public BOOL_CONST_EXPR(boolean b) {
+			_bDet = true;
 			_bValue = b;
 			_sType = BOOL;
 		}
@@ -3095,6 +3365,7 @@ public class RDDL {
 			_comp = comp.intern();
 			_e1 = e1;
 			_e2 = e2;
+			_bDet = e1._bDet && e2._bDet;
 		}
 		
 		public EXPR _e1 = null;

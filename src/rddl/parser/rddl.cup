@@ -335,11 +335,13 @@ PVAR_LIST ::= PVAR_DEF:d            {: RESULT = new ArrayList(Arrays.asList(new 
 		| PVAR_DEF:d PVAR_LIST:list {: list.add(0,d); RESULT = list; :} 
 		;
 
-/* RDDL2: Added derived-fluent as variant of intermediate fluent */ 
+/* RDDL2: Added derived-fluent as variant of intermediate fluent and made levels for derived/interm optional */ 
 PVAR_DEF ::= IDENT:varname PARAM_LIST:list LCURLY STATE COMMA TYPE_SPEC:range COMMA DEFAULT ASSIGN_EQUAL RANGE_CONST:defvalue RCURLY SEMI {: RESULT = new RDDL.PVARIABLE_STATE_DEF(varname, false, range, list, defvalue); :}
 		| IDENT:varname PARAM_LIST:list LCURLY NON_FLUENT COMMA TYPE_SPEC:range COMMA DEFAULT ASSIGN_EQUAL RANGE_CONST:defvalue RCURLY SEMI {: RESULT = new RDDL.PVARIABLE_STATE_DEF(varname, true, range, list, defvalue); :}
 		| IDENT:varname PARAM_LIST:list LCURLY INTERMEDIATE COMMA TYPE_SPEC:range COMMA LEVEL ASSIGN_EQUAL INTEGER:level RCURLY SEMI {: RESULT = new RDDL.PVARIABLE_INTERM_DEF(varname, false /*not derived*/, range, list, level); :}
 		| IDENT:varname PARAM_LIST:list LCURLY DERIVED_FLUENT COMMA TYPE_SPEC:range COMMA LEVEL ASSIGN_EQUAL INTEGER:level RCURLY SEMI {: RESULT = new RDDL.PVARIABLE_INTERM_DEF(varname, true /*derived*/, range, list, level); :}
+		| IDENT:varname PARAM_LIST:list LCURLY INTERMEDIATE COMMA TYPE_SPEC:range RCURLY SEMI {: RESULT = new RDDL.PVARIABLE_INTERM_DEF(varname, false /*not derived*/, range, list, -1); :}
+		| IDENT:varname PARAM_LIST:list LCURLY DERIVED_FLUENT COMMA TYPE_SPEC:range RCURLY SEMI {: RESULT = new RDDL.PVARIABLE_INTERM_DEF(varname, true /*derived*/, range, list, -1); :}
 		| IDENT:varname PARAM_LIST:list LCURLY OBSERVATION COMMA TYPE_SPEC:range RCURLY SEMI {: RESULT = new RDDL.PVARIABLE_OBS_DEF(varname, range, list); :}
 		| IDENT:varname PARAM_LIST:list LCURLY ACTION COMMA TYPE_SPEC:range COMMA DEFAULT ASSIGN_EQUAL RANGE_CONST:defvalue RCURLY SEMI {: RESULT = new RDDL.PVARIABLE_ACTION_DEF(varname, range, list, defvalue); :}
 		;

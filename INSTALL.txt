@@ -143,12 +143,17 @@ We currently provide the following rddlsim command line utilities:
 
 		See RDDL2 domain examples in files/rddl2/
 
-		To run some of these examples, use:
+		**RDDL2 Simulator examples**
 
-		./run rddl.sim.Simulator files/rddl2/examples/multiagent_mars_rover.rddl2 rddl.policy.RandomConcurrentPolicy inst_simple_mars_rover rddl.viz.MarsRoverDisplay 3 3
-		./run rddl.sim.Simulator ./files/rddl2/examples/traffic_control_ctm.rddl2 rddl.policy.RandomConcurrentPolicy inst_traffic_control_ctm rddl.viz.trfctm.TrfDisplay 2 2
+		./run rddl.sim.Simulator files/rddl2/examples/multiagent_mars_rover.rddl2 rddl.policy.RandomConcurrentPolicy inst_multiagent_mars_rover rddl.viz.MarsRoverDisplay 3 3
+		./run rddl.sim.Simulator files/rddl2/examples/traffic_control_ctm.rddl2 rddl.policy.RandomConcurrentPolicy inst_traffic_control_ctm rddl.viz.trfctm.TrfDisplay 2 2
 		./run rddl.sim.Simulator files/rddl2/examples/lang_extension_examples.rddl2 rddl.policy.RandomConcurrentPolicy inst_lang_extension_examples rddl.viz.GenericScreenDisplay 1 1
 
+		**RDDL2 DBN / Influence Diagram Visualization**
+		./run rddl.viz.RDDL2Graph files/rddl2/examples/lang_extension_examples.rddl2 inst_lang_extension_examples
+		./run rddl.viz.RDDL2Graph files/rddl2/examples/multiagent_mars_rover.rddl2 inst_multiagent_mars_rover
+		./run rddl.viz.RDDL2Graph ./files/rddl2/examples/traffic_control_ctm.rddl2 inst_traffic_control_ctm
+			
 
 GraphViz RDDL Visualization
 ===========================
