@@ -29,12 +29,13 @@ domain lang_extension_examples {
 		matrix-2d     : [col-2d]<? : point-2d>; // Can nest vectors... a vector of vectors is a matrix... see following discussion:
 		// ... if col-2d = {col1, col2} then implicitly builds tuple type <col1 : point-2d, col2 : point-2d> 
 		// ... equivalently <col1 : <@x : real, @y : real>, 
-		//                   col2 : <@x : real, @y : real> >		
+		//                   col2 : <@x : real, @y : real> >	
 	};
 
 	// Objects listed in a domain specification are objects that we want to be in every instance -- may reference them in CPF expressions
 	objects { 
 		picture-point : {p1};  
+		robot         : {r1};  
 		col-2d : {col1, col2};
 	};
 
@@ -57,7 +58,12 @@ domain lang_extension_examples {
 		// EVENTUALLY: allow nested tuple types which lead to trees... effectively mixed-type tuples for which we do not know the nesting depth;
 		//       use empty < > as no-tree; recursively type check according to vector labels... do we need tuple names, inheritance, i.e.,
 		//       multiple types of subtrees, recursive types, multiplicity of types for a label?  e.g., NP: < A NP >, NP: < N >
-		//tree(int-1-4) : { interm-fluent, tree, default = < > };
+		//tree(int-1-4) : { interm-fluent, {tree,vec,untyped-vec}, default = < > };
+				
+		// A fluent that will have a recursive definition
+		PREV(robot)         : { non-fluent, int, default = r1 }; 	
+		robot-index1(robot) : { derived-fluent, int };
+		robot-index2(robot) : { interm-fluent, int  };
 	};
 	
 	cpfs {
@@ -109,6 +115,12 @@ domain lang_extension_examples {
 		
 		// NOTE: the following second summation would violate type restrictions and throw an Exception
 		//randVal' = sum_{?col : col-2d, ?d : col-2d} (randMatrix.?col.?d * randMatrix.?col.?d); // Matrix Inner Product
+		
+		// Some recursive definitions
+		robot-index1(?r) = 1 + if (?r == $r1)
+						       then 0
+						       else robot-index1(PREV(?r));
+		robot-index2(?r) = robot-index1(PREV(?r));
 	};
   
 	// Rewards can reference all fluents (action, interm, derived, current and next state) 
@@ -134,6 +146,7 @@ non-fluents nf_lang_extension_examples {
 	
 	objects { 
 		picture-point : {p2, p3}; // Augments p1 in lang_extension_examples
+		robot : {r1, r2, r3, r4}; // r1 is duplicated here but the intepreter should remove the duplicate
 	};
   
 	non-fluents { 
@@ -143,6 +156,10 @@ non-fluents nf_lang_extension_examples {
 		NEXT_PICT(p2) = $p3;
 		NEXT_PICT(p3) = $p1;
 
+		PREV(r1) = $r1;
+		PREV(r2) = $r1;
+		PREV(r3) = $r2;
+		PREV(r4) = $r3;
 	};
 }
 instance inst_lang_extension_examples {
@@ -151,10 +168,6 @@ instance inst_lang_extension_examples {
   
   	non-fluents = nf_lang_extension_examples;
 
-	objects { 
-		robot : {r1, r2, r3};
-	};
-  
   	// State-action constraints above are sufficient
 	max-nondef-actions = pos-inf;
   
