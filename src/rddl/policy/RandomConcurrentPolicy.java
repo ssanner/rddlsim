@@ -40,10 +40,13 @@ public class RandomConcurrentPolicy extends Policy {
 	
 	public ArrayList<PVAR_INST_DEF> getActions(State s) throws EvalException {
 		
+		ArrayList<PVAR_INST_DEF> actions = new ArrayList<PVAR_INST_DEF>();
+
+		if (s == null) return actions; 
+		
 		int num_concurrent_actions = Math.min(MAX_CONCURRENT_ACTIONS, s._nMaxNondefActions);
 		//System.out.println("Allowing maximum " + num_concurrent_actions + " concurrent actions.");
 		
-		ArrayList<PVAR_INST_DEF> actions = new ArrayList<PVAR_INST_DEF>();
 		ArrayList<PVAR_NAME> action_types = s._hmTypeMap.get("action-fluent");
 		
 		boolean passed_constraints = false;

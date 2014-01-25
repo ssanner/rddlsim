@@ -137,12 +137,13 @@ public class Simulator {
 		String state_viz_class_name = "rddl.viz.GenericScreenDisplay";
 		if (args.length >= 4)
 			state_viz_class_name = args[3];
-		int rand_seed_sim = 123456;
-		if (args.length == 5)
+		int rand_seed_sim = (int)System.currentTimeMillis(); // 123456
+		if (args.length >= 5)
 			rand_seed_sim = new Integer(args[4]);
-		int rand_seed_policy = 123456;
-		if (args.length == 6)
+		int rand_seed_policy = (int)System.currentTimeMillis(); // 123456
+		if (args.length >= 6)
 			rand_seed_policy = new Integer(args[5]);
+		//System.out.println("Using seeds " + rand_seed_sim + ", " + rand_seed_policy);
 		
 		// Load RDDL files
 		RDDL rddl = new RDDL(rddl_file);
