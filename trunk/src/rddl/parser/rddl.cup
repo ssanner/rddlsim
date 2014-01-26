@@ -564,7 +564,6 @@ NONFLUENT_BLOCK ::= NON_FLUENTS IDENT:name LCURLY
 		;
 
 /* For simplicity in the INSTANCE_BLOCK grammar, order matters. */
-/* Also, OBJECTS and NONFLUENTS are the only optional entries. */
 INSTANCE_BLOCK ::= INSTANCE IDENT:name LCURLY 
                            DOMAIN ASSIGN_EQUAL IDENT:domain SEMI
                            NON_FLUENTS ASSIGN_EQUAL IDENT:nonfluents SEMI 
