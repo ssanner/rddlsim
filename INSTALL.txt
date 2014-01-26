@@ -154,7 +154,7 @@ We currently provide the following rddlsim command line utilities:
 		
 		./run rddl.viz.RDDL2Graph files/rddl2/examples/lang_extension_examples.rddl2 inst_lang_extension_examples
 		./run rddl.viz.RDDL2Graph files/rddl2/examples/multiagent_mars_rover.rddl2 inst_multiagent_mars_rover
-		./run rddl.viz.RDDL2Graph ./files/rddl2/examples/traffic_control_ctm.rddl2 inst_traffic_control_ctm
+		./run rddl.viz.RDDL2Graph files/rddl2/examples/traffic_control_ctm.rddl2 inst_traffic_control_ctm
 		./run rddl.viz.RDDL2Graph files/rddl2/examples/power_gen.rddl2 inst_power_gen			
 
 GraphViz RDDL Visualization

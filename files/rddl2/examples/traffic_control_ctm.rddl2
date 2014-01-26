@@ -8,7 +8,7 @@
 // @author Tan Nguyen (tan1889@gmail.com)
 //
 // Modified by Scott Sanner for RDDL2 and to enforce proper signal
-// sequences and make stochastic.
+// sequences.
 ////////////////////////////////////////////////////////////////////
 
 domain traffic_control_ctm {
@@ -33,7 +33,7 @@ domain traffic_control_ctm {
 		MERGE-CELL(cell) : { non-fluent, bool, default = false };	// is cell x the merge cell
 		DIVERGE-CELL(cell) : { non-fluent, bool, default = false };	// is cell x the diverge cell
 			
-		signal(intersection) : { action-fluent, signal-phase, default = @ALL-RED };
+		signal(intersection) : { state-fluent, signal-phase, default = @ALL-RED };
 		FLOWS-TO-INTERSECTION(cell, intersection, signal-phase)  : { non-fluent, bool, default = false };
 
 		n(cell) : { state-fluent, real, default = 0.0 };		// Actual number of cars in cell
@@ -41,9 +41,21 @@ domain traffic_control_ctm {
 		send(cell) : { interm-fluent, real, level = 1 }; 		// Sending capacity
 		recv(cell) : { interm-fluent, real, level = 1 };		// Receiving capacity
 		flow(cell, cell) : { interm-fluent, real, level = 2 };	// Flow into a cell
+		
+		// Do we advance this signal for an intersection to its next sequence?
+		advance(intersection) : { action-fluent, bool, default = false }; 
 	};
   
 	cpfs {
+		
+  		signal'(?i) = if (advance(?i)) then
+					switch (signal(?i)) {
+						case @ALL-RED     : @WEST-EAST,
+						case @WEST-EAST   : @ALL-RED2,
+						case @ALL-RED2    : @NORTH-SOUTH,
+						case @NORTH-SOUTH : @ALL-RED
+					}
+				else signal(?i);
 		
 		// calculate the send capacity of each cell
 		send(?c) = 	if (v(?c) * n(?c)/l(?c)< v(?c) * k(?c)) then 
