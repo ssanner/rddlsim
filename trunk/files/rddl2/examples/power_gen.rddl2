@@ -107,6 +107,6 @@ instance inst_power_gen {
   	// State-action constraints above are sufficient
 	max-nondef-actions = pos-inf;
   
-	horizon  = 5;
+	horizon  = 40;
 	discount = 1.0;
 }
