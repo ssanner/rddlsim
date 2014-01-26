@@ -368,12 +368,6 @@ public class RDDL {
 			if (_alInitState != null && _alInitState.size() > 0) {
 				sb.append("  init-state {\n");
 				for (PVAR_INST_DEF isd : _alInitState) {
-					// TODO: will not handle non-boolean fluents
-					if (!(isd._oValue instanceof Boolean)) {
-						System.out.println("FIXME: current non-boolean values not exported in instance");
-						new Exception().printStackTrace();
-						//System.exit(1);
-					}
 					sb.append("    " + isd + "\n");
 				}
 				sb.append("  };\n");
