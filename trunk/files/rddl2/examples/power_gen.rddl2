@@ -91,7 +91,7 @@ domain power_gen {
 	};
 }
         
-// Specify three robots using the the three picture points defined above
+// Specify three power plants with default settings
 instance inst_power_gen {
 
 	domain = power_gen;
