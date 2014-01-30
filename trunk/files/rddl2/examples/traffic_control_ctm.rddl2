@@ -38,9 +38,9 @@ domain traffic_control_ctm {
 
 		n(cell) : { state-fluent, real, default = 0.0 };		// Actual number of cars in cell
 		
-		send(cell) : { interm-fluent, real, level = 1 }; 		// Sending capacity
-		recv(cell) : { interm-fluent, real, level = 1 };		// Receiving capacity
-		flow(cell, cell) : { interm-fluent, real, level = 2 };	// Flow into a cell
+		send(cell) : { interm-fluent, real }; 		// Sending capacity
+		recv(cell) : { interm-fluent, real };		// Receiving capacity
+		flow(cell, cell) : { interm-fluent, real };	// Flow into a cell
 		
 		// Do we advance this signal for an intersection to its next sequence?
 		advance(intersection) : { action-fluent, bool, default = false }; 
@@ -124,7 +124,7 @@ domain traffic_control_ctm {
 	    				
 	};
     	
-	state-action-constraints {
+	state-invariants {
 		// ensure exactly two cells flow into a merge cell
 		forall_{?c : cell} [MERGE-CELL(?c) 
 				=> ((sum_{?c1 : cell} NEXT(?c1, ?c)) == 2)];
@@ -316,11 +316,11 @@ non-fluents nf_traffic_control_ctm {
 		LAST(R_22_17);
 		k(R_22_17) = 9999.0;
 		FLOWS-TO-INTERSECTION (R_4_5, I_5_5, @WEST-EAST);
-		FLOWS-TO-INTERSECTION (D_5_4, I_5_5, @NORHT-SOUTH);
+		FLOWS-TO-INTERSECTION (D_5_4, I_5_5, @NORTH-SOUTH);
 		FLOWS-TO-INTERSECTION (R_10_11, I_11_11, @WEST-EAST);
-		FLOWS-TO-INTERSECTION (D_11_10, I_11_11, @NORHT-SOUTH);
+		FLOWS-TO-INTERSECTION (D_11_10, I_11_11, @NORTH-SOUTH);
 		//signal(I_5_5) = @WEST-EAST;
-		//signal(I_11_11) = @NORHT-SOUTH;
+		//signal(I_11_11) = @NORTH-SOUTH;
 	};
 }
 
