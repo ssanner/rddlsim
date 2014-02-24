@@ -3262,7 +3262,7 @@ public class RDDL {
 
 				if (lhs_condition != null && rhs_condition != null)
 					return; // Can terminate since this statement's outcome is independent of state
-				else if (_sConn == IMPLY && (lhs_condition == false || rhs_condition == true)) 
+				else if (_sConn == IMPLY && (Boolean.FALSE.equals(lhs_condition) || (Boolean.TRUE.equals(rhs_condition)))) 
 					return; // Can terminate => if LHS false or RHS true since this statement's outcome is independent of state
 			} 
 			
