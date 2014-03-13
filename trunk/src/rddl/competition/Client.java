@@ -221,11 +221,18 @@ public class Client {
 				} // TODO
 				int h =0;
 				//System.out.println(instance._nHorizon);
+				boolean round_ended_early = false;
 				for(; h < instance._nHorizon; h++ ) {
 					if (SHOW_MSG) System.out.println("Reading turn message");
 					isrc = Server.readOneMessage(isr);
+					Element e = parseMessage(p, isrc);
+					round_ended_early = e.getNodeName().equals(Server.ROUND_END);
+					if (round_ended_early)
+						break;
 					if (SHOW_MSG) System.out.println("Done reading turn message");
-					ArrayList<PVAR_INST_DEF> obs = processXMLTurn(p,isrc,state);
+					//if (SHOW_XML)
+					//	Server.printXMLNode(e); // DEBUG
+					ArrayList<PVAR_INST_DEF> obs = processXMLTurn(e,state);
 					if (SHOW_MSG) System.out.println("Done parsing turn message");
 					if ( obs == null ) {
 						if (SHOW_MSG) System.out.println("No state/observations received.");
@@ -249,10 +256,15 @@ public class Client {
 				if ( h < instance._nHorizon ) {
 					break;
 				}
-				isrc = Server.readOneMessage(isr);
-				double reward = processXMLRoundEnd(p, isrc);
+				if (!round_ended_early) // otherwise isrc is the round-end message
+					isrc = Server.readOneMessage(isr);
+				Element round_end_msg = parseMessage(p, isrc);
+				double reward = processXMLRoundEnd(round_end_msg);
 				policy.roundEnd(reward);
 				//System.out.println("Round reward: " + reward);
+				
+				if (getTimeLeft(round_end_msg) <= 0l)
+					break;
 			}
 			isrc = Server.readOneMessage(isr);
 			double total_reward = processXMLSessionEnd(p, isrc);
@@ -266,6 +278,26 @@ public class Client {
 			System.out.println("Exception: " + g);
 			g.printStackTrace();
 		}
+	}
+	
+	static Element parseMessage(DOMParser p, InputSource isrc) throws RDDLXMLException {
+		try {
+			p.parse(isrc);
+		} catch (SAXException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+			// Debug info to explain parse error
+			//Server.showInputSource(isrc);
+			throw new RDDLXMLException("sax exception");
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+			throw new RDDLXMLException("io exception");
+		}
+		if (SHOW_XML)
+			Server.printXMLNode(p.getDocument()); // DEBUG
+
+		return p.getDocument().getDocumentElement();
 	}
 	
 	static String serialize(Document dom) {
@@ -380,12 +412,14 @@ public class Client {
 				name.appendChild(textName);
 				for( LCONST lc : d._alTerms ) {
 					Element arg = dom.createElement(Server.ACTION_ARG);
-					Text textArg = dom.createTextNode(lc.toString());
+					Text textArg = dom.createTextNode(lc.toSuppString()); // TODO $ <>... done$
 					arg.appendChild(textArg);
 					action.appendChild(arg);
 				}
 				Element value = dom.createElement(Server.ACTION_VALUE);
-				Text textValue = dom.createTextNode(d._oValue.toString());
+				Text textValue = d._oValue instanceof LCONST 
+						? dom.createTextNode( ((LCONST)d._oValue).toSuppString())
+						: dom.createTextNode( d._oValue.toString() ); // TODO $ <>... done$
 				value.appendChild(textValue);
 				action.appendChild(value);
 			}
@@ -448,22 +482,17 @@ public class Client {
 		return Double.valueOf(r.get(0));
 	}
 	
-	static ArrayList<PVAR_INST_DEF> processXMLTurn (DOMParser p, InputSource isrc,
-			State state) throws RDDLXMLException {
-		try {
-			p.parse(isrc);
-		} catch (SAXException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-			// Debug info to explain parse error
-			//Server.showInputSource(isrc);
-			throw new RDDLXMLException("sax exception");
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-			throw new RDDLXMLException("io exception");
+	static long getTimeLeft(Element e) {
+		ArrayList<String> r = Server.getTextValue(e, Server.TIME_LEFT);
+		if ( r == null ) {
+			return -1;
 		}
-		Element e = p.getDocument().getDocumentElement();
+		return Long.valueOf(r.get(0));
+	}
+	
+	static ArrayList<PVAR_INST_DEF> processXMLTurn (Element e,
+			State state) throws RDDLXMLException {
+
 		if ( e.getNodeName().equals(Server.TURN) ) {
 			
 			// We need to be able to distinguish no observations from
@@ -484,11 +513,11 @@ public class Client {
 					for( String arg : args ) {
 						if (arg.startsWith("@"))
 							lcArgs.add(new RDDL.ENUM_VAL(arg));
-						else 
+						else // TODO $ <> (forgiving)... done$
 							lcArgs.add(new RDDL.OBJECT_VAL(arg));
 					}
 					String value = Server.getTextValue(el, Server.FLUENT_VALUE).get(0);
-					Object r = Server.getValue(name, value, state);
+					Object r = Server.getValue(name, value, state); // TODO $ <> (forgiving)... done$
 					PVAR_INST_DEF d = new PVAR_INST_DEF(name, r, lcArgs);
 					ds.add(d);
 				}
@@ -500,19 +529,7 @@ public class Client {
 		//return null;
 	}
 	
-	static double processXMLRoundEnd(DOMParser p, InputSource isrc) throws RDDLXMLException {
-		try {
-			p.parse(isrc);
-		} catch (SAXException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-			throw new RDDLXMLException("sax exception");
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-			throw new RDDLXMLException("io exception");
-		}
-		Element e = p.getDocument().getDocumentElement();
+	static double processXMLRoundEnd(Element e) throws RDDLXMLException {
 		if ( e.getNodeName().equals(Server.ROUND_END) ) {
 			ArrayList<String> text = Server.getTextValue(e, Server.ROUND_REWARD);
 			if ( text == null ) {
