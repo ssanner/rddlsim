@@ -112,7 +112,7 @@ public class Server implements Runnable {
 	private RDDL rddl = null;
 	private static int ID = 0;
 	private static int DEFAULT_NUM_ROUNDS = 30;
-	private static double DEFAULT_TIME_ALLOWED = 30;
+	private static long DEFAULT_TIME_ALLOWED = 1080000; // milliseconds = 18 minutes
 	public int port;
 	public int id;
 	public String clientName = null;
@@ -140,10 +140,10 @@ public class Server implements Runnable {
 		ArrayList<RDDL> rddls = new ArrayList<RDDL>();
 		int port = PORT_NUMBER;
 		if ( args.length < 1 ) {
-			System.out.println("usage: rddlfilename (optional) portnumber num-rounds random-seed state-viz-class-name");
-			System.out.println("\nexample 1: Server rddlfilename");
-			System.out.println("example 2: Server rddlfilename 2323");
-			System.out.println("example 3: Server rddlfilename 2323 100 0 rddl.viz.GenericScreenDisplay");
+			System.out.println("usage: rddlfilename-or-dir (optional) portnumber num-rounds random-seed state-viz-class-name");
+			System.out.println("\nexample 1: Server rddlfilename-or-dir");
+			System.out.println("example 2: Server rddlfilename-or-dir 2323");
+			System.out.println("example 3: Server rddlfilename-or-dir 2323 100 0 rddl.viz.GenericScreenDisplay");
 			System.exit(1);
 		}
 				
@@ -193,8 +193,7 @@ public class Server implements Runnable {
 	public void run() {
 		DOMParser p = new DOMParser();
 		int numRounds = DEFAULT_NUM_ROUNDS;
-		double timeAllowed = DEFAULT_TIME_ALLOWED;
-		double timeUsed = 0;
+		long timeAllowed = DEFAULT_TIME_ALLOWED;
 		try {
 			BufferedInputStream isr = new BufferedInputStream(connection.getInputStream());
 			//InputStreamReader isr = new InputStreamReader(is);
@@ -211,6 +210,7 @@ public class Server implements Runnable {
 			BufferedOutputStream os = new BufferedOutputStream(connection.getOutputStream());
 			OutputStreamWriter osw = new OutputStreamWriter(os, "US-ASCII");
 			String msg = createXMLSessionInit(numRounds, timeAllowed, this);
+			boolean OUT_OF_TIME = false;
 			sendOneMessage(osw,msg);			
 
 			initializeState(rddl, requestedInstance);
@@ -220,13 +220,14 @@ public class Server implements Runnable {
 			ArrayList<Double> rewards = new ArrayList<Double>(DEFAULT_NUM_ROUNDS * instance._nHorizon);
 			int r = 0;
 			long session_elapsed_time = 0l;
-			for( ; r < numRounds; r++ ) {			
+			for( ; r < numRounds && !OUT_OF_TIME; r++ ) {			
 				isrc = readOneMessage(isr);
 				if ( !processXMLRoundRequest(p, isrc) ) {
 					break;
 				}
+				
 				resetState();
-				msg = createXMLRoundInit(r+1, numRounds, timeUsed, timeAllowed);
+				msg = createXMLRoundInit(r+1, numRounds, timeAllowed - session_elapsed_time, timeAllowed);
 				sendOneMessage(osw,msg);
 				
 				long start_round_time = System.currentTimeMillis();
@@ -242,7 +243,8 @@ public class Server implements Runnable {
 				double cur_discount = 1.0d;
 				int h = 0;
 				HashMap<PVAR_NAME, HashMap<ArrayList<LCONST>, Object>> observStore =null;
-				for( ; h < instance._nHorizon; h++ ) {
+				long round_elapsed_time = 0l;
+				for( ; h < instance._nHorizon && !OUT_OF_TIME; h++ ) {
 					
 					Timer timer = new Timer();
 				
@@ -282,8 +284,12 @@ public class Server implements Runnable {
 					//if ( h== 0 && domain._bPartiallyObserved && ds.size() != 0) {
 					//	System.err.println("the first action for partial observable domain should be noop");
 					//}
-					if (SHOW_ACTIONS)
+					if (SHOW_ACTIONS) {
+						boolean suppress_object_cast_temp = RDDL.SUPPRESS_OBJECT_CAST;
+						RDDL.SUPPRESS_OBJECT_CAST = true;
 						System.out.println("** Actions received: " + ds);
+						RDDL.SUPPRESS_OBJECT_CAST = suppress_object_cast_temp;
+					}
 					
 					// Check state-action constraints (also checks maxNonDefActions)
 					try {
@@ -331,18 +337,23 @@ public class Server implements Runnable {
 					
 					if (SHOW_TIMING)
 						System.out.println("**TIME to advance state: " + timer.GetTimeSoFarAndReset());
+										
+					// Scott: Update 2014 to check for out of time... this can trigger
+					//        an early round end
+					// TODO: check that this works
+					round_elapsed_time = (System.currentTimeMillis() - start_round_time);
+					OUT_OF_TIME = session_elapsed_time + round_elapsed_time > timeAllowed;
 				}
 				accum_total_reward += accum_reward;
-				long elapsed_time = System.currentTimeMillis() - start_round_time;
-				session_elapsed_time += elapsed_time;
-				msg = createXMLRoundEnd(requestedInstance, r, accum_reward, h, elapsed_time, clientName);
+				session_elapsed_time += round_elapsed_time;
+				msg = createXMLRoundEnd(requestedInstance, r, accum_reward, h, round_elapsed_time, timeAllowed - session_elapsed_time, clientName);
 				if (SHOW_MSG)
 					System.out.println("Sending msg:\n" + msg);
 				sendOneMessage(osw, msg);
 				
 				writeToLog(msg);
 			}
-			msg = createXMLSessionEnd(requestedInstance, accum_total_reward, r, session_elapsed_time, this.clientName, this.id);
+			msg = createXMLSessionEnd(requestedInstance, accum_total_reward, r, session_elapsed_time, timeAllowed - session_elapsed_time, this.clientName, this.id);
 			if (SHOW_MSG)
 				System.out.println("Sending msg:\n" + msg);
 			sendOneMessage(osw, msg);
@@ -432,6 +443,8 @@ public class Server implements Runnable {
 	}
 	
 	static Object getValue(String pname, String pvalue, State state) {
+		
+		// Get the fluent value's range
 		TYPE_NAME tname = state._hmPVariables.get(new PVAR_NAME(pname))._typeRange;
 		
 		// TYPE_NAMES are interned so that equality can be tested directly
@@ -448,14 +461,15 @@ public class Server implements Runnable {
 			return Double.valueOf(pvalue);
 		}	
 		
-		// TODO: should really verify tname is an enum val here by looking up
-		// it's definition
+		// TODO: handle vectors <>
+		// TODO: are enum int values handled correctly?  need an @ 
+		
+		// This allows object vals
+		// TODO: should really verify tname is an enum val here by looking up it's definition
 		if ( pvalue.startsWith("@") ) {
 			// Must be an enum
 			return new ENUM_VAL(pvalue);
 		} else {			
-			// TODO: who calls this method?  Is it only for fluent values?  Or also args?
-			// for now we'll allow objects
 			return new OBJECT_VAL(pvalue);
 		}
 		
@@ -512,11 +526,11 @@ public class Server implements Runnable {
 						//System.out.println("arg: " + arg);
 						if (arg.startsWith("@"))
 							lcArgs.add(new RDDL.ENUM_VAL(arg));
-						else 
+						else // TODO $ <> (forgiving)... done$
 							lcArgs.add(new RDDL.OBJECT_VAL(arg));
 					}
 					String pvalue = getTextValue(el, ACTION_VALUE).get(0);
-					Object value = getValue(name, pvalue, state);
+					Object value = getValue(name, pvalue, state); // TODO $ <> (forgiving)... done$
 					PVAR_INST_DEF d = new PVAR_INST_DEF(name, value, lcArgs);
 					ds.add(d);
 				}
@@ -700,7 +714,7 @@ public class Server implements Runnable {
 						ofEle.appendChild(pName);
 						for ( LCONST lc : gfluent ) {
 							Element pArg = dom.createElement(FLUENT_ARG);
-							Text pTextArg = dom.createTextNode(lc.toString());
+							Text pTextArg = dom.createTextNode(lc.toSuppString()); // TODO $ <>... done$
 							pArg.appendChild(pTextArg);
 							ofEle.appendChild(pArg);
 						}
@@ -711,7 +725,10 @@ public class Server implements Runnable {
 							throw new Exception("ERROR: Could not retrieve value for " + pn + gfluent.toString());
 						}
 
-						Text pTextValue = dom.createTextNode(value.toString());
+						Text pTextValue = value instanceof LCONST 
+								? dom.createTextNode( ((LCONST)value).toSuppString())
+								: dom.createTextNode( value.toString() ); // TODO $ <>... done$
+						// dom.createTextNode(value.toString()); // TODO $ <>
 						pValue.appendChild(pTextValue);
 						ofEle.appendChild(pValue);
 					}
@@ -757,7 +774,7 @@ public class Server implements Runnable {
 	}
 	
 	static String createXMLRoundEnd (String requested_instance, int round, double reward,
-			int turnsUsed, long timeUsed, String client_name) {
+			int turnsUsed, long timeUsed, long timeLeft, String client_name) {
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		try {
 			DocumentBuilder db = dbf.newDocumentBuilder();
@@ -770,6 +787,7 @@ public class Server implements Runnable {
 			addOneText(dom,rootEle, ROUND_REWARD, reward + "");			
 			addOneText(dom,rootEle, TURNS_USED, turnsUsed + "");
 			addOneText(dom,rootEle, TIME_USED, timeUsed + "");
+			addOneText(dom,rootEle, TIME_LEFT, timeLeft + "");
 			return Client.serialize(dom);
 		}
 		catch (Exception e) {
@@ -787,7 +805,7 @@ public class Server implements Runnable {
 	}
 	
 	static String createXMLSessionEnd(String requested_instance, 
-			double reward, int roundsUsed, long timeUsed,
+			double reward, int roundsUsed, long timeUsed, long timeLeft, 
 			String clientName, int sessionId) {
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		try {
@@ -801,6 +819,7 @@ public class Server implements Runnable {
 			addOneText(dom,rootEle,TIME_USED, timeUsed + "");
 			addOneText(dom,rootEle,CLIENT_NAME, clientName + "");
 			addOneText(dom,rootEle,SESSION_ID, sessionId + "");
+			addOneText(dom,rootEle,TIME_LEFT, timeLeft + "");
 			return Client.serialize(dom);
 		}
 		catch (Exception e) {

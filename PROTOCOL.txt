@@ -13,16 +13,38 @@ A session looks like this
 
 client: session request
 server: session init
---loop
+--loop (until round limit or session time limit reached)
   client: round request
   server: round init
-  --loop
+  --loop (until trial termination criteria or session time limit reached)
     server: state
     client: action
   --
   server: end round
 --
 server: end session
+
+
+NOTES REGARDING SERVER SESSION TIME LIMITS (currently set at 1080000 ms = 18 min): 
+
+(1) All times are specified in milliseconds.
+
+(2) Clients should expect a "round end" message in place of a "state" message if the
+time limit during a trial is reached, and clients should expect a "session end" 
+message immediately after a "round end" if the "round end" message indicates 
+time-left <= 0.  Note that time-left entries for "round end" and "session end"
+have been added to the message format below.  
+
+
+NOTES REGARDING RDDL2 AND OBJECT NOTATION WITH $ PREFIX
+
+(1) While in RDDL2, there is an optional $ prefix for objects (required to disambiguate
+object references in expressions, but optional elsewhere), there is no ambiguity in
+client/server object references so the $ is suppressed in messages sent by the server.  
+A client may optionally use a $ prefix for objects when communicating with the server.
+
+(2) All clients written for the IPPC 2011 (when $'s were not used) should work without
+modification with the latest versions of the RDDL2 client/server.    
 
 
 Client messages:
@@ -42,13 +64,14 @@ name => "<action-name>"  <WORD>  "</action-name>
 arg => "<action-arg>"  <WORD>  "</action-arg>"
 value => "<action-value>" <WORD> "</action-value>"
 
+
 Server messages:
 
 -Session init
 session-init => "<session-init>"  <sessionID><numrounds><timeallowed>  "</session-init>"
 sessionID => "<session-id>"  <WORD>  "</session-id>"
 numrounds => "<num-rounds>"  <WORD>  "</num-rounds>"
-timeallowed => "<time-allowed>"  <WORD>  "</time-allowed"
+timeallowed => "<time-allowed>"  <WORD>  "</time-allowed>"
 
 -Round init
 round-init => "<round-init>"  <round><time-left><rounds-left><sessionID>  "</round-init>"
@@ -67,11 +90,13 @@ no-observed-fluents => <no-observed-fluents/>
 -End round
 round-end => "<round-end>"<time-spent><turns-used>  "</round-end>"
 time-spent => "<time-spent>"  <WORD>  "</time-spent>"
+time-left => "<time-left>"  <WORD>  "</time-left>"
 turns-used => "<turns-used>"  <WORD>  "</turns-used>"
 
 -End session
 end-session => "<end-session>"  <sessionID><problem><name><rounds-used><time-spent><total-reward>  "</end-session>"
 time-spent => "<time-spent>"  <WORD>  "</time-spent>"
+time-left => "<time-left>"  <WORD>  "</time-left>"
 total-reward => "<total-reward>"  <WORD>  "</total-reward>"
 rounds-used => "<rounds-used>"  <WORD>  "</rounds-used>"
 

@@ -1180,6 +1180,7 @@ public class RDDL2Format {
 		s = s.replace("()","");
 		s = s.replace("(", "__");
 		s = s.replace(")", "");
+		s = s.replace("$", "");
 		if (s.endsWith("__"))
 			s = s.substring(0, s.length() - 2);
 		return s;
@@ -1239,6 +1240,7 @@ public class RDDL2Format {
 			rddl_files.add(file);
 		
 		// Load RDDL files
+		RDDL.SUPPRESS_OBJECT_CAST = true;
 		RDDL rddl = new RDDL();
 		HashMap<File,RDDL> file2rddl = new HashMap<File,RDDL>();
 		for (File f : (ArrayList<File>)rddl_files.clone()) {

@@ -27,6 +27,7 @@ public class RDDL {
 	public static TreeSet<String> PVAR_SRC_SET = new TreeSet<String>();
 	
 	public static boolean USE_PREFIX = false;
+	public static boolean SUPPRESS_OBJECT_CAST = false;
 	
 	public RDDL() { }
 
@@ -1088,6 +1089,8 @@ public class RDDL {
 			return _sConstValue;
 		}
 		
+		public abstract String toSuppString();
+		
 		// Precomputed
 		public int hashCode() {
 			return _nHashCode;
@@ -1166,13 +1169,19 @@ public class RDDL {
                 _intVal = null;
             }
 		}
+		
+		@Override
+		public String toSuppString() {
+			return toString();
+		}
 	}
 	
 	// Immutable... making public to avoid unnecessary
 	// method calls, relying on user to respect immutability
 	public static class OBJECT_VAL extends LCONST {
 		public OBJECT_VAL(String enum_name) {
-			super(enum_name);
+			// Allow a $ here, but remove it if present
+			super(enum_name.charAt(0) == '$' ? enum_name.substring(1) : enum_name);
 		}
 		
 		// We have an optional $ for object references except in expressions where required
@@ -1180,7 +1189,15 @@ public class RDDL {
 		//  to always use the $ prefix of object).
 		// Unlike ENUM_VAL, the "$" is not a part of the name since it is not required.
 		public String toString() {
-			return "$" + this._sConstValue;
+			if (SUPPRESS_OBJECT_CAST)
+				return toSuppString();
+			else
+				return "$" + this._sConstValue;
+		}
+
+		@Override
+		public String toSuppString() {
+			return this._sConstValue;
 		}
 	}
 
