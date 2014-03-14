@@ -117,10 +117,10 @@ domain lang_extension_examples {
 		//randVal' = sum_{?col : col-2d, ?d : col-2d} (randMatrix.?col.?d * randMatrix.?col.?d); // Matrix Inner Product
 		
 		// Some recursive definitions
-		robot-index1(?r) = 1 + if (?r == $r1)
+		robot-index1(?r) = round[ 1.01 + if (?r == $r1)
 						       then 0
-						       else robot-index1(PREV(?r));
-		robot-index2(?r) = robot-index1(PREV(?r));
+						       else robot-index1(PREV(?r))];
+		robot-index2(?r) = robot-index1(PREV(?r)) + 0.1;
 	};
   
 	// Rewards can reference all fluents (action, interm, derived, current and next state) 
