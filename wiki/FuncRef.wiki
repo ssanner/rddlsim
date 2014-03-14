@@ -1,0 +1,14 @@
+#summary Quick reference of built-in functions in RDDL.
+
+= Introduction =
+
+This page serves as a reference for the built-in functions available in RDDL.
+
+
+= Math Functions =
+
+  * sin[ x ] 
+  * cos[ x ]
+  * tan[ x ]
+  * log[ x ]
+  * exp[ x ]
