@@ -22,6 +22,7 @@ This page serves as a reference for the built-in functions available in RDDL.
   * ln
   * exp
   * pow
+  * sqrt
 
   * cos
   * sin
