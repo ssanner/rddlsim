@@ -7,7 +7,7 @@ This page serves as a reference for the built-in functions available in RDDL.
 
 = Math Functions =
 
-  * div [[ x, y ]] : divides y by x
+  * div [ &nbsp; x, y &nbsp; ] : divides y by x
   * mod [[ x, y ]] : x % y
   * min [[ x, y ]] : minimum of x and y
   * max [[ x, y ]] : maximum of x and y
