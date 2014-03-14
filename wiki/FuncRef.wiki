@@ -8,12 +8,12 @@ This page serves as a reference for the built-in functions available in RDDL.
 = Math Functions =
 
   * div `[` x, y `]` : divides y by x
-  * mod [[ x, y ]] : x % y
-  * min [[ x, y ]] : minimum of x and y
-  * max [[ x, y ]] : maximum of x and y
+  * mod `[` x, y `]` : x % y
+  * min `[` x, y `]` : minimum of x and y
+  * max `[` x, y `]` : maximum of x and y
 
-  * abs
-  * sgn
+  * abs `[` x `]` : the absolute value of x
+  * sgn `[` x `]` : returns 0 if x == 0; 1 if x > 0; -1 if x < 0
   * round
   * floor
   * ceil
