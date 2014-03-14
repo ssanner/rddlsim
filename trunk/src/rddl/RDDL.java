@@ -2594,6 +2594,9 @@ public class RDDL {
 		// Potentiall integer functions -- single arg
 		public static final String ABS  = "abs".intern();
 		public static final String SGN  = "sgn".intern();
+		public static final String ROUND = "round".intern();
+		public static final String FLOOR = "floor".intern();
+		public static final String CEIL  = "ceil".intern();
 
 		// Real-valued functions -- two args
 		public static final String POW  = "pow".intern();
@@ -2614,7 +2617,7 @@ public class RDDL {
 		public static final String SQRT = "sqrt".intern();
 		
 		public static TreeSet<String> KNOWN_FUNCTIONS = new TreeSet<String>(
-				Arrays.asList(new String[] {DIV, MOD, MIN, MAX, ABS, SGN, POW, LOG, COS, SIN, TAN, ACOS, ASIN, ATAN, COSH, SINH, TANH, EXP, LN, SQRT}));
+				Arrays.asList(new String[] {DIV, MOD, MIN, MAX, ABS, SGN, ROUND, FLOOR, CEIL, POW, LOG, COS, SIN, TAN, ACOS, ASIN, ATAN, COSH, SINH, TANH, EXP, LN, SQRT}));
 		
 		public FUN_EXPR(String s, ArrayList expressions) {
 			
@@ -2721,6 +2724,19 @@ public class RDDL {
 					return Math.abs(((Number)o1).doubleValue());
 				else // SGN
 					return Math.signum(((Number)o1).doubleValue());
+			}
+
+			// ROUND, FLOOR, CEIL: Integer output, floating point input
+			if (_sName == ROUND || _sName == FLOOR || _sName == CEIL) {
+				if (_alArgEval.size() != 1)
+					throw new EvalException("Operands of " + _sName + " take one argument, but " + _alArgEval + " provided.");
+
+				if (_sName == ROUND) 
+					return (int)Math.round(((Number)o1).doubleValue());
+				else if (_sName == FLOOR)
+					return (int)Math.floor(((Number)o1).doubleValue());
+				else // SGN
+					return (int)Math.ceil(((Number)o1).doubleValue());
 			}
 
 			// POW(a,b), LOG(a,b): Real-valued functions of base b -- two args
