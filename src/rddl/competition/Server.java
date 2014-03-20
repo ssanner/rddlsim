@@ -112,7 +112,7 @@ public class Server implements Runnable {
 	private RDDL rddl = null;
 	private static int ID = 0;
 	private static int DEFAULT_NUM_ROUNDS = 30;
-	private static long DEFAULT_TIME_ALLOWED = 1080000; // milliseconds = 18 minutes
+        private static long DEFAULT_TIME_ALLOWED = 1080000; // milliseconds = 18 minutes
 	public int port;
 	public int id;
 	public String clientName = null;
@@ -754,7 +754,7 @@ public class Server implements Runnable {
 		}
 	}
 	
-	static String createXMLRoundInit (int round, int numRounds, double timeUsed,
+	static String createXMLRoundInit (int round, int numRounds, double timeLeft,
 			double timeAllowed) {
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		try {
@@ -764,7 +764,7 @@ public class Server implements Runnable {
 			dom.appendChild(rootEle);
 			addOneText(dom,rootEle,ROUND_NUM, round + "");
 			addOneText(dom,rootEle,ROUND_LEFT, (numRounds - round) + "");
-			addOneText(dom,rootEle,TIME_LEFT, (timeAllowed-timeUsed) + "");
+			addOneText(dom,rootEle,TIME_LEFT, timeLeft + "");
 			return Client.serialize(dom);
 		}
 		catch (Exception e) {
