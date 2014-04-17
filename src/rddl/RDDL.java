@@ -102,6 +102,14 @@ public class RDDL {
 	}
 
 	public String toString() {
+		
+		// Since fluents in prefix format will always be surrounded by parens and object names will not, I believe
+		// that it will be unambiguous to always suppress the dollar sign in prefix format, so I will make $-suppression
+		// the default setting for PREFIX output.
+		boolean suppress_object_cast_temp = RDDL.SUPPRESS_OBJECT_CAST;
+		if (USE_PREFIX) 
+			RDDL.SUPPRESS_OBJECT_CAST = true;
+			
 		StringBuilder sb = new StringBuilder();
 		for (DOMAIN d : _tmDomainNodes.values())
 			sb.append(d + "\n\n");
@@ -109,7 +117,23 @@ public class RDDL {
 			sb.append(n + "\n\n");
 		for (INSTANCE i : _tmInstanceNodes.values())
 			sb.append(i + "\n\n");
+		
+		if (USE_PREFIX) 
+			RDDL.SUPPRESS_OBJECT_CAST = suppress_object_cast_temp;
+		
 		return sb.toString();
+	}
+	
+	public boolean containsObjectFluents() {
+		for (DOMAIN d : _tmDomainNodes.values()) {
+			for (PVARIABLE_DEF pvdef : d._hmPVariables.values()) {
+				TYPE_NAME range = pvdef._typeRange;
+				TYPE_DEF tdef = d._hmTypes.get(range);
+				if (tdef != null && tdef._sType.equals("object"))
+					return true;
+			}
+		}
+		return false;
 	}
 	
 	public TreeMap<String,DOMAIN>     _tmDomainNodes    = new TreeMap<String,DOMAIN>();
