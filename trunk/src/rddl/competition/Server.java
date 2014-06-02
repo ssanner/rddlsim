@@ -66,7 +66,7 @@ public class Server implements Runnable {
 	public static final String SESSION_ID = "session-id";
 	public static final String SESSION_END = "session-end";
 	public static final String TOTAL_REWARD = "total-reward";
-	public static final String TIME_SPENT = "time-spent";
+        public static final String IMMEDIATE_REWARD = "immediate-reward";
 	public static final String NUM_ROUNDS = "num-rounds";
 	public static final String TIME_ALLOWED = "time-allowed";
 	public static final String ROUNDS_USED = "rounds-used";
@@ -238,7 +238,7 @@ public class Server implements Runnable {
 							_df.format(RUNTIME.totalMemory()/1e6d) + "Mb" + 
 							" = " + _df.format(((double) (RUNTIME.totalMemory() - RUNTIME.freeMemory()) / 
 											   (double) RUNTIME.totalMemory())) + " ]\n");
-				
+				double immediate_reward = 0.0d;
 				double accum_reward = 0.0d;
 				double cur_discount = 1.0d;
 				int h = 0;
@@ -256,7 +256,7 @@ public class Server implements Runnable {
 					//		}
 					//	}
 					//}
-					msg = createXMLTurn(state, h+1, domain, observStore);
+					msg = createXMLTurn(state, h+1, domain, observStore, (timeAllowed - session_elapsed_time - round_elapsed_time), immediate_reward);
 					
 					if (SHOW_TIMING)
 						System.out.println("**TIME to create XML turn: " + timer.GetTimeSoFarAndReset());
@@ -321,10 +321,10 @@ public class Server implements Runnable {
 						observStore = copyObserv(state._observ);
 					
 					// Calculate reward / objective and store
-					double reward = ((Number)domain._exprReward.sample(new HashMap<LVAR,LCONST>(), 
+					immediate_reward = ((Number)domain._exprReward.sample(new HashMap<LVAR,LCONST>(), 
 							state, rand)).doubleValue();
-					rewards.add(reward);
-					accum_reward += cur_discount * reward;
+					rewards.add(immediate_reward);
+					accum_reward += cur_discount * immediate_reward;
 					//System.out.println("Accum reward: " + accum_reward + ", instance._dDiscount: " + instance._dDiscount + 
 					//   " / " + (cur_discount * reward) + " / " + reward);
 					cur_discount *= instance._dDiscount;
@@ -346,7 +346,9 @@ public class Server implements Runnable {
 				}
 				accum_total_reward += accum_reward;
 				session_elapsed_time += round_elapsed_time;
-				msg = createXMLRoundEnd(requestedInstance, r, accum_reward, h, round_elapsed_time, timeAllowed - session_elapsed_time, clientName);
+				msg = createXMLRoundEnd(requestedInstance, r, accum_reward, h, round_elapsed_time,
+                                                        timeAllowed - session_elapsed_time,
+                                                        clientName, immediate_reward);
 				if (SHOW_MSG)
 					System.out.println("Sending msg:\n" + msg);
 				sendOneMessage(osw, msg);
@@ -676,7 +678,8 @@ public class Server implements Runnable {
 	}
 	
 	static String createXMLTurn (State state, int turn, DOMAIN domain,
-			HashMap<PVAR_NAME, HashMap<ArrayList<LCONST>, Object>> observStore) throws Exception {
+                                     HashMap<PVAR_NAME, HashMap<ArrayList<LCONST>, Object>> observStore,
+                                     double timeLeft, double immediateReward) throws Exception {
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		try {
 			DocumentBuilder db = dbf.newDocumentBuilder();
@@ -687,6 +690,14 @@ public class Server implements Runnable {
 			Text textTurnNum = dom.createTextNode(turn + "");
 			turnNum.appendChild(textTurnNum);
 			rootEle.appendChild(turnNum);
+                        Element timeElem = dom.createElement(TIME_LEFT);
+                        Text textTimeElem = dom.createTextNode(timeLeft + "");
+                        timeElem.appendChild(textTimeElem);
+                        rootEle.appendChild(timeElem);
+                        Element immediateRewardElem = dom.createElement(IMMEDIATE_REWARD);
+                        Text textImmediateRewardElem = dom.createTextNode(immediateReward + "");
+                        immediateRewardElem.appendChild(textImmediateRewardElem);
+                        rootEle.appendChild(immediateRewardElem);
 
 			//System.out.println("PO: " + domain._bPartiallyObserved);
 			if( !domain._bPartiallyObserved || observStore != null) {
@@ -774,7 +785,7 @@ public class Server implements Runnable {
 	}
 	
 	static String createXMLRoundEnd (String requested_instance, int round, double reward,
-			int turnsUsed, long timeUsed, long timeLeft, String client_name) {
+                                         int turnsUsed, long timeUsed, long timeLeft, String client_name, double immediateReward) {
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		try {
 			DocumentBuilder db = dbf.newDocumentBuilder();
@@ -788,6 +799,7 @@ public class Server implements Runnable {
 			addOneText(dom,rootEle, TURNS_USED, turnsUsed + "");
 			addOneText(dom,rootEle, TIME_USED, timeUsed + "");
 			addOneText(dom,rootEle, TIME_LEFT, timeLeft + "");
+                        addOneText(dom,rootEle, IMMEDIATE_REWARD, immediateReward + "");
 			return Client.serialize(dom);
 		}
 		catch (Exception e) {
