@@ -293,21 +293,18 @@ public class BlockDisplay extends JPanel implements ActionListener {
 		}
 
 		// Draw all lines
-		Iterator li = _lines.iterator();
-		while (li.hasNext()) {
-			drawLine(g, (Line) li.next());
+		for (int i = 0; i < _lines.size(); i++) {
+			drawLine(g, (Line) _lines.get(i));
 		}
 		
 		// Draw all circles
-		li = _circles.iterator();
-		while (li.hasNext()) {
-			drawCircle(g, (Circle) li.next());
+		for (int i = 0; i < _circles.size(); i++) {
+			drawCircle(g, (Circle) _circles.get(i));
 		}
 		
 		// Draw all text
-		li = _text.iterator();
-		while (li.hasNext()) {
-			drawText(g, (Text) li.next());
+		for (int i = 0; i < _text.size(); i++) {
+			drawText(g, (Text) _text.get(i));
 		}
 }
 
