@@ -11,18 +11,18 @@ NOTE: This is a modified version of the PROTOCOL file from
 
 A session looks like this
 
-client: session request
-server: session init
+client: session-request
+server: session-init
 --loop (until round limit or session time limit reached)
-  client: round request
-  server: round init
+  client: round-request
+  server: round-init
   --loop (until trial termination criteria or session time limit reached)
     server: state
     client: action
   --
-  server: end round
+  server: end-round
 --
-server: end session
+server: end-session
 
 
 NOTES REGARDING SERVER SESSION TIME LIMITS (currently set at 1080000 ms = 18 min): 
@@ -47,25 +47,29 @@ A client may optionally use a $ prefix for objects when communicating with the s
 modification with the latest versions of the RDDL2 client/server.    
 
 
-Client messages:
+CLIENT MESSAGES:
+
 
 -Session request
 session-request => "<session-request>" <name> <problem> "</session-request>"
 name => "<client-name>" <WORD> "</client-name>"
 problem => "<problem-name>" <WORD> "</problem-name>"
 
+
 -Round request
 round-request => "<round-request/>"
 
--action spec
-action spec => "<actions>" <act>* "</actions>"
+
+-Action spec
+action => "<actions>" <act>* "</actions>"
 act => "<action>" <name> <arg>* <value> "</action>"
 name => "<action-name>" <WORD> "</action-name>
 arg => "<action-arg>" <WORD> "</action-arg>"
 value => "<action-value>" <WORD> "</action-value>"
 
 
-Server messages:
+SERVER MESSAGES:
+
 
 -Session init
 session-init => "<session-init>"  <sessionID> <numrounds> <timeallowed>  "</session-init>"
@@ -73,16 +77,18 @@ sessionID => "<session-id>"  <WORD>  "</session-id>"
 numrounds => "<num-rounds>"  <WORD>  "</num-rounds>"
 timeallowed => "<time-allowed>"  <WORD>  "</time-allowed>"
 
+
 -Round init
 round-init => "<round-init>" <round> <time-left> <rounds-left> <sessionID> "</round-init>"
 round => "<round-num>" <WORD> "</round-num>"
 time-left => "<time-left>" <WORD> "</time-left>"
 rounds-left => "<round-left>" <WORD> "</round-left>"
 
--Turn response
-turn-response => "<turn>" <turn-num> <time-left> <immediate-reward> <observed-fluent>* "</turn>" | 
-                 "<turn>" <turn-num> <time-left> <immediate-reward> <no-observed-fluents> "</turn>" |
-                 <end-round> | <end-session>
+
+-State (and turn response)
+state => "<turn>" <turn-num> <time-left> <immediate-reward> <observed-fluent>* "</turn>" | 
+         "<turn>" <turn-num> <time-left> <immediate-reward> <no-observed-fluents> "</turn>" |
+         <end-round> | <end-session>
 turn-num => "<turn-num>" <WORD> ">/turn-num>"
 time-left => "<time-left>" <WORD> "</time-left>"
 immediate-reward => "<immediate-reward> <WORD> "</immediate-reward>"

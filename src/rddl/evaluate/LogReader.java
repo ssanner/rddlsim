@@ -81,6 +81,7 @@ public class LogReader {
 			String client_name = null; //(String)XPathQuery(n, ".//client-name", XPathConstants.STRING);		
 			String instance_name = null; //(String)XPathQuery(n, ".//instance-name", XPathConstants.STRING);		
 			double reward = Double.NaN; //(Double)XPathQuery(n, ".//round-reward", XPathConstants.NUMBER);
+			long time_used = -1;
 			
 			NodeList children = n.getChildNodes();
 			for (int j = 0; j < children.getLength(); j++) {
@@ -96,6 +97,9 @@ public class LogReader {
 					//PrintNode(c.getFirstChild(), "", 0);
 					//System.out.println("C:" + c.getFirstChild().getNodeValue());
 					reward = new Double(c.getFirstChild().getNodeValue());
+				}
+				if (c.getNodeName().equals("time-used")) {
+					time_used = new Long(c.getFirstChild().getNodeValue());
 				}
 			}
 
@@ -113,6 +117,7 @@ public class LogReader {
 				_client2data.put(client_name, ml);
 			}
 			ml.putValue(instance_name, reward);
+			ml.putValue(instance_name + "__trial_time", time_used);
 		}
 		
 		//System.out.println(_client2data);
@@ -197,8 +202,13 @@ public class LogReader {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		LogReader d = new LogReader(new File("TestComp/MDP/rddl-2320.log"));
+		
+		if (args.length != 1) {
+			System.err.println("Must specify log file to read.");
+			System.exit(1);
+		}
+		
+		LogReader d = new LogReader(new File(args[0]));
 		System.out.println(d._client2data);
 	}
 }

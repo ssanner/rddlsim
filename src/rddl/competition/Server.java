@@ -17,8 +17,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -66,10 +68,14 @@ public class Server implements Runnable {
 	public static final String SESSION_ID = "session-id";
 	public static final String SESSION_END = "session-end";
 	public static final String TOTAL_REWARD = "total-reward";
-        public static final String IMMEDIATE_REWARD = "immediate-reward";
+	public static final String IMMEDIATE_REWARD = "immediate-reward";
 	public static final String NUM_ROUNDS = "num-rounds";
 	public static final String TIME_ALLOWED = "time-allowed";
 	public static final String ROUNDS_USED = "rounds-used";
+	
+	public static final String CLIENT_INFO = "client-info";
+	public static final String CLIENT_HOSTNAME = "client-hostname";
+	public static final String CLIENT_IP = "client-ip";
 	
 	public static final String ROUND_REQUEST = "round-request";
 	public static final String ROUND_INIT = "round-init";
@@ -108,11 +114,10 @@ public class Server implements Runnable {
 	
 	
 	private Socket connection;
-	private String TimeStamp;
 	private RDDL rddl = null;
 	private static int ID = 0;
 	private static int DEFAULT_NUM_ROUNDS = 30;
-        private static long DEFAULT_TIME_ALLOWED = 1080000; // milliseconds = 18 minutes
+    private static long DEFAULT_TIME_ALLOWED = 1080000; // milliseconds = 18 minutes
 	public int port;
 	public int id;
 	public String clientName = null;
@@ -171,7 +176,7 @@ public class Server implements Runnable {
 			while (true) {
 				Socket connection = socket1.accept();
 				RandomDataGenerator rdg = new RandomDataGenerator();
-				rdg.reSeed(rand_seed);
+				rdg.reSeed(rand_seed + ID); // Ensures predictable but different seed on every session if a single client connects and all session requests run in same order
 				Runnable runnable = new Server(connection, ++ID, rddl, state_viz, port, rdg);
 				Thread thread = new Thread(runnable);
 				thread.start();
@@ -194,13 +199,22 @@ public class Server implements Runnable {
 		DOMParser p = new DOMParser();
 		int numRounds = DEFAULT_NUM_ROUNDS;
 		long timeAllowed = DEFAULT_TIME_ALLOWED;
+				
 		try {
+			
+			// Log client host name and IP address
+			InetAddress ia = connection.getInetAddress();
+			String client_hostname = ia.getCanonicalHostName();
+			String client_IP = ia.getHostAddress();
+			System.out.println("Connection from client address: " + client_hostname + " / " + client_IP);
+			writeToLog(createClientHostMessage(client_hostname, client_IP));
+			
+			// Begin communication protocol from PROTOCOL.txt
 			BufferedInputStream isr = new BufferedInputStream(connection.getInputStream());
-			//InputStreamReader isr = new InputStreamReader(is);
 			InputSource isrc = readOneMessage(isr);
 			requestedInstance = null;
 			processXMLSessionRequest(p, isrc, this);
-			System.out.println(requestedInstance);
+			System.out.println("Instance requested: " + requestedInstance);
 	
 			if (!rddl._tmInstanceNodes.containsKey(requestedInstance)) {
 				System.out.println("Instance name '" + requestedInstance + "' not found.");
@@ -231,7 +245,7 @@ public class Server implements Runnable {
 				sendOneMessage(osw,msg);
 				
 				long start_round_time = System.currentTimeMillis();
-				System.out.println("Round " + (r+1) + " / " + numRounds);
+				System.out.println("Round " + (r+1) + " / " + numRounds + ", time remaining: " + (timeAllowed - session_elapsed_time));
 				if (SHOW_MEMORY_USAGE)
 					System.out.print("[ Memory usage: " + 
 							_df.format((RUNTIME.totalMemory() - RUNTIME.freeMemory())/1e6d) + "Mb / " + 
@@ -599,6 +613,23 @@ public class Server implements Runnable {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	static public String createClientHostMessage(String client_hostname, String client_IP) {
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		try {
+			DocumentBuilder db = dbf.newDocumentBuilder();
+			Document dom = db.newDocument();
+			Element rootEle = dom.createElement(CLIENT_INFO);
+			dom.appendChild(rootEle);
+			addOneText(dom,rootEle,CLIENT_HOSTNAME, client_hostname);
+			addOneText(dom,rootEle,CLIENT_IP, client_IP);
+			return Client.serialize(dom);
+		}
+		catch (Exception e) {
+			System.out.println(e);
 			return null;
 		}
 	}
