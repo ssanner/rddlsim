@@ -1,4 +1,5 @@
-/** Document implementation for TREC Interactive track data (TREC Disks 4-5)
+/** Derives min and max normalizing constants for use by FinalEval in determining
+ *  competitors final normalized scores.  Outputs 'min_max_norm_constants.txt'.
  *   
  * @author Scott Sanner (ssanner@gmail.com)
  */
@@ -24,8 +25,8 @@ import org.w3c.dom.NodeList;
 
 import rddl.parser.parser;
 
+import util.DocUtils;
 import util.MapList;
-
 
 public class MinMaxEval {
 	
@@ -38,20 +39,8 @@ public class MinMaxEval {
 		BASELINE_POLICIES.add("NoopPolicy".toLowerCase());
 	}
 	
+	public static final String IGNORE_CLIENT_LIST_FILE = "IGNORE_CLIENT_LIST.txt";
 	public static HashSet<String> IGNORE_POLICIES = new HashSet<String>();
-	static {
-		IGNORE_POLICIES.add("bogustest");
-		IGNORE_POLICIES.add("a0");
-		IGNORE_POLICIES.add("Beaver-Real-Attempt-2");
-		IGNORE_POLICIES.add("Beaver");
-		IGNORE_POLICIES.add("MyClientName");
-		IGNORE_POLICIES.add("mcgilltest");
-		IGNORE_POLICIES.add("TestClient");
-		IGNORE_POLICIES.add("TestingClient");
-		IGNORE_POLICIES.add("Beaver");
-		IGNORE_POLICIES.add("PoupartBogusClient");
-		IGNORE_POLICIES.add("PoupartRandomTest");
-	}
 	
 	public static DecimalFormat df = new DecimalFormat("#.##");
 	
@@ -64,6 +53,15 @@ public class MinMaxEval {
 		HashSet<String> client_names = new HashSet<String>();
 		
 		if (f.isDirectory()) {
+			
+			// Add additional client names to ignore from IGNORE_LIST_FILE
+			String s_ignore = DocUtils.ReadFile(new File(f.getPath() + File.separator + IGNORE_CLIENT_LIST_FILE));
+			for (String s : s_ignore.split("[\\s]")) {
+				IGNORE_POLICIES.add(s.trim());
+				System.out.println("Ignoring: '" + s.trim() + "'");
+			}
+
+			// Read all log files
 			for (File f2 : f.listFiles())
 				if (f2.getName().endsWith(".log")) {
 					System.out.println("Loading log file: " + f2 + "...");
@@ -72,7 +70,7 @@ public class MinMaxEval {
 					client2data.putAll(lr._client2data);
 				}
 		} else
-			usage();
+			FinalEval.usage();
 		
 		HashMap<String,Integer> instance2count = new HashMap<String,Integer>();
 		HashMap<String,Double>  instance2minR  = new HashMap<String,Double>();
@@ -97,6 +95,8 @@ public class MinMaxEval {
 			HashSet<String> instances_encountered = new HashSet<String>();
 			for (Object o : e.getValue().keySet()) {
 				String instance_name = (String)o;
+				if (instance_name.endsWith("__trial_time"))
+					continue;
 				Integer count = instance2count.get(instance_name);
 				if (count == null) {
 					// This instance has never been encountered before
@@ -109,21 +109,48 @@ public class MinMaxEval {
 				instances_encountered.add(instance_name);
 				
 				ArrayList<Double> rewards = new ArrayList<Double>(e.getValue().getValues(instance_name));
+				ArrayList<Long>   times   = new ArrayList<Long>((e.getValue().getValues(instance_name + "__trial_time")));
 				
-				if (rewards.size() > FinalEval.NUM_EXPECTED_TRIALS) {
-					// Take the last NUM_EXPECTED_TRIALS
-					Object[] temp_rewards = rewards.toArray();
-					rewards.clear();
-					for (int i = temp_rewards.length - FinalEval.NUM_EXPECTED_TRIALS; i < temp_rewards.length; i++)
-						rewards.add((Double)temp_rewards[i]);
+				///////////////////////////////////////////////////////////////////////////////////////////////////////
+				
+				// Get up to last FinalEval.NUM_EXPECTED_TRIALS within cumulative time limit of FinalEval.TIME_ALLOWED
+				ArrayList<Double> last_rewards_in_trial_and_time_limit = new ArrayList<Double>();
+				ArrayList<Long> last_times_in_trial_and_time_limit = new ArrayList<Long>();
+				long cumulative_time = 0; 
+				for (int i = rewards.size() - 1 /*end*/; i >= Math.max(0, rewards.size() - FinalEval.NUM_EXPECTED_TRIALS) /*e.g., max(end-30,0)*/; i--) {
 					
-				} 
+					double rew = rewards.get(i);
+					long time  = times.get(i);
+					if (FinalEval.ENFORCE_TIME_LIMIT && cumulative_time + time > FinalEval.TIME_ALLOWED) {
+						System.err.println("TIME LIMIT (" + (cumulative_time + time) + "/" + FinalEval.TIME_ALLOWED + ") EXCEEDED on " + instance_name + 
+								           " by " + client_name + ", using last " + last_rewards_in_trial_and_time_limit.size() + " / " + rewards.size() + " trials.");
+						break;
+					}
+					
+					last_rewards_in_trial_and_time_limit.add(rew);
+					last_times_in_trial_and_time_limit.add(time);
+					cumulative_time += time;
+				}
+				rewards.clear(); // Need to modify in place since external references to this object 
+				rewards.addAll(last_rewards_in_trial_and_time_limit); // Replace with the subset within the time limit
+				times.clear(); // Need to modify in place since external references to this object
+				times.addAll(last_times_in_trial_and_time_limit);
+				
+//				if (rewards.size() > FinalEval.NUM_EXPECTED_TRIALS) {
+//					// Take the last NUM_EXPECTED_TRIALS
+//					Object[] temp_rewards = rewards.toArray();
+//					rewards.clear();
+//					for (int i = temp_rewards.length - FinalEval.NUM_EXPECTED_TRIALS; i < temp_rewards.length; i++)
+//						rewards.add((Double)temp_rewards[i]);
+//					
+//				} 
 
 				if (rewards.size() != FinalEval.NUM_EXPECTED_TRIALS) {
-					System.err.println("INCORRECT NUMBER OF TRIALS [" + rewards.size() + "/ expected: "
+					System.err.println("INCORRECT NUMBER OF TRIALS [" + rewards.size() + " / expected: "
 							+ FinalEval.NUM_EXPECTED_TRIALS + "] for " + client_name + " on " +
 							instance_name + ": continuing with average on these trials.");
 				}		
+				///////////////////////////////////////////////////////////////////////////////////////////////////////
 				
 				double min_val = instance2minR.get(instance_name);
 				double max_val = instance2maxR.get(instance_name);	
@@ -199,16 +226,12 @@ public class MinMaxEval {
 	
 	public static void main(String[] args) throws Exception {
 		
-		String directory = "FinalComp/POMDP";
-		if (args.length == 1)
-			directory = args[0];
-		else
-			usage();
+		String directory = null;
+		int index = FinalEval.ProcessArgs(args, 0);
+		if (index != args.length - 1)
+			FinalEval.usage();
+		directory = args[index];
 		
 		Eval(new File(directory));
-	}
-	
-	public static void usage() {
-		System.out.println("\nUsage: <directory of RDDL .log files>");
 	}
 }

@@ -93,6 +93,15 @@ We currently provide the following rddlsim command line utilities:
         	  ...otherwise, any policy class name which derives from rddl.Policy
         	  ...for *your* client, just provide a policy derived from rddl.Policy
         
+    Evaluating competition results for a directory of Client log-files:
+       
+        rddl.evaluate.MinMaxEval [--time-limit TIME] [--num-trials NUM] <directory of RDDL .log files>
+        rddl.evaluate.FinalEval [--time-limit TIME] [--num-trials NUM] <directory of RDDL .log files>
+       
+        See src/rddl/evaluate/README.txt for a full explanation.
+        
+        For archives of log files from competitions, please see the respective competition websites. 
+        
 	Examples (run from rddlsim directory, ./run for UNIX/Cygwin, run.bat for Windows):
 
 		**Client/Server examples**
@@ -156,6 +165,7 @@ We currently provide the following rddlsim command line utilities:
 		./run rddl.viz.RDDL2Graph files/rddl2/examples/multiagent_mars_rover.rddl2 inst_multiagent_mars_rover
 		./run rddl.viz.RDDL2Graph files/rddl2/examples/traffic_control_ctm.rddl2 inst_traffic_control_ctm
 		./run rddl.viz.RDDL2Graph files/rddl2/examples/power_gen.rddl2 inst_power_gen			
+
 
 GraphViz RDDL Visualization
 ===========================
