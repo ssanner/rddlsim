@@ -225,6 +225,8 @@ public class RDDL {
 		public String _sDomainName = null;
 		public String _sCPFHeader  = null;
 		
+		// WARNING: these are no longer set properly... should avoid using them until they
+		//          are derived from domain analysis.
 		public boolean _bConcurrent = false;  // more than one non-default action 
 		public boolean _bContinuous = false;  // use of real type
 		public boolean _bInteger = false;     // use of int type
