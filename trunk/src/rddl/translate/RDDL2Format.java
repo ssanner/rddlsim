@@ -969,10 +969,10 @@ public class RDDL2Format {
 			HashSet<Pair> relevant_vars = new HashSet<Pair>();
 			HashMap subs = (HashMap)p._o1;
 			EXPR e2 = ((EXPR)p._o2);
-			if (_d._bRewardDeterministic) // collectGFluents expects distribution
-				e2 = new DiracDelta(e2);
-			else
-				System.out.println("WARNING: May not convert additive reward correctly... check results.");
+			//if (_d._bRewardDeterministic) // collectGFluents expects distribution
+			e2 = new DiracDelta(e2);
+			//else
+			//	System.out.println("WARNING: May not convert additive reward correctly... check results.");
 			e2.collectGFluents(subs, _state, relevant_vars);
 			
 			if (filter_actions)
@@ -1078,36 +1078,51 @@ public class RDDL2Format {
 			
 			// At this point, all state and action variables are set
 			// Just need to get the distribution for the appropriate CPT
-			RDDL.EXPR e = cpf_expr.getDist(subs, _state);
 			double prob_true = -1d;
-			//System.out.println("RDDL.EXPR: " + e);
-			if (e instanceof KronDelta) {
-				EXPR e2 = ((KronDelta)e)._exprIntValue;
-				if (e2 instanceof INT_CONST_EXPR)
-					// Should either be true (1) or false (0)... same as prob_true
-					prob_true = (double)((INT_CONST_EXPR)e2)._nValue;
-				else if (e2 instanceof BOOL_CONST_EXPR)
-					prob_true = ((BOOL_CONST_EXPR)e2)._bValue ? 1d : 0d;
+			try {
+				RDDL.EXPR e = cpf_expr.getDist(subs, _state);
+				//System.out.println("RDDL.EXPR: " + e);
+				if (e instanceof KronDelta) {
+					EXPR e2 = ((KronDelta)e)._exprIntValue;
+					if (e2 instanceof INT_CONST_EXPR)
+						// Should either be true (1) or false (0)... same as prob_true
+						prob_true = (double)((INT_CONST_EXPR)e2)._nValue;
+					else if (e2 instanceof BOOL_CONST_EXPR)
+						prob_true = ((BOOL_CONST_EXPR)e2)._bValue ? 1d : 0d;
+					else
+						throw new EvalException("Unhandled KronDelta argument: " + e2.getClass()); 
+				} else if (e instanceof Bernoulli) {
+					prob_true = ((REAL_CONST_EXPR)((Bernoulli)e)._exprProb)._dValue;
+				} else if (e instanceof DiracDelta) {
+					// NOTE: this is not a probability, but rather an actual value
+					//       (presumably for the reward).  This method is a little
+					//       overloaded... need to consider whether there will be
+					//       any problems arising from this overloading.  -Scott
+					prob_true = ((REAL_CONST_EXPR)((DiracDelta)e)._exprRealValue)._dValue;
+				} else
+					throw new EvalException("Unhandled distribution type: " + e.getClass());
+
+			} catch (Exception e) {
+				// We typically get here when KronDelta or DiracDelta were not used to wrap a deterministic function
+				// We could have Expr.getDist return KronDelta/DiracDelta wrapped values when arguments are deterministic?
+				// For now a workaround...
+				Object oprob = cpf_expr.sample(subs, _state, null);
+				if (oprob instanceof Number)
+					prob_true = ((Number)oprob).doubleValue();
+				else if (oprob instanceof Boolean)
+					prob_true = ((Boolean)oprob) ? 1d : 0d;
 				else
-					throw new EvalException("Unhandled KronDelta argument: " + e2.getClass()); 
-			} else if (e instanceof Bernoulli) {
-				prob_true = ((REAL_CONST_EXPR)((Bernoulli)e)._exprProb)._dValue;
-			} else if (e instanceof DiracDelta) {
-				// NOTE: this is not a probability, but rather an actual value
-				//       (presumably for the reward).  This method is a little
-				//       overloaded... need to consider whether there will be
-				//       any problems arising from this overloading.  -Scott
-				prob_true = ((REAL_CONST_EXPR)((DiracDelta)e)._exprRealValue)._dValue;
-			} else
-				throw new EvalException("Unhandled distribution type: " + e.getClass());
-			
+					throw new EvalException("Could not deterministically evaluate: " + cpf_expr + " / " + subs);
+				//System.out.println(e + "\n- " + cpf_expr + " / " + subs + "\n  is not a proper distribution, deterministic eval = " + prob_true);
+			}
+
 			// Now build CPT for action variables
 			return _context.scalarMultiply(cpt, prob_true);
 
 		} else {
 			PVAR_NAME p = (PVAR_NAME)vars.get(index)._o1;
 			ArrayList<LCONST> terms = (ArrayList<LCONST>)vars.get(index)._o2;
-			String var_name = CleanFluentName(p._sPVarName + terms + (p._bPrimed ? "\'" : "")); 
+			String var_name = CleanFluentName(p._sPVarName + terms + (p._bPrimed ? "\'" : "")); // Really need to escape it?  Don't think so.
 			//System.out.println(var_name);
 
 			// Set to true
@@ -1183,6 +1198,10 @@ public class RDDL2Format {
 		s = s.replace("$", "");
 		if (s.endsWith("__"))
 			s = s.substring(0, s.length() - 2);
+		if (s.endsWith("__'")) {
+			s = s.substring(0, s.length() - 3);
+			s = s + "\'"; // Really need to escape it?  Don't think so.
+		}
 		return s;
 	}
 	
