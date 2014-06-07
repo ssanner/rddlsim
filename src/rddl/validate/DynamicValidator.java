@@ -24,6 +24,8 @@ import rddl.viz.StateViz;
 
 public class DynamicValidator {
 
+	// Note when objects are referenced but not declared in object lists
+	
 	// Validates a domain and arbitrary first instance by simulating one iteration with a NOOP -- undefined
 	// references will be caught although it should be pointed out that a dynamic simulation does not 
 	// necessarily evaluate all conditional paths or states so this is more of a reality check.

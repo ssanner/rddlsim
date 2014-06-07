@@ -516,7 +516,7 @@ public class RDDL2Format {
 							PW.print(" ");
 					}	
 					String operation = leaf_val > 0d ? "increase" : "decrease";
-					PW.println("(" + operation + " (reward) " + Math.abs(leaf_val) + "))");
+					PW.println("(" + operation + " (reward) " + Math.abs(leaf_val) + ")" + (use_when ? ")" : ""));
 				}
 			});
 		}
