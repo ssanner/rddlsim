@@ -24,6 +24,8 @@ import rddl.viz.StateViz;
 
 public class StaticValidator {
 
+	// Note when objects are referenced but not declared in object lists
+	
 	// Ensure that all pvariable references in expressions refer to
 	// defined pvariables
 	
