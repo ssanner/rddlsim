@@ -77,8 +77,11 @@ domain wildfire_pomdp {
 		burning'(?x, ?y) = 
 			if ( put-out(?x, ?y) ) // Intervention to put out fire?
 				then false
-			else if (~out-of-fuel(?x, ?y) ^ ~burning(?x, ?y)) // Ignition of a new fire? Depends on neighbors.
-				then Bernoulli( 1.0 / (1.0 + exp[4.5 - (sum_{?x2: x_pos, ?y2: y_pos} (NEIGHBOR(?x, ?y, ?x2, ?y2) ^ burning(?x2, ?y2)))]) )
+            // Modification: targets can only start to burn if at least one neighbor is on fire
+            else if (~out-of-fuel(?x, ?y) ^ ~burning(?x, ?y)) // Ignition of a new fire? Depends on neighbors.
+              then [if (TARGET(?x, ?y) ^ ~exists_{?x2: x_pos, ?y2: y_pos} (NEIGHBOR(?x, ?y, ?x2, ?y2) ^ burning(?x2, ?y2)))
+                    then false
+                    else Bernoulli( 1.0 / (1.0 + exp[4.5 - (sum_{?x2: x_pos, ?y2: y_pos} (NEIGHBOR(?x, ?y, ?x2, ?y2) ^ burning(?x2, ?y2)))]) ) ]
 			else 
 				burning(?x, ?y); // State persists
 		
