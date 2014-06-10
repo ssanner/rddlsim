@@ -48,25 +48,25 @@ domain tamarisk_mdp {
   pvariables {
 
 	// Nonfluents: constant parameters
-	ERADICATION-RATE       : { non-fluent, real, default = 0.85 };
-	RESTORATION-RATE       : { non-fluent, real, default = 0.65 };
-	DOWNSTREAM-SPREAD-RATE : { non-fluent, real, default = 0.5  };
-	UPSTREAM-SPREAD-RATE   : { non-fluent, real, default = 0.1  };
-	DEATH-RATE-TAMARISK    : { non-fluent, real, default = 0.2  };
-	DEATH-RATE-NATIVE      : { non-fluent, real, default = 0.2  };
+	ERADICATION-RATE       : { non-fluent, real, default = 0.9  }; // 0.85 in original
+	RESTORATION-RATE       : { non-fluent, real, default = 0.9  }; // 0.65 in original
+	DOWNSTREAM-SPREAD-RATE : { non-fluent, real, default = 0.6  }; // 0.5 in original
+	UPSTREAM-SPREAD-RATE   : { non-fluent, real, default = 0.15 }; // 0.1 in original
+	DEATH-RATE-TAMARISK    : { non-fluent, real, default = 0.05 }; // 0.2 in original
+	DEATH-RATE-NATIVE      : { non-fluent, real, default = 0.05 }; // 0.2 in original
 	
 	// These are parameters I have added to address native spreading and
 	// competition if a tamarisk and native both appear at a slot.
-	EXOGENOUS-PROD-RATE-NATIVE    : { non-fluent, real, default = 0.2 };
+	EXOGENOUS-PROD-RATE-NATIVE    : { non-fluent, real, default = 0.1 };
 	EXOGENOUS-PROD-RATE-TAMARISK  : { non-fluent, real, default = 0.1 };
 	COMPETITION-WIN-RATE-NATIVE   : { non-fluent, real, default = 0.2 };
 	COMPETITION-WIN-RATE-TAMARISK : { non-fluent, real, default = 0.8 };
 		
 	// Invasion and vulnerability costs (independent of actions)
 		
-	COST-PER-INVADED-REACH : { non-fluent, real, default = 10.0  };
-	COST-PER-TREE          : { non-fluent, real, default =  0.1  };
-	COST-PER-EMPTY-SLOT    : { non-fluent, real, default =  0.05 };
+	COST-PER-INVADED-REACH : { non-fluent, real, default = 5.0  }; // 5.0 in original
+	COST-PER-TREE          : { non-fluent, real, default = 0.5  }; // 0.1 in original
+	COST-PER-EMPTY-SLOT    : { non-fluent, real, default = 0.25 }; // 0.05 in original
 	
 	// From https://slots.google.com/slot/rlcompetition2014/domains/invasive-species:
 	//

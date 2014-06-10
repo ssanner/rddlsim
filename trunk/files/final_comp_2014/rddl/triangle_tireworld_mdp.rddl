@@ -132,10 +132,11 @@ domain triangle_tireworld_mdp {
 				
   };
 
-  // We get a reward of 100 for reaching the goal 
+  // We get a reward of 100 for reaching the goal and lose -1 on every iteration goal not reached
   reward = if (~goal-reward-received ^ exists_{?l : location} (vehicle-at(?l) ^ goal-location(?l)))
-  		then 100
-  		else 0;
+                then 100
+           else if (goal-reward-received) then 0
+           else -1; // Modified from IPPC 2008 to encourage shorter paths since we don't separately evaluate plan length
 
 }     
  
