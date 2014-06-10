@@ -54,9 +54,9 @@ domain academic_advising_pomdp {
   cpfs {
 
 	// Determine whether each course was passed
-	// If PRIOR_PROB_PASS=.2 and 0 out of 3 prereqs were taken, the distributions is Bernoulli(.2 + .8 * (0/4)) = Bernoulli(.2)
-	//                           1 out of 3 prereqs were taken, the distributions is Bernoulli(.2 + .8 * (1/4)) = Bernoulli(.4)
-	//                           3 out of 3 prereqs were taken, the distributions is Bernoulli(.2 + .8 * (3/4)) = Bernoulli(.8)
+	// If PRIOR_PROB_PASS=.2 and 0 out of 3 prereqs were taken, the distribution is Bernoulli(.2 + .8 * (0/4)) = Bernoulli(.2)
+	//                           1 out of 3 prereqs were taken, the distribution is Bernoulli(.2 + .8 * (1/4)) = Bernoulli(.4)
+	//                           3 out of 3 prereqs were taken, the distribution is Bernoulli(.2 + .8 * (3/4)) = Bernoulli(.8)
     passed'(?c) = 
     	if (takeCourse(?c) ^ ~passed(?c)) // If take a course and not already passed 
 			then Bernoulli((PRIOR_PROB_PASS(?c)) + 

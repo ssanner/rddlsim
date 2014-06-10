@@ -2668,7 +2668,7 @@ public class RDDL {
 		public String toString() {
 			StringBuilder sb = new StringBuilder();
 			if (USE_PREFIX) 
-				sb.append("(SPECIAL-FUN ");
+				sb.append("(");
 			sb.append(_sName);
 			if (_alArgs.size() > 0) {
 				boolean first = true;
