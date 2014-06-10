@@ -28,7 +28,8 @@ domain academic_advising_pomdp {
     PREREQ(course, course) : { non-fluent, bool, default = false }; // First argument is a prereq of second argument
 
     // Nonfluents: course passing probabilities
-    PRIOR_PROB_PASS(course) : { non-fluent, real, default = 0.2 };   // Probability of passing a course regardless of prereq status
+    PRIOR_PROB_PASS_NO_PREREQ(course) : { non-fluent, real, default = 0.8 }; // Probability of passing a course with no prereqs
+    PRIOR_PROB_PASS(course)           : { non-fluent, real, default = 0.2 }; // Probability of passing a course regardless of prereq status
     
     // Nonfluents: program requirements for graduation
     PROGRAM_REQUIREMENT(course) : { non-fluent, bool, default = false }; // Specifies whether course is program requirement 
@@ -54,14 +55,18 @@ domain academic_advising_pomdp {
   cpfs {
 
 	// Determine whether each course was passed
-	// If PRIOR_PROB_PASS=.2 and 0 out of 3 prereqs were taken, the distribution is Bernoulli(.2 + .8 * (0/4)) = Bernoulli(.2)
-	//                           1 out of 3 prereqs were taken, the distribution is Bernoulli(.2 + .8 * (1/4)) = Bernoulli(.4)
-	//                           3 out of 3 prereqs were taken, the distribution is Bernoulli(.2 + .8 * (3/4)) = Bernoulli(.8)
+	// Modification: differentiate courses with no prereqs since should be easier to pass such introductory courses
+	// For courses with prereqs:
+	//   if PRIOR_PROB_PASS=.2 and 0 out of 3 prereqs were taken, the distribution is Bernoulli(.2 + .8 * (0/4)) = Bernoulli(.2)
+	//                             1 out of 3 prereqs were taken, the distribution is Bernoulli(.2 + .8 * (1/4)) = Bernoulli(.4)
+	//                             3 out of 3 prereqs were taken, the distribution is Bernoulli(.2 + .8 * (3/4)) = Bernoulli(.8)
     passed'(?c) = 
     	if (takeCourse(?c) ^ ~passed(?c)) // If take a course and not already passed 
-			then Bernoulli((PRIOR_PROB_PASS(?c)) + 
-			               (1 - PRIOR_PROB_PASS(?c))*[[sum_{?c2 : course} (PREREQ(?c2,?c) ^ passed(?c2))] 
-									                  / [1 + sum_{?c2 : course} PREREQ(?c2,?c)]]) 
+			then [ if (~exists_{?c2 : course} PREREQ(?c2,?c))
+			       then Bernoulli( PRIOR_PROB_PASS_NO_PREREQ(?c) )  
+			       else Bernoulli((PRIOR_PROB_PASS(?c)) + 
+			                      (1 - PRIOR_PROB_PASS(?c))*[[sum_{?c2 : course} (PREREQ(?c2,?c) ^ passed(?c2))] 
+								                             / [1 + sum_{?c2 : course} PREREQ(?c2,?c)]]) ]
 			else
 				passed(?c); // Value persists if course not taken or already passed
 	
