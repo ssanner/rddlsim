@@ -25,7 +25,7 @@ public class RDDL2Format {
 
 	public final static boolean DEBUG_CPTS = true;
 	public final static boolean SHOW_GRAPH = false;
-	public final static boolean SHOW_RELEVANCE = false;
+	public final static boolean SHOW_RELEVANCE = true;
 
 	public final static int     STATE_ITER  = 0;
 	public final static int     OBSERV_ITER = 1;
@@ -142,6 +142,8 @@ public class RDDL2Format {
 		}
 		
 		// Build the CPTs
+		if (_sTranslationType != SPUDD_CONC && _sTranslationType != SPUDD_CONT_CONC)
+			RDDL.ASSUME_ACTION_OBSERVED = true; // Action will be instantiated when we check CPT dependencies
 		buildCPTs();
 	}
 	
@@ -824,6 +826,11 @@ public class RDDL2Format {
 								_alSaveNodes.addAll(rew_fun);
 							}							
 								
+							// 2014 modification: re-evaluate relevance in context of action setting
+							relevant_vars.clear();
+							cpf_expr.collectGFluents(subs, _state, relevant_vars);
+							relevant_vars = filterOutActionVars(relevant_vars);
+							
 							// For this action, enumerate all relevant state assignments
 							// and build the CPT.  (Could be more efficient by recursively
 							// constructing ADD from RDDL expression, but this becomes
@@ -831,7 +838,7 @@ public class RDDL2Format {
 							// sum/prod are used in comparisons.  This method is generic
 							// and relatively simple.) 
 							if (SHOW_RELEVANCE)
-								System.out.println("Vars relevant to " + action_instance + ", " + cpt_var + ": " + relevant_vars);
+								System.out.println("ACTION: Vars relevant to " + action_instance + ", " + cpt_var + ": " + relevant_vars);
 							
 							int cpt = enumerateAssignments(new ArrayList<Pair>(relevant_vars), cpf_expr, subs, 0);
 							_alSaveNodes.add(cpt);

@@ -26,6 +26,7 @@ public class RDDL {
 	public final static boolean DEBUG_PVAR_NAMES = true;
 	public static TreeSet<String> PVAR_SRC_SET = new TreeSet<String>();
 	
+	public static boolean ASSUME_ACTION_OBSERVED = false;
 	public static boolean USE_PREFIX = false;
 	public static boolean SUPPRESS_OBJECT_CAST = false;
 	
@@ -3289,7 +3290,23 @@ public class RDDL {
 					local_fluents.clear();
 					b.collectGFluents(subs, s, local_fluents);
 					boolean b_is_indep_of_state = local_fluents.size() == 0;
+				
+					// 2014: Special check for action dependencies
+					// A direct recursive compilation may circumvent the need for this action-dependency analysis since
+					//   it may be lightweight to build a disjunction and later prune?  Currently have to enumerate all
+					//   joint values of irrelevant variables.
+					if (_sConn == AND && ASSUME_ACTION_OBSERVED && (b instanceof PVAR_EXPR) && s.getPVariableType(((PVAR_EXPR)b)._pName) == State.ACTION) {
+						
+						// If this action is false then this entire branch is not accessible
+						//System.out.println("Testing if can ignoring branch: " + this + " / " + subs);
+						Boolean eval = (Boolean)b.sample(subs, s, null);
+						if (Boolean.FALSE.equals(eval)) {
+							//System.out.println("Ignoring branch: " + this);
+							return;
+						}
+					}
 					
+					// Check for early termination due to nonfluent state independence and deterministic evaluation
 					if (b_is_indep_of_state && b._bDet) { // (s.getPVariableType(p._pName) == State.NONFLUENT) {
 						boolean eval = (Boolean)b.sample(subs, s, null);
 						// If can determine truth value of connective from nonfluents
