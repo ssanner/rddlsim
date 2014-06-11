@@ -16,33 +16,31 @@ rm -rf files/final_comp_2014/rddl/*inst*
 # Generate triangle tireworld MDP instances
 #############################################################################
 echo Generating Triangle Tireworld MDPs
-./run rddl.competition.generators.TriangleTireworldMDPGen files/final_comp_2014/rddl triangle_tireworld_inst_mdp__1  src/ppddl/tt/p01.pddl 0.499 40 1.0
-./run rddl.competition.generators.TriangleTireworldMDPGen files/final_comp_2014/rddl triangle_tireworld_inst_mdp__2  src/ppddl/tt/p01.pddl 0.25  40 1.0
-./run rddl.competition.generators.TriangleTireworldMDPGen files/final_comp_2014/rddl triangle_tireworld_inst_mdp__3  src/ppddl/tt/p02.pddl 0.40  40 1.0
-./run rddl.competition.generators.TriangleTireworldMDPGen files/final_comp_2014/rddl triangle_tireworld_inst_mdp__4  src/ppddl/tt/p02.pddl 0.20  40 1.0
+./run rddl.competition.generators.TriangleTireworldMDPGen files/final_comp_2014/rddl triangle_tireworld_inst_mdp__1  src/ppddl/tt/p01.pddl 0.40 40 1.0
+./run rddl.competition.generators.TriangleTireworldMDPGen files/final_comp_2014/rddl triangle_tireworld_inst_mdp__2  src/ppddl/tt/p01.pddl 0.499  40 1.0
+./run rddl.competition.generators.TriangleTireworldMDPGen files/final_comp_2014/rddl triangle_tireworld_inst_mdp__3  src/ppddl/tt/p02.pddl 0.35  40 1.0
+./run rddl.competition.generators.TriangleTireworldMDPGen files/final_comp_2014/rddl triangle_tireworld_inst_mdp__4  src/ppddl/tt/p02.pddl 0.45  40 1.0
 ./run rddl.competition.generators.TriangleTireworldMDPGen files/final_comp_2014/rddl triangle_tireworld_inst_mdp__5  src/ppddl/tt/p03.pddl 0.30  40 1.0
-./run rddl.competition.generators.TriangleTireworldMDPGen files/final_comp_2014/rddl triangle_tireworld_inst_mdp__6  src/ppddl/tt/p03.pddl 0.15  40 1.0
-./run rddl.competition.generators.TriangleTireworldMDPGen files/final_comp_2014/rddl triangle_tireworld_inst_mdp__7  src/ppddl/tt/p04.pddl 0.20  40 1.0
-./run rddl.competition.generators.TriangleTireworldMDPGen files/final_comp_2014/rddl triangle_tireworld_inst_mdp__8  src/ppddl/tt/p04.pddl 0.10  40 1.0
-./run rddl.competition.generators.TriangleTireworldMDPGen files/final_comp_2014/rddl triangle_tireworld_inst_mdp__9  src/ppddl/tt/p05.pddl 0.10  40 1.0
-./run rddl.competition.generators.TriangleTireworldMDPGen files/final_comp_2014/rddl triangle_tireworld_inst_mdp__10 src/ppddl/tt/p05.pddl 0.05  40 1.0
-
-exit
+./run rddl.competition.generators.TriangleTireworldMDPGen files/final_comp_2014/rddl triangle_tireworld_inst_mdp__6  src/ppddl/tt/p03.pddl 0.40  40 1.0
+./run rddl.competition.generators.TriangleTireworldMDPGen files/final_comp_2014/rddl triangle_tireworld_inst_mdp__7  src/ppddl/tt/p04.pddl 0.25  40 1.0
+./run rddl.competition.generators.TriangleTireworldMDPGen files/final_comp_2014/rddl triangle_tireworld_inst_mdp__8  src/ppddl/tt/p04.pddl 0.35  40 1.0
+./run rddl.competition.generators.TriangleTireworldMDPGen files/final_comp_2014/rddl triangle_tireworld_inst_mdp__9  src/ppddl/tt/p05.pddl 0.20  40 1.0
+./run rddl.competition.generators.TriangleTireworldMDPGen files/final_comp_2014/rddl triangle_tireworld_inst_mdp__10 src/ppddl/tt/p05.pddl 0.30  40 1.0
 
 #############################################################################
 # Generate triangle tireworld POMDP instances
 #############################################################################
 echo Generating Triangle Tireworld POMDPs
-./run rddl.competition.generators.TriangleTireworldPOMDPGen files/final_comp_2014/rddl triangle_tireworld_inst_pomdp__1  src/ppddl/tt/p01.pddl 0.49 40 1.0
-./run rddl.competition.generators.TriangleTireworldPOMDPGen files/final_comp_2014/rddl triangle_tireworld_inst_pomdp__2  src/ppddl/tt/p02.pddl 0.49 40 1.0
-./run rddl.competition.generators.TriangleTireworldPOMDPGen files/final_comp_2014/rddl triangle_tireworld_inst_pomdp__3  src/ppddl/tt/p03.pddl 0.49 40 1.0
-./run rddl.competition.generators.TriangleTireworldPOMDPGen files/final_comp_2014/rddl triangle_tireworld_inst_pomdp__4  src/ppddl/tt/p04.pddl 0.49 40 1.0
-./run rddl.competition.generators.TriangleTireworldPOMDPGen files/final_comp_2014/rddl triangle_tireworld_inst_pomdp__5  src/ppddl/tt/p05.pddl 0.49 40 1.0
-./run rddl.competition.generators.TriangleTireworldPOMDPGen files/final_comp_2014/rddl triangle_tireworld_inst_pomdp__6  src/ppddl/tt/p06.pddl 0.49 40 1.0
-./run rddl.competition.generators.TriangleTireworldPOMDPGen files/final_comp_2014/rddl triangle_tireworld_inst_pomdp__7  src/ppddl/tt/p07.pddl 0.49 40 1.0
-./run rddl.competition.generators.TriangleTireworldPOMDPGen files/final_comp_2014/rddl triangle_tireworld_inst_pomdp__8  src/ppddl/tt/p08.pddl 0.49 40 1.0
-./run rddl.competition.generators.TriangleTireworldPOMDPGen files/final_comp_2014/rddl triangle_tireworld_inst_pomdp__9  src/ppddl/tt/p09.pddl 0.49 40 1.0
-./run rddl.competition.generators.TriangleTireworldPOMDPGen files/final_comp_2014/rddl triangle_tireworld_inst_pomdp__10 src/ppddl/tt/p10.pddl 0.49 40 1.0
+./run rddl.competition.generators.TriangleTireworldPOMDPGen files/final_comp_2014/rddl triangle_tireworld_inst_pomdp__1  src/ppddl/tt/p01.pddl 0.40 40 1.0
+./run rddl.competition.generators.TriangleTireworldPOMDPGen files/final_comp_2014/rddl triangle_tireworld_inst_pomdp__2  src/ppddl/tt/p01.pddl 0.499  40 1.0
+./run rddl.competition.generators.TriangleTireworldPOMDPGen files/final_comp_2014/rddl triangle_tireworld_inst_pomdp__3  src/ppddl/tt/p02.pddl 0.35  40 1.0
+./run rddl.competition.generators.TriangleTireworldPOMDPGen files/final_comp_2014/rddl triangle_tireworld_inst_pomdp__4  src/ppddl/tt/p02.pddl 0.45  40 1.0
+./run rddl.competition.generators.TriangleTireworldPOMDPGen files/final_comp_2014/rddl triangle_tireworld_inst_pomdp__5  src/ppddl/tt/p03.pddl 0.30  40 1.0
+./run rddl.competition.generators.TriangleTireworldPOMDPGen files/final_comp_2014/rddl triangle_tireworld_inst_pomdp__6  src/ppddl/tt/p03.pddl 0.40  40 1.0
+./run rddl.competition.generators.TriangleTireworldPOMDPGen files/final_comp_2014/rddl triangle_tireworld_inst_pomdp__7  src/ppddl/tt/p04.pddl 0.25  40 1.0
+./run rddl.competition.generators.TriangleTireworldPOMDPGen files/final_comp_2014/rddl triangle_tireworld_inst_pomdp__8  src/ppddl/tt/p04.pddl 0.35  40 1.0
+./run rddl.competition.generators.TriangleTireworldPOMDPGen files/final_comp_2014/rddl triangle_tireworld_inst_pomdp__9  src/ppddl/tt/p05.pddl 0.20  40 1.0
+./run rddl.competition.generators.TriangleTireworldPOMDPGen files/final_comp_2014/rddl triangle_tireworld_inst_pomdp__10 src/ppddl/tt/p05.pddl 0.30  40 1.0
 
 #############################################################################
 # Generate tamarisk MDP instances
@@ -73,8 +71,6 @@ echo Generating Tamarisk POMDPs
 ./run rddl.competition.generators.TamariskPOMDPGen files/final_comp_2014/rddl tamarisk_inst_pomdp__8  7 3 0.3 0.2 40 1.0
 ./run rddl.competition.generators.TamariskPOMDPGen files/final_comp_2014/rddl tamarisk_inst_pomdp__9  8 2 0.3 0.2 40 1.0
 ./run rddl.competition.generators.TamariskPOMDPGen files/final_comp_2014/rddl tamarisk_inst_pomdp__10 8 3 0.3 0.2 40 1.0
-
-exit
 
 #############################################################################
 # Generate academic advising MDP instances

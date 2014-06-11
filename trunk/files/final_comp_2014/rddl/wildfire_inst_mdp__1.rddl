@@ -13,7 +13,7 @@ non-fluents nf_wildfire_inst_mdp__1 {
 		NEIGHBOR(x1,y2,x2,y1);
 		NEIGHBOR(x1,y2,x2,y2);
 		NEIGHBOR(x1,y2,x2,y3);
-		NEIGHBOR(x1,y3,x1,y2);
+		// Omitted: NEIGHBOR(x1,y3,x1,y2);
 		NEIGHBOR(x1,y3,x2,y2);
 		NEIGHBOR(x1,y3,x2,y3);
 		NEIGHBOR(x2,y1,x1,y1);
@@ -45,10 +45,9 @@ non-fluents nf_wildfire_inst_mdp__1 {
 		NEIGHBOR(x3,y3,x2,y2);
 		NEIGHBOR(x3,y3,x2,y3);
 		NEIGHBOR(x3,y3,x3,y2);
-		TARGET(x1, y1);
-		TARGET(x3, y3);
-		TARGET(x3, y2);
-		TARGET(x3, y1);
+		TARGET(x2,y2);
+		TARGET(x2,y3);
+		TARGET(x3,y1);
 	};
 }
 
@@ -56,11 +55,10 @@ instance wildfire_inst_mdp__1 {
 	domain = wildfire_mdp;
 	non-fluents = nf_wildfire_inst_mdp__1;
 	init-state {
-		burning(x1, y3);
-		burning(x1, y2);
-		burning(x2, y3);
+		burning(x1,y3);
 	};
+
 	max-nondef-actions = 1;
-	horizon = 40;
+	horizon  = 40;
 	discount = 1.0;
 }
