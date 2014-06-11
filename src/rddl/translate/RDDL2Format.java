@@ -25,7 +25,7 @@ public class RDDL2Format {
 
 	public final static boolean DEBUG_CPTS = true;
 	public final static boolean SHOW_GRAPH = false;
-	public final static boolean SHOW_RELEVANCE = true;
+	public final static boolean SHOW_RELEVANCE = false;
 
 	public final static int     STATE_ITER  = 0;
 	public final static int     OBSERV_ITER = 1;
@@ -793,7 +793,7 @@ public class RDDL2Format {
 							_context.clearSpecialNodes();
 							for (int n : _alSaveNodes)
 								_context.addSpecialNode(n);
-							_context.flushCaches(true);
+							_context.flushCaches(false);
 
 							String action_instance = e2.getKey();
 							ArrayList<PVAR_INST_DEF> action_list = e2.getValue();
