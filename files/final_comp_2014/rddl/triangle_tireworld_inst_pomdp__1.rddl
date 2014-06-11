@@ -1,50 +1,37 @@
 non-fluents nf_triangle_tireworld_inst_pomdp__1 {
-  domain = triangle_tireworld_pomdp;
-  
-  objects {
-    location : {la1a1, la1a2, la1a3, la2a1, la2a2, la3a1};
-  };
+	domain = triangle_tireworld_pomdp;
+	objects {
+		location : {la1a1, la1a2, la1a3, la2a1, la2a2, la3a1};
+	};
 
-  // Note that nonfluents are separated from fluents  
-  non-fluents {
-    road(la1a1,la1a2);
-    road(la1a2,la1a3);
-    road(la1a1,la2a1);
-    road(la1a2,la2a2);
-    road(la2a1,la1a2);
-    road(la2a2,la1a3);
-    road(la2a1,la3a1);
-    road(la3a1,la2a2);
+	non-fluents {
+		FLAT-PROB = 0.4;
+		road(la1a1,la1a2);
+		road(la1a2,la1a3);
+		road(la1a1,la2a1);
+		road(la1a2,la2a2);
+		road(la2a1,la1a2);
+		road(la2a2,la1a3);
+		road(la2a1,la3a1);
+		road(la3a1,la2a2);
 
-    goal-location(la1a3);
-  };
+		goal-location(la1a3);
+	};
 }
 
 instance triangle_tireworld_inst_pomdp__1 {
-  domain = triangle_tireworld_pomdp;
-  non-fluents = nf_triangle_tireworld_inst_pomdp__1;
+	domain = triangle_tireworld_pomdp;
+	non-fluents = nf_triangle_tireworld_inst_pomdp__1;
+	init-state {
+		vehicle-at(la1a1);
+		spare-in(la2a1);
+		spare-in(la2a2);
+		spare-in(la3a1);
+		spare-in(la3a1);
+		not-flattire;
+	};
 
-  // Note that nonfluents are specified above, the initial state is only for fluents  
-  init-state {
-    vehicle-at(la1a1);
-    spare-in(la2a1);
-    spare-in(la2a2);
-    spare-in(la3a1);
-    spare-in(la3a1);
-    not-flattire;
-  };
-  
-  max-nondef-actions = 1;
-  horizon = 40;
-  discount = 1.0;
+	max-nondef-actions = 1;
+	horizon  = 40;
+	discount = 1.0;
 }
-
-// Original PPDDL version of "Triangle Tireworld" problem p01.pddl from IPPC 2008: 
-//
-//   http://ippc-2008.loria.fr/wiki/images/6/68/Benchmarks-FOP.tgz
-//
-//(define (problem triangle-tire-1)
-//                   (:domain triangle-tire)
-//                   (:objects l-1-1 l-1-2 l-1-3 l-2-1 l-2-2 l-2-3 l-3-1 l-3-2 l-3-3 - location)
-//                   (:init (vehicle-at l-1-1)(road l-1-1 l-1-2)(road l-1-2 l-1-3)(road l-1-1 l-2-1)(road l-1-2 l-2-2)(road l-2-1 l-1-2)(road l-2-2 l-1-3)(spare-in l-2-1)(spare-in l-2-2)(road l-2-1 l-3-1)(road l-3-1 l-2-2)(spare-in l-3-1)(spare-in l-3-1)(not-flattire))
-//                   (:goal (vehicle-at l-1-3)) (:goal-reward 100) (:metric maximize (reward)))
