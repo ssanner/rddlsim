@@ -25,7 +25,7 @@ public class RDDL2Format {
 
 	public final static boolean DEBUG_CPTS = true;
 	public final static boolean SHOW_GRAPH = false;
-	public final static boolean SHOW_RELEVANCE = true;
+	public final static boolean SHOW_RELEVANCE = false;
 
 	public final static int     STATE_ITER  = 0;
 	public final static int     OBSERV_ITER = 1;
