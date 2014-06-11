@@ -35,8 +35,8 @@ domain academic_advising_pomdp {
     PROGRAM_REQUIREMENT(course) : { non-fluent, bool, default = false }; // Specifies whether course is program requirement 
     
     // Nonfluents: costs/penalties
-    COURSE_COST(course)        : { non-fluent, real, default = -2 }; // Cost for taking a course
-    COURSE_RETAKE_COST(course) : { non-fluent, real, default = -4 }; // Cost for re-taking a course (heavily discouraged)
+    COURSE_COST(course)        : { non-fluent, real, default = -1 }; // Cost for taking a course
+    COURSE_RETAKE_COST(course) : { non-fluent, real, default = -2 }; // Cost for re-taking a course (heavily discouraged)
     PROGRAM_INCOMPLETE_PENALTY : { non-fluent, real, default = -5 }; // Penalty at each time step for having an incomplete program
 
 	// State
