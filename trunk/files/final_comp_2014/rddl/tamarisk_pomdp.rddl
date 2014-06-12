@@ -40,6 +40,10 @@
 
 domain tamarisk_pomdp {
 
+  requirements = {  
+    partially-observed
+  };
+
   types {
     reach : object;
     slot  : object;

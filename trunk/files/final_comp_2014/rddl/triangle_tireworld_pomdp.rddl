@@ -37,6 +37,10 @@
 
 domain triangle_tireworld_pomdp {
 
+  requirements = {  
+    partially-observed
+  };
+
   types {
     location : object;
   };

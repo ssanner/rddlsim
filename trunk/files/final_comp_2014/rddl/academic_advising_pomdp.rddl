@@ -18,6 +18,10 @@
 
 domain academic_advising_pomdp {
 
+  requirements = {  
+    partially-observed
+  };
+
   types {
     course : object;
   };

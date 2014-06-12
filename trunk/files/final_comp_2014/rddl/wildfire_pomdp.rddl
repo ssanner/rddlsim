@@ -36,6 +36,10 @@
 
 domain wildfire_pomdp {
 
+    requirements = {  
+        partially-observed
+    };
+
 	types {
 		x_pos : object;
 		y_pos : object;
