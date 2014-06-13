@@ -452,9 +452,12 @@ public class Server implements Runnable {
 				domain._exprReward, instance._nNonDefActions);
 		
 		if ((domain._bPartiallyObserved && state._alObservNames.size() == 0)
-				|| (!domain._bPartiallyObserved && state._alObservNames.size() > 0))
-			System.err.println("Domain '" + domain._sDomainName
-							+ "' partially observed flag and presence of observations mismatched.");
+				|| (!domain._bPartiallyObserved && state._alObservNames.size() > 0)) {
+			boolean observations_present = (state._alObservNames.size() > 0);
+			System.err.println("WARNING: Domain '" + domain._sDomainName
+							+ "' partially observed (PO) flag and presence of observations mismatched.\nSetting PO flag = " + observations_present + ".");
+			domain._bPartiallyObserved = observations_present;
+		}
 
 	}
 	
