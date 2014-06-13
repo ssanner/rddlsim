@@ -164,6 +164,15 @@ public class Client {
 					domain._alStateConstraints, domain._alActionPreconditions, domain._alStateInvariants, 
 					domain._exprReward, instance._nNonDefActions);
 			
+			// If necessary, correct the partially observed flag since this flag determines what content will be seen by the Client
+			if ((domain._bPartiallyObserved && state._alObservNames.size() == 0)
+					|| (!domain._bPartiallyObserved && state._alObservNames.size() > 0)) {
+				boolean observations_present = (state._alObservNames.size() > 0);
+				System.err.println("WARNING: Domain '" + domain._sDomainName
+								+ "' partially observed (PO) flag and presence of observations mismatched.\nSetting PO flag = " + observations_present + ".");
+				domain._bPartiallyObserved = observations_present;
+			}
+
 			// Not strictly enforcing flags anymore... 
 			//if ((domain._bPartiallyObserved && state._alObservNames.size() == 0)
 			//		|| (!domain._bPartiallyObserved && state._alObservNames.size() > 0)) {

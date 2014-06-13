@@ -3295,12 +3295,12 @@ public class RDDL {
 					// A direct recursive compilation may circumvent the need for this action-dependency analysis since
 					//   it may be lightweight to build a disjunction and later prune?  Currently have to enumerate all
 					//   joint values of irrelevant variables.
-					if (_sConn == AND && ASSUME_ACTION_OBSERVED && (b instanceof PVAR_EXPR) && s.getPVariableType(((PVAR_EXPR)b)._pName) == State.ACTION) {
+					if (ASSUME_ACTION_OBSERVED && (b instanceof PVAR_EXPR) && s.getPVariableType(((PVAR_EXPR)b)._pName) == State.ACTION) {
 						
-						// If this action is false then this entire branch is not accessible
+						// If AND/false or OR/true then the other elements of this connective are irrelevant and can return with no relevant fluents
 						//System.out.println("Testing if can ignoring branch: " + this + " / " + subs);
 						Boolean eval = (Boolean)b.sample(subs, s, null);
-						if (Boolean.FALSE.equals(eval)) {
+						if ((_sConn == AND && Boolean.FALSE.equals(eval)) || (_sConn == OR && Boolean.TRUE.equals(eval))) {
 							//System.out.println("Ignoring branch: " + this);
 							return;
 						}
