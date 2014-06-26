@@ -1,0 +1,17 @@
+This file lists bugs and errors found in the final competition
+domains.  These errata will *not* be fixed in order to keep a single
+standard version of each domain that everyone can use and compare on
+(including to IPPC 2014 final competition results).
+
+===
+
+Triangle Tireworld: state-action constraints were unintentionally
+omitted, thus leading to an extremely large number of irrelevant (NOOP
+equivalent) actions in each instance.  Planners should be able to
+easily identify which actions are NOOP; likely only the planners
+that perform this domain analysis and action pruning can do well.
+
+Academic Advising: planners had a hard time beating the NOOP/Random
+policies on the larger instances... further investigation is needed to
+see if it is possible to do better than the NOOP/Random policies in
+these instances.
