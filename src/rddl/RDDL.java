@@ -1677,13 +1677,25 @@ public class RDDL {
 			StringBuilder sb = new StringBuilder();
 			if (USE_PREFIX) {
 				sb.append("(Discrete " + (_sTypeName != null ? _sTypeName : "") + " ( ");
-				for (int i = 0; i < _exprProbs.size(); i+=2)
+				for (int i = 0; i < _exprProbs.size(); i+=2) {
+                                    if (_exprProbs.get(i) instanceof ENUM_VAL)
 					sb.append("(" + ((ENUM_VAL)_exprProbs.get(i)) + " : " + ((EXPR)_exprProbs.get(i+1)) + ") ");
+                                    else if (_exprProbs.get(i) instanceof OBJECT_VAL)
+                                        sb.append("(" + ((OBJECT_VAL)_exprProbs.get(i)) + " : " + ((EXPR)_exprProbs.get(i+1)) + ") ");
+                                    else
+                                        sb.append("(" + ((EXPR)_exprProbs.get(i)) + " : " + ((EXPR)_exprProbs.get(i+1)) + ") ");
+                                }
 				sb.append(")");
 			} else {
 				sb.append("Discrete(" + (_sTypeName != null ? _sTypeName + ", ": ""));
-				for (int i = 0; i < _exprProbs.size(); i+=2)
+				for (int i = 0; i < _exprProbs.size(); i+=2) {
+                                    if (_exprProbs.get(i) instanceof ENUM_VAL)
 					sb.append(((i > 0) ? ", " : "") + ((ENUM_VAL)_exprProbs.get(i)) + " : " + ((EXPR)_exprProbs.get(i+1)));
+                                    else if (_exprProbs.get(i) instanceof OBJECT_VAL)
+                                        sb.append(((i > 0) ? ", " : "") + ((OBJECT_VAL)_exprProbs.get(i)) + " : " + ((EXPR)_exprProbs.get(i+1)));
+                                    else
+                                        sb.append(((i > 0) ? ", " : "") + ((EXPR)_exprProbs.get(i)) + " : " + ((EXPR)_exprProbs.get(i+1)));
+                                }
 			}
 			sb.append(")");
 			return sb.toString();
