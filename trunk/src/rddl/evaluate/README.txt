@@ -9,8 +9,8 @@ To evaluate log files from RDDLSim, there are two steps.
     
     for example, the commands used to evaluate different competitions:
     
-      IPPC 2011: rddl.evaluate.MinMaxEval --num-trials 30 FinalComp/MDP/
-      IPPC 2014: rddl.evaluate.MinMaxEval --time-limit 1080000 --num-trials 30 FinalComp/MDP/
+      IPPC 2011: rddl.evaluate.MinMaxEval --num-trials 30 FinalComp2011/MDP/
+      IPPC 2014: rddl.evaluate.MinMaxEval --time-limit 1080000 --num-trials 30 FinalComp2014/MDP/
 
 Simply run rddl.evaluate.MinMaxEval with the sole argument containing
 the directory of all log files to be processed including the Random 
