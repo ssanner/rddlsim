@@ -41,11 +41,11 @@ public class RDDL2Graph {
 	public int _nObservVars = 0;
 	
 	// Display cur state, actions, interm, observations, next state occur in fixed order?
-	public boolean    _bStrictLevels = false;   
+	public boolean    _bStrictLevels = true;   
 	
 	// Display cur state, actions, interm, observations, next state occur at same rank?
 	// if this is false, then strict levels can have no effect
-	public boolean    _bStrictGrouping = false;
+	public boolean    _bStrictGrouping = true;
 	
 	public boolean    _bDirected = true;
 

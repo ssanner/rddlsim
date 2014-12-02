@@ -583,7 +583,7 @@ public class Server implements Runnable {
 		osw.flush();
 	}
 	
-	public static final int MAX_BYTES = 1048576;
+	public static final int MAX_BYTES = 10485760;
 	public static byte[] bytes = new byte[MAX_BYTES];
 	
 	// Synchronize because this uses a global bytes[] buffer
