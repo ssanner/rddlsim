@@ -22,3 +22,40 @@ to
 ...
    then KronDelta( ~exists_{?f : floor} [elevator-at-floor(?e, ?f) ^ BOTTOM-FLOOR(?f) ^ ~elevator-closed(?e)] )
 
+===
+
+Skill Learning, from Ping Hou with additional commentary from Tom Walsh:
+
+Essentially I made the pre-requisites non-compensatory (you need them all to get a bump in the probability of answering a question), which did not match the comments and the way I did it actually made it easier to, in certain situations, answer questions with more pre-requisites (which is counter intuitive).  It remains an interesting domain even the way it is coded, but would be better with the following change (new code highlighted with <<< >>>)
+
+		answeredRight'(?s) = 
+			if ([forall_{?s2: skill} ~updateTurn(?s2)] ^ askProb(?s) ^ proficiencyHigh(?s)) 
+				then Bernoulli(PROB_HIGH(?s))
+			else if ([forall_{?s2: skill} ~updateTurn(?s2)] ^ askProb(?s) ^ proficiencyMed(?s) ^forall_{?s3: skill}[PRE_REQ(?s3, ?s) => proficiencyHigh(?s3)]) 
+				then Bernoulli(PROB_ALL_PRE_MED(?s))
+		    else if ([forall_{?s2: skill} ~updateTurn(?s2)] ^ askProb(?s) ^proficiencyMed(?s) ^ askProb(?s)) 
+		    	then Bernoulli(sum_{?s2: skill}[[PRE_REQ(?s2, ?s) <<< ^ proficiencyHigh(?s2) >>> ] * PROB_PER_PRE_MED(?s)])
+			else if ([forall_{?s3: skill} ~updateTurn(?s3)] ^ askProb(?s) ^forall_{?s2: skill}[PRE_REQ(?s2, ?s) => proficiencyHigh(?s2)]) 
+				then Bernoulli(PROB_ALL_PRE(?s))
+		    else if ([forall_{?s2: skill} ~updateTurn(?s2)] ^ askProb(?s)  ^ askProb(?s)) 
+		    	then Bernoulli(sum_{?s2: skill}[[PRE_REQ(?s2, ?s) <<< ^ proficiencyHigh(?s2) >>> ] * PROB_PER_PRE(?s)])
+			else
+				KronDelta( false );
+
+===
+
+Recon Domain, from Piyush Khandelwal
+
+The definition of the pictureTaken is as follows:
+
+  pictureTaken'(?o) =
+     KronDelta( exists_{?x : x_pos, ?y : y_pos, ?a: agent, ?t: tool}
+     [CAMERA_TOOL(?t) ^ agentAt(?a, ?x, ?y) ^ objAt(?o, ?x, ?y) ^
+     useToolOn(?a, ?t, ?o) ^ ~damaged(?t)] );
+
+Here the value of pictureTaken should persist as the comments indicate.  The fix would be the following:
+
+pictureTaken'(?o) =
+     KronDelta( pictureTaken(?o) | exists_{?x : x_pos, ?y : y_pos, ?a: agent, ?t: tool}
+     [CAMERA_TOOL(?t) ^ agentAt(?a, ?x, ?y) ^ objAt(?o, ?x, ?y) ^
+     useToolOn(?a, ?t, ?o) ^ ~damaged(?t)] );
