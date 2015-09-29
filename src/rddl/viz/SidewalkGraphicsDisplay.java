@@ -18,7 +18,7 @@ import rddl.RDDL.PVARIABLE_DEF;
 import rddl.RDDL.PVAR_NAME;
 import rddl.RDDL.TYPE_NAME;
 
-public class SidewalkGraphicsDisplay extends StateViz {
+public class SidewalkGraphicsDisplay implements StateViz {
 
 	public SidewalkGraphicsDisplay() {
 		_nTimeDelay = 200; // in milliseconds

@@ -18,7 +18,7 @@ import rddl.RDDL.TYPE_NAME;
 
 import java.text.DecimalFormat;
 
-public class TrfDisplay extends StateViz {
+public class TrfDisplay implements StateViz {
 
 	public TrfDisplay() { }
 

@@ -23,7 +23,7 @@ import rddl.RDDL.PVARIABLE_DEF;
 import rddl.RDDL.PVAR_NAME;
 import rddl.RDDL.TYPE_NAME;
 
-public class MarsRoverDisplay extends StateViz {
+public class MarsRoverDisplay implements StateViz {
 
 	public static final int NUM_SCREEN_BLOCKS = 42;
 	

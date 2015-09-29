@@ -17,7 +17,7 @@ import rddl.EvalException;
 import rddl.State;
 import rddl.RDDL.*;
 
-public class TriangleTireworldDisplay extends StateViz {
+public class TriangleTireworldDisplay implements StateViz {
 
 	public TriangleTireworldDisplay() {
 		_nTimeDelay = 200; // in milliseconds

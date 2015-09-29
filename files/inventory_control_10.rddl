@@ -1,0 +1,47 @@
+non-fluents nf_inventory_control_10 {
+	 domain = inventory_control_continuous;
+	 objects {
+		 item : {t0,t1,t2,t3,t4,t5,t6,t7,t8,t9};
+	 };
+	 non-fluents {
+		 demand(t0) = 4.567082293753172;
+		 demand(t1) = 5.190841066317416;
+		 demand(t2) = 4.578476132661638;
+		 demand(t3) = 4.789737238081403;
+		 demand(t4) = 5.208787394787444;
+		 demand(t5) = 5.263870644400085;
+		 demand(t6) = 5.659811856890807;
+		 demand(t7) = 5.30285855705159;
+		 demand(t8) = 4.8077168007953155;
+		 demand(t9) = 4.324921649739992;
+
+		 payoff(t0) = 1.2402493762519033;
+		 payoff(t1) = 1.6145046397904497;
+		 payoff(t2) = 1.247085679596983;
+		 payoff(t3) = 1.3738423428488418;
+		 payoff(t4) = 1.6252724368724665;
+		 payoff(t5) = 1.658322386640051;
+		 payoff(t6) = 1.8958871141344842;
+		 payoff(t7) = 1.6817151342309542;
+		 payoff(t8) = 1.3846300804771894;
+		 payoff(t9) = 1.0949529898439954;
+
+		 cost(t0) = 0.7134164587506345;
+		 cost(t1) = 0.8381682132634833;
+		 cost(t2) = 0.7156952265323276;
+		 cost(t3) = 0.7579474476162806;
+		 cost(t4) = 0.8417574789574889;
+		 cost(t5) = 0.852774128880017;
+		 cost(t6) = 0.9319623713781614;
+		 cost(t7) = 0.8605717114103181;
+		 cost(t8) = 0.7615433601590632;
+		 cost(t9) = 0.6649843299479985;
+		 capacity = 282.99059284454034;
+	 };
+}
+instance inst_inventory_control_10 { 
+	 domain = inventory_control_continuous;
+	 non-fluents = nf_inventory_control_10;
+	 horizon = 100;
+	 discount = 1.0;
+}

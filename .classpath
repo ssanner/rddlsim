@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="lib" path="lib/grappa1_4.jar"/>
+	<classpathentry kind="lib" path="lib/java_cup.jar"/>
+	<classpathentry kind="lib" path="lib/jlex.jar"/>
+	<classpathentry kind="lib" path="lib/xercesImpl.jar"/>
+	<classpathentry kind="lib" path="lib/xml-apis.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="D:/workspace/RDDLv2/lib/gurobi.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="lib" path="D:/workspace/RDDLv2/lib/commons-math3-3.5.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:file:/D:/workspace/RDDLv2/lib/commons-math3-3.5-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

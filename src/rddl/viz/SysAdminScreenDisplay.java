@@ -16,7 +16,7 @@ import rddl.State;
 import rddl.RDDL.LCONST;
 import rddl.RDDL.PVAR_NAME;
 
-public class SysAdminScreenDisplay extends StateViz {
+public class SysAdminScreenDisplay implements StateViz {
 
 	public SysAdminScreenDisplay() {
 		_bSuppressNonFluents = true;

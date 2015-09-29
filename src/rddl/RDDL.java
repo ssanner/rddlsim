@@ -9,15 +9,36 @@
 
 package rddl;
 
+import gurobi.GRB;
+import gurobi.GRBConstr;
+import gurobi.GRBEnv;
+import gurobi.GRBException;
+import gurobi.GRBExpr;
+import gurobi.GRBLinExpr;
+import gurobi.GRBModel;
+import gurobi.GRBVar;
+
 import java.io.File;
+import java.nio.channels.UnsupportedAddressTypeException;
 import java.util.*;
+import java.util.function.BinaryOperator;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import javax.swing.event.ListSelectionEvent;
 
 import org.apache.commons.math3.*;
 import org.apache.commons.math3.random.RandomDataGenerator;
 import org.apache.commons.math3.distribution.MultivariateNormalDistribution;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
+import att.grappa.Graph;
 import rddl.parser.parser;
-
 import util.Pair;
 
 public class RDDL {
@@ -979,14 +1000,25 @@ public class RDDL {
 	//       just directly modify to return general LCONST and allow an 
 	//       "object fluent" expression type.  Note: still want to separate 
 	//       objects/enums from general arithmetic expressions.
-	public static abstract class LTERM extends EXPR { 
+	public static abstract class LTERM extends EXPR  { 
 		public Object getTermSub(HashMap<LVAR, LCONST> subs, State s, RandomDataGenerator r)
 		throws EvalException {
 			return sample(subs, s, r);
 		}
+		
+		public abstract LTERM substitute(Map<LVAR, LCONST> subs,
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants,
+				Map<TYPE_NAME, OBJECTS_DEF > objects );
+		
+		@Override
+		protected char getGRB_Type(
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants,
+				Map<PVAR_NAME, Character> type_map) {
+			return GRB.CONTINUOUS;
+		}
 	}
 			
-	public static class LVAR extends LTERM {
+	public static class LVAR extends LTERM  {
 		
 		public LVAR(String var_name) {
 			_sVarName  = var_name.intern();
@@ -996,7 +1028,31 @@ public class RDDL {
 		
 		public String _sVarName;
 		public int    _nHashCode;
-				
+		
+		@Override
+		protected char getGRB_Type(
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants,
+				Map<PVAR_NAME, Character> type_map) {
+			return GRB.CONTINUOUS;
+		}
+
+		@Override
+		public EXPR addTerm( final LVAR new_term , 
+				Map< PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants, 
+				Map<TYPE_NAME, OBJECTS_DEF> objects ) {
+			return this;
+		}
+		
+		@Override
+		public LTERM substitute(Map<LVAR, LCONST> subs,
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants, 
+				Map<TYPE_NAME, OBJECTS_DEF > objects  ) {
+			if( subs.containsKey(this) ){
+				return subs.get(this);
+			}
+			return this;
+		}
+		
 		// Precomputed
 		public int hashCode() {
 			return _nHashCode;
@@ -1004,7 +1060,10 @@ public class RDDL {
 		
 		// Name was interned so can check reference equality
 		public boolean equals(Object o) {
-			return _sVarName == ((LVAR)o)._sVarName; 
+			if( o instanceof LVAR ){
+				return _sVarName == ((LVAR)o)._sVarName;
+			}
+			return false;
 		}
 
 		public String toString() {
@@ -1041,6 +1100,37 @@ public class RDDL {
 		
 		public LVAR _sVarName;
 		public TYPE_NAME _sType;
+		
+		@Override
+		public EXPR addTerm( final LVAR new_term, 
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants, Map<TYPE_NAME, OBJECTS_DEF> objects ) {
+			return this;
+		}
+		
+		@Override
+		public int hashCode() {
+			return Objects.hash( _sVarName, _sType );
+		}
+		
+		@Override
+		public boolean equals(Object obj) {
+			if( obj instanceof LTYPED_VAR ){
+				LTYPED_VAR l = (LTYPED_VAR)obj;
+				return _sType.equals( l._sType );//FIXME : name may be different but same type 
+			}
+			return false;
+		}
+		
+		@Override
+		public LTERM substitute(Map<LVAR, LCONST> subs,
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants, 
+				Map< TYPE_NAME, OBJECTS_DEF > objects ) {
+			if( subs.containsKey( _sVarName ) ){
+				return subs.get( _sVarName );
+			}else{
+				return this;
+			}
+		}
 		
 		public String toString() {
 			if (USE_PREFIX)
@@ -1079,6 +1169,45 @@ public class RDDL {
 		
 		public PVAR_EXPR _pvarExpr;
 		
+		@Override
+		protected char getGRB_Type(
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants,
+				Map<PVAR_NAME, Character> type_map) {
+			return GRB.CONTINUOUS;
+		}
+
+		@Override
+		public EXPR addTerm(LVAR new_term, 
+				Map< PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants, 
+				Map<TYPE_NAME, OBJECTS_DEF> objects) {
+			if( isConstant(constants, objects) ){
+				return this;
+			}
+			return _pvarExpr.addTerm(new_term, constants, objects );
+		}
+		
+		@Override
+		public int hashCode() {
+			return _pvarExpr.hashCode();
+		}
+		
+		@Override
+		public boolean equals(Object obj) {
+			if( obj instanceof TVAR_EXPR ){
+				TVAR_EXPR te = (TVAR_EXPR)obj;
+				return ( te._bDet == this._bDet ) && ( te._pvarExpr.equals(_pvarExpr) );
+			}
+			return false;
+		}
+		
+		@Override
+		public LTERM substitute(Map<LVAR, LCONST> subs,
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants, 
+				Map<TYPE_NAME, OBJECTS_DEF > objects  ) {
+			EXPR inner = _pvarExpr.substitute(subs, constants, objects);
+			return new TVAR_EXPR( (PVAR_EXPR)inner );	
+		}
+		
 		public String toString() {
 			return _pvarExpr.toString();
 		}
@@ -1096,7 +1225,46 @@ public class RDDL {
 		public EXPR getDist(HashMap<LVAR,LCONST> subs, State s) throws EvalException {
 			return _pvarExpr.getDist(subs, s);
 		}
+		
+		@Override
+		public boolean isConstant(
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants,
+				Map<TYPE_NAME, OBJECTS_DEF> objects) {
+			return _pvarExpr.isConstant(constants, objects);
+		}
 
+		@Override
+		public GRBVar addGRBObjectiveTerm(GRBModel model,
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants,
+				Map<TYPE_NAME, OBJECTS_DEF> objects,
+				Map<PVAR_NAME, Character> type_map) {
+			return _pvarExpr.addGRBObjectiveTerm(model, constants, objects, type_map);
+		}
+		
+		@Override
+		protected double getDoubleValue(
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants,
+				Map<TYPE_NAME, OBJECTS_DEF> objects) {
+			assert( isConstant(constants, objects) );
+			return _pvarExpr.getDoubleValue(constants, objects);
+		}
+		
+		@Override
+		public GRBVar getGRBConstr(char sense, GRBModel model,
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants,
+				Map<TYPE_NAME, OBJECTS_DEF> objects,
+				Map<PVAR_NAME, Character> type_map) {
+			return _pvarExpr.getGRBConstr(sense, model, constants, objects, type_map);
+		}
+		
+		@Override
+		public boolean isPiecewiseLinear(
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants,
+				Map<TYPE_NAME, OBJECTS_DEF> objects) {
+			return _pvarExpr.isPiecewiseLinear(constants, objects);
+		}
+		
+		
 	}
 	
 	// Immutable... making public to avoid unnecessary
@@ -1111,6 +1279,19 @@ public class RDDL {
 		
 		public String _sConstValue;
 		public int    _nHashCode;
+		
+		@Override
+		public boolean isConstant( Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants ,
+				Map<TYPE_NAME, OBJECTS_DEF> objects ) {
+			return true;
+		}
+		
+		@Override
+		public LCONST substitute(Map<LVAR, LCONST> subs,
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants,
+				Map<TYPE_NAME, OBJECTS_DEF> objects ) {
+			return this;
+		}
 		
 		public String toString() {
 			return _sConstValue;
@@ -1127,7 +1308,7 @@ public class RDDL {
 		public boolean equals(Object o) {
 			if (!(o instanceof LCONST))
 				return false;
-			return _sConstValue == ((LCONST)o)._sConstValue; 
+			return _sConstValue.equals(  ((LCONST)o)._sConstValue ); 
 		}
 
 		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<Pair> gfluents) 
@@ -1181,11 +1362,19 @@ public class RDDL {
 	// method calls, relying on user to respect immutability
 	public static class ENUM_VAL extends LCONST {
 		public Integer _intVal = null; 
+		
+		@Override
+		public EXPR addTerm(LVAR new_term, 
+				Map< PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants, 
+				Map<TYPE_NAME, OBJECTS_DEF> objects) {
+			return this;
+		}
+		
 		public ENUM_VAL(String enum_name) {
 			super(enum_name);
 			
 			if (enum_name.charAt(0) != '@' && !enum_name.equals("default")) { // I don't recall why PVAR_EXPR.DEFAULT is an ENUM_VAL, but accept this as special case 
-				System.out.println("FATAL ERROR (LANGUAGE REQUIREMENT): Enum '" + enum_name + "' currently must defined with a leading @");
+				System.out.println("FATAL ERROR (LANGUAGE REQUIREMENT): Enum '" + enum_name + "' currently must be defined with a leading @");
 				System.exit(1);
 			}
 			
@@ -1211,6 +1400,13 @@ public class RDDL {
 			super(enum_name.charAt(0) == '$' ? enum_name.substring(1) : enum_name);
 		}
 		
+		@Override
+		public EXPR addTerm(LVAR new_term, 
+				Map< PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants, 
+				Map<TYPE_NAME, OBJECTS_DEF> objects) {
+			return this;
+		}
+		
 		// We have an optional $ for object references except in expressions where required
 		// (optional for reasons of backward compatibility, but in RDDL2, it is recommended 
 		//  to always use the $ prefix of object).
@@ -1226,6 +1422,7 @@ public class RDDL {
 		public String toSuppString() {
 			return this._sConstValue;
 		}
+		
 	}
 
 	// Immutable... making public to avoid unnecessary
@@ -1275,7 +1472,7 @@ public class RDDL {
 	
 	//////////////////////////////////////////////////////////
 
-	public static abstract class EXPR { 
+	public static abstract class EXPR  { 
 		
 		public static final String UNKNOWN = "[Unknown type]".intern(); 
 		
@@ -1284,9 +1481,11 @@ public class RDDL {
 		public static final String BOOL   = "[Bool]".intern();
 		public static final String ENUM   = "[Enum]".intern();
 		public static final String STRUCT = "[Struct]".intern();
-		
+
+		//FIXME : String ? this should be an enumeration.
 		String  _sType = UNKNOWN; // real, int, bool, enum
 		public boolean _bDet  = false;    // deterministic?  (if not, then stochastic)
+		protected int M = (int)1e6;//Integer.MAX_VALUE;
 		
 		public abstract Object sample(HashMap<LVAR,LCONST> subs, State s, RandomDataGenerator r) throws EvalException;
 		
@@ -1297,6 +1496,246 @@ public class RDDL {
 		
 		// Recurses until distribution then samples parameters (assuming deterministic)
 		public abstract EXPR getDist(HashMap<LVAR,LCONST> subs, State s) throws EvalException;
+		
+		public abstract EXPR substitute( final Map<LVAR,LCONST> subs, 
+				final Map< PVAR_NAME, Map< ArrayList<LCONST>, Object > > constants,
+				final Map< TYPE_NAME, OBJECTS_DEF > objects );
+		
+		
+		public boolean isConstant( Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants, 
+				Map< TYPE_NAME, OBJECTS_DEF >  objects ){
+			return false;
+		}
+		
+		public boolean isPiecewiseLinear( final Map< PVAR_NAME, Map< ArrayList<LCONST>, Object > > constants,
+				final Map< TYPE_NAME, OBJECTS_DEF > objects ){
+			return true;
+		}
+		
+		protected double getDoubleValue(
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants, 
+				Map<TYPE_NAME, OBJECTS_DEF> objects ) {
+			assert( isConstant(constants, objects ) );
+			try{
+				throw new Exception("getDoubleValue called for " + toString() );
+			}catch(Exception exc ){
+				exc.printStackTrace();
+				System.exit(1);
+			}
+			return Double.NaN;
+		}
+		
+		public char upper( char... types ){
+			char ret = types[0];
+			for( int i = 0 ; i < types.length; ++i ){
+				if( types[i] == ret ){
+					continue;
+				}else if( types[i] == GRB.CONTINUOUS ){
+					ret = GRB.CONTINUOUS;
+				}else if( types[i] == GRB.INTEGER && ret == GRB.BINARY ){
+					ret = GRB.INTEGER;
+				}
+			}
+			return ret;
+		}
+		
+		public char upper( List<Character> types ){
+			char ret = types.get(0);
+			for( int i = 0 ; i < types.size(); ++i ){
+				if( types.get(i) == ret ){
+					continue;
+				}else if( types.get( i ) == GRB.CONTINUOUS ){
+					ret = GRB.CONTINUOUS;
+				}else if( types.get( i ) == GRB.INTEGER && ret == GRB.BINARY ){
+					ret = GRB.INTEGER;
+				}
+			}
+			return ret;
+		}
+		
+		public abstract String toString();
+		
+		public abstract boolean equals(Object obj);
+		
+		public static double getGRB_LB( final char grb_type ){
+			return grb_type == GRB.CONTINUOUS ? -Double.MAX_VALUE : 
+				grb_type == GRB.INTEGER ? Integer.MIN_VALUE : grb_type == GRB.BINARY ? 0 : Double.NaN;
+		}
+		
+		public static double getGRB_UB( final char grb_type ){
+			return grb_type == GRB.CONTINUOUS ? Double.MAX_VALUE : 
+				grb_type == GRB.INTEGER ? Integer.MAX_VALUE : 
+					grb_type == GRB.BINARY ? 1 : Double.NaN;
+		}
+		
+		//need typemap from RDDL TODO
+		protected abstract char getGRB_Type( 
+				final Map< PVAR_NAME, Map< ArrayList<LCONST>, Object > > constants ,
+				final Map< PVAR_NAME, Character > type_map ) ;
+		
+		public abstract EXPR addTerm( final LVAR new_term , 
+				final Map< PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants, Map<TYPE_NAME, OBJECTS_DEF> objects );
+		
+		/* Previously used typeSafe implementation - each expression need not match hashcode() and equals() for 
+		 * other implementing subclasses of EXPR, such as (OPER_EXPR)0*E == 0(CONST_EXPR)
+		 * current implementation : simple weak map from expr. upto implementation to provide 
+		 * equality relationships between different subclasses, perhaps using instanceof checks.
+		 * Relevant : http://stackoverflow.com/questions/103564/the-performance-impact-of-using-instanceof-in-java
+		 * This is a point to note for any implementation of EXPR. Either the implementation must 
+		 * override hashCode() and equals(Object). 
+		 */
+//		protected static HashMap< Class<? extends EXPR> , WeakHashMap< EXPR, GRBVar > > grb_cache = new HashMap< >();
+		public static Map< String, String > name_map = new TreeMap<>();
+		public static Map<String, String > reverse_name_map = new TreeMap<>();
+		
+		private  static int nameId = 0;
+		public static HashMap< EXPR, GRBVar > grb_cache = new HashMap< >();
+		//0 = E*0
+		
+		protected static List<EXPR> expandQuantifier( 
+				final EXPR e, 
+				final ArrayList<LTYPED_VAR> lvars, 
+				final Map<TYPE_NAME, OBJECTS_DEF> objects,
+				final Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants ){
+			assert( objects != null );
+			
+			List<OBJECTS_DEF> consts = lvars.stream().map( m -> objects.get( m._sType ) ) //possibly null 
+					.collect( Collectors.toList() );
+			List<List<LCONST>> consts_queue = consts.stream().map( m -> m != null ? m._alObjects : null )
+					.collect( Collectors.toList() );
+			List<Integer> consts_sizes = consts_queue.stream()
+					.map( m -> m == null ? null : m.size() ).collect( Collectors.toList() );
+			
+			int[] assign_index = new int[ lvars.size() ];
+			Arrays.fill( assign_index, 0 );
+			List<EXPR> ret = new ArrayList<EXPR>();
+			
+			boolean done = false;
+			while( !done ){
+				final HashMap<LVAR,LCONST> subs = getSubs( lvars, consts_queue, assign_index );
+				final EXPR one = e.substitute(subs, constants, objects);
+				ret.add( one );
+				done = incrementArray( assign_index, consts_sizes );
+			}
+			return ret;
+		}
+		
+		protected static boolean incrementArray( final int[] assign_index, List<Integer> consts_sizes) {
+			
+			boolean carry = true;
+			for( int i = 0 ; i < assign_index.length && carry ; ++i ){
+				if( consts_sizes.get(i) == null ){
+					continue;
+				}
+				assign_index[i]++;
+				carry = ( assign_index[i] == consts_sizes.get(i) );
+				assign_index[i] = carry ? 0 : assign_index[i];
+			}
+//			System.out.println("Array assigns in AGG_EXPR.incrementArray " );
+//			System.out.println( Arrays.toString( assign_index ) );
+			return carry;
+		}
+		
+		protected static HashMap<LVAR,LCONST> getSubs( final ArrayList<LTYPED_VAR> lvars, 
+				List<List<LCONST>> instantiations, 
+				final int[] assigns ){
+			assert( instantiations.size() == assigns.length );
+			final HashMap<LVAR,LCONST> ret = new HashMap<LVAR,LCONST>();
+			for( int i = 0 ; i < assigns.length; ++i ){
+				if( instantiations.get(i) == null ){
+					continue;
+				}
+				ret.put( lvars.get(i)._sVarName, instantiations.get(i).get( assigns[i] ) );
+			}
+			return ret;
+		}
+		
+	   /* static implementation for all subclasses. 
+		* performance and the amount of canonicity is enforced by the implementations'
+		* hashCode() and equals(), via the cache grb_cache.
+		*/
+		public static GRBVar getGRBVar( 
+				final EXPR expr, final GRBModel model,
+				final Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants,
+				final Map< TYPE_NAME, OBJECTS_DEF > objects, final Map< PVAR_NAME, Character> type_map ) {
+//			assert( expr.isPiecewiseLinear(constants, objects) ); cant check without expanding quantifier
+			
+			/*
+			 * Old implementation : 
+			 * Class<? extends EXPR> clazz = expr.getClass();
+			 * WeakHashMap< EXPR , GRBVar > inner_map 
+				= grb_cache.containsKey( clazz ) ? grb_cache.get( clazz ) : new WeakHashMap< >(  );
+			if( inner_map.containsKey(expr) ){
+				return inner_map.get( expr );
+			}else{
+			 */
+			if( grb_cache.containsKey( expr ) ){
+				return grb_cache.get( expr );
+			}
+			
+			try {
+				final char type = expr.getGRB_Type(constants, type_map);
+				//problem with using toString() for name
+				//max length is 255 chars
+				String next_name = nextName();
+				name_map.put( expr.toString(), next_name );
+				reverse_name_map.put( next_name, expr.toString() );
+				
+				double lb = getGRB_LB(type); double ub = getGRB_UB(type);
+				GRBVar new_var = model.addVar( lb, ub, 1.0d, type, next_name  );
+				grb_cache.put( expr, new_var );
+//				System.out.println("Adding var " + expr.toString() + " " + new_var + "[" + lb + "," + ub + "]" + " type : " + type );
+				model.update();
+				return new_var; 
+			} catch (GRBException e) {
+				e.printStackTrace();
+				System.exit(1);
+			}
+			return null;
+		}
+		
+		private static String nextName(){
+			return ("v"+(++nameId )).toString();
+		}
+		
+		public GRBVar addGRBObjectiveTerm( final GRBModel model , 
+				final Map< PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants,
+				final Map< TYPE_NAME, OBJECTS_DEF > objects , 
+				Map<PVAR_NAME, Character> type_map ){
+//			assert( isPiecewiseLinear(constants, objects) ); cant check here without expansion of quantifiers 
+			
+			try {
+				GRBExpr old_obj = model.getObjective();
+				final GRBVar this_var = getGRBConstr( GRB.EQUAL, model, constants, objects,  type_map );
+				GRBLinExpr new_obj = new GRBLinExpr( (GRBLinExpr)old_obj );
+				new_obj.addTerm(1.0d, this_var );
+				model.setObjective( new_obj );
+				model.update();
+				return this_var;
+			} catch (GRBException e) {
+				e.printStackTrace();
+				System.exit(1);
+			}
+			return null;
+		}
+		
+		public GRBVar getGRBConstr( final char sense, final GRBModel model , 
+				final Map< PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants ,
+				final Map< TYPE_NAME, OBJECTS_DEF > objects , 
+				 Map<PVAR_NAME, Character> type_map ){
+			assert( isPiecewiseLinear(constants, objects) );
+			
+			try{
+				throw new UnsupportedOperationException("not GRB EXPR " + toString() );
+			}catch( Exception e ){
+				e.printStackTrace();
+				System.exit(1);
+			}
+			return null;
+		}
+		
+		public abstract int hashCode();
+		
 	}
 	
 	////////////////////////////////////////////////////////// 
@@ -1309,6 +1748,35 @@ public class RDDL {
 		}
 		
 		public EXPR _exprRealValue;
+		
+		@Override
+		protected char getGRB_Type(
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants,
+				Map<PVAR_NAME, Character> type_map) {
+			return _exprRealValue.getGRB_Type(constants, type_map);
+		}
+		
+		@Override
+		public EXPR addTerm(LVAR new_term, 
+				Map< PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants, 
+				Map<TYPE_NAME, OBJECTS_DEF> objects) {
+			return new DiracDelta( _exprRealValue.addTerm(new_term, constants, objects ) );
+		}
+		
+		@Override
+		public int hashCode( ) {
+			return _exprRealValue.hashCode();
+		}
+		
+		@Override
+		public boolean equals(Object obj) {
+			if( obj instanceof DiracDelta ){
+				DiracDelta d = (DiracDelta)obj;
+				return _bDet == d._bDet && _sType.equals(d._sType) 
+						&& _exprRealValue.equals(d._exprRealValue);
+			}
+			return false;
+		}
 		
 		public String toString() {
 			if (USE_PREFIX) 
@@ -1333,6 +1801,15 @@ public class RDDL {
 			throws EvalException {
 			_exprRealValue.collectGFluents(subs, s, gfluents);
 		}
+		
+		@Override
+		public EXPR substitute(Map<LVAR, LCONST> subs,
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants, 
+				Map<TYPE_NAME, OBJECTS_DEF> objects ) {
+			return new DiracDelta( _exprRealValue.substitute(subs, constants, objects) );
+		}
+
+
 	}
 	
 	public static class KronDelta extends EXPR {
@@ -1343,6 +1820,34 @@ public class RDDL {
 		}
 		
 		public EXPR _exprIntValue;
+		
+		@Override
+		protected char getGRB_Type(
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants,
+				Map<PVAR_NAME, Character> type_map) {
+			return _exprIntValue.getGRB_Type(constants, type_map); //y=\delta(t), y(x)=0 if x != t else y(x) = 1
+		}
+		
+		@Override
+		public EXPR addTerm(LVAR new_term, Map< PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants, 
+				Map<TYPE_NAME, OBJECTS_DEF> objects) {
+			return new KronDelta( _exprIntValue.addTerm(new_term, constants, objects) );
+		}
+		
+		@Override
+		public int hashCode() {
+			return _exprIntValue.hashCode();
+		}
+		
+		@Override
+		public boolean equals(Object obj) {
+			if( obj instanceof KronDelta ){
+				KronDelta kd = (KronDelta)obj;
+				return _sType.equals( kd._sType ) && 
+						_bDet == kd._bDet && _exprIntValue.equals( kd._exprIntValue );
+			}
+			return false;
+		}
 		
 		public String toString() {
 			if (USE_PREFIX) 
@@ -1368,6 +1873,13 @@ public class RDDL {
 			return null;
 		}
 		
+		@Override
+		public EXPR substitute(Map<LVAR, LCONST> subs,
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants,
+				Map<TYPE_NAME, OBJECTS_DEF> objects ) {
+			return new KronDelta( _exprIntValue.substitute(subs, constants, objects ) );
+		}
+		
 		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<Pair> gfluents) 
 			throws EvalException {
 			_exprIntValue.collectGFluents(subs, s, gfluents);
@@ -1385,6 +1897,40 @@ public class RDDL {
 		
 		public EXPR _exprLowerReal;
 		public EXPR _exprUpperReal;
+		
+		@Override
+		protected char getGRB_Type(
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants,
+				Map<PVAR_NAME, Character> type_map) {
+			return GRB.CONTINUOUS;
+		}
+		
+		@Override
+		public EXPR addTerm(LVAR new_term, 
+				Map< PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants, 
+				Map<TYPE_NAME, OBJECTS_DEF> objects) {
+			return new Uniform( _exprLowerReal.addTerm(new_term,constants,objects), 
+					_exprUpperReal.addTerm(new_term,constants,objects) );
+		}
+		
+		@Override
+		public int hashCode() {
+			return Objects.hash( _exprLowerReal, _exprUpperReal );
+		}
+		
+		@Override
+		public boolean equals(Object obj) {
+			if( isConstant(null, null) ){
+				return new REAL_CONST_EXPR( getDoubleValue(null, null) ).equals(obj);
+			}
+			
+			if( obj instanceof Uniform ){
+				Uniform u = (Uniform)obj;
+				return _bDet == u._bDet && _sType.equals( u._sType ) && 
+						_exprLowerReal.equals( u._exprLowerReal ) && _exprUpperReal.equals( u._exprUpperReal );
+			}
+			return false;
+		}
 		
 		public String toString() {
 			if (USE_PREFIX) 
@@ -1427,6 +1973,14 @@ public class RDDL {
 			_exprUpperReal.collectGFluents(subs, s, gfluents);
 		}
 		
+		@Override
+		public EXPR substitute(Map<LVAR, LCONST> subs,
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants,
+				Map<TYPE_NAME, OBJECTS_DEF > objects ) {
+			return new Uniform( _exprLowerReal.substitute(subs, constants, objects), 
+					_exprUpperReal.substitute(subs, constants, objects) );
+		}
+		
 	}
 
 	public static class Normal extends EXPR {
@@ -1439,6 +1993,41 @@ public class RDDL {
 		
 		public EXPR _normalMeanReal;
 		public EXPR _normalVarReal;
+		
+		@Override
+		protected char getGRB_Type(
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants,
+				Map<PVAR_NAME, Character> type_map) {
+			return GRB.CONTINUOUS;
+		}
+		
+		@Override
+		public EXPR addTerm(LVAR new_term, Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants, 
+				Map<TYPE_NAME, OBJECTS_DEF> objects) {
+			return new Normal( _normalMeanReal.addTerm(new_term, constants, objects),
+					_normalVarReal.addTerm(new_term, constants, objects ) );
+		}
+
+		@Override
+		public int hashCode() {
+			return Objects.hash( _normalMeanReal, _normalVarReal );
+		}
+		
+		@Override
+		public boolean equals(Object obj) {
+			if( obj instanceof Normal ){
+				Normal n = (Normal)obj;
+				return n._bDet == _bDet && n._sType.equals(_sType) 
+						&& _normalMeanReal.equals(n._normalMeanReal)
+						&& _normalVarReal.equals(n._normalVarReal);
+			}else if( obj instanceof EXPR ){
+				EXPR expr = ((EXPR) obj);
+				if( expr.isConstant(null, null) ){
+					return new REAL_CONST_EXPR( getDoubleValue( null, null ) ).equals( obj );
+				}
+			}
+			return false;
+		}
 		
 		public String toString() {
 			if (USE_PREFIX) 
@@ -1480,6 +2069,14 @@ public class RDDL {
 			_normalMeanReal.collectGFluents(subs, s, gfluents);
 			_normalVarReal.collectGFluents(subs, s, gfluents);
 		}
+		
+		@Override
+		public EXPR substitute(Map<LVAR, LCONST> subs,
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants, 
+				Map<TYPE_NAME, OBJECTS_DEF > objects  ) {
+			return new Normal( _normalMeanReal.substitute(subs, constants, objects), 
+					_normalVarReal.substitute(subs, constants, objects) );
+		}
 	}
 
 	public static class Dirichlet extends EXPR {
@@ -1493,6 +2090,47 @@ public class RDDL {
 		
 		public TYPE_NAME _sTypeName = null;
 		public EXPR      _exprAlpha = null;
+		
+		@Override
+		protected char getGRB_Type(
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants,
+				Map<PVAR_NAME, Character> type_map) {
+			try{
+				throw new UnsupportedOperationException("dirichlet getType");
+			}catch( Exception exc ){
+				exc.printStackTrace();
+				System.exit(1);
+			}
+			return GRB.CONTINUOUS;
+		}
+		
+		@Override
+		public EXPR addTerm(LVAR new_term, Map< PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants, 
+				Map<TYPE_NAME, OBJECTS_DEF> objects) {
+			return new Dirichlet( _sTypeName._STypeName, _exprAlpha.addTerm(new_term, constants, objects) );
+		}
+		
+		@Override
+		public int hashCode() {
+			return Objects.hash( _sTypeName, _exprAlpha );
+		}
+		
+		@Override
+		public boolean equals(Object obj) {
+			if( obj instanceof Dirichlet ){
+				Dirichlet d = (Dirichlet)obj;
+				return d._bDet == _bDet && _sType.equals(d._sType) && 
+						_sTypeName.equals(d._sTypeName) && _exprAlpha.equals( d._exprAlpha );
+			}
+			return false;
+		}
+		
+		@Override
+		public EXPR substitute(Map<LVAR, LCONST> subs,
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants, 
+				Map<TYPE_NAME, OBJECTS_DEF > objects ) {
+			return new Dirichlet( _sTypeName._STypeName, _exprAlpha.substitute(subs, constants, objects) );
+		}
 		
 		public Object sample(HashMap<LVAR, LCONST> subs, State s,
 				RandomDataGenerator r) throws EvalException {
@@ -1578,6 +2216,52 @@ public class RDDL {
 		
 		public Discrete _distDiscrete = null;
 		public EXPR     _exprCount = null;
+		
+		@Override
+		protected char getGRB_Type(
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants,
+				Map<PVAR_NAME, Character> type_map) {
+			return GRB.INTEGER;
+		}
+		
+		@Override
+		public EXPR addTerm(LVAR new_term, Map< PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants, 
+				Map<TYPE_NAME, OBJECTS_DEF> objects) {
+			return new Multinomial( _distDiscrete._sTypeName._STypeName, 
+					_exprCount.addTerm(new_term, constants, objects), 
+					new ArrayList<>( _distDiscrete._exprProbs.stream().map( m -> m.addTerm(new_term, constants, objects) )
+							.collect( Collectors.toList() ) ) );
+		}
+		
+		@Override
+		public int hashCode() {
+			return Objects.hash( _distDiscrete, _exprCount );
+		}
+		
+		@Override
+		public boolean equals(Object obj) {
+			if( obj instanceof Multinomial ){
+				Multinomial m = (Multinomial)obj;
+				return m._bDet == _bDet && m._sType.equals(_sType) && 
+						_distDiscrete.equals(m._distDiscrete) && _exprCount.equals( m._exprCount );
+			}
+			return false;
+		}
+		
+		@Override
+		public EXPR substitute(Map<LVAR, LCONST> subs,
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants, 
+				Map< TYPE_NAME, OBJECTS_DEF> objects ) {
+			
+			List<EXPR> x = _distDiscrete._exprProbs.stream().map( 
+					m -> m.substitute(subs, constants, objects) ).collect( Collectors.toList() );
+			
+			return new Multinomial( _distDiscrete._sType, _exprCount, 
+					new ArrayList<EXPR>( x ) );
+			
+//							_distDiscrete._exprProbs.stream().map( m -> m::substitute(subs, constants) ).collect( 
+//							Collectors.toList() ) ) ;
+		}
 		
 		public Object sample(HashMap<LVAR, LCONST> subs, State s,
 				RandomDataGenerator r) throws EvalException {
@@ -1673,6 +2357,46 @@ public class RDDL {
 		public TYPE_NAME       _sTypeName = null;
 		public ArrayList<EXPR> _exprProbs = null; // At runtime, check these sum to 1
 		
+		@Override
+		protected char getGRB_Type(
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants,
+				Map<PVAR_NAME, Character> type_map) {
+			return _sTypeName.equals( TYPE_NAME.BOOL_TYPE ) ? GRB.BINARY : 
+				_sTypeName.equals( TYPE_NAME.INT_TYPE ) ? GRB.INTEGER : GRB.CONTINUOUS;
+		}
+		
+		@Override
+		public EXPR addTerm(LVAR new_term, Map< PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants, 
+				Map<TYPE_NAME, OBJECTS_DEF> objects) {
+			return new Discrete( _sTypeName._STypeName, new ArrayList<EXPR> ( 
+						_exprProbs.stream().map( m -> m.addTerm(new_term, constants, objects) )
+					.collect( Collectors.toList() ) ) );
+		}
+		
+		@Override
+		public int hashCode() {
+			return Objects.hash( _sTypeName, _exprProbs );
+		}
+		
+		@Override
+		public boolean equals(Object obj) {
+			if( obj instanceof Discrete ){
+				Discrete d = (Discrete)obj;
+				return d._bDet == _bDet && d._sType.equals(_sType) 
+						&& _sTypeName.equals( d._sTypeName ) && _exprProbs.equals( d._exprProbs );
+						
+			}
+			return false;
+		}
+		
+		@Override
+		public EXPR substitute(Map<LVAR, LCONST> subs,
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants,
+				Map<TYPE_NAME, OBJECTS_DEF > objects ) {
+			List<EXPR> x = _exprProbs.stream().map( m -> m.substitute(subs, constants, objects) ).collect( Collectors.toList() );
+			return new Discrete( _sTypeName._STypeName, new ArrayList<EXPR>( x ) );
+		}
+		
 		public String toString() {
 			StringBuilder sb = new StringBuilder();
 			if (USE_PREFIX) {
@@ -1766,6 +2490,31 @@ public class RDDL {
 		
 		public EXPR _exprMeanReal;
 		
+		@Override
+		protected char getGRB_Type(
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants,
+				Map<PVAR_NAME, Character> type_map) {
+			return GRB.CONTINUOUS;
+		}
+		
+		@Override
+		public EXPR addTerm(LVAR new_term, Map< PVAR_NAME, Map< ArrayList<LCONST>, Object > > constants, 
+				Map< TYPE_NAME, OBJECTS_DEF > objects ) {
+			return new Exponential( _exprMeanReal.addTerm(new_term, constants, objects) );
+		}
+		
+		@Override
+		public int hashCode() {
+			return _exprMeanReal.hashCode();
+		}
+		
+		@Override
+		public EXPR substitute(Map<LVAR, LCONST> subs,
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants,
+				Map<TYPE_NAME, OBJECTS_DEF > objects ) {
+			return new Exponential( _exprMeanReal.substitute(subs, constants, objects) );
+		}
+		
 		public String toString() {
 			if (USE_PREFIX)
 				return "(Exponential " + _exprMeanReal + ")";
@@ -1787,7 +2536,16 @@ public class RDDL {
 			throws EvalException {
 			_exprMeanReal.collectGFluents(subs, s, gfluents);
 		}
-	
+
+		@Override
+		public boolean equals(Object obj) {
+			if( obj instanceof Exponential ){
+				Exponential e = (Exponential)obj;
+				return _bDet == e._bDet && _sType.equals( e._sType ) && 
+						_exprMeanReal.equals( e._exprMeanReal );
+			}
+			return false;
+		}
 	}
 
 	public static class Weibull extends EXPR {
@@ -1800,6 +2558,49 @@ public class RDDL {
 		
 		public EXPR _exprShape;
 		public EXPR _exprScale;
+		
+		@Override
+		protected char getGRB_Type(
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants,
+				Map<PVAR_NAME, Character> type_map) {
+			try{
+				throw new UnsupportedOperationException("weibull get type");
+			}catch( Exception exc ){
+				exc.printStackTrace();
+				System.exit(1);
+			}
+			return GRB.CONTINUOUS;
+		}
+		
+		@Override
+		public EXPR addTerm(LVAR new_term, Map< PVAR_NAME, Map< ArrayList<LCONST>, Object> > constants , 
+				Map< TYPE_NAME, OBJECTS_DEF> objects ) {
+			return new Weibull( _exprShape.addTerm(new_term, constants, objects), 
+					_exprScale.addTerm(new_term, constants, objects) );
+		}
+		
+		@Override
+		public int hashCode() {
+			return Objects.hash( _exprShape, _exprScale );
+		}
+		
+		@Override
+		public boolean equals(Object obj) {
+			if( obj instanceof Weibull ){
+				Weibull w = (Weibull)obj;
+				return _bDet == w._bDet && _sType.equals( w._sType ) && 
+						_exprScale.equals( w._exprScale ) && _exprShape.equals( w._exprShape );
+			}
+			return false;
+		}
+		
+		@Override
+		public EXPR substitute(Map<LVAR, LCONST> subs,
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants, 
+				Map<TYPE_NAME, OBJECTS_DEF > objects ) {
+			return new Weibull( _exprShape.substitute(subs, constants, objects), 
+					_exprScale.substitute(subs, constants, objects) );
+		}
 		
 		public String toString() {
 			if (USE_PREFIX)
@@ -1839,6 +2640,50 @@ public class RDDL {
 		public EXPR _exprShape;
 		public EXPR _exprScale;
 		
+		@Override
+		protected char getGRB_Type(
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants,
+				Map<PVAR_NAME, Character> type_map) {
+			return GRB.CONTINUOUS;
+		}
+		
+		@Override
+		public EXPR addTerm(LVAR new_term, Map<PVAR_NAME, Map<ArrayList<LCONST>, Object> > constants, 
+				Map<TYPE_NAME, OBJECTS_DEF > objects ) {
+			return new Gamma( _exprShape.addTerm(new_term, constants, objects), 
+					_exprScale.addTerm(new_term, constants, objects ) );
+		}
+		
+		@Override
+		public int hashCode() {
+			if( isConstant(null, null) ){
+				return Double.hashCode( getDoubleValue(null, null) );
+			}
+			return Objects.hash( _exprShape, _exprScale );
+		}
+		
+		@Override
+		public boolean equals(Object obj) {
+			if( isConstant(null, null) ){
+				return new REAL_CONST_EXPR( getDoubleValue(null, null) ).equals(obj);
+			}
+			
+			if(  obj instanceof Gamma ){
+				Gamma g = (Gamma)obj;
+				return g._bDet == _bDet && g._sType.equals(_sType) && 
+						_exprScale.equals( g._exprScale ) && _exprShape.equals( g._exprShape );
+			}
+			return false;
+		}
+		
+		@Override
+		public EXPR substitute(Map<LVAR, LCONST> subs,
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants, 
+				Map<TYPE_NAME, OBJECTS_DEF > objects ) {
+			return new Gamma( _exprShape.substitute(subs, constants, objects), 
+					_exprScale.substitute(subs, constants, objects) );
+		}
+		
 		public String toString() {
 			if (USE_PREFIX)
 				return "(Gamma " + _exprShape + " " + _exprScale + ")";
@@ -1875,6 +2720,41 @@ public class RDDL {
 		
 		public EXPR _exprMean;
 		
+		@Override
+		protected char getGRB_Type(
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants,
+				Map<PVAR_NAME, Character> type_map) {
+			return GRB.INTEGER;
+		}
+		
+		@Override
+		public EXPR addTerm(LVAR new_term, Map< PVAR_NAME, Map<ArrayList<LCONST>, Object> > constants, 
+				Map< TYPE_NAME, OBJECTS_DEF > objects ) {
+			return new Poisson( _exprMean.addTerm(new_term, constants, objects ) );
+		}
+		
+		@Override
+		public int hashCode() {
+			return _exprMean.hashCode();
+		}
+		
+		@Override
+		public boolean equals(Object obj) {
+			if( obj instanceof Poisson ){
+				Poisson p = (Poisson) obj;
+				return _bDet == p._bDet && _sType.equals( p._sType ) && 
+						_exprMean.equals( p._exprMean );
+			}
+			return false;
+		}
+		
+		@Override
+		public EXPR substitute(Map<LVAR, LCONST> subs,
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants, 
+				Map<TYPE_NAME, OBJECTS_DEF > objects ) {
+			return new Poisson( _exprMean.substitute(subs, constants, objects) );
+		}
+		
 		public String toString() {
 			if (USE_PREFIX)
 				return "(Poisson " + _exprMean + ")";
@@ -1907,6 +2787,34 @@ public class RDDL {
 		
 		public EXPR _exprProb;
 		
+		@Override
+		public EXPR addTerm(LVAR new_term, Map< PVAR_NAME, Map< ArrayList<LCONST>, Object>> constants, 
+				Map< TYPE_NAME, OBJECTS_DEF > objects ) {
+			return new Bernoulli( _exprProb.addTerm(new_term, constants, objects) );
+		}
+		
+		@Override
+		public int hashCode() {
+			return _exprProb.hashCode();
+		}
+		
+		@Override
+		public boolean equals(Object obj) {
+			if( obj instanceof Bernoulli ){
+				Bernoulli b = (Bernoulli)obj;
+				return _bDet == b._bDet && _sType.equals( b._sType ) && 
+						_exprProb.equals( b._exprProb );
+			}
+			return false;
+		}
+		
+		@Override
+		public EXPR substitute(Map<LVAR, LCONST> subs,
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants, 
+				Map<TYPE_NAME, OBJECTS_DEF > objects ) {
+			return new Bernoulli( _exprProb.substitute(subs, constants, objects) );
+		}
+		
 		public String toString() {
 			if (USE_PREFIX)
 				return "(Bernoulli " + _exprProb + ")";
@@ -1932,66 +2840,162 @@ public class RDDL {
 			_exprProb.collectGFluents(subs, s, gfluents);
 		}
 
+		@Override
+		protected char getGRB_Type(
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants,
+				Map<PVAR_NAME, Character> type_map) {
+			return GRB.BINARY;
+		}
+
 	}		
 	
 	//////////////////////////////////////////////////////////
 
-	public static class INT_CONST_EXPR extends EXPR {
-		
-		public INT_CONST_EXPR(Integer i) {
-			_nValue = i;
-			_sType = INT;
-			_bDet = true;
+	protected static abstract class CONST_EXPR extends EXPR {
+		public Number value;
+		public CONST_EXPR( Number v ) {
+			value = v;
+		}
+		public CONST_EXPR( int i ) {
+			value = i;
+		}
+		public CONST_EXPR( double d ) {
+			value = d;
+		}
+		public CONST_EXPR( boolean b ){
+			value = b ? 1 : 0 ;
+		}
+		@Override
+		public boolean equals(Object obj) {
+			if( obj instanceof CONST_EXPR ){
+				return value.equals( ( (CONST_EXPR)obj ).value );
+			}else if( obj instanceof OPER_EXPR ){
+				OPER_EXPR obj_op = ((OPER_EXPR)obj);
+				EXPR obj_cannon = obj_op.reduce( obj_op._e1, obj_op._e2, obj_op._op,  null , null);
+				if( obj_cannon instanceof CONST_EXPR ){
+					return value.equals( ( (CONST_EXPR)obj_cannon ).value );	
+				}
+				return false;
+			}else if( obj instanceof EXPR ){
+				EXPR expr = ((EXPR)obj);
+				if( expr.isConstant( null , null ) ){
+					return value.equals( expr.getDoubleValue( null, null ) );
+				}
+			}
+			return false;
 		}
 		
-		public Integer _nValue;
+		@Override
+		public EXPR addTerm(LVAR new_term, Map< PVAR_NAME, Map< ArrayList<LCONST>, Object > > constants, 
+				Map< TYPE_NAME, OBJECTS_DEF > objects ) {
+			return this;
+		}
 		
+		public GRBVar getGRBConstr(char sense, GRBModel model, 
+				Map<PVAR_NAME, Map< ArrayList<LCONST>,Object > > constants, Map<TYPE_NAME,OBJECTS_DEF> objects, 
+				Map<PVAR_NAME, Character> type_map ) {
+			if( grb_cache.containsKey( this ) ){
+				return grb_cache.get( this );
+			}
+			
+			GRBVar this_var = getGRBVar( this, model, constants, objects, type_map );
+			try {
+				model.addConstr( this_var, GRB.EQUAL, getDoubleValue(constants, objects), name_map.get(toString()) );
+				model.update();
+				return this_var;
+			} catch (GRBException e) {
+				e.printStackTrace();
+				System.exit(1);
+			}
+			return null;
+		}
+		
+		@Override
+		public boolean isConstant( Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants, 
+				Map< TYPE_NAME, OBJECTS_DEF >  objects  ) {
+			return true;
+		}
+		
+		@Override
+		public boolean isPiecewiseLinear(
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants, 
+				final Map< TYPE_NAME, OBJECTS_DEF > objects ) {
+			return true;
+		}
+		
+		@Override
+		public int hashCode() {
+			return value.hashCode();
+		}
+		
+		@Override
+		public CONST_EXPR substitute(Map<LVAR, LCONST> subs,
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants, 
+				final Map< TYPE_NAME, OBJECTS_DEF > objects ) {
+			return this;
+		}
+		
+		@Override
 		public String toString() {
-			return _nValue.toString();
+			return value.toString();
 		}
 		
+		@Override
 		public Object sample(HashMap<LVAR,LCONST> subs, State s, RandomDataGenerator r) throws EvalException {
-			return _nValue;
+			return value;
 		}
 		
-		public EXPR getDist(HashMap<LVAR,LCONST> subs, State s) throws EvalException {
-			throw new EvalException("INT_CONST_EXPR.getDist: Not a distribution.");
-		}
-		
-		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<Pair> gfluents) 
-			throws EvalException {
-			// Nothing to collect
-		}
-
-	}
-
-	public static class REAL_CONST_EXPR extends EXPR {
-		
-		public REAL_CONST_EXPR(Double d) {
-			_dValue = d;
-			_sType  = REAL;
-			_bDet = true;
-		}
-		
-		public Double _dValue;
-		
-		public String toString() {
-			return _dValue.toString();
-		}
-		
-		public Object sample(HashMap<LVAR,LCONST> subs, State s, RandomDataGenerator r) throws EvalException {
-			return _dValue;
-		}
-		
+		@Override
 		public EXPR getDist(HashMap<LVAR,LCONST> subs, State s) throws EvalException {
 			throw new EvalException("REAL_CONST_EXPR.getDist: Not a distribution.");
 		}
 
+		@Override
 		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<Pair> gfluents) 
 			throws EvalException {
 			// Nothing to collect
 		}
+		
+		@Override
+		protected double getDoubleValue( Map<PVAR_NAME,Map<ArrayList<LCONST>,Object>> constants, 
+				Map< TYPE_NAME, OBJECTS_DEF >  objects ) {
+			return value.doubleValue();
+		};
+		
+	}
 	
+	public static class INT_CONST_EXPR extends CONST_EXPR { // implements NUMBER_CONST {
+		
+		public INT_CONST_EXPR(final int i) {
+			super(i);
+			_sType = INT;
+			_bDet = true;
+		}
+		
+		@Override
+		protected char getGRB_Type(
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants,
+				Map<PVAR_NAME, Character> type_map) {
+			return GRB.INTEGER;
+		}
+		
+	}
+	
+	public static class REAL_CONST_EXPR extends CONST_EXPR { // implements NUMBER_CONST {
+		
+		public REAL_CONST_EXPR(Double d) {
+			super(d);
+			_sType  = REAL;
+			_bDet = true;
+		}
+		
+		@Override
+		protected char getGRB_Type(
+			Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants,
+			Map<PVAR_NAME, Character> type_map) {
+			return GRB.CONTINUOUS;
+		}
+
 	}
 	
 	public static class STRUCT_EXPR_MEMBER {
@@ -2005,7 +3009,7 @@ public class RDDL {
 		public EXPR   _expr;
 		
 		public int hashCode() {
-			return _sLabel.hashCode() + _expr.hashCode();
+			return Objects.hash( _sLabel , _expr );
 		}
 		
 		public boolean equals(Object o) {
@@ -2045,6 +3049,27 @@ public class RDDL {
 		}
 
 		public ArrayList<STRUCT_EXPR_MEMBER> _alSubExpr;
+		
+		@Override
+		public EXPR addTerm(LVAR new_term, Map< PVAR_NAME, Map< ArrayList< LCONST >, Object > > constants, 
+				Map< TYPE_NAME, OBJECTS_DEF > objects ) {
+			return new STRUCT_EXPR( new ArrayList<>( _alSubExpr.stream()
+					.map( m -> new STRUCT_EXPR_MEMBER( m._sLabel, m._expr.addTerm(new_term, constants, objects) ) )
+					.collect( Collectors.toList() ) ) );
+		}
+		
+		@Override
+		public int hashCode() {
+			return _alSubExpr.hashCode();
+		}
+		
+		@Override
+		public boolean equals(Object obj) {
+			if( obj instanceof STRUCT_EXPR ){
+				return _alSubExpr.equals( ( ( STRUCT_EXPR ) obj )._alSubExpr );
+			}
+			return false;
+		}
 
 		public void addMember(LCONST label, EXPR expr) {
 			_alSubExpr.add(new STRUCT_EXPR_MEMBER(label, expr));
@@ -2088,6 +3113,32 @@ public class RDDL {
 			for (STRUCT_EXPR_MEMBER m : _alSubExpr)
 				m._expr.collectGFluents(subs, s, gfluents);
 		}
+		
+		@Override
+		public EXPR substitute(Map<LVAR, LCONST> subs,
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants, 
+				Map<TYPE_NAME, OBJECTS_DEF > objects  ) {
+			try{
+				throw new Exception("I don't know what this class is.");
+			}catch( Exception exc ){
+				exc.printStackTrace();
+				System.exit(1);
+			}
+			return null;
+		}
+		
+		@Override
+		protected char getGRB_Type(
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants,
+				Map<PVAR_NAME, Character> type_map) {
+			try{
+				throw new UnsupportedOperationException("grb type of struct expr");
+			}catch( Exception exc ){
+				exc.printStackTrace();
+				System.exit(1);
+			}
+			return GRB.CONTINUOUS;
+		}
 	
 	}
 	
@@ -2105,9 +3156,15 @@ public class RDDL {
 		public static final Boolean  B_ZERO = Boolean.valueOf(false);
 		public static final ENUM_VAL E_ZERO = new ENUM_VAL("@0");
 		
-		public OPER_EXPR(EXPR e1, EXPR e2, String op) throws Exception {
-			if (!op.equals(PLUS) && !op.equals(MINUS) && !op.equals(TIMES) && !op.equals(DIV))
-				throw new Exception("Unrecognized arithmetic operator: " + op);
+		public OPER_EXPR(EXPR e1, EXPR e2, String op)  {
+//			try{
+//				if (!op.equals(PLUS) && !op.equals(MINUS) && !op.equals(TIMES) && !op.equals(DIV))
+//					throw new Exception("Unrecognized arithmetic operator: " + op);	
+//			}catch( Exception exc ){
+//				exc.printStackTrace();
+//				System.exit(1);
+//			}
+			
 			_op = op.intern();
 			_e1 = e1;
 			_e2 = e2;
@@ -2118,6 +3175,336 @@ public class RDDL {
 		public EXPR _e2 = null;
 		public String _op = UNKNOWN;
 		
+		@Override
+		public EXPR addTerm(LVAR new_term, Map< PVAR_NAME, Map< ArrayList< LCONST >, Object > > constants, 
+				Map< TYPE_NAME, OBJECTS_DEF > objects ) {
+			try {
+				return new OPER_EXPR( _e1.addTerm(new_term, constants, objects), 
+						_e2.addTerm(new_term, constants, objects ), _op );
+			} catch (Exception e) {
+				e.printStackTrace();
+				System.exit(1);
+			}
+			return null;
+		}
+		
+		@Override
+		public GRBVar getGRBConstr( char sense, GRBModel model,
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants ,
+				Map< TYPE_NAME, OBJECTS_DEF > objects,  Map<PVAR_NAME, Character> type_map ) {
+			if( grb_cache.containsKey( this ) ){
+				return grb_cache.get( this );
+			}
+			
+//			assert( isPiecewiseLinear(constants, objects) );
+
+			EXPR reducible = reduce( _e1, _e2, _op, constants, objects );
+			if( !( reducible instanceof OPER_EXPR ) ){
+				return reducible.getGRBConstr(sense, model, constants, objects, type_map );
+			}
+			
+
+			GRBVar this_var = getGRBVar(this, model, constants, objects , type_map );
+			GRBVar v1 = _e1.getGRBConstr( GRB.EQUAL, model, constants, objects , type_map );
+			GRBVar v2 = _e2.getGRBConstr( GRB.EQUAL, model, constants, objects , type_map );
+			
+			GRBLinExpr exp = new GRBLinExpr();
+			try{
+				switch( _op ){
+				case "+" :
+					exp.addTerm(1.0d, v1);
+					exp.addTerm(1.0d, v2);
+					model.addConstr( this_var, sense, exp, name_map.get(toString()) );
+					break;
+				case "-" :
+					exp.addTerm(1.0d, v1);
+					exp.addTerm(-1d, v2 );
+					model.addConstr( this_var, sense, exp, name_map.get(toString()) );
+					break;
+				case "*" : 
+					assert( _e1.isConstant(constants, objects) || _e2.isConstant(constants, objects) );
+					if( _e1.isConstant(constants, objects) ){
+						exp.addTerm( _e1.getDoubleValue(constants, objects), v2 );	
+					}else{
+						exp.addTerm( _e2.getDoubleValue( constants, objects ), v1 );
+					}
+					model.addConstr( this_var, sense, exp, name_map.get(toString()) );
+					break;
+				case "/" :
+					assert( _e2.isConstant(constants, objects) );
+					exp.addTerm( 1.0d/_e2.getDoubleValue(constants, objects), v1 );
+					model.addConstr( this_var, sense, exp, name_map.get(toString()) );
+					break;
+				
+				case "min" : 
+					//make if expr using v1 and v2
+					try {
+						IF_EXPR ife = new IF_EXPR( new COMP_EXPR( _e1, _e2, COMP_EXPR.LESSEQ ) ,_e1, _e2 );
+						GRBVar if_min_var = ife.getGRBConstr( sense, model, constants, objects , type_map);
+						model.addConstr( this_var, GRB.EQUAL, if_min_var,  name_map.get(toString()) );
+					} catch (Exception e) {
+						e.printStackTrace();
+						System.exit(1);
+					}
+					break;
+				case "max" :
+					try {
+						IF_EXPR ife = new IF_EXPR( new COMP_EXPR( _e1, _e2, COMP_EXPR.GREATEREQ ) ,_e1, _e2 );
+						GRBVar ife_max_var = ife.getGRBConstr( sense, model, constants, objects, type_map );
+						model.addConstr(this_var, GRB.EQUAL, ife_max_var, name_map.get(toString()) );
+					} catch (Exception e) {
+						e.printStackTrace();
+						System.exit(1);
+					}
+					break;
+				}
+				model.update();
+				return this_var;
+			} catch(Exception exc ){
+				exc.printStackTrace();
+				System.exit(1);
+			}
+			return null;
+		}
+		
+		@Override
+		protected char getGRB_Type(Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants,
+				Map<PVAR_NAME,  Character> type_map) {
+			
+			char e1_type = _e1.getGRB_Type( constants , type_map );
+			char e2_type = _e2.getGRB_Type( constants , type_map );
+			
+			switch( _op ){
+			case "+" :
+			case "-" :
+				//binary/int + binary/int = integer
+				if( ( e1_type == GRB.BINARY || e1_type == GRB.INTEGER ) && 
+						( e2_type == GRB.BINARY || e2_type == GRB.INTEGER ) ){
+					return GRB.INTEGER;
+				}else{
+					return GRB.CONTINUOUS;
+				}
+			case "*" :
+			case "min" : 
+			case "max" : 
+				if( e1_type == GRB.BINARY && e2_type == GRB.BINARY ){
+					return GRB.BINARY;
+				}else if( (  e1_type == GRB.BINARY && e2_type == GRB.INTEGER ) ||  
+						( e2_type == GRB.BINARY && e1_type == GRB.INTEGER ) || 
+						( e2_type == GRB.INTEGER && e1_type == GRB.INTEGER ) ){
+					return GRB.INTEGER;
+				}else{
+					return GRB.CONTINUOUS;
+				}
+			case "/" : 
+				return GRB.CONTINUOUS ;
+			default : 
+				try{
+					throw new Exception("unknown op type " + toString() );
+				}catch( Exception exc ){
+					exc.printStackTrace();
+					System.exit(1);
+				}
+			}
+			return GRB.CONTINUOUS;
+		}
+		
+		@Override
+		public int hashCode() {
+			if( isConstant( null, null ) ){
+				return Double.hashCode( getDoubleValue( null , null ) );
+			}
+			EXPR reducible = reduce( _e1, _e2, _op, null, null );
+			if( reducible instanceof OPER_EXPR ){
+				return Objects.hash( _op, _e1.hashCode() + _e2.hashCode(), isCommutable(_op) ? 0 : _e2.hashCode() );
+			}
+			return reducible.hashCode();
+		}
+		
+		public boolean isCommutable( final String op ){ 
+			return !( op.equals(MINUS) || op.equals(DIV) );
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			//reduce trivial operations like multiply with zero
+			//We can capture (<E> \ E+E).equals(<E> \ 2*E), (<E> \ E*0.equals(<E> \ 0)) here.
+			//Depends on (<E> \ 0).equals(<E>E+E)
+			if( isConstant(null,null) ){
+				return new REAL_CONST_EXPR( getDoubleValue(null, null) ).equals( obj );
+			}
+			
+			if( obj instanceof EXPR ){
+				if( obj instanceof OPER_EXPR ) {
+					OPER_EXPR other_oper = (OPER_EXPR)obj;
+					boolean equals = _op.equals(other_oper._op) 
+							&& _e1.equals( other_oper._e1 ) 
+							&& _e2.equals( other_oper._e2 );
+					if( !equals ){
+						equals = isCommutable( _op ) && _op.equals(other_oper._op) 
+								&& _e1.equals( other_oper._e2 ) 
+								&& _e2.equals( other_oper._e1 );
+					}
+					return equals;
+				}
+				EXPR this_cannon = reduce(_e1, _e2, _op, null, null);
+				if( this_cannon instanceof OPER_EXPR ){
+					return false;
+				}
+				return this_cannon.equals( obj );
+			}
+			return false;
+		}
+
+		@Override
+		public boolean isConstant(
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants, 
+				Map<TYPE_NAME, OBJECTS_DEF> objects ) {
+			EXPR reducible = reduce( _e1, _e2, _op, constants , objects);
+			if( reducible instanceof OPER_EXPR ){
+				return _e1.isConstant(constants, objects) && _e2.isConstant(constants, objects);
+			}
+			return reducible.isConstant(constants, objects);//CONST_EXPR 
+		}
+		
+		@Override
+		protected double getDoubleValue(
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants,
+				Map<TYPE_NAME, OBJECTS_DEF> objects) {
+			assert( isConstant(constants, objects) );
+			EXPR sub = substitute( Collections.EMPTY_MAP, constants, objects);
+			assert( sub.isConstant(constants, objects) );
+			
+			if( sub instanceof OPER_EXPR ){//case not caught by isConstant()
+				try{
+					throw new Exception("isCOnstant() is true but substitution yielded OPER_EXPR");
+				}catch( Exception exc ){
+					exc.printStackTrace();
+					System.exit(1);
+				}
+				return Double.NaN;
+			}
+			return sub.getDoubleValue(constants, objects);
+		}
+		
+		@Override
+		public boolean isPiecewiseLinear( Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants,
+				Map<TYPE_NAME, OBJECTS_DEF> objects ) {
+			if( isConstant(constants, objects) ){
+				return true;
+			}
+			
+			if( _op.equals(PLUS) || _op.equals(MINUS) || _op.equals(MIN) || _op.equals(MAX) ){
+				return _e1.isPiecewiseLinear(constants, objects) && 
+						_e2.isPiecewiseLinear(constants, objects);
+			}else if( _op.equals(TIMES) ){
+				return ( _e1.isConstant(constants, objects) && _e2.isPiecewiseLinear(constants, objects) )
+						|| ( _e2.isConstant(constants, objects) && _e1.isPiecewiseLinear(constants, objects) );
+			}else if( _op.equals(DIV) ){
+				return _e2.isConstant(constants, objects) && _e1.isPiecewiseLinear(constants, objects);
+			}else{
+				try{
+					throw new Exception("unhandled case.");
+				}catch(Exception exc ){
+					exc.printStackTrace();
+					System.exit(1);
+				}
+			}
+			return false;
+		}
+		
+		@Override
+		public EXPR substitute(Map<LVAR, LCONST> subs,
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants,
+				Map<TYPE_NAME, OBJECTS_DEF> objects ) {
+			try {
+				EXPR e1_sub = _e1.substitute(subs, constants, objects);
+				EXPR e2_sub = _e2.substitute(subs, constants, objects);
+				
+				return reduce( e1_sub, e2_sub, _op, constants , objects );
+			} catch (Exception e) {
+				e.printStackTrace();
+				System.exit(1);
+			}
+			return null;
+		}
+		
+		private EXPR reduce( final EXPR e1_sub, final EXPR e2_sub, final String op, 
+				final Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants,
+				final Map< TYPE_NAME, OBJECTS_DEF > objects )  {
+			final boolean e1_const = e1_sub.isConstant( constants , objects);
+			final boolean e2_const = e2_sub.isConstant( constants , objects );
+			if( e1_const && e2_const ){
+				try {
+					return new REAL_CONST_EXPR( (double) ComputeArithmeticResult( e1_sub.getDoubleValue( constants, objects ), 
+							e2_sub.getDoubleValue( constants, objects ), op ) );
+				} catch (EvalException e) {
+					e.printStackTrace();
+					System.exit(1);
+				}
+			}
+			
+			switch( op ){
+			case "+" : 
+				if( e2_const && e2_sub.getDoubleValue(constants, objects) == 0d ){
+					return e1_sub;
+				}else if( e1_const && e1_sub.getDoubleValue(constants, objects) == 0d ){
+					return e2_sub;
+				}
+				break;
+			case "-" : 
+				if( e2_const && e2_sub.getDoubleValue(constants, objects) == 0d ){
+					return e1_sub;
+				}
+				break;
+			case "*" : 
+				if( ( e1_const && e1_sub.getDoubleValue(constants, objects) == 0d ) ){
+					return e1_sub;
+				}else if( e1_const && e1_sub.getDoubleValue(constants, objects) == 1d ){
+					return e2_sub;
+				}else if( e2_const && e2_sub.getDoubleValue(constants, objects) == 0d ){
+					return e2_sub;
+				}else if( e2_const && e2_sub.getDoubleValue(constants, objects) == 1d ){
+					return e1_sub;
+				}
+				break;
+			case "/" : 
+				if( e1_const && e1_sub.getDoubleValue(constants, objects) == 0d ){
+					return e1_sub;
+				}else if( e2_const && e2_sub.getDoubleValue(constants, objects) == 0d ){
+					try{
+						throw new ArithmeticException("divide by zero : " + toString() );
+					}catch( Exception exc ){
+						exc.printStackTrace();
+						System.exit(1);
+					}
+				}else if( e2_const && e2_sub.getDoubleValue(constants, objects) == 1d ){
+					return e1_sub;
+				}
+				break;
+			}
+
+			if( e1_sub.equals(e2_sub) ){
+				switch( op ){
+				case "+" : try {
+						return new OPER_EXPR( new REAL_CONST_EXPR(2d) , e1_sub, TIMES );
+					} catch (Exception e) {
+						e.printStackTrace();
+						System.exit(1);
+					}
+				case "-" : return new REAL_CONST_EXPR(0d);
+				case "/" : return new REAL_CONST_EXPR(1d); 
+				}
+			}
+			try {
+				return new OPER_EXPR( e1_sub, e2_sub, _op );
+			} catch (Exception e) {
+				e.printStackTrace();
+				System.exit(1);
+			}
+			return null;
+		}
+
 		public String toString() {
 			if (USE_PREFIX)
 				return "(" + _op + " " + _e1 + " " + _e2 + ")";
@@ -2279,19 +3666,213 @@ public class RDDL {
 		public static final String PROD = "prod".intern();
 		public static final String MIN  = "min".intern();
 		public static final String MAX  = "max".intern();
+//		private HashMap<TYPE_NAME, OBJECTS_DEF> _objects;
 		
-		public AGG_EXPR(String op, ArrayList<LTYPED_VAR> vars, EXPR e) throws Exception {
+		public AGG_EXPR(String op, ArrayList<LTYPED_VAR> vars, EXPR e  ) throws Exception {
 			if (!op.equals(SUM) && !op.equals(PROD) && !op.equals(MIN) && !op.equals(MAX))
 				throw new Exception("Unrecognized aggregation operator: " + op);
 			_op = op.intern();
-			_alVariables = (ArrayList<LTYPED_VAR>)vars;
+			_alVariables = ((ArrayList<LTYPED_VAR>)vars);
 			_e  = e;
 			_bDet = e._bDet;
+			
+			if( _e._sType.equals( EXPR.BOOL ) && _op.equals( PROD ) ){
+				_sType = EXPR.BOOL;
+			}else if( ( _e._sType.equals( EXPR.BOOL ) && _op.equals(SUM) ) || _e._sType.equals( EXPR.INT ) ){
+				_sType = EXPR.INT;
+			}else{
+				_sType = EXPR.REAL;
+			}
+		}
+		
+		@Override
+		protected char getGRB_Type( Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants, 
+				Map<PVAR_NAME, Character> type_map ) {
+			char inner_type = _e.getGRB_Type(constants, type_map );
+			if( inner_type == GRB.BINARY && _op.equals( PROD ) ){
+				return GRB.BINARY;
+			}else if( ( inner_type == GRB.BINARY && _op.equals(SUM) ) || inner_type == GRB.INTEGER ){
+				return GRB.INTEGER;
+			}
+			return GRB.CONTINUOUS;
+		}
+		
+		public EXPR expandArithmeticQuantifier(Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants, 
+				Map<TYPE_NAME, OBJECTS_DEF> objects ){
+			List<EXPR> terms = expandQuantifier( _e, _alVariables, objects, constants );
+			String type = null;
+			switch( _op ){
+			case "sum" : type  = OPER_EXPR.PLUS; break;
+			case "prod" : type = OPER_EXPR.TIMES; break;
+			case "min" : type = OPER_EXPR.MIN; break;
+			case "max" : type = OPER_EXPR.MAX; break;
+			}
+			EXPR ret = null;
+			for( final EXPR t : terms ){
+				try {
+					ret = ( ret == null ) ? t : new OPER_EXPR( ret, t, type );
+				} catch (Exception e) {
+					e.printStackTrace();
+					System.exit(1);
+				}
+			}
+			return ret;
+		}
+		
+		@Override
+		public int hashCode() {
+			if( isConstant( null , null ) ){
+				return Double.hashCode( getDoubleValue( null , null ) );
+			}
+			if( _alVariables.isEmpty() ){
+				return _e.hashCode();
+			}
+			
+			return Objects.hash( _op, _e, _alVariables );
+		}
+		
+		@Override
+		protected double getDoubleValue( Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants,
+				Map<TYPE_NAME, OBJECTS_DEF> objects ) {
+			assert( isConstant(constants, objects ) );
+			EXPR result = expandArithmeticQuantifier(constants, objects );
+			assert( result.isConstant(constants , objects) );
+			return result.getDoubleValue(constants, objects );
+		}
+		
+		@Override
+		public boolean isConstant(
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants,
+				Map<TYPE_NAME, OBJECTS_DEF> objects) {
+			if( _e.isConstant(constants, objects) && _op.equals( PROD ) ){
+					return true;
+			}
+			
+			if( _alVariables.isEmpty() ){
+				return _e.isConstant(constants, objects);
+			}
+			
+//			this is too expensive
+//			if( objects != null ){
+//				EXPR result = expandArithmeticQuantifier(constants, objects );
+//				return result.isConstant(constants, objects);	
+//			}
+
+			return false;
+		}
+		
+		@Override
+		public boolean isPiecewiseLinear(
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants,
+				Map<TYPE_NAME, OBJECTS_DEF> objects) {
+			if( isConstant(constants, objects) ){
+				return true;
+			}
+			//too expensive
+//			EXPR result = expandArithmeticQuantifier(constants, objects );
+			return _e.isPiecewiseLinear(constants, objects) && ( _alVariables.isEmpty()  || !_op.equals(PROD) );
+			//product of pwl is not pwl
+		}
+		
+		@Override
+		public GRBVar getGRBConstr( char sense, GRBModel model,
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants,
+				Map<TYPE_NAME, OBJECTS_DEF> objects, Map<PVAR_NAME, Character> type_map) {
+			if( grb_cache.containsKey( this ) ){
+				return grb_cache.get( this );
+			}
+			
+			if( isConstant(constants, objects) ){
+				return new REAL_CONST_EXPR( getDoubleValue(constants, objects) )
+					.getGRBConstr(sense, model, constants, objects, type_map);
+			}
+			
+			GRBVar this_var = getGRBVar(this, model, constants, objects , type_map );
+			GRBLinExpr total = new GRBLinExpr();
+			List<EXPR> assigns = expandQuantifier( _e, _alVariables, objects, constants);
+			for( final EXPR e : assigns ){
+				GRBVar v = e.getGRBConstr( GRB.EQUAL, model, constants, objects, type_map );
+				total.addTerm( 1.0d, v );
+			}
+			try {
+				model.addConstr( this_var , GRB.EQUAL, total, name_map.get(toString()) );
+				model.update();
+				return this_var;
+			} catch (GRBException e1) {
+				e1.printStackTrace();
+				System.exit(1);
+			}
+			return null;
 		}
 		
 		public EXPR   _e = null;
 		public String _op = UNKNOWN;
 		public ArrayList<LTYPED_VAR> _alVariables = null;
+		
+		@Override
+		public EXPR addTerm(LVAR new_term, Map< PVAR_NAME, Map< ArrayList< LCONST > , Object > > constants, 
+				Map< TYPE_NAME, OBJECTS_DEF > objects ) {
+			try {
+				return new AGG_EXPR( _op, _alVariables, _e.addTerm(new_term, constants, objects)  );
+			} catch (Exception e) {
+				e.printStackTrace();
+				System.exit(1);
+			}
+			return null;
+		}
+		
+		@Override
+		public boolean equals(Object obj) {
+			if( isConstant( null, null ) ){
+				return new REAL_CONST_EXPR( getDoubleValue( null, null ) ).equals( obj );
+			}
+			
+			if( _alVariables.isEmpty() ){
+				return _e.equals(obj);
+			}
+			
+			if( obj instanceof AGG_EXPR ){
+				AGG_EXPR a = (AGG_EXPR)obj;
+				return _bDet == a._bDet && _sType.equals( a._sType ) &&
+						_op.equals( a._op ) && _alVariables.equals( a._alVariables )
+						&& _e.equals( a._e );
+			}
+			return false;
+		}
+		
+		
+		@Override
+		public EXPR substitute(Map<LVAR, LCONST> subs,
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants,
+				Map<TYPE_NAME, OBJECTS_DEF> objects ) {
+			
+			if( isConstant(constants, objects ) ){
+				return new REAL_CONST_EXPR( getDoubleValue(constants, objects) );
+			}
+			
+			List<LTERM> new_terms = _alVariables.stream().map( m -> m.substitute(subs, constants, objects) )
+					.collect( Collectors.toList() );
+			final List<LTYPED_VAR> al_new_terms = new_terms.stream().filter( m -> m instanceof LTYPED_VAR )
+					.map( m -> (LTYPED_VAR)m ).collect( Collectors.toList() );
+			//expanding under sum is expensive
+			//defer this till getGRBConstr()
+			try {
+				if( al_new_terms.isEmpty() ){
+					return _e.substitute(subs, constants, objects);
+				}else{
+					EXPR inner_subs = _e.substitute(subs, constants, objects) ;
+					AGG_EXPR unexpanded = new AGG_EXPR( _op, new ArrayList<>( al_new_terms ), inner_subs );
+//					EXPR expanded = unexpanded.expandArithmeticQuantifier(constants, objects);
+					return unexpanded; //.substitute(subs, constants, objects);
+				}
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+				System.exit(1);
+			}
+			return null;
+			
+		}
 		
 		public String toString() {
 			StringBuilder sb = new StringBuilder();
@@ -2429,16 +4010,27 @@ public class RDDL {
 			}
 		}
 		
+		
 	}
 	
 	// TODO: Need a cleaner way to ensure that only boolean pvars go under forall, exists
 	// NOTE: technically a PVAR_EXPR does not have to be a boolean expression (it
 	// could be int/real), but at parse time we don't know so we just put it
 	// under BOOL_EXPR which is a subclass of EXPR.
-	public static class PVAR_EXPR extends BOOL_EXPR {
+	//On the same note, for real valued fluents we want pvar expr 
+	//to not be bool_expr , but for now I am not changing this, but taking a 
+	//type parameter in the constructor
+	public static class PVAR_EXPR extends BOOL_EXPR  {
 
 		public final static LCONST DEFAULT = new ENUM_VAL("default");
-
+		
+		@Override
+		protected char getGRB_Type( 
+				final Map< PVAR_NAME, Map< ArrayList<LCONST>, Object > > constants ,
+				Map< PVAR_NAME, Character > type_map ) {
+			return type_map.get( this._pName );
+		}
+		
 		public PVAR_EXPR(String s, ArrayList terms) {
 			this(s, terms, null);
 		}
@@ -2447,6 +4039,7 @@ public class RDDL {
 			_bDet = true;
 			_pName = new PVAR_NAME(s);
 			_alTerms = new ArrayList<LTERM>();
+			
 			for (Object o : terms) {
 				if (o instanceof LTERM)
 					_alTerms.add((LTERM)o);
@@ -2469,6 +4062,151 @@ public class RDDL {
 		public ArrayList<LCONST> _subTerms = new ArrayList<LCONST>(); // Used for evaluation
 		public ArrayList<LTERM>  _alMembers = null;
 		public ArrayList<LCONST> _subMembers = new ArrayList<LCONST>(); // Used for evaluation
+		
+		@Override
+		public EXPR addTerm(LVAR new_term, Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants, Map<TYPE_NAME, OBJECTS_DEF> objects) {
+			//check constant here
+			if( constants.containsKey( _pName ) ){
+				return this;
+			}
+			
+			ArrayList<LTERM> new_terms = new ArrayList<LTERM>( _alTerms );
+			new_terms.add(new_term);
+			return new PVAR_EXPR( _pName._sPVarName, new_terms );
+		}
+		
+		@Override
+		public GRBVar getGRBConstr( char sense, GRBModel model,
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants, 
+				Map<TYPE_NAME, OBJECTS_DEF > objects,  Map<PVAR_NAME, Character> type_map ) {
+			if( grb_cache.containsKey( this ) ){
+				return grb_cache.get( this );
+			}
+			
+			assert( isPiecewiseLinear(constants, objects) );
+			GRBVar this_var = getGRBVar(this, model, constants, objects, type_map);
+			GRBLinExpr expression = new GRBLinExpr();
+			if( isConstant(constants, objects) ){
+				final double val = getDoubleValue(constants, objects );
+				expression.addConstant(val);
+			}else{
+				expression.addTerm(1.0d, this_var);
+			}
+			
+			try {
+				model.addConstr(  this_var, sense, expression, name_map.get(toString()) );
+				model.update();
+				return this_var;
+			} catch (GRBException e) {
+				e.printStackTrace();
+				System.exit(1);
+			}
+			return null;
+		}
+		
+		@Override
+		protected double getDoubleValue(
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants, 
+				Map<TYPE_NAME, OBJECTS_DEF > objects ) {
+			assert( isConstant(constants, objects) );
+			
+			final double val = _sType.equals(REAL) ? ( (REAL_CONST_EXPR) getConstantValue(constants, objects) ).value.doubleValue()
+					: _sType.equals(INT) ? ( (INT_CONST_EXPR) getConstantValue(constants, objects) ).value.doubleValue()
+					: _sType.equals(BOOL) ? ( ( (BOOL_CONST_EXPR) getConstantValue(constants, objects) )._bValue ? 1 : 0 )
+					: Double.NaN;
+			return val;
+		}
+		
+		@Override
+		public int hashCode() {
+			return Objects.hash( _pName.hashCode(), _alTerms.hashCode() );
+		}
+		
+		@Override
+		public boolean equals(Object obj) {
+			if( isConstant( null, null ) ){
+				return new REAL_CONST_EXPR( getDoubleValue(null, null) ).equals(obj);
+			}
+			
+			if( obj instanceof PVAR_EXPR ){
+				PVAR_EXPR p = (PVAR_EXPR)obj;
+				return _bDet == p._bDet && _sType.equals( p._sType ) && 
+						_pName.equals( p._pName ) && _alTerms.equals( p._alTerms );
+			}else if( obj instanceof AGG_EXPR ){
+				AGG_EXPR ae = (AGG_EXPR)obj;
+				if( ae._alVariables.isEmpty() ){
+					return equals( ae._e );
+				}
+			}else if( obj instanceof QUANT_EXPR ){
+				QUANT_EXPR qe = (QUANT_EXPR)obj;
+				if( qe._alVariables.isEmpty() ){
+					return equals( qe._expr );
+				}
+			}
+			else if( obj instanceof EXPR ){
+				EXPR e = (EXPR)obj;
+				if( e.isConstant(null, null) ){
+					return false;
+				}
+			}
+			return false;
+		}
+		
+		@Override
+		public boolean isPiecewiseLinear( Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants, 
+				Map<TYPE_NAME, OBJECTS_DEF > objects ) {
+			return true;
+		}
+
+		@Override
+		public boolean isConstant( Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants ,
+				Map<TYPE_NAME, OBJECTS_DEF> objects ) {
+//			return constants.containsKey( _pName ); - no good, need to check fully instantiated terms
+			return constants != null && constants.containsKey( _pName ) && constants.get( _pName ).containsKey( _alTerms ) && 
+					_alTerms.stream().allMatch( m -> (m instanceof LCONST) );
+		}
+		
+		@Override
+		public EXPR substitute(Map<LVAR, LCONST> subs,
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants,
+				Map<TYPE_NAME, OBJECTS_DEF> objects ) {
+			ArrayList<LTERM> ret = new ArrayList<LTERM>( 
+					_alTerms.stream()
+					.map( m -> m.substitute(subs, constants, objects) )
+					.collect( Collectors.toList() ) );
+			PVAR_EXPR p = new PVAR_EXPR( _pName._sPVarName, ret );
+			//check for NF
+			if( p.isConstant( constants, objects ) ){
+				return p.getConstantValue( constants, objects );
+			}else{
+				return p;
+			}
+		}
+		
+		//FIXME : make map arguments unmodifiable 		
+		//type changes from PVAR_EXPR -> { NUMBER_CONST (BOOL/INT/REAL_CONST_EXPR) , LCONST }
+		private EXPR getConstantValue( Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>>  constants ,
+				Map<TYPE_NAME, OBJECTS_DEF> objects ){
+			assert( isConstant(constants , objects) );
+			Object lookup = constants.get( _pName ).get( _alTerms );
+			if( lookup instanceof Boolean ){ 
+				return new BOOL_CONST_EXPR( (boolean)lookup );
+			}else if( lookup instanceof Integer ){
+				return new INT_CONST_EXPR( (int)lookup );
+			}else if( lookup instanceof Double ){
+				return new REAL_CONST_EXPR( (double)lookup );
+			}else if( _sType.equals( EXPR.ENUM ) ){
+				return (ENUM_VAL)lookup;//I don't know about thiss
+			}else{
+				try{
+					throw new Exception("Uncaught case : " + this.toString() + " type " + _sType );
+				}catch( Exception exc ){
+					exc.printStackTrace();
+					System.exit(1);
+				}
+			}
+			return null;
+		}
 		
 		public String toString() {
 			StringBuilder sb = new StringBuilder();
@@ -2656,7 +4394,9 @@ public class RDDL {
 		public static final String SQRT = "sqrt".intern();
 		
 		public static TreeSet<String> KNOWN_FUNCTIONS = new TreeSet<String>(
-				Arrays.asList(new String[] {DIV, MOD, MIN, MAX, ABS, SGN, ROUND, FLOOR, CEIL, POW, LOG, COS, SIN, TAN, ACOS, ASIN, ATAN, COSH, SINH, TANH, EXP, LN, SQRT}));
+				Arrays.asList(new String[] {DIV, MOD, MIN, MAX, ABS, SGN, ROUND, 
+						FLOOR, CEIL, POW, LOG, COS, SIN, TAN, ACOS, ASIN, ATAN, 
+						COSH, SINH, TANH, EXP, LN, SQRT}));
 		
 		public FUN_EXPR(String s, ArrayList expressions) {
 			
@@ -2677,6 +4417,200 @@ public class RDDL {
 		public String _sName;
 		public ArrayList<EXPR>   _alArgs  = null;
 		public ArrayList<Object> _alArgEval = new ArrayList<Object>(); // Used for evaluation
+		
+		@Override
+		public boolean isConstant(
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants,
+				Map<TYPE_NAME, OBJECTS_DEF> objects) {
+			return _alArgs.stream().allMatch( m -> m.isConstant(constants, objects) );
+		}
+		
+		@Override
+		public boolean isPiecewiseLinear(
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants,
+				Map<TYPE_NAME, OBJECTS_DEF> objects) {
+			if( isConstant(constants, objects) ){
+				return true;
+			}
+			
+			if( _sName.equals( MIN ) || _sName.equals( MAX )  || _sName.equals( ABS ) 
+					|| _sName.equals( SGN ) ){
+				return _alArgs.stream().allMatch(m -> m.isPiecewiseLinear(constants, objects) );
+			}
+			return false;
+		}	
+		
+		@Override
+		protected double getDoubleValue( Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants,
+				Map<TYPE_NAME, OBJECTS_DEF> objects) {
+			assert( isConstant(constants, objects) );
+			List<Double> evals = _alArgs.stream()
+					.map( m -> m.getDoubleValue(constants, objects) ).collect( Collectors.toList() );
+			if( _sName.equals(MIN) ){
+				return evals.stream().reduce( Double.POSITIVE_INFINITY, Double::min );
+			}else if( _sName.equals( MAX ) ){
+				return evals.stream().reduce( Double.NEGATIVE_INFINITY, Double::max );
+			}else if( _sName.equals( MOD ) ){
+				//left associative
+				return evals.stream().reduce( (a,b) -> a%b ).get();
+			}else if( _sName.equals( ABS ) ){
+				assert( _alArgs.size() == 1 && evals.size() == 1 );
+				return Math.abs( evals.get(0) );
+			}else if( _sName.equals( SGN ) ){
+				assert( _alArgs.size() == 1 && evals.size() == 1 );
+				return Math.signum( evals.get(0) );
+			}else if( _sName.equals( ROUND ) ){
+				assert( _alArgs.size() == 1 && evals.size() == 1 );
+				return Math.round( evals.get(0) );
+			}else if( _sName.equals( FLOOR ) ){
+				assert( _alArgs.size() == 1 && evals.size() == 1 );
+				return Math.floor( evals.get(0) );
+			}else if( _sName.equals( CEIL ) ){
+				assert( _alArgs.size() == 1 && evals.size() == 1 );
+				return Math.ceil( evals.get(0) );
+			}else if( _sName.equals( POW ) ){
+				//left associative
+				return evals.stream().reduce( (a,b) -> Math.pow(a, b) ).get();
+			}else if( _sName.equals( LOG ) ){
+				//left
+				assert( _alArgs.size() == 1 && evals.size() == 1 );
+				return Math.log10( evals.get(0) );
+			}else if( _sName.equals( COS ) ){
+				assert( _alArgs.size() == 1 );
+				return Math.cos( evals.get(0) );
+			}else if( _sName.equals( SIN ) ){
+				assert( _alArgs.size() == 1 );
+				return Math.sin( evals.get(0) );
+			}else if( _sName.equals( TAN ) ){
+				assert( _alArgs.size() == 1 );
+				return Math.tan( evals.get(0) );
+			}else if( _sName.equals( ACOS ) ){
+				assert( _alArgs.size() == 1 );
+				return Math.acos( evals.get(0) );
+			}else if( _sName.equals( ASIN ) ){
+				assert( _alArgs.size() == 1 );
+				return Math.asin( evals.get(0) );
+			}else if( _sName.equals( ATAN ) ){
+				assert( _alArgs.size() == 1 );
+				return Math.atan( evals.get(0) );
+			}else if( _sName.equals( COSH ) ){
+				assert( _alArgs.size() == 1 );
+				return Math.cosh( evals.get(0) );
+			}else if( _sName.equals( SINH ) ){
+				assert( _alArgs.size() == 1 );
+				return Math.sinh( evals.get(0) );
+			}else if( _sName.equals( TANH ) ){
+				assert( _alArgs.size() == 1 );
+				return Math.tanh( evals.get(0) );
+			}else if( _sName.equals( EXP ) ){
+				assert( _alArgs.size() == 1 );
+				return Math.exp( evals.get(0) );
+			}else if( _sName.equals( LN ) ){
+				assert( _alArgs.size() == 1 );
+				return Math.log( evals.get(0) );
+			}else if( _sName.equals( SQRT ) ){
+				assert( _alArgs.size() == 1 );
+				return Math.sqrt( evals.get(0) );
+			}
+		
+			try{
+				throw new UnsupportedOperationException("not implemented case " + toString() );
+			}catch( Exception exc ){
+				exc.printStackTrace();
+				System.exit(1);
+			}
+			return Double.NaN;
+		}
+		
+		@Override
+		public GRBVar getGRBConstr(char sense, GRBModel model,
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants,
+				Map<TYPE_NAME, OBJECTS_DEF> objects,
+				Map<PVAR_NAME, Character> type_map) {
+			if( isConstant(constants, objects) ){
+				return new REAL_CONST_EXPR( getDoubleValue(constants, objects) )
+					.getGRBConstr(sense, model, constants, objects, type_map);
+			}
+			
+//			assert( isPiecewiseLinear(constants, objects) );
+			
+			try{
+				EXPR ret = null;
+				if( _sName.equals( MIN ) ){
+					ret = _alArgs.stream().reduce( (a,b) -> new OPER_EXPR( a, b, OPER_EXPR.MIN ) ).get();
+				}else if( _sName.equals( MAX ) ){
+					ret = _alArgs.stream().reduce( (a,b) -> new OPER_EXPR( a, b, OPER_EXPR.MAX ) ).get();
+				}else if( _sName.equals( ABS ) ){
+					assert( _alArgs.size() == 1 );
+					COMP_EXPR comp_expr = new COMP_EXPR( _alArgs.get(0) , new REAL_CONST_EXPR(0d), COMP_EXPR.GREATEREQ );
+					ret = new IF_EXPR( comp_expr, _alArgs.get(0), 
+							new OPER_EXPR( new REAL_CONST_EXPR(-1d), _alArgs.get(0), OPER_EXPR.TIMES ) );
+				}
+//				else if( _sName.equals( MOD ) ){
+//					//x%y == x/y - floor(x/y)
+//					ret = _alArgs.stream().reduce( new BinaryOperator<RDDL.EXPR>() {
+//						
+//						@Override
+//						public EXPR apply(EXPR arg0, EXPR arg1) {
+//							OPER_EXPR x_upon_y = new OPER_EXPR( arg0, arg1, OPER_EXPR.DIV );
+//							FUN_EXPR floor_that = new FUN_EXPR( FLOOR,  
+//									new ArrayList<>( Collections.singletonList( x_upon_y ) ) );
+//							return new OPER_EXPR( x_upon_y, floor_that , OPER_EXPR.MINUS );
+//						}
+//					}).get();
+//				}
+				else if( _sName.equals( SGN ) ){
+					assert( _alArgs.size() == 1 );
+					COMP_EXPR comp_expr = new COMP_EXPR( _alArgs.get(0), new REAL_CONST_EXPR(0d), COMP_EXPR.GREATEREQ );
+					ret = new IF_EXPR( comp_expr, new INT_CONST_EXPR(1), new INT_CONST_EXPR(-1) );
+				}
+				return ret == null ? null : ret.getGRBConstr(sense, model, constants, objects, type_map);
+			}catch( Exception exc ){
+				exc.printStackTrace();
+				System.exit(1);
+			}
+			return null;
+		}
+		
+		@Override
+		protected char getGRB_Type(
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants,
+				Map<PVAR_NAME, Character> type_map) {
+//			public static TreeSet<String> KNOWN_FUNCTIONS = new TreeSet<String>(
+//					Arrays.asList(new String[] {DIV, MOD, MIN, MAX, ABS, SGN, ROUND, 
+//							FLOOR, CEIL, POW, LOG, COS, SIN, TAN, ACOS, ASIN, ATAN, 
+//							COSH, SINH, TANH, EXP, LN, SQRT}));
+			if( _sName.equals( MIN ) || _sName.equals( MAX ) ){
+				return upper( _alArgs.stream().map( m -> m.getGRB_Type(constants, type_map) )
+						.collect( Collectors.toList()) );	
+			}else if( _sName.equals( SGN ) || _sName.equals( MOD ) || _sName.equals( ROUND ) 
+					|| _sName.equals( FLOOR ) || _sName.equals( CEIL ) ){
+				return GRB.INTEGER;
+			}
+			return GRB.CONTINUOUS;
+		}
+		
+		@Override
+		public EXPR addTerm(LVAR new_term, Map< PVAR_NAME, Map< ArrayList<LCONST>, Object> > constants, 
+				Map< TYPE_NAME, OBJECTS_DEF > objects ) {
+			return new FUN_EXPR( _sName, new ArrayList<EXPR>( _alArgs.stream().map( m -> m.addTerm(new_term, constants, objects) )
+					.collect( Collectors.toList() ) ) );
+		}
+		
+		@Override
+		public int hashCode() {
+			return Objects.hash( _sName, _alArgs );
+		}
+		
+		@Override
+		public boolean equals(Object obj) {
+			if( obj instanceof FUN_EXPR ){
+				FUN_EXPR f = (FUN_EXPR)obj;
+				return _bDet == f._bDet && _sType.equals( f._sType ) && 
+						_sName.equals(f._sName) && _alArgs.equals( f._alArgs );
+			}
+			return false;
+		}
 		
 		public String toString() {
 			StringBuilder sb = new StringBuilder();
@@ -2702,6 +4636,14 @@ public class RDDL {
 				sb.append("]");
 			
 			return sb.toString();
+		}
+		
+		@Override
+		public FUN_EXPR substitute(Map<LVAR, LCONST> subs,
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants, 
+				Map<TYPE_NAME, OBJECTS_DEF > objects ) {
+			List<EXPR> x = _alArgs.stream().map( m -> m.substitute(subs, constants, objects) ).collect( Collectors.toList() );
+			return new FUN_EXPR( _sName, new ArrayList<EXPR>( x ) );
 		}
 		
 		public Object sample(HashMap<LVAR,LCONST> subs, State s, RandomDataGenerator r) throws EvalException {		
@@ -2832,7 +4774,6 @@ public class RDDL {
 			for (EXPR e : _alArgs)
 				e.collectGFluents(subs, s, gfluents);
 		}
-
 	}
 	
 	public static class IF_EXPR extends EXPR { 
@@ -2851,6 +4792,160 @@ public class RDDL {
 		public BOOL_EXPR _test;
 		public EXPR _trueBranch;
 		public EXPR _falseBranch;
+		
+		@Override
+		protected char getGRB_Type(
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants,
+				Map<PVAR_NAME, Character> type_map) {
+			if( isConstant( constants, null ) ){
+				final double d = getDoubleValue(constants, null );
+				assert( d== 1d || d == 0d );
+				return (d == 1) ? _trueBranch.getGRB_Type(constants, type_map) : _falseBranch.getGRB_Type(constants, type_map);
+			}
+			return upper( _trueBranch.getGRB_Type(constants, type_map), 
+					_falseBranch.getGRB_Type(constants, type_map) );
+		}
+		
+		@Override
+		public EXPR addTerm(LVAR new_term, Map< PVAR_NAME, Map< ArrayList< LCONST >, Object > > constants, 
+				Map< TYPE_NAME, OBJECTS_DEF > objects ) {
+			return new IF_EXPR( _test.addTerm(new_term, constants, objects),
+					_trueBranch.addTerm(new_term, constants, objects), 
+					_falseBranch.addTerm(new_term, constants, objects) );
+		}
+		
+		@Override
+		public boolean equals(Object obj) {
+			if( _test.isConstant(null, null ) ){
+				return _test.getDoubleValue( null, null ) == 1d ?_trueBranch.equals(obj) : _falseBranch.equals(obj); 
+			}
+			
+			if( obj instanceof IF_EXPR ){
+				IF_EXPR ife = (IF_EXPR)obj;
+				return _test.equals( ife._test ) && _trueBranch.equals( ife._trueBranch ) && 
+						_falseBranch.equals( ife._falseBranch );
+			}
+			return false;
+		}
+		
+		@Override
+		public boolean isPiecewiseLinear(Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants,
+				Map<TYPE_NAME, OBJECTS_DEF> objects ) {
+			return _test.isConstant(constants, objects) || ( 
+					_test.isPiecewiseLinear( constants , objects ) && _trueBranch.isPiecewiseLinear(constants, objects)
+					&& _falseBranch.isPiecewiseLinear(constants, objects) );
+		}
+
+		public boolean isConstant( Map<PVAR_NAME, Map< ArrayList<LCONST>,Object> > constants ,
+				Map< TYPE_NAME, OBJECTS_DEF> objects ) {
+			return _test.isConstant(constants, objects ) && 
+					( _test.getDoubleValue(constants, objects) == 1d ? _trueBranch.isConstant(constants, objects) 
+							: _falseBranch.isConstant(constants, objects) );
+		}
+		
+		@Override
+		public EXPR substitute(Map<LVAR, LCONST> subs,
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants,
+				Map<TYPE_NAME, OBJECTS_DEF> objects ) {
+			EXPR new_test = _test.substitute(subs, constants, objects);
+			if( new_test.isConstant(constants, objects) ){
+				final double d = new_test.getDoubleValue(constants, objects);
+				assert( d  == 0d || d == 1d );
+				if( d == 1d ){
+					return _trueBranch.substitute(subs, constants, objects);
+				}else {
+					return _falseBranch.substitute(subs, constants, objects);
+				}
+			}else{
+				return new IF_EXPR(new_test, _trueBranch.substitute(subs, constants, objects), 
+						_falseBranch.substitute(subs, constants, objects) );
+			}
+		}
+		
+		@Override
+		public GRBVar getGRBConstr( char sense, GRBModel model,
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants,
+				Map<TYPE_NAME, OBJECTS_DEF > objects, Map< PVAR_NAME, Character> type_map ) {
+			if( grb_cache.containsKey( this ) ){
+				return grb_cache.get( this );
+			}
+			
+//			assert( isPiecewiseLinear(constants, objects) );
+			GRBVar this_var = getGRBVar( this, model, constants, objects, type_map);
+			/* [y = if E<=F then E1 else E2] is 
+			 *		E <= F + M(1-z)
+			 *		y <= E1 + M(1-z) 
+			 *		y >= E1 - M(1-z)
+			 *		
+			 *		E > F + Mz
+			 *		y <= E2 + Mz
+			 *		y >= E2 - Mz
+			 *		
+			 *		z \in {0,1}
+			 *		
+			 * if z then E else F
+			 *		E-M(1-z) <= y <= E+M(1-z)
+			 *		F-Mz <= y <= F+Mz
+			 */
+			try{
+				GRBVar z = _test.getGRBConstr(GRB.EQUAL, model, constants, objects, type_map);
+				
+				final GRBLinExpr m_z = new GRBLinExpr();
+				m_z.addTerm( M, z);
+				
+				final GRBLinExpr minus_m_z = new GRBLinExpr();
+				minus_m_z.addTerm( -1d*M, z);
+				
+				final GRBLinExpr m_one_minus_z = new GRBLinExpr();
+				m_one_minus_z.addConstant( M );
+				m_one_minus_z.addTerm(-1d*M, z);
+	
+				final GRBLinExpr minus_m_one_minus_z = new GRBLinExpr();
+				minus_m_one_minus_z.addConstant(-1d*M);
+				minus_m_one_minus_z.addTerm( M, z);
+				
+				final GRBVar E = _trueBranch.getGRBConstr(GRB.EQUAL, model, constants, objects, type_map);
+				final GRBVar F = _falseBranch.getGRBConstr(GRB.EQUAL, model, constants, objects, type_map);
+				
+				//E-M(1-z) <= y <= E+M(1-z)
+				GRBLinExpr foo1 = new GRBLinExpr();
+				foo1.addTerm(1.0d, E);
+				foo1.add(minus_m_one_minus_z );
+				
+				GRBLinExpr foo2 = new GRBLinExpr();
+				foo2.addTerm(1.0d, E);
+				foo2.add( m_one_minus_z );
+				
+				model.addConstr( foo1, GRB.LESS_EQUAL, this_var, name_map.get(toString()) );
+				model.addConstr( this_var, GRB.LESS_EQUAL, foo2 , name_map.get(toString()));
+	
+				//F-Mz <= y <= F+Mz
+				GRBLinExpr foo3 = new GRBLinExpr();
+				foo3.addTerm(1.0d, F);
+				foo3.add( minus_m_z );
+				
+				GRBLinExpr foo4 = new GRBLinExpr();
+				foo4.addTerm(1.0d, F);
+				foo4.add( m_z );
+				
+				model.addConstr( foo3, GRB.LESS_EQUAL, this_var,  name_map.get(toString()) );
+				model.addConstr( this_var, GRB.LESS_EQUAL, foo4, name_map.get(toString()) );
+				model.update();
+				return this_var;
+			}catch( Exception exc ){
+				exc.printStackTrace();
+				System.exit(1);
+			}
+			return null;
+		}
+		
+		@Override
+		public int hashCode() {
+			if( _test.isConstant(null, null) ){
+				return _test.getDoubleValue( null, null ) == 1d ? _trueBranch.hashCode() : _falseBranch.hashCode(); 
+			}
+			return Objects.hash( _test,  _trueBranch, _falseBranch );
+		}
 		
 		public String toString() {
 			if (USE_PREFIX) // TODO: Change prefix to if-then-else?
@@ -2901,6 +4996,23 @@ public class RDDL {
 			//System.out.println("\nGfluents after F[" + test_outcome + "]: " + "[" + gfluents.size() + "] " + _test + ": " + gfluents);
 			
 		}
+		
+		@Override
+		protected double getDoubleValue(
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants, 
+				Map<TYPE_NAME, OBJECTS_DEF > objects ) {
+			if( isConstant(constants , objects) ){
+				return _test.getDoubleValue(constants, objects) == 1d ? _trueBranch.getDoubleValue(constants, objects) : 
+					_falseBranch.getDoubleValue(constants, objects);
+			}
+			try{
+				throw new Exception("double value undefined for " + toString() );
+			}catch( Exception exc ){
+				exc.printStackTrace();
+				System.exit(1);
+			}
+			return Double.NaN;
+		}
 	}
 
 	public static class CASE {
@@ -2914,6 +5026,20 @@ public class RDDL {
 		public boolean  _bDefaultCase;
 		public LTERM    _termVal;
 		public EXPR     _expr;
+		
+		@Override
+		public int hashCode() {
+			return Objects.hash( _bDefaultCase, _termVal, _expr );
+		}
+		
+		@Override
+		public boolean equals(Object obj) {
+			if( obj instanceof CASE ){
+				CASE c = (CASE)obj;
+				return _bDefaultCase == c._bDefaultCase && _termVal.equals( c._termVal) && _expr.equals( c._expr );
+			}
+			return false;
+		}
 		
 		public String toString() {
 			if (USE_PREFIX)
@@ -2936,6 +5062,138 @@ public class RDDL {
 		
 		public LTERM _term; 
 		public ArrayList<CASE> _cases = null;
+		
+		@Override
+		public boolean isPiecewiseLinear(
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants,
+				Map<TYPE_NAME, OBJECTS_DEF> objects) {
+			if( _term.isPiecewiseLinear(constants, objects) ){
+				if( _term.isConstant(constants, objects) ){
+					
+					List<CASE> matches = _cases.stream().filter( m -> m._termVal.equals( _term ) ).collect( Collectors.toList() );
+					if( matches.size() == 0 ){
+						List<CASE> defaults = _cases.stream().filter( m -> m._bDefaultCase ).collect( Collectors.toList() );
+						assert( defaults.size() == 1 );
+						return defaults.get(0)._termVal.isPiecewiseLinear(constants, objects) && 
+								defaults.get(0)._expr.isPiecewiseLinear(constants, objects);
+					}else if( matches.size() == 1 ){
+						return matches.get(0)._termVal.isPiecewiseLinear(constants, objects)
+								&& matches.get(0)._expr.isPiecewiseLinear(constants, objects);
+					}else{
+						try{
+							throw new Exception("mutiple matching cases?" );
+						}catch( Exception exc ){
+							exc.printStackTrace();
+							System.exit(1);
+						}
+					}
+					
+				}else{
+					return _cases.stream().allMatch( m -> m._termVal.isPiecewiseLinear(constants, objects) && m._expr.isPiecewiseLinear(constants, objects) );
+				}
+			}
+			return false;
+		}
+		
+		@Override
+		protected char getGRB_Type(
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants,
+				Map<PVAR_NAME, Character> type_map) {
+			return upper( _cases.stream().map( m -> m._expr.getGRB_Type(constants, type_map) )
+					.collect( Collectors.toList() ) );
+		}
+		
+		@Override
+		public EXPR addTerm(LVAR new_term, Map< PVAR_NAME, Map< ArrayList<LCONST>, Object > > constants , 
+				Map< TYPE_NAME, OBJECTS_DEF > objects ) {
+			return new SWITCH_EXPR( _term, new ArrayList<CASE>( 
+					_cases.stream().map( m -> new CASE( m._termVal, m._expr.addTerm(new_term, constants, objects) ) )
+					.collect( Collectors.toList() ) ) );
+		}
+		
+		@Override
+		public int hashCode() {
+			return Objects.hash( _term, _cases );
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if( obj instanceof SWITCH_EXPR ){
+				SWITCH_EXPR s = (SWITCH_EXPR)obj;
+				return s._bDet == _bDet && _sType.equals(s._sType) && 
+						_term.equals(s._term) && _cases.equals( s._cases );
+			}
+			return false;
+		}
+		
+		@Override
+		public EXPR substitute(Map<LVAR, LCONST> subs,
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants,
+				Map<TYPE_NAME, OBJECTS_DEF> objects) {
+			LTERM new_term = (LTERM) _term.substitute(subs, constants, objects);
+			Stream<CASE> case_stream = _cases.stream();
+			
+			if( new_term.isConstant( constants , objects ) ){
+				//eval each case condition 
+				//but not the expr
+				Stream<CASE> eval_case_stream = case_stream.map( m -> new CASE( (LTERM)(m._termVal.substitute(subs, constants, objects)),
+						m._expr ) );
+				List<CASE> match_case_list = eval_case_stream.filter( m -> m._termVal.equals( new_term ) ).collect( Collectors.toList() );
+				
+				if( match_case_list.size() == 1 ){
+					//found exactly one
+					return match_case_list.get(0)._expr.substitute(subs, constants, objects);
+				}else if( match_case_list.size() == 0 ){
+					//default case
+					List<CASE> ret = case_stream.filter( m -> m._bDefaultCase ).collect( Collectors.toList() );
+					assert( ret.size() == 1 );
+					return ret.get(0)._expr.substitute(subs, constants, objects);
+				}else{
+					try{
+						throw new Exception("Case garbage");
+					}catch( Exception exc ){
+						exc.printStackTrace();
+						System.exit(1);
+					}
+				}
+					
+			}else{
+				//eval all case conds and exprs
+				List<CASE> new_cases = case_stream.map( m -> new CASE(  (LTERM) m._termVal.substitute(subs, constants, objects), 
+						m._expr.substitute(subs, constants, objects) ) ).collect( Collectors.toList() );
+				return new SWITCH_EXPR(new_term, new ArrayList<CASE>( new_cases ) );
+			}
+			return null;
+			
+		}
+		
+		@Override
+		public boolean isConstant(
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants,
+				Map<TYPE_NAME, OBJECTS_DEF> objects) {
+			if( _term.isConstant(constants, objects) ){
+				//match case
+				List<CASE> matches = _cases.stream().filter( m -> m._termVal.equals( _term ) ).collect( Collectors.toList() );
+				if( matches.size() == 0 ){
+					List<CASE> defaults = _cases.stream().filter( m -> m._bDefaultCase ).collect( Collectors.toList() );
+					assert( defaults.size() == 1 );
+					return defaults.get(0)._expr.isConstant(constants, objects);
+				}else if( matches.size() == 1 ){
+					return matches.get(0)._expr.isConstant(constants, objects);
+				}else{
+					try{
+						throw new Exception("mutiple matching cases?" );
+					}catch( Exception exc ){
+						exc.printStackTrace();
+						System.exit(1);
+					}
+				}
+				
+			}
+			return false;
+		}
+		
+		
 		
 		public String toString() {
 			StringBuilder sb = new StringBuilder();
@@ -2984,6 +5242,7 @@ public class RDDL {
 			for (CASE c : _cases)
 				c._expr.collectGFluents(subs, s, gfluents);
 		}
+		
 	}
 
 	//////////////////////////////////////////////////////////
@@ -2992,7 +5251,7 @@ public class RDDL {
 	// evaluated in GroundKb, otherwise will be recursively evaluated
 	// as a boolean expression.  
 	//
-	// Cannot use int/real vars (with equality) below a quantifier 
+	// TODO Cannot use int/real vars (with equality) below a quantifier 
 	// (should allow at a later time).
 	//
 	// Special handling for count above a ground evaluable expression
@@ -3000,6 +5259,14 @@ public class RDDL {
 	public abstract static class BOOL_EXPR extends EXPR { 
 		public static final Boolean TRUE  = Boolean.valueOf(true);
 		public static final Boolean FALSE = Boolean.valueOf(false);
+		
+		@Override
+		protected char getGRB_Type(
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants,
+				Map< PVAR_NAME, Character > type_map ) {
+			return GRB.BINARY;
+		}
+		
 	}
 
 	// TODO: should never put a RandomDataGenerator variable directly under a quantifier,
@@ -3010,22 +5277,176 @@ public class RDDL {
 		public final static String EXISTS = "exists".intern();
 		public final static String FORALL = "forall".intern();
 		
-		public QUANT_EXPR(String quant, ArrayList vars, EXPR expr) throws Exception {
-			this(quant, vars, (BOOL_EXPR)expr); // PARSER RESTRICTION
+		public QUANT_EXPR( String quant, ArrayList vars, EXPR expr  ) throws Exception {
+			this( quant, vars, (BOOL_EXPR)expr ); // PARSER RESTRICTION
 		}
 		
-		public QUANT_EXPR(String quant, ArrayList vars, BOOL_EXPR expr) throws Exception {
+		public QUANT_EXPR(String quant, ArrayList vars, BOOL_EXPR expr ) throws Exception {
 			if (!quant.equals(EXISTS) && !quant.equals(FORALL))
 				throw new Exception("Unrecognized quantifier type: " + quant);
 			_sQuantType = quant.intern();
 			_alVariables = (ArrayList<LTYPED_VAR>)vars;
 			_expr = expr;
 			_bDet = expr._bDet;
+			_sType = EXPR.BOOL;
+			assert( _expr instanceof BOOL_EXPR );
+		}
+		
+		@Override
+		public EXPR addTerm(LVAR new_term, Map< PVAR_NAME, Map< ArrayList<LCONST>, Object > > constants, 
+				Map< TYPE_NAME, OBJECTS_DEF > objects ) {
+			try {
+				return new QUANT_EXPR( _sQuantType, _alVariables, _expr.addTerm(new_term, constants, objects)  );
+			} catch (Exception e) {
+				e.printStackTrace();
+				System.exit(1);
+			}
+			return null;
 		}
 		
 		public String _sQuantType = null;
 		public ArrayList<LTYPED_VAR> _alVariables = new ArrayList<LTYPED_VAR>();
 		public BOOL_EXPR _expr;
+		
+		@Override
+		public int hashCode() {
+			if( isConstant( null , null ) ){
+				return Double.hashCode( getDoubleValue( null , null) );
+			}
+			if( _alVariables.size() == 0 ){
+				return _expr.hashCode();
+			}
+			return Objects.hash( _sQuantType, _alVariables, _expr );
+		}
+		
+		@Override
+		protected double getDoubleValue( Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants,
+				Map<TYPE_NAME, OBJECTS_DEF> objects ) {
+			assert( isConstant(constants, objects ) );
+			if( _expr.isConstant(constants, objects) ){
+				final double val = _expr.getDoubleValue(constants, objects);
+				return val;  
+			}
+			
+			EXPR result = expandBooleanQuantifier(constants, objects);
+			assert( result.isConstant(constants, objects ) );
+			return result.getDoubleValue(constants, objects );
+		}
+		
+		@Override
+		public boolean isPiecewiseLinear(Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants,
+				Map<TYPE_NAME, OBJECTS_DEF> objects) {
+			if( isConstant( constants, objects ) ){
+				return true;
+			}
+			EXPR result = expandBooleanQuantifier(constants, objects );
+			return result.isPiecewiseLinear(constants, objects );
+		}
+		
+		public EXPR expandBooleanQuantifier( Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants,
+				Map<TYPE_NAME, OBJECTS_DEF> objects ){
+			List<BOOL_EXPR> terms = expandQuantifier( _expr, _alVariables, objects, constants )
+					.stream().map( m -> m instanceof BOOL_EXPR ? ((BOOL_EXPR)m) : (
+							m.isConstant(constants, objects) ? ( m.getDoubleValue(constants, objects) == 1d ? 
+									new BOOL_CONST_EXPR(true) : new BOOL_CONST_EXPR(false)  ) : null ) )
+					.collect( Collectors.toList() );
+			
+			final String type = _sQuantType.equals( EXISTS ) ? CONN_EXPR.OR : 
+				( _sQuantType.equals( FORALL ) ? CONN_EXPR.AND : null );
+			CONN_EXPR result;
+			try {
+				result = new CONN_EXPR( new ArrayList<>( terms ), type );
+				return result;
+			} catch (Exception e) {
+				e.printStackTrace();
+				System.exit(1);
+			}  
+			return null;
+		}
+		
+		@Override
+		public boolean isConstant( Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants,
+				Map<TYPE_NAME, OBJECTS_DEF> objects ) {
+			final boolean inner_const = _expr.isConstant(constants, objects);
+			if( inner_const ){
+				return true;
+			}
+//			this is too expensive
+//			if( objects != null ){
+//				return expandBooleanQuantifier( constants, objects ).isConstant(constants, objects);	
+//			}
+			return false;
+		}
+		
+		@Override
+		public GRBVar getGRBConstr( char sense, GRBModel model,
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants, 
+				Map<TYPE_NAME, OBJECTS_DEF> objects, Map<PVAR_NAME, Character> type_map ) {
+			if( grb_cache.containsKey( this ) ){
+				return grb_cache.get( this );
+			}
+			
+			if( _alVariables.size() == 0 ){
+				return _expr.getGRBConstr(sense, model, constants, objects, type_map);
+			}
+			EXPR expr  = expandBooleanQuantifier(constants, objects );
+			GRBVar expr_var = expr.getGRBConstr( GRB.EQUAL, model, constants, objects, type_map );
+			try {
+				GRBVar this_var = getGRBVar(this, model, constants, objects , type_map );
+				model.addConstr( this_var, GRB.EQUAL, expr_var, name_map.get(toString()) );
+				model.update();
+				return this_var;
+			} catch (GRBException e) {
+				e.printStackTrace();
+				System.exit(1);
+			}
+			return null;
+		}
+		
+		@Override
+		public boolean equals(Object obj) {
+			if( isConstant( null , null ) ){
+				return new REAL_CONST_EXPR( getDoubleValue( null , null ) ).equals(obj);
+			}
+			
+			if( _alVariables.size() == 0 ){
+				return _expr.equals(obj);
+			}
+			
+			if( obj instanceof QUANT_EXPR ){
+				QUANT_EXPR q = (QUANT_EXPR)obj;
+				return _bDet == q._bDet && _sType.equals( q._sType ) && 
+						_sQuantType.equals( q._sQuantType ) && _expr.equals( q._expr )
+						&& _alVariables.equals( q._alVariables );
+			}
+			return false;
+		}
+		
+		@Override
+		public EXPR substitute( Map<LVAR, LCONST> subs,
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants,
+				Map<TYPE_NAME, OBJECTS_DEF> objects ) {
+			if( isConstant( constants, objects ) ){
+				return new REAL_CONST_EXPR( getDoubleValue(constants, objects ) );
+			}
+			
+			assert( isPiecewiseLinear( constants, objects ) );
+			List<EXPR> new_terms = _alVariables.stream().map( m -> m.substitute(subs, constants, objects ) )
+					.collect( Collectors.toList() );
+			final List<LTYPED_VAR> al_new_terms = new_terms.stream().filter( m -> m instanceof LTYPED_VAR )
+					.map( m -> (LTYPED_VAR)m )
+					.collect( Collectors.toList() );
+			try {
+				EXPR inner_sub = _expr.substitute(subs, constants, objects);
+				QUANT_EXPR unexpanded = new QUANT_EXPR( _sQuantType, new ArrayList<>( al_new_terms ), inner_sub );
+				EXPR expanded = unexpanded.expandBooleanQuantifier(constants, objects);
+				return expanded.substitute(subs, constants, objects);
+			} catch (Exception e) {
+				e.printStackTrace();
+				System.exit(1);
+			}
+			return null;
+		}
 		
 		public String toString() {
 			StringBuilder sb = new StringBuilder();
@@ -3184,6 +5605,160 @@ public class RDDL {
 			this((BOOL_EXPR)b1, (BOOL_EXPR)b2, conn); // PARSER RESTRICTION
 		}
 		
+		@Override
+		public EXPR addTerm(LVAR new_term, Map< PVAR_NAME, Map< ArrayList<LCONST>, Object> > constants, 
+				Map< TYPE_NAME, OBJECTS_DEF > objects ) {
+			try {
+				return new CONN_EXPR( new ArrayList< BOOL_EXPR > ( _alSubNodes.stream()
+						.map( m -> (BOOL_EXPR)m.addTerm(new_term, constants, objects) )
+						.collect( Collectors.toList() ) ), _sConn );
+			} catch (Exception e) {
+				e.printStackTrace();
+				System.exit(1);
+			}
+			return null;
+		}
+		
+		@Override
+		public GRBVar getGRBConstr( char sense, GRBModel model,
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants, 
+				Map<TYPE_NAME, OBJECTS_DEF> objects, Map<PVAR_NAME, Character> type_map ) {
+			if( grb_cache.containsKey( this ) ){
+				return grb_cache.get( this );
+			}
+			
+			final int n = _alSubNodes.size();			
+			if( n == 1 ){
+				return _alSubNodes.get(0).getGRBConstr(sense, model, constants, objects, type_map);
+			}
+			
+			GRBVar this_var = getGRBVar( this , model, constants, objects, type_map );
+			GRBLinExpr sum = new GRBLinExpr();
+			for( final BOOL_EXPR  b : _alSubNodes ){
+				GRBVar v = b.getGRBConstr( GRB.EQUAL, model, constants, objects, type_map);
+				sum.addTerm(1.0d, v);
+			}
+			
+			try{
+				
+				GRBLinExpr nz = new GRBLinExpr( );
+				nz.addTerm( n, this_var );
+			
+				GRBLinExpr n_minus_1_plus_z = new GRBLinExpr();
+				n_minus_1_plus_z.addTerm(1.0d, this_var );
+				n_minus_1_plus_z.addConstant(n-1);
+			
+				switch( _sConn ){
+//					[z = x1 ^ x2 ^... ^ xn] is captured by nz <= (x1+x2+...+xn) <= (n - 1) + z
+					case "^" : 
+						model.addConstr( nz, GRB.LESS_EQUAL, sum ,  name_map.get(toString()) );
+						model.addConstr( sum, GRB.LESS_EQUAL, n_minus_1_plus_z, name_map.get(toString()) );
+						break;
+//					[z = x1 v x2 v ... v xn] is z <= (x1+x2+...+xn) <= nz
+					case "|" : 
+						model.addConstr( this_var , GRB.LESS_EQUAL, sum, name_map.get(toString()) );
+						model.addConstr( sum, GRB.LESS_EQUAL, nz, name_map.get(toString()) );
+						break;
+				}
+				model.update();
+				return this_var;
+			}catch( Exception exc ){
+				exc.printStackTrace();
+				System.exit(1);
+			}
+			
+			try{
+				throw new Exception("unimplemented GRB method for " + toString() );
+			}catch( Exception exc ){
+				exc.printStackTrace();
+				System.exit(1);
+			}
+			return null;
+		}
+		
+		@Override
+		public boolean isPiecewiseLinear(
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants, 
+				Map<TYPE_NAME,OBJECTS_DEF> objects ) {
+			//FIXME : correctness ?
+			return _alSubNodes.stream().allMatch(m -> m.isPiecewiseLinear(constants, objects) );
+		}
+		
+		public void filter( Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants, 
+				Map<TYPE_NAME, OBJECTS_DEF> objects ) { 
+			if( isConstant(constants , objects) ){
+				final double d = getDoubleValue(constants, objects);
+				assert( d == 1d || d == 0d );
+				
+				_alSubNodes.clear();
+				_alSubNodes.add( new BOOL_CONST_EXPR( d == 1d ? true : false ) );
+				return;
+			}
+			//not constant 
+			Stream<BOOL_EXPR> stream = _alSubNodes.stream();
+			
+			switch( _sConn ){
+			case "^" : //remove true
+				_alSubNodes = new ArrayList<>( stream.filter( m -> !( m.isConstant(constants, objects) && 
+						m.getDoubleValue(constants, objects) == 1d ) ).collect( Collectors.toList() ) );
+				//remove duplicates
+				_alSubNodes = new ArrayList<> ( _alSubNodes.stream().distinct().collect( Collectors.toList() ) );
+				break;
+			case  "|" : //remove false
+				_alSubNodes = new ArrayList<>( stream
+						.filter( m -> !( m.isConstant(constants, objects)  && m.getDoubleValue(constants, objects)==0d ) )
+						.collect( Collectors.toList() ) );
+				_alSubNodes = new ArrayList<> ( _alSubNodes.stream().distinct().collect( Collectors.toList() ) );
+				break;
+			case "=>" :
+				if( _alSubNodes.get(0).isConstant(constants, objects) && _alSubNodes.get(0).getDoubleValue(constants, objects) == 1d ){
+					_alSubNodes = new ArrayList<>( _alSubNodes.subList(1, _alSubNodes.size() ) );
+					filter( constants, objects );//T => T => x = x
+				}
+			}
+			
+			assert( !_alSubNodes.isEmpty() );
+			
+		}
+		
+		@Override
+		public boolean isConstant( Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants,
+				Map<TYPE_NAME,OBJECTS_DEF> objects ) {
+			if( _alSubNodes.stream().allMatch( m -> m.isConstant(constants, objects ) ) ){
+				return true;
+			}
+				
+			switch( _sConn ){
+			case "^" : 
+				return _alSubNodes.stream()
+						.anyMatch( m -> m.isConstant(constants, objects) && m.getDoubleValue(constants, objects) == 0d );
+			case "|" : 
+				return _alSubNodes.stream()
+						.anyMatch( m -> m.isConstant(constants, objects) && m.getDoubleValue(constants, objects) == 1d );
+			case "=>" : 
+				//convention : left associative implication
+				//https://en.wikipedia.org/wiki/Material_conditional#Formal_properties
+				return _alSubNodes.get( _alSubNodes.size() - 1 ).isConstant(constants, objects) && 
+						_alSubNodes.get( _alSubNodes.size() - 1 ).getDoubleValue(constants, objects) == 1d; 
+				//these cases are not constants
+				//F => x => y = (!F V x ) => y = ( F ^ !x ) v y = y
+				//F=>x=>y=>z = (!F v x ) =>y=>z = y => z
+				//(F ^ !x ) v y => z = ( (T v x ) ^ !y ) v z = !y v z
+			case "<=>" :
+				Stream<BOOL_EXPR> stream = _alSubNodes.stream();
+				return stream.allMatch( m -> m.isConstant(constants, objects) && m.getDoubleValue(constants, objects) == 1d )
+						||stream.allMatch( m -> m.isConstant(constants, objects) && m.getDoubleValue(constants, objects) == 0d );
+			}
+			try{
+				throw new Exception("unhandled case CONN_EXPR " + toString() );
+			}catch( Exception exc ){
+				exc.printStackTrace();
+				System.exit(1);
+			}
+			return false;
+		}
+		
+		
 		public CONN_EXPR(BOOL_EXPR b1, BOOL_EXPR b2, String conn) throws Exception {
 			if (!conn.equals(IMPLY) && !conn.equals(EQUIV) && 
 				!conn.equals(AND) && !conn.equals(OR))
@@ -3198,13 +5773,128 @@ public class RDDL {
 			else
 				_alSubNodes.add(b2);
 			
+			_bDet = setBDet();
+			_sType = BOOL;
+			filter( null , null );
+		}
+
+		public boolean setBDet( ){
 			_bDet = true;
-			for (BOOL_EXPR e : _alSubNodes)
+			for (BOOL_EXPR e : _alSubNodes){
 				_bDet = _bDet && e._bDet;
+			}
+			return _bDet;
+		}
+		
+		public CONN_EXPR( final ArrayList<BOOL_EXPR> sub_nodes, final String conn ) throws Exception {
+			if (!conn.equals(IMPLY) && !conn.equals(EQUIV) && 
+					!conn.equals(AND) && !conn.equals(OR))
+					throw new Exception("Unrecognized logical connective: " + conn);
+			
+			this._sConn = conn.intern();
+			this._alSubNodes = sub_nodes;
+			_bDet = setBDet();
+			_sType = BOOL;
+			filter( null , null);
 		}
 		
 		public String _sConn;
 		public ArrayList<BOOL_EXPR> _alSubNodes = new ArrayList<BOOL_EXPR>();
+		
+		@Override
+		public int hashCode() {
+			if( isConstant( null , null ) ){
+				//x ^ y ^ false for e.g. 
+				return Double.hashCode( getDoubleValue( null, null ) );
+			}
+			
+			if( _alSubNodes.size() == 1 ){
+				return _alSubNodes.get(0).hashCode();
+			}
+				
+			return Objects.hash( _sConn, Objects.hash(_alSubNodes) );
+		}
+		
+		@Override
+		protected double getDoubleValue(
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants, 
+				Map<TYPE_NAME, OBJECTS_DEF > objects ) {
+			assert( isConstant(constants, objects) );
+			if( _alSubNodes.stream().allMatch( m -> m.isConstant(constants, objects) ) ){
+				
+				if( _sConn.equals("|") || _sConn.equals("^") ){
+					double sum = _alSubNodes.stream().mapToDouble( m -> m.getDoubleValue(constants, objects) ).sum();
+					
+					return ( _sConn .equals("^") ? ( sum == _alSubNodes.size() ?  1 : 0 ) : 
+						   		( _sConn.equals("|") ? ( sum >= 1 ? 1 : 0 ) : Double.NaN ) );
+				}else if( _sConn.equals("=>") ){
+					try {
+						return new CONN_EXPR( new NEG_EXPR( _alSubNodes.get(0) ), 
+								new CONN_EXPR( new ArrayList< BOOL_EXPR >( _alSubNodes.subList(1, _alSubNodes.size() ) ) , _sConn ), OR )
+									.getDoubleValue(constants, objects);
+					} catch (Exception e) {
+						e.printStackTrace();
+						System.exit(1);
+					}
+				}
+			}
+			
+			switch( _sConn ){
+			case "^" : 
+				return 0d;
+			case "|" : 
+				return 1d;
+			case "=>" : 
+				return 1d;
+			case "<=>" : 
+				return 1d;
+			}
+			
+			return Double.NaN;
+		}
+		
+		@Override
+		public boolean equals(Object obj) {
+			if( isConstant( null , null ) ){
+				if( obj instanceof BOOL_EXPR ){
+					return _alSubNodes.get(0).equals(obj);	
+				}else if( obj instanceof CONST_EXPR ){
+					return obj.equals( new REAL_CONST_EXPR( getDoubleValue( null , null ) ) );
+				}
+			}
+			
+			
+			if( _alSubNodes.size() == 1 ){
+				return _alSubNodes.get(0).equals(obj);
+			}
+			
+			if( obj instanceof CONN_EXPR ){
+				CONN_EXPR c = (CONN_EXPR)obj;
+				return _bDet == c._bDet && _sType.equals( c._sType ) && 
+						_sConn.equals( c._sConn ) && _alSubNodes.equals( c._alSubNodes );
+			}else if( _alSubNodes.size() == 1 ){
+				return _alSubNodes.get(0).equals(obj);
+			}
+			return false;
+		}
+		
+		@Override
+		public BOOL_EXPR substitute(Map<LVAR, LCONST> subs,
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants, 
+				Map<TYPE_NAME, OBJECTS_DEF > objects ) {
+			List<BOOL_EXPR> new_expr = _alSubNodes.stream().map( m -> m.substitute(subs, constants, objects) )
+					.map(m -> m.isConstant(constants, objects) ? 
+						new BOOL_CONST_EXPR( m.getDoubleValue(constants, objects) == 1d ? true : false ) : (BOOL_EXPR)m )
+					.collect(Collectors.toList());
+			try {
+				return new CONN_EXPR( new ArrayList<>( new_expr ), _sConn );
+				//calls filter() in constructor 
+			} catch (Exception e) {
+				e.printStackTrace();
+				System.exit(1);
+			}
+			return null;
+		}
 		
 		public String toString() {
 			StringBuilder sb = new StringBuilder("(");
@@ -3360,30 +6050,99 @@ public class RDDL {
 
 			//System.out.println("CollGfluents: " + this + " -- " + gfluents);
 		}
+		
 
 	}
 	
 	// TODO: should never put a RandomDataGenerator variable directly under a negation,
 	//       a RandomDataGenerator sample should always be referenced by an intermediate
 	//       variable so that it is consistent over repeated evaluations.
-	public static class NEG_EXPR extends BOOL_EXPR {
+	public static class NEG_EXPR extends BOOL_EXPR  {
 
 		public NEG_EXPR(EXPR b) {
 			this((BOOL_EXPR)b); // PARSER RESTRICTION
 		}
+		
+		@Override
+		public EXPR addTerm(LVAR new_term, Map< PVAR_NAME, Map< ArrayList<LCONST>, Object> > constants, 
+				Map< TYPE_NAME, OBJECTS_DEF> objects ) {
+			return new NEG_EXPR( _subnode.addTerm(new_term, constants, objects ) );
+		}
 
+		//NEG(NEG(NEG(e))) = NEG(e)
 		public NEG_EXPR(BOOL_EXPR b) {
-			_subnode = b;
+			if( b instanceof NEG_EXPR && ((NEG_EXPR)b)._subnode instanceof NEG_EXPR ){
+				_subnode = ((NEG_EXPR)((NEG_EXPR)b)._subnode)._subnode;
+			}else{
+				_subnode = b;	
+			}
 			_bDet = b._bDet;
 		}
 		
 		public BOOL_EXPR _subnode;
+		
+		@Override
+		public boolean isConstant( Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants, 
+				Map<TYPE_NAME, OBJECTS_DEF > objects ) {
+			return _subnode.isConstant(constants, objects);
+		}
+		
+		@Override
+		public boolean isPiecewiseLinear(
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants, 
+				Map<TYPE_NAME, OBJECTS_DEF > objects ) {
+			return _subnode.isPiecewiseLinear(constants, objects);
+		}
+		
+		@Override
+		protected double getDoubleValue(
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants, 
+				Map<TYPE_NAME, OBJECTS_DEF > objects ) {
+			assert( isConstant(constants, objects) );
+			final double d = _subnode.getDoubleValue(constants, objects);
+			assert( d == 1d || d == 0d );
+			return 1-d;
+		}
+		
+		@Override
+		public boolean equals(Object obj) {
+			if( isConstant( null , null) ){
+				return new REAL_CONST_EXPR( getDoubleValue( null, null ) ).equals(obj);
+			}
+			
+			if( obj instanceof NEG_EXPR ){
+				NEG_EXPR n = (NEG_EXPR)obj;
+				
+				return _bDet == n._bDet && _sType.equals( n._sType ) && 
+						_subnode.equals( n._subnode );
+			} //!x=!y
+			else if( obj instanceof EXPR && _subnode instanceof NEG_EXPR ){
+				return ((NEG_EXPR)_subnode)._subnode.equals(obj);
+			}//!!x=y
+			return false;
+		}
 		
 		public String toString() {
 			if (USE_PREFIX)
 				return "(~ " + _subnode + ")";
 			else
 				return "~" + _subnode;
+		}
+		
+		@Override
+		public EXPR substitute(Map<LVAR, LCONST> subs,
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants, 
+				Map<TYPE_NAME, OBJECTS_DEF > objects ) {
+			if( isConstant(constants, objects) ){
+				return new REAL_CONST_EXPR( getDoubleValue(constants, objects) );
+			}
+			EXPR sub = _subnode.substitute(subs, constants, objects);
+			if( sub.isConstant(constants, objects) ){
+				final double d = sub.getDoubleValue(constants, objects);
+				assert( d == 0d || d == 1d );
+				return new BOOL_CONST_EXPR( d == 1 ? false : true );
+			}
+			return new NEG_EXPR( sub );
 		}
 		
 		public Object sample(HashMap<LVAR,LCONST> subs, State s, RandomDataGenerator r) throws EvalException {
@@ -3399,14 +6158,131 @@ public class RDDL {
 			throws EvalException {
 			_subnode.collectGFluents(subs, s, gfluents);
 		}
+		
+		@Override
+		public int hashCode() {
+			if( isConstant(null , null) ){
+				return Double.hashCode( getDoubleValue(null, null) );
+			}
+			return _subnode.hashCode()*(-1);//!!x=x
+		}
+		
+		@Override
+		public GRBVar getGRBConstr( char sense, GRBModel model,
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants, 
+				Map<TYPE_NAME, OBJECTS_DEF > objects, Map<PVAR_NAME, Character> type_map ) {
+			if( grb_cache.containsKey( this ) ){
+				return grb_cache.get( this );
+			}
+			
+			assert( isPiecewiseLinear(constants, objects) );
+			GRBVar this_var = getGRBVar(this, model, constants, objects, type_map);
+
+			GRBVar inner_var = _subnode.getGRBConstr( GRB.EQUAL, model, constants, objects, type_map);
+			//[z = !x1] is z = 1-x
+			GRBLinExpr one_minus_x = new GRBLinExpr();
+			one_minus_x.addConstant(1);
+			one_minus_x.addTerm(-1.0d, inner_var);
+			try {
+				model.addConstr( this_var, GRB.EQUAL, one_minus_x, name_map.get(toString()) );
+				model.update();
+				return this_var;
+			} catch (GRBException e) {
+				e.printStackTrace();
+				System.exit(1);
+			}
+			return null;
+		}
 	}
 	
-	public static class BOOL_CONST_EXPR extends BOOL_EXPR {
+	//TODO : test cases for substitute
+	
+	public static class BOOL_CONST_EXPR extends BOOL_EXPR { // implements NUMBER_CONST {
 		
 		public BOOL_CONST_EXPR(boolean b) {
 			_bDet = true;
 			_bValue = b;
 			_sType = BOOL;
+		}
+		
+		@Override
+		public EXPR addTerm(LVAR new_term, Map< PVAR_NAME, Map< ArrayList<LCONST>, Object>> constants, 
+				Map< TYPE_NAME, OBJECTS_DEF > objects ) {
+			return this;
+		}
+		
+		@Override
+		protected double getDoubleValue(
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants, 
+				Map<TYPE_NAME, OBJECTS_DEF > objects ) {
+			return _bValue ? 1d :0d;
+		}
+		
+		@Override
+		public GRBVar getGRBConstr(char sense, GRBModel model,
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants,
+				Map<TYPE_NAME, OBJECTS_DEF> objects, Map< PVAR_NAME, Character > type_map) {
+			if( grb_cache.containsKey( this ) ){
+				return grb_cache.get( this );
+			}
+			
+			GRBVar this_var = getGRBVar( this, model, constants, objects , type_map);
+			try{
+				model.addConstr( this_var, GRB.EQUAL, getDoubleValue(constants, objects),  name_map.get(toString()) );
+				model.update();
+				return this_var;
+			}catch( GRBException exc ){
+				exc.printStackTrace();
+				System.out.println( "Error code " + exc.getErrorCode() );
+				System.out.println( exc.getMessage() );
+				System.exit(1);
+			}
+			return null;
+		}
+		
+		@Override
+		public boolean equals(Object obj) {
+			if( obj instanceof BOOL_CONST_EXPR ){
+				return ((BOOL_CONST_EXPR)obj)._bValue == _bValue;
+			}else if( obj instanceof CONST_EXPR ){
+				return ((CONST_EXPR)obj).value.equals( _bValue ? 1 : 0 );
+			}else if( obj instanceof EXPR ){
+				EXPR e = (EXPR)obj;
+				if( e.isConstant( null , null ) ){
+					final double d  = e.getDoubleValue( null , null );
+					return ( d == 0 && !_bValue ) || ( d == 1 && _bValue ); 
+				}
+			}
+			return false;
+		}
+		
+		@Override
+		public boolean isConstant( Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants , 
+				Map<TYPE_NAME, OBJECTS_DEF > objects ) {
+			return true;
+		}
+		
+		@Override
+		public boolean isPiecewiseLinear( Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants, 
+				Map<TYPE_NAME, OBJECTS_DEF > objects ) {
+			return true;
+		}
+		
+		@Override
+		public int hashCode() {
+			return Double.hashCode( getDoubleValue(null, null) );
+		}
+		
+//		@Override
+//		public double doubleValue() {
+//			return _bValue ? 1.0d : 0.0d ;
+//		}
+		
+		@Override
+		public EXPR substitute(Map<LVAR, LCONST> subs,
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants, 
+				Map<TYPE_NAME, OBJECTS_DEF > objects ) {
+			return this;
 		}
 		
 		public boolean _bValue;
@@ -3439,20 +6315,107 @@ public class RDDL {
 		public static final String GREATER = ">".intern(); 
 		public static final String EQUAL = "==".intern(); 
 
-		public COMP_EXPR(EXPR e1, EXPR e2, String comp) throws Exception {
-			if (!comp.equals(NEQ) && !comp.equals(LESSEQ) 
-				&& !comp.equals(LESS) && !comp.equals(GREATEREQ)
-				&& !comp.equals(GREATER) && !comp.equals(EQUAL))
-					throw new Exception("Unrecognized inequality: " + comp);
+		public COMP_EXPR(EXPR e1, EXPR e2, String comp) {
+			assert ( comp.equals(NEQ) || comp.equals(LESSEQ)  
+				|| comp.equals(LESS) || comp.equals(GREATEREQ)
+				|| comp.equals(GREATER) || comp.equals(EQUAL) );
 			_comp = comp.intern();
 			_e1 = e1;
 			_e2 = e2;
 			_bDet = e1._bDet && e2._bDet;
 		}
+
+		@Override
+		public EXPR addTerm(LVAR new_term, Map< PVAR_NAME, Map< ArrayList<LCONST>, Object>> constants, 
+				Map< TYPE_NAME, OBJECTS_DEF > objects ) {
+			try {
+				return new COMP_EXPR( _e1.addTerm(new_term, constants, objects), _e2.addTerm(new_term, constants, objects), _comp );
+			} catch (Exception e) {
+				e.printStackTrace();
+				System.exit(1);
+			}
+			return null;
+		}
+		
+		@Override
+		public int hashCode() {
+			if( isConstant(null, null) ){
+				return (int)getDoubleValue(null, null);
+			}
+			return Objects.hash( _e1, _comp, _e2 );
+		}
+
+		@Override
+		protected double getDoubleValue(
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants,
+				Map<TYPE_NAME, OBJECTS_DEF> objects) {
+			assert( isConstant(constants, objects) );
+
+			if( _e1 instanceof LCONST && _e2 instanceof LCONST ){
+				assert( _comp.equals(EQUAL) || _comp.equals(NEQ) );
+				return  _comp.equals(EQUAL) ? ( _e1.equals( _e2 ) ? 1d : 0d ) : 
+					 _comp.equals(NEQ) ? ( _e1.equals(_e2) ? 0d : 1d ) : Double.NaN;
+			}
+			
+			//handling for when comparison is between objects (z1 == z2)
+			final double d1 = _e1.getDoubleValue(constants, objects);
+			final double d2 = _e2.getDoubleValue(constants, objects);
+			switch( _comp ){
+			case "~=" : return ( d1 != d2 ) ? 1 : 0;
+			case "<=" : return ( d1 <= d2 ) ? 1 : 0;
+			case "<" : return ( d1 < d2 ) ? 1 : 0;
+			case ">=" : return ( d1 >= d2 ) ? 1 : 0;
+			case ">" : return ( d1 > d2 ) ? 1 : 0;
+			case "==" : return ( d1 == d2 ) ? 1 : 0;
+			}
+			
+			return Double.NaN;
+		}
+		
+		@Override
+		public boolean isPiecewiseLinear(
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants, 
+				Map<TYPE_NAME, OBJECTS_DEF > objects  ) {
+			return _e1.isPiecewiseLinear(constants, objects ) && _e2.isPiecewiseLinear(constants, objects);
+		}
 		
 		public EXPR _e1 = null;
 		public EXPR _e2 = null;
 		public String _comp = UNKNOWN;
+		
+		@Override
+		public boolean equals(Object obj) {
+			if( isConstant(null, null) ){
+				return new REAL_CONST_EXPR( getDoubleValue(null, null) ).equals(obj);
+			}
+			
+			if( obj instanceof COMP_EXPR ){
+				COMP_EXPR c = (COMP_EXPR)obj;
+				return _bDet == c._bDet && _sType.equals( c._sType ) && 
+						_comp.equals( c._comp ) && _e1.equals( c._e1 ) && _e2.equals( c._e2 );
+			}
+			return false;
+		}
+		
+		@Override
+		public boolean isConstant(
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants, 
+				Map<TYPE_NAME, OBJECTS_DEF > objects ) {
+			return _e1.isConstant(constants, objects ) && _e2.isConstant(constants, objects );
+		}
+		
+		@Override
+		public EXPR substitute(Map<LVAR, LCONST> subs,
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants, 
+				Map<TYPE_NAME, OBJECTS_DEF > objects ) {
+			try {
+				return new COMP_EXPR(_e1.substitute(subs, constants, objects), _e2.substitute(subs, constants, objects), _comp );
+			} catch (Exception e) {
+				e.printStackTrace();
+				System.exit(1);
+			}
+			return null;
+		}
 		
 		public String toString() {
 			if (USE_PREFIX) 
@@ -3544,6 +6507,91 @@ public class RDDL {
 			throws EvalException {
 			_e1.collectGFluents(subs, s, gfluents);
 			_e2.collectGFluents(subs, s, gfluents);
+		}
+		
+		@Override
+		public GRBVar getGRBConstr( char sense, GRBModel model,
+				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants, 
+				Map<TYPE_NAME, OBJECTS_DEF > objects , Map<PVAR_NAME, Character> type_map ) {
+			if( grb_cache.containsKey( this ) ){
+				return grb_cache.get( this );
+			}
+			
+			GRBVar this_var = getGRBVar( this , model, constants, objects, type_map );
+			
+			GRBVar v1 = _e1.getGRBConstr( GRB.EQUAL, model, constants, objects , type_map);
+			GRBVar v2 = _e2.getGRBConstr( GRB.EQUAL, model, constants, objects , type_map);
+			
+			final GRBLinExpr minus_M_z = new GRBLinExpr();
+			minus_M_z.addTerm( -1.0d*M, this_var); 
+			
+			final GRBLinExpr M_z = new GRBLinExpr();
+			M_z.addTerm( 1.0d*M, this_var); 
+			
+			final GRBLinExpr M_one_minus_z = new GRBLinExpr();//M(1-z)=M-Mz
+			M_one_minus_z.addConstant(M);
+			M_one_minus_z.addTerm(-1d*M, this_var);
+			
+			final GRBLinExpr minus_M_one_minus_z = new GRBLinExpr();//-M(1-z)=-M+Mz
+			minus_M_one_minus_z.addConstant(-1d*M);
+			minus_M_one_minus_z.addTerm(1d*M, this_var);
+			
+			final GRBLinExpr x_minus_y = new GRBLinExpr();
+			x_minus_y.addTerm(1, v1);
+			x_minus_y.addTerm(-1, v2);
+			
+			try{
+				switch( _comp ){
+					case "<=" : 
+					case "<" : 
+						// z = [ x <= y ]
+						//-Mz <= x-y <= M(1-z)
+						// z = 1 : -M <= x-y  <= 0
+						// z = 0 : 0 <= x-y <= M
+						model.addConstr( minus_M_z, GRB.LESS_EQUAL, x_minus_y, name_map.get(toString()) );
+						model.addConstr( x_minus_y, GRB.LESS_EQUAL, M_one_minus_z, name_map.get(toString()) );
+						break;
+					case ">=" : 
+					case ">" : 
+						// z = [ x >= y ]
+						// -M(1-z) <= x-y <= Mz
+						// z = 1 : 0 <= x-y <= M
+						// z = 0 : -M <= x-y <= 0
+						model.addConstr( minus_M_one_minus_z, GRB.LESS_EQUAL, x_minus_y, name_map.get(toString()) );
+						model.addConstr( x_minus_y, GRB.LESS_EQUAL, M_z, name_map.get(toString()) );
+						break;
+					case "==" : 
+						//z = [ x == y ]
+						//-M(1-z) <= x-y <= M(1-z), z in 0,1
+						//z=1 : 0 <= x-y <= 0
+						//z=0 : -M <= x-y <= M
+						model.addConstr( minus_M_one_minus_z, GRB.LESS_EQUAL, x_minus_y, name_map.get(toString()) );
+						model.addConstr( x_minus_y, GRB.LESS_EQUAL, M_one_minus_z, name_map.get(toString()) );
+						break;
+					case "~=" : 
+						//z = 1-t, t = [ x == y ]
+						//-M(1-t) <= x-y <= M(1-t), t in 0,1
+						//-Mz <= x-y <= Mz, z in 0,1
+						//z = 1 : -M <= x-y <= M
+						//z = 0 : 0 <= x-y <= 0
+						model.addConstr( minus_M_z, GRB.LESS_EQUAL, x_minus_y, name_map.get(toString()) );
+						model.addConstr( x_minus_y, GRB.LESS_EQUAL, M_z , name_map.get(toString()) );
+						break;
+					default : 
+						try{
+							throw new Exception("unhandled case " + name_map.get(toString()) );
+						}catch( Exception exc ){
+							exc.printStackTrace();
+							System.exit(1);
+						}
+				}
+				model.update();
+				return this_var;
+			}catch( Exception exc ){
+				exc.printStackTrace();
+				System.exit(1);
+			}
+			return null;
 		}
 
 	}

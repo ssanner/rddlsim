@@ -1,0 +1,38 @@
+non-fluents nf_reservoir_test {
+	domain = reservoir_control;
+	objects {
+		reservoir : {r1,r2,r3};
+		pipe : {p1,p2};
+	};
+	
+	non-fluents {		
+		LEVEL_MIN( r1 ) = 0; 
+		LEVEL_MIN( r2 ) = 0;
+		LEVEL_MIN( r3 ) = 0;
+		
+		LEVEL_MAX( r1 ) = 10;  
+		LEVEL_MAX( r2 ) = 10;
+		LEVEL_MAX( r3 ) = 7;
+		
+        LEVEL_PENALTY( r1 ) = -100;
+		LEVEL_PENALTY( r2 ) = -100;
+		
+		RAIN( r1 ) = 6;
+		RAIN( r2 ) = 7;
+		
+		CONNECT( p1, r1, r3 ) = true;
+		CONNECT( p2, r2, r3 ) = true;
+	};
+}
+
+instance ic_reservoir_test {
+	domain = reservoir_control;
+	non-fluents = nf_reservoir_test;
+	
+	//init-state {
+	//};
+	
+	//max-nondef-actions = 10;
+	horizon  = 100;
+	discount = 1.0;
+}

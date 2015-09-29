@@ -19,7 +19,7 @@ import rddl.RDDL.PVARIABLE_DEF;
 import rddl.RDDL.PVAR_NAME;
 import rddl.RDDL.TYPE_NAME;
 
-public class NavigationDisplay extends StateViz {
+public class NavigationDisplay implements StateViz {
 
 	public boolean IS_OBFUSCATED;
 	

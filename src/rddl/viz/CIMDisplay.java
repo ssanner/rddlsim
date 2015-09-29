@@ -42,7 +42,7 @@ import rddl.RDDL.TYPE_NAME;
  * @author Timothy A. Mann
  * 
  */
-public class CIMDisplay extends StateViz {
+public class CIMDisplay implements StateViz {
 
 	private static final Color QUANT_COLOR = new Color(0.0f, 0.3f, 1.0f, 1.0f);
 	private static final Color UNMET_COLOR = new Color(1.0f, 0.0f, 0.0f, 0.4f);

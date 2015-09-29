@@ -19,7 +19,7 @@ import rddl.RDDL.PVARIABLE_DEF;
 import rddl.RDDL.PVAR_NAME;
 import rddl.RDDL.TYPE_NAME;
 
-public class WildfireDisplay extends StateViz {
+public class WildfireDisplay implements StateViz {
 
 	public WildfireDisplay() {
 		_nTimeDelay = 200; // in milliseconds

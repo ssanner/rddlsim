@@ -21,7 +21,7 @@ import rddl.RDDL.PVARIABLE_DEF;
 import rddl.RDDL.PVAR_NAME;
 import rddl.RDDL.TYPE_NAME;
 
-public class ElevatorDisplay extends StateViz {
+public class ElevatorDisplay implements StateViz {
 
 	public ElevatorDisplay() {
 		_nTimeDelay = 200; // in milliseconds

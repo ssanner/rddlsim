@@ -17,7 +17,7 @@ import rddl.EvalException;
 import rddl.State;
 import rddl.RDDL.*;
 
-public class TamariskDisplay extends StateViz {
+public class TamariskDisplay implements StateViz {
 
 	public TamariskDisplay() {
 		_nTimeDelay = 200; // in milliseconds

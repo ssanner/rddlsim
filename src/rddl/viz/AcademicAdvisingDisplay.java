@@ -19,7 +19,7 @@ import rddl.RDDL.PVARIABLE_DEF;
 import rddl.RDDL.PVAR_NAME;
 import rddl.RDDL.TYPE_NAME;
 
-public class AcademicAdvisingDisplay extends StateViz {
+public class AcademicAdvisingDisplay implements StateViz {
 
 	public AcademicAdvisingDisplay() {
 		_nTimeDelay = 200; // in milliseconds

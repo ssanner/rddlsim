@@ -16,7 +16,7 @@ import rddl.State;
 import rddl.RDDL.LCONST;
 import rddl.RDDL.PVAR_NAME;
 
-public class NullScreenDisplay extends StateViz {
+public class NullScreenDisplay implements StateViz {
 
 	public NullScreenDisplay() {
 		_bShowTime = false;

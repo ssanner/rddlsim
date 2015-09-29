@@ -19,7 +19,7 @@ import rddl.State;
 import rddl.RDDL.LCONST;
 import rddl.RDDL.PVAR_NAME;
 
-public class GenericScreenDisplay extends StateViz {
+public class GenericScreenDisplay implements StateViz {
 
 	public GenericScreenDisplay() {
 		_bSuppressNonFluents = true;

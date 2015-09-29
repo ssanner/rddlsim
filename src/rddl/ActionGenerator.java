@@ -5,9 +5,9 @@ import java.util.HashSet;
 import java.util.TreeMap;
 
 import rddl.RDDL.LCONST;
-import rddl.RDDL.PVAR_INST_DEF;
 import rddl.RDDL.PVAR_NAME;
 import rddl.translate.RDDL2Format;
+import rddl.RDDL.PVAR_INST_DEF;
 
 public class ActionGenerator {
 

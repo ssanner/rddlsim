@@ -996,20 +996,20 @@ public class RDDL2FormatNonAdd {
 				if (e2 instanceof INT_CONST_EXPR)
 					// Should either be true (1) or false (0)... same as
 					// prob_true
-					prob_true = (double) ((INT_CONST_EXPR) e2)._nValue;
+					prob_true = (double) ((INT_CONST_EXPR) e2).value.doubleValue();
 				else if (e2 instanceof BOOL_CONST_EXPR)
 					prob_true = ((BOOL_CONST_EXPR) e2)._bValue ? 1d : 0d;
 				else
 					throw new EvalException("Unhandled KronDelta argument: "
 							+ e2.getClass());
 			} else if (e instanceof Bernoulli) {
-				prob_true = ((REAL_CONST_EXPR) ((Bernoulli) e)._exprProb)._dValue;
+				prob_true = ((REAL_CONST_EXPR) ((Bernoulli) e)._exprProb).value.doubleValue();
 			} else if (e instanceof DiracDelta) {
 				// NOTE: this is not a probability, but rather an actual value
 				// (presumably for the reward). This method is a little
 				// overloaded... need to consider whether there will be
 				// any problems arising from this overloading. -Scott
-				prob_true = ((REAL_CONST_EXPR) ((DiracDelta) e)._exprRealValue)._dValue;
+				prob_true = ((REAL_CONST_EXPR) ((DiracDelta) e)._exprRealValue).value.doubleValue();
 			} else
 				throw new EvalException("Unhandled distribution type: "
 						+ e.getClass());

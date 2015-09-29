@@ -1,0 +1,22 @@
+domain test_mdp {
+
+	types { 
+		thing : object;
+	};
+	
+	pvariables {
+		pvar(thing) : { state-fluent, real, default = 0 };
+		avar(thing) : { action-fluent, real, default = 0 };
+		D(thing) : { non-fluent, real, default = 0 };
+	};
+	
+	cpfs {
+		pvar'(?t) = if ( pvar(?t) > 10 ) then avar(?t) else pvar(?t);
+	};
+	
+	reward = sum_{?t : thing} [ D(?t) * pvar(?t) ];
+	
+	state-invariants {
+		forall_{?t:thing}[ avar(?t) >= 0 ];
+	};
+}

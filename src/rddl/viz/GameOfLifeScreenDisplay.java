@@ -17,7 +17,7 @@ import rddl.RDDL.PVARIABLE_DEF;
 import rddl.RDDL.PVAR_NAME;
 import rddl.RDDL.TYPE_NAME;
 
-public class GameOfLifeScreenDisplay extends StateViz {
+public class GameOfLifeScreenDisplay implements StateViz {
 
 	public GameOfLifeScreenDisplay() {
 		_bSuppressNonFluents = true;

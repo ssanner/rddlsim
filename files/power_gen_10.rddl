@@ -1,0 +1,19 @@
+// Specify three power plants with default settings
+instance inst_power_gen_10 {
+
+	domain = power_gen;
+	
+	objects { 
+		plant : {p1, p2, p3,p4,p5, p6, p7, p8, p9 , p10};
+	};
+  
+	//init-state { 
+	//	temperature = 10000;
+	//};
+  
+  	// State-action constraints above are sufficient
+	//max-nondef-actions = pos-inf;
+  
+	horizon  = 40;
+	discount = 1.0;
+}
