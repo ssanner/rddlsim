@@ -25,13 +25,13 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.*;
 
+import org.apache.commons.math3.random.RandomDataGenerator;
 
 import dd.discrete.ADDDNode;
 import dd.discrete.ADDINode;
 import dd.discrete.DD;
 import dd.discrete.ADD;
 import dd.discrete.ADDNode;
-
 import rddl.*;
 import rddl.RDDL.*;
 import rddl.policy.Policy;
@@ -45,7 +45,7 @@ import rddl.translate.RDDL2Format;
 import util.CString;
 import util.Pair;
 
-public class sBRTDP_Avg extends Policy {
+public class sBRTDP_Avg implements Policy {
 	
 	public static int SOLVER_TIME_LIMIT_PER_TURN = 2; // Solver time limit (seconds)
 	
@@ -73,12 +73,17 @@ public class sBRTDP_Avg extends Policy {
 	
 	// Just use the default random seed
 	public Random _rand = new Random();
+
+	private RDDL _rddl;
+	private String _instanceName;
+	private RandomDataGenerator _random = new RandomDataGenerator();
 		
 	// Constructors
 	public sBRTDP_Avg() { }
 	
-	public sBRTDP_Avg(String instance_name) {
-		super(instance_name);
+	public sBRTDP_Avg(RDDL rddl, String instance_name) {
+		_rddl = rddl;
+		_instanceName = instance_name;
 	}
 
 	///////////////////////////////////////////////////////////////////////////
@@ -157,9 +162,9 @@ public class sBRTDP_Avg extends Policy {
 			
 			// Use RDDL2Format to build SPUDD ADD translation of _sInstanceName
 			try {
-				_translation = new RDDL2Format(_rddl, _sInstanceName, RDDL2Format.SPUDD_CURR, "");
+				_translation = new RDDL2Format(_rddl, _instanceName, RDDL2Format.SPUDD_CURR, "");
 			} catch (Exception e) {
-				System.err.println("Could not construct MDP for: " + _sInstanceName + "\n" + e);
+				System.err.println("Could not construct MDP for: " + _instanceName + "\n" + e);
 				e.printStackTrace(System.err);
 				System.exit(1);
 			}
@@ -315,7 +320,7 @@ public class sBRTDP_Avg extends Policy {
 	// Initialize all variables (call before starting value iteration)
 	public void resetSolver() {
 		_nTrials = -1;
-		_rddlInstance = _rddl._tmInstanceNodes.get(this._sInstanceName);
+		_rddlInstance = _rddl._tmInstanceNodes.get(_instanceName);
 		if (_rddlInstance == null) {
 			System.err.println("ERROR: Could not fine RDDL instance '" + _rddlInstance + "'");
 			System.exit(1);

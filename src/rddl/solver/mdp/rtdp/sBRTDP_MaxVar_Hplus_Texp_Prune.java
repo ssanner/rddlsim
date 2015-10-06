@@ -25,13 +25,11 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.*;
 
-
 import dd.discrete.ADDDNode;
 import dd.discrete.ADDINode;
 import dd.discrete.DD;
 import dd.discrete.ADD;
 import dd.discrete.ADDNode;
-
 import rddl.*;
 import rddl.RDDL.*;
 import rddl.policy.Policy;
@@ -45,7 +43,7 @@ import rddl.translate.RDDL2Format;
 import util.CString;
 import util.Pair;
 
-public class sBRTDP_MaxVar_Hplus_Texp_Prune extends Policy {
+public class sBRTDP_MaxVar_Hplus_Texp_Prune implements Policy {
     
     public static double SOLVER_TIME_LIMIT_PER_TURN = 2d; // Solver time limit (seconds)
     
@@ -78,11 +76,13 @@ public class sBRTDP_MaxVar_Hplus_Texp_Prune extends Policy {
     public int _nGetActions = 0;
     public int _nRound =0;
     public int _nMaxHorizon=1;
-    // Constructors
-    public sBRTDP_MaxVar_Hplus_Texp_Prune() { }
-    
-    public sBRTDP_MaxVar_Hplus_Texp_Prune(String instance_name) {
-        super(instance_name);
+
+	private RDDL _rddl;
+	private String _instanceName;
+	
+    public sBRTDP_MaxVar_Hplus_Texp_Prune(RDDL rddl, String instance_name) {
+    	_rddl = rddl;
+    	_instanceName = instance_name;
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -168,9 +168,9 @@ public class sBRTDP_MaxVar_Hplus_Texp_Prune extends Policy {
             
             // Use RDDL2Format to build SPUDD ADD translation of _sInstanceName
             try {
-                _translation = new RDDL2Format(_rddl, _sInstanceName, RDDL2Format.SPUDD_CURR, "");
+                _translation = new RDDL2Format(_rddl, _instanceName, RDDL2Format.SPUDD_CURR, "");
             } catch (Exception e) {
-                System.err.println("Could not construct MDP for: " + _sInstanceName + "\n" + e);
+                System.err.println("Could not construct MDP for: " + _instanceName + "\n" + e);
                 e.printStackTrace(System.err);
                 System.exit(1);
             }
@@ -334,7 +334,7 @@ public class sBRTDP_MaxVar_Hplus_Texp_Prune extends Policy {
     // Initialize all variables (call before starting value iteration)
     public void resetSolver() {
         _nTrials = -1;
-        _rddlInstance = _rddl._tmInstanceNodes.get(this._sInstanceName);
+        _rddlInstance = _rddl._tmInstanceNodes.get(this._instanceName);
         if (_rddlInstance == null) {
             System.err.println("ERROR: Could not fine RDDL instance '" + _rddlInstance + "'");
             System.exit(1);
@@ -406,7 +406,7 @@ public class sBRTDP_MaxVar_Hplus_Texp_Prune extends Policy {
             assign.add(null);
         Integer F=beginF;
         for (CString s : _alStateVars) {
-            double ran=_random.nextUniform(0d,1d);
+            double ran= _rand.nextDouble();
             Integer index = (Integer)_context._hmVarName2ID.get(s._string); // if null, var not in var2ID
             Integer level = (Integer)_context._hmGVarToLevel.get(index);
             String new_str = (String)_translation._hmPrimeRemap.get(s._string);

@@ -152,8 +152,6 @@ public class Simulator {
 		Simulator sim = new Simulator(rddl, instance_name);
 		Policy pol = (Policy)Class.forName(policy_class_name).getConstructor(
 				new Class[]{String.class}).newInstance(new Object[]{instance_name});
-		pol.setRandSeed(rand_seed_policy);
-		pol.setRDDL(rddl);
 		
 		StateViz viz = (StateViz)Class.forName(state_viz_class_name).newInstance();
 			

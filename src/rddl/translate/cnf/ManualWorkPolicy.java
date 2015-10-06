@@ -16,17 +16,12 @@ import rddl.policy.Policy;
 
 import java.io.Console;
 
-public class ManualWorkPolicy extends Policy {
+public class ManualWorkPolicy implements Policy {
 	
 
-	public ManualWorkPolicy () {
-		
-	}
-	
-	public ManualWorkPolicy(String instance_name) {
-		super(instance_name);
-
-	}
+//	public ManualWorkPolicy(String instance_name) {
+//		super(instance_name);
+//	}
 
 	public ArrayList<PVAR_INST_DEF> getActions(State s) throws EvalException {
 		

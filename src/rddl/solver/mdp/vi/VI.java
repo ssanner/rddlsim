@@ -25,7 +25,6 @@ import java.util.*;
 
 import dd.discrete.DD;
 import dd.discrete.ADD;
-
 import rddl.*;
 import rddl.RDDL.*;
 import rddl.policy.Policy;
@@ -37,7 +36,7 @@ import rddl.translate.RDDL2Format;
 import util.CString;
 import util.Pair;
 
-public class VI extends Policy {
+public class VI implements Policy {
 	
 	public static int SOLVER_TIME_LIMIT = 40; // Solver time limit (seconds)
 	
@@ -61,12 +60,13 @@ public class VI extends Policy {
 	
 	// Just use the default random seed
 	public Random _rand = new Random();
+
+	private RDDL _rddl;
+	private String _instanceName;
 		
-	// Constructors
-	public VI () { }
-	
-	public VI(String instance_name) {
-		super(instance_name);
+	public VI(RDDL rddl, String instance_name) {
+		_rddl = rddl;
+		_instanceName = instance_name;
 	}
 
 	///////////////////////////////////////////////////////////////////////////
@@ -152,9 +152,9 @@ public class VI extends Policy {
 			
 			// Use RDDL2Format to build SPUDD ADD translation of _sInstanceName
 			try {
-				_translation = new RDDL2Format(_rddl, _sInstanceName, RDDL2Format.SPUDD_CURR, "");
+				_translation = new RDDL2Format(_rddl, _instanceName, RDDL2Format.SPUDD_CURR, "");
 			} catch (Exception e) {
-				System.err.println("Could not construct MDP for: " + _sInstanceName + "\n" + e);
+				System.err.println("Could not construct MDP for: " + _instanceName + "\n" + e);
 				e.printStackTrace(System.err);
 				System.exit(1);
 			}
@@ -328,7 +328,7 @@ public class VI extends Policy {
 		_valueDD = _context.getConstantNode(0d); // Initialize to 0			
 		_nIter = -1;
 		_sRegrAction = null;
-		_rddlInstance = _rddl._tmInstanceNodes.get(this._sInstanceName);
+		_rddlInstance = _rddl._tmInstanceNodes.get(this._instanceName);
 		if (_rddlInstance == null) {
 			System.err.println("ERROR: Could not fine RDDL instance '" + _rddlInstance + "'");
 			System.exit(1);

@@ -25,7 +25,7 @@ import rddl.translate.RDDL2Format;
 //                             Helper Functions
 ///////////////////////////////////////////////////////////////////////////
 
-public class SPerseusSPUDDPolicy extends Policy {
+public class SPerseusSPUDDPolicy implements Policy {
 	
 	public final static boolean SHOW_STATE   = true;
 	public final static boolean SHOW_ACTIONS = true;
@@ -37,10 +37,6 @@ public class SPerseusSPUDDPolicy extends Policy {
 	
 	public SPerseusSPUDDPolicy () { }
 	
-	public SPerseusSPUDDPolicy(String instance_name) {
-		super(instance_name);
-	}
-
 	///////////////////////////////////////////////////////////////////////////
 	//                      Main Action Selection Method
 	//

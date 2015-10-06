@@ -14,18 +14,10 @@ import java.util.*;
 import rddl.*;
 import rddl.RDDL.*;
 
-public class RandomEnumPolicy extends Policy {
+public class RandomEnumPolicy implements Policy {
 	
 	static int time = 0;
 	
-	public RandomEnumPolicy () {
-		
-	}
-	
-	public RandomEnumPolicy(String instance_name) {
-		super(instance_name);
-	}
-
 	public void roundInit(double time_left, int horizon, int round_number, int total_rounds) {
 		time = 0;
 	}

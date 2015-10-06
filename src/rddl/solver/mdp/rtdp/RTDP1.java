@@ -11,7 +11,12 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.*;
 
+import org.apache.commons.math3.random.RandomDataGenerator;
+
 import com.sun.org.apache.bcel.internal.generic.INSTANCEOF;
+
+
+
 
 
 import dd.discrete.ADD;
@@ -19,7 +24,6 @@ import dd.discrete.ADDBNode;
 import dd.discrete.ADDDNode;
 import dd.discrete.ADDINode;
 import dd.discrete.ADDNode;
-
 import rddl.*;
 import rddl.RDDL.*;
 import rddl.policy.Policy;
@@ -35,7 +39,7 @@ import util.Pair;
 //                             Helper Functions
 ///////////////////////////////////////////////////////////////////////////
 
-public class RTDP1 extends Policy {
+public class RTDP1 implements Policy {
 
 	public final static int SOLVER_TIME_LIMIT = 20; // Solver time limit (seconds)
 	
@@ -63,12 +67,17 @@ public class RTDP1 extends Policy {
 	public State _initState;
 	// Just use the default random seed
 	public Random _rand = new Random();
-		
+
+	private String _instanceName;
+	private RDDL _rddl;
+	private RandomDataGenerator _random = new RandomDataGenerator();	
+	
 	// Constructors
 	public RTDP1 () { }
 	
-	public RTDP1(String instance_name) {
-		super(instance_name);
+	public RTDP1(RDDL rddl, String instance_name) {
+		_instanceName = instance_name;
+		_rddl = rddl;
 	}
 
 	///////////////////////////////////////////////////////////////////////////
@@ -155,9 +164,9 @@ public class RTDP1 extends Policy {
 			
 			// Use RDDL2Format to build SPUDD ADD translation of _sInstanceName
 			try {
-				_translation = new RDDL2Format(_rddl, _sInstanceName, RDDL2Format.SPUDD_CURR, "");
+				_translation = new RDDL2Format(_rddl, _instanceName, RDDL2Format.SPUDD_CURR, "");
 			} catch (Exception e) {
-				System.err.println("Could not construct MDP for: " + _sInstanceName + "\n" + e);
+				System.err.println("Could not construct MDP for: " + _instanceName + "\n" + e);
 				e.printStackTrace(System.err);
 				System.exit(1);
 			}
@@ -400,7 +409,7 @@ public class RTDP1 extends Policy {
     public void resetSolver() {
     		resetState();                                 
             _nIter = -1;
-            _rddlInstance = _rddl._tmInstanceNodes.get(this._sInstanceName);
+            _rddlInstance = _rddl._tmInstanceNodes.get(this._instanceName);
             if (_rddlInstance == null) {
                     System.err.println("ERROR: Could not fine RDDL instance '" + _rddlInstance + "'");
                     System.exit(1);

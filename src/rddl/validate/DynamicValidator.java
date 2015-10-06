@@ -46,8 +46,10 @@ public class DynamicValidator {
 		String instance_name = args.length > 1 ? args[1] : rddl._tmInstanceNodes.firstKey();;
 		Simulator sim = new Simulator(rddl, instance_name);
 		Policy pol = new NoopPolicy();
-		pol.setRandSeed(rand_seed_policy);
-		pol.setRDDL(rddl);
+//		
+//		pol.setRandSeed(rand_seed_policy);
+//		pol.setRDDL(rddl);
+		
 		//StateViz viz = new NullScreenDisplay();
 		StateViz viz = new GenericScreenDisplay();
 			

@@ -14,17 +14,9 @@ import java.util.*;
 import rddl.*;
 import rddl.RDDL.*;
 
-public class RandomBoolPolicy extends Policy {
+public class RandomBoolPolicy implements Policy {
 	
 	public Random _rand = new Random();
-
-	public RandomBoolPolicy () {
-		
-	}
-	
-	public RandomBoolPolicy(String instance_name) {
-		super(instance_name);
-	}
 
 	public ArrayList<PVAR_INST_DEF> getActions(State s) throws EvalException {
 		

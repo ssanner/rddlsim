@@ -31,16 +31,11 @@ import util.*;
 public class UCT2 extends EnumerableStatePolicy {
 
 	/**
-	 * Default constructor.
-	 */
-	public UCT2() { }
-	
-	/**
 	 * Initialize this class with the instance name to be solved by this algorithm. 
 	 * @param instance_name Instance name to be solved by this algorithm
 	 */
-	public UCT2(String instance_name) {
-		super(instance_name);
+	public UCT2(RDDL rddl, String instance_name) {
+		super( rddl, instance_name );
 	}
 	
 	private HashMap<BigInteger, HashMap<CString, Double>> averageRewardsPerState = new HashMap<BigInteger, HashMap<CString,Double>>();		
@@ -302,7 +297,7 @@ public class UCT2 extends EnumerableStatePolicy {
 	public void roundInit(double timeLeft, int horizon, int roundNumber, int totalRounds) {
 		super.roundInit(timeLeft, horizon, roundNumber, totalRounds);
 		
-		this.setRandSeed(System.currentTimeMillis());
+//		this.setRandSeed(System.currentTimeMillis());
 		policy = new RolloutPolicy(this);
 	}
 }

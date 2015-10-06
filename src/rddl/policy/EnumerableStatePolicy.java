@@ -1,7 +1,11 @@
 package rddl.policy;
-
+/*
+ * Broken class after refactoring Policy to an interface.
+ */
 import java.math.BigInteger;
 import java.util.*;
+
+import org.apache.commons.math3.random.RandomDataGenerator;
 
 import dd.discrete.ADD;
 import dd.discrete.ADDBNode;
@@ -10,7 +14,6 @@ import dd.discrete.ADDINode;
 import dd.discrete.ADDNode;
 import dd.discrete.ADD.ADDLeafOperation;
 import dd.discrete.DD;
-
 import rddl.*;
 import rddl.RDDL.*;
 import rddl.solver.mdp.Action;
@@ -21,19 +24,11 @@ import util.*;
  * Represents a policy that handles with a Markov Decision Process with
  * enumerable states. 
  */
-public abstract class EnumerableStatePolicy extends Policy {
+public abstract class EnumerableStatePolicy implements Policy {
 
-	/**
-	 * Default constructor.
-	 */
-	public EnumerableStatePolicy() { }
-	
-	/**
-	 * Initialize this class with the instance name to be solved by this algorithm. 
-	 * @param instance_name Instance name to be solved by this algorithm
-	 */
-	public EnumerableStatePolicy(String instance_name) {
-		super(instance_name);
+	public EnumerableStatePolicy( RDDL rddl , String instance_name ) { 
+		_rddl = rddl;
+		_instanceName = instance_name;
 	}
 	
 	/**
@@ -47,22 +42,19 @@ public abstract class EnumerableStatePolicy extends Policy {
 		this.actions = policy.actions;
 		this.rddlInstance = policy.rddlInstance;
 		this.translation = policy.translation;
-		this._random = policy._random;
 		this._rddl = policy._rddl;
-		this._sInstanceName = policy._sInstanceName;
+		this._instanceName = policy._instanceName;
 	}
 
 	private List<String> stateVariableNames = null;
-	
 	private int remainingHorizons = 0;
-	
+	private RDDL _rddl;
+	private String _instanceName;
 	private double discountFactor = 1.0;
-	
 	private List<CString> actions = null;
-
 	protected INSTANCE rddlInstance = null;
-	
 	private RDDL2Format translation = null;
+	protected RandomDataGenerator _random = new RandomDataGenerator();
 
 	/**
 	 * Gets a handler to RDDL data.
@@ -127,19 +119,15 @@ public abstract class EnumerableStatePolicy extends Policy {
 	 */
 	protected void roundInit(double timeLeft, int horizon, int roundNumber, int totalRounds, boolean suppressConsole) {
 		if (!suppressConsole) //execute super class definitions for this method
-			super.roundInit(timeLeft, horizon, roundNumber, totalRounds);
+			roundInit(timeLeft, horizon, roundNumber, totalRounds);
 		
 		this.remainingHorizons = horizon;
 		
-		this.rddlInstance = _rddl._tmInstanceNodes.get(_sInstanceName);
-		
-		this.discountFactor = this.rddlInstance._dDiscount;
-		
 		if (translation == null) {
 			try {
-				this.translation = new RDDL2Format(_rddl, _sInstanceName, RDDL2Format.SPUDD_CURR, "");
+				this.translation = new RDDL2Format(_rddl, _instanceName, RDDL2Format.SPUDD_CURR, "");
 			} catch (Exception e) {
-				System.err.println("Could not construct MDP for: " + _sInstanceName + "\n" + e);
+				System.err.println("Could not construct MDP for: " + _instanceName + "\n" + e);
 				e.printStackTrace(System.err);
 				System.exit(1);
 			}
@@ -261,7 +249,7 @@ public abstract class EnumerableStatePolicy extends Policy {
 		// Return a random action if a action cannot be taken
 		if (action_taken == null) {
 			ArrayList<String> actions = new ArrayList<String>(action_map.keySet());
-			action_taken = actions.get(_random.nextInt(0, action_map.size() - 1));
+			action_taken = actions.get( _random.nextInt( 0, action_map.size()-1 ));
 		}
 		
 		return action_map.get(action_taken);

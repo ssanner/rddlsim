@@ -69,36 +69,36 @@ import util.Pair;
 import util.Timer;
 
 //FIXME : why is Policy an abstract class and not an interface ?
-public class Translate  extends rddl.policy.Policy {
+public class Translate { //  extends rddl.policy.Policy {
 
 	private static final int GRB_INFUNBDINFO = 1;
 	private static final int GRB_DUALREDUCTIONS = 0;
 	private static final double GRB_MIPGAP = 0.01;
 	private static final double GRB_HEURISTIC = 0.2;
-	private static final LVAR TIME_PREDICATE = new LVAR( "?time" );
+	protected static final LVAR TIME_PREDICATE = new LVAR( "?time" );
 	private static final TYPE_NAME TIME_TYPE = new TYPE_NAME( "time" );
 	private double TIME_LIMIT_MINS = 10; 
 	
 	private RDDL rddl_obj;
-	private int lookahead;
-	private State rddl_state;
+	protected int lookahead;
+	protected State rddl_state;
 	private DOMAIN rddl_domain;
 	private INSTANCE rddl_instance;
 	private NONFLUENTS rddl_nonfluents;
 	private String instance_name;
 	private String domain_name;
 	private String GRB_log;
-	private HashMap<PVAR_NAME, ArrayList<ArrayList<LCONST>>> rddl_state_vars;
-	private HashMap<PVAR_NAME, ArrayList<ArrayList<LCONST>>> rddl_action_vars;
-	private HashMap<PVAR_NAME, ArrayList<ArrayList<LCONST>>> rddl_observ_vars;
-	private HashMap<PVAR_NAME, ArrayList<ArrayList<LCONST>>> rddl_interm_vars;
+	protected HashMap<PVAR_NAME, ArrayList<ArrayList<LCONST>>> rddl_state_vars;
+	protected HashMap<PVAR_NAME, ArrayList<ArrayList<LCONST>>> rddl_action_vars;
+	protected HashMap<PVAR_NAME, ArrayList<ArrayList<LCONST>>> rddl_observ_vars;
+	protected HashMap<PVAR_NAME, ArrayList<ArrayList<LCONST>>> rddl_interm_vars;
 	
-	private List<String> string_state_vars;
-	private List<String> string_action_vars;
+	protected List<String> string_state_vars;
+	protected List<String> string_action_vars;
 	private List<String> string_observ_vars;
 	private List<String> string_interm_vars;
 	private GRBEnv grb_env;
-	private GRBModel grb_model;
+	protected GRBModel grb_model;
 	private HashMap<PVAR_NAME, TYPE_NAME> pred_type = new HashMap<>();
 	
 //	private HashMap<String, GRBVar> grb_string_map  
@@ -107,18 +107,16 @@ public class Translate  extends rddl.policy.Policy {
 //		= new HashMap<String,Pair>();
 	
 	private String OUTPUT_FILE = "model.lp";
-	private HashMap<TYPE_NAME, OBJECTS_DEF> objects;
-	private Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants = new HashMap<>();
-	private ArrayList< LCONST > TIME_TERMS = new ArrayList<>();
-	private HashMap<PVAR_NAME,  Character> type_map = new HashMap<>();
-	private List<EXPR> saved_expr = new ArrayList<RDDL.EXPR>();
-	private List<GRBVar> saved_vars = new ArrayList<GRBVar>();
-	private Timer translate_time;
+	protected HashMap<TYPE_NAME, OBJECTS_DEF> objects;
+	protected Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants = new HashMap<>();
+	protected ArrayList< LCONST > TIME_TERMS = new ArrayList<>();
+	protected HashMap<PVAR_NAME,  Character> type_map = new HashMap<>();
+	protected List<EXPR> saved_expr = new ArrayList<RDDL.EXPR>();
+	protected List<GRBVar> saved_vars = new ArrayList<GRBVar>();
+	protected Timer translate_time;
 	
 	public Translate( final String domain_file, final String inst_file, 
 			final int lookahead , final double timeout ) throws Exception, GRBException {
-		super(inst_file);
-//		setRandSeed(`vfgb0);
 		
 		TIME_LIMIT_MINS = timeout;
 		
@@ -150,12 +148,6 @@ public class Translate  extends rddl.policy.Policy {
 		type_map.forEach( (a,b) -> System.out.println(a + " " + b) );
 
 		translate_time = new Timer();
-		System.out.println("--------------Translating CPTs-------------");
-		translateCPTs( );
-		System.out.println("--------------Translating Constraints-------------");
-		translateConstraints( );
-		System.out.println("--------------Translating Reward-------------");
-		translateReward( );
 		translate_time.PauseTimer();
 
 	}
@@ -166,8 +158,14 @@ public class Translate  extends rddl.policy.Policy {
 
 	public Map< EXPR, Double >  doPlan( final ArrayList<PVAR_INST_DEF> initState ) throws Exception{
 		Map< EXPR, Double > ret = new HashMap< EXPR, Double >();
-		
+
 		translate_time.ResumeTimer();
+		System.out.println("--------------Translating CPTs-------------");
+		translateCPTs( );
+		System.out.println("--------------Translating Constraints-------------");
+		translateConstraints( );
+		System.out.println("--------------Translating Reward-------------");
+		translateReward( );
 		System.out.println("--------------Initial State-------------");
 		translateInitialState( initState );
 		translate_time.PauseTimer();
@@ -228,7 +226,7 @@ public class Translate  extends rddl.policy.Policy {
 				dumpAllAssignments();
 			}
 		}
-//		outputLPFile( );
+		outputLPFile( );
 
 		System.out.println( "Status : "+ grb_model.get( IntAttr.Status ) + "(Optimal/Inf/Unb: " + GRB.OPTIMAL + ", " + GRB.INFEASIBLE +", " + GRB.UNBOUNDED + ")" );
 		System.out.println( "Number of solutions found : " + grb_model.get( IntAttr.SolCount ) );
@@ -258,7 +256,7 @@ public class Translate  extends rddl.policy.Policy {
 		return ret;
 	}
 	
-	private void dumpAllAssignments() {
+	protected void dumpAllAssignments() {
 		try {
 			FileWriter file_write = new FileWriter( new File( OUTPUT_FILE + ".result" ) );
 			EXPR.grb_cache.forEach( new BiConsumer<EXPR, GRBVar>() {
@@ -281,7 +279,7 @@ public class Translate  extends rddl.policy.Policy {
 		}
 	}
 
-	private void outputLPFile() throws GRBException, IOException {
+	protected void outputLPFile() throws GRBException, IOException {
 		grb_model.write( OUTPUT_FILE );
 		
 		List<String> src = new ArrayList<>( EXPR.reverse_name_map.keySet() );
@@ -333,7 +331,7 @@ public class Translate  extends rddl.policy.Policy {
 			});
 	}
 	
-	private Map<EXPR, Double> getAssignments( final HashMap<PVAR_NAME, ArrayList<ArrayList<LCONST>>> map, final int time ) {
+	protected Map<EXPR, Double> getAssignments( final HashMap<PVAR_NAME, ArrayList<ArrayList<LCONST>>> map, final int time ) {
 		final HashMap< EXPR, Double > ret = new HashMap< >();
 		
 		map.forEach( new BiConsumer<PVAR_NAME, ArrayList<ArrayList<LCONST>>>( ) {
@@ -350,7 +348,7 @@ public class Translate  extends rddl.policy.Policy {
 						   try {
 							   GRBVar grb_var = EXPR.grb_cache.get( subs_t );
 							   assert( grb_var != null );
-							ret.put( subs_t, grb_var.get( DoubleAttr.X ) );
+							   ret.put( subs_t, grb_var.get( DoubleAttr.X ) );
 						   } catch (GRBException e) {
 								e.printStackTrace();
 						   }
@@ -381,7 +379,7 @@ public class Translate  extends rddl.policy.Policy {
 		constants.forEach( (a,b) -> System.out.println( a + " : " + b ) );
 	}
 
-	private void translateConstraints() throws Exception {
+	protected void translateConstraints() throws Exception {
 		
 		GRBExpr old_obj = grb_model.getObjective();
 //		translateMaxNonDef( );
@@ -434,7 +432,7 @@ public class Translate  extends rddl.policy.Policy {
 //		grb_model.update();		
 //	}
 
-	private void translateInitialState(ArrayList<PVAR_INST_DEF> initState) throws GRBException {
+	protected void translateInitialState(ArrayList<PVAR_INST_DEF> initState) throws GRBException {
 		Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> subs = getConsts( initState );
 		
 		GRBExpr old_obj = grb_model.getObjective();
@@ -477,7 +475,7 @@ public class Translate  extends rddl.policy.Policy {
 		grb_model.update();
 	}
 
-	private void translateCPTs() throws GRBException {
+	protected void translateCPTs() throws GRBException {
 		
 		GRBExpr old_obj = grb_model.getObjective();
 		
@@ -547,7 +545,7 @@ public class Translate  extends rddl.policy.Policy {
 		
 	}
 
-	private Map<LVAR,LCONST> getSubs(ArrayList<LTERM> terms, ArrayList<LCONST> consts) {
+	protected Map<LVAR,LCONST> getSubs(ArrayList<LTERM> terms, ArrayList<LCONST> consts) {
 		Map<LVAR, LCONST> ret = new HashMap<RDDL.LVAR, RDDL.LCONST>();
 		for( int i = 0 ; i < terms.size(); ++i ){
 			assert( terms.get(i) instanceof LVAR );
@@ -556,7 +554,7 @@ public class Translate  extends rddl.policy.Policy {
 		return ret;
 	}
 
-	private Map< PVAR_NAME, Map< ArrayList<LCONST>, Object> > getConsts(ArrayList<PVAR_INST_DEF> consts) {
+	protected Map< PVAR_NAME, Map< ArrayList<LCONST>, Object> > getConsts(ArrayList<PVAR_INST_DEF> consts) {
 		HashMap<PVAR_NAME, Map<ArrayList<LCONST>, Object>> ret 
 			= new HashMap< PVAR_NAME, Map< ArrayList<LCONST>, Object> >();
 		for( final PVAR_INST_DEF p : consts ){
@@ -616,7 +614,7 @@ public class Translate  extends rddl.policy.Policy {
 //		}
 //	}
 
-	private void translateReward() throws Exception{
+	protected void translateReward() throws Exception{
 		EXPR stationary = rddl_state._reward;
 		//expand quantifier
 		//filter constants
@@ -713,7 +711,6 @@ public class Translate  extends rddl.policy.Policy {
 		this.string_observ_vars = cleanMap( rddl_observ_vars );
 		this.string_interm_vars = cleanMap( rddl_interm_vars );
 		
-		setRDDL(rddl_obj);
 	}
 	
 	private void initializeGRB( ) throws GRBException {
@@ -772,52 +769,10 @@ public class Translate  extends rddl.policy.Policy {
 	}
 	
 	public static void main(String[] args) throws Exception {
-		System.out.println( args );
+		System.out.println( Arrays.toString( args ) );
 		System.out.println( 
 				new Translate(args[0], args[1], Integer.parseInt( args[2] ), Double.parseDouble( args[3] ))
 				.doPlanInitState() );
 	}
 
-	@Override
-	public ArrayList<PVAR_INST_DEF> getActions(State s) {
-		ArrayList<PVAR_INST_DEF> initState = new ArrayList<PVAR_INST_DEF>();
-		rddl_state_vars.forEach( new BiConsumer<PVAR_NAME, ArrayList<ArrayList<LCONST>>>() {
-
-			
-			@Override
-			public void accept( PVAR_NAME t, ArrayList<ArrayList<LCONST>> u) {
-					u.forEach( new Consumer< ArrayList<LCONST> >() {
-
-						@Override
-						public void accept(ArrayList<LCONST> u) {
-							try{
-								initState.add( new PVAR_INST_DEF( t._sPVarName , s.getPVariableAssign(t, u), u) );
-							}catch( Exception exc ){
-								exc.printStackTrace();
-								System.exit(1);
-							}
-						}
-						
-					});  
-				}
-		    });
-		Map<EXPR, Double> assigns;
-		try {
-			assigns = doPlan( initState );
-			ArrayList<PVAR_INST_DEF> output_action = new ArrayList<>();
-			rddl_action_vars.forEach( (a,b) -> ( b.forEach( 
-					m -> output_action.add( new PVAR_INST_DEF( a._sPVarName, assigns.get( new PVAR_EXPR( a._sPVarName, m )
-						.addTerm(TIME_PREDICATE, constants, objects)
-						.substitute( Collections.singletonMap( TIME_PREDICATE, TIME_TERMS.get(0) ), constants, objects) ), m ) ) ) ) );
-			System.out.println( output_action );
-			return output_action;
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.exit(1);
-		}
-		return null;
-		
-	}
-
-	
 }

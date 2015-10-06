@@ -28,7 +28,7 @@ import rddl.State;
 import rddl.RDDL.PVAR_INST_DEF;
 import rddl.policy.Policy;
 
-public class PBVI extends Policy {
+public class PBVI implements Policy {
 
 	@Override
 	public ArrayList<PVAR_INST_DEF> getActions(State s) throws EvalException {

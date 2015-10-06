@@ -14,16 +14,8 @@ import java.util.*;
 import rddl.*;
 import rddl.RDDL.*;
 
-public class FixedBoolPolicy extends Policy {
+public class FixedBoolPolicy implements Policy {
 	
-	public FixedBoolPolicy () {
-		
-	}
-	
-	public FixedBoolPolicy(String instance_name) {
-		super(instance_name);
-	}
-
 	public ArrayList<PVAR_INST_DEF> getActions(State s) throws EvalException {
 		
 		// Get a random action

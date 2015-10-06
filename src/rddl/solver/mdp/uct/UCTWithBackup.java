@@ -5,7 +5,7 @@ import java.util.*;
 
 import dd.discrete.ADD;
 import dd.discrete.DD;
-
+import rddl.RDDL;
 import rddl.State;
 import rddl.solver.DDUtils;
 import rddl.solver.mdp.Action;
@@ -15,16 +15,11 @@ import util.Pair;
 public class UCTWithBackup extends UCT {
 
 	/**
-	 * Default constructor.
-	 */
-	public UCTWithBackup() { }
-	
-	/**
 	 * Initialize this class with the instance name to be solved by this algorithm. 
 	 * @param instance_name Instance name to be solved by this algorithm
 	 */
-	public UCTWithBackup(String instance_name) {
-		super(instance_name);
+	public UCTWithBackup(RDDL rddl, String instance_name) {
+		super( rddl, instance_name );
 	}
 
 	/**

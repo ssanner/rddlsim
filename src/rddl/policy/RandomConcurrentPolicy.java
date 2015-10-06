@@ -16,18 +16,16 @@ import rddl.*;
 import rddl.RDDL.*;
 import util.Permutation;
 
-public class RandomConcurrentPolicy extends Policy {
+public class RandomConcurrentPolicy implements Policy {
 		
 	public int MAX_CONCURRENT_ACTIONS = 20; // Since we could have: max-nondef-actions = pos-inf;
 	public int MAX_INT_VALUE = 5; // Max int value to use when selecting random action
 	public double MAX_REAL_VALUE = 5.0d; // Max real value to use when selecting random action
+	private Random _random;
 	
 	public RandomConcurrentPolicy () { 
 		super();
-	}
-	
-	public RandomConcurrentPolicy(String instance_name) {
-		super(instance_name);
+		_random = new Random();
 	}
 	
 	public void setActionMaxIntValue(int max_int_value) {
@@ -71,7 +69,7 @@ public class RandomConcurrentPolicy extends Policy {
 				// ... this allows actions with names occurring later in the outer
 				//     for loop to have a chance if there are action constraints
 				Object value = null;
-				if (_random.nextUniform(0d, 1d) < 0.5d) {
+				if (_random.nextDouble() < 0.5d) {
 					continue;
 					//System.out.println("DEFAULT");
 					//value = action_def._oDefValue;
@@ -129,10 +127,10 @@ public class RandomConcurrentPolicy extends Policy {
 			return new Boolean(true); // Not random: we'll assume false is default so return non-default value 
 		} else if (type.equals(RDDL.TYPE_NAME.INT_TYPE)) {
 			// int
-			return new Integer(_random.nextInt(0, MAX_INT_VALUE));
+			return new Integer(_random.nextInt( MAX_INT_VALUE ) );
 		} else if (type.equals(RDDL.TYPE_NAME.REAL_TYPE)) {
 			// real
-			return new Double(_random.nextUniform(-MAX_REAL_VALUE,MAX_REAL_VALUE));
+			return new Double( (-MAX_REAL_VALUE) + (2*MAX_REAL_VALUE)*_random.nextDouble() );
 		}  else {
 			// a more complex type -- have to retrieve and process
 			TYPE_DEF tdef = s._hmTypes.get(type);
@@ -153,7 +151,7 @@ public class RandomConcurrentPolicy extends Policy {
 				
 				// randomly return one of the legal values for this ENUM or OBJECT type
 				ArrayList<LCONST> possible_values = ((LCONST_TYPE_DEF)tdef)._alPossibleValues;
-				int index = _random.nextInt(0, possible_values.size() - 1);
+				int index = _random.nextInt( possible_values.size() );
 				return possible_values.get(index);
 				
 			} else {

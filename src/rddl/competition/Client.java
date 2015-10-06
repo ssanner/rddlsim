@@ -143,9 +143,9 @@ public class Client {
 			
 			// Note: following constructor approach suggested by Alan Olsen
 			Policy policy = (Policy)c.getConstructor(
-					new Class[]{String.class}).newInstance(new Object[]{instanceName});
-			policy.setRDDL(rddl);
-			policy.setRandSeed(randomSeed);
+					new Class[]{RDDL.class, String.class}).newInstance(new Object[]{rddl, instanceName});
+//			policy.setRDDL(rddl);
+//			policy.setRandSeed(randomSeed);
 			
 			instance = rddl._tmInstanceNodes.get(instanceName);
 			if (instance._sNonFluents != null) {

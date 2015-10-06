@@ -25,7 +25,7 @@ import rddl.parser.parser;
 import rddl.policy.Policy;
 import rddl.translate.RDDL2Format;
 
-public class TestElevatorPolicy extends Policy{	
+public class TestElevatorPolicy implements Policy {	
 	//Only for Elevator 
 	public final static String ROOT_PATH = System.getProperty("user.dir");
 	public final static String RDDL_FILE_NAME = ROOT_PATH+"/test_input/elevators_mdp_testinput3.rddl";
@@ -62,10 +62,9 @@ public class TestElevatorPolicy extends Policy{
 	public TestElevatorPolicy () {
 	}
 	
-	public TestElevatorPolicy(String instance_name) {
-		super(instance_name);
-
-	}
+//	public TestElevatorPolicy(String instance_name) {
+//		super(instance_name);
+//	}
 
 	public ArrayList<PVAR_INST_DEF> getActions(State s) throws EvalException {
 		

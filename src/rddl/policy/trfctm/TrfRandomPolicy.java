@@ -9,12 +9,13 @@
 package rddl.policy.trfctm;
 
 import rddl.policy.Policy;
+
 import java.util.*;
 
 import rddl.*;
 import rddl.RDDL.*;
 
-public class TrfRandomPolicy extends Policy {
+public class TrfRandomPolicy implements Policy {
 
 	static int time = -1;
 	static final int RED_TIME = 3;
@@ -23,13 +24,16 @@ public class TrfRandomPolicy extends Policy {
 	
 	static int[][] signalTimeOut;
 	static int[][] signal;
+	private RDDL _rddl;
+	private String _instanceName;
 	
 	public TrfRandomPolicy () {
 		
 	}
 	
-	public TrfRandomPolicy(String instance_name) {
-		super(instance_name);
+	public TrfRandomPolicy(RDDL rddl, String instance_name) {
+		_rddl = rddl;
+		_instanceName = instance_name;
 	}
 	
 	public ArrayList<PVAR_INST_DEF> getActions(State s) throws EvalException {

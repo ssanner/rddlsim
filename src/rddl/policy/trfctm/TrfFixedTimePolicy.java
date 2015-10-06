@@ -9,11 +9,13 @@
 package rddl.policy.trfctm;
 
 import rddl.policy.Policy;
+
 import java.util.*;
+
 import rddl.*;
 import rddl.RDDL.*;
 
-public class TrfFixedTimePolicy extends Policy {
+public class TrfFixedTimePolicy implements Policy {
 
 	static int time = -1;
 	static final int RED_TIME = 3;
@@ -21,13 +23,12 @@ public class TrfFixedTimePolicy extends Policy {
 	
 	static int[][] signalTimeOut;
 	static int[][] signal;
+	private RDDL _rddl;
+	private String _instanceName;
 	
-	public TrfFixedTimePolicy () {
-		
-	}
-	
-	public TrfFixedTimePolicy(String instance_name) {
-		super(instance_name);
+	public TrfFixedTimePolicy(RDDL rddl, String instance_name) {
+		_rddl = rddl;
+		_instanceName = instance_name;
 	}
 	
 	public ArrayList<PVAR_INST_DEF> getActions(State s) throws EvalException {

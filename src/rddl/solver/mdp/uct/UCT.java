@@ -31,16 +31,11 @@ import util.*;
 public class UCT extends EnumerableStatePolicy {
 
 	/**
-	 * Default constructor.
-	 */
-	public UCT() { }
-	
-	/**
 	 * Initialize this class with the instance name to be solved by this algorithm. 
 	 * @param instance_name Instance name to be solved by this algorithm
 	 */
-	public UCT(String instance_name) {
-		super(instance_name);
+	public UCT( RDDL rddl, String instance_name) {
+		super( rddl, instance_name);
 	}
 	
 	protected final int TIMEOUT_ORDER = 1000; //1000 milliseconds
@@ -437,8 +432,8 @@ public class UCT extends EnumerableStatePolicy {
 			}	
 		}
 		
-		//Force a "random" seed for each round to avoid the same 
-		//pseudo random numbers used in the Simulator
-		this.setRandSeed(System.currentTimeMillis());
+//		//Force a "random" seed for each round to avoid the same 
+//		//pseudo random numbers used in the Simulator
+//		this.setRandSeed(System.currentTimeMillis());
 	}
 }
