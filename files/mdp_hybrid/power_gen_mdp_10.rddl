@@ -1,0 +1,24 @@
+non-fluents nf_power_mdp_10 {
+	domain = power_gen_mdp; 
+	
+	objects { 
+		plant : {p1, p2, p3,p4,p5, p6, p7, p8, p9 , p10};
+	};
+
+	non-fluents {		
+		MIN_CONSUMPTION = 10;
+	};
+}
+
+
+instance inst_power_gen_mdp_10 {
+
+	domain = power_gen_mdp;
+	non-fluents = nf_power_mdp_10;
+  
+  	// State-action constraints above are sufficient
+	//max-nondef-actions = pos-inf;
+  
+	horizon  = 40;
+	discount = 1.0;
+}
