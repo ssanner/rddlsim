@@ -16,10 +16,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.lang.reflect.Constructor;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -112,7 +115,7 @@ public class Client {
 		
 		if ( args.length < 4 ) {
 			System.out.println("usage: rddlfilename hostname clientname policyclassname " +
-					"(optional) portnumber randomSeed instanceName/directory");
+					" portnumber randomSeed instanceName/directory  [...policy args]");
 			System.exit(1);
 		}
 		host = args[1];
@@ -142,8 +145,18 @@ public class Client {
 			state = new State();
 			
 			// Note: following constructor approach suggested by Alan Olsen
-			Policy policy = (Policy)c.getConstructor(
-					new Class[]{RDDL.class, String.class}).newInstance(new Object[]{rddl, instanceName});
+			//Modified by ashwinnr to take varargs for constructor
+			//assuming that policy class has only one constructor
+			Constructor[] constructors = c.getConstructors();
+			assert( constructors.length == 1 );
+			//constructor must take array of string varargs
+			List<String> varargs = Arrays.asList( Arrays.copyOfRange( args, 7, args.length ) );
+			assert( constructors[0].getParameterTypes().length == 1 && constructors[0].getParameterTypes()[0].isInstance( varargs ) );
+			Object constructed = constructors[0].newInstance( varargs ) ;
+			
+			assert( Policy.class.isInstance(constructed) );
+			Policy policy = Policy.class.cast(constructed);
+//					new Class[]{RDDL.class, String.class}).newInstance(new Object[]{rddl, instanceName});
 //			policy.setRDDL(rddl);
 //			policy.setRandSeed(randomSeed);
 			

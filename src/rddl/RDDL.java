@@ -1806,6 +1806,13 @@ public class RDDL {
 		}
 		
 		public abstract int hashCode();
+
+		public static void cleanUpGRB() {
+			grb_cache.clear();
+			name_map.clear();
+			reverse_name_map.clear();
+			nameId = 0;
+		}
 		
 	}
 	
