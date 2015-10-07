@@ -24,4 +24,4 @@ Implements a parser, simulator, and client/server evaluation architecture for th
 
 When you checkout the code, the first file you'll want to look at is [INSTALL.txt](https://github.com/ssanner/rddlsim/blob/master/INSTALL.txt)... this includes everything you need to start simulating, visualizing, and translating domains in < 5 minutes!
 
-If you want to use an MDP or POMDP planner in conjunction with RDDL, please check out planner releases at the above competition web pages... all support the RDDL Client/Server protocol.
+If you want to use an MDP or POMDP planner in conjunction with RDDL, please check out planner releases at the above IPPC competition web pages... all support the RDDL Client/Server protocol.
