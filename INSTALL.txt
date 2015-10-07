@@ -35,7 +35,8 @@ directory with the class name as an argument, e.g.
 
 You can pass up to 10 arguments to these scripts as required.
 
-We highly recommend that you use Eclipse for Java development:
+We highly recommend that you use Eclipse (or other IDE) for
+Java development:
 
     http://www.eclipse.org/downloads/
 
@@ -44,8 +45,11 @@ In Eclipse the CLASSPATH libraries can be set via
     Project -> Properties -> Java Build Path -> Libraries Tab
 
 
-Basic RDDLSim Usage
-===================
+Basic RDDLSim Usage Syntax
+==========================
+
+(If you just want to see quick examples of commands to run, skip
+ this section on syntax and scroll down to the "Examples" section.)
 
 We currently provide the following rddlsim command line utilities:
 
@@ -101,10 +105,14 @@ We currently provide the following rddlsim command line utilities:
         See src/rddl/evaluate/README.txt for a full explanation.
         
         For archives of log files from competitions, please see the respective competition websites. 
-        
-	Examples (run from rddlsim directory, ./run for UNIX/Cygwin, run.bat for Windows):
 
-		**Client/Server examples**
+
+Examples
+========
+
+    **Examples (run from rddlsim directory, ./run for UNIX/Cygwin, run.bat for Windows):
+
+	    **Client/Server examples**
 
 		./run rddl.competition.Server files/final_comp/rddl/
 		./run rddl.competition.Client files/final_comp/rddl localhost MyClientName rddl.policy.SPerseusSPUDDPolicy 2323 123456 sysadmin_inst_mdp__10
@@ -113,7 +121,7 @@ We currently provide the following rddlsim command line utilities:
                 Note: see directory rddlsim/cclient for instructions
                 on how to build and run a C++ client.
 
-		**Parser and translation examples**
+	    **Parser and translation examples**
 
 		./run rddl.parser.parser files/rddl/test/sysadmin_mdp.rddl 
 
@@ -132,7 +140,7 @@ We currently provide the following rddlsim command line utilities:
 		./run rddl.translate.RDDL2Format files/final_comp/rddl files/final_comp/spudd_sperseus spudd_sperseus
 		./run rddl.translate.RDDL2Format files/final_comp/rddl files/final_comp/ppddl ppddl
 
-		**Simulator examples**
+	    **Simulator examples**
 	
 		./run rddl.sim.Simulator files/final_comp/rddl rddl.policy.RandomBoolPolicy elevators_inst_mdp__9 rddl.viz.ElevatorDisplay
 		./run rddl.sim.Simulator files/final_comp/rddl rddl.policy.RandomBoolPolicy game_of_life_inst_mdp__10 rddl.viz.GameOfLifeScreenDisplay
@@ -142,24 +150,24 @@ We currently provide the following rddlsim command line utilities:
 		./run rddl.sim.Simulator files/final_comp/rddl rddl.policy.RandomBoolPolicy navigation_inst_mdp__10 rddl.viz.NavigationDisplay
 		./run rddl.sim.Simulator files/final_comp/rddl rddl.policy.RandomBoolPolicy navigation_inst_pomdp__10 rddl.viz.NavigationDisplay
 
-		**RDDL DBN / Influence Diagram Visualization**
+	    **RDDL DBN / Influence Diagram Visualization**
 
 		./run rddl.viz.RDDL2Graph files/rddl/examples/dbn_prop.rddl inst_dbn
 		./run rddl.viz.RDDL2Graph files/rddl/examples/dbn_types_interm_po.rddl inst_dbn_interm_po
 		./run rddl.viz.RDDL2Graph files/rddl/examples/game_of_life_stoch.rddl is1_stoch
 
-	Examples of RDDL 2.0 (2013) -- A strict superset of RDDL 1.0
+    **Examples of RDDL 2.0 (2013) -- A strict superset of RDDL 1.0
 
 		See RDDL2 domain examples in files/rddl2/
 
-		**RDDL2 Simulator examples**
+	    **RDDL2 Simulator examples**
 
 		./run rddl.sim.Simulator files/rddl2/examples/multiagent_mars_rover.rddl2 rddl.policy.RandomConcurrentPolicy inst_multiagent_mars_rover rddl.viz.MarsRoverDisplay 3 3
 		./run rddl.sim.Simulator files/rddl2/examples/traffic_control_ctm.rddl2 rddl.policy.RandomConcurrentPolicy inst_traffic_control_ctm rddl.viz.trfctm.TrfDisplay 2 2
 		./run rddl.sim.Simulator files/rddl2/examples/lang_extension_examples.rddl2 rddl.policy.RandomConcurrentPolicy inst_lang_extension_examples rddl.viz.GenericScreenDisplay 1 1
 		./run rddl.sim.Simulator files/rddl2/examples/power_gen.rddl2 rddl.policy.RandomConcurrentPolicy inst_power_gen rddl.viz.GenericScreenDisplay 1 1
 
-		**RDDL2 DBN / Influence Diagram Visualization**
+	    **RDDL2 DBN / Influence Diagram Visualization**
 		
 		./run rddl.viz.RDDL2Graph files/rddl2/examples/lang_extension_examples.rddl2 inst_lang_extension_examples
 		./run rddl.viz.RDDL2Graph files/rddl2/examples/multiagent_mars_rover.rddl2 inst_multiagent_mars_rover
