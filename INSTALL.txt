@@ -110,7 +110,7 @@ We currently provide the following rddlsim command line utilities:
 Examples
 ========
 
-    **Examples (run from rddlsim directory, ./run for UNIX/Cygwin, run.bat for Windows):
+    **Examples of RDDL 1.0 (run from rddlsim directory, ./run for UNIX/Cygwin, run.bat for Windows):
 
 	    **Client/Server examples**
 
@@ -156,7 +156,7 @@ Examples
 		./run rddl.viz.RDDL2Graph files/rddl/examples/dbn_types_interm_po.rddl inst_dbn_interm_po
 		./run rddl.viz.RDDL2Graph files/rddl/examples/game_of_life_stoch.rddl is1_stoch
 
-    **Examples of RDDL 2.0 (2013) -- A strict superset of RDDL 1.0
+    **Examples of RDDL 2.0 -- A strict superset of RDDL 1.0 still under partial development
 
 		See RDDL2 domain examples in files/rddl2/
 
