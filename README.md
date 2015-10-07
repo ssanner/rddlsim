@@ -10,7 +10,7 @@ Implements a parser, simulator, and client/server evaluation architecture for th
 
 * [RDDL Language Guide](http://users.cecs.anu.edu.au/~ssanner/IPPC_2011/RDDL.pdf)
 
-Please cite as
+  Please cite as
 
 ```
    @unpublished{Sanner:RDDL,
