@@ -126,6 +126,9 @@ public class HOPTranslate extends Translate implements Policy {
 						entry.getValue().parallelStream().forEach( new Consumer< ArrayList<LCONST> >() {
 							@Override
 							public void accept(ArrayList<LCONST> terms) {
+								
+								System.out.println(  "CPT_"+ entry.getKey().toString()+"_"+terms );
+								
 								PVAR_NAME p = entry.getKey();
 								
 								CPF_DEF cpf = null;
@@ -178,9 +181,6 @@ public class HOPTranslate extends Translate implements Policy {
 //														synchronized ( lhs_future ) {
 //															synchronized ( rhs_future ) {
 																synchronized ( grb_model ) {
-																	
-																	System.out.println(  "CPT_"+p.toString()+"_"+terms+"_"+time_term_index+"_"+future_term_index );
-																	
 																	
 																	GRBVar lhs_var = lhs_future.getGRBConstr( 
 																			GRB.EQUAL, grb_model, constants, objects, type_map);

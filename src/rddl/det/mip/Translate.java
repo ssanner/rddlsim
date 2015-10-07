@@ -462,7 +462,7 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 		}
 		
 		grb_model.setObjective(old_obj);
-		grb_model.update();
+//		grb_model.update();
 	}
 
 //	private void translateMaxNonDef() {
@@ -529,7 +529,7 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 		}
 		
 		grb_model.setObjective(old_obj);
-		grb_model.update();
+//		grb_model.update();
 		
 	}
 
@@ -599,7 +599,7 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 		}
 		
 		grb_model.setObjective(old_obj);
-		grb_model.update();
+//		grb_model.update();
 		
 	}
 
@@ -684,14 +684,14 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 		//just iterate over time 
 		//reset objective
 		grb_model.setObjective( new GRBLinExpr() );
-		grb_model.update();
+//		grb_model.update();
 				
 		for( int time = 0 ; time < lookahead; ++time ){
 			EXPR subs_t = non_stationary.substitute( Collections.singletonMap( TIME_PREDICATE, TIME_TERMS.get(time)), constants, objects);
 			saved_expr.add( subs_t );
 			saved_vars.add( subs_t.addGRBObjectiveTerm(grb_model, constants, objects, type_map) );
 		}
-		grb_model.update();
+//		grb_model.update();
 	}
 	
 //	private HashMap<LVAR, LCONST> getSubs( final ArrayList<LTERM> param_names,
@@ -783,7 +783,7 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 		this.grb_model = new GRBModel( grb_env );
 		//max
 		grb_model.set( GRB.IntAttr.ModelSense, -1);
-		grb_model.update();
+//		grb_model.update();
 	}
 
 	private List<String> cleanMap( final HashMap<PVAR_NAME, ArrayList<ArrayList<LCONST>>> map ) {

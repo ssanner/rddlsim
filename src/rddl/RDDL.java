@@ -1781,7 +1781,7 @@ public class RDDL {
 				GRBLinExpr new_obj = new GRBLinExpr( (GRBLinExpr)old_obj );
 				new_obj.addTerm(1.0d, this_var );
 				model.setObjective( new_obj );
-				model.update();
+//				model.update();
 				return this_var;
 			} catch (GRBException e) {
 				e.printStackTrace();
@@ -3118,7 +3118,7 @@ public class RDDL {
 			GRBVar this_var = getGRBVar( this, model, constants, objects, type_map );
 			try {
 				model.addConstr( this_var, GRB.EQUAL, getDoubleValue(constants, objects), name_map.get(toString()) );
-				model.update();
+//				model.update();
 				return this_var;
 			} catch (GRBException e) {
 				e.printStackTrace();
@@ -3488,7 +3488,7 @@ public class RDDL {
 					}
 					break;
 				}
-				model.update();
+//				model.update();
 				return this_var;
 			} catch(Exception exc ){
 				exc.printStackTrace();
@@ -4035,7 +4035,7 @@ public class RDDL {
 			}
 			try {
 				model.addConstr( this_var , GRB.EQUAL, total, name_map.get(toString()) );
-				model.update();
+//				model.update();
 				return this_var;
 			} catch (GRBException e1) {
 				e1.printStackTrace();
@@ -4344,7 +4344,7 @@ public class RDDL {
 			
 			try {
 				model.addConstr(  this_var, sense, expression, name_map.get(toString()) );
-				model.update();
+//				model.update();
 				return this_var;
 			} catch (GRBException e) {
 				e.printStackTrace();
@@ -5202,7 +5202,7 @@ public class RDDL {
 				
 				model.addConstr( foo3, GRB.LESS_EQUAL, this_var,  name_map.get(toString()) );
 				model.addConstr( this_var, GRB.LESS_EQUAL, foo4, name_map.get(toString()) );
-				model.update();
+//				model.update();
 				return this_var;
 			}catch( Exception exc ){
 				exc.printStackTrace();
@@ -5685,7 +5685,7 @@ public class RDDL {
 			try {
 				GRBVar this_var = getGRBVar(this, model, constants, objects , type_map );
 				model.addConstr( this_var, GRB.EQUAL, expr_var, name_map.get(toString()) );
-				model.update();
+//				model.update();
 				return this_var;
 			} catch (GRBException e) {
 				e.printStackTrace();
@@ -5965,7 +5965,7 @@ public class RDDL {
 						model.addConstr( sum, GRB.LESS_EQUAL, nz, name_map.get(toString()) );
 						break;
 				}
-				model.update();
+//				model.update();
 				return this_var;
 			}catch( Exception exc ){
 				exc.printStackTrace();
@@ -6498,7 +6498,7 @@ public class RDDL {
 			one_minus_x.addTerm(-1.0d, inner_var);
 			try {
 				model.addConstr( this_var, GRB.EQUAL, one_minus_x, name_map.get(toString()) );
-				model.update();
+//				model.update();
 				return this_var;
 			} catch (GRBException e) {
 				e.printStackTrace();
@@ -6552,7 +6552,7 @@ public class RDDL {
 			GRBVar this_var = getGRBVar( this, model, constants, objects , type_map);
 			try{
 				model.addConstr( this_var, GRB.EQUAL, getDoubleValue(constants, objects),  name_map.get(toString()) );
-				model.update();
+//				model.update();
 				return this_var;
 			}catch( GRBException exc ){
 				exc.printStackTrace();
@@ -6919,7 +6919,7 @@ public class RDDL {
 							System.exit(1);
 						}
 				}
-				model.update();
+//				model.update();
 				return this_var;
 			}catch( Exception exc ){
 				exc.printStackTrace();
