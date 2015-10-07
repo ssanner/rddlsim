@@ -1,0 +1,89 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Creating the model</TITLE>
+<META NAME="description" CONTENT="Creating the model">
+<META NAME="keywords" CONTENT="quickstart_mac">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="quickstart_mac.css">
+
+<LINK REL="next" HREF="cpp_adding_variables_to_th.html">
+<LINK REL="previous" HREF="cpp_creating_the_environme.html">
+<LINK REL="up" HREF="cpp_interface.html">
+<LINK REL="next" HREF="cpp_adding_variables_to_th.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html785"
+  HREF="cpp_adding_variables_to_th.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html783"
+  HREF="cpp_interface.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html777"
+  HREF="cpp_creating_the_environme.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html786"
+  HREF="cpp_adding_variables_to_th.html">Adding variables to the</A>
+<B> Up:</B> <A NAME="tex2html784"
+  HREF="cpp_interface.html">C++ Interface</A>
+<B> Previous:</B> <A NAME="tex2html778"
+  HREF="cpp_creating_the_environme.html">Creating the environment</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00084000000000000000">
+Creating the model</A>
+</H2>
+<P>
+<EM>Once an environment has been created, the next step is to create a
+model.  A Gurobi model holds a single optimization problem.  It
+consists of a set of variables, a set of constraints, and the
+associated attributes (variable bounds, objective coefficients,
+variable integrality types, constraint senses, constraint right-hand
+side values, etc.).  The first step towards building a model that
+contains all of this information is to create an empty model object:
+</EM><PRE>
+  GRBModel model = GRBModel(env);
+</PRE><EM>
+The constructor takes the previously created environment as its
+argument.
+</EM>
+<P>
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html785"
+  HREF="cpp_adding_variables_to_th.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html783"
+  HREF="cpp_interface.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html777"
+  HREF="cpp_creating_the_environme.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html786"
+  HREF="cpp_adding_variables_to_th.html">Adding variables to the</A>
+<B> Up:</B> <A NAME="tex2html784"
+  HREF="cpp_interface.html">C++ Interface</A>
+<B> Previous:</B> <A NAME="tex2html778"
+  HREF="cpp_creating_the_environme.html">Creating the environment</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

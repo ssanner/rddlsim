@@ -1,0 +1,110 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Using a gurobi.env file</TITLE>
+<META NAME="description" CONTENT="Using a gurobi.env file">
+<META NAME="keywords" CONTENT="quickstart_mac">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="quickstart_mac.css">
+
+<LINK REL="next" HREF="working_with_multiple_mode.html">
+<LINK REL="previous" HREF="parameter_tuning_tool.html">
+<LINK REL="up" HREF="interactive_shell.html">
+<LINK REL="next" HREF="working_with_multiple_mode.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html536"
+  HREF="working_with_multiple_mode.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html534"
+  HREF="interactive_shell.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html528"
+  HREF="parameter_tuning_tool.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html537"
+  HREF="working_with_multiple_mode.html">Working with multiple models</A>
+<B> Up:</B> <A NAME="tex2html535"
+  HREF="interactive_shell.html">Interactive Shell</A>
+<B> Previous:</B> <A NAME="tex2html529"
+  HREF="parameter_tuning_tool.html">Parameter tuning tool</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00057000000000000000"></A>
+<A NAME="subsection:gurobi.env"></A>
+<BR>
+Using a gurobi.env file
+</H2>
+<P>
+<EM>When you want to change the values of Gurobi parameters, you actually
+have several options available for doing so.  We've already discussed
+parameter changes through the command-line tool (e.g.,
+<code>gurobi_cl Threads=1 coins.lp</code>), and through interactive shell
+commands  (e.g., <code>m.setParam('Threads', 1)</code>).  Each of our
+language APIs also provides methods for setting parameters.  The other
+option we'd like to mention now is the <code>gurobi.env</code> file.
+</EM>
+<P>
+<EM>Whenever the Gurobi library starts, it will look for file
+<code>gurobi.env</code> in the current working directory, and will apply any
+parameter changes contained therein.  This is true whether the Gurobi
+library is invoked from the command-line, from the interactive shell,
+or from any of the Gurobi APIs.  Parameter settings are stored one per
+line in this file, with the parameter name first, followed by at least
+one space, followed by the desired value.  Lines beginning with the
+<code>#</code> sign are comments and are ignored.  To give an example, the
+following (Linux) commands:
+</EM><PRE>
+  echo "Threads 1" &gt; gurobi.env
+  gurobi_cl coins.lp
+</PRE><EM>
+would read the new value of the <code>Threads</code> parameter from file
+<code>gurobi.env</code> and then optimize model <code>coins.lp</code> using
+one thread.  Note that if the same parameter is changed in both <EM>  gurobi.env</EM> and in your program (or through the Gurobi
+command-line), the value from <code>gurobi.env</code> will be ignored.
+</EM>
+<P>
+<EM>The distribution includes a sample <code>gurobi.env</code> file (in the
+<code>bin</code> directory).  The sample includes every parameter, with the
+default value for each, but with all settings commented out.
+</EM>
+<P>
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html536"
+  HREF="working_with_multiple_mode.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html534"
+  HREF="interactive_shell.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html528"
+  HREF="parameter_tuning_tool.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html537"
+  HREF="working_with_multiple_mode.html">Working with multiple models</A>
+<B> Up:</B> <A NAME="tex2html535"
+  HREF="interactive_shell.html">Interactive Shell</A>
+<B> Previous:</B> <A NAME="tex2html529"
+  HREF="parameter_tuning_tool.html">Parameter tuning tool</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

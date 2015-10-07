@@ -1,0 +1,216 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>intlinprog.m</TITLE>
+<META NAME="description" CONTENT="intlinprog.m">
+<META NAME="keywords" CONTENT="examples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="examples.css">
+
+<LINK REL="next" HREF="linprog_m.html">
+<LINK REL="previous" HREF="diet_m.html">
+<LINK REL="up" HREF="matlab_examples.html">
+<LINK REL="next" HREF="linprog_m.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html2227"
+  HREF="linprog_m.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html2225"
+  HREF="matlab_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html2219"
+  HREF="diet_m.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html2228"
+  HREF="linprog_m.html">linprog.m</A>
+<B> Up:</B> <A NAME="tex2html2226"
+  HREF="matlab_examples.html">MATLAB Examples</A>
+<B> Previous:</B> <A NAME="tex2html2220"
+  HREF="diet_m.html">diet.m</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00027200000000000000"></A>
+<A NAME="subsubsection:intlinprog.m"></A>
+<BR>
+intlinprog.m
+</H3>
+
+<P>
+<BR>
+<PRE  CLASS="verbatim">function [x, fval, exitflag] = intlinprog(f, intcon, A, b, Aeq, beq, lb, ub)
+%INTLINPROG A mixed integer linear programming example using the
+%   Gurobi MATLAB interface
+%
+%   This example is based on the intlinprog interface defined in the
+%   MATLAB Optimization Toolbox. The Optimization Toolbox
+%   is a registered trademark of The MathWorks, Inc.
+%
+%   x = INTLINPROG(f,intcon,A,b) solves the problem:
+%
+%   minimize     f'*x
+%   subject to   A*x &lt;= b
+%                x(j) integer, when j is in the vector
+%                intcon of integer constraints
+%
+%   x = INTLINPROG(f,intcon,A,b,Aeq,beq) solves the problem:
+%
+%   minimize     f'*x
+%   subject to     A*x &lt;= b,
+%                Aeq*x == beq
+%                x(j) integer, where j is in the vector
+%                intcon of integer constraints
+%
+%   x = INTLINPROG(f,intcon,A,b,Aeq,beq,lb,ub) solves the problem:
+%
+%   minimize     f'*x
+%   subject to     A*x &lt;= b,
+%                Aeq*x == beq,
+%          lb &lt;=     x &lt;= ub.
+%                x(j) integer, where j is in the vector
+%                intcon of integer constraints
+%
+%   You can set lb(j) = -inf, if x(j) has no lower bound,
+%   and ub(j) = inf, if x(j) has no upper bound.
+%
+%   [x, fval] = INTLINPROG(f, intcon, A, b) returns the objective value
+%   at the solution. That is, fval = f'*x.
+%
+%   [x, fval, exitflag] = INTLINPROG(f, intcon, A, b) returns an exitflag
+%   containing the status of the optimization. The values for
+%   exitflag and corresponding status codes are:
+%    2 - Solver stopped prematurely. Integer feasible point found.
+%    1 - Optimal solution found.
+%    0 - Solver stopped prematurely. No integer feasible point found.
+%   -2 - No feasible point found.
+%   -3 - Problem is unbounded.
+
+if nargin &lt; 4
+    error('intlinprog(f, intcon, A, b)')
+end
+
+if nargin &gt; 8
+    error('intlinprog(f, intcon, A, b, Aeq, beq, lb, ub)');
+end
+
+if ~isempty(A)
+    n = size(A, 2);
+elseif nargin &gt; 5 &amp;&amp; ~isempty(Aeq)
+    n = size(Aeq, 2);
+else
+    error('No linear constraints specified')
+end
+
+if ~issparse(A)
+    A = sparse(A);
+end
+
+if nargin &gt; 4 &amp;&amp; ~issparse(Aeq)
+    Aeq = sparse(Aeq);
+end
+
+model.obj = f;
+model.vtype = repmat('C', n, 1);
+model.vtype(intcon) = 'I';
+
+if nargin &lt; 5
+    model.A = A;
+    model.rhs = b;
+    model.sense = '&lt;';
+else
+    model.A = [A; Aeq];
+    model.rhs = [b; beq];
+    model.sense = [repmat('&lt;', size(A,1), 1); repmat('=', size(Aeq,1), 1)];
+end
+
+if nargin &lt; 7
+    model.lb = -inf(n,1);
+else
+    model.lb = lb;
+end
+
+if nargin == 8
+   model.ub = ub;
+end
+
+params.outputflag = 1;
+result = gurobi(model, params);
+
+
+if strcmp(result.status, 'OPTIMAL')
+    exitflag = 1;
+elseif strcmp(result.status, 'INTERRUPTED')
+    if isfield(result, 'x')
+        exitflag = 2;
+    else
+        exitflag = 0;
+    end
+elseif strcmp(result.status, 'INF_OR_UNBD')
+    params.dualreductions = 0;
+    result = gurobi(model, params);
+    if strcmp(result.status, 'INFEASIBLE')
+        exitflag = -2;
+    elseif strcmp(result.status, 'UNBOUNDED')
+        exitflag = -3;
+    else
+        exitflag = nan;
+    end
+else
+    exitflag = nan;
+end
+
+
+if isfield(result, 'x')
+    x = result.x;
+else
+    x = nan(n,1);
+end
+
+if isfield(result, 'objval')
+    fval = result.objval;
+else
+    fval = nan;
+end
+
+</PRE>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html2227"
+  HREF="linprog_m.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html2225"
+  HREF="matlab_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html2219"
+  HREF="diet_m.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html2228"
+  HREF="linprog_m.html">linprog.m</A>
+<B> Up:</B> <A NAME="tex2html2226"
+  HREF="matlab_examples.html">MATLAB Examples</A>
+<B> Previous:</B> <A NAME="tex2html2220"
+  HREF="diet_m.html">diet.m</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

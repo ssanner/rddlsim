@@ -1,0 +1,129 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>GRBModel.chgCoeffs()</TITLE>
+<META NAME="description" CONTENT="GRBModel.chgCoeffs()">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="java_grbmodel_computeiis.html">
+<LINK REL="previous" HREF="java_grbmodel_chgcoeff.html">
+<LINK REL="up" HREF="java_grbmodel.html">
+<LINK REL="next" HREF="java_grbmodel_computeiis.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html4689"
+  HREF="java_grbmodel_computeiis.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html4687"
+  HREF="java_grbmodel.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html4681"
+  HREF="java_grbmodel_chgcoeff.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html4690"
+  HREF="java_grbmodel_computeiis.html">GRBModel.computeIIS()</A>
+<B> Up:</B> <A NAME="tex2html4688"
+  HREF="java_grbmodel.html">GRBModel</A>
+<B> Previous:</B> <A NAME="tex2html4682"
+  HREF="java_grbmodel_chgcoeff.html">GRBModel.chgCoeff()</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000621100000000000000"></A>
+<A NAME="javamethod:GRBModel.chgCoeffs"></A>
+<BR>
+GRBModel.chgCoeffs()
+</H3>
+
+<P>
+Change a list of coefficients in the model.  Each desired change is
+captured using a <code>GRBVar</code> object, a <code>GRBConstr</code> object,
+and a desired coefficient for the specified variable in the specified
+constraint.  The entries in the input arrays each correspond to a
+single desired coefficient change.  The lengths of the input arrays
+must all be the same.  If you make multiple changes to the same
+coefficient, the last one will be applied.
+
+<P>
+Note that the changes won't take effect until the next call to
+<A HREF="java_grbmodel_optimize.html#javamethod:GRBModel.optimize">GRBModel.optimize</A> or
+<A HREF="java_grbmodel_update.html#javamethod:GRBModel.update">GRBModel.update</A> on that
+model.
+
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">void</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">chgCoeffs</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT">GRBConstr[]</TD>
+<TD ALIGN="LEFT">constrs,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">GRBVar[]</TD>
+<TD ALIGN="LEFT">vars,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">double[]</TD>
+<TD ALIGN="LEFT">vals )</TD>
+</TR>
+</TABLE>
+
+<UL>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">constrs</SPAN>: Constraints for coefficients to be changed.
+
+<P>
+ <SPAN  CLASS="textbf">vars</SPAN>: Variables for coefficients to be changed.
+
+<P>
+ <SPAN  CLASS="textbf">vals</SPAN>: Desired new values for coefficients.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html4689"
+  HREF="java_grbmodel_computeiis.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html4687"
+  HREF="java_grbmodel.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html4681"
+  HREF="java_grbmodel_chgcoeff.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html4690"
+  HREF="java_grbmodel_computeiis.html">GRBModel.computeIIS()</A>
+<B> Up:</B> <A NAME="tex2html4688"
+  HREF="java_grbmodel.html">GRBModel</A>
+<B> Previous:</B> <A NAME="tex2html4682"
+  HREF="java_grbmodel_chgcoeff.html">GRBModel.chgCoeff()</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

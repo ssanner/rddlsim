@@ -1,0 +1,195 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>GRBgetqconstr</TITLE>
+<META NAME="description" CONTENT="GRBgetqconstr">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="c_grbgetsos.html">
+<LINK REL="previous" HREF="c_grbgetq.html">
+<LINK REL="up" HREF="c_model_queries.html">
+<LINK REL="next" HREF="c_grbgetsos.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html1695"
+  HREF="c_grbgetsos.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1693"
+  HREF="c_model_queries.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1687"
+  HREF="c_grbgetq.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1696"
+  HREF="c_grbgetsos.html">GRBgetsos</A>
+<B> Up:</B> <A NAME="tex2html1694"
+  HREF="c_model_queries.html">Model Queries</A>
+<B> Previous:</B> <A NAME="tex2html1688"
+  HREF="c_grbgetq.html">GRBgetq</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00024700000000000000"></A>
+<A NAME="routine:GRBgetqconstr"></A>
+<BR>
+GRBgetqconstr
+</H3>
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">GRBgetqconstr</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT">GRBmodel</TD>
+<TD ALIGN="LEFT">*model,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">qconstr,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">*numlnzP,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">*lind,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">double</TD>
+<TD ALIGN="LEFT">*lval,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">*numqnzP,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">*qrow,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">*qcol,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">double</TD>
+<TD ALIGN="LEFT">*qval )</TD>
+</TR>
+</TABLE>
+
+<P>
+Retrieve the linear and quadratic terms associated with a single
+quadratic constraint.  Typical usage is to call this routine twice.
+In the first call, you specify the requested quadratic constraint,
+with <code>NULL</code> values for the array arguments.  The routine returns the
+total number of linear and quadratic terms in the specified quadratic
+constraint in <code>numlnzP</code> and <code>numqnzP</code>, respectively.  That
+allows you to make certain that <code>lind</code>, <code>lval</code>,
+<code>qrow</code>, <code>qcol</code>, and <code>qval</code> are of sufficient size to
+hold the result of the second call.
+
+<P>
+
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Return value:</SPAN></BIG>
+
+<P>
+A non-zero return value indicates that a problem occurred while retrieving the quadratic constraint.
+Refer to the <A HREF="error_codes.html#sec:ErrorCodes">Error Code</A> table for a
+list of possible return values.  Details on the error can be obtained
+by calling <A HREF="c_grbgeterrormsg.html#routine:GRBgeterrormsg">GRBgeterrormsg</A>.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">model</SPAN>: The model from which the quadratic constraint should be retrieved.
+
+<P>
+ <SPAN  CLASS="textbf">qconstr</SPAN>: The index of the requested quadratic constraint.
+
+<P>
+ <SPAN  CLASS="textbf">numlnzP</SPAN>: The number of linear terms retrieved for the requested quadratic constraint.
+
+<P>
+ <SPAN  CLASS="textbf">lind</SPAN>: Variable indices associated with linear terms.
+
+<P>
+ <SPAN  CLASS="textbf">lval</SPAN>: Numerical coefficients associated with linear terms.
+
+<P>
+ <SPAN  CLASS="textbf">numqnzP</SPAN>: The number of quadratic terms retrieved for the requested quadratic constraint.
+
+<P>
+ <SPAN  CLASS="textbf">qrow</SPAN>: Row indices associated with quadratic terms.  A
+  quadratic term is represented using three values: a pair of indices
+  (stored in <TT>qrow</TT> and <TT>qcol</TT>), and a coefficient (stored
+  in <TT>qval</TT>).  The associated arguments arrays provide the
+  corresponding values for each quadratic term.  To give an example,
+  if the requested quadratic constraint has
+  quadratic terms <!-- MATH
+ $2 x0^2 + x0 * x1 + x1^2$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="149" HEIGHT="33" ALIGN="MIDDLE" BORDER="0"
+ SRC="img8.png"
+ ALT="$2 x0^2 + x0 * x1 +
+x1^2$"></SPAN>,
+  this routine would return <TT>*numqnzP=3</TT>,
+  <TT>qrow[] = {0, 0, 1}</TT>, <TT>qcol[] = {0, 1, 1}</TT>, and
+  <TT>qval[] = {2, 1, 1}</TT>.
+
+<P>
+ <SPAN  CLASS="textbf">qcol</SPAN>: Column indices associated with quadratic terms.
+  See the description of the <TT>qrow</TT> argument for more information.
+
+<P>
+ <SPAN  CLASS="textbf">qval</SPAN>: Numerical values associated with quadratic terms.
+  See the description of the <TT>qrow</TT> argument for more information.
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1695"
+  HREF="c_grbgetsos.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1693"
+  HREF="c_model_queries.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1687"
+  HREF="c_grbgetq.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1696"
+  HREF="c_grbgetsos.html">GRBgetsos</A>
+<B> Up:</B> <A NAME="tex2html1694"
+  HREF="c_model_queries.html">Model Queries</A>
+<B> Previous:</B> <A NAME="tex2html1688"
+  HREF="c_grbgetq.html">GRBgetq</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

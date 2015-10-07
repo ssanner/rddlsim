@@ -1,0 +1,344 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>callback_c.c</TITLE>
+<META NAME="description" CONTENT="callback_c.c">
+<META NAME="keywords" CONTENT="examples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="examples.css">
+
+<LINK REL="next" HREF="dense_c_c.html">
+<LINK REL="previous" HREF="c_examples.html">
+<LINK REL="up" HREF="c_examples.html">
+<LINK REL="next" HREF="dense_c_c.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html533"
+  HREF="dense_c_c.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html531"
+  HREF="c_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html525"
+  HREF="c_examples.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html534"
+  HREF="dense_c_c.html">dense_c.c</A>
+<B> Up:</B> <A NAME="tex2html532"
+  HREF="c_examples.html">C Examples</A>
+<B> Previous:</B> <A NAME="tex2html526"
+  HREF="c_examples.html">C Examples</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00021100000000000000"></A>
+<A NAME="subsubsection:callback_c.c"></A>
+<BR>
+callback_c.c
+</H3>
+
+<P>
+<BR>
+<PRE  CLASS="verbatim">/* Copyright 2014, Gurobi Optimization, Inc. */
+
+/*
+   This example reads a model from a file, sets up a callback that
+   monitors optimization progress and implements a custom
+   termination strategy, and outputs progress information to the
+   screen and to a log file.
+
+   The termination strategy implemented in this callback stops the
+   optimization of a MIP model once at least one of the following two
+   conditions have been satisfied:
+     1) The optimality gap is less than 10%
+     2) At least 10000 nodes have been explored, and an integer feasible
+        solution has been found.
+   Note that termination is normally handled through Gurobi parameters
+   (MIPGap, NodeLimit, etc.).  You should only use a callback for
+   termination if the available parameters don't capture your desired
+   termination criterion.
+*/
+
+#include &lt;stdlib.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;math.h&gt;
+#include "gurobi_c.h"
+
+/* Define structure to pass my data to the callback function */
+
+struct callback_data {
+  double  lastiter;
+  double  lastnode;
+  double *solution;
+  FILE   *logfile;
+};
+
+/* Define my callback function */
+
+int __stdcall
+mycallback(GRBmodel *model,
+           void     *cbdata,
+           int       where,
+           void     *usrdata)
+{
+  struct callback_data *mydata = (struct callback_data *) usrdata;
+
+  if (where == GRB_CB_POLLING) {
+    /* Ignore polling callback */
+  } else if (where == GRB_CB_PRESOLVE) {
+    /* Presolve callback */
+    int cdels, rdels;
+    GRBcbget(cbdata, where, GRB_CB_PRE_COLDEL, &amp;cdels);
+    GRBcbget(cbdata, where, GRB_CB_PRE_ROWDEL, &amp;rdels);
+    if (cdels || rdels) {
+      printf("%7d columns and %7d rows are removed\n", cdels, rdels);
+    }
+  } else if (where == GRB_CB_SIMPLEX) {
+    /* Simplex callback */
+    double itcnt, obj, pinf, dinf;
+    int    ispert;
+    char   ch;
+    GRBcbget(cbdata, where, GRB_CB_SPX_ITRCNT, &amp;itcnt);
+    if (itcnt - mydata-&gt;lastiter &gt;= 100) {
+      mydata-&gt;lastiter = itcnt;
+      GRBcbget(cbdata, where, GRB_CB_SPX_OBJVAL, &amp;obj);
+      GRBcbget(cbdata, where, GRB_CB_SPX_ISPERT, &amp;ispert);
+      GRBcbget(cbdata, where, GRB_CB_SPX_PRIMINF, &amp;pinf);
+      GRBcbget(cbdata, where, GRB_CB_SPX_DUALINF, &amp;dinf);
+      if      (ispert == 0) ch = ' ';
+      else if (ispert == 1) ch = 'S';
+      else                  ch = 'P';
+      printf("%7.0f %14.7e%c %13.6e %13.6e\n", itcnt, obj, ch, pinf, dinf);
+    }
+  } else if (where == GRB_CB_MIP) {
+    /* General MIP callback */
+    double nodecnt, objbst, objbnd, actnodes, itcnt;
+    int    solcnt, cutcnt;
+    GRBcbget(cbdata, where, GRB_CB_MIP_NODCNT, &amp;nodecnt);
+    GRBcbget(cbdata, where, GRB_CB_MIP_OBJBST, &amp;objbst);
+    GRBcbget(cbdata, where, GRB_CB_MIP_OBJBND, &amp;objbnd);
+    GRBcbget(cbdata, where, GRB_CB_MIP_SOLCNT, &amp;solcnt);
+    if (nodecnt - mydata-&gt;lastnode &gt;= 100) {
+      mydata-&gt;lastnode = nodecnt;
+      GRBcbget(cbdata, where, GRB_CB_MIP_NODLFT, &amp;actnodes);
+      GRBcbget(cbdata, where, GRB_CB_MIP_ITRCNT, &amp;itcnt);
+      GRBcbget(cbdata, where, GRB_CB_MIP_CUTCNT, &amp;cutcnt);
+      printf("%7.0f %7.0f %8.0f %13.6e %13.6e %7d %7d\n",
+             nodecnt, actnodes, itcnt, objbst, objbnd, solcnt, cutcnt);
+    }
+    if (fabs(objbst - objbnd) &lt; 0.1 * (1.0 + fabs(objbst))) {
+      printf("Stop early - 10%% gap achieved\n");
+      GRBterminate(model);
+    }
+    if (nodecnt &gt;= 10000 &amp;&amp; solcnt) {
+      printf("Stop early - 10000 nodes explored\n");
+      GRBterminate(model);
+    }
+  } else if (where == GRB_CB_MIPSOL) {
+    /* MIP solution callback */
+    double nodecnt, obj;
+    int    solcnt;
+    GRBcbget(cbdata, where, GRB_CB_MIPSOL_NODCNT, &amp;nodecnt);
+    GRBcbget(cbdata, where, GRB_CB_MIPSOL_OBJ, &amp;obj);
+    GRBcbget(cbdata, where, GRB_CB_MIPSOL_SOLCNT, &amp;solcnt);
+    GRBcbget(cbdata, where, GRB_CB_MIPSOL_SOL, mydata-&gt;solution);
+    printf("**** New solution at node %.0f, obj %g, sol %d, x[0] = %.2f ****\n",
+           nodecnt, obj, solcnt, mydata-&gt;solution[0]);
+  } else if (where == GRB_CB_MIPNODE) {
+    int status;
+    /* MIP node callback */
+    printf("**** New node ****\n");
+    GRBcbget(cbdata, where, GRB_CB_MIPNODE_STATUS, &amp;status);
+    if (status == GRB_OPTIMAL) {
+      GRBcbget(cbdata, where, GRB_CB_MIPNODE_REL, mydata-&gt;solution);
+      GRBcbsolution(cbdata, mydata-&gt;solution);
+    }
+  } else if (where == GRB_CB_BARRIER) {
+    /* Barrier callback */
+    int    itcnt;
+    double primobj, dualobj, priminf, dualinf, compl;
+    GRBcbget(cbdata, where, GRB_CB_BARRIER_ITRCNT, &amp;itcnt);
+    GRBcbget(cbdata, where, GRB_CB_BARRIER_PRIMOBJ, &amp;primobj);
+    GRBcbget(cbdata, where, GRB_CB_BARRIER_DUALOBJ, &amp;dualobj);
+    GRBcbget(cbdata, where, GRB_CB_BARRIER_PRIMINF, &amp;priminf);
+    GRBcbget(cbdata, where, GRB_CB_BARRIER_DUALINF, &amp;dualinf);
+    GRBcbget(cbdata, where, GRB_CB_BARRIER_COMPL, &amp;compl);
+    printf("%d %.4e %.4e %.4e %.4e %.4e\n",
+           itcnt, primobj, dualobj, priminf, dualinf, compl);
+  } else if (where == GRB_CB_MESSAGE) {
+    /* Message callback */
+    char *msg;
+    GRBcbget(cbdata, where, GRB_CB_MSG_STRING, &amp;msg);
+    fprintf(mydata-&gt;logfile, "%s", msg);
+  }
+  return 0;
+}
+
+int
+main(int   argc,
+     char *argv[])
+{
+  GRBenv   *env   = NULL;
+  GRBmodel *model = NULL;
+  int       error = 0;
+  int       numvars, solcount, optimstatus, j;
+  double    objval, x;
+  char     *varname;
+  struct callback_data mydata;
+
+  mydata.lastiter = -GRB_INFINITY;
+  mydata.lastnode = -GRB_INFINITY;
+  mydata.solution = NULL;
+  mydata.logfile  = NULL;
+
+  if (argc &lt; 2) {
+    fprintf(stderr, "Usage: callback_c filename\n");
+    goto QUIT;
+  }
+
+  /* Open log file */
+  mydata.logfile = fopen("cb.log", "w");
+  if (!mydata.logfile) {
+    fprintf(stderr, "Cannot open cb.log for callback message\n");
+    goto QUIT;
+  }
+
+  /* Create environment */
+
+  error = GRBloadenv(&amp;env, NULL);
+  if (error) goto QUIT;
+
+  /* Turn off display and heuristics */
+
+  error = GRBsetintparam(env, GRB_INT_PAR_OUTPUTFLAG, 0);
+  if (error) goto QUIT;
+
+  error = GRBsetdblparam(env, GRB_DBL_PAR_HEURISTICS, 0.0);
+  if (error) goto QUIT;
+
+  /* Read model from file */
+
+  error = GRBreadmodel(env, argv[1], &amp;model);
+  if (error) goto QUIT;
+
+  /* Allocate space for solution */
+
+  error = GRBgetintattr(model, GRB_INT_ATTR_NUMVARS, &amp;numvars);
+  if (error) goto QUIT;
+
+  mydata.solution = malloc(numvars*sizeof(double));
+  if (mydata.solution == NULL) {
+    fprintf(stderr, "Failed to allocate memory\n");
+    exit(1);
+  }
+
+  /* Set callback function */
+
+  error = GRBsetcallbackfunc(model, mycallback, (void *) &amp;mydata);
+  if (error) goto QUIT;
+
+  /* Solve model */
+
+  error = GRBoptimize(model);
+  if (error) goto QUIT;
+
+  /* Capture solution information */
+
+  printf("\nOptimization complete\n");
+
+  error = GRBgetintattr(model, GRB_INT_ATTR_SOLCOUNT, &amp;solcount);
+  if (error) goto QUIT;
+
+  error = GRBgetintattr(model, GRB_INT_ATTR_STATUS, &amp;optimstatus);
+  if (error) goto QUIT;
+
+  if (solcount == 0) {
+    printf("No solution found, optimization status = %d\n", optimstatus);
+    goto QUIT;
+  }
+
+  error = GRBgetdblattr(model, GRB_DBL_ATTR_OBJVAL, &amp;objval);
+  if (error) goto QUIT;
+
+  printf("Solution found, objective = %.4e\n", objval);
+
+  for ( j = 0; j &lt; numvars; ++j ) {
+    error = GRBgetstrattrelement(model, GRB_STR_ATTR_VARNAME, j, &amp;varname);
+    if (error) goto QUIT;
+    error = GRBgetdblattrelement(model, GRB_DBL_ATTR_X, j, &amp;x);
+    if (error) goto QUIT;
+    if (x != 0.0) {
+      printf("%s %f\n", varname, x);
+    }
+  }
+
+QUIT:
+
+  /* Error reporting */
+
+  if (error) {
+    printf("ERROR: %s\n", GRBgeterrormsg(env));
+    exit(1);
+  }
+
+  /* Close log file */
+
+  if (mydata.logfile)
+    fclose(mydata.logfile);
+
+  /* Free solution */
+
+  if (mydata.solution)
+    free(mydata.solution);
+
+  /* Free model */
+
+  GRBfreemodel(model);
+
+  /* Free environment */
+
+  GRBfreeenv(env);
+
+  return 0;
+}
+</PRE>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html533"
+  HREF="dense_c_c.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html531"
+  HREF="c_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html525"
+  HREF="c_examples.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html534"
+  HREF="dense_c_c.html">dense_c.c</A>
+<B> Up:</B> <A NAME="tex2html532"
+  HREF="c_examples.html">C Examples</A>
+<B> Previous:</B> <A NAME="tex2html526"
+  HREF="c_examples.html">C Examples</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

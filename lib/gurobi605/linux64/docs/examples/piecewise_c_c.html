@@ -1,0 +1,256 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>piecewise_c.c</TITLE>
+<META NAME="description" CONTENT="piecewise_c.c">
+<META NAME="keywords" CONTENT="examples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="examples.css">
+
+<LINK REL="next" HREF="qcp_c_c.html">
+<LINK REL="previous" HREF="params_c_c.html">
+<LINK REL="up" HREF="c_examples.html">
+<LINK REL="next" HREF="qcp_c_c.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html653"
+  HREF="qcp_c_c.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html651"
+  HREF="c_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html645"
+  HREF="params_c_c.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html654"
+  HREF="qcp_c_c.html">qcp_c.c</A>
+<B> Up:</B> <A NAME="tex2html652"
+  HREF="c_examples.html">C Examples</A>
+<B> Previous:</B> <A NAME="tex2html646"
+  HREF="params_c_c.html">params_c.c</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000211300000000000000"></A>
+<A NAME="subsubsection:piecewise_c.c"></A>
+<BR>
+piecewise_c.c
+</H3>
+
+<P>
+<BR>
+<PRE  CLASS="verbatim">/* Copyright 2014, Gurobi Optimization, Inc. */
+
+/* This example considers the following separable, convex problem:
+
+     minimize    f(x) - y + g(z)
+     subject to  x + 2 y + 3 z &lt;= 4
+                 x +   y       &gt;= 1
+                 x,    y,    z &lt;= 1
+
+   where f(u) = exp(-u) and g(u) = 2 u^2 - 4 u, for all real u. It
+   formulates and solves a simpler LP model by approximating f and
+   g with piecewise-linear functions. Then it transforms the model
+   into a MIP by negating the approximation for f, which corresponds
+   to a non-convex piecewise-linear function, and solves it again.
+*/
+
+#include &lt;stdlib.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;math.h&gt;
+#include "gurobi_c.h"
+
+double f(double u) { return exp(-u); }
+double g(double u) { return 2 * u * u - 4 * u; }
+
+int
+main(int   argc,
+     char *argv[])
+{
+  GRBenv   *env   = NULL;
+  GRBmodel *model = NULL;
+  int       error = 0;
+  double    lb, ub;
+  int       npts, i;
+  double   *ptu = NULL;
+  double   *ptf = NULL;
+  double   *ptg = NULL;
+  int       ind[3];
+  double    val[3];
+  int       ismip;
+  double    objval;
+  double    sol[3];
+
+  /* Create environment */
+
+  error = GRBloadenv(&amp;env, NULL);
+  if (error) goto QUIT;
+
+  /* Create a new model */
+
+  error = GRBnewmodel(env, &amp;model, NULL, 0, NULL, NULL, NULL, NULL, NULL);
+  if (error) goto QUIT;
+
+  /* Add variables */
+
+  lb = 0.0; ub = 1.0;
+
+  error = GRBaddvar(model, 0, NULL, NULL, 0.0, lb, ub, GRB_CONTINUOUS, "x");
+  if (error) goto QUIT;
+  error = GRBaddvar(model, 0, NULL, NULL, 0.0, lb, ub, GRB_CONTINUOUS, "y");
+  if (error) goto QUIT;
+  error = GRBaddvar(model, 0, NULL, NULL, 0.0, lb, ub, GRB_CONTINUOUS, "z");
+  if (error) goto QUIT;
+
+  /* Integrate new variables */
+
+  error = GRBupdatemodel(model);
+  if (error) goto QUIT;
+
+  /* Set objective for y */
+
+  error = GRBsetdblattrelement(model, GRB_DBL_ATTR_OBJ, 1, -1.0);
+  if (error) goto QUIT;
+
+  /* Add piecewise-linear objective functions for x and z */
+
+  npts = 101;
+  ptu = (double *) malloc(npts * sizeof(double));
+  ptf = (double *) malloc(npts * sizeof(double));
+  ptg = (double *) malloc(npts * sizeof(double));
+
+  for (i = 0; i &lt; npts; i++) {
+    ptu[i] = lb + (ub - lb) * i / (npts - 1);
+    ptf[i] = f(ptu[i]);
+    ptg[i] = g(ptu[i]);
+  }
+
+  error = GRBsetpwlobj(model, 0, npts, ptu, ptf);
+  if (error) goto QUIT;
+  error = GRBsetpwlobj(model, 2, npts, ptu, ptg);
+  if (error) goto QUIT;
+
+  /* Add constraint: x + 2 y + 3 z &lt;= 4 */
+
+  ind[0] = 0; ind[1] = 1; ind[2] = 2;
+  val[0] = 1; val[1] = 2; val[2] = 3;
+
+  error = GRBaddconstr(model, 3, ind, val, GRB_LESS_EQUAL, 4.0, "c0");
+  if (error) goto QUIT;
+
+  /* Add constraint: x + y &gt;= 1 */
+
+  ind[0] = 0; ind[1] = 1;
+  val[0] = 1; val[1] = 1;
+
+  error = GRBaddconstr(model, 2, ind, val, GRB_GREATER_EQUAL, 1.0, "c1");
+  if (error) goto QUIT;
+
+  /* Optimize model as an LP */
+
+  error = GRBoptimize(model);
+  if (error) goto QUIT;
+
+  error = GRBgetintattr(model, "IsMIP", &amp;ismip);
+  if (error) goto QUIT;
+  error = GRBgetdblattr(model, "ObjVal", &amp;objval);
+  if (error) goto QUIT;
+  error = GRBgetdblattrarray(model, "X", 0, 3, sol);
+  if (error) goto QUIT;
+
+  printf("IsMIP: %d\n", ismip);
+  printf("x %g\ny %g\nz %g\n", sol[0], sol[1], sol[2]);
+  printf("Obj: %g\n", objval);
+  printf("\n");
+
+  /* Negate piecewise-linear objective function for x */
+
+  for (i = 0; i &lt; npts; i++) {
+    ptf[i] = -ptf[i];
+  }
+
+  error = GRBsetpwlobj(model, 0, npts, ptu, ptf);
+  if (error) goto QUIT;
+
+  /* Optimize model as a MIP */
+
+  error = GRBoptimize(model);
+  if (error) goto QUIT;
+
+  error = GRBgetintattr(model, "IsMIP", &amp;ismip);
+  if (error) goto QUIT;
+  error = GRBgetdblattr(model, "ObjVal", &amp;objval);
+  if (error) goto QUIT;
+  error = GRBgetdblattrarray(model, "X", 0, 3, sol);
+  if (error) goto QUIT;
+
+  printf("IsMIP: %d\n", ismip);
+  printf("x %g\ny %g\nz %g\n", sol[0], sol[1], sol[2]);
+  printf("Obj: %g\n", objval);
+
+QUIT:
+
+  /* Error reporting */
+
+  if (error) {
+    printf("ERROR: %s\n", GRBgeterrormsg(env));
+    exit(1);
+  }
+
+  /* Free data */
+
+  free(ptu);
+  free(ptf);
+  free(ptg);
+
+  /* Free model */
+
+  GRBfreemodel(model);
+
+  /* Free environment */
+
+  GRBfreeenv(env);
+
+  return 0;
+}
+</PRE>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html653"
+  HREF="qcp_c_c.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html651"
+  HREF="c_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html645"
+  HREF="params_c_c.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html654"
+  HREF="qcp_c_c.html">qcp_c.c</A>
+<B> Up:</B> <A NAME="tex2html652"
+  HREF="c_examples.html">C Examples</A>
+<B> Previous:</B> <A NAME="tex2html646"
+  HREF="params_c_c.html">params_c.c</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

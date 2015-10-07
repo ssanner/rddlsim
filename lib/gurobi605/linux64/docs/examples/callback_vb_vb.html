@@ -1,0 +1,207 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>callback_vb.vb</TITLE>
+<META NAME="description" CONTENT="callback_vb.vb">
+<META NAME="keywords" CONTENT="examples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="examples.css">
+
+<LINK REL="next" HREF="dense_vb_vb.html">
+<LINK REL="previous" HREF="visual_basic_examples.html">
+<LINK REL="up" HREF="visual_basic_examples.html">
+<LINK REL="next" HREF="dense_vb_vb.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html1621"
+  HREF="dense_vb_vb.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1619"
+  HREF="visual_basic_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1613"
+  HREF="visual_basic_examples.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1622"
+  HREF="dense_vb_vb.html">dense_vb.vb</A>
+<B> Up:</B> <A NAME="tex2html1620"
+  HREF="visual_basic_examples.html">Visual Basic Examples</A>
+<B> Previous:</B> <A NAME="tex2html1614"
+  HREF="visual_basic_examples.html">Visual Basic Examples</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00025100000000000000"></A>
+<A NAME="subsubsection:callback_vb.vb"></A>
+<BR>
+callback_vb.vb
+</H3>
+
+<P>
+<BR>
+<PRE  CLASS="verbatim">' Copyright 2014, Gurobi Optimization, Inc.
+
+'   This example reads a model from a file, sets up a callback that
+'   monitors optimization progress and implements a custom
+'   termination strategy, and outputs progress information to the
+'   screen and to a log file.
+'
+'   The termination strategy implemented in this callback stops the
+'   optimization of a MIP model once at least one of the following two
+'   conditions have been satisfied:
+'     1) The optimality gap is less than 10%
+'     2) At least 10000 nodes have been explored, and an integer feasible
+'        solution has been found.
+'   Note that termination is normally handled through Gurobi parameters
+'   (MIPGap, NodeLimit, etc.).  You should only use a callback for
+'   termination if the available parameters don't capture your desired
+'   termination criterion.
+
+Imports System
+Imports Gurobi
+
+Class callback_vb
+    Inherits GRBCallback
+    Private vars As GRBVar()
+    Private lastnode As Double
+    Private lastiter As Double
+
+    Public Sub New(ByVal xvars As GRBVar())
+        vars = xvars
+        lastnode = lastiter = -1
+    End Sub
+
+    Protected Overloads Overrides Sub Callback()
+        Try
+            If where = GRB.Callback.PRESOLVE Then
+                ' Presolve callback
+                Dim cdels As Integer = GetIntInfo(GRB.Callback.PRE_COLDEL)
+                Dim rdels As Integer = GetIntInfo(GRB.Callback.PRE_ROWDEL)
+                Console.WriteLine(cdels &amp; " columns and " &amp; rdels &amp; " rows are removed")
+            ElseIf where = GRB.Callback.SIMPLEX Then
+                ' Simplex callback
+                Dim itcnt As Double = GetDoubleInfo(GRB.Callback.SPX_ITRCNT)
+                If itcnt Mod - lastiter &gt;= 100 Then
+                    lastiter = itcnt
+                    Dim obj As Double = GetDoubleInfo(GRB.Callback.SPX_OBJVAL)
+                    Dim pinf As Double = GetDoubleInfo(GRB.Callback.SPX_PRIMINF)
+                    Dim dinf As Double = GetDoubleInfo(GRB.Callback.SPX_DUALINF)
+                    Dim ispert As Integer = GetIntInfo(GRB.Callback.SPX_ISPERT)
+                    Dim ch As Char
+                    If ispert = 0 Then
+                        ch = " "c
+                    ElseIf ispert = 1 Then
+                        ch = "S"c
+                    Else
+                        ch = "P"c
+                    End If
+                    Console.WriteLine(itcnt &amp; "  " &amp; obj &amp; ch &amp; "  " &amp; pinf &amp; "  " &amp; dinf)
+                End If
+            ElseIf where = GRB.Callback.MIP Then
+                ' General MIP callback
+                Dim nodecnt As Double = GetDoubleInfo(GRB.Callback.MIP_NODCNT)
+                If nodecnt - lastnode &gt;= 100 Then
+                    lastnode = nodecnt
+                    Dim objbst As Double = GetDoubleInfo(GRB.Callback.MIP_OBJBST)
+                    Dim objbnd As Double = GetDoubleInfo(GRB.Callback.MIP_OBJBND)
+                    If Math.Abs(objbst - objbnd) &lt; 0.1 * (1.0R + Math.Abs(objbst)) Then
+                        Abort()
+                    End If
+                    Dim actnodes As Integer = CInt(GetDoubleInfo(GRB.Callback.MIP_NODLFT))
+                    Dim itcnt As Integer = CInt(GetDoubleInfo(GRB.Callback.MIP_ITRCNT))
+                    Dim solcnt As Integer = GetIntInfo(GRB.Callback.MIP_SOLCNT)
+                    Dim cutcnt As Integer = GetIntInfo(GRB.Callback.MIP_CUTCNT)
+                    Console.WriteLine(nodecnt &amp; " " &amp; actnodes &amp; " " &amp; itcnt &amp; " " &amp; _
+                                      objbst &amp; " " &amp; objbnd &amp; " " &amp; solcnt &amp; " " &amp; cutcnt)
+                End If
+            ElseIf where = GRB.Callback.MIPSOL Then
+                ' MIP solution callback
+                Dim obj As Double = GetDoubleInfo(GRB.Callback.MIPSOL_OBJ)
+                Dim nodecnt As Integer = CInt(GetDoubleInfo(GRB.Callback.MIPSOL_NODCNT))
+                Dim x As Double() = GetSolution(vars)
+                Console.WriteLine("**** New solution at node " &amp; nodecnt &amp; ", obj " &amp; _
+                                  obj &amp; ", x(0) = " &amp; x(0) &amp; "****")
+            End If
+        Catch e As GRBException
+            Console.WriteLine("Error code: " &amp; e.ErrorCode &amp; ". " &amp; e.Message)
+            Console.WriteLine(e.StackTrace)
+        End Try
+    End Sub
+
+    Shared Sub Main(ByVal args As String())
+
+        If args.Length &lt; 1 Then
+            Console.WriteLine("Usage: callback_vb filename")
+            Return
+        End If
+
+        Try
+            Dim env As New GRBEnv()
+            Dim model As New GRBModel(env, args(0))
+
+            Dim vars As GRBVar() = model.GetVars()
+
+            ' Create a callback object and associate it with the model
+            model.SetCallback(New callback_vb(vars))
+            model.Optimize()
+
+            Dim x As Double() = model.Get(GRB.DoubleAttr.X, vars)
+            Dim vnames As String() = model.Get(GRB.StringAttr.VarName, vars)
+
+            For j As Integer = 0 To vars.Length - 1
+                If x(j) &lt;&gt; 0.0R Then
+                    Console.WriteLine(vnames(j) &amp; " " &amp; x(j))
+                End If
+            Next
+
+            ' Dispose of model and env
+            model.Dispose()
+            env.Dispose()
+
+        Catch e As GRBException
+            Console.WriteLine("Error code: " &amp; e.ErrorCode &amp; ". " &amp; e.Message)
+            Console.WriteLine(e.StackTrace)
+        End Try
+    End Sub
+End Class
+</PRE>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1621"
+  HREF="dense_vb_vb.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1619"
+  HREF="visual_basic_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1613"
+  HREF="visual_basic_examples.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1622"
+  HREF="dense_vb_vb.html">dense_vb.vb</A>
+<B> Up:</B> <A NAME="tex2html1620"
+  HREF="visual_basic_examples.html">Visual Basic Examples</A>
+<B> Previous:</B> <A NAME="tex2html1614"
+  HREF="visual_basic_examples.html">Visual Basic Examples</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

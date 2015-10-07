@@ -1,0 +1,148 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>mip1_c++.cpp</TITLE>
+<META NAME="description" CONTENT="mip1_c++.cpp">
+<META NAME="keywords" CONTENT="examples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="examples.css">
+
+<LINK REL="next" HREF="mip2_cpp_cpp.html">
+<LINK REL="previous" HREF="lpmod_cpp_cpp.html">
+<LINK REL="up" HREF="cpp_examples.html">
+<LINK REL="next" HREF="mip2_cpp_cpp.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html895"
+  HREF="mip2_cpp_cpp.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html893"
+  HREF="cpp_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html887"
+  HREF="lpmod_cpp_cpp.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html896"
+  HREF="mip2_cpp_cpp.html">mip2_c++.cpp</A>
+<B> Up:</B> <A NAME="tex2html894"
+  HREF="cpp_examples.html">C++ Examples</A>
+<B> Previous:</B> <A NAME="tex2html888"
+  HREF="lpmod_cpp_cpp.html">lpmod_c++.cpp</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000221000000000000000"></A>
+<A NAME="subsubsection:mip1_c++.cpp"></A>
+<BR>
+mip1_c++.cpp
+</H3>
+
+<P>
+<BR>
+<PRE  CLASS="verbatim">/* Copyright 2014, Gurobi Optimization, Inc. */
+
+/* This example formulates and solves the following simple MIP model:
+
+     maximize    x +   y + 2 z
+     subject to  x + 2 y + 3 z &lt;= 4
+                 x +   y       &gt;= 1
+     x, y, z binary
+*/
+
+#include "gurobi_c++.h"
+using namespace std;
+
+int
+main(int   argc,
+     char *argv[])
+{
+  try {
+    GRBEnv env = GRBEnv();
+
+    GRBModel model = GRBModel(env);
+
+    // Create variables
+
+    GRBVar x = model.addVar(0.0, 1.0, 0.0, GRB_BINARY, "x");
+    GRBVar y = model.addVar(0.0, 1.0, 0.0, GRB_BINARY, "y");
+    GRBVar z = model.addVar(0.0, 1.0, 0.0, GRB_BINARY, "z");
+
+    // Integrate new variables
+
+    model.update();
+
+    // Set objective: maximize x + y + 2 z
+
+    model.setObjective(x + y + 2 * z, GRB_MAXIMIZE);
+
+    // Add constraint: x + 2 y + 3 z &lt;= 4
+
+    model.addConstr(x + 2 * y + 3 * z &lt;= 4, "c0");
+
+    // Add constraint: x + y &gt;= 1
+
+    model.addConstr(x + y &gt;= 1, "c1");
+
+    // Optimize model
+
+    model.optimize();
+
+    cout &lt;&lt; x.get(GRB_StringAttr_VarName) &lt;&lt; " "
+         &lt;&lt; x.get(GRB_DoubleAttr_X) &lt;&lt; endl;
+    cout &lt;&lt; y.get(GRB_StringAttr_VarName) &lt;&lt; " "
+         &lt;&lt; y.get(GRB_DoubleAttr_X) &lt;&lt; endl;
+    cout &lt;&lt; z.get(GRB_StringAttr_VarName) &lt;&lt; " "
+         &lt;&lt; z.get(GRB_DoubleAttr_X) &lt;&lt; endl;
+
+    cout &lt;&lt; "Obj: " &lt;&lt; model.get(GRB_DoubleAttr_ObjVal) &lt;&lt; endl;
+
+  } catch(GRBException e) {
+    cout &lt;&lt; "Error code = " &lt;&lt; e.getErrorCode() &lt;&lt; endl;
+    cout &lt;&lt; e.getMessage() &lt;&lt; endl;
+  } catch(...) {
+    cout &lt;&lt; "Exception during optimization" &lt;&lt; endl;
+  }
+
+  return 0;
+}
+</PRE>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html895"
+  HREF="mip2_cpp_cpp.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html893"
+  HREF="cpp_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html887"
+  HREF="lpmod_cpp_cpp.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html896"
+  HREF="mip2_cpp_cpp.html">mip2_c++.cpp</A>
+<B> Up:</B> <A NAME="tex2html894"
+  HREF="cpp_examples.html">C++ Examples</A>
+<B> Previous:</B> <A NAME="tex2html888"
+  HREF="lpmod_cpp_cpp.html">lpmod_c++.cpp</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

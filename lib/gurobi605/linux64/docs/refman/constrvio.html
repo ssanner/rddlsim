@@ -1,0 +1,121 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>ConstrVio</TITLE>
+<META NAME="description" CONTENT="ConstrVio">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="constrsvio.html">
+<LINK REL="previous" HREF="boundsviosum.html">
+<LINK REL="up" HREF="quality_attributes.html">
+<LINK REL="next" HREF="constrsvio.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html10422"
+  HREF="constrsvio.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html10420"
+  HREF="quality_attributes.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html10414"
+  HREF="boundsviosum.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html10423"
+  HREF="constrsvio.html">ConstrSVio</A>
+<B> Up:</B> <A NAME="tex2html10421"
+  HREF="quality_attributes.html">Quality Attributes</A>
+<B> Previous:</B> <A NAME="tex2html10415"
+  HREF="boundsviosum.html">BoundSVioSum</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000136700000000000000"></A>
+<A NAME="attr:ConstrVio"></A>
+<BR>
+ConstrVio
+</H3>
+<TABLE CELLPADDING=3>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf">Type:</SPAN></TH>
+<TD ALIGN="LEFT">double</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf">Modifiable:</SPAN></TH>
+<TD ALIGN="LEFT">No</TD>
+</TR>
+</TABLE>
+
+<P>
+Reporting constraint violations for the simplex solver is actually
+more complex than it may appear, due to the treatment of slacks on
+linear inequality constraints.  The simplex solver introduces explicit
+non-negative slack variables inside the algorithm.  Thus, for example,
+<SPAN CLASS="MATH"><IMG
+ WIDTH="60" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img50.png"
+ ALT="$a^Tx \le b$"></SPAN> becomes <SPAN CLASS="MATH"><IMG
+ WIDTH="87" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img51.png"
+ ALT="$a^Tx + s = b$"></SPAN>.  In this formulation,
+constraint errors can show up in two places: (i) as bound violations
+on the computed slack variable values, and (ii) as differences between
+<SPAN CLASS="MATH"><IMG
+ WIDTH="58" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img52.png"
+ ALT="$a^Tx + s$"></SPAN> and <SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img23.png"
+ ALT="$b$"></SPAN>.  We report the former as <code>ConstrVio</code>
+and the latter as <code>ConstrResidual</code>.
+
+<P>
+For MIP models, constraint violations are reported in <code>ConstrVio</code>.
+
+<P>
+Available for all model types.
+
+<P>
+
+<P>
+For examples of how to query or modify attributes, refer to
+our <A HREF="attribute_examples.html#sec:AttributeExamples">Attribute Examples</A>.
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html10422"
+  HREF="constrsvio.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html10420"
+  HREF="quality_attributes.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html10414"
+  HREF="boundsviosum.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html10423"
+  HREF="constrsvio.html">ConstrSVio</A>
+<B> Up:</B> <A NAME="tex2html10421"
+  HREF="quality_attributes.html">Quality Attributes</A>
+<B> Previous:</B> <A NAME="tex2html10415"
+  HREF="boundsviosum.html">BoundSVioSum</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

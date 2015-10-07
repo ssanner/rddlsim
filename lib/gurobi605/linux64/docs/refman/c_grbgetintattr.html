@@ -1,0 +1,140 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>GRBgetintattr</TITLE>
+<META NAME="description" CONTENT="GRBgetintattr">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="c_grbsetintattr.html">
+<LINK REL="previous" HREF="c_grbgetattrinfo.html">
+<LINK REL="up" HREF="c_attribute_management.html">
+<LINK REL="next" HREF="c_grbsetintattr.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html1845"
+  HREF="c_grbsetintattr.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1843"
+  HREF="c_attribute_management.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1837"
+  HREF="c_grbgetattrinfo.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1846"
+  HREF="c_grbsetintattr.html">GRBsetintattr</A>
+<B> Up:</B> <A NAME="tex2html1844"
+  HREF="c_attribute_management.html">Attribute Management</A>
+<B> Previous:</B> <A NAME="tex2html1838"
+  HREF="c_grbgetattrinfo.html">GRBgetattrinfo</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00026200000000000000"></A>
+<A NAME="routine:GRBgetintattr"></A>
+<BR>
+GRBgetintattr
+</H3>
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">GRBgetintattr</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT">GRBmodel</TD>
+<TD ALIGN="LEFT">*model,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">const char</TD>
+<TD ALIGN="LEFT">*attrname,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">*valueP )</TD>
+</TR>
+</TABLE>
+
+<P>
+Query the value of an integer-valued model attribute.
+
+<P>
+
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Return value:</SPAN></BIG>
+
+<P>
+A non-zero return value indicates that a problem occurred while querying the attribute.
+Refer to the <A HREF="error_codes.html#sec:ErrorCodes">Error Code</A> table for a
+list of possible return values.  Details on the error can be obtained
+by calling <A HREF="c_grbgeterrormsg.html#routine:GRBgeterrormsg">GRBgeterrormsg</A>.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">model</SPAN>: A loaded optimization model, typically created by routine
+<A HREF="c_grbnewmodel.html#routine:GRBnewmodel">GRBnewmodel</A> or
+<A HREF="c_grbreadmodel.html#routine:GRBreadmodel">GRBreadmodel</A>.
+
+<P>
+ <SPAN  CLASS="textbf">attrname</SPAN>: The name of an integer-valued model attribute. Available
+attributes are listed and described in the
+<A HREF="attributes.html#sec:Attributes">Attributes</A> section of this document.
+
+<P>
+ <SPAN  CLASS="textbf">valueP</SPAN>: The location in which the current value of the
+  requested attribute should be placed.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Important note:</SPAN></BIG>
+
+<P>
+Note that this method should be used for scalar attributes only (i.e.,
+model attributes).  To query a single element of an array attribute,
+use
+<A HREF="c_grbgetintattrelement.html#routine:GRBgetintattrelement">GRBgetintattrelement</A> instead.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Example usage:</SPAN></BIG><PRE>
+  error = GRBgetintattr(model, "NumBinVars", &amp;numbin);
+</PRE>
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1845"
+  HREF="c_grbsetintattr.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1843"
+  HREF="c_attribute_management.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1837"
+  HREF="c_grbgetattrinfo.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1846"
+  HREF="c_grbsetintattr.html">GRBsetintattr</A>
+<B> Up:</B> <A NAME="tex2html1844"
+  HREF="c_attribute_management.html">Attribute Management</A>
+<B> Previous:</B> <A NAME="tex2html1838"
+  HREF="c_grbgetattrinfo.html">GRBgetattrinfo</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

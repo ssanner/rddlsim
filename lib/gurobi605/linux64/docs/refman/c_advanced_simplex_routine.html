@@ -1,0 +1,143 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Advanced simplex routines</TITLE>
+<META NAME="description" CONTENT="Advanced simplex routines">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="previous" HREF="c_error_handling.html">
+<LINK REL="up" HREF="c_api_details.html">
+<LINK REL="next" HREF="c_grbfsolve.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html2426"
+  HREF="c_grbfsolve.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html2424"
+  HREF="c_api_details.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html2420"
+  HREF="c_grbgeterrormsg.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html2427"
+  HREF="c_grbfsolve.html">GRBFSolve</A>
+<B> Up:</B> <A NAME="tex2html2425"
+  HREF="c_api_details.html">C API Details</A>
+<B> Previous:</B> <A NAME="tex2html2421"
+  HREF="c_grbgeterrormsg.html">GRBgeterrormsg</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION000211000000000000000">
+Advanced simplex routines</A>
+</H2>
+
+<P>
+This section describes a set of advanced basis routines.  These
+routines allow you to compute solutions to various linear systems
+involving the simplex basis matrix.  Note that these should only be used by
+advanced users.  We provide no technical support for these routines.
+
+<P>
+Before describing the routines, we should first describe the
+<code>GRBsvec</code> data structure that is used to input or
+return sparse vectors:
+
+<P>
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">typedef</TD>
+<TD ALIGN="LEFT">struct SVector {</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">len;</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">*ind;</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">double</TD>
+<TD ALIGN="LEFT">*val;</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">} <BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">GRBsvec</SPAN></FONT></BIG>;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+</TR>
+</TABLE>
+
+<P>
+The <code>len</code> field gives the number of non-zero values in the
+vector.  The <code>ind</code> and <code>val</code> fields give the index and
+value for each non-zero, respectively.  Indices are zero-based.
+To give an example, the sparse vector
+<code>[0, 2.0, 0, 1.0]</code> would be represented as
+<code>len=2</code>, <code>ind = [1, 3]</code>, and <code>val = [2.0, 1.0]</code>.
+
+<P>
+The user is responsible for allocating and freeing the <code>ind</code> and
+<code>val</code> fields.  The length of the result vector for these
+routines is not known in advance, so the user must allocate
+these arrays to hold the longest possible result (whose length is
+noted in the documentation for each routine).
+
+<P>
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html2428"
+  HREF="c_grbfsolve.html">GRBFSolve</A>
+<LI><A NAME="tex2html2429"
+  HREF="c_grbbsolve.html">GRBBSolve</A>
+<LI><A NAME="tex2html2430"
+  HREF="c_grbbinvcolj.html">GRBBinvColj</A>
+<LI><A NAME="tex2html2431"
+  HREF="c_grbbinvrowi.html">GRBBinvRowi</A>
+<LI><A NAME="tex2html2432"
+  HREF="c_grbgetbasishead.html">GRBgetBasisHead</A>
+</UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html2426"
+  HREF="c_grbfsolve.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html2424"
+  HREF="c_api_details.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html2420"
+  HREF="c_grbgeterrormsg.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html2427"
+  HREF="c_grbfsolve.html">GRBFSolve</A>
+<B> Up:</B> <A NAME="tex2html2425"
+  HREF="c_api_details.html">C API Details</A>
+<B> Previous:</B> <A NAME="tex2html2421"
+  HREF="c_grbgeterrormsg.html">GRBgeterrormsg</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

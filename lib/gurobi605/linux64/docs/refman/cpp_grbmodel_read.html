@@ -1,0 +1,118 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>GRBModel::read()</TITLE>
+<META NAME="description" CONTENT="GRBModel::read()">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="cpp_grbmodel_remove.html">
+<LINK REL="previous" HREF="cpp_grbmodel_presolve.html">
+<LINK REL="up" HREF="cpp_grbmodel.html">
+<LINK REL="next" HREF="cpp_grbmodel_remove.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html3172"
+  HREF="cpp_grbmodel_remove.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html3170"
+  HREF="cpp_grbmodel.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html3164"
+  HREF="cpp_grbmodel_presolve.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html3173"
+  HREF="cpp_grbmodel_remove.html">GRBModel::remove()</A>
+<B> Up:</B> <A NAME="tex2html3171"
+  HREF="cpp_grbmodel.html">GRBModel</A>
+<B> Previous:</B> <A NAME="tex2html3165"
+  HREF="cpp_grbmodel_presolve.html">GRBModel::presolve()</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000423600000000000000"></A>
+<A NAME="cppmethod:GRBModel::read"></A>
+<BR>
+GRBModel::read()
+</H3>
+
+<P>
+This method is the general entry point for importing data from a file
+into a model.  It can be used to read basis files for continuous
+models, start vectors for MIP models, or parameter settings.  The type
+of data read is determined by the file suffix.  File formats are
+described in the <A HREF="model_file_formats.html#sec:FileFormats">File Format</A> section.
+
+<P>
+Note that this isn't the method to use if you want to read a new
+model from a file.  For that, use the
+<A HREF="cpp_grbmodel2.html#cppmethod:GRBModel">GRBModel constructor</A>.  One
+variant of the constructor takes the name of the file that contains the
+new model as its argument.
+
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">void</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">read</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT">const string&amp;</TD>
+<TD ALIGN="LEFT">filename )</TD>
+</TR>
+</TABLE>
+
+<UL>
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">filename</SPAN>: Name of the file to read. The suffix on the file
+  must be either <TT>.bas</TT> (for an LP basis), <TT>.mst</TT> (for a
+  MIP start), <TT>.ord</TT> (for a priority order), or <TT>.prm</TT>
+  (for a parameter file). The suffix may optionally be followed by
+  <TT>.zip</TT>, <TT>.gz</TT>, <TT>.bz2</TT>, or <TT>.7z</TT>.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html3172"
+  HREF="cpp_grbmodel_remove.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html3170"
+  HREF="cpp_grbmodel.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html3164"
+  HREF="cpp_grbmodel_presolve.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html3173"
+  HREF="cpp_grbmodel_remove.html">GRBModel::remove()</A>
+<B> Up:</B> <A NAME="tex2html3171"
+  HREF="cpp_grbmodel.html">GRBModel</A>
+<B> Previous:</B> <A NAME="tex2html3165"
+  HREF="cpp_grbmodel_presolve.html">GRBModel::presolve()</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

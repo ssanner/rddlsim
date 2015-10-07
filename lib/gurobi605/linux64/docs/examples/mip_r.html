@@ -1,0 +1,110 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>mip.R</TITLE>
+<META NAME="description" CONTENT="mip.R">
+<META NAME="keywords" CONTENT="examples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="examples.css">
+
+<LINK REL="next" HREF="qcp_r.html">
+<LINK REL="previous" HREF="lp2_r.html">
+<LINK REL="up" HREF="r_examples.html">
+<LINK REL="next" HREF="qcp_r.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html2348"
+  HREF="qcp_r.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html2346"
+  HREF="r_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html2340"
+  HREF="lp2_r.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html2349"
+  HREF="qcp_r.html">qcp.R</A>
+<B> Up:</B> <A NAME="tex2html2347"
+  HREF="r_examples.html">R Examples</A>
+<B> Previous:</B> <A NAME="tex2html2341"
+  HREF="lp2_r.html">lp2.R</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00028300000000000000"></A>
+<A NAME="subsubsection:mip.R"></A>
+<BR>
+mip.R
+</H3>
+
+<P>
+<BR>
+<PRE  CLASS="verbatim"># Copyright 2014, Gurobi Optimization, Inc.
+#
+# This example formulates and solves the following simple MIP model:
+#  maximize
+#        x +   y + 2 z
+#  subject to
+#        x + 2 y + 3 z &lt;= 4
+#        x +   y       &gt;= 1
+#        x, y, z binary
+
+library("gurobi")
+
+model &lt;- list()
+
+model$A          &lt;- matrix(c(1,2,3,1,1,0), nrow=2, ncol=3, byrow=T)
+model$obj        &lt;- c(1,1,2)
+model$modelsense &lt;- "max"
+model$rhs        &lt;- c(4,1)
+model$sense      &lt;- c('&lt;=', '&gt;=')
+model$vtype      &lt;- 'B'
+
+params &lt;- list(OutputFlag=0)
+
+result &lt;- gurobi(model, params)
+
+print('Solution:')
+print(result$objval)
+print(result$x)
+</PRE>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html2348"
+  HREF="qcp_r.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html2346"
+  HREF="r_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html2340"
+  HREF="lp2_r.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html2349"
+  HREF="qcp_r.html">qcp.R</A>
+<B> Up:</B> <A NAME="tex2html2347"
+  HREF="r_examples.html">R Examples</A>
+<B> Previous:</B> <A NAME="tex2html2341"
+  HREF="lp2_r.html">lp2.R</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

@@ -1,0 +1,331 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>tsp_c++.cpp</TITLE>
+<META NAME="description" CONTENT="tsp_c++.cpp">
+<META NAME="keywords" CONTENT="examples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="examples.css">
+
+<LINK REL="next" HREF="tune_cpp_cpp.html">
+<LINK REL="previous" HREF="sudoku_cpp_cpp.html">
+<LINK REL="up" HREF="cpp_examples.html">
+<LINK REL="next" HREF="tune_cpp_cpp.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html985"
+  HREF="tune_cpp_cpp.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html983"
+  HREF="cpp_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html977"
+  HREF="sudoku_cpp_cpp.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html986"
+  HREF="tune_cpp_cpp.html">tune_c++.cpp</A>
+<B> Up:</B> <A NAME="tex2html984"
+  HREF="cpp_examples.html">C++ Examples</A>
+<B> Previous:</B> <A NAME="tex2html978"
+  HREF="sudoku_cpp_cpp.html">sudoku_c++.cpp</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000221900000000000000"></A>
+<A NAME="subsubsection:tsp_c++.cpp"></A>
+<BR>
+tsp_c++.cpp
+</H3>
+
+<P>
+<BR>
+<PRE  CLASS="verbatim">/* Copyright 2014, Gurobi Optimization, Inc. */
+
+/* Solve a traveling salesman problem on a randomly generated set of
+   points using lazy constraints.   The base MIP model only includes
+   'degree-2' constraints, requiring each node to have exactly
+   two incident edges.  Solutions to this model may contain subtours -
+   tours that don't visit every node.  The lazy constraint callback
+   adds new constraints to cut them off. */
+
+#include "gurobi_c++.h"
+#include &lt;cstdlib&gt;
+#include &lt;cmath&gt;
+#include &lt;sstream&gt;
+using namespace std;
+
+string itos(int i) {stringstream s; s &lt;&lt; i; return s.str(); }
+double distance(double* x, double* y, int i, int j);
+void findsubtour(int n, double** sol, int* tourlenP, int* tour);
+
+// Subtour elimination callback.  Whenever a feasible solution is found,
+// find the smallest subtour, and add a subtour elimination constraint
+// if the tour doesn't visit every node.
+
+class subtourelim: public GRBCallback
+{
+  public:
+    GRBVar** vars;
+    int n;
+    subtourelim(GRBVar** xvars, int xn) {
+      vars = xvars;
+      n    = xn;
+    }
+  protected:
+    void callback() {
+      try {
+        if (where == GRB_CB_MIPSOL) {
+          // Found an integer feasible solution - does it visit every node?
+          double **x = new double*[n];
+          int *tour = new int[n];
+          int i, j, len;
+          for (i = 0; i &lt; n; i++)
+            x[i] = getSolution(vars[i], n);
+
+          findsubtour(n, x, &amp;len, tour);
+
+          if (len &lt; n) {
+            // Add subtour elimination constraint
+            GRBLinExpr expr = 0;
+            for (i = 0; i &lt; len; i++)
+              for (j = i+1; j &lt; len; j++)
+                expr += vars[tour[i]][tour[j]];
+            addLazy(expr &lt;= len-1);
+          }
+
+          for (i = 0; i &lt; n; i++)
+            delete[] x[i];
+          delete[] x;
+          delete[] tour;
+        }
+      } catch (GRBException e) {
+        cout &lt;&lt; "Error number: " &lt;&lt; e.getErrorCode() &lt;&lt; endl;
+        cout &lt;&lt; e.getMessage() &lt;&lt; endl;
+      } catch (...) {
+        cout &lt;&lt; "Error during callback" &lt;&lt; endl;
+      }
+    }
+};
+
+// Given an integer-feasible solution 'sol', find the smallest
+// sub-tour.  Result is returned in 'tour', and length is
+// returned in 'tourlenP'.
+
+void
+findsubtour(int      n,
+            double** sol,
+            int*     tourlenP,
+            int*     tour)
+{
+  bool* seen = new bool[n];
+  int bestind, bestlen;
+  int i, node, len, start;
+
+  for (i = 0; i &lt; n; i++)
+    seen[i] = false;
+
+  start = 0;
+  bestlen = n+1;
+  bestind = -1;
+  node = 0;
+  while (start &lt; n) {
+    for (node = 0; node &lt; n; node++)
+      if (!seen[node])
+        break;
+    if (node == n)
+      break;
+    for (len = 0; len &lt; n; len++) {
+      tour[start+len] = node;
+      seen[node] = true;
+      for (i = 0; i &lt; n; i++) {
+        if (sol[node][i] &gt; 0.5 &amp;&amp; !seen[i]) {
+          node = i;
+          break;
+        }
+      }
+      if (i == n) {
+        len++;
+        if (len &lt; bestlen) {
+          bestlen = len;
+          bestind = start;
+        }
+        start += len;
+        break;
+      }
+    }
+  }
+
+  for (i = 0; i &lt; bestlen; i++)
+    tour[i] = tour[bestind+i];
+  *tourlenP = bestlen;
+
+  delete[] seen;
+}
+
+// Euclidean distance between points 'i' and 'j'.
+
+double
+distance(double* x,
+         double* y,
+         int     i,
+         int     j)
+{
+  double dx = x[i]-x[j];
+  double dy = y[i]-y[j];
+
+  return sqrt(dx*dx+dy*dy);
+}
+
+int
+main(int   argc,
+     char *argv[])
+{
+  if (argc &lt; 2) {
+    cout &lt;&lt; "Usage: tsp_c++ size" &lt;&lt; endl;
+    return 1;
+  }
+
+  int n = atoi(argv[1]);
+  double* x = new double[n];
+  double* y = new double[n];
+
+  int i;
+  for (i = 0; i &lt; n; i++) {
+    x[i] = ((double) rand())/RAND_MAX;
+    y[i] = ((double) rand())/RAND_MAX;
+  }
+
+  GRBEnv *env = NULL;
+  GRBVar **vars = NULL;
+
+  vars = new GRBVar*[n];
+  for (i = 0; i &lt; n; i++)
+    vars[i] = new GRBVar[n];
+
+  try {
+    int j;
+
+    env = new GRBEnv();
+    GRBModel model = GRBModel(*env);
+
+    // Must set LazyConstraints parameter when using lazy constraints
+
+    model.getEnv().set(GRB_IntParam_LazyConstraints, 1);
+
+    // Create binary decision variables
+
+    for (i = 0; i &lt; n; i++) {
+      for (j = 0; j &lt;= i; j++) {
+        vars[i][j] = model.addVar(0.0, 1.0, distance(x, y, i, j),
+                                  GRB_BINARY, "x_"+itos(i)+"_"+itos(j));
+        vars[j][i] = vars[i][j];
+      }
+    }
+    model.update();
+
+    // Integrate new variables
+
+    model.update();
+
+    // Degree-2 constraints
+
+    for (i = 0; i &lt; n; i++) {
+      GRBLinExpr expr = 0;
+      for (j = 0; j &lt; n; j++)
+        expr += vars[i][j];
+      model.addConstr(expr == 2, "deg2_"+itos(i));
+    }
+
+    // Forbid edge from node back to itself
+
+    for (i = 0; i &lt; n; i++)
+      vars[i][i].set(GRB_DoubleAttr_UB, 0);
+
+    // Set callback function
+
+    subtourelim cb = subtourelim(vars, n);
+    model.setCallback(&amp;cb);
+
+    // Optimize model
+
+    model.optimize();
+
+    // Extract solution
+
+    if (model.get(GRB_IntAttr_SolCount) &gt; 0) {
+      double **sol = new double*[n];
+      for (i = 0; i &lt; n; i++)
+        sol[i] = model.get(GRB_DoubleAttr_X, vars[i], n);
+
+      int* tour = new int[n];
+      int len;
+
+      findsubtour(n, sol, &amp;len, tour);
+
+      cout &lt;&lt; "Tour: ";
+      for (i = 0; i &lt; len; i++)
+        cout &lt;&lt; tour[i] &lt;&lt; " ";
+      cout &lt;&lt; endl;
+
+      for (i = 0; i &lt; n; i++)
+        delete[] sol[i];
+      delete[] sol;
+      delete[] tour;
+    }
+
+  } catch (GRBException e) {
+    cout &lt;&lt; "Error number: " &lt;&lt; e.getErrorCode() &lt;&lt; endl;
+    cout &lt;&lt; e.getMessage() &lt;&lt; endl;
+  } catch (...) {
+    cout &lt;&lt; "Error during optimization" &lt;&lt; endl;
+  }
+
+  for (i = 0; i &lt; n; i++)
+    delete[] vars[i];
+  delete[] vars;
+  delete[] x;
+  delete[] y;
+  delete env;
+  return 0;
+}
+</PRE>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html985"
+  HREF="tune_cpp_cpp.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html983"
+  HREF="cpp_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html977"
+  HREF="sudoku_cpp_cpp.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html986"
+  HREF="tune_cpp_cpp.html">tune_c++.cpp</A>
+<B> Up:</B> <A NAME="tex2html984"
+  HREF="cpp_examples.html">C++ Examples</A>
+<B> Previous:</B> <A NAME="tex2html978"
+  HREF="sudoku_cpp_cpp.html">sudoku_c++.cpp</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

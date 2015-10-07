@@ -1,0 +1,148 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Env()</TITLE>
+<META NAME="description" CONTENT="Env()">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="py_env_resetparams.html">
+<LINK REL="previous" HREF="py_env.html">
+<LINK REL="up" HREF="py_env.html">
+<LINK REL="next" HREF="py_env_resetparams.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html9056"
+  HREF="py_env_resetparams.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html9054"
+  HREF="py_env.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html9048"
+  HREF="py_env.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html9057"
+  HREF="py_env_resetparams.html">Env.resetParams()</A>
+<B> Up:</B> <A NAME="tex2html9055"
+  HREF="py_env.html">Env</A>
+<B> Previous:</B> <A NAME="tex2html9049"
+  HREF="py_env.html">Env</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION0001013100000000000000"></A>
+<A NAME="pythonmethod:Env"></A>
+<BR>
+Env()
+</H3>
+<BIG CLASS="LARGE">
+<FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">Env</SPAN></FONT></BIG> ( logfilename='''', computeServers='''',
+                            port=GRB.DEFAULT_CS_PORT, password='''',
+                            priority=0, timeout=-1 )
+
+
+<P>
+Env constructor.  Creates a client environment on a compute server.
+If all compute servers are at capacity, this command will cause a job
+to be placed in the compute server queue, and the command will return
+an environment once capacity is available.
+
+<P>
+Client environments have limited uses in the Python environment.
+You can use a client environment as an argument to
+the
+<A HREF="py_model2.html#pythonmethod:Model">Model constructor</A>, to
+indicate that a model should be constructed on a Compute Server,
+or as an argument to the global
+<A HREF="py_read.html#pythonmethod:read">read</A> function, to indicate
+that the result of reading the file should be place on
+a Compute Server.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">logfilename</SPAN>: Name of the log file for this environment.  Pass an
+   an empty string if you don't want a log file.
+
+<P>
+ <SPAN  CLASS="textbf">computeServers</SPAN>: Comma-separated list of compute servers.  Servers
+   can be identified by name or by IP address.
+
+<P>
+ <SPAN  CLASS="textbf">port</SPAN>: Port number on compute server.  Use the default value
+   unless your server administrator has informed you that a different
+   value should be used.
+
+<P>
+ <SPAN  CLASS="textbf">password</SPAN>: User password on compute server.  Obtain this from
+   your Compute Server administrator.
+
+<P>
+ <SPAN  CLASS="textbf">priority</SPAN>: Job priority on the compute server.  Higher
+   priority jobs are pulled from the job queue before lower priority jobs.
+   A special value of 100 indicates that the job should run immediately.
+
+<P>
+ <SPAN  CLASS="textbf">timeout</SPAN>: Job queue timeout.  After the specified timeout (in
+   seconds) has elapsed, this command will give up and return a Gurobi
+   exception.  Use a negative value to indicate that the call should
+   never timeout.
+
+<P>
+
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Return value:</SPAN></BIG>
+
+<P>
+New environment object.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Example usage:</SPAN></BIG><PRE>
+  env = Env("client.log", "server1.mycompany.com,server2.mycompany.com")
+  m = read("misc07.mps", env)
+  m.optimize()
+</PRE>
+
+<P>
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html9056"
+  HREF="py_env_resetparams.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html9054"
+  HREF="py_env.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html9048"
+  HREF="py_env.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html9057"
+  HREF="py_env_resetparams.html">Env.resetParams()</A>
+<B> Up:</B> <A NAME="tex2html9055"
+  HREF="py_env.html">Env</A>
+<B> Previous:</B> <A NAME="tex2html9049"
+  HREF="py_env.html">Env</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

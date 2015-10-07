@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Setting Up and Administering a Gurobi Compute Server</TITLE>
+<META NAME="description" CONTENT="Setting Up and Administering a Gurobi Compute Server">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="compute_server_usage.html">
+<LINK REL="previous" HREF="gurobi_compute_server.html">
+<LINK REL="up" HREF="gurobi_compute_server.html">
+<LINK REL="next" HREF="compute_server_usage.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html12562"
+  HREF="compute_server_usage.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html12560"
+  HREF="gurobi_compute_server.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html12554"
+  HREF="gurobi_compute_server.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html12563"
+  HREF="compute_server_usage.html">Compute Server Usage</A>
+<B> Up:</B> <A NAME="tex2html12561"
+  HREF="gurobi_compute_server.html">Gurobi Compute Server</A>
+<B> Previous:</B> <A NAME="tex2html12555"
+  HREF="gurobi_compute_server.html">Gurobi Compute Server</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION000251000000000000000"></A>
+<A NAME="sec:CSAdmin"></A>
+<BR>
+Setting Up and Administering a Gurobi Compute Server
+</H2>
+
+<P>
+To use Compute Server, you'll need to start
+<A HREF="gurobi_remote_services.html#sec:RemoteServices">Gurobi Remote Services</A> on one or more
+servers.  Once you've got a Compute Server running, you can
+check to make sure that you will be able to submit jobs to it
+by issuing the following command from any machine that can
+reach the server on your network:
+<PRE>
+&gt; gurobi_cl --server=servername --status
+</PRE>
+(replace <code>servername</code> with the name of your server).  If you see
+the following lines in the resulting output, Compute Server is ready
+to go:
+<PRE>
+Gurobi Remote Services (version 6.0.0) functioning normally
+Available services: Distributed Worker, Compute Server
+</PRE>
+
+<P>
+Compute Server provides a number of user configurable parameters to
+control things like the user and administrator passwords, limits on
+the number of jobs that can run simultaneously, etc.  Compute Server
+also has a number of administrative commands that allow you to kill
+jobs, obtain a list of running and queued jobs, and change
+parameters. Please refer to the
+<A HREF="gurobi_remote_services.html#sec:RemoteServices">Gurobi Remote Services</A>
+section for details.
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html12562"
+  HREF="compute_server_usage.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html12560"
+  HREF="gurobi_compute_server.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html12554"
+  HREF="gurobi_compute_server.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html12563"
+  HREF="compute_server_usage.html">Compute Server Usage</A>
+<B> Up:</B> <A NAME="tex2html12561"
+  HREF="gurobi_compute_server.html">Gurobi Compute Server</A>
+<B> Previous:</B> <A NAME="tex2html12555"
+  HREF="gurobi_compute_server.html">Gurobi Compute Server</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

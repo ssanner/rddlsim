@@ -1,0 +1,149 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>sos_c++.cpp</TITLE>
+<META NAME="description" CONTENT="sos_c++.cpp">
+<META NAME="keywords" CONTENT="examples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="examples.css">
+
+<LINK REL="next" HREF="sudoku_cpp_cpp.html">
+<LINK REL="previous" HREF="qp_cpp_cpp.html">
+<LINK REL="up" HREF="cpp_examples.html">
+<LINK REL="next" HREF="sudoku_cpp_cpp.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html965"
+  HREF="sudoku_cpp_cpp.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html963"
+  HREF="cpp_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html957"
+  HREF="qp_cpp_cpp.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html966"
+  HREF="sudoku_cpp_cpp.html">sudoku_c++.cpp</A>
+<B> Up:</B> <A NAME="tex2html964"
+  HREF="cpp_examples.html">C++ Examples</A>
+<B> Previous:</B> <A NAME="tex2html958"
+  HREF="qp_cpp_cpp.html">qp_c++.cpp</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000221700000000000000"></A>
+<A NAME="subsubsection:sos_c++.cpp"></A>
+<BR>
+sos_c++.cpp
+</H3>
+
+<P>
+<BR>
+<PRE  CLASS="verbatim">/* Copyright 2014, Gurobi Optimization, Inc. */
+
+/* This example creates a very simple Special Ordered Set (SOS) model.
+   The model consists of 3 continuous variables, no linear constraints,
+   and a pair of SOS constraints of type 1. */
+
+#include "gurobi_c++.h"
+using namespace std;
+
+int
+main(int   argc,
+     char *argv[])
+{
+  GRBEnv *env = 0;
+  GRBVar *x = 0;
+  try {
+    env = new GRBEnv();
+
+    GRBModel model = GRBModel(*env);
+
+    // Create variables
+
+    double ub[]    = {1, 1, 2};
+    double obj[]   = {-2, -1, -1};
+    string names[] = {"x0", "x1", "x2"};
+
+    x = model.addVars(NULL, ub, obj, NULL, names, 3);
+
+    // Integrate new variables
+
+    model.update();
+
+    // Add first SOS1: x0=0 or x1=0
+
+    GRBVar sosv1[]  = {x[0], x[1]};
+    double soswt1[] = {1, 2};
+
+    model.addSOS(sosv1, soswt1, 2, GRB_SOS_TYPE1);
+
+    // Add second SOS1: x0=0 or x2=0 */
+
+    GRBVar sosv2[]  = {x[0], x[2]};
+    double soswt2[] = {1, 2};
+
+    model.addSOS(sosv2, soswt2, 2, GRB_SOS_TYPE1);
+
+    // Optimize model
+
+    model.optimize();
+
+    for (int i = 0; i &lt; 3; i++)
+      cout &lt;&lt; x[i].get(GRB_StringAttr_VarName) &lt;&lt; " "
+           &lt;&lt; x[i].get(GRB_DoubleAttr_X) &lt;&lt; endl;
+
+    cout &lt;&lt; "Obj: " &lt;&lt; model.get(GRB_DoubleAttr_ObjVal) &lt;&lt; endl;
+
+  } catch(GRBException e) {
+    cout &lt;&lt; "Error code = " &lt;&lt; e.getErrorCode() &lt;&lt; endl;
+    cout &lt;&lt; e.getMessage() &lt;&lt; endl;
+  } catch(...) {
+    cout &lt;&lt; "Exception during optimization" &lt;&lt; endl;
+  }
+
+  delete[] x;
+  delete env;
+  return 0;
+}
+</PRE>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html965"
+  HREF="sudoku_cpp_cpp.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html963"
+  HREF="cpp_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html957"
+  HREF="qp_cpp_cpp.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html966"
+  HREF="sudoku_cpp_cpp.html">sudoku_c++.cpp</A>
+<B> Up:</B> <A NAME="tex2html964"
+  HREF="cpp_examples.html">C++ Examples</A>
+<B> Previous:</B> <A NAME="tex2html958"
+  HREF="qp_cpp_cpp.html">qp_c++.cpp</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

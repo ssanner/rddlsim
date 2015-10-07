@@ -1,0 +1,242 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Command-Line Tuning</TITLE>
+<META NAME="description" CONTENT="Command-Line Tuning">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="tuning_api.html">
+<LINK REL="previous" HREF="parameter_tuning_tool.html">
+<LINK REL="up" HREF="parameter_tuning_tool.html">
+<LINK REL="next" HREF="tuning_api.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html12422"
+  HREF="tuning_api.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html12420"
+  HREF="parameter_tuning_tool.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html12414"
+  HREF="parameter_tuning_tool.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html12423"
+  HREF="tuning_api.html">Tuning API</A>
+<B> Up:</B> <A NAME="tex2html12421"
+  HREF="parameter_tuning_tool.html">Parameter Tuning Tool</A>
+<B> Previous:</B> <A NAME="tex2html12415"
+  HREF="parameter_tuning_tool.html">Parameter Tuning Tool</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION000221000000000000000"></A>
+<A NAME="sec:TuningCommandLine"></A>
+<BR>
+Command-Line Tuning
+</H2>
+
+<P>
+The <code>grbtune</code> command-line tool provides a very simple way to
+invoke parameter tuning on a model (or a set of models).  You specify
+a list of <code>parameter=value</code> arguments first, followed by the
+name of the file containing the model to be tuned.  For example, you
+can issue the following command (in a Windows command window, or in a
+Linux/Mac terminal window)...
+<PRE>
+&gt; grbtune TuneTimeLimit=10000 c:\gurobi550\win64\examples\data\misc07
+</PRE>
+(substituting the appropriate path to a model, stored in an MPS or LP
+file).  The tool will try to find parameter settings that reduce the
+runtime on the specified model.  When the tuning run completes, it
+writes a set of <code>.prm</code> files in the current working directory
+that capture the best parameter settings that it found.  It also
+writes the Gurobi log files for these runs (in a set of <code>.log</code>
+files).
+
+<P>
+You can also invoke the tuning tool through our programming language
+APIs.  That will be discussed <A HREF="tuning_api.html#sec:TuningAPI">shortly</A>.
+
+<P>
+If you specify multiple model files at the end of the command line,
+the tuning tool will try to find settings that minimize the total
+runtime for the listed models.
+
+<P>
+<SPAN  CLASS="textbf">Running the Tuning Tool</SPAN>
+
+<P>
+The first thing the tuning tool does is to perform a baseline run.
+The parameters for this run are determined by your choice of initial
+parameter values.  If you set a parameter, it will take the chosen
+value throughout tuning.  Thus, for example, if you set the
+<A HREF="method.html#parameter:Method">Method</A>
+parameter to 2, then the baseline run and all
+subsequent tuning runs will include this setting.  In the example
+above, you'd do this by issuing the command:
+<PRE>
+&gt; grbtune Method=2 TuneTimeLimit=100 misc07
+</PRE>
+
+<P>
+For a MIP model, you will note that the tuning tool actually performs
+several baseline runs, and captures the mean runtime over all of these
+trials.  In fact, the tool will perform multiple runs for each
+parameter set considered. This is done to limit the impact of random
+effects on the results, as discussed earlier.  Use the
+<A HREF="tunetrials.html#parameter:TuneTrials">TuneTrials</A> parameter to adjust
+the number of trials performed.
+
+<P>
+Once the baseline run is complete, the time for that run becomes the
+time to beat.  The tool then starts its search for improved parameter
+settings.  Under the default value of the
+<A HREF="tuneoutput.html#parameter:TuneOutput">TuneOutput</A> parameter, the tool
+prints output for each parameter set that it tries...
+<PRE>
+Testing candidate parameter set 7...
+
+	Method 2
+	MIPFocus 1
+
+Solving with random seed #1 ... runtime 3.63s
+Solving with random seed #2 ... runtime 4.12s+
+
+Progress so far: baseline runtime 3.38s, best runtime 2.88s
+Total elapsed tuning time 34s (66s remaining)
+</PRE>
+This output indicates that the tool has tried 7 parameter sets so far.
+For the seventh set, it changed the value of the
+<A HREF="mipfocus.html#parameter:MIPFocus">MIPFocus</A> parameter (the
+<A HREF="method.html#parameter:Method">Method</A> parameter was changed in our
+initial parameter settings, so this change will appear in every
+parameter set that the tool tries).  The first trial solved the model
+in 3.63 seconds, while the second hit a a time limit that was set by
+the tuning tool (as indicated by the <code>+</code> after the runtime
+output).  If any trial hits a time limit, the corresponding parameter
+set is considered worse any set that didn't hit a time limit.
+The output also shows that the best parameter set found so far gives a
+runtime of 2.88s.  Finally, it shows elapsed and remaining runtime.
+
+<P>
+Tuning normally proceeeds until the elapsed time exceeds the tuning
+time limit.  However, hitting CTRL-C will also stop the tool.
+
+<P>
+When the tuning tool finishes, it prints a summary...
+<PRE>
+Tested 20 parameter sets in 97.89s
+
+Baseline parameter set: runtime 3.38s
+
+Improved parameter set 1 (runtime 1.62s):
+
+	Method 2
+	Heuristics 0
+	VarBranch 1
+	CutPasses 3
+	GomoryPasses 0
+
+Improved parameter set 2 (runtime 2.03s):
+
+	Method 2
+	Heuristics 0
+	VarBranch 1
+	CutPasses 3
+
+Improved parameter set 3 (runtime 2.38s):
+
+	Method 2
+	VarBranch 1
+
+Wrote parameter files tune1.prm through tune3.prm
+Wrote log files: tune1.log through tune3.log
+</PRE>
+The summary shows the number of parameter sets it tried, and provides
+details on a few of the best parameter sets it found.  It also shows
+the names of the <code>.prm</code> and <code>.log</code> files it writes.  You
+can change the names of these files using the
+<A HREF="resultfile.html#parameter:ResultFile">ResultFile</A> parameter.  If you
+set <code>ResultFile=model.prm</code>, for example, the tool would
+write <code>model1.prm</code> through <code>model3.prm</code> and
+<code>model1.log</code> through <code>model3.log</code>.
+
+<P>
+The number of sets that are retained by the tuning tool is controlled
+by the <A HREF="tuneresults.html#parameter:TuneResults">TuneResults</A> parameter.
+The default behavior is to keep the sets that achieve the best
+tradeoff between runtime and the number of changed parameters.  In
+other words, we report the set that achieves the best result when
+changing one parameter, when changing two parameters, etc.  We
+actually report a Pareto frontier, so for example we won't report a
+result for three parameter changes if it is worse than the result for
+two parameter changes.
+
+<P>
+<SPAN  CLASS="textbf">Other Tuning Parameters</SPAN>
+
+<P>
+So far, we've only talked about using the tuning tool to minimize the
+time to find an optimal solution.  For MIP models, you can also
+minimize the optimality gap after a specified time limit.  You don't
+have to take any special action to do this; you just set a time limit.
+Whenever a baseline run hits this limit, the tuning tool will
+automatically try to minimize the MIP gap.  To give an example, the
+command...
+<PRE>
+&gt; grbtune TimeLimit=100 glass4
+</PRE>
+...will look for a parameter set that minimizes the optimality gap
+achieved after 100s of runtime on model <code>glass4</code>.  If the tool
+happens to find a parameter set that solves the model within the time
+limit, it will then try to find settings that minimize mean runtime.
+
+<P>
+You can modify the <A HREF="tuneoutput.html#parameter:TuneOutput">TuneOutput</A>
+parameter to produce more or less output.  The default value is 2.  A
+setting of 0 produces no output; a setting of 1 only produces output
+when an improvement is found; a setting of 3 produces a complete
+Gurobi log for each run performed.
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html12422"
+  HREF="tuning_api.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html12420"
+  HREF="parameter_tuning_tool.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html12414"
+  HREF="parameter_tuning_tool.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html12423"
+  HREF="tuning_api.html">Tuning API</A>
+<B> Up:</B> <A NAME="tex2html12421"
+  HREF="parameter_tuning_tool.html">Parameter Tuning Tool</A>
+<B> Previous:</B> <A NAME="tex2html12415"
+  HREF="parameter_tuning_tool.html">Parameter Tuning Tool</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

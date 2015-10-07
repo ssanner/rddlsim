@@ -1,0 +1,137 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>GRBModel::getSOS()</TITLE>
+<META NAME="description" CONTENT="GRBModel::getSOS()">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="cpp_grbmodel_getsoss.html">
+<LINK REL="previous" HREF="cpp_grbmodel_getrow.html">
+<LINK REL="up" HREF="cpp_grbmodel.html">
+<LINK REL="next" HREF="cpp_grbmodel_getsoss.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html3092"
+  HREF="cpp_grbmodel_getsoss.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html3090"
+  HREF="cpp_grbmodel.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html3084"
+  HREF="cpp_grbmodel_getrow.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html3093"
+  HREF="cpp_grbmodel_getsoss.html">GRBModel::getSOSs()</A>
+<B> Up:</B> <A NAME="tex2html3091"
+  HREF="cpp_grbmodel.html">GRBModel</A>
+<B> Previous:</B> <A NAME="tex2html3085"
+  HREF="cpp_grbmodel_getrow.html">GRBModel::getRow()</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000422800000000000000"></A>
+<A NAME="cppmethod:GRBModel::getSOS"></A>
+<BR>
+GRBModel::getSOS()
+</H3>
+
+<P>
+Retrieve the list of variables that participate in an SOS constraint,
+and the associated coefficients.  The return value is the length of
+this list.  If you would like to allocate space for the result before
+retrieving the result, call the method first with <code>NULL</code> array
+arguments to determine the appropriate array lengths.
+
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">getSOS</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT">GRBSOS</TD>
+<TD ALIGN="LEFT">sos,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">GRBVar*</TD>
+<TD ALIGN="LEFT">vars,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">double*</TD>
+<TD ALIGN="LEFT">weights,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int*</TD>
+<TD ALIGN="LEFT">typeP )</TD>
+</TR>
+</TABLE>
+
+<UL>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">sos</SPAN>: The SOS set of interest.
+
+<P>
+ <SPAN  CLASS="textbf">vars</SPAN>: A list of variables that participate in <TT>sos</TT>.
+
+<P>
+ <SPAN  CLASS="textbf">weights</SPAN>: The SOS weights for each participating variable.
+
+<P>
+ <SPAN  CLASS="textbf">typeP</SPAN>: The type of the SOS set (either <TT>GRB_SOS_TYPE1</TT> or
+  <TT>GRB_SOS_TYPE2</TT>).
+
+<P>
+
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Return value:</SPAN></BIG>
+
+<P>
+The length of the result arrays.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html3092"
+  HREF="cpp_grbmodel_getsoss.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html3090"
+  HREF="cpp_grbmodel.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html3084"
+  HREF="cpp_grbmodel_getrow.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html3093"
+  HREF="cpp_grbmodel_getsoss.html">GRBModel::getSOSs()</A>
+<B> Up:</B> <A NAME="tex2html3091"
+  HREF="cpp_grbmodel.html">GRBModel</A>
+<B> Previous:</B> <A NAME="tex2html3085"
+  HREF="cpp_grbmodel_getrow.html">GRBModel::getRow()</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

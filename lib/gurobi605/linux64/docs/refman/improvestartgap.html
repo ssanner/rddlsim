@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>ImproveStartGap</TITLE>
+<META NAME="description" CONTENT="ImproveStartGap">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="improvestartnodes.html">
+<LINK REL="previous" HREF="impliedcuts.html">
+<LINK REL="up" HREF="parameter_descriptions.html">
+<LINK REL="next" HREF="improvestartnodes.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html11387"
+  HREF="improvestartnodes.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html11385"
+  HREF="parameter_descriptions.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html11379"
+  HREF="impliedcuts.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html11388"
+  HREF="improvestartnodes.html">ImproveStartNodes</A>
+<B> Up:</B> <A NAME="tex2html11386"
+  HREF="parameter_descriptions.html">Parameter Descriptions</A>
+<B> Previous:</B> <A NAME="tex2html11380"
+  HREF="impliedcuts.html">ImpliedCuts</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION0001423400000000000000"></A>
+<A NAME="parameter:ImproveStartGap"></A>
+<BR>
+ImproveStartGap
+</H3>
+Solution improvement strategy control
+
+<TABLE CELLPADDING=3>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf">Type:</SPAN></TH>
+<TD ALIGN="LEFT">double</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf">Default value:</SPAN></TH>
+<TD ALIGN="LEFT">0.0</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf">Minimum value:</SPAN></TH>
+<TD ALIGN="LEFT">0.0</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf">Maximum value:</SPAN></TH>
+<TD ALIGN="LEFT">Infinity</TD>
+</TR>
+</TABLE>
+
+<P>
+The MIP solver can change parameter settings in the middle of the
+search in order to adopt a strategy that gives up on moving the best
+bound and instead devotes all of its effort towards finding better
+feasible solutions.  This parameter allows you to specify an
+optimality gap at which the MIP solver switches to a solution
+improvement strategy. For example, setting this parameter to 0.1 will
+cause the MIP solver to switch strategies once the relative optimality
+gap is smaller than 0.1.
+
+<P>
+
+<SPAN  CLASS="textbf">Note:</SPAN> Only affects mixed integer programming (MIP) models 
+<BR>
+
+<P>
+For examples of how to query or modify parameter values from
+our different APIs, refer to our
+<A HREF="parameter_examples.html#sec:ParameterExamples">Parameter Examples</A>.
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html11387"
+  HREF="improvestartnodes.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html11385"
+  HREF="parameter_descriptions.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html11379"
+  HREF="impliedcuts.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html11388"
+  HREF="improvestartnodes.html">ImproveStartNodes</A>
+<B> Up:</B> <A NAME="tex2html11386"
+  HREF="parameter_descriptions.html">Parameter Descriptions</A>
+<B> Previous:</B> <A NAME="tex2html11380"
+  HREF="impliedcuts.html">ImpliedCuts</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

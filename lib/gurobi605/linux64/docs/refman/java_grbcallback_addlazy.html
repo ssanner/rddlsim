@@ -1,0 +1,153 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>GRBCallback.addLazy()</TITLE>
+<META NAME="description" CONTENT="GRBCallback.addLazy()">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="java_grbcallback_getdouble.html">
+<LINK REL="previous" HREF="java_grbcallback_addcut.html">
+<LINK REL="up" HREF="java_grbcallback.html">
+<LINK REL="next" HREF="java_grbcallback_getdouble.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html5656"
+  HREF="java_grbcallback_getdouble.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html5654"
+  HREF="java_grbcallback.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html5648"
+  HREF="java_grbcallback_addcut.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html5657"
+  HREF="java_grbcallback_getdouble.html">GRBCallback.getDoubleInfo()</A>
+<B> Up:</B> <A NAME="tex2html5655"
+  HREF="java_grbcallback.html">GRBCallback</A>
+<B> Previous:</B> <A NAME="tex2html5649"
+  HREF="java_grbcallback_addcut.html">GRBCallback.addCut()</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000611400000000000000"></A>
+<A NAME="javamethod:GRBCallback.addLazy"></A>
+<BR>
+GRBCallback.addLazy()
+</H3>
+
+<P>
+Add a lazy constraint to the MIP model from within a callback function.
+Note that this method can only be invoked when the <code>where</code>
+member variable is equal to <code>GRB.CB_MIPNODE</code> or <code>GRB.CB_MIPSOL</code>
+(see the
+<A HREF="callback_codes.html#sec:CallbackCodes">Callback Codes</A> section for more
+information).
+
+<P>
+Lazy constraints are typically used when the full set of constraints
+for a MIP model is too large to represent explicitly.  By only
+including the constraints that are actually violated by solutions
+found during the branch-and-cut search, it is sometimes possible to
+find a proven optimal solution while only adding a fraction of the
+full set of constraints.
+
+<P>
+You would typically add a lazy constraint by first querying the
+current node solution (by calling
+<A HREF="java_grbcallback_getsoluti.html#javamethod:GRBCallback.getSolution">getSolution</A> from a
+<code>GRB.CB_MIPSOL</code> callback, or
+<A HREF="java_grbcallback_getnodere.html#javamethod:GRBCallback.getNodeRel">getNodeRel</A> from a
+<code>GRB.CB_MIPNODE</code> callback), and then calling <code>addLazy()</code> to add a
+constraint that cuts off the solution.  Gurobi guarantees that you
+will have the opportunity to cut off any solutions that would
+otherwise be considered feasible.
+
+<P>
+Your callback should be prepared to cut off solutions that violate any
+of your lazy constraints, including those that have already been
+added.  Node solutions will usually respect previously added lazy
+constraints, but not always.
+
+<P>
+Note that you must set the
+<A HREF="lazyconstraints.html#parameter:LazyConstraints">LazyConstraints</A>
+parameter if you want to use lazy constraints.
+
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">void</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">addLazy</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT">GRBLinExpr</TD>
+<TD ALIGN="LEFT">lhsExpr,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">char</TD>
+<TD ALIGN="LEFT">sense,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">double</TD>
+<TD ALIGN="LEFT">rhsVal )</TD>
+</TR>
+</TABLE>
+
+<UL>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">lhsExpr</SPAN>: Left-hand side expression for new lazy constraint.
+
+<P>
+ <SPAN  CLASS="textbf">sense</SPAN>: Sense for new lazy constraint (<TT>GRB.LESS_EQUAL</TT>,
+  <TT>GRB.EQUAL</TT>, or <TT>GRB.GREATER_EQUAL</TT>).
+
+<P>
+ <SPAN  CLASS="textbf">rhsVal</SPAN>: Right-hand side value for new lazy constraint.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html5656"
+  HREF="java_grbcallback_getdouble.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html5654"
+  HREF="java_grbcallback.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html5648"
+  HREF="java_grbcallback_addcut.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html5657"
+  HREF="java_grbcallback_getdouble.html">GRBCallback.getDoubleInfo()</A>
+<B> Up:</B> <A NAME="tex2html5655"
+  HREF="java_grbcallback.html">GRBCallback</A>
+<B> Previous:</B> <A NAME="tex2html5649"
+  HREF="java_grbcallback_addcut.html">GRBCallback.addCut()</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

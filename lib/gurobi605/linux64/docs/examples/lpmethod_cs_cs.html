@@ -1,0 +1,140 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>lpmethod_cs.cs</TITLE>
+<META NAME="description" CONTENT="lpmethod_cs.cs">
+<META NAME="keywords" CONTENT="examples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="examples.css">
+
+<LINK REL="next" HREF="lpmod_cs_cs.html">
+<LINK REL="previous" HREF="lp_cs_cs.html">
+<LINK REL="up" HREF="cs_examples.html">
+<LINK REL="next" HREF="lpmod_cs_cs.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html1419"
+  HREF="lpmod_cs_cs.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1417"
+  HREF="cs_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1411"
+  HREF="lp_cs_cs.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1420"
+  HREF="lpmod_cs_cs.html">lpmod_cs.cs</A>
+<B> Up:</B> <A NAME="tex2html1418"
+  HREF="cs_examples.html">C# Examples</A>
+<B> Previous:</B> <A NAME="tex2html1412"
+  HREF="lp_cs_cs.html">lp_cs.cs</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00024800000000000000"></A>
+<A NAME="subsubsection:lpmethod_cs.cs"></A>
+<BR>
+lpmethod_cs.cs
+</H3>
+
+<P>
+<BR>
+<PRE  CLASS="verbatim">/* Copyright 2014, Gurobi Optimization, Inc. */
+
+/* Solve a model with different values of the Method parameter;
+   show which value gives the shortest solve time. */
+
+using System;
+using Gurobi;
+
+class lpmethod_cs
+{
+  static void Main(string[] args)
+  {
+    if (args.Length &lt; 1) {
+      Console.Out.WriteLine("Usage: lpmethod_cs filename");
+      return;
+    }
+
+    try {
+      // Read model
+      GRBEnv env = new GRBEnv();
+      GRBModel model = new GRBModel(env, args[0]);
+      GRBEnv menv = model.GetEnv();
+
+      // Solve the model with different values of Method
+      int bestMethod = -1;
+      double bestTime = menv.Get(GRB.DoubleParam.TimeLimit);
+      for (int i = 0; i &lt;= 2; ++i)
+      {
+        model.Reset();
+        menv.Set(GRB.IntParam.Method, i);
+        model.Optimize();
+        if (model.Get(GRB.IntAttr.Status) == GRB.Status.OPTIMAL)
+        {
+          bestTime = model.Get(GRB.DoubleAttr.Runtime);
+          bestMethod = i;
+          // Reduce the TimeLimit parameter to save time
+          // with other methods
+          menv.Set(GRB.DoubleParam.TimeLimit, bestTime);
+        }
+      }
+
+      // Report which method was fastest
+      if (bestMethod == -1) {
+        Console.WriteLine("Unable to solve this model");
+      } else {
+        Console.WriteLine("Solved in " + bestTime
+          + " seconds with Method: " + bestMethod);
+      }
+
+      // Dispose of model and env
+      model.Dispose();
+      env.Dispose();
+
+    } catch (GRBException e) {
+      Console.WriteLine("Error code: " + e.ErrorCode + ". " + e.Message);
+    }
+  }
+}
+</PRE>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1419"
+  HREF="lpmod_cs_cs.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1417"
+  HREF="cs_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1411"
+  HREF="lp_cs_cs.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1420"
+  HREF="lpmod_cs_cs.html">lpmod_cs.cs</A>
+<B> Up:</B> <A NAME="tex2html1418"
+  HREF="cs_examples.html">C# Examples</A>
+<B> Previous:</B> <A NAME="tex2html1412"
+  HREF="lp_cs_cs.html">lp_cs.cs</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

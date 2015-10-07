@@ -1,0 +1,155 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Retrieving a Named-User or Single-Machine license</TITLE>
+<META NAME="description" CONTENT="Retrieving a Named-User or Single-Machine license">
+<META NAME="keywords" CONTENT="quickstart_mac">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="quickstart_mac.css">
+
+<LINK REL="next" HREF="setting_up_and_using_a_sin.html">
+<LINK REL="previous" HREF="retrieving_a_free_academic.html">
+<LINK REL="up" HREF="retrieving_and_setting_up_.html">
+<LINK REL="next" HREF="setting_up_and_using_a_sin.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html283"
+  HREF="setting_up_and_using_a_sin.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html281"
+  HREF="retrieving_and_setting_up_.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html275"
+  HREF="academic_validation.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html284"
+  HREF="setting_up_and_using_a_sin.html">Setting up and using</A>
+<B> Up:</B> <A NAME="tex2html282"
+  HREF="retrieving_and_setting_up_.html">Retrieving and Setting Up</A>
+<B> Previous:</B> <A NAME="tex2html276"
+  HREF="academic_validation.html">Academic validation</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00032000000000000000"></A>
+<A NAME="subsection:nodelicense"></A>
+<BR>
+Retrieving a Named-User or Single-Machine license
+</H2>
+<P>
+<EM>To obtain a Gurobi license key you'll need to run the <code>grbgetkey</code>
+command on your machine.  Note that the machine must be connected to
+the Internet in order to run this command. An Internet connection is
+not required after you have obtained your license key.
+</EM>
+<P>
+<EM>If your computer isn't connected to the Internet or if your network
+security system does not allow the command below to function,
+we also offer a
+manual license key process.  You'll find manual instructions at the
+bottom of the License Detail page (by following the link labeled
+<EM>click here for additional instructions</EM>).
+</EM>
+<P>
+<EM>The exact <EM>grbgetkey</EM> command to run for a specific license is
+indicated at the bottom of the License Detail page (e.g.,
+<code>grbgetkey 253e22f3-...</code>).  We recommend that you use copy-paste
+to copy the entire <code>grbgetkey</code> command from our website and paste
+it into a Terminal window.
+</EM>
+<P>
+<EM>The <code>grbgetkey</code> program passes identifying information about
+your machine back to our website, and the website responds with your
+license key.  Once this exchange has occurred, <code>grbgetkey</code> will
+ask for the name of the directory in which to store your license
+key file (<code>gurobi.lic</code>).  You should see a prompt that looks
+like this:
+</EM><PRE>
+---------------------
+Saving license key...
+---------------------
+
+In which directory would you like to store the Gurobi license key file?
+[hit Enter to store it in /home/jones]:
+</PRE>
+<P>
+<EM>You can store the license key file anywhere, but we strongly recommend
+that you accept the default location by hitting <EM>Enter</EM>. Setting
+up a non-default location is error-prone and a frequent source of
+trouble.
+</EM>
+<P>
+<EM><SPAN  CLASS="textbf">Using a non-default license file location</SPAN>
+</EM>
+<P>
+<EM>When you run the Mac version of the Gurobi Optimizer, it will look for
+the <code>gurobi.lic</code> key file in three different default locations.
+It will always look in your home directory.  In addition, Gurobi
+Optimizer 6.0.0 will also look in <code>/Library/gurobi</code> and
+<code>/Library/gurobi600</code>.
+</EM>
+<P>
+<EM>If you would like to use a non-default license key file
+location, you can do so by setting environment variable
+<code>GRB_LICENSE_FILE</code> to point to the license key file.  <EM>  Important note: the environment variable should point to the license
+  key file itself, not to the directory that contains the file.</EM>
+</EM>
+<P>
+<EM>On Mac systems, you can set the optional <code>GRB_LICENSE_FILE</code>
+environment variable through <code>environment.plist</code>, as explained in
+<A NAME="tex2html11"
+  HREF="https://developer.apple.com/mac/library/documentation/MacOSX/Conceptual/BPRuntimeConfig/Articles/EnvironmentVars.html">Apple's Runtime configuration Guidelines</A>.
+</EM>
+<P>
+<EM><SPAN  CLASS="textbf">Next steps</SPAN>
+</EM>
+<P>
+<EM>If your license includes the Distributed Add-On and you plan to use
+any of the Gurobi distributed algorithms, you'll also need to set up
+<A HREF="starting_gurobi_remote_ser.html#subsection:startremoteservices">Gurobi Remote Services</A>
+on your distributed worker machines.
+</EM>
+<P>
+<EM>Once you have followed the steps above and have obtained
+a license key file, your next step is to
+<A HREF="testing_your_license.html#subsection:testlicense">test your license</A>.
+</EM>
+<P>
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html283"
+  HREF="setting_up_and_using_a_sin.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html281"
+  HREF="retrieving_and_setting_up_.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html275"
+  HREF="academic_validation.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html284"
+  HREF="setting_up_and_using_a_sin.html">Setting up and using</A>
+<B> Up:</B> <A NAME="tex2html282"
+  HREF="retrieving_and_setting_up_.html">Retrieving and Setting Up</A>
+<B> Previous:</B> <A NAME="tex2html276"
+  HREF="academic_validation.html">Academic validation</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

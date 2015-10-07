@@ -1,0 +1,270 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>mip2_c.c</TITLE>
+<META NAME="description" CONTENT="mip2_c.c">
+<META NAME="keywords" CONTENT="examples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="examples.css">
+
+<LINK REL="next" HREF="params_c_c.html">
+<LINK REL="previous" HREF="mip1_c_c.html">
+<LINK REL="up" HREF="c_examples.html">
+<LINK REL="next" HREF="params_c_c.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html633"
+  HREF="params_c_c.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html631"
+  HREF="c_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html625"
+  HREF="mip1_c_c.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html634"
+  HREF="params_c_c.html">params_c.c</A>
+<B> Up:</B> <A NAME="tex2html632"
+  HREF="c_examples.html">C Examples</A>
+<B> Previous:</B> <A NAME="tex2html626"
+  HREF="mip1_c_c.html">mip1_c.c</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000211100000000000000"></A>
+<A NAME="subsubsection:mip2_c.c"></A>
+<BR>
+mip2_c.c
+</H3>
+
+<P>
+<BR>
+<PRE  CLASS="verbatim">/* Copyright 2014, Gurobi Optimization, Inc. */
+
+/* This example reads a MIP model from a file, solves it and
+   prints the objective values from all feasible solutions
+   generated while solving the MIP. Then it creates the fixed
+   model and solves that model. */
+
+#include &lt;stdlib.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;math.h&gt;
+#include "gurobi_c.h"
+
+int
+main(int   argc,
+     char *argv[])
+{
+  GRBenv   *env   = NULL;
+  GRBmodel *model = NULL;
+  GRBmodel *fixed = NULL;
+  int       error = 0;
+  int       ismip;
+  int       j, k, solcount, numvars;
+  double    objn, vobj, xn;
+  int       optimstatus, foptimstatus;
+  double    objval, fobjval;
+  char      *varname;
+  double    x;
+
+  /* To change settings for a loaded model, we need to get
+     the model environment, which will be freed when the model
+     is freed. */
+
+  GRBenv   *menv, *fenv;
+
+  if (argc &lt; 2) {
+    fprintf(stderr, "Usage: mip2_c filename\n");
+    exit(1);
+  }
+
+  /* Create environment */
+
+  error = GRBloadenv(&amp;env, "mip2.log");
+  if (error) goto QUIT;
+
+  /* Read model from file */
+
+  error = GRBreadmodel(env, argv[1], &amp;model);
+  if (error) goto QUIT;
+
+  error = GRBgetintattr(model, "IsMIP", &amp;ismip);
+  if (error) goto QUIT;
+
+  if (ismip == 0) {
+    printf("Model is not a MIP\n");
+    goto QUIT;
+  }
+
+  /* Get model environment */
+
+  menv = GRBgetenv(model);
+  if (!menv) {
+    fprintf(stderr, "Error: could not get model environment\n");
+    goto QUIT;
+  }
+
+  /* Solve model */
+
+  error = GRBoptimize(model);
+  if (error) goto QUIT;
+
+  /* Capture solution information */
+
+  error = GRBgetintattr(model, GRB_INT_ATTR_STATUS, &amp;optimstatus);
+  if (error) goto QUIT;
+
+  printf("\nOptimization complete\n");
+  if (optimstatus == GRB_OPTIMAL) {
+    error = GRBgetdblattr(model, GRB_DBL_ATTR_OBJVAL, &amp;objval);
+    if (error) goto QUIT;
+    printf("Optimal objective: %.4e\n\n", objval);
+  } else if (optimstatus == GRB_INF_OR_UNBD) {
+    printf("Model is infeasible or unbounded\n\n");
+    goto QUIT;
+  } else if (optimstatus == GRB_INFEASIBLE) {
+    printf("Model is infeasible\n\n");
+    goto QUIT;
+  } else if (optimstatus == GRB_UNBOUNDED) {
+    printf("Model is unbounded\n\n");
+    goto QUIT;
+  } else {
+    printf("Optimization was stopped with status = %d\n\n", optimstatus);
+    goto QUIT;
+  }
+
+  /* Iterate over the solutions and compute the objectives */
+
+  error = GRBsetintparam(menv, "OutputFlag", 0);
+  if (error) goto QUIT;
+  error = GRBgetintattr(model, "SolCount", &amp;solcount);
+  if (error) goto QUIT;
+  error = GRBgetintattr(model, "NumVars", &amp;numvars);
+  if (error) goto QUIT;
+
+  printf("\n");
+  for ( k = 0; k &lt; solcount; ++k ) {
+    error = GRBsetintparam(menv, "SolutionNumber", k);
+    objn = 0.0;
+    for ( j = 0; j &lt; numvars; ++j ) {
+      error = GRBgetdblattrelement(model, "Obj", j, &amp;vobj);
+      if (error) goto QUIT;
+      error = GRBgetdblattrelement(model, "Xn", j, &amp;xn);
+      if (error) goto QUIT;
+      objn += vobj * xn;
+    }
+    printf("Solution %i has objective: %f\n", k, objn);
+  }
+  printf("\n");
+
+  error = GRBsetintparam(menv, "OutputFlag", 1);
+  if (error) goto QUIT;
+
+  /* Create a fixed model, turn off presolve and solve */
+
+  fixed = GRBfixedmodel(model);
+  if (!fixed) {
+    fprintf(stderr, "Error: could not create fixed model\n");
+    goto QUIT;
+  }
+
+  fenv = GRBgetenv(fixed);
+  if (!fenv) {
+    fprintf(stderr, "Error: could not get fixed model environment\n");
+    goto QUIT;
+  }
+
+  error = GRBsetintparam(fenv, "PRESOLVE", 0);
+  if (error) goto QUIT;
+
+  error = GRBoptimize(fixed);
+  if (error) goto QUIT;
+
+  error = GRBgetintattr(fixed, GRB_INT_ATTR_STATUS, &amp;foptimstatus);
+  if (error) goto QUIT;
+
+  if (foptimstatus != GRB_OPTIMAL) {
+    fprintf(stderr, "Error: fixed model isn't optimal\n");
+    goto QUIT;
+  }
+
+  error = GRBgetdblattr(fixed, GRB_DBL_ATTR_OBJVAL, &amp;fobjval);
+  if (error) goto QUIT;
+
+  if (fabs(fobjval - objval) &gt; 1.0e-6 * (1.0 + fabs(objval))) {
+    fprintf(stderr, "Error: objective values are different\n");
+  }
+
+  /* Print values of nonzero variables */
+  for ( j = 0; j &lt; numvars; ++j ) {
+    error = GRBgetstrattrelement(fixed, "VarName", j, &amp;varname);
+    if (error) goto QUIT;
+    error = GRBgetdblattrelement(fixed, "X", j, &amp;x);
+    if (error) goto QUIT;
+    if (x != 0.0) {
+      printf("%s %f\n", varname, x);
+    }
+  }
+
+
+QUIT:
+
+  /* Error reporting */
+
+  if (error) {
+    printf("ERROR: %s\n", GRBgeterrormsg(env));
+    exit(1);
+  }
+
+  /* Free models */
+
+  GRBfreemodel(model);
+  GRBfreemodel(fixed);
+
+  /* Free environment */
+
+  GRBfreeenv(env);
+
+  return 0;
+}
+</PRE>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html633"
+  HREF="params_c_c.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html631"
+  HREF="c_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html625"
+  HREF="mip1_c_c.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html634"
+  HREF="params_c_c.html">params_c.c</A>
+<B> Up:</B> <A NAME="tex2html632"
+  HREF="c_examples.html">C Examples</A>
+<B> Previous:</B> <A NAME="tex2html626"
+  HREF="mip1_c_c.html">mip1_c.c</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

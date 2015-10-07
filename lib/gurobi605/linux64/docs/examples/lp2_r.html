@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>lp2.R</TITLE>
+<META NAME="description" CONTENT="lp2.R">
+<META NAME="keywords" CONTENT="examples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="examples.css">
+
+<LINK REL="next" HREF="mip_r.html">
+<LINK REL="previous" HREF="lp_r.html">
+<LINK REL="up" HREF="r_examples.html">
+<LINK REL="next" HREF="mip_r.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html2338"
+  HREF="mip_r.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html2336"
+  HREF="r_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html2330"
+  HREF="lp_r.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html2339"
+  HREF="mip_r.html">mip.R</A>
+<B> Up:</B> <A NAME="tex2html2337"
+  HREF="r_examples.html">R Examples</A>
+<B> Previous:</B> <A NAME="tex2html2331"
+  HREF="lp_r.html">lp.R</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00028200000000000000"></A>
+<A NAME="subsubsection:lp2.R"></A>
+<BR>
+lp2.R
+</H3>
+
+<P>
+<BR>
+<PRE  CLASS="verbatim"># Copyright 2014, Gurobi Optimization, Inc.
+#
+# Formulate a simple linear program, solve it, and then solve it
+# again using the optimal basis.
+
+library("gurobi")
+
+model &lt;- list()
+
+model$A     &lt;- matrix(c(1,3,4,8,2,3), nrow=2, byrow=T)
+model$obj   &lt;- c(1,2,3)
+model$rhs   &lt;- c(4,7)
+model$sense &lt;- c('&gt;=', '&gt;=')
+
+# First solve - requires a few simplex iterations
+
+result &lt;- gurobi(model)
+
+model$vbasis &lt;- result$vbasis
+model$cbasis &lt;- result$cbasis
+
+# Second solve - start from optimal basis, so no iterations
+
+result &lt;- gurobi(model)
+</PRE>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html2338"
+  HREF="mip_r.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html2336"
+  HREF="r_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html2330"
+  HREF="lp_r.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html2339"
+  HREF="mip_r.html">mip.R</A>
+<B> Up:</B> <A NAME="tex2html2337"
+  HREF="r_examples.html">R Examples</A>
+<B> Previous:</B> <A NAME="tex2html2331"
+  HREF="lp_r.html">lp.R</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

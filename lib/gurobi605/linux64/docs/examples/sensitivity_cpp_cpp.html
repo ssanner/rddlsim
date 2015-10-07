@@ -1,0 +1,198 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>sensitivity_c++.cpp</TITLE>
+<META NAME="description" CONTENT="sensitivity_c++.cpp">
+<META NAME="keywords" CONTENT="examples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="examples.css">
+
+<LINK REL="next" HREF="qcp_cpp_cpp.html">
+<LINK REL="previous" HREF="piecewise_cpp_cpp.html">
+<LINK REL="up" HREF="cpp_examples.html">
+<LINK REL="next" HREF="qcp_cpp_cpp.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html935"
+  HREF="qcp_cpp_cpp.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html933"
+  HREF="cpp_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html927"
+  HREF="piecewise_cpp_cpp.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html936"
+  HREF="qcp_cpp_cpp.html">qcp_c++.cpp</A>
+<B> Up:</B> <A NAME="tex2html934"
+  HREF="cpp_examples.html">C++ Examples</A>
+<B> Previous:</B> <A NAME="tex2html928"
+  HREF="piecewise_cpp_cpp.html">piecewise_c++.cpp</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000221400000000000000"></A>
+<A NAME="subsubsection:sensitivity_c++.cpp"></A>
+<BR>
+sensitivity_c++.cpp
+</H3>
+
+<P>
+<BR>
+<PRE  CLASS="verbatim">/* Copyright 2014, Gurobi Optimization, Inc. */
+
+/* A simple sensitivity analysis example which reads a MIP model
+   from a file and solves it. Then each binary variable is set
+   to 1-X, where X is its value in the optimal solution, and
+   the impact on the objective function value is reported.
+*/
+
+#include "gurobi_c++.h"
+using namespace std;
+
+int
+main(int   argc,
+     char *argv[])
+{
+  if (argc &lt; 2) {
+    cout &lt;&lt; "Usage: sensitivity_c++ filename" &lt;&lt; endl;
+    return 1;
+  }
+
+  GRBVar* vars = NULL;
+  double* origX = NULL;
+
+  try {
+
+    // Create environment
+
+    GRBEnv env = GRBEnv();
+
+    // Read and solve model
+
+    GRBModel model = GRBModel(env, argv[1]);
+
+    if (model.get(GRB_IntAttr_IsMIP) == 0) {
+      cout &lt;&lt; "Model is not a MIP" &lt;&lt; endl;
+      return 1;
+    }
+
+    model.optimize();
+
+    if (model.get(GRB_IntAttr_Status) != GRB_OPTIMAL) {
+      cout &lt;&lt; "Optimization ended with status "
+           &lt;&lt; model.get(GRB_IntAttr_Status) &lt;&lt; endl;
+      return 1;
+    }
+
+    // Store the optimal solution
+
+    double origObjVal = model.get(GRB_DoubleAttr_ObjVal);
+    vars = model.getVars();
+    int numVars = model.get(GRB_IntAttr_NumVars);
+    origX = model.get(GRB_DoubleAttr_X, vars, numVars);
+
+    // Disable solver output for subsequent solves
+
+    model.getEnv().set(GRB_IntParam_OutputFlag, 0);
+
+    // Iterate through unfixed, binary variables in model
+
+    for (int i = 0; i &lt; numVars; i++) {
+      GRBVar v = vars[i];
+      char vType = v.get(GRB_CharAttr_VType);
+
+      if (v.get(GRB_DoubleAttr_LB) == 0 &amp;&amp; v.get(GRB_DoubleAttr_UB) == 1
+          &amp;&amp; (vType == GRB_BINARY || vType == GRB_INTEGER)) {
+
+        // Set variable to 1-X, where X is its value in optimal solution
+
+        if (origX[i] &lt; 0.5) {
+          v.set(GRB_DoubleAttr_LB, 1.0);
+          v.set(GRB_DoubleAttr_Start, 1.0);
+        } else {
+          v.set(GRB_DoubleAttr_UB, 0.0);
+          v.set(GRB_DoubleAttr_Start, 0.0);
+        }
+
+        // Update MIP start for the other variables
+
+        for (int j = 0; j &lt; numVars; j++) {
+          if (j != i) {
+            vars[j].set(GRB_DoubleAttr_Start, origX[j]);
+          }
+        }
+
+        // Solve for new value and capture sensitivity information
+
+        model.optimize();
+
+        if (model.get(GRB_IntAttr_Status) == GRB_OPTIMAL) {
+          cout &lt;&lt; "Objective sensitivity for variable "
+               &lt;&lt; v.get(GRB_StringAttr_VarName) &lt;&lt; " is "
+               &lt;&lt; (model.get(GRB_DoubleAttr_ObjVal) - origObjVal) &lt;&lt; endl;
+        } else {
+          cout &lt;&lt; "Objective sensitivity for variable "
+               &lt;&lt; v.get(GRB_StringAttr_VarName) &lt;&lt; " is infinite" &lt;&lt; endl;
+        }
+
+        // Restore the original variable bounds
+
+        v.set(GRB_DoubleAttr_LB, 0.0);
+        v.set(GRB_DoubleAttr_UB, 1.0);
+      }
+    }
+
+  } catch (GRBException e) {
+    cout &lt;&lt; "Error code = " &lt;&lt; e.getErrorCode() &lt;&lt; endl;
+    cout &lt;&lt; e.getMessage() &lt;&lt; endl;
+  } catch (...) {
+    cout &lt;&lt; "Error during optimization" &lt;&lt; endl;
+  }
+
+  delete[] vars;
+  delete[] origX;
+
+  return 0;
+}
+</PRE>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html935"
+  HREF="qcp_cpp_cpp.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html933"
+  HREF="cpp_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html927"
+  HREF="piecewise_cpp_cpp.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html936"
+  HREF="qcp_cpp_cpp.html">qcp_c++.cpp</A>
+<B> Up:</B> <A NAME="tex2html934"
+  HREF="cpp_examples.html">C++ Examples</A>
+<B> Previous:</B> <A NAME="tex2html928"
+  HREF="piecewise_cpp_cpp.html">piecewise_c++.cpp</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

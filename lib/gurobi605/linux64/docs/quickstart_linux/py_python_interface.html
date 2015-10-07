@@ -1,0 +1,216 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Python Interface</TITLE>
+<META NAME="description" CONTENT="Python Interface">
+<META NAME="keywords" CONTENT="quickstart_linux">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="quickstart_linux.css">
+
+<LINK REL="next" HREF="matlab_interface.html">
+<LINK REL="previous" HREF="cs_net_interface_cs.html">
+<LINK REL="up" HREF="quickstart_linux.html">
+<LINK REL="next" HREF="py_simple_python_example.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html1171"
+  HREF="py_simple_python_example.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1169"
+  HREF="quickstart_linux.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1163"
+  HREF="cs_building_and_running_th.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1172"
+  HREF="py_simple_python_example.html">Simple Python Example</A>
+<B> Up:</B> <A NAME="tex2html1170"
+  HREF="quickstart_linux.html">Gurobi Optimizer Quick Start</A>
+<B> Previous:</B> <A NAME="tex2html1164"
+  HREF="cs_building_and_running_th.html">Building and running the</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION000110000000000000000"></A>
+<A NAME="section:Python"></A>
+<BR>
+Python Interface
+</H1>
+
+<P>
+The Gurobi Python interface can be used in a number of ways.  It is
+the basis of our Interactive Shell, where it is typically used to work
+with existing models.  It can also be used to write standalone
+programs that create and solve models, in much the same way that you
+would use our other language interfaces.  The Gurobi distribution
+includes a Python interpreter and a basic set of Python modules.  If
+you'd like additional capabilities, you can also
+<A HREF="installing_the_anaconda_py.html#section:Anaconda">install the Anaconda Python distribution</A>, which
+includes both a graphical development environment (Spyder) and a
+notebook-style interface
+
+<P>
+When comparing our Python interface against our other language
+interfaces, you will find that our Python interface adds a few
+higher-level constructs that allow you to build models using a more
+mathematical syntax, similar to the way you might work with a
+traditional modeling language.  This section will work through two
+Python modeling examples.  The
+<A HREF="py_simple_python_example.html#subsection:simplepython">first</A> will present a Python
+program that is similar to the C, C++, Java, and C# programs
+presented in previous sections.  The
+<A HREF="py_python_dictionary_examp.html#subsection:pythondictionary">second</A> demonstrates some
+of the higher-level modeling capabilities of our Python interface.
+
+<P>
+This section assumes that you are already familiar with the Python
+programming language, and that you have read the preceding section on
+the
+<A HREF="interactive_shell.html#section:Shell">Gurobi Interactive Shell</A>.
+If you
+would like to learn more about the Python language, we recommend that
+you visit the Python <A NAME="tex2html38"
+  HREF="http://docs.python.org/release/2.7.5/tutorial/">online
+  tutorial</A>.
+
+<P>
+As we noted, the Gurobi distribution includes all the tools you will
+need to run Python programs.  However, if you would prefer to use your
+own Python installation, we also provide tools for installing the
+<code>gurobipy</code> module into your Python environment.  You should refer
+to the instructions for <A HREF="py_building_and_running_th.html#subsection:pythonrun">building and running the
+  examples</A>
+for further details.
+
+<P>
+One big advantage of working within Python is that the Python language
+is popular and well supported.  One aspect of this support is the
+breadth of powerful Python Integrated Development Environments (IDEs)
+that are available, most of which can be downloaded for free from the
+internet.  This document includes <A HREF="installing_the_anaconda_py.html#section:Anaconda">instructions for setting
+  up Gurobi for use within the Anaconda
+  distribution</A>.  Anaconda greatly simplifies
+the task of installing Python packages, and it includes both a
+graphical development environment (Spyder) and a notebook-style
+interface (iPython Notebook).  If you plan to do significant Python
+development, we recommend that you <A HREF="installing_the_anaconda_py.html#section:Anaconda">install Anaconda
+  now</A>.  You will also find pointers to other
+useful Python tools there.
+
+<P>
+<B>Important note for AIX users:</B> due to limited Python support on
+AIX, our AIX port does not include the Interactive Shell or the Python
+interface.  You can use the C, C++, or Java interfaces.
+
+<P>
+The Python example directory contains a number of examples.  We
+encourage you to browse and modify them in order to become more
+familiar with the Gurobi Python interface.
+We also encourage you to read the
+<A NAME="tex2html39"
+  HREF="../examples/examples.html">Gurobi Example Tour</A>
+for more information.
+
+<P>
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html1173"
+  HREF="py_simple_python_example.html">Simple Python Example</A>
+<LI><A NAME="tex2html1174"
+  HREF="py_example_mip1_py.html">Example mip1.py</A>
+<UL>
+<LI><A NAME="tex2html1175"
+  HREF="py_example_details.html">Example details</A>
+<LI><A NAME="tex2html1176"
+  HREF="py_creating_the_model.html">Creating the model</A>
+<LI><A NAME="tex2html1177"
+  HREF="py_adding_variables_to_the.html">Adding variables to the model</A>
+<LI><A NAME="tex2html1178"
+  HREF="py_updating_the_model_lazy.html">Updating the model - lazy modification</A>
+<LI><A NAME="tex2html1179"
+  HREF="py_setting_the_objective.html">Setting the objective</A>
+<LI><A NAME="tex2html1180"
+  HREF="py_adding_constraints_to_t.html">Adding constraints to the model</A>
+<LI><A NAME="tex2html1181"
+  HREF="py_optimizing_the_model.html">Optimizing the model</A>
+<LI><A NAME="tex2html1182"
+  HREF="py_reporting_results_attri.html">Reporting results - attributes</A>
+<LI><A NAME="tex2html1183"
+  HREF="py_error_handling.html">Error handling</A>
+<LI><A NAME="tex2html1184"
+  HREF="py_running_the_example.html">Running the example</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html1185"
+  HREF="py_python_dictionary_examp.html">Python Dictionary Example</A>
+<UL>
+<LI><A NAME="tex2html1186"
+  HREF="py_motivation.html">Motivation</A>
+<LI><A NAME="tex2html1187"
+  HREF="py_lists_and_tuples.html">Lists and Tuples</A>
+<LI><A NAME="tex2html1188"
+  HREF="py_dictionaries.html">Dictionaries</A>
+<LI><A NAME="tex2html1189"
+  HREF="py_list_comprehension.html">List comprehension</A>
+<LI><A NAME="tex2html1190"
+  HREF="py_the_tuplelist_class.html">The tuplelist class</A>
+<LI><A NAME="tex2html1191"
+  HREF="py_netflow_py_example.html">netflow.py example</A>
+<LI><A NAME="tex2html1192"
+  HREF="py_netflow_py_example_deta.html">netflow.py example details</A>
+<LI><A NAME="tex2html1193"
+  HREF="py_building_a_multi_dimens.html">Building a multi-dimensional array of variables</A>
+<LI><A NAME="tex2html1194"
+  HREF="py_arc_capacity_constraint.html">Arc capacity constraints</A>
+<LI><A NAME="tex2html1195"
+  HREF="py_flow_conservation_const.html">Flow conservation constraints</A>
+<LI><A NAME="tex2html1196"
+  HREF="py_results.html">Results</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html1197"
+  HREF="py_building_and_running_th.html">Building and running the examples</A>
+</UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1171"
+  HREF="py_simple_python_example.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1169"
+  HREF="quickstart_linux.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1163"
+  HREF="cs_building_and_running_th.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1172"
+  HREF="py_simple_python_example.html">Simple Python Example</A>
+<B> Up:</B> <A NAME="tex2html1170"
+  HREF="quickstart_linux.html">Gurobi Optimizer Quick Start</A>
+<B> Previous:</B> <A NAME="tex2html1164"
+  HREF="cs_building_and_running_th.html">Building and running the</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

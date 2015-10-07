@@ -1,0 +1,201 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Optimization Status Codes</TITLE>
+<META NAME="description" CONTENT="Optimization Status Codes">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="callback_codes.html">
+<LINK REL="previous" HREF="parameters.html">
+<LINK REL="up" HREF="refman.html">
+<LINK REL="next" HREF="callback_codes.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html12159"
+  HREF="callback_codes.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html12157"
+  HREF="refman.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html12151"
+  HREF="visual_basic_parameter_exa.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html12160"
+  HREF="callback_codes.html">Callback Codes</A>
+<B> Up:</B> <A NAME="tex2html12158"
+  HREF="refman.html">Gurobi Optimizer Reference Manual</A>
+<B> Previous:</B> <A NAME="tex2html12152"
+  HREF="visual_basic_parameter_exa.html">Visual Basic Parameter Examples</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION000150000000000000000"></A>
+<A NAME="sec:StatusCodes"></A>
+<BR>
+Optimization Status Codes
+</H1>
+
+<P>
+Once an optimize call has returned, the Gurobi optimizer sets the
+<A HREF="status.html#attr:Status">Status</A>
+attribute of the model to one of several possible values.
+The attribute takes an integer value, but we recommend that you use
+one of the pre-defined status constants to check the status in your
+program.  Each code has a name, and each language requires a prefix on
+this name to obtain the appropriate constant.  You would access status
+code <code>OPTIMAL</code> in the following ways from the available Gurobi
+interfaces:
+<BR><TABLE CELLPADDING=3 BORDER="1">
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf">Language</SPAN></TH>
+<TH ALIGN="LEFT"><SPAN  CLASS="textbf">Status Code</SPAN></TH>
+</TR>
+<TR><TD ALIGN="LEFT">C</TD>
+<TD ALIGN="LEFT"><TT>GRB_OPTIMAL</TT></TD>
+</TR>
+<TR><TD ALIGN="LEFT">C++</TD>
+<TD ALIGN="LEFT"><TT>GRB_OPTIMAL</TT></TD>
+</TR>
+<TR><TD ALIGN="LEFT">Java</TD>
+<TD ALIGN="LEFT"><TT>GRB.Status.OPTIMAL</TT></TD>
+</TR>
+<TR><TD ALIGN="LEFT">.NET</TD>
+<TD ALIGN="LEFT"><TT>GRB.Status.OPTIMAL</TT></TD>
+</TR>
+<TR><TD ALIGN="LEFT">Python</TD>
+<TD ALIGN="LEFT"><TT>GRB.OPTIMAL</TT></TD>
+</TR>
+</TABLE>
+
+<P>
+Possible status codes are as follows:
+<BR>
+<P>
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf">Status code</SPAN></TH>
+<TH ALIGN="LEFT"><SPAN  CLASS="textbf">Value</SPAN></TH>
+<TH ALIGN="LEFT"><SPAN  CLASS="textbf">Description</SPAN></TH>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>LOADED</TT></SPAN></TH>
+<TD ALIGN="LEFT">1</TD>
+<TD ALIGN="LEFT">Model is loaded, but no solution information is available.</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>OPTIMAL</TT></SPAN></TH>
+<TD ALIGN="LEFT">2</TD>
+<TD ALIGN="LEFT">Model was solved to optimality (subject to tolerances), and an optimal
+    solution is available.</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>INFEASIBLE</TT></SPAN></TH>
+<TD ALIGN="LEFT">3</TD>
+<TD ALIGN="LEFT">Model was proven to be infeasible.</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>INF_OR_UNBD</TT></SPAN></TH>
+<TD ALIGN="LEFT">4</TD>
+<TD ALIGN="LEFT">Model was proven to be either infeasible or unbounded.  To obtain
+    a more definitive conclusion, set the
+    <A HREF="dualreductions.html#parameter:DualReductions">DualReductions</A> parameter to
+    0 and reoptimize.</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>UNBOUNDED</TT></SPAN></TH>
+<TD ALIGN="LEFT">5</TD>
+<TD ALIGN="LEFT">Model was proven to be unbounded. <EM>Important note: an unbounded
+    status indicates the presence of an unbounded ray that allows the objective
+    to improve without limit.  It says nothing about whether the model has a
+    feasible solution.  If you require information on feasibility, you should
+    set the objective to zero and reoptimize.</EM></TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>CUTOFF</TT></SPAN></TH>
+<TD ALIGN="LEFT">6</TD>
+<TD ALIGN="LEFT">Optimal objective for model was proven to be worse than the
+    value specified in the <code>Cutoff</code>
+    parameter. No solution information is available.</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>ITERATION_LIMIT</TT></SPAN></TH>
+<TD ALIGN="LEFT">7</TD>
+<TD ALIGN="LEFT">Optimization terminated because the total number of simplex iterations
+    performed exceeded the value specified in the <code>IterationLimit</code>
+    parameter, or because the total number of barrier iterations
+    exceeded the value specified in the <code>BarIterLimit</code>
+    parameter.</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>NODE_LIMIT</TT></SPAN></TH>
+<TD ALIGN="LEFT">8</TD>
+<TD ALIGN="LEFT">Optimization terminated because the total number of branch-and-cut nodes
+    explored exceeded the value specified in the <code>NodeLimit</code>
+    parameter.</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>TIME_LIMIT</TT></SPAN></TH>
+<TD ALIGN="LEFT">9</TD>
+<TD ALIGN="LEFT">Optimization terminated because the time expended
+    exceeded the value specified in the <code>TimeLimit</code>
+    parameter.</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>SOLUTION_LIMIT</TT></SPAN></TH>
+<TD ALIGN="LEFT">10</TD>
+<TD ALIGN="LEFT">Optimization terminated because the number of solutions found
+    reached the value specified in the <code>SolutionLimit</code>
+    parameter.</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>INTERRUPTED</TT></SPAN></TH>
+<TD ALIGN="LEFT">11</TD>
+<TD ALIGN="LEFT">Optimization was terminated by the user.</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>NUMERIC</TT></SPAN></TH>
+<TD ALIGN="LEFT">12</TD>
+<TD ALIGN="LEFT">Optimization was terminated due to unrecoverable numerical difficulties.</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>SUBOPTIMAL</TT></SPAN></TH>
+<TD ALIGN="LEFT">13</TD>
+<TD ALIGN="LEFT">Unable to satisfy optimality tolerances; a sub-optimal solution is
+    available.</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>INPROGRESS</TT></SPAN></TH>
+<TD ALIGN="LEFT">14</TD>
+<TD ALIGN="LEFT">An asynchronous optimization call was made, but the associated
+    optimization run is not yet complete.</TD>
+</TR>
+</TABLE>
+
+<P>
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html12159"
+  HREF="callback_codes.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html12157"
+  HREF="refman.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html12151"
+  HREF="visual_basic_parameter_exa.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html12160"
+  HREF="callback_codes.html">Callback Codes</A>
+<B> Up:</B> <A NAME="tex2html12158"
+  HREF="refman.html">Gurobi Optimizer Reference Manual</A>
+<B> Previous:</B> <A NAME="tex2html12152"
+  HREF="visual_basic_parameter_exa.html">Visual Basic Parameter Examples</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

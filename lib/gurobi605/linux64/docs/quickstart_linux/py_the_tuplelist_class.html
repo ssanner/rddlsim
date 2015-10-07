@@ -1,0 +1,157 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>The tuplelist class</TITLE>
+<META NAME="description" CONTENT="The tuplelist class">
+<META NAME="keywords" CONTENT="quickstart_linux">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="quickstart_linux.css">
+
+<LINK REL="next" HREF="py_netflow_py_example.html">
+<LINK REL="previous" HREF="py_list_comprehension.html">
+<LINK REL="up" HREF="py_python_dictionary_examp.html">
+<LINK REL="next" HREF="py_netflow_py_example.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html1395"
+  HREF="py_netflow_py_example.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1393"
+  HREF="py_python_dictionary_examp.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1387"
+  HREF="py_list_comprehension.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1396"
+  HREF="py_netflow_py_example.html">netflow.py example</A>
+<B> Up:</B> <A NAME="tex2html1394"
+  HREF="py_python_dictionary_examp.html">Python Dictionary Example</A>
+<B> Previous:</B> <A NAME="tex2html1388"
+  HREF="py_list_comprehension.html">List comprehension</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000113500000000000000">
+The tuplelist class</A>
+</H3>
+
+<P>
+The final important item we would like to discuss is the
+<code>tuplelist</code> class.  This is a custom sub-class of the Python
+<code>list</code> class that is designed to allow
+you to efficiently build sub-lists from a list of tuples.
+To be more specific, you can
+use the <code>select</code> method on a <code>tuplelist</code> object to
+retrieve all tuples that match one or more specified values
+in specified fields.
+
+<P>
+Let us give a simple example.  We'll begin by creating a simple
+<code>tuplelist</code> (by passing a list of tuples to the constructor):
+<PRE>
+gurobi&gt; l = tuplelist([(1, 2), (1, 3), (2, 3), (2, 4)])
+</PRE>
+To select a sub-list where particular tuple entries match desired
+values, you specify the desired values as arguments
+to the <code>select</code> method.
+The number of arguments to <code>select</code> is equal
+to the number of entries in the members of the <code>tuplelist</code>
+(they should all have the same number of entries).
+You use a
+<code>'*'</code> string to indicate that any value is acceptable in that position
+in the tuple.
+
+<P>
+Each tuple in our example contains two entries, so we
+can perform the following selections:
+<PRE>
+gurobi&gt; print l.select(1, '*')
+[(1, 2), (1, 3)]
+gurobi&gt; print l.select('*', 3)
+[(1, 3), (2, 3)]
+gurobi&gt; print l.select(1, 3)
+[(1, 3)]
+gurobi&gt; print l.select('*', '*')
+[(1, 2), (1, 3), (2, 3), (2, 4)]
+</PRE>
+
+<P>
+You may have noticed that similar results could have been achieved
+using list comprehension.  For example:
+<PRE>
+gurobi&gt; print l.select(1, '*')
+[(1, 2), (1, 3)]
+gurobi&gt; print [(x,y) for x,y in l if x == 1]
+[(1, 2), (1, 3)]
+</PRE>
+The problem is that the latter statement considers every member in the list,
+which can be quite inefficient for large lists.  The <code>select</code>
+method builds internal data structures that make these
+selections quite efficient.
+
+<P>
+Note that <code>tuplelist</code> is a sub-class of <code>list</code>, so you can
+use the standard <code>list</code> methods to access or modify a
+<code>tuplelist</code>:
+<PRE>
+gurobi&gt; print l[1]
+(1,3)
+gurobi&gt; l += [(3, 4)]
+gurobi&gt; print l
+[(1, 2), (1, 3), (2, 3), (2, 4), (3, 4)]
+</PRE>
+
+<P>
+Returning to our network flow example, once we've built a
+<code>tuplelist</code> containing all valid commodity-source-destination
+combinations on the network (we'll call it <code>flows</code>), we
+can select
+all arcs that flow into a specific destination city as follows:
+<PRE>
+gurobi&gt; inbound = flows.select('*', '*', 'New York')
+</PRE>
+
+<P>
+We now present an example that illustrates the use of all of the
+concepts discussed so far.
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1395"
+  HREF="py_netflow_py_example.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1393"
+  HREF="py_python_dictionary_examp.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1387"
+  HREF="py_list_comprehension.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1396"
+  HREF="py_netflow_py_example.html">netflow.py example</A>
+<B> Up:</B> <A NAME="tex2html1394"
+  HREF="py_python_dictionary_examp.html">Python Dictionary Example</A>
+<B> Previous:</B> <A NAME="tex2html1388"
+  HREF="py_list_comprehension.html">List comprehension</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

@@ -1,0 +1,249 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>dense_c.c</TITLE>
+<META NAME="description" CONTENT="dense_c.c">
+<META NAME="keywords" CONTENT="examples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="examples.css">
+
+<LINK REL="next" HREF="diet_c_c.html">
+<LINK REL="previous" HREF="callback_c_c.html">
+<LINK REL="up" HREF="c_examples.html">
+<LINK REL="next" HREF="diet_c_c.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html543"
+  HREF="diet_c_c.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html541"
+  HREF="c_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html535"
+  HREF="callback_c_c.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html544"
+  HREF="diet_c_c.html">diet_c.c</A>
+<B> Up:</B> <A NAME="tex2html542"
+  HREF="c_examples.html">C Examples</A>
+<B> Previous:</B> <A NAME="tex2html536"
+  HREF="callback_c_c.html">callback_c.c</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00021200000000000000"></A>
+<A NAME="subsubsection:dense_c.c"></A>
+<BR>
+dense_c.c
+</H3>
+
+<P>
+<BR>
+<PRE  CLASS="verbatim">/* Copyright 2014, Gurobi Optimization, Inc. */
+
+/* This example formulates and solves the following simple QP model:
+
+     minimize    x + y + x^2 + x*y + y^2 + y*z + z^2
+     subject to  x + 2 y + 3 z &gt;= 4
+                 x +   y       &gt;= 1
+
+   The example illustrates the use of dense matrices to store A and Q
+   (and dense vectors for the other relevant data).  We don't recommend
+   that you use dense matrices, but this example may be helpful if you
+   already have your data in this format.
+*/
+
+#include &lt;stdlib.h&gt;
+#include &lt;stdio.h&gt;
+#include "gurobi_c.h"
+
+/*
+  Solve an LP/QP/MILP/MIQP represented using dense matrices.  This
+  routine assumes that A and Q are both stored in row-major order.
+  It returns 1 if the optimization succeeds.  When successful,
+  it returns the optimal objective value in 'objvalP', and the
+  optimal solution vector in 'solution'.
+*/
+
+static int
+dense_optimize(GRBenv *env,
+               int     rows,
+               int     cols,
+               double *c,     /* linear portion of objective function */
+               double *Q,     /* quadratic portion of objective function */
+               double *A,     /* constraint matrix */
+               char   *sense, /* constraint senses */
+               double *rhs,   /* RHS vector */
+               double *lb,    /* variable lower bounds */
+               double *ub,    /* variable upper bounds */
+               char   *vtype, /* variable types (continuous, binary, etc.) */
+               double *solution,
+               double *objvalP)
+{
+  GRBmodel *model = NULL;
+  int       i, j, optimstatus;
+  int       error = 0;
+  int       success = 0;
+
+  /* Create an empty model */
+
+  error = GRBnewmodel(env, &amp;model, "dense", cols, c, lb, ub, vtype, NULL);
+  if (error) goto QUIT;
+
+  error = GRBaddconstrs(model, rows, 0, NULL, NULL, NULL, sense, rhs, NULL);
+  if (error) goto QUIT;
+
+  /* Integrate new rows and columns */
+
+  error = GRBupdatemodel(model);
+  if (error) goto QUIT;
+
+  /* Populate A matrix */
+
+  for (i = 0; i &lt; rows; i++) {
+    for (j = 0; j &lt; cols; j++) {
+      if (A[i*cols+j] != 0) {
+        error = GRBchgcoeffs(model, 1, &amp;i, &amp;j, &amp;A[i*cols+j]);
+        if (error) goto QUIT;
+      }
+    }
+  }
+
+  /* Populate Q matrix */
+
+  if (Q) {
+    for (i = 0; i &lt; cols; i++) {
+      for (j = 0; j &lt; cols; j++) {
+        if (Q[i*cols+j] != 0) {
+          error = GRBaddqpterms(model, 1, &amp;i, &amp;j, &amp;Q[i*cols+j]);
+          if (error) goto QUIT;
+        }
+      }
+    }
+  }
+
+  /* Integrate new coefficients */
+
+  error = GRBupdatemodel(model);
+  if (error) goto QUIT;
+
+  /* Write model to 'dense.lp' */
+
+  error = GRBwrite(model, "dense.lp");
+  if (error) goto QUIT;
+
+  /* Optimize model */
+
+  error = GRBoptimize(model);
+  if (error) goto QUIT;
+
+  /* Capture solution information */
+
+  error = GRBgetintattr(model, GRB_INT_ATTR_STATUS, &amp;optimstatus);
+  if (error) goto QUIT;
+
+  if (optimstatus == GRB_OPTIMAL) {
+
+    error = GRBgetdblattr(model, GRB_DBL_ATTR_OBJVAL, objvalP);
+    if (error) goto QUIT;
+
+    error = GRBgetdblattrarray(model, GRB_DBL_ATTR_X, 0, cols, solution);
+    if (error) goto QUIT;
+
+    success = 1;
+  }
+
+QUIT:
+
+  /* Error reporting */
+
+  if (error) {
+    printf("ERROR: %s\n", GRBgeterrormsg(env));
+    exit(1);
+  }
+
+  /* Free model */
+
+  GRBfreemodel(model);
+
+  return success;
+}
+
+int
+main(int   argc,
+     char *argv[])
+{
+  GRBenv *env     = NULL;
+  int     error   = 0;
+  double  c[]     = {1, 1, 0};
+  double  Q[3][3] = {{1, 1, 0}, {0, 1, 1}, {0, 0, 1}};
+  double  A[2][3] = {{1, 2, 3}, {1, 1, 0}};
+  char    sense[] = {'&gt;', '&gt;'};
+  double  rhs[]   = {4, 1};
+  double  lb[]    = {0, 0, 0};
+  double  sol[3];
+  int     solved;
+  double  objval;
+
+  /* Create environment */
+
+  error = GRBloadenv(&amp;env, "dense.log");
+  if (error) goto QUIT;
+
+  /* Solve the model */
+
+  solved = dense_optimize(env, 2, 3, c, &amp;Q[0][0], &amp;A[0][0], sense, rhs, lb,
+                          NULL, NULL, sol, &amp;objval);
+
+  if (solved)
+    printf("Solved: x=%.4f, y=%.4f, z=%.4f\n", sol[0], sol[1], sol[2]);
+
+QUIT:
+
+  /* Free environment */
+
+  GRBfreeenv(env);
+
+  return 0;
+}
+</PRE>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html543"
+  HREF="diet_c_c.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html541"
+  HREF="c_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html535"
+  HREF="callback_c_c.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html544"
+  HREF="diet_c_c.html">diet_c.c</A>
+<B> Up:</B> <A NAME="tex2html542"
+  HREF="c_examples.html">C Examples</A>
+<B> Previous:</B> <A NAME="tex2html536"
+  HREF="callback_c_c.html">callback_c.c</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

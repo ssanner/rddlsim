@@ -1,0 +1,194 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>sensitivity_cs.cs</TITLE>
+<META NAME="description" CONTENT="sensitivity_cs.cs">
+<META NAME="keywords" CONTENT="examples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="examples.css">
+
+<LINK REL="next" HREF="sos_cs_cs.html">
+<LINK REL="previous" HREF="qp_cs_cs.html">
+<LINK REL="up" HREF="cs_examples.html">
+<LINK REL="next" HREF="sos_cs_cs.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html1499"
+  HREF="sos_cs_cs.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1497"
+  HREF="cs_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1491"
+  HREF="qp_cs_cs.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1500"
+  HREF="sos_cs_cs.html">sos_cs.cs</A>
+<B> Up:</B> <A NAME="tex2html1498"
+  HREF="cs_examples.html">C# Examples</A>
+<B> Previous:</B> <A NAME="tex2html1492"
+  HREF="qp_cs_cs.html">qp_cs.cs</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000241600000000000000"></A>
+<A NAME="subsubsection:sensitivity_cs.cs"></A>
+<BR>
+sensitivity_cs.cs
+</H3>
+
+<P>
+<BR>
+<PRE  CLASS="verbatim">/* Copyright 2014, Gurobi Optimization, Inc. */
+
+/* A simple sensitivity analysis example which reads a MIP model
+   from a file and solves it. Then each binary variable is set
+   to 1-X, where X is its value in the optimal solution, and
+   the impact on the objective function value is reported.
+*/
+
+using System;
+using Gurobi;
+
+class sensitivity_cs
+{
+  static void Main(string[] args)
+  {
+    if (args.Length &lt; 1) {
+      Console.Out.WriteLine("Usage: sensitivity_cs filename");
+      return;
+    }
+
+    try {
+
+      // Create environment
+
+      GRBEnv env = new GRBEnv();
+
+      // Read and solve model
+
+      GRBModel model = new GRBModel(env, args[0]);
+
+      if (model.Get(GRB.IntAttr.IsMIP) == 0) {
+        Console.WriteLine("Model is not a MIP");
+        return;
+      }
+
+      model.Optimize();
+
+      if (model.Get(GRB.IntAttr.Status) != GRB.Status.OPTIMAL) {
+        Console.WriteLine("Optimization ended with status "
+            + model.Get(GRB.IntAttr.Status));
+        return;
+      }
+
+      // Store the optimal solution
+
+      double   origObjVal = model.Get(GRB.DoubleAttr.ObjVal);
+      GRBVar[] vars       = model.GetVars();
+      double[] origX      = model.Get(GRB.DoubleAttr.X, vars);
+
+      // Disable solver output for subsequent solves
+
+      model.GetEnv().Set(GRB.IntParam.OutputFlag, 0);
+
+      // Iterate through unfixed, binary variables in model
+
+      for (int i = 0; i &lt; vars.Length; i++) {
+        GRBVar v     = vars[i];
+        char   vType = v.Get(GRB.CharAttr.VType);
+
+        if (v.Get(GRB.DoubleAttr.LB) == 0 &amp;&amp; v.Get(GRB.DoubleAttr.UB) == 1
+            &amp;&amp; (vType == GRB.BINARY || vType == GRB.INTEGER)) {
+
+          // Set variable to 1-X, where X is its value in optimal solution
+
+          if (origX[i] &lt; 0.5) {
+            v.Set(GRB.DoubleAttr.LB, 1.0);
+            v.Set(GRB.DoubleAttr.Start, 1.0);
+          } else {
+            v.Set(GRB.DoubleAttr.UB, 0.0);
+            v.Set(GRB.DoubleAttr.Start, 0.0);
+          }
+
+          // Update MIP start for the other variables
+
+          for (int j = 0; j &lt; vars.Length; j++) {
+            if (j != i) {
+              vars[j].Set(GRB.DoubleAttr.Start, origX[j]);
+            }
+          }
+
+          // Solve for new value and capture sensitivity information
+
+          model.Optimize();
+
+          if (model.Get(GRB.IntAttr.Status) == GRB.Status.OPTIMAL) {
+            Console.WriteLine("Objective sensitivity for variable "
+                + v.Get(GRB.StringAttr.VarName) + " is "
+                + (model.Get(GRB.DoubleAttr.ObjVal) - origObjVal));
+          } else {
+            Console.WriteLine("Objective sensitivity for variable "
+                + v.Get(GRB.StringAttr.VarName) + " is infinite");
+          }
+
+          // Restore the original variable bounds
+
+          v.Set(GRB.DoubleAttr.LB, 0.0);
+          v.Set(GRB.DoubleAttr.UB, 1.0);
+        }
+      }
+
+      // Dispose of model and environment
+
+      model.Dispose();
+      env.Dispose();
+
+    } catch (GRBException e) {
+      Console.WriteLine("Error code: " + e.ErrorCode);
+      Console.WriteLine(e.Message);
+      Console.WriteLine(e.StackTrace);
+    }
+  }
+}
+</PRE>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1499"
+  HREF="sos_cs_cs.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1497"
+  HREF="cs_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1491"
+  HREF="qp_cs_cs.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1500"
+  HREF="sos_cs_cs.html">sos_cs.cs</A>
+<B> Up:</B> <A NAME="tex2html1498"
+  HREF="cs_examples.html">C# Examples</A>
+<B> Previous:</B> <A NAME="tex2html1492"
+  HREF="qp_cs_cs.html">qp_cs.cs</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

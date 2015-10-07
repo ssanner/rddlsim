@@ -1,0 +1,363 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>GRBModel.addVars()</TITLE>
+<META NAME="description" CONTENT="GRBModel.addVars()">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="java_grbmodel_chgcoeff.html">
+<LINK REL="previous" HREF="java_grbmodel_addvar.html">
+<LINK REL="up" HREF="java_grbmodel.html">
+<LINK REL="next" HREF="java_grbmodel_chgcoeff.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html4669"
+  HREF="java_grbmodel_chgcoeff.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html4667"
+  HREF="java_grbmodel.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html4661"
+  HREF="java_grbmodel_addvar.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html4670"
+  HREF="java_grbmodel_chgcoeff.html">GRBModel.chgCoeff()</A>
+<B> Up:</B> <A NAME="tex2html4668"
+  HREF="java_grbmodel.html">GRBModel</A>
+<B> Previous:</B> <A NAME="tex2html4662"
+  HREF="java_grbmodel_addvar.html">GRBModel.addVar()</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00062900000000000000"></A>
+<A NAME="javamethod:GRBModel.addVars"></A>
+<BR>
+GRBModel.addVars()
+</H3>
+
+<P>
+Add new decision variables to a model.
+
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">GRBVar[]</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">addVars</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">count,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">char</TD>
+<TD ALIGN="LEFT">type )</TD>
+</TR>
+</TABLE>
+
+<UL>
+Add <code>count</code> new decision variables to a model.  All
+associated attributes take their default values, except the
+variable <code>type</code>, which is specified as an argument.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">count</SPAN>: Number of variables to add.
+
+<P>
+ <SPAN  CLASS="textbf">type</SPAN>: Variable type for new variables (<TT>GRB.CONTINUOUS</TT>,
+  <TT>GRB.BINARY</TT>, <TT>GRB.INTEGER</TT>,  <TT>GRB.SEMICONT</TT>, or <TT>GRB.SEMIINT</TT>).
+
+<P>
+
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Return value:</SPAN></BIG>
+
+<P>
+Array of new variable objects.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">GRBVar[]</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">addVars</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT">double[]</TD>
+<TD ALIGN="LEFT">lb,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">double[]</TD>
+<TD ALIGN="LEFT">ub,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">double[]</TD>
+<TD ALIGN="LEFT">obj,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">char[]</TD>
+<TD ALIGN="LEFT">type,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">String[]</TD>
+<TD ALIGN="LEFT">names )</TD>
+</TR>
+</TABLE>
+
+<UL>
+Add new decision variables to a model.  The number of
+added variables is determined by the length of the input arrays
+(which must be consistent across all arguments).
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">lb</SPAN>: Lower bounds for new variables.  Can be <TT>null</TT>, in
+which case the variables get lower bounds of 0.0.
+
+<P>
+ <SPAN  CLASS="textbf">ub</SPAN>: Upper bounds for new variables.  Can be <TT>null</TT>, in
+which case the variables get infinite upper bounds.
+
+<P>
+ <SPAN  CLASS="textbf">obj</SPAN>: Objective coefficients for new variables.  Can be
+<TT>null</TT>, in which case the variables get objective coefficients
+of 0.0.
+
+<P>
+ <SPAN  CLASS="textbf">type</SPAN>: Variable types for new variables (<TT>GRB.CONTINUOUS</TT>,
+  <TT>GRB.BINARY</TT>, <TT>GRB.INTEGER</TT>,  <TT>GRB.SEMICONT</TT>, or <TT>GRB.SEMIINT</TT>).  Can be
+  <TT>null</TT>, in which case the variables are assumed to be
+  continuous.
+
+<P>
+ <SPAN  CLASS="textbf">names</SPAN>: Names for new variables.  Can be <TT>null</TT>,
+in which case all variables are given default names.
+
+<P>
+
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Return value:</SPAN></BIG>
+
+<P>
+Array of new variable objects.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">GRBVar[]</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">addVars</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT">double[]</TD>
+<TD ALIGN="LEFT">lb,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">double[]</TD>
+<TD ALIGN="LEFT">ub,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">double[]</TD>
+<TD ALIGN="LEFT">obj,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">char[]</TD>
+<TD ALIGN="LEFT">type,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">String[]</TD>
+<TD ALIGN="LEFT">names,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">start,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">len )</TD>
+</TR>
+</TABLE>
+
+<UL>
+Add new decision variables to a model.  This signature
+allows you to use arrays to hold the various variable attributes
+(lower bound, upper bound, etc.), without forcing you to add a
+variable for each entry in the array.  The <code>start</code> and
+<code>len</code> arguments allow you to specify which variables to add.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">lb</SPAN>: Lower bounds for new variables.  Can be <TT>null</TT>, in
+which case the variables get lower bounds of 0.0.
+
+<P>
+ <SPAN  CLASS="textbf">ub</SPAN>: Upper bounds for new variables.  Can be <TT>null</TT>, in
+which case the variables get infinite upper bounds.
+
+<P>
+ <SPAN  CLASS="textbf">obj</SPAN>: Objective coefficients for new variables.  Can be
+<TT>null</TT>, in which case the variables get objective coefficients
+of 0.0.
+
+<P>
+ <SPAN  CLASS="textbf">type</SPAN>: Variable types for new variables (<TT>GRB.CONTINUOUS</TT>,
+  <TT>GRB.BINARY</TT>, <TT>GRB.INTEGER</TT>,  <TT>GRB.SEMICONT</TT>, or <TT>GRB.SEMIINT</TT>).  Can be
+  <TT>null</TT>, in which case the variables are assumed to be
+  continuous.
+
+<P>
+ <SPAN  CLASS="textbf">names</SPAN>: Names for new variables.  Can be <TT>null</TT>,
+in which case all variables are given default names.
+
+<P>
+ <SPAN  CLASS="textbf">start</SPAN>: The first variable in the list to add.
+
+<P>
+ <SPAN  CLASS="textbf">len</SPAN>: The number of variables to add.
+
+<P>
+
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Return value:</SPAN></BIG>
+
+<P>
+Array of new variable objects.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">GRBVar[]</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">addVars</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT">double[]</TD>
+<TD ALIGN="LEFT">lb,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">double[]</TD>
+<TD ALIGN="LEFT">ub,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">double[]</TD>
+<TD ALIGN="LEFT">obj,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">char[]</TD>
+<TD ALIGN="LEFT">type,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">String[]</TD>
+<TD ALIGN="LEFT">names,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">GRBColumn[]</TD>
+<TD ALIGN="LEFT">col )</TD>
+</TR>
+</TABLE>
+
+<UL>
+Add new decision variables to a model.  This signature
+allows you to specify the list of constraints to which each new
+variable belongs using an array of
+<A HREF="java_grbcolumn.html#javaclass:GRBColumn">GRBColumn</A> objects.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">lb</SPAN>: Lower bounds for new variables.  Can be <TT>null</TT>, in
+which case the variables get lower bounds of 0.0.
+
+<P>
+ <SPAN  CLASS="textbf">ub</SPAN>: Upper bounds for new variables.  Can be <TT>null</TT>, in
+which case the variables get infinite upper bounds.
+
+<P>
+ <SPAN  CLASS="textbf">obj</SPAN>: Objective coefficients for new variables.  Can be
+<TT>null</TT>, in which case the variables get objective coefficients
+of 0.0.
+
+<P>
+ <SPAN  CLASS="textbf">type</SPAN>: Variable types for new variables (<TT>GRB.CONTINUOUS</TT>,
+  <TT>GRB.BINARY</TT>, <TT>GRB.INTEGER</TT>,  <TT>GRB.SEMICONT</TT>, or <TT>GRB.SEMIINT</TT>).  Can be
+  <TT>null</TT>, in which case the variables are assumed to be
+  continuous.
+
+<P>
+ <SPAN  CLASS="textbf">names</SPAN>: Names for new variables.  Can be <TT>null</TT>,
+in which case all variables are given default names.
+
+<P>
+ <SPAN  CLASS="textbf">cols</SPAN>: GRBColumn objects for specifying a set of constraints
+to which each new column belongs.
+
+<P>
+
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Return value:</SPAN></BIG>
+
+<P>
+Array of new variable objects.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html4669"
+  HREF="java_grbmodel_chgcoeff.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html4667"
+  HREF="java_grbmodel.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html4661"
+  HREF="java_grbmodel_addvar.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html4670"
+  HREF="java_grbmodel_chgcoeff.html">GRBModel.chgCoeff()</A>
+<B> Up:</B> <A NAME="tex2html4668"
+  HREF="java_grbmodel.html">GRBModel</A>
+<B> Previous:</B> <A NAME="tex2html4662"
+  HREF="java_grbmodel_addvar.html">GRBModel.addVar()</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

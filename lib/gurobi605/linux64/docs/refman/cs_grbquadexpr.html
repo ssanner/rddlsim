@@ -1,0 +1,195 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>GRBQuadExpr</TITLE>
+<META NAME="description" CONTENT="GRBQuadExpr">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="cs_grbtempconstr.html">
+<LINK REL="previous" HREF="cs_grblinexpr.html">
+<LINK REL="up" HREF="cs_net_api_details.html">
+<LINK REL="next" HREF="cs_grbquadexpr2.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html6957"
+  HREF="cs_grbquadexpr2.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html6955"
+  HREF="cs_net_api_details.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html6949"
+  HREF="cs_grblinexpr_value.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html6958"
+  HREF="cs_grbquadexpr2.html">GRBQuadExpr()</A>
+<B> Up:</B> <A NAME="tex2html6956"
+  HREF="cs_net_api_details.html">.NET API Details</A>
+<B> Previous:</B> <A NAME="tex2html6950"
+  HREF="cs_grblinexpr_value.html">GRBLinExpr.Value</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00089000000000000000"></A>
+<A NAME="dotnetclass:GRBQuadExpr"></A>
+<BR>
+GRBQuadExpr
+</H2>
+
+<P>
+Gurobi quadratic expression object.  A quadratic expression consists
+of a linear expression, plus a list of coefficient-variable-variable
+triples that capture the quadratic terms.  Quadratic expressions are
+used to build quadratic objective functions and quadratic constraints.
+They are temporary objects that typically have short lifespans.
+
+<P>
+The <code>GRBQuadExpr</code> class is a sub-class of the abstract base
+class <A HREF="cs_grbexpr.html#dotnetclass:GRBExpr">GRBExpr</A>.
+
+<P>
+In .NET languages that support operator overloading, you generally
+build quadratic expressions using overloaded operators.  For example,
+if <code>x</code> is a <A HREF="cs_grbvar.html#dotnetclass:GRBVar">GRBVar</A> object,
+then <code>x * x</code> is a
+<A HREF="#dotnetclass:GRBQuadExpr">GRBQuadExpr</A> object.
+Expressions can be built from constants (e.g., <code>expr = 0</code>),
+variables (e.g., <code>expr = 1 * x * x + 2 * x * y</code>), or from other
+expressions (e.g., <code>expr2 = 2 * expr1 + x</code>, or
+<code>expr3 = expr1 + 2 * expr2</code>).  You can also modify existing expressions
+(e.g., <code>expr += x * x</code>, or <code>expr2 -= expr1</code>).
+
+<P>
+The other option for building expressions is to start with an empty
+expression (using the
+<A HREF="cs_grbquadexpr2.html#dotnetmethod:GRBQuadExpr">GRBQuadExpr</A> constructor), and
+then add terms.  Terms can be added individually (using
+<A HREF="cs_grbquadexpr_addterm.html#dotnetmethod:GRBQuadExpr.AddTerm">AddTerm</A>) or in groups
+(using <A HREF="cs_grbquadexpr_addterms.html#dotnetmethod:GRBQuadExpr.AddTerms">AddTerms</A> or
+<A HREF="cs_grbquadexpr_multadd.html#dotnetmethod:GRBQuadExpr.MultAdd">MultAdd</A>).  Terms can
+also be removed from an expression (using
+<A HREF="cs_grbquadexpr_remove.html#dotnetmethod:GRBQuadExpr.Remove">Remove</A>).
+
+<P>
+Note that the cost of building expressions depends heavily on the
+approach you use.  While you can generally ignore this issue when
+building small expressions, you should be aware of a few efficiency
+issues when building large expressions:
+
+<UL>
+<LI>You should avoid using <code>expr = expr + x*x</code>
+  or <code>expr += x*x</code> in a loop.
+  It will lead to runtimes that are quadratic in the number of terms in
+  the expression.
+</LI>
+<LI>Using <A HREF="cs_grbquadexpr_addterm.html#dotnetmethod:GRBQuadExpr.AddTerm">AddTerm</A>
+  in a loop is reasonably efficient, but it isn't the most efficient
+  approach.
+</LI>
+<LI>The most efficient way to build a large expression is to make a
+  single call to
+  <A HREF="cs_grbquadexpr_addterms.html#dotnetmethod:GRBQuadExpr.AddTerms">AddTerms</A>.
+</LI>
+</UL>
+
+<P>
+Individual quadratic terms in a quadratic expression can be queried
+using the <A HREF="cs_grbquadexpr_getvar1.html#dotnetmethod:GRBQuadExpr.GetVar1">GetVar1</A>
+<A HREF="cs_grbquadexpr_getvar2.html#dotnetmethod:GRBQuadExpr.GetVar2">GetVar2</A>, and
+<A HREF="cs_grbquadexpr_getcoeff.html#dotnetmethod:GRBQuadExpr.GetCoeff">GetCoeff</A> methods.
+You can query the number of quadratic terms in the expression using
+the <A HREF="cs_grbquadexpr_size.html#dotnetmethod:GRBQuadExpr.Size">Size</A> property.  To
+query the constant and linear terms associated with a quadratic
+expression, first obtain the linear portion of the quadratic
+expression using
+<A HREF="cs_grbquadexpr_linexpr.html#dotnetmethod:GRBQuadExpr.LinExpr">LinExpr</A>, and then use
+the <A HREF="cs_grblinexpr_constant.html#dotnetmethod:GRBLinExpr.Constant">Constant</A>,
+<A HREF="cs_grblinexpr_getcoeff.html#dotnetmethod:GRBLinExpr.GetCoeff">GetCoeff</A>, or
+<A HREF="cs_grblinexpr_getvar.html#dotnetmethod:GRBLinExpr.GetVar">GetVar</A> on the
+resulting <A HREF="cs_grblinexpr.html#dotnetclass:GRBLinExpr">GRBLinExpr</A> object.
+
+<P>
+Note that a quadratic expression may contain multiple terms that
+involve the same variable pair.  These duplicate terms are merged when
+creating the model objective from an expression, but they may be
+visible when inspecting individual quadratic terms in the expression
+(e.g., when using
+<A HREF="cs_grbquadexpr_getvar1.html#dotnetmethod:GRBQuadExpr.GetVar1">GetVar1</A> and
+<A HREF="cs_grbquadexpr_getvar2.html#dotnetmethod:GRBQuadExpr.GetVar2">GetVar2</A>).
+
+<P>
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html6959"
+  HREF="cs_grbquadexpr2.html">GRBQuadExpr()</A>
+<LI><A NAME="tex2html6960"
+  HREF="cs_grbquadexpr_add.html">GRBQuadExpr.Add()</A>
+<LI><A NAME="tex2html6961"
+  HREF="cs_grbquadexpr_addconstant.html">GRBQuadExpr.AddConstant()</A>
+<LI><A NAME="tex2html6962"
+  HREF="cs_grbquadexpr_addterm.html">GRBQuadExpr.AddTerm()</A>
+<LI><A NAME="tex2html6963"
+  HREF="cs_grbquadexpr_addterms.html">GRBQuadExpr.AddTerms()</A>
+<LI><A NAME="tex2html6964"
+  HREF="cs_grbquadexpr_clear.html">GRBQuadExpr.Clear()</A>
+<LI><A NAME="tex2html6965"
+  HREF="cs_grbquadexpr_getcoeff.html">GRBQuadExpr.GetCoeff()</A>
+<LI><A NAME="tex2html6966"
+  HREF="cs_grbquadexpr_getvar1.html">GRBQuadExpr.GetVar1()</A>
+<LI><A NAME="tex2html6967"
+  HREF="cs_grbquadexpr_getvar2.html">GRBQuadExpr.GetVar2()</A>
+<LI><A NAME="tex2html6968"
+  HREF="cs_grbquadexpr_linexpr.html">GRBQuadExpr.LinExpr()</A>
+<LI><A NAME="tex2html6969"
+  HREF="cs_grbquadexpr_multadd.html">GRBQuadExpr.MultAdd()</A>
+<LI><A NAME="tex2html6970"
+  HREF="cs_grbquadexpr_remove.html">GRBQuadExpr.Remove()</A>
+<LI><A NAME="tex2html6971"
+  HREF="cs_grbquadexpr_size.html">GRBQuadExpr.Size</A>
+<LI><A NAME="tex2html6972"
+  HREF="cs_grbquadexpr_value.html">GRBQuadExpr.Value</A>
+</UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html6957"
+  HREF="cs_grbquadexpr2.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html6955"
+  HREF="cs_net_api_details.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html6949"
+  HREF="cs_grblinexpr_value.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html6958"
+  HREF="cs_grbquadexpr2.html">GRBQuadExpr()</A>
+<B> Up:</B> <A NAME="tex2html6956"
+  HREF="cs_net_api_details.html">.NET API Details</A>
+<B> Previous:</B> <A NAME="tex2html6950"
+  HREF="cs_grblinexpr_value.html">GRBLinExpr.Value</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

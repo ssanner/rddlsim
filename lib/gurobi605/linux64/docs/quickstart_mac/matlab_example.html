@@ -1,0 +1,155 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Example</TITLE>
+<META NAME="description" CONTENT="Example">
+<META NAME="keywords" CONTENT="quickstart_mac">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="quickstart_mac.css">
+
+<LINK REL="next" HREF="matlab_example_details.html">
+<LINK REL="previous" HREF="matlab_setting_up_gurobi_f.html">
+<LINK REL="up" HREF="matlab_interface.html">
+<LINK REL="next" HREF="matlab_example_details.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html1503"
+  HREF="matlab_example_details.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1501"
+  HREF="matlab_interface.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1495"
+  HREF="matlab_setting_up_gurobi_f.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1504"
+  HREF="matlab_example_details.html">Example details</A>
+<B> Up:</B> <A NAME="tex2html1502"
+  HREF="matlab_interface.html">MATLAB Interface</A>
+<B> Previous:</B> <A NAME="tex2html1496"
+  HREF="matlab_setting_up_gurobi_f.html">Setting up Gurobi for</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION000122000000000000000">
+Example</A>
+</H2>
+<P>
+<EM>Let us now turn our attention to an example of using Gurobi to
+solve a simple MIP model.  Our example optimizes the following model:
+</EM>
+<DIV ALIGN="CENTER"><TABLE CELLPADDING=3>
+<TR><TD ALIGN="RIGHT"><EM><B>maximize</B>   </EM></TD>
+<TD ALIGN="RIGHT"><EM> x </EM></TD>
+<TD ALIGN="RIGHT"><EM> + </EM></TD>
+<TD ALIGN="RIGHT"><EM>   y </EM></TD>
+<TD ALIGN="RIGHT"><EM> + </EM></TD>
+<TD ALIGN="RIGHT"><EM> 2 z </EM></TD>
+<TD></TD>
+<TD></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><EM><B>subject to</B> </EM></TD>
+<TD ALIGN="RIGHT"><EM> x </EM></TD>
+<TD ALIGN="RIGHT"><EM> + </EM></TD>
+<TD ALIGN="RIGHT"><EM> 2 y </EM></TD>
+<TD ALIGN="RIGHT"><EM> + </EM></TD>
+<TD ALIGN="RIGHT"><EM> 3 z </EM></TD>
+<TD ALIGN="RIGHT"><EM> <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$\leq$"></SPAN> </EM></TD>
+<TD ALIGN="RIGHT"><EM> 4 </EM></TD>
+</TR>
+<TR><TD></TD>
+<TD ALIGN="RIGHT"><EM> x </EM></TD>
+<TD ALIGN="RIGHT"><EM> + </EM></TD>
+<TD ALIGN="RIGHT"><EM>   y </EM></TD>
+<TD></TD>
+<TD></TD>
+<TD ALIGN="RIGHT"><EM> <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$\geq$"></SPAN> </EM></TD>
+<TD ALIGN="RIGHT"><EM> 1 </EM></TD>
+</TR>
+<TR><TD></TD>
+<TD ALIGN="CENTER" COLSPAN=6><EM> <SPAN>x, y, z binary</SPAN> </EM></TD>
+<TD></TD>
+</TR>
+</TABLE></DIV><EM>
+Note that this is the same model that was modeled and optimized in the
+<A HREF="c_interface.html#section:C">C Interface</A> section.
+</EM>
+<P>
+<EM>This is the complete source code for our example (also available in 
+<code>&lt;installdir&gt;/examples/matlab/mip1.m</code>)...
+</EM>
+<P><PRE>
+names = {'x'; 'y'; 'z'};
+
+try
+    clear model;
+    model.A = sparse([1 2 3; 1 1 0]);
+    model.obj = [1 1 2];
+    model.rhs = [4; 1];
+    model.sense = '&lt;&gt;';
+    model.vtype = 'B';
+    model.modelsense = 'max';
+
+    clear params;
+    params.outputflag = 0;
+    params.resultfile = 'mip1.lp';
+
+    result = gurobi(model, params);
+
+    disp(result)
+
+    for v=1:length(names)
+        fprintf('%s %d\n', names{v}, result.x(v));
+    end
+
+    fprintf('Obj: %e\n', result.objval);
+
+catch gurobiError
+    fprintf('Error reported\n');
+end
+</PRE>
+<P>
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1503"
+  HREF="matlab_example_details.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1501"
+  HREF="matlab_interface.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1495"
+  HREF="matlab_setting_up_gurobi_f.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1504"
+  HREF="matlab_example_details.html">Example details</A>
+<B> Up:</B> <A NAME="tex2html1502"
+  HREF="matlab_interface.html">MATLAB Interface</A>
+<B> Previous:</B> <A NAME="tex2html1496"
+  HREF="matlab_setting_up_gurobi_f.html">Setting up Gurobi for</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

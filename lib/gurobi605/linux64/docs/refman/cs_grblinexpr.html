@@ -1,0 +1,183 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>GRBLinExpr</TITLE>
+<META NAME="description" CONTENT="GRBLinExpr">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="cs_grbquadexpr.html">
+<LINK REL="previous" HREF="cs_grbexpr.html">
+<LINK REL="up" HREF="cs_net_api_details.html">
+<LINK REL="next" HREF="cs_grblinexpr2.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html6806"
+  HREF="cs_grblinexpr2.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html6804"
+  HREF="cs_net_api_details.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html6798"
+  HREF="cs_grbexpr_value.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html6807"
+  HREF="cs_grblinexpr2.html">GRBLinExpr()</A>
+<B> Up:</B> <A NAME="tex2html6805"
+  HREF="cs_net_api_details.html">.NET API Details</A>
+<B> Previous:</B> <A NAME="tex2html6799"
+  HREF="cs_grbexpr_value.html">GRBExpr.Value</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00088000000000000000"></A>
+<A NAME="dotnetclass:GRBLinExpr"></A>
+<BR>
+GRBLinExpr
+</H2>
+
+<P>
+Gurobi linear expression object.  A linear expression consists of a
+constant term, plus a list of coefficient-variable pairs that capture
+the linear terms.  Linear expressions are used to build constraints.
+They are temporary objects that typically have short lifespans.
+
+<P>
+The <code>GRBLinExpr</code> class is a sub-class of the abstract base
+class <A HREF="cs_grbexpr.html#dotnetclass:GRBExpr">GRBExpr</A>.
+
+<P>
+In .NET languages that support operator overloading, you generally
+build linear expressions using overloaded operators.  For example, if
+<code>x</code> is a <A HREF="cs_grbvar.html#dotnetclass:GRBVar">GRBVar</A> object, then
+<code>x + 1</code> is a <A HREF="#dotnetclass:GRBLinExpr">GRBLinExpr</A>
+object.  Expressions can be built from constants (e.g.,
+<code>expr = 0</code>), variables
+(e.g., <TT>expr = 1 * x + 2 * y</TT>), or from other
+expressions (e.g., <code>expr2 = 2 * expr1 + x</code>, or
+<code>expr3 = expr1 + 2 * expr2</code>).  You can also modify existing expressions
+(e.g., <code>expr += x</code>, or <code>expr2 -= expr1</code>).
+
+<P>
+The other option for building expressions is to start with an empty
+expression (using the
+<A HREF="cs_grblinexpr2.html#dotnetmethod:GRBLinExpr">GRBLinExpr</A> constructor), and
+then add terms.  Terms can be added individually (using
+<A HREF="cs_grblinexpr_addterm.html#dotnetmethod:GRBLinExpr.AddTerm">AddTerm</A>) or in groups
+(using <A HREF="cs_grblinexpr_addterms.html#dotnetmethod:GRBLinExpr.AddTerms">AddTerms</A> or
+<A HREF="cs_grblinexpr_multadd.html#dotnetmethod:GRBLinExpr.MultAdd">MultAdd</A>).  Terms can
+also be removed from an expression, using
+<A HREF="cs_grblinexpr_remove.html#dotnetmethod:GRBLinExpr.Remove">Remove</A>.
+
+<P>
+Note that the cost of building expressions depends heavily on the
+approach you use.  While you can generally ignore this issue when
+building small expressions, you should be aware of a few efficiency
+issues when building large expressions:
+
+<UL>
+<LI>You should avoid using <code>expr = expr + x</code>
+  or <code>expr += x</code> in a loop.
+  It will lead to runtimes that are quadratic in the number of terms in
+  the expression.
+</LI>
+<LI>Using <A HREF="cs_grblinexpr_addterm.html#dotnetmethod:GRBLinExpr.AddTerm">AddTerm</A>
+  in a loop is reasonably efficient, but it isn't the most efficient
+  approach.
+</LI>
+<LI>The most efficient way to build a large expression is to make a
+  single call to
+  <A HREF="cs_grblinexpr_addterms.html#dotnetmethod:GRBLinExpr.AddTerms">AddTerms</A>.
+</LI>
+</UL>
+
+<P>
+Individual terms in a linear expression can be queried using the
+<A HREF="cs_grblinexpr_getvar.html#dotnetmethod:GRBLinExpr.GetVar">GetVar</A> and
+<A HREF="cs_grblinexpr_getcoeff.html#dotnetmethod:GRBLinExpr.GetCoeff">GetCoeff</A> methods.
+The constant can be queried using the
+<A HREF="cs_grblinexpr_constant.html#dotnetmethod:GRBLinExpr.Constant">Constant</A> property.
+You can query the number of terms in the expression using the
+<A HREF="cs_grblinexpr_size.html#dotnetmethod:GRBLinExpr.Size">Size</A> property.
+
+<P>
+Note that a linear expression may contain multiple terms that involve
+the same variable.  These duplicate terms are merged when creating a
+constraint from an expression, but they may be visible when inspecting
+individual terms in the expression (e.g., when using
+<A HREF="cs_grblinexpr_getvar.html#dotnetmethod:GRBLinExpr.GetVar">GetVar</A>).
+
+<P>
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html6808"
+  HREF="cs_grblinexpr2.html">GRBLinExpr()</A>
+<LI><A NAME="tex2html6809"
+  HREF="cs_grblinexpr_add.html">GRBLinExpr.Add()</A>
+<LI><A NAME="tex2html6810"
+  HREF="cs_grblinexpr_addconstant.html">GRBLinExpr.AddConstant()</A>
+<LI><A NAME="tex2html6811"
+  HREF="cs_grblinexpr_addterm.html">GRBLinExpr.AddTerm()</A>
+<LI><A NAME="tex2html6812"
+  HREF="cs_grblinexpr_addterms.html">GRBLinExpr.AddTerms()</A>
+<LI><A NAME="tex2html6813"
+  HREF="cs_grblinexpr_clear.html">GRBLinExpr.Clear()</A>
+<LI><A NAME="tex2html6814"
+  HREF="cs_grblinexpr_constant.html">GRBLinExpr.Constant</A>
+<LI><A NAME="tex2html6815"
+  HREF="cs_grblinexpr_getcoeff.html">GRBLinExpr.GetCoeff()</A>
+<LI><A NAME="tex2html6816"
+  HREF="cs_grblinexpr_getvar.html">GRBLinExpr.GetVar()</A>
+<LI><A NAME="tex2html6817"
+  HREF="cs_grblinexpr_multadd.html">GRBLinExpr.MultAdd()</A>
+<LI><A NAME="tex2html6818"
+  HREF="cs_grblinexpr_remove.html">GRBLinExpr.Remove()</A>
+<LI><A NAME="tex2html6819"
+  HREF="cs_grblinexpr_size.html">GRBLinExpr.Size</A>
+<LI><A NAME="tex2html6820"
+  HREF="cs_grblinexpr_value.html">GRBLinExpr.Value</A>
+</UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html6806"
+  HREF="cs_grblinexpr2.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html6804"
+  HREF="cs_net_api_details.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html6798"
+  HREF="cs_grbexpr_value.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html6807"
+  HREF="cs_grblinexpr2.html">GRBLinExpr()</A>
+<B> Up:</B> <A NAME="tex2html6805"
+  HREF="cs_net_api_details.html">.NET API Details</A>
+<B> Previous:</B> <A NAME="tex2html6799"
+  HREF="cs_grbexpr_value.html">GRBExpr.Value</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

@@ -1,0 +1,154 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>qcp_cs.cs</TITLE>
+<META NAME="description" CONTENT="qcp_cs.cs">
+<META NAME="keywords" CONTENT="examples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="examples.css">
+
+<LINK REL="next" HREF="qp_cs_cs.html">
+<LINK REL="previous" HREF="piecewise_cs_cs.html">
+<LINK REL="up" HREF="cs_examples.html">
+<LINK REL="next" HREF="qp_cs_cs.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html1479"
+  HREF="qp_cs_cs.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1477"
+  HREF="cs_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1471"
+  HREF="piecewise_cs_cs.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1480"
+  HREF="qp_cs_cs.html">qp_cs.cs</A>
+<B> Up:</B> <A NAME="tex2html1478"
+  HREF="cs_examples.html">C# Examples</A>
+<B> Previous:</B> <A NAME="tex2html1472"
+  HREF="piecewise_cs_cs.html">piecewise_cs.cs</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000241400000000000000"></A>
+<A NAME="subsubsection:qcp_cs.cs"></A>
+<BR>
+qcp_cs.cs
+</H3>
+
+<P>
+<BR>
+<PRE  CLASS="verbatim">/* Copyright 2014, Gurobi Optimization, Inc. */
+
+/* This example formulates and solves the following simple QCP model:
+
+     maximize    x
+     subject to  x + y + z = 1
+                 x^2 + y^2 &lt;= z^2 (second-order cone)
+                 x^2 &lt;= yz        (rotated second-order cone)
+*/
+
+using System;
+using Gurobi;
+
+class qcp_cs
+{
+  static void Main()
+  {
+    try {
+      GRBEnv    env   = new GRBEnv("qcp.log");
+      GRBModel  model = new GRBModel(env);
+
+      // Create variables
+
+      GRBVar x = model.AddVar(0.0, GRB.INFINITY, 0.0, GRB.CONTINUOUS, "x");
+      GRBVar y = model.AddVar(0.0, GRB.INFINITY, 0.0, GRB.CONTINUOUS, "y");
+      GRBVar z = model.AddVar(0.0, GRB.INFINITY, 0.0, GRB.CONTINUOUS, "z");
+
+      // Integrate new variables
+
+      model.Update();
+
+      // Set objective
+
+      GRBLinExpr obj = x;
+      model.SetObjective(obj, GRB.MAXIMIZE);
+
+      // Add linear constraint: x + y + z = 1
+
+      model.AddConstr(x + y + z == 1.0, "c0");
+
+      // Add second-order cone: x^2 + y^2 &lt;= z^2
+
+      model.AddQConstr(x*x + y*y &lt;= z*z, "qc0");
+
+      // Add rotated cone: x^2 &lt;= yz
+
+      model.AddQConstr(x*x &lt;= y*z, "qc1");
+
+      // Optimize model
+
+      model.Optimize();
+
+      Console.WriteLine(x.Get(GRB.StringAttr.VarName)
+                         + " " + x.Get(GRB.DoubleAttr.X));
+      Console.WriteLine(y.Get(GRB.StringAttr.VarName)
+                         + " " + y.Get(GRB.DoubleAttr.X));
+      Console.WriteLine(z.Get(GRB.StringAttr.VarName)
+                         + " " + z.Get(GRB.DoubleAttr.X));
+
+      Console.WriteLine("Obj: " + model.Get(GRB.DoubleAttr.ObjVal) + " " +
+                        obj.Value);
+
+      // Dispose of model and env
+
+      model.Dispose();
+      env.Dispose();
+
+    } catch (GRBException e) {
+      Console.WriteLine("Error code: " + e.ErrorCode + ". " + e.Message);
+    }
+  }
+}
+</PRE>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1479"
+  HREF="qp_cs_cs.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1477"
+  HREF="cs_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1471"
+  HREF="piecewise_cs_cs.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1480"
+  HREF="qp_cs_cs.html">qp_cs.cs</A>
+<B> Up:</B> <A NAME="tex2html1478"
+  HREF="cs_examples.html">C# Examples</A>
+<B> Previous:</B> <A NAME="tex2html1472"
+  HREF="piecewise_cs_cs.html">piecewise_cs.cs</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

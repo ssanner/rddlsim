@@ -1,0 +1,3 @@
+#!/bin/sh
+
+gurobi.sh -c "from grb_common import grbgetkey;grbgetkey()" "$@"

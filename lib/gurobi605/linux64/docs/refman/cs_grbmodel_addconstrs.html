@@ -1,0 +1,250 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>GRBModel.AddConstrs()</TITLE>
+<META NAME="description" CONTENT="GRBModel.AddConstrs()">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="cs_grbmodel_addqconstr.html">
+<LINK REL="previous" HREF="cs_grbmodel_addconstr.html">
+<LINK REL="up" HREF="cs_grbmodel.html">
+<LINK REL="next" HREF="cs_grbmodel_addqconstr.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html6218"
+  HREF="cs_grbmodel_addqconstr.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html6216"
+  HREF="cs_grbmodel.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html6210"
+  HREF="cs_grbmodel_addconstr.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html6219"
+  HREF="cs_grbmodel_addqconstr.html">GRBModel.AddQConstr()</A>
+<B> Up:</B> <A NAME="tex2html6217"
+  HREF="cs_grbmodel.html">GRBModel</A>
+<B> Previous:</B> <A NAME="tex2html6211"
+  HREF="cs_grbmodel_addconstr.html">GRBModel.AddConstr()</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00082300000000000000"></A>
+<A NAME="dotnetmethod:GRBModel.AddConstrs"></A>
+<BR>
+GRBModel.AddConstrs()
+</H3>
+
+<P>
+Add new linear constraints to a model.
+
+<P>
+We recommend that you build your model one constraint at a time (using
+<A HREF="cs_grbmodel_addconstr.html#dotnetmethod:GRBModel.AddConstr">AddConstr</A>), since it
+introduces no significant overhead and we find that it produces
+simpler code.  Feel free to use these methods if you disagree, though.
+
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">GRBConstr[]</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">AddConstrs</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">count )</TD>
+</TR>
+</TABLE>
+
+<UL>
+
+<P>
+Add <code>count</code> new linear constraints to a model.  The new
+constraints are all of the form <code>0 &lt;= 0</code>.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">count</SPAN>: Number of constraints to add.
+
+<P>
+
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Return value:</SPAN></BIG>
+
+<P>
+Array of new constraint objects.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">GRBConstr[]</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">AddConstrs</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT">GRBLinExpr[]</TD>
+<TD ALIGN="LEFT">lhsExprs,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">char[]</TD>
+<TD ALIGN="LEFT">senses,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">double[]</TD>
+<TD ALIGN="LEFT">rhsVals,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">string[]</TD>
+<TD ALIGN="LEFT">names )</TD>
+</TR>
+</TABLE>
+
+<UL>
+Add new linear constraints to a model.  The number of added
+constraints is determined by the length of the input arrays (which
+must be consistent across all arguments).
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">lhsExprs</SPAN>: Left-hand side expressions for the new linear constraints.
+
+<P>
+ <SPAN  CLASS="textbf">senses</SPAN>: Senses for new linear constraints (<TT>GRB.LESS_EQUAL</TT>,
+  <TT>GRB.EQUAL</TT>, or <TT>GRB.GREATER_EQUAL</TT>).
+
+<P>
+ <SPAN  CLASS="textbf">rhsVals</SPAN>: Right-hand side values for the new linear constraints.
+
+<P>
+ <SPAN  CLASS="textbf">names</SPAN>: Names for new constraints.
+
+<P>
+
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Return value:</SPAN></BIG>
+
+<P>
+Array of new constraint objects.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">GRBConstr[]</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">AddConstrs</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT">GRBLinExpr[]</TD>
+<TD ALIGN="LEFT">lhsExprs,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">char[]</TD>
+<TD ALIGN="LEFT">senses,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">GRBLinExpr[]</TD>
+<TD ALIGN="LEFT">rhsExprs,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">start,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">len,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">string[]</TD>
+<TD ALIGN="LEFT">names )</TD>
+</TR>
+</TABLE>
+
+<UL>
+Add new linear constraints to a model.  This signature
+allows you to use arrays to hold the various constraint attributes
+(left-hand side, sense, etc.), without forcing you to add one constraint
+for each entry in the array.  The <code>start</code> and <code>len</code>
+arguments allow you to specify which constraints to add.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">lhsExprs</SPAN>: Left-hand side expressions for the new linear constraints.
+
+<P>
+ <SPAN  CLASS="textbf">senses</SPAN>: Senses for new linear constraints (<TT>GRB.LESS_EQUAL</TT>,
+  <TT>GRB.EQUAL</TT>, or <TT>GRB.GREATER_EQUAL</TT>).
+
+<P>
+ <SPAN  CLASS="textbf">rhs</SPAN>: Right-hand side expressions for the new linear constraints.
+
+<P>
+ <SPAN  CLASS="textbf">start</SPAN>: The first constraint in the list to add.
+
+<P>
+ <SPAN  CLASS="textbf">len</SPAN>: The number of variables to add.
+
+<P>
+ <SPAN  CLASS="textbf">names</SPAN>: Names for new constraints.
+
+<P>
+
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Return value:</SPAN></BIG>
+
+<P>
+Array of new constraint objects.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html6218"
+  HREF="cs_grbmodel_addqconstr.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html6216"
+  HREF="cs_grbmodel.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html6210"
+  HREF="cs_grbmodel_addconstr.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html6219"
+  HREF="cs_grbmodel_addqconstr.html">GRBModel.AddQConstr()</A>
+<B> Up:</B> <A NAME="tex2html6217"
+  HREF="cs_grbmodel.html">GRBModel</A>
+<B> Previous:</B> <A NAME="tex2html6211"
+  HREF="cs_grbmodel_addconstr.html">GRBModel.AddConstr()</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

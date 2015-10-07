@@ -1,0 +1,160 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>GRBQuadExpr</TITLE>
+<META NAME="description" CONTENT="GRBQuadExpr">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="java_grbcolumn.html">
+<LINK REL="previous" HREF="java_grblinexpr.html">
+<LINK REL="up" HREF="java_api_details.html">
+<LINK REL="next" HREF="java_grbquadexpr2.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html5348"
+  HREF="java_grbquadexpr2.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html5346"
+  HREF="java_api_details.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html5340"
+  HREF="java_grblinexpr_size.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html5349"
+  HREF="java_grbquadexpr2.html">GRBQuadExpr()</A>
+<B> Up:</B> <A NAME="tex2html5347"
+  HREF="java_api_details.html">Java API Details</A>
+<B> Previous:</B> <A NAME="tex2html5341"
+  HREF="java_grblinexpr_size.html">GRBLinExpr.size()</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00069000000000000000"></A>
+<A NAME="javaclass:GRBQuadExpr"></A>
+<BR>
+GRBQuadExpr
+</H2>
+
+<P>
+Gurobi quadratic expression object.  A quadratic expression consists
+of a linear expression, plus a list of coefficient-variable-variable
+triples that capture the quadratic terms.  Quadratic expressions are
+used to build quadratic objective functions and quadratic constraints.
+They are temporary objects that typically have short lifespans.
+
+<P>
+The <code>GRBQuadExpr</code> class is a sub-class of the abstract base
+class <A HREF="java_grbexpr.html#javaclass:GRBExpr">GRBExpr</A>.
+
+<P>
+You generally build quadratic expressions by starting with an empty
+expression (using the
+<A HREF="java_grbquadexpr2.html#javamethod:GRBQuadExpr">GRBQuadExpr</A> constructor), and
+then adding terms.  Terms can be added individually, using
+<A HREF="java_grbquadexpr_addterm.html#javamethod:GRBQuadExpr.addTerm">addTerm</A>, or in groups,
+using <A HREF="java_grbquadexpr_addterms.html#javamethod:GRBQuadExpr.addTerms">addTerms</A>, or
+<A HREF="java_grbquadexpr_multadd.html#javamethod:GRBQuadExpr.multAdd">multAdd</A>.  Quadratic
+terms can be removed from a quadratic expression using
+<A HREF="java_grbquadexpr_remove.html#javamethod:GRBQuadExpr.remove">remove</A>.
+
+<P>
+Individual quadratic terms in a quadratic expression can be queried
+using the <A HREF="java_grbquadexpr_getvar1.html#javamethod:GRBQuadExpr.getVar1">getVar1</A>,
+<A HREF="java_grbquadexpr_getvar2.html#javamethod:GRBQuadExpr.getVar2">getVar2</A>, and
+<A HREF="java_grbquadexpr_getcoeff.html#javamethod:GRBQuadExpr.getCoeff">getCoeff</A> methods.  You
+can query the number of quadratic terms in the expression using the
+<A HREF="java_grbquadexpr_size.html#javamethod:GRBQuadExpr.size">size</A> method.  To query the
+constant and linear terms associated with a quadratic expression,
+first obtain the linear portion of the quadratic expression using
+<A HREF="java_grbquadexpr_getlinexp.html#javamethod:GRBQuadExpr.getLinExpr">getLinExpr</A>, and then
+use the <A HREF="java_grblinexpr_getconstan.html#javamethod:GRBLinExpr.getConstant">getConstant</A>,
+<A HREF="java_grblinexpr_getcoeff.html#javamethod:GRBLinExpr.getCoeff">getCoeff</A>, and
+<A HREF="java_grblinexpr_getvar.html#javamethod:GRBLinExpr.getVar">getVar</A> methods on the
+resulting <A HREF="java_grblinexpr.html#javaclass:GRBLinExpr">GRBLinExpr</A> object.
+
+<P>
+Note that a quadratic expression may contain multiple terms that
+involve the same variable pair.  These duplicate terms are merged when
+creating the model objective from an expression, but they may be
+visible when inspecting individual quadratic terms in the expression
+(e.g., when using
+<A HREF="java_grbquadexpr_getvar1.html#javamethod:GRBQuadExpr.getVar1">getVar1</A> and
+<A HREF="java_grbquadexpr_getvar2.html#javamethod:GRBQuadExpr.getVar2">getVar2</A>).
+
+<P>
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html5350"
+  HREF="java_grbquadexpr2.html">GRBQuadExpr()</A>
+<LI><A NAME="tex2html5351"
+  HREF="java_grbquadexpr_add.html">GRBQuadExpr.add()</A>
+<LI><A NAME="tex2html5352"
+  HREF="java_grbquadexpr_addconsta.html">GRBQuadExpr.addConstant()</A>
+<LI><A NAME="tex2html5353"
+  HREF="java_grbquadexpr_addterm.html">GRBQuadExpr.addTerm()</A>
+<LI><A NAME="tex2html5354"
+  HREF="java_grbquadexpr_addterms.html">GRBQuadExpr.addTerms()</A>
+<LI><A NAME="tex2html5355"
+  HREF="java_grbquadexpr_clear.html">GRBQuadExpr.clear()</A>
+<LI><A NAME="tex2html5356"
+  HREF="java_grbquadexpr_getcoeff.html">GRBQuadExpr.getCoeff()</A>
+<LI><A NAME="tex2html5357"
+  HREF="java_grbquadexpr_getlinexp.html">GRBQuadExpr.getLinExpr()</A>
+<LI><A NAME="tex2html5358"
+  HREF="java_grbquadexpr_getvalue.html">GRBQuadExpr.getValue()</A>
+<LI><A NAME="tex2html5359"
+  HREF="java_grbquadexpr_getvar1.html">GRBQuadExpr.getVar1()</A>
+<LI><A NAME="tex2html5360"
+  HREF="java_grbquadexpr_getvar2.html">GRBQuadExpr.getVar2()</A>
+<LI><A NAME="tex2html5361"
+  HREF="java_grbquadexpr_multadd.html">GRBQuadExpr.multAdd()</A>
+<LI><A NAME="tex2html5362"
+  HREF="java_grbquadexpr_remove.html">GRBQuadExpr.remove()</A>
+<LI><A NAME="tex2html5363"
+  HREF="java_grbquadexpr_size.html">GRBQuadExpr.size()</A>
+</UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html5348"
+  HREF="java_grbquadexpr2.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html5346"
+  HREF="java_api_details.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html5340"
+  HREF="java_grblinexpr_size.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html5349"
+  HREF="java_grbquadexpr2.html">GRBQuadExpr()</A>
+<B> Up:</B> <A NAME="tex2html5347"
+  HREF="java_api_details.html">Java API Details</A>
+<B> Previous:</B> <A NAME="tex2html5341"
+  HREF="java_grblinexpr_size.html">GRBLinExpr.size()</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

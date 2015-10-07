@@ -1,0 +1,111 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Building and running the examples</TITLE>
+<META NAME="description" CONTENT="Building and running the examples">
+<META NAME="keywords" CONTENT="quickstart_windows">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="quickstart_windows.css">
+
+<LINK REL="previous" HREF="py_python_dictionary_examp.html">
+<LINK REL="up" HREF="py_python_interface.html">
+<LINK REL="next" HREF="matlab_interface.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html1464"
+  HREF="matlab_interface.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1462"
+  HREF="py_python_interface.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1458"
+  HREF="py_results.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1465"
+  HREF="matlab_interface.html">MATLAB Interface</A>
+<B> Up:</B> <A NAME="tex2html1463"
+  HREF="py_python_interface.html">Python Interface</A>
+<B> Previous:</B> <A NAME="tex2html1459"
+  HREF="py_results.html">Results</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION000114000000000000000"></A>
+<A NAME="subsection:pythonrun"></A>
+<BR>
+Building and running the examples
+</H2>
+
+<P>
+Python is an interpreted language, so no explicit compilation step is
+required to run the examples.  For Windows platforms, you can simply
+type the following in the Gurobi Python example directory
+(<code>&lt;installdir&gt;/examples/python</code>):
+<PRE>
+  gurobi.bat mip1.py
+</PRE>
+For Linux or Mac OS platforms, type:
+<PRE>
+  gurobi.sh mip1.py
+</PRE>
+
+<P>
+If you are a Python user, and wish to use Gurobi from within your own
+Python environment, you can install the <code>gurobipy</code> module
+directly into your environment.  The steps for doing this depend on
+your platform.  On Windows, you can double-click on the <code>pysetup</code>
+program in the Gurobi <code>&lt;installdir&gt;/bin</code> directory.  This program
+will prompt you for the location of your Python installation; it
+handles all of the details of the installation.  On Linux or Mac OS,
+you will need to open a terminal window, change your current directory
+to the Gurobi <code>&lt;installdir&gt;</code> (the directory that contains the
+file <code>setup.py</code>), and issue the following command:
+<PRE>
+  python setup.py install
+</PRE>
+Unless you are using your own private Python installation, you will
+need to run this command as super-user.  Once <code>gurobipy</code> is
+successfully installed, you can type <code>python mip1.py</code> (more
+generally, you can type <code>from gurobipy import *</code> in your Python
+environment).
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1464"
+  HREF="matlab_interface.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1462"
+  HREF="py_python_interface.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1458"
+  HREF="py_results.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1465"
+  HREF="matlab_interface.html">MATLAB Interface</A>
+<B> Up:</B> <A NAME="tex2html1463"
+  HREF="py_python_interface.html">Python Interface</A>
+<B> Previous:</B> <A NAME="tex2html1459"
+  HREF="py_results.html">Results</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

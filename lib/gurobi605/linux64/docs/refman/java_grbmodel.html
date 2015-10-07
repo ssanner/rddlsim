@@ -1,0 +1,198 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>GRBModel</TITLE>
+<META NAME="description" CONTENT="GRBModel">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="java_grbvar.html">
+<LINK REL="previous" HREF="java_grbenv.html">
+<LINK REL="up" HREF="java_api_details.html">
+<LINK REL="next" HREF="java_grbmodel2.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html4533"
+  HREF="java_grbmodel2.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html4531"
+  HREF="java_api_details.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html4525"
+  HREF="java_grbenv_writeparams.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html4534"
+  HREF="java_grbmodel2.html">GRBModel()</A>
+<B> Up:</B> <A NAME="tex2html4532"
+  HREF="java_api_details.html">Java API Details</A>
+<B> Previous:</B> <A NAME="tex2html4526"
+  HREF="java_grbenv_writeparams.html">GRBEnv.writeParams()</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00062000000000000000"></A>
+<A NAME="javaclass:GRBModel"></A>
+<BR>
+GRBModel
+</H2>
+
+<P>
+Gurobi model object.  Commonly used methods include
+<A HREF="java_grbmodel_addvar.html#javamethod:GRBModel.addVar">addVar</A> (adds a new decision
+variable to the model),
+<A HREF="java_grbmodel_addconstr.html#javamethod:GRBModel.addConstr">addConstr</A> (adds a new
+constraint to the model),
+<A HREF="java_grbmodel_optimize.html#javamethod:GRBModel.optimize">optimize</A> (optimizes the
+current model), and <A HREF="java_grbmodel_get.html#javamethod:GRBModel.get">get</A>
+(retrieves the value of an attribute).
+
+<P>
+While the Java garbage collector will eventually collect an unused
+<code>GRBModel</code> object, the vast majority of the memory associated
+with a model is stored outside of the Java heap.  As a result, the
+garbage collector can't see this memory usage, and thus it can't take
+this quantity into account when deciding whether collection is
+necessary.  We recommend that you call
+<A HREF="java_grbmodel_dispose.html#javamethod:GRBModel.dispose">GRBModel.dispose</A> when you
+are done using a model.
+
+<P>
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html4535"
+  HREF="java_grbmodel2.html">GRBModel()</A>
+<LI><A NAME="tex2html4536"
+  HREF="java_grbmodel_addconstr.html">GRBModel.addConstr()</A>
+<LI><A NAME="tex2html4537"
+  HREF="java_grbmodel_addconstrs.html">GRBModel.addConstrs()</A>
+<LI><A NAME="tex2html4538"
+  HREF="java_grbmodel_addqconstr.html">GRBModel.addQConstr()</A>
+<LI><A NAME="tex2html4539"
+  HREF="java_grbmodel_addrange.html">GRBModel.addRange()</A>
+<LI><A NAME="tex2html4540"
+  HREF="java_grbmodel_addranges.html">GRBModel.addRanges()</A>
+<LI><A NAME="tex2html4541"
+  HREF="java_grbmodel_addsos.html">GRBModel.addSOS()</A>
+<LI><A NAME="tex2html4542"
+  HREF="java_grbmodel_addvar.html">GRBModel.addVar()</A>
+<LI><A NAME="tex2html4543"
+  HREF="java_grbmodel_addvars.html">GRBModel.addVars()</A>
+<LI><A NAME="tex2html4544"
+  HREF="java_grbmodel_chgcoeff.html">GRBModel.chgCoeff()</A>
+<LI><A NAME="tex2html4545"
+  HREF="java_grbmodel_chgcoeffs.html">GRBModel.chgCoeffs()</A>
+<LI><A NAME="tex2html4546"
+  HREF="java_grbmodel_computeiis.html">GRBModel.computeIIS()</A>
+<LI><A NAME="tex2html4547"
+  HREF="java_grbmodel_discardconcu.html">GRBModel.discardConcurrentEnvs()</A>
+<LI><A NAME="tex2html4548"
+  HREF="java_grbmodel_dispose.html">GRBModel.dispose()</A>
+<LI><A NAME="tex2html4549"
+  HREF="java_grbmodel_feasrelax.html">GRBModel.feasRelax()</A>
+<LI><A NAME="tex2html4550"
+  HREF="java_grbmodel_fixedmodel.html">GRBModel.fixedModel()</A>
+<LI><A NAME="tex2html4551"
+  HREF="java_grbmodel_get.html">GRBModel.get()</A>
+<LI><A NAME="tex2html4552"
+  HREF="java_grbmodel_getcoeff.html">GRBModel.getCoeff()</A>
+<LI><A NAME="tex2html4553"
+  HREF="java_grbmodel_getcol.html">GRBModel.getCol()</A>
+<LI><A NAME="tex2html4554"
+  HREF="java_grbmodel_getconcurren.html">GRBModel.getConcurrentEnv()</A>
+<LI><A NAME="tex2html4555"
+  HREF="java_grbmodel_getconstrbyn.html">GRBModel.getConstrByName()</A>
+<LI><A NAME="tex2html4556"
+  HREF="java_grbmodel_getconstrs.html">GRBModel.getConstrs()</A>
+<LI><A NAME="tex2html4557"
+  HREF="java_grbmodel_getenv.html">GRBModel.getEnv()</A>
+<LI><A NAME="tex2html4558"
+  HREF="java_grbmodel_getobjective.html">GRBModel.getObjective()</A>
+<LI><A NAME="tex2html4559"
+  HREF="java_grbmodel_getpwlobj.html">GRBModel.getPWLObj()</A>
+<LI><A NAME="tex2html4560"
+  HREF="java_grbmodel_getqconstr.html">GRBModel.getQConstr()</A>
+<LI><A NAME="tex2html4561"
+  HREF="java_grbmodel_getqconstrs.html">GRBModel.getQConstrs()</A>
+<LI><A NAME="tex2html4562"
+  HREF="java_grbmodel_getrow.html">GRBModel.getRow()</A>
+<LI><A NAME="tex2html4563"
+  HREF="java_grbmodel_getsos.html">GRBModel.getSOS()</A>
+<LI><A NAME="tex2html4564"
+  HREF="java_grbmodel_getsoss.html">GRBModel.getSOSs()</A>
+<LI><A NAME="tex2html4565"
+  HREF="java_grbmodel_gettuneresul.html">GRBModel.getTuneResult()</A>
+<LI><A NAME="tex2html4566"
+  HREF="java_grbmodel_getvarbyname.html">GRBModel.getVarByName()</A>
+<LI><A NAME="tex2html4567"
+  HREF="java_grbmodel_getvars.html">GRBModel.getVars()</A>
+<LI><A NAME="tex2html4568"
+  HREF="java_grbmodel_optimize.html">GRBModel.optimize()</A>
+<LI><A NAME="tex2html4569"
+  HREF="java_grbmodel_presolve.html">GRBModel.presolve()</A>
+<LI><A NAME="tex2html4570"
+  HREF="java_grbmodel_read.html">GRBModel.read()</A>
+<LI><A NAME="tex2html4571"
+  HREF="java_grbmodel_remove.html">GRBModel.remove()</A>
+<LI><A NAME="tex2html4572"
+  HREF="java_grbmodel_reset.html">GRBModel.reset()</A>
+<LI><A NAME="tex2html4573"
+  HREF="java_grbmodel_setcallback.html">GRBModel.setCallback()</A>
+<LI><A NAME="tex2html4574"
+  HREF="java_grbmodel_set.html">GRBModel.set()</A>
+<LI><A NAME="tex2html4575"
+  HREF="java_grbmodel_setobjective.html">GRBModel.setObjective()</A>
+<LI><A NAME="tex2html4576"
+  HREF="java_grbmodel_setpwlobj.html">GRBModel.setPWLObj()</A>
+<LI><A NAME="tex2html4577"
+  HREF="java_grbmodel_terminate.html">GRBModel.terminate()</A>
+<LI><A NAME="tex2html4578"
+  HREF="java_grbmodel_tune.html">GRBModel.tune()</A>
+<LI><A NAME="tex2html4579"
+  HREF="java_grbmodel_update.html">GRBModel.update()</A>
+<LI><A NAME="tex2html4580"
+  HREF="java_grbmodel_write.html">GRBModel.write()</A>
+</UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html4533"
+  HREF="java_grbmodel2.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html4531"
+  HREF="java_api_details.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html4525"
+  HREF="java_grbenv_writeparams.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html4534"
+  HREF="java_grbmodel2.html">GRBModel()</A>
+<B> Up:</B> <A NAME="tex2html4532"
+  HREF="java_api_details.html">Java API Details</A>
+<B> Previous:</B> <A NAME="tex2html4526"
+  HREF="java_grbenv_writeparams.html">GRBEnv.writeParams()</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

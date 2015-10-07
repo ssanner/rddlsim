@@ -1,0 +1,11 @@
+# License ID 104222
+# Gurobi license for Oregon State University
+ORGANIZATION=Oregon State University
+TYPE=ACADEMIC
+HOSTNAME=submit-em64t-01.hpc.engr.oregonstate.edu
+HOSTID=9b9ed52a
+SOCKETS=2
+USERNAME=nadamuna
+EXPIRATION=2016-10-06
+VERSION=6
+KEY=4EB3V8PV

@@ -1,0 +1,153 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Diagnose and cope with infeasibility</TITLE>
+<META NAME="description" CONTENT="Diagnose and cope with infeasibility">
+<META NAME="keywords" CONTENT="examples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="examples.css">
+
+<LINK REL="next" HREF="mip_starts.html">
+<LINK REL="previous" HREF="automated_parameter_tuning.html">
+<LINK REL="up" HREF="example_tour.html">
+<LINK REL="next" HREF="mip_starts.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html280"
+  HREF="mip_starts.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html278"
+  HREF="example_tour.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html272"
+  HREF="automated_parameter_tuning.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html281"
+  HREF="mip_starts.html">MIP starts</A>
+<B> Up:</B> <A NAME="tex2html279"
+  HREF="example_tour.html">Example tour</A>
+<B> Previous:</B> <A NAME="tex2html273"
+  HREF="automated_parameter_tuning.html">Automated Parameter Tuning</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00017000000000000000"></A>
+<A NAME="subsection:Infeasibility"></A>
+<BR>
+Diagnose and cope with infeasibility
+</H2>
+<B>Examples:</B> feasopt, lp, workforce1, workforce2, workforce3,
+workforce4
+
+<P>
+When solving optimization models, there are some
+situations where the specified constraints cannot be satisfied.  When
+this happens, you often need to either identify and repair the root
+cause of the infeasibility, or alternatively find a set of constraints
+to relax in order to obtain a feasible model.  The <code>workforce1</code>,
+<code>workforce2</code>, and <code>workforce3</code> illustrate these different
+strategies.
+
+<P>
+Starting with the simplest of the three examples, <code>workforce1</code>
+formulates a simple workforce scheduling model and solves it.  If the
+model is infeasible, it computes an Irreducible Inconsistent Subsystem
+(IIS).  The user can then inspect this information
+to understand and hopefully address the source of the infeasibility in
+the model.
+
+<P>
+Example <code>workforce2</code> is similar, except that if the model is
+infeasible, the example repeatedly identifies an IIS and removes one
+of the associated constraints from the model until the model becomes
+feasible.  Note that it is sufficient to remove one constraint from the
+IIS to address that source of infeasibility, but that one IIS may not
+capture all sources of infeasibility.  It is therefore necessary to
+repeat the process until the model is feasible.
+
+<P>
+Example <code>workforce3</code> takes a different approach to addressing
+infeasibility.  Rather than identifying and removing IIS members, it
+allows the constraints of the model to be relaxed.  Like the
+<code>feasopt</code> example, an artificial variable is added to each constraint.
+The example sets the objective on the original variables to zero, and
+then solves a model that minimizes the total magnitude of the
+constraint relaxation.
+
+<P>
+The <code>feasopt</code> example demonstrates another approach to relaxing
+an infeasible model.  It computes a <EM>feasibility relaxation</EM> for
+the infeasible model.  A feasibility relaxation is a model that, when
+solved, minimizes the amount by which the solution violates the bounds
+and linear constraints of the original model.  This method is invoked
+as follows:
+
+<P>
+In C:
+<PRE>
+  error = GRBfeasrelax(feasmodel, GRB_FEASRELAX_LINEAR, 1,
+                       NULL, NULL, rhspen, &amp;feasobj);
+</PRE>
+In C++:
+<PRE>
+  feasmodel1.feasRelax(GRB_FEASRELAX_LINEAR, true, false, true);
+</PRE>
+In C#:
+<PRE>
+  feasmodel1.FeasRelax(GRB.FEASRELAX_LINEAR, true, false, true);
+</PRE>
+In Java:
+<PRE>
+  feasmodel1.feasRelax(GRB.FEASRELAX_LINEAR, true, false, true);
+</PRE>
+In Python:
+<PRE>
+  feasmodel1.FeasRelaxS(0, True, False, True);
+</PRE>
+
+<P>
+The arguments to this method select the objective function for the
+relaxed model, the specific set of bounds and constraints that are
+allowed to be relaxed, and the penalties for relaxing specific bounds
+and constraints.
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html280"
+  HREF="mip_starts.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html278"
+  HREF="example_tour.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html272"
+  HREF="automated_parameter_tuning.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html281"
+  HREF="mip_starts.html">MIP starts</A>
+<B> Up:</B> <A NAME="tex2html279"
+  HREF="example_tour.html">Example tour</A>
+<B> Previous:</B> <A NAME="tex2html273"
+  HREF="automated_parameter_tuning.html">Automated Parameter Tuning</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

@@ -1,0 +1,190 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Model.feasRelax()</TITLE>
+<META NAME="description" CONTENT="Model.feasRelax()">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="py_model_fixed.html">
+<LINK REL="previous" HREF="py_model_feasrelaxs.html">
+<LINK REL="up" HREF="py_model.html">
+<LINK REL="next" HREF="py_model_fixed.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html8010"
+  HREF="py_model_fixed.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html8008"
+  HREF="py_model.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html8002"
+  HREF="py_model_feasrelaxs.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html8011"
+  HREF="py_model_fixed.html">Model.fixed()</A>
+<B> Up:</B> <A NAME="tex2html8009"
+  HREF="py_model.html">Model</A>
+<B> Previous:</B> <A NAME="tex2html8003"
+  HREF="py_model_feasrelaxs.html">Model.feasRelaxS()</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION0001021200000000000000"></A>
+<A NAME="pythonmethod:Model.feasRelax"></A>
+<BR>
+Model.feasRelax()
+</H3>
+<BIG CLASS="LARGE">
+<FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">feasRelax</SPAN></FONT></BIG> ( relaxobjtype, minrelax, vars, lbpen, ubpen, constrs, rhspen )
+
+<P>
+Modifies the <code>Model</code> object to create a feasibility relaxation.
+Note that you need to call
+<A HREF="py_model_optimize.html#pythonmethod:Model.optimize">optimize</A>
+on the result to compute the actual relaxed solution.  Note also
+that this is a more complex version of this method - use
+<A HREF="py_model_feasrelaxs.html#pythonmethod:Model.feasRelaxS">feasRelaxS</A>
+for a simplified version.
+
+<P>
+The feasibility relaxation is a model that, when solved, minimizes the
+amount by which the solution violates the bounds and linear
+constraints of the original model.  This method provides a number of
+options for specifying the relaxation.
+
+<P>
+If you specify <code>relaxobjtype=0</code>, the objective of the
+feasibility relaxation is to minimize the sum of the weighted
+magnitudes of the bound and constraint violations.  The <code>lbpen</code>,
+<code>ubpen</code>, and <code>rhspen</code> arguments specify the cost per unit
+violation in the lower bounds, upper bounds, and linear constraints,
+respectively.
+
+<P>
+If you specify <code>relaxobjtype=1</code>, the objective of the
+feasibility relaxation is to minimize the
+weighted sum of the squares of the bound and constraint violations.
+The <code>lbpen</code>, <code>ubpen</code>, and <code>rhspen</code> arguments specify
+the coefficients on the squares of the lower bound, upper bound, and
+linear constraint violations, respectively.
+
+<P>
+If you specify <code>relaxobjtype=2</code>, the objective of the
+feasibility relaxation is to minimize the
+weighted count of bound and constraint violations.  The <code>lbpen</code>,
+<code>ubpen</code>, and <code>rhspen</code> arguments specify the cost of
+violating a lower bound, upper bound, and linear constraint, respectively.
+
+<P>
+To give an example, if a constraint with <code>rhspen</code> value
+<code>p</code> is violated by 2.0,
+it would contribute <code>2*p</code> to the
+feasibility relaxation objective for <code>relaxobjtype=0</code>,
+it would contribute <code>2*2*p</code> for <code>relaxobjtype=1</code>, and
+it would contribute <code>p</code> for <code>relaxobjtype=2</code>.
+
+<P>
+The <code>minrelax</code> argument is a boolean that controls the type of
+feasibility relaxation that is created.  If <code>minrelax=False</code>, optimizing
+the returned model gives a solution that minimizes the cost of the
+violation.  If <code>minrelax=True</code>, optimizing the returned model finds
+a solution that minimizes the original objective, but only from among
+those solutions that minimize the cost of the violation.
+Note that <code>feasRelax</code> must solve an optimization problem to
+find the minimum possible relaxation when <code>minrelax=True</code>, which can
+be quite expensive.
+
+<P>
+Note that this is a destructive method: it modifies the model
+on which it is invoked.  If you don't want to modify your original model,
+use <A HREF="py_model_copy.html#pythonmethod:Model.copy">copy</A>
+to create a copy before invoking this method.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">relaxobjtype</SPAN>: The cost function used when finding the minimum cost
+relaxation.
+
+<P>
+ <SPAN  CLASS="textbf">minrelax</SPAN>: The type of feasibility relaxation to perform.
+
+<P>
+ <SPAN  CLASS="textbf">vars</SPAN>: Variables whose bounds are allowed to be violated.
+
+<P>
+ <SPAN  CLASS="textbf">lbpen</SPAN>: Penalty for violating a variable lower bound.  One entry for
+each variable in argument <TT>vars</TT>.
+
+<P>
+ <SPAN  CLASS="textbf">ubpen</SPAN>: Penalty for violating a variable upper bound.  One entry for
+each variable in argument <TT>vars</TT>.
+
+<P>
+ <SPAN  CLASS="textbf">constr</SPAN>: Linear constraints that are allowed to be violated.
+
+<P>
+ <SPAN  CLASS="textbf">rhspen</SPAN>: Penalty for violating a linear constraint.  One entry for
+each variable in argument <TT>constr</TT>.
+
+<P>
+
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Return value:</SPAN></BIG>
+
+<P>
+Zero if <TT>minrelax</TT> is False.  If <TT>minrelax</TT> is True, the return value is the objective value for the relaxation performed.  If the value is less than 0, it indicates that the method failed to create the feasibility relaxation.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Example usage:</SPAN></BIG><PRE>
+  if model.status == GRB.INFEASIBLE:
+    vars = model.getVars()
+    ubpen = [1.0]*model.numVars
+    model.feasRelax(1, False, vars, None, ubpen, None, None)
+    model.optimize()
+</PRE>
+
+<P>
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html8010"
+  HREF="py_model_fixed.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html8008"
+  HREF="py_model.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html8002"
+  HREF="py_model_feasrelaxs.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html8011"
+  HREF="py_model_fixed.html">Model.fixed()</A>
+<B> Up:</B> <A NAME="tex2html8009"
+  HREF="py_model.html">Model</A>
+<B> Previous:</B> <A NAME="tex2html8003"
+  HREF="py_model_feasrelaxs.html">Model.feasRelaxS()</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

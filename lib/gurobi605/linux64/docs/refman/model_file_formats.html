@@ -1,0 +1,131 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Model File Formats</TITLE>
+<META NAME="description" CONTENT="Model File Formats">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="logging.html">
+<LINK REL="previous" HREF="error_codes.html">
+<LINK REL="up" HREF="refman.html">
+<LINK REL="next" HREF="mps_format.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html12189"
+  HREF="mps_format.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html12187"
+  HREF="refman.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html12181"
+  HREF="error_codes.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html12190"
+  HREF="mps_format.html">MPS format</A>
+<B> Up:</B> <A NAME="tex2html12188"
+  HREF="refman.html">Gurobi Optimizer Reference Manual</A>
+<B> Previous:</B> <A NAME="tex2html12182"
+  HREF="error_codes.html">Error Codes</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION000180000000000000000"></A>
+<A NAME="sec:FileFormats"></A>
+<BR>
+Model File Formats
+</H1>
+
+<P>
+The Gurobi optimizer works with a variety of file formats.  The
+<A HREF="mps_format.html#format:MPS">MPS</A>, <A HREF="rew_format.html#format:REW">REW</A>,
+<A HREF="lp_format.html#format:LP">LP</A>, <A HREF="rlp_format.html#format:RLP">RLP</A>, and
+<A HREF="ilp_format.html#format:ILP">ILP</A> formats are used to hold optimization
+models.  The <A HREF="mst_format.html#format:MST">MST</A> format is used to hold MIP
+start data.  Importing this data into a MIP model allows the MIP model
+to start with a known feasible solution.  The
+<A HREF="ord_format.html#format:ORD">ORD</A> format is used to hold MIP variable
+branching priorities.  Importing this data into a MIP model
+affects the search strategy.  The <A HREF="bas_format.html#format:BAS">BAS</A> format
+holds simplex basis information.  Importing this data into a
+continuous models allows the simplex algorithm to start from the given
+simplex basis.  The <A HREF="sol_format.html#format:SOL">SOL</A> format holds a
+solution vector.  It can be written once the model has been optimized.
+<A HREF="prm_format.html#format:PRM">PRM</A> format holds parameter values.
+Importing this data into a model changes the values of the referenced
+parameters.
+
+<P>
+Note that all of the Gurobi file I/O routines can work with compressed
+versions of these files.  Specifically, we can read or write files
+with the following extensions: <code>.zip</code>, <code>.gz</code>,
+<code>.bz2</code>, and <code>.7z</code>.
+
+<P>
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html12191"
+  HREF="mps_format.html">MPS format</A>
+<LI><A NAME="tex2html12192"
+  HREF="rew_format.html">REW format</A>
+<LI><A NAME="tex2html12193"
+  HREF="lp_format.html">LP format</A>
+<LI><A NAME="tex2html12194"
+  HREF="rlp_format.html">RLP format</A>
+<LI><A NAME="tex2html12195"
+  HREF="ilp_format.html">ILP format</A>
+<LI><A NAME="tex2html12196"
+  HREF="mst_format.html">MST format</A>
+<LI><A NAME="tex2html12197"
+  HREF="ord_format.html">ORD format</A>
+<LI><A NAME="tex2html12198"
+  HREF="bas_format.html">BAS format</A>
+<LI><A NAME="tex2html12199"
+  HREF="sol_format.html">SOL format</A>
+<LI><A NAME="tex2html12200"
+  HREF="prm_format.html">PRM format</A>
+</UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html12189"
+  HREF="mps_format.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html12187"
+  HREF="refman.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html12181"
+  HREF="error_codes.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html12190"
+  HREF="mps_format.html">MPS format</A>
+<B> Up:</B> <A NAME="tex2html12188"
+  HREF="refman.html">Gurobi Optimizer Reference Manual</A>
+<B> Previous:</B> <A NAME="tex2html12182"
+  HREF="error_codes.html">Error Codes</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

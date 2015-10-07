@@ -1,0 +1,149 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Simple experimentation with a more difficult model</TITLE>
+<META NAME="description" CONTENT="Simple experimentation with a more difficult model">
+<META NAME="keywords" CONTENT="quickstart_linux">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="quickstart_linux.css">
+
+<LINK REL="next" HREF="changing_parameters.html">
+<LINK REL="previous" HREF="simple_model_modification.html">
+<LINK REL="up" HREF="interactive_shell.html">
+<LINK REL="next" HREF="changing_parameters.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html502"
+  HREF="changing_parameters.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html500"
+  HREF="interactive_shell.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html494"
+  HREF="simple_model_modification.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html503"
+  HREF="changing_parameters.html">Changing parameters</A>
+<B> Up:</B> <A NAME="tex2html501"
+  HREF="interactive_shell.html">Interactive Shell</A>
+<B> Previous:</B> <A NAME="tex2html495"
+  HREF="simple_model_modification.html">Simple model modification</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00054000000000000000">
+Simple experimentation with a more difficult model</A>
+</H2>
+
+<P>
+Let us now consider a more difficult model, <code>glass4.mps</code>.
+Again, we read the model and begin the optimization:
+<PRE>
+gurobi&gt; m = read('c:/gurobi600/win64/examples/data/glass4')
+Read MPS format model from file c:/gurobi600/win64/examples/data/glass4.mps
+Reading time = 0.00 seconds
+glass4: 396 Rows, 322 Columns, 1815 NonZeros
+gurobi&gt; m.optimize()
+Optimize a model with 396 Rows, 322 Columns and 1815 NonZeros
+Presolve removed 4 rows and 5 columns
+Presolve time: 0.00s
+Presolved: 392 Rows, 317 Columns, 1815 Nonzeros
+Found heuristic solution: objective 3.691696e+09
+
+Root relaxation: objective 8.000024e+08, 72 iterations, 0.00 seconds
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0 8.0000e+08    0   72 3.6917e+09 8.0000e+08  78.3%     -    0s
+     0     0 8.0000e+08    0   72 3.6917e+09 8.0000e+08  78.3%     -    0s
+     0     0 8.0000e+08    0   72 3.6917e+09 8.0000e+08  78.3%     -    0s
+     0     0 8.0000e+08    0   72 3.6917e+09 8.0000e+08  78.3%     -    0s
+     0     2 8.0000e+08    0   72 3.6917e+09 8.0000e+08  78.3%     -    0s
+H  769   732                    2.800024e+09 8.0000e+08  71.4%   5.2    0s
+H  834   781                    2.666693e+09 8.0000e+08  70.0%   5.3    0s
+H 1091   984                    2.475023e+09 8.0000e+08  67.7%   5.1    0s
+H 1092   986                    2.400020e+09 8.0000e+08  66.7%   5.1    0s
+H 1092   984                    2.380021e+09 8.0000e+08  66.4%   5.1    0s
+H 1095   988                    2.350020e+09 8.0000e+08  66.0%   5.1    0s
+* 1845  1543              94    2.316685e+09 8.0000e+08  65.5%   4.9    0s
+* 2131  1627             126    2.150018e+09 8.0000e+08  62.8%   4.8    0s
+H 2244  1580                    2.100019e+09 8.0000e+08  61.9%   4.8    0s
+H 2248  1341                    1.900018e+09 8.0000e+08  57.9%   5.0    0s
+H 3345  1816                    1.900018e+09 8.0000e+08  57.9%   4.1    0s
+H 3346  1744                    1.900017e+09 8.0000e+08  57.9%   4.1    0s
+H15979 10383                    1.900017e+09 8.0000e+08  57.9%   2.5    1s
+H19540 13051                    1.900016e+09 8.0000e+08  57.9%   2.4    1s
+*21124 13489             101    1.866683e+09 8.0000e+08  57.1%   2.4    1s
+*23011 14690             100    1.850015e+09 8.0000e+08  56.8%   2.3    1s
+*25630 15679             143    1.800016e+09 8.0000e+08  55.6%   2.3    1s
+*28365 15421             113    1.700015e+09 8.0000e+08  52.9%   2.3    1s
+H29910 16333                    1.700014e+09 8.0000e+08  52.9%   2.3    1s
+*30582 16765             124    1.700014e+09 8.0000e+08  52.9%   2.3    1s
+*33238 16251              92    1.677794e+09 8.0000e+08  52.3%   2.3    1s
+*37319 18258              85    1.633349e+09 8.0000e+08  51.0%   2.2    1s
+H40623 19584                    1.600015e+09 8.0000e+08  50.0%   2.3    2s
+ 81781 42951 1.1000e+09   49   51 1.6000e+09 8.0001e+08  50.0%   2.2    5s
+ 199990 100088 1.6000e+09   82   28 1.6000e+09 8.0001e+08  50.0%   2.3   10s
+*242810 116891              97    1.600015e+09 8.2001e+08  48.8%   2.3   11s
+*243703 116786              95    1.600014e+09 8.2001e+08  48.8%   2.3   11s
+
+Interrupt request received
+
+Explored 255558 nodes (588336 simplex iterations) in 12.36 seconds
+Thread count was 8 (of 8 available processors)
+
+Solve interrupted
+Best objective 1.6000142000e+09, best bound 8.5000490000e+08, gap 46.8752%
+</PRE>
+
+<P>
+It quickly becomes apparent that this model is quite a bit more
+difficult than the earlier <code>coins</code> model.  The optimal solution
+is actually <code>1,200,000,000</code>, but finding that solution takes a
+while.  After letting the model run for 10 seconds, we interrupt the
+run (by hitting CTRL-C, which produces the <EM>Interrupt request
+  received</EM> message) and consider our options.  Typing
+<code>m.optimize()</code> would resume the run from the point at which it was
+interrupted.
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html502"
+  HREF="changing_parameters.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html500"
+  HREF="interactive_shell.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html494"
+  HREF="simple_model_modification.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html503"
+  HREF="changing_parameters.html">Changing parameters</A>
+<B> Up:</B> <A NAME="tex2html501"
+  HREF="interactive_shell.html">Interactive Shell</A>
+<B> Previous:</B> <A NAME="tex2html495"
+  HREF="simple_model_modification.html">Simple model modification</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

@@ -1,0 +1,145 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Variable Attributes</TITLE>
+<META NAME="description" CONTENT="Variable Attributes">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="linear_constraint_attribut.html">
+<LINK REL="previous" HREF="model_attributes.html">
+<LINK REL="up" HREF="attributes.html">
+<LINK REL="next" HREF="lb.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html9833"
+  HREF="lb.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html9831"
+  HREF="attributes.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html9825"
+  HREF="tuneresultcount.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html9834"
+  HREF="lb.html">LB</A>
+<B> Up:</B> <A NAME="tex2html9832"
+  HREF="attributes.html">Attributes</A>
+<B> Previous:</B> <A NAME="tex2html9826"
+  HREF="tuneresultcount.html">TuneResultCount</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION000132000000000000000">
+Variable Attributes</A>
+</H2>
+
+<P>
+These are variable attributes, meaning that they are associated with
+specific variables in the model.  You should use one of the various
+<code>get</code> routines to retrieve the value of an attribute.  These are
+described at the beginning of
+<A HREF="attributes.html#sec:Attributes">this section</A>).
+For the object-oriented interfaces, variable attributes are retrieved
+by invoking the <code>get</code> method on a variable object.  For
+attributes that can be modified directly by the user, you can use one
+of the various <code>set</code> methods.
+
+<P>
+Attempting to query an attribute that is not available will produce an
+error.  In C, the attribute query routine will return a
+<code>GRB_ERROR_DATA_NOT_AVAILABLE</code> error code.  The object-oriented
+interfaces will throw an exception.
+
+<P>
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html9835"
+  HREF="lb.html">LB</A>
+<LI><A NAME="tex2html9836"
+  HREF="ub.html">UB</A>
+<LI><A NAME="tex2html9837"
+  HREF="obj.html">Obj</A>
+<LI><A NAME="tex2html9838"
+  HREF="vtype.html">VType</A>
+<LI><A NAME="tex2html9839"
+  HREF="varname.html">VarName</A>
+<LI><A NAME="tex2html9840"
+  HREF="x.html">X</A>
+<LI><A NAME="tex2html9841"
+  HREF="xn.html">Xn</A>
+<LI><A NAME="tex2html9842"
+  HREF="rc.html">RC</A>
+<LI><A NAME="tex2html9843"
+  HREF="start.html">Start</A>
+<LI><A NAME="tex2html9844"
+  HREF="branchpriority.html">BranchPriority</A>
+<LI><A NAME="tex2html9845"
+  HREF="vbasis.html">VBasis</A>
+<LI><A NAME="tex2html9846"
+  HREF="pstart.html">PStart</A>
+<LI><A NAME="tex2html9847"
+  HREF="iislb.html">IISLB</A>
+<LI><A NAME="tex2html9848"
+  HREF="iisub.html">IISUB</A>
+<LI><A NAME="tex2html9849"
+  HREF="pwlobjcvx.html">PWLObjCvx</A>
+<LI><A NAME="tex2html9850"
+  HREF="saobjlow.html">SAObjLow</A>
+<LI><A NAME="tex2html9851"
+  HREF="saobjup.html">SAObjUp</A>
+<LI><A NAME="tex2html9852"
+  HREF="salblow.html">SALBLow</A>
+<LI><A NAME="tex2html9853"
+  HREF="salbup.html">SALBUp</A>
+<LI><A NAME="tex2html9854"
+  HREF="saublow.html">SAUBLow</A>
+<LI><A NAME="tex2html9855"
+  HREF="saubup.html">SAUBUp</A>
+<LI><A NAME="tex2html9856"
+  HREF="unbdray.html">UnbdRay</A>
+</UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html9833"
+  HREF="lb.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html9831"
+  HREF="attributes.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html9825"
+  HREF="tuneresultcount.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html9834"
+  HREF="lb.html">LB</A>
+<B> Up:</B> <A NAME="tex2html9832"
+  HREF="attributes.html">Attributes</A>
+<B> Previous:</B> <A NAME="tex2html9826"
+  HREF="tuneresultcount.html">TuneResultCount</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

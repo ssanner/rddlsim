@@ -1,0 +1,111 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>GRBgeterrormsg</TITLE>
+<META NAME="description" CONTENT="GRBgeterrormsg">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="previous" HREF="c_error_handling.html">
+<LINK REL="up" HREF="c_error_handling.html">
+<LINK REL="next" HREF="c_advanced_simplex_routine.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html2418"
+  HREF="c_advanced_simplex_routine.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html2416"
+  HREF="c_error_handling.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html2412"
+  HREF="c_error_handling.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html2419"
+  HREF="c_advanced_simplex_routine.html">Advanced simplex routines</A>
+<B> Up:</B> <A NAME="tex2html2417"
+  HREF="c_error_handling.html">Error Handling</A>
+<B> Previous:</B> <A NAME="tex2html2413"
+  HREF="c_error_handling.html">Error Handling</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000210100000000000000"></A>
+<A NAME="routine:GRBgeterrormsg"></A>
+<BR>
+GRBgeterrormsg
+</H3>
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">char *</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">GRBgeterrormsg</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT">GRBenv</TD>
+<TD ALIGN="LEFT">*env )</TD>
+</TR>
+</TABLE>
+
+<P>
+Retrieve the error message associated with the most recent error
+that occurred in an environment.
+
+<P>
+
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Return value:</SPAN></BIG>
+
+<P>
+A string containing the error message.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">env</SPAN>: The environment in which the error occurred.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Example usage:</SPAN></BIG><PRE>
+  error = GRBgetintattr(model, "DOES_NOT_EXIST", &amp;attr);
+  if (error)
+    printf("%s\n", GRBgeterrormsg(env));
+</PRE>
+
+<P>
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html2418"
+  HREF="c_advanced_simplex_routine.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html2416"
+  HREF="c_error_handling.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html2412"
+  HREF="c_error_handling.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html2419"
+  HREF="c_advanced_simplex_routine.html">Advanced simplex routines</A>
+<B> Up:</B> <A NAME="tex2html2417"
+  HREF="c_error_handling.html">Error Handling</A>
+<B> Previous:</B> <A NAME="tex2html2413"
+  HREF="c_error_handling.html">Error Handling</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

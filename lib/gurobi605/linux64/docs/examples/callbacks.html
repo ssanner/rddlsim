@@ -1,0 +1,133 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Callbacks</TITLE>
+<META NAME="description" CONTENT="Callbacks">
+<META NAME="keywords" CONTENT="examples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="examples.css">
+
+<LINK REL="previous" HREF="model_data_separation_in_p.html">
+<LINK REL="up" HREF="example_tour.html">
+<LINK REL="next" HREF="example_source_code.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html308"
+  HREF="example_source_code.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html306"
+  HREF="example_tour.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html302"
+  HREF="model_data_separation_in_p.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html309"
+  HREF="example_source_code.html">Example Source Code</A>
+<B> Up:</B> <A NAME="tex2html307"
+  HREF="example_tour.html">Example tour</A>
+<B> Previous:</B> <A NAME="tex2html303"
+  HREF="model_data_separation_in_p.html">Model-data separation in Python</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION000110000000000000000"></A>
+<A NAME="subsection:Callbacks"></A>
+<BR>
+Callbacks
+</H2>
+<B>Example:</B> callback
+
+<P>
+The final example we consider is <code>callback</code>, which demonstrates
+the use of Gurobi callbacks.  Callbacks are used to report on the
+progress of the optimization or to modify the behavior of the Gurobi
+solver.  To use a callback, the user writes a routine that implements
+the desired behavior.  The routine is passed to the Gurobi optimizer
+when optimization begins, and the routine is called regularly during
+the optimization process.  One argument of the user routine is a
+<code>where</code> value, which indicates from where in the optimization
+process the callback is invoked.  The user callback routine can call
+the optimization library to query certain values.  We refer the reader
+to the callback section of the <A NAME="tex2html4"
+  HREF="../refman/refman.html">Gurobi Reference
+  Manual</A>
+for more precise details.
+
+<P>
+Our callback example implements a simple termination scheme: the user
+passes a node count into the callback, and the callback asks the
+optimizer to terminate when that node count is reached.  This is
+implemented in C as follows:
+<PRE>
+  GRBcbget(cbdata, where, GRB_CB_MIP_NODCNT, &amp;nodecnt);
+  if (nodecnt &gt; limit)
+    GRBterminate(model);
+</PRE>
+In Python, this is implemented as:
+<PRE>
+  nodecnt = model.cbGet(GRB.callback.MIP_NODCNT)
+  if nodecnt &gt; model._mynodelimit:
+    model.terminate()
+</PRE>
+To obtain the current node count, the user routine calls the
+<code>cbget</code> routine (the <code>GRBcbget</code> function in C, or the
+<code>cbGet</code> method on the model object in C++, C#, Java, and Python).
+
+<P>
+Our callback example also prints progress information. In C:
+<PRE>
+  GRBcbget(cbdata, where, GRB_CB_MIP_NODCNT, &amp;nodecnt);
+  if (nodecnt - mydata-&gt;lastmsg &gt;= 100) {
+    ...
+    printf("%7.0f ...", nodecnt, ...);
+  }
+</PRE>
+In Python:
+<PRE>
+  nodecnt = model.cbGet(GRB.callback.MIP_NODCNT)
+  if nodecnt % 100 == 0:
+    print int(nodecnt), ...
+</PRE>
+Again, the user callback calls the <code>cbGet</code> routine to query the
+state of the optimization.
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html308"
+  HREF="example_source_code.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html306"
+  HREF="example_tour.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html302"
+  HREF="model_data_separation_in_p.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html309"
+  HREF="example_source_code.html">Example Source Code</A>
+<B> Up:</B> <A NAME="tex2html307"
+  HREF="example_tour.html">Example tour</A>
+<B> Previous:</B> <A NAME="tex2html303"
+  HREF="model_data_separation_in_p.html">Model-data separation in Python</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

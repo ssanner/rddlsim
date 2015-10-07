@@ -1,0 +1,206 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Diet.java</TITLE>
+<META NAME="description" CONTENT="Diet.java">
+<META NAME="keywords" CONTENT="examples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="examples.css">
+
+<LINK REL="next" HREF="facility_java.html">
+<LINK REL="previous" HREF="dense_java.html">
+<LINK REL="up" HREF="java_examples.html">
+<LINK REL="next" HREF="facility_java.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html1097"
+  HREF="facility_java.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1095"
+  HREF="java_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1089"
+  HREF="dense_java.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1098"
+  HREF="facility_java.html">Facility.java</A>
+<B> Up:</B> <A NAME="tex2html1096"
+  HREF="java_examples.html">Java Examples</A>
+<B> Previous:</B> <A NAME="tex2html1090"
+  HREF="dense_java.html">Dense.java</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00023300000000000000"></A>
+<A NAME="subsubsection:Diet.java"></A>
+<BR>
+Diet.java
+</H3>
+
+<P>
+<BR>
+<PRE  CLASS="verbatim">/* Copyright 2014, Gurobi Optimization, Inc. */
+
+/* Solve the classic diet model, showing how to add constraints
+   to an existing model. */
+
+import gurobi.*;
+
+public class Diet {
+
+  public static void main(String[] args) {
+    try {
+
+      // Nutrition guidelines, based on
+      // USDA Dietary Guidelines for Americans, 2005
+      // http://www.health.gov/DietaryGuidelines/dga2005/
+      String Categories[] =
+          new String[] { "calories", "protein", "fat", "sodium" };
+      int nCategories = Categories.length;
+      double minNutrition[] = new double[] { 1800, 91, 0, 0 };
+      double maxNutrition[] = new double[] { 2200, GRB.INFINITY, 65, 1779 };
+
+      // Set of foods
+      String Foods[] =
+          new String[] { "hamburger", "chicken", "hot dog", "fries",
+              "macaroni", "pizza", "salad", "milk", "ice cream" };
+      int nFoods = Foods.length;
+      double cost[] =
+          new double[] { 2.49, 2.89, 1.50, 1.89, 2.09, 1.99, 2.49, 0.89,
+              1.59 };
+
+      // Nutrition values for the foods
+      double nutritionValues[][] = new double[][] {
+          { 410, 24, 26, 730 },   // hamburger
+          { 420, 32, 10, 1190 },  // chicken
+          { 560, 20, 32, 1800 },  // hot dog
+          { 380, 4, 19, 270 },    // fries
+          { 320, 12, 10, 930 },   // macaroni
+          { 320, 15, 12, 820 },   // pizza
+          { 320, 31, 12, 1230 },  // salad
+          { 100, 8, 2.5, 125 },   // milk
+          { 330, 8, 10, 180 }     // ice cream
+          };
+
+      // Model
+      GRBEnv env = new GRBEnv();
+      GRBModel model = new GRBModel(env);
+      model.set(GRB.StringAttr.ModelName, "diet");
+
+      // Create decision variables for the nutrition information,
+      // which we limit via bounds
+      GRBVar[] nutrition = new GRBVar[nCategories];
+      for (int i = 0; i &lt; nCategories; ++i) {
+        nutrition[i] =
+            model.addVar(minNutrition[i], maxNutrition[i], 0, GRB.CONTINUOUS,
+                         Categories[i]);
+      }
+
+      // Create decision variables for the foods to buy
+      GRBVar[] buy = new GRBVar[nFoods];
+      for (int j = 0; j &lt; nFoods; ++j) {
+        buy[j] =
+            model.addVar(0, GRB.INFINITY, cost[j], GRB.CONTINUOUS, Foods[j]);
+      }
+
+      // The objective is to minimize the costs
+      model.set(GRB.IntAttr.ModelSense, 1);
+
+      // Update model to integrate new variables
+      model.update();
+
+      // Nutrition constraints
+      for (int i = 0; i &lt; nCategories; ++i) {
+        GRBLinExpr ntot = new GRBLinExpr();
+        for (int j = 0; j &lt; nFoods; ++j) {
+          ntot.addTerm(nutritionValues[j][i], buy[j]);
+        }
+        model.addConstr(ntot, GRB.EQUAL, nutrition[i], Categories[i]);
+      }
+
+      // Solve
+      model.optimize();
+      printSolution(model, buy, nutrition);
+
+      System.out.println("\nAdding constraint: at most 6 servings of dairy");
+      GRBLinExpr lhs = new GRBLinExpr();
+      lhs.addTerm(1.0, buy[7]);
+      lhs.addTerm(1.0, buy[8]);
+      model.addConstr(lhs, GRB.LESS_EQUAL, 6.0, "limit_dairy");
+
+      // Solve
+      model.optimize();
+      printSolution(model, buy, nutrition);
+
+      // Dispose of model and environment
+      model.dispose();
+      env.dispose();
+
+    } catch (GRBException e) {
+      System.out.println("Error code: " + e.getErrorCode() + ". " +
+          e.getMessage());
+    }
+  }
+
+  private static void printSolution(GRBModel model, GRBVar[] buy,
+                                    GRBVar[] nutrition) throws GRBException {
+    if (model.get(GRB.IntAttr.Status) == GRB.Status.OPTIMAL) {
+      System.out.println("\nCost: " + model.get(GRB.DoubleAttr.ObjVal));
+      System.out.println("\nBuy:");
+      for (int j = 0; j &lt; buy.length; ++j) {
+        if (buy[j].get(GRB.DoubleAttr.X) &gt; 0.0001) {
+          System.out.println(buy[j].get(GRB.StringAttr.VarName) + " " +
+              buy[j].get(GRB.DoubleAttr.X));
+        }
+      }
+      System.out.println("\nNutrition:");
+      for (int i = 0; i &lt; nutrition.length; ++i) {
+        System.out.println(nutrition[i].get(GRB.StringAttr.VarName) + " " +
+            nutrition[i].get(GRB.DoubleAttr.X));
+      }
+    } else {
+      System.out.println("No solution");
+    }
+  }
+}
+</PRE>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1097"
+  HREF="facility_java.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1095"
+  HREF="java_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1089"
+  HREF="dense_java.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1098"
+  HREF="facility_java.html">Facility.java</A>
+<B> Up:</B> <A NAME="tex2html1096"
+  HREF="java_examples.html">Java Examples</A>
+<B> Previous:</B> <A NAME="tex2html1090"
+  HREF="dense_java.html">Dense.java</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

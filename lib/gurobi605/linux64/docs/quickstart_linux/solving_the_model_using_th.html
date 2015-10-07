@@ -1,0 +1,176 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Solving the model using the Gurobi command-line interface</TITLE>
+<META NAME="description" CONTENT="Solving the model using the Gurobi command-line interface">
+<META NAME="keywords" CONTENT="quickstart_linux">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="quickstart_linux.css">
+
+<LINK REL="previous" HREF="the_model_file.html">
+<LINK REL="up" HREF="solving_a_simple_model_the.html">
+<LINK REL="next" HREF="interactive_shell.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html440"
+  HREF="interactive_shell.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html438"
+  HREF="solving_a_simple_model_the.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html434"
+  HREF="the_model_file.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html441"
+  HREF="interactive_shell.html">Interactive Shell</A>
+<B> Up:</B> <A NAME="tex2html439"
+  HREF="solving_a_simple_model_the.html">Solving a Simple Model</A>
+<B> Previous:</B> <A NAME="tex2html435"
+  HREF="the_model_file.html">The model file</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00044000000000000000"></A>
+<A NAME="subsection:SolvingTheModel"></A>
+<BR>
+Solving the model using the Gurobi command-line interface
+</H2>
+
+<P>
+The final step in solving our optimization problem is to pass the
+model to the Gurobi Optimizer.  We'll use the Gurobi command-line
+interface, as it is typically the simplest of our interfaces to use when solving a model stored in a file.
+
+<P>
+To use the command-line interface, you'll first need to bring up a
+window that allows you to run command-line programs.
+On a Linux system, you can use a <EM>Terminal</EM> window.
+(Note that the Gurobi Interactive Shell, which was
+used earlier to test your license, does <EM>not</EM> directly accept
+command-line program input).
+
+<P>
+The name of the Gurobi command-line tool is <code>gurobi_cl</code>.  To
+invoke it, type <code>gurobi_cl</code>, followed by the name of the model file.
+For example, if our example is stored in file
+<code>/opt/gurobi600/linux64/examples/data/coins.lp</code>,
+you would type the following command into your command-line window...
+<PRE>
+&gt; gurobi_cl /opt/gurobi600/linux64/examples/data/coins.lp
+</PRE>
+This command should produce the following output...
+<PRE>
+Read LP format model from file /opt/gurobi600/linux64/examples/data/coins.lp
+Reading time = 0.00 seconds
+(null): 4 rows, 9 columns, 16 nonzeros
+Optimize a model with 4 rows, 9 columns and 16 nonzeros
+Presolve removed 1 rows and 5 columns
+Presolve time: 0.00s
+Presolved: 3 rows, 4 columns, 9 nonzeros
+Variable types: 0 continuous, 4 integer (0 binary)
+Found heuristic solution: objective 26.1000000
+Found heuristic solution: objective 113.3000000
+
+Root relaxation: objective 1.134615e+02, 4 iterations, 0.00 seconds
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0  113.46154    0    1  113.30000  113.46154  0.14%     -    0s
+     0     0  113.45952    0    1  113.30000  113.45952  0.14%     -    0s
+H    0     0                     113.4500000  113.45952  0.01%     -    0s
+
+Explored 0 nodes (5 simplex iterations) in 0.00 seconds
+Thread count was 2 (of 2 available processors)
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 1.134500000000e+02, best bound 1.134500000000e+02, gap 0.0%
+</PRE>
+Details on the format of the Gurobi log file can be found in
+the <A NAME="tex2html18"
+  HREF="../refman/refman.html">Gurobi Reference Manual</A>.
+For now, you can simply note that the optimal objective
+value is 113.45.  Recall that the objective is denoted in dollars.
+We can therefore conclude that by a proper choice of production
+plan, the Mint can produce $113.45 worth of coins using the available
+minerals.  Moreover, because this value is optimal, we know
+that it is not possible to produce coins with value greater
+than $113.45!
+
+<P>
+It would clearly be useful to know the exact number of each coin
+produced by this optimal plan.  The <code>gurobi_cl</code> command allows
+you to set Gurobi parameters through command-line arguments.  One
+particularly useful parameter for the purposes of this example is
+<code>ResultFile</code>, which instructs the Gurobi Optimizer to write a file
+once optimization is complete.  The type of the file is encoded in the
+suffix.  To request a <code>.sol</code> file:
+<PRE>
+&gt; gurobi_cl ResultFile=coins.sol coins.lp
+</PRE>
+The command will produce a file that contains solution values for the
+variables in the model:
+<PRE>
+# Objective value = 113.45
+Pennies 0
+Nickels 0
+Dimes 2
+Quarters 53
+Dollars 100
+Cu 999.8
+Ni 46.9
+Zi 50
+Mn 30
+</PRE>
+In the optimal solution, we'll produce 100 dollar coins, 53 quarters,
+and 2 dimes.
+
+<P>
+If we wanted to explore the parameters of the model (for example, to
+consider how the optimal solution changes with different quantities of
+available minerals), we could use a text editor to modify
+the input file.  However, it is typically better to do such tests
+within a more powerful system.  We'll now describe the Gurobi
+Interactive Shell, which provides an environment for creating,
+modifying, and experimenting with optimization models.
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html440"
+  HREF="interactive_shell.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html438"
+  HREF="solving_a_simple_model_the.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html434"
+  HREF="the_model_file.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html441"
+  HREF="interactive_shell.html">Interactive Shell</A>
+<B> Up:</B> <A NAME="tex2html439"
+  HREF="solving_a_simple_model_the.html">Solving a Simple Model</A>
+<B> Previous:</B> <A NAME="tex2html435"
+  HREF="the_model_file.html">The model file</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

@@ -1,0 +1,170 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Java Interface</TITLE>
+<META NAME="description" CONTENT="Java Interface">
+<META NAME="keywords" CONTENT="quickstart_linux">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="quickstart_linux.css">
+
+<LINK REL="next" HREF="cs_net_interface_cs.html">
+<LINK REL="previous" HREF="cpp_interface.html">
+<LINK REL="up" HREF="quickstart_linux.html">
+<LINK REL="next" HREF="java_example_mip1_java.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html869"
+  HREF="java_example_mip1_java.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html867"
+  HREF="quickstart_linux.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html861"
+  HREF="cpp_building_and_running_t.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html870"
+  HREF="java_example_mip1_java.html">Example Mip1.java</A>
+<B> Up:</B> <A NAME="tex2html868"
+  HREF="quickstart_linux.html">Gurobi Optimizer Quick Start</A>
+<B> Previous:</B> <A NAME="tex2html862"
+  HREF="cpp_building_and_running_t.html">Building and running the</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00090000000000000000"></A>
+<A NAME="section:Java"></A>
+<BR>
+Java Interface
+</H1>
+
+<P>
+This section will work through a simple Java example in order to
+illustrate the use of the Gurobi Java interface.  The example builds a
+model, optimizes it, and outputs the optimal objective value.  This
+section assumes that you are already familiar with the Java
+programming language.  If not, a variety of books and websites are
+available for learning the language (for example,
+<A NAME="tex2html29"
+  HREF="http://java.sun.com/docs/books/tutorial">the online Java
+  tutorials</A>).
+
+<P>
+Our example optimizes the following model:
+<DIV ALIGN="CENTER">
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="RIGHT"><B>maximize</B></TD>
+<TD ALIGN="RIGHT">x</TD>
+<TD ALIGN="RIGHT">+</TD>
+<TD ALIGN="RIGHT">y</TD>
+<TD ALIGN="RIGHT">+</TD>
+<TD ALIGN="RIGHT">2 z</TD>
+<TD ALIGN="RIGHT">&nbsp;</TD>
+<TD ALIGN="RIGHT">&nbsp;</TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><B>subject to</B></TD>
+<TD ALIGN="RIGHT">x</TD>
+<TD ALIGN="RIGHT">+</TD>
+<TD ALIGN="RIGHT">2 y</TD>
+<TD ALIGN="RIGHT">+</TD>
+<TD ALIGN="RIGHT">3 z</TD>
+<TD ALIGN="RIGHT"><SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$\leq$"></SPAN></TD>
+<TD ALIGN="RIGHT">4</TD>
+</TR>
+<TR><TD ALIGN="RIGHT">&nbsp;</TD>
+<TD ALIGN="RIGHT">x</TD>
+<TD ALIGN="RIGHT">+</TD>
+<TD ALIGN="RIGHT">y</TD>
+<TD ALIGN="RIGHT">&nbsp;</TD>
+<TD ALIGN="RIGHT">&nbsp;</TD>
+<TD ALIGN="RIGHT"><SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$\geq$"></SPAN></TD>
+<TD ALIGN="RIGHT">1</TD>
+</TR>
+<TR><TD ALIGN="RIGHT">&nbsp;</TD>
+<TD ALIGN="CENTER" COLSPAN=6><SPAN>x, y, z binary</SPAN></TD>
+<TD ALIGN="RIGHT">&nbsp;</TD>
+</TR>
+</TABLE>
+</DIV>
+Note that this is the same model that was modeled and optimized in the
+<A HREF="c_interface.html#section:C">C Interface</A>
+section.
+
+<P>
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html871"
+  HREF="java_example_mip1_java.html">Example Mip1.java</A>
+<LI><A NAME="tex2html872"
+  HREF="java_example_details.html">Example details</A>
+<LI><A NAME="tex2html873"
+  HREF="java_creating_the_environm.html">Creating the environment</A>
+<LI><A NAME="tex2html874"
+  HREF="java_creating_the_model.html">Creating the model</A>
+<LI><A NAME="tex2html875"
+  HREF="java_adding_variables_to_t.html">Adding variables to the model</A>
+<LI><A NAME="tex2html876"
+  HREF="java_updating_the_model_la.html">Updating the model - lazy modification</A>
+<LI><A NAME="tex2html877"
+  HREF="java_setting_the_objective.html">Setting the objective</A>
+<LI><A NAME="tex2html878"
+  HREF="java_adding_constraints_to.html">Adding constraints to the model</A>
+<LI><A NAME="tex2html879"
+  HREF="java_optimizing_the_model.html">Optimizing the model</A>
+<LI><A NAME="tex2html880"
+  HREF="java_reporting_results_att.html">Reporting results - attributes</A>
+<LI><A NAME="tex2html881"
+  HREF="java_cleaning_up.html">Cleaning up</A>
+<LI><A NAME="tex2html882"
+  HREF="java_error_handling.html">Error handling</A>
+<LI><A NAME="tex2html883"
+  HREF="java_building_and_running_.html">Building and running the example</A>
+</UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html869"
+  HREF="java_example_mip1_java.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html867"
+  HREF="quickstart_linux.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html861"
+  HREF="cpp_building_and_running_t.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html870"
+  HREF="java_example_mip1_java.html">Example Mip1.java</A>
+<B> Up:</B> <A NAME="tex2html868"
+  HREF="quickstart_linux.html">Gurobi Optimizer Quick Start</A>
+<B> Previous:</B> <A NAME="tex2html862"
+  HREF="cpp_building_and_running_t.html">Building and running the</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

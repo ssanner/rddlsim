@@ -1,0 +1,129 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>DualResidual</TITLE>
+<META NAME="description" CONTENT="DualResidual">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="dualsresidual.html">
+<LINK REL="previous" HREF="dualsviosum.html">
+<LINK REL="up" HREF="quality_attributes.html">
+<LINK REL="next" HREF="dualsresidual.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html10602"
+  HREF="dualsresidual.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html10600"
+  HREF="quality_attributes.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html10594"
+  HREF="dualsviosum.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html10603"
+  HREF="dualsresidual.html">DualSResidual</A>
+<B> Up:</B> <A NAME="tex2html10601"
+  HREF="quality_attributes.html">Quality Attributes</A>
+<B> Previous:</B> <A NAME="tex2html10595"
+  HREF="dualsviosum.html">DualSVioSum</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION0001362500000000000000"></A>
+<A NAME="attr:DualResidual"></A>
+<BR>
+DualResidual
+</H3>
+<TABLE CELLPADDING=3>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf">Type:</SPAN></TH>
+<TD ALIGN="LEFT">double</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf">Modifiable:</SPAN></TH>
+<TD ALIGN="LEFT">No</TD>
+</TR>
+</TABLE>
+
+<P>
+Reporting dual constraint violations for the simplex solver is
+actually more complex than it may appear, due to the treatment of
+reduced costs for bounded variables.  The simplex solver introduces
+explicit non-negative reduced-cost variables inside the algorithm.
+Thus, <SPAN CLASS="MATH"><IMG
+ WIDTH="59" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img53.png"
+ ALT="$a^Ty \ge c$"></SPAN> becomes <SPAN CLASS="MATH"><IMG
+ WIDTH="87" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img54.png"
+ ALT="$a^Ty - z = c$"></SPAN> (where <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img5.png"
+ ALT="$y$"></SPAN> is
+the dual vector and <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img7.png"
+ ALT="$z$"></SPAN> is the reduced cost).  In this
+formulation, errors can show up in two places: (i) as bound violations
+on the computed reduced-cost variable values, and (ii) as differences
+between <SPAN CLASS="MATH"><IMG
+ WIDTH="58" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img55.png"
+ ALT="$a^Ty - z$"></SPAN> and <SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img56.png"
+ ALT="$c$"></SPAN>.  We report the former as
+<code>DualVio</code> and the latter as <code>DualResidual</code>.
+
+<P>
+<code>DualResidual</code> reports the maximum (unscaled) dual
+constraint error.
+
+<P>
+Only available for continuous models.
+
+<P>
+
+<P>
+For examples of how to query or modify attributes, refer to
+our <A HREF="attribute_examples.html#sec:AttributeExamples">Attribute Examples</A>.
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html10602"
+  HREF="dualsresidual.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html10600"
+  HREF="quality_attributes.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html10594"
+  HREF="dualsviosum.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html10603"
+  HREF="dualsresidual.html">DualSResidual</A>
+<B> Up:</B> <A NAME="tex2html10601"
+  HREF="quality_attributes.html">Quality Attributes</A>
+<B> Previous:</B> <A NAME="tex2html10595"
+  HREF="dualsviosum.html">DualSVioSum</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

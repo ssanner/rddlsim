@@ -1,0 +1,103 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Printing the solution</TITLE>
+<META NAME="description" CONTENT="Printing the solution">
+<META NAME="keywords" CONTENT="quickstart_linux">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="quickstart_linux.css">
+
+<LINK REL="next" HREF="r_running_the_example.html">
+<LINK REL="previous" HREF="r_solving_the_model.html">
+<LINK REL="up" HREF="r_interface.html">
+<LINK REL="next" HREF="r_running_the_example.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html1645"
+  HREF="r_running_the_example.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1643"
+  HREF="r_interface.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1637"
+  HREF="r_solving_the_model.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1646"
+  HREF="r_running_the_example.html">Running the example</A>
+<B> Up:</B> <A NAME="tex2html1644"
+  HREF="r_interface.html">R Interface</A>
+<B> Previous:</B> <A NAME="tex2html1638"
+  HREF="r_solving_the_model.html">Solving the model</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION000137000000000000000">
+Printing the solution</A>
+</H2>
+
+<P>
+The <code>gurobi()</code> function returns a list as its result.  This list
+contains a number of components, where each component contains information
+about the computed solution.  The available components depend on the
+result of the optimization, the type of model that was solved (LP, QP,
+SOCP, or MIP), and the algorithm used to solve the model.  This result list
+will always contain an integer <code>status</code> component, which indicates
+whether Gurobi was able to compute an optimal solution to the model.
+You should consult the <EM>Status Codes</EM> section of the
+<A NAME="tex2html46"
+  HREF="../refman/refman.html">Gurobi Reference Manual</A>
+for
+a complete list of all possible status codes.  If Gurobi was able to
+find a solution to the model, the return value will also include
+<code>objval</code> and <code>x</code> components.  The former gives the
+objective value for the computed solution, and the latter is the
+computed solution vector (one entry per column of the constraint
+matrix).  For continuous models, we will also return dual information
+(reduced costs and dual multipliers), and possibly an optimal basis.
+
+<P>
+In our example, we simply print the optimal objective value
+(<code>result$objval</code>)
+and the optimal solution vector
+(<code>result$x</code>).
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1645"
+  HREF="r_running_the_example.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1643"
+  HREF="r_interface.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1637"
+  HREF="r_solving_the_model.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1646"
+  HREF="r_running_the_example.html">Running the example</A>
+<B> Up:</B> <A NAME="tex2html1644"
+  HREF="r_interface.html">R Interface</A>
+<B> Previous:</B> <A NAME="tex2html1638"
+  HREF="r_solving_the_model.html">Solving the model</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

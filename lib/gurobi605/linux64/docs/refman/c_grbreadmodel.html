@@ -1,0 +1,134 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>GRBreadmodel</TITLE>
+<META NAME="description" CONTENT="GRBreadmodel">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="c_grbread.html">
+<LINK REL="previous" HREF="c_input_output.html">
+<LINK REL="up" HREF="c_input_output.html">
+<LINK REL="next" HREF="c_grbread.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html1766"
+  HREF="c_grbread.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1764"
+  HREF="c_input_output.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1758"
+  HREF="c_input_output.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1767"
+  HREF="c_grbread.html">GRBread</A>
+<B> Up:</B> <A NAME="tex2html1765"
+  HREF="c_input_output.html">Input/Output</A>
+<B> Previous:</B> <A NAME="tex2html1759"
+  HREF="c_input_output.html">Input/Output</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00025100000000000000"></A>
+<A NAME="routine:GRBreadmodel"></A>
+<BR>
+GRBreadmodel
+</H3>
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">GRBreadmodel</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT">GRBenv</TD>
+<TD ALIGN="LEFT">*env,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">const char</TD>
+<TD ALIGN="LEFT">*filename,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">GRBmodel</TD>
+<TD ALIGN="LEFT">**modelP )</TD>
+</TR>
+</TABLE>
+
+<P>
+Read a model from a file.
+
+<P>
+
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Return value:</SPAN></BIG>
+
+<P>
+A non-zero return value indicates that a problem occurred while reading the model.
+Refer to the <A HREF="error_codes.html#sec:ErrorCodes">Error Code</A> table for a
+list of possible return values.  Details on the error can be obtained
+by calling <A HREF="c_grbgeterrormsg.html#routine:GRBgeterrormsg">GRBgeterrormsg</A>.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">env</SPAN>: The environment in which to load the new model.  This
+should come from a previous call to
+<A HREF="c_grbloadenv.html#routine:GRBloadenv">GRBloadenv</A>.
+
+<P>
+ <SPAN  CLASS="textbf">filename</SPAN>: The path to the file to be read.  Note that the
+  type of the file is encoded in the file name suffix.  Valid suffixes
+  are <TT>.mps</TT>, <TT>.rew</TT>, <TT>.lp</TT>, <TT>.rlp</TT>, or
+  <TT>.ilp</TT>.  The files can be compressed, so additional suffixes of
+  <TT>.zip</TT>, <TT>.gz</TT>, <TT>.bz2</TT>, or <TT>.7z</TT> are accepted.
+
+<P>
+ <SPAN  CLASS="textbf">modelP</SPAN>: The location in which the pointer to the model
+  should be placed.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Example usage:</SPAN></BIG><PRE>
+  GRBmodel *model;
+  error = GRBreadmodel(env, "/tmp/model.mps.bz2", &amp;model);
+</PRE>
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1766"
+  HREF="c_grbread.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1764"
+  HREF="c_input_output.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1758"
+  HREF="c_input_output.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1767"
+  HREF="c_grbread.html">GRBread</A>
+<B> Up:</B> <A NAME="tex2html1765"
+  HREF="c_input_output.html">Input/Output</A>
+<B> Previous:</B> <A NAME="tex2html1759"
+  HREF="c_input_output.html">Input/Output</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

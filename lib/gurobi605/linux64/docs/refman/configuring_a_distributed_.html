@@ -1,0 +1,317 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Configuring a Distributed Worker Pool</TITLE>
+<META NAME="description" CONTENT="Configuring a Distributed Worker Pool">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="writing_your_own_distribut.html">
+<LINK REL="previous" HREF="distributed_parallel_algor.html">
+<LINK REL="up" HREF="distributed_parallel_algor.html">
+<LINK REL="next" HREF="writing_your_own_distribut.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html12518"
+  HREF="writing_your_own_distribut.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html12516"
+  HREF="distributed_parallel_algor.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html12510"
+  HREF="distributed_parallel_algor.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html12519"
+  HREF="writing_your_own_distribut.html">Writing Your Own Distributed</A>
+<B> Up:</B> <A NAME="tex2html12517"
+  HREF="distributed_parallel_algor.html">Distributed Parallel Algorithms</A>
+<B> Previous:</B> <A NAME="tex2html12511"
+  HREF="distributed_parallel_algor.html">Distributed Parallel Algorithms</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION000241000000000000000">
+Configuring a Distributed Worker Pool</A>
+</H2>
+
+<P>
+Before your program can perform a distributed optimization task,
+you'll need to identify a set of machines to use as your
+distributed workers.  Ideally these machines should give very
+similar performance.  Identical performance is best, especially for
+distributed tuning, but small variations in performance won't hurt
+your overall results too much.
+
+<P>
+<SPAN  CLASS="textbf">Specifying the Distributed Worker Pool</SPAN>
+
+<P>
+Once you've identified your distributed worker machines, you'll need
+to start <A HREF="gurobi_remote_services.html#sec:RemoteServices">Gurobi Remote Services</A> on these
+machines.  Instructions for setting up Gurobi Remote Services can be found in
+the
+<A NAME="tex2html19"
+  HREF="../quickstart/starting_gurobi_remote_ser.html">Gurobi Quick Start Guide</A>.
+As noted in the Quick Start Guide, run following command to
+make sure a machine is available to be used as a distributed worker:
+<PRE>
+&gt; gurobi_cl --server=machine --status
+</PRE>
+(replace <code>machine</code> with the name or IP address of your machine).
+If you see <code>Distributed Worker</code> listed among the
+set of available services...
+<PRE>
+Gurobi Remote Services (version 6.0.0) functioning normally
+Available services: Distributed Worker
+</PRE>
+then that machine is good to go.
+
+<P>
+We should reiterate a point that is raised in the Quick Start Guide:
+you do not need a Gurobi license to run Gurobi Remote Services on a machine.
+Some services are only available with a license (e.g.,
+<A HREF="gurobi_compute_server.html#sec:ComputeServer">Compute Server</A>).  However, any
+machine that is running Gurobi Remote Services will provide the
+Distributed Worker service.
+
+<P>
+<SPAN  CLASS="textbf">The Distributed Manager Machine</SPAN>
+
+<P>
+Once you have identified a set of distributed worker machines, you'll
+need to choose a manager machine.  This is the machine where your
+application actually runs.  In addition to building the optimization
+model, your manager machine will coordinate the efforts of the
+distributed workers during the execution of the distributed algorithm.
+<DIV ALIGN="CENTER">
+<IMG
+  WIDTH="435" HEIGHT="271" ALIGN="BOTTOM" BORDER="0"
+ SRC="./distributed.png"
+ ALT="Image distributed">
+</DIV>
+<P>
+<DIV ALIGN="CENTER">
+</DIV>
+Note that once the distributed algorithm completes, only the manager
+retains any information about the solution.  The distributed workers
+go off to work on other things.
+
+<P>
+You'll need to choose a manager machine that is licensed to run the
+distributed algorithms.  You'll see a <code>DISTRIBUTED=</code> line in your
+license file if distributed algorithms are enabled.
+
+<P>
+Note that, by default, the manager does <EM>not</EM> participate in the
+distributed optimization.  It simply coordinates the efforts of the
+distributed workers.  If you would like the manager to also act as one
+of the workers, you'll need to start Gurobi Remote Services on the manager
+machine as well.
+<DIV ALIGN="CENTER">
+<IMG
+  WIDTH="356" HEIGHT="273" ALIGN="BOTTOM" BORDER="0"
+ SRC="./distributed2.png"
+ ALT="Image distributed2">
+</DIV>
+<P>
+<DIV ALIGN="CENTER">
+</DIV>
+The workload associated with managing the
+distributed algorithm is quite light, so a machine can easily handle
+both the manager and worker role without degrading performance.
+
+<P>
+<SPAN  CLASS="textbf">Specifying the Distributed Worker Pool</SPAN>
+
+<P>
+If you'd like to invoke a distributed algorithm from your application,
+you'll need to provide the names of the distributed worker machines.
+You do this by setting the
+<A HREF="workerpool.html#parameter:WorkerPool">WorkerPool</A> parameter (refer to
+the <A HREF="parameters.html#sec:Parameters">Gurobi Parameter</A> section for
+information on how to set a parameter).  The parameter should be set
+to a string that contains a comma-separated list of either machine
+names or IP addresses.  For example, you might use the following in
+your <code>gurobi_cl</code> command line:
+<PRE>
+&gt; gurobi_cl WorkerPool=server1,server2,server3 ...
+</PRE>
+
+<P>
+If you have set up an access password on the distributed
+worker machines, you'll need to provide it through the
+<A HREF="workerpassword.html#parameter:WorkerPassword">WorkerPassword</A> parameter.
+All machines in the worker pool must have the same access password.
+
+<P>
+Note that providing a list of available workers is strictly a
+configuration step. Your program won't actually use any of the
+distributed algorithms unless it specifically requests them.
+Instructions for doing so are next.
+
+<P>
+<SPAN  CLASS="textbf">Requesting A Distributed Algorithm</SPAN>
+
+<P>
+Once you've set the <code>WorkerPool</code> parameter to
+the appropriate value, your final step is to set the
+<A HREF="concurrentjobs.html#parameter:ConcurrentJobs">ConcurrentJobs</A>,
+<A HREF="distributedmipjobs.html#parameter:DistributedMIPJobs">DistributedMIPJobs</A>, or
+<A HREF="tunejobs.html#parameter:TuneJobs">TuneJobs</A> parameter.  These
+parameters indicate how many distinct distributed worker
+jobs you would like to start.
+For example, if you set <code>TuneJobs</code> to 2 in <code>grbtune</code>...
+<PRE>
+&gt; grbtune WorkerPool=server1,server2 TuneJobs=2 misc07.mps
+</PRE>
+...you should see the following output in the log...
+<PRE>
+Started distributed worker on server1
+Started distributed worker on server2
+
+Distributed tuning: launched 2 distributed worker jobs
+</PRE>
+This output indicates that two jobs have been launched, one on machine
+<code>server1</code> and the other on machine <code>server2</code>.  These two
+jobs will continue to run until your tuning run completes.
+
+<P>
+Similarly, if you launch distributed MIP...
+<PRE>
+&gt; gurobi_cl WorkerPool=server1,server2 DistributedMIPJobs=2 misc07.mps
+</PRE>
+...you should see the following output in the log...
+<PRE>
+Started distributed worker on server1
+Started distributed worker on server2
+
+Distributed MIP job count: 2
+</PRE>
+
+<P>
+Note that, in most cases, each machine runs one distributed worker job
+at a time.  Distributed workers are allocated on a first-come,
+first-served basis, so if multiple users are sharing a set of
+distributed worker machines, you should be prepared for the
+possibility that some or all of them may be busy when the manager
+requests them.  The manager will grab as many as it can, up to the
+requested count.  If none are available, it will return an error.
+
+<P>
+<SPAN  CLASS="textbf">Compute Server Considerations</SPAN>
+
+<P>
+If you have one or more
+<A HREF="gurobi_compute_server.html#sec:ComputeServer">Gurobi Compute Servers</A>,
+you can use them for distributed
+optimization as well.  Compute Servers offer a lot more flexibility
+than distributed workers, though, so they require a bit of additional
+explanation.
+
+<P>
+The first point you should be aware of is that one Compute Server can
+actually host multiple distributed worker jobs.  Compute Servers allow
+you to set a limit on the number of jobs that can run simultaneously.
+Each of those jobs can be a distributed worker.  For example,
+if you have a pair of Compute Servers, each with a job limit of 2,
+then issuing the command...
+<PRE>
+&gt; gurobi_cl DistributedMIPJobs=3 WorkerPool=server1,server2 misc07.mps
+</PRE>
+...would produce the following output...
+<PRE>
+Started distributed worker on server1
+Started distributed worker on server2
+Started distributed worker on server1
+</PRE>
+Compute Server assigns a new job to the machine with the most
+available capacity, so assuming that the two servers are otherwise
+idle, the first distributed worker job would be assigned to
+<code>server1</code>, the second to <code>server2</code>, and the third to
+<code>server1</code>.
+
+<P>
+Another point to note is that, if you are working in a Compute Server
+environment, it is often better to use the Compute Server itself as
+the distributed manager, rather than the client machine.  This is
+particularly true if the Compute Server and the workers are physically
+close to each other, but physically distant from the client machine.
+In a typical environment, the client machine will offload the Gurobi
+computations onto the Compute Server, and the Compute Server will then
+act as the manager for the distributed computation.
+
+<P>
+To give an example, running following command on machine <code>client1</code>:
+<PRE>
+&gt; gurobi_cl --server=server1 WorkerPool=server1,server2 DistributeMIPJobs=2 misc07.mps
+</PRE>
+...will lead to the following sequence of events...
+
+<UL>
+<LI>The model will be read from the disk on <code>client1</code> and passed to Compute Server <code>server1</code>.
+</LI>
+<LI>Machine <code>server1</code> will act as the manager of the distributed optimization.
+</LI>
+<LI>Machine <code>server1</code> will start two distributed worker jobs, one that
+also runs on <code>server1</code> and another that runs on <code>server2</code>.
+</LI>
+</UL>
+
+<P>
+Compute Server provides load balancing among multiple machines, so it
+is common for the user to provides a list of available servers when a
+Gurobi application starts.  We'll automatically copy this list into the
+<code>WorkerPool</code> parameter.  Of course, you can change the value of
+this parameter in your program, but the default behavior is to draw
+from the same set of machines for the distributed workers.  Thus,
+the following command would be equivalent to the previous command:
+<PRE>
+&gt; gurobi_cl --server=server1,server2 DistributedMIPJobs=2 misc07.mps
+</PRE>
+
+<P>
+Please refer to the
+<A HREF="gurobi_compute_server.html#sec:ComputeServer">next section</A> section for more information
+on using a Gurobi Compute Server.
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html12518"
+  HREF="writing_your_own_distribut.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html12516"
+  HREF="distributed_parallel_algor.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html12510"
+  HREF="distributed_parallel_algor.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html12519"
+  HREF="writing_your_own_distribut.html">Writing Your Own Distributed</A>
+<B> Up:</B> <A NAME="tex2html12517"
+  HREF="distributed_parallel_algor.html">Distributed Parallel Algorithms</A>
+<B> Previous:</B> <A NAME="tex2html12511"
+  HREF="distributed_parallel_algor.html">Distributed Parallel Algorithms</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

@@ -1,0 +1,111 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>GRBSOS</TITLE>
+<META NAME="description" CONTENT="GRBSOS">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="java_grbexpr.html">
+<LINK REL="previous" HREF="java_grbqconstr.html">
+<LINK REL="up" HREF="java_api_details.html">
+<LINK REL="next" HREF="java_grbsos_get.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html5159"
+  HREF="java_grbsos_get.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html5157"
+  HREF="java_api_details.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html5151"
+  HREF="java_grbqconstr_set.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html5160"
+  HREF="java_grbsos_get.html">GRBSOS.get()</A>
+<B> Up:</B> <A NAME="tex2html5158"
+  HREF="java_api_details.html">Java API Details</A>
+<B> Previous:</B> <A NAME="tex2html5152"
+  HREF="java_grbqconstr_set.html">GRBQConstr.set()</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00066000000000000000"></A>
+<A NAME="javaclass:GRBSOS"></A>
+<BR>
+GRBSOS
+</H2>
+
+<P>
+Gurobi SOS constraint object.  SOS constraints are always associated
+with a particular model.  You create an SOS object by adding an SOS
+constraint to a model (using
+<A HREF="java_grbmodel_addsos.html#javamethod:GRBModel.addSOS">GRBModel.addSOS</A>), rather
+than by using a <code>GRBSOS</code> constructor.  Similarly, SOS
+constraints are removed using the
+<A HREF="java_grbmodel_remove.html#javamethod:GRBModel.remove">GRBModel.remove</A> method.
+
+<P>
+An SOS constraint can be of type 1 or 2 (<code>GRB.SOS_TYPE1</code> or
+<code>GRB.SOS_TYPE2</code>).  A type 1 SOS constraint is a set of
+variables for which at most one variable in the set may take a value
+other than zero.  A type 2 SOS constraint is an ordered set of
+variables where at most two variables in the set may take non-zero
+values.  If two take non-zero values, they must be contiguous in the
+ordered set.
+
+<P>
+SOS constraint objects have one attribute, <code>IISSOS</code>, which can
+be queried with the
+<A HREF="java_grbsos_get.html#javamethod:GRBSOS.get">GRBSOS.get</A> method.
+
+<P>
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html5161"
+  HREF="java_grbsos_get.html">GRBSOS.get()</A>
+</UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html5159"
+  HREF="java_grbsos_get.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html5157"
+  HREF="java_api_details.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html5151"
+  HREF="java_grbqconstr_set.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html5160"
+  HREF="java_grbsos_get.html">GRBSOS.get()</A>
+<B> Up:</B> <A NAME="tex2html5158"
+  HREF="java_api_details.html">Java API Details</A>
+<B> Previous:</B> <A NAME="tex2html5152"
+  HREF="java_grbqconstr_set.html">GRBQConstr.set()</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

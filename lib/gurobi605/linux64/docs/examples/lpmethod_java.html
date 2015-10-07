@@ -1,0 +1,138 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Lpmethod.java</TITLE>
+<META NAME="description" CONTENT="Lpmethod.java">
+<META NAME="keywords" CONTENT="examples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="examples.css">
+
+<LINK REL="next" HREF="lpmod_java.html">
+<LINK REL="previous" HREF="lp_java.html">
+<LINK REL="up" HREF="java_examples.html">
+<LINK REL="next" HREF="lpmod_java.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html1147"
+  HREF="lpmod_java.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1145"
+  HREF="java_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1139"
+  HREF="lp_java.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1148"
+  HREF="lpmod_java.html">Lpmod.java</A>
+<B> Up:</B> <A NAME="tex2html1146"
+  HREF="java_examples.html">Java Examples</A>
+<B> Previous:</B> <A NAME="tex2html1140"
+  HREF="lp_java.html">Lp.java</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00023800000000000000"></A>
+<A NAME="subsubsection:Lpmethod.java"></A>
+<BR>
+Lpmethod.java
+</H3>
+
+<P>
+<BR>
+<PRE  CLASS="verbatim">/* Copyright 2014, Gurobi Optimization, Inc. */
+
+/* Solve a model with different values of the Method parameter;
+   show which value gives the shortest solve time. */
+
+import gurobi.*;
+
+public class Lpmethod {
+
+  public static void main(String[] args) {
+
+    if (args.length &lt; 1) {
+      System.out.println("Usage: java Lpmethod filename");
+      System.exit(1);
+    }
+
+    try {
+      // Read model
+      GRBEnv env = new GRBEnv();
+      GRBModel model = new GRBModel(env, args[0]);
+      GRBEnv menv = model.getEnv();
+
+      // Solve the model with different values of Method
+      int bestMethod = -1;
+      double bestTime = menv.get(GRB.DoubleParam.TimeLimit);
+      for (int i = 0; i &lt;= 2; ++i) {
+        model.reset();
+        menv.set(GRB.IntParam.Method, i);
+        model.optimize();
+        if (model.get(GRB.IntAttr.Status) == GRB.Status.OPTIMAL) {
+          bestTime = model.get(GRB.DoubleAttr.Runtime);
+          bestMethod = i;
+          // Reduce the TimeLimit parameter to save time
+          // with other methods
+          menv.set(GRB.DoubleParam.TimeLimit, bestTime);
+        }
+      }
+
+      // Report which method was fastest
+      if (bestMethod == -1) {
+        System.out.println("Unable to solve this model");
+      } else {
+        System.out.println("Solved in " + bestTime
+            + " seconds with Method: " + bestMethod);
+      }
+
+      // Dispose of model and environment
+      model.dispose();
+      env.dispose();
+
+    } catch (GRBException e) {
+      System.out.println("Error code: " + e.getErrorCode() + ". "
+          + e.getMessage());
+    }
+  }
+}
+</PRE>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1147"
+  HREF="lpmod_java.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1145"
+  HREF="java_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1139"
+  HREF="lp_java.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1148"
+  HREF="lpmod_java.html">Lpmod.java</A>
+<B> Up:</B> <A NAME="tex2html1146"
+  HREF="java_examples.html">Java Examples</A>
+<B> Previous:</B> <A NAME="tex2html1140"
+  HREF="lp_java.html">Lp.java</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

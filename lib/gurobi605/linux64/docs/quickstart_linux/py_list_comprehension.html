@@ -1,0 +1,100 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>List comprehension</TITLE>
+<META NAME="description" CONTENT="List comprehension">
+<META NAME="keywords" CONTENT="quickstart_linux">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="quickstart_linux.css">
+
+<LINK REL="next" HREF="py_the_tuplelist_class.html">
+<LINK REL="previous" HREF="py_dictionaries.html">
+<LINK REL="up" HREF="py_python_dictionary_examp.html">
+<LINK REL="next" HREF="py_the_tuplelist_class.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html1385"
+  HREF="py_the_tuplelist_class.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1383"
+  HREF="py_python_dictionary_examp.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1377"
+  HREF="py_dictionaries.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1386"
+  HREF="py_the_tuplelist_class.html">The tuplelist class</A>
+<B> Up:</B> <A NAME="tex2html1384"
+  HREF="py_python_dictionary_examp.html">Python Dictionary Example</A>
+<B> Previous:</B> <A NAME="tex2html1378"
+  HREF="py_dictionaries.html">Dictionaries</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000113400000000000000">
+List comprehension</A>
+</H3>
+
+<P>
+List comprehension is an important Python feature that allows you to
+build lists in a concise fashion.  To give a simple example, the
+following list comprehension builds a list containing the squares of
+the numbers from 1 through 5:
+<PRE>
+gurobi&gt; print [x*x for x in [1, 2, 3, 4, 5]]
+[1, 4, 9, 16, 25]
+</PRE>
+A list comprehension can contain more than one <code>for</code> clause,
+and it can contain one or more <code>if</code> clauses.
+The following example builds
+a list of tuples containing all <code>x,y</code> pairs where x and y
+are both less than 3 and are not equal:
+<PRE>
+gurobi&gt; print [(x,y) for x in range(3) for y in range(3) if x != y]
+[(0, 1), (0, 2), (1, 0), (1, 2) (2, 0), (2, 1)]
+</PRE>
+(Details on the <code>range</code> function can be found
+<A NAME="tex2html42"
+  HREF="http://docs.python.org/release/2.7.5/library/functions.html">here</A>).
+List comprehension is used extensively in our Python examples.
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1385"
+  HREF="py_the_tuplelist_class.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1383"
+  HREF="py_python_dictionary_examp.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1377"
+  HREF="py_dictionaries.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1386"
+  HREF="py_the_tuplelist_class.html">The tuplelist class</A>
+<B> Up:</B> <A NAME="tex2html1384"
+  HREF="py_python_dictionary_examp.html">Python Dictionary Example</A>
+<B> Previous:</B> <A NAME="tex2html1378"
+  HREF="py_dictionaries.html">Dictionaries</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

@@ -1,0 +1,146 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>dietmodel.py</TITLE>
+<META NAME="description" CONTENT="dietmodel.py">
+<META NAME="keywords" CONTENT="examples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="examples.css">
+
+<LINK REL="next" HREF="facility_py.html">
+<LINK REL="previous" HREF="diet4_py.html">
+<LINK REL="up" HREF="python_examples.html">
+<LINK REL="next" HREF="facility_py.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html1969"
+  HREF="facility_py.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1967"
+  HREF="python_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1961"
+  HREF="diet4_py.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1970"
+  HREF="facility_py.html">facility.py</A>
+<B> Up:</B> <A NAME="tex2html1968"
+  HREF="python_examples.html">Python Examples</A>
+<B> Previous:</B> <A NAME="tex2html1962"
+  HREF="diet4_py.html">diet4.py</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00026800000000000000"></A>
+<A NAME="subsubsection:dietmodel.py"></A>
+<BR>
+dietmodel.py
+</H3>
+
+<P>
+<BR>
+<PRE  CLASS="verbatim">#!/usr/bin/python
+
+# Copyright 2014, Gurobi Optimization, Inc.
+
+# Solve the classic diet model.  This file implements
+# a function that formulates and solves the model,
+# but it contains no model data.  The data is
+# passed in by the calling program.  Run example 'diet2.py',
+# 'diet3.py', or 'diet4.py' to invoke this function.
+
+from gurobipy import *
+
+
+def solve(categories, minNutrition, maxNutrition, foods, cost,
+          nutritionValues):
+    # Model
+    m = Model("diet")
+
+    # Create decision variables for the nutrition information,
+    # which we limit via bounds
+    nutrition = {}
+    for c in categories:
+        nutrition[c] = m.addVar(lb=minNutrition[c], ub=maxNutrition[c], name=c)
+
+    # Create decision variables for the foods to buy
+    buy = {}
+    for f in foods:
+        buy[f] = m.addVar(obj=cost[f], name=f)
+
+    # The objective is to minimize the costs
+    m.modelSense = GRB.MINIMIZE
+
+    # Update model to integrate new variables
+    m.update()
+
+    # Nutrition constraints
+    for c in categories:
+        m.addConstr(
+          quicksum(nutritionValues[f,c] * buy[f] for f in foods) ==
+                    nutrition[c], c)
+
+    def printSolution():
+        if m.status == GRB.status.OPTIMAL:
+            print('\nCost: %g' % m.objVal)
+            print('\nBuy:')
+            for f in foods:
+                if buy[f].x &gt; 0.0001:
+                    print('%s %g' % (f, buy[f].x))
+            print('\nNutrition:')
+            for c in categories:
+                print('%s %g' % (c, nutrition[c].x))
+        else:
+            print('No solution')
+
+    # Solve
+    m.optimize()
+    printSolution()
+
+    print('\nAdding constraint: at most 6 servings of dairy')
+    m.addConstr(buy['milk'] + buy['ice cream'] &lt;= 6, "limit_dairy")
+
+    # Solve
+    m.optimize()
+    printSolution()
+</PRE>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1969"
+  HREF="facility_py.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1967"
+  HREF="python_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1961"
+  HREF="diet4_py.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1970"
+  HREF="facility_py.html">facility.py</A>
+<B> Up:</B> <A NAME="tex2html1968"
+  HREF="python_examples.html">Python Examples</A>
+<B> Previous:</B> <A NAME="tex2html1962"
+  HREF="diet4_py.html">diet4.py</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

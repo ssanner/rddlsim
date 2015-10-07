@@ -1,0 +1,171 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Gurobi Remote Services and Compute Server Administration</TITLE>
+<META NAME="description" CONTENT="Gurobi Remote Services and Compute Server Administration">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="previous" HREF="solving_a_model.html">
+<LINK REL="up" HREF="gurobi_command_line_tool.html">
+<LINK REL="next" HREF="concurrent_optimizer.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html12390"
+  HREF="concurrent_optimizer.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html12388"
+  HREF="gurobi_command_line_tool.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html12384"
+  HREF="solving_a_model.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html12391"
+  HREF="concurrent_optimizer.html">Concurrent Optimizer</A>
+<B> Up:</B> <A NAME="tex2html12389"
+  HREF="gurobi_command_line_tool.html">Gurobi Command-Line Tool</A>
+<B> Previous:</B> <A NAME="tex2html12385"
+  HREF="solving_a_model.html">Solving a Model</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION000202000000000000000"></A>
+<A NAME="subsection:CLRSAdmin"></A>
+<BR>
+Gurobi Remote Services and Compute Server Administration
+</H2>
+
+<P>
+The command-line tool can also be used to administer
+<A HREF="gurobi_remote_services.html#sec:RemoteServices">Gurobi Remote Services</A> and
+<A HREF="gurobi_compute_server.html#sec:ComputeServer">Gurobi Compute Server</A>.
+The format of an
+administrative command is simply:
+<PRE>
+gurobi_cl [--command]*
+</PRE>
+Available administrative commands are:
+<DL>
+<DT><STRONG>--status</STRONG></DT>
+<DD>Obtain a list of running and queued
+jobs.
+</DD>
+<DT><STRONG>--killjob=</STRONG></DT>
+<DD>Kill a job.  The argument
+identifies the job to kill.  You specify a job
+by giving the client hostname, followed by a comma,
+followed by the process ID (PID) of the job.  You typically obtain
+this information from the output of <code>gurobi_cl --status</code>.
+</DD>
+<DT><STRONG>--joblimit=</STRONG></DT>
+<DD>Change the server job limit.  The
+argument gives the new limit.  Note that this command is
+useful for taking a Compute Server off-line: setting the job limit to zero
+allows currently running jobs to finish, but prevents
+new ones from starting.
+</DD>
+<DT><STRONG>--adminpassword</STRONG></DT>
+<DD>Change the administrator password.
+</DD>
+</DL>
+
+<P>
+Administrative commands can be run from any machine on the same
+network as the server.  All except <code>--status</code> prompt you for the
+administrator password.  For security reasons, if no initial
+administrator password is specified (via the <code>grb_rs.cnf</code>
+file), server administration is disabled.
+
+<P>
+One additional command-line argument that you may need in conjunction
+with these commands is <code>--server=</code> (<code>--servers=</code> is also
+accepted).  This argument specifies the machine where the requested
+command should be performed.  If you omit this argument, the machine
+name will be pulled from the <code>COMPUTESERVER=</code> line of your client
+license file.
+
+<P>
+Note that the <code>--joblimit</code> and <code>--adminpassword</code>
+commands can only be applied to a single server at a time.
+If you specify multiple servers (either through the <code>--servers</code>
+switch or through your client license file), the command will only
+be applied to the first member of the list.
+
+<P>
+The following shows sample output from <code>gurobi_cl --status</code>...
+<PRE>
+------------------------------------------------------------------
+Checking status of Gurobi Remote Services on server 'server1'...
+------------------------------------------------------------------
+
+Gurobi Remote Services (version 6.0.0) functioning normally
+Available services: Distributed Worker, Compute Server
+Job limit: 2, currently running: 2
+
+Jobs currently running: 2 ...
+
+Client HostName    Client IP Address    UserName        PID
+-----------------------------------------------------------
+client1            192.168.1.101        smith           7416
+client2            192.168.1.102        jones           1536
+
+Jobs currently queued: 1 ...
+
+Client HostName    Client IP Address    UserName        PID     Priority
+------------------------------------------------------------------------
+client3            192.168.1.103        jim             2620    5
+</PRE>
+The report shows two jobs currently running (one from user <code>smith</code>
+on client machine <code>client1</code>, and one from user <code>jones</code> on
+client machine <code>client2</code>), and one job queued (from user
+<code>jim</code> on client machine <code>client3</code>).
+
+<P>
+Here are a few more example administrator commands:
+<PRE>
+&gt; gurobi_cl --killjob=client1,7416
+&gt; gurobi_cl --adminpassword --server=gurobiserver1
+&gt; gurobi_cl --joblimit=0 --server=gurobiserver1
+</PRE>
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html12390"
+  HREF="concurrent_optimizer.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html12388"
+  HREF="gurobi_command_line_tool.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html12384"
+  HREF="solving_a_model.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html12391"
+  HREF="concurrent_optimizer.html">Concurrent Optimizer</A>
+<B> Up:</B> <A NAME="tex2html12389"
+  HREF="gurobi_command_line_tool.html">Gurobi Command-Line Tool</A>
+<B> Previous:</B> <A NAME="tex2html12385"
+  HREF="solving_a_model.html">Solving a Model</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

@@ -1,0 +1,251 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Build a model</TITLE>
+<META NAME="description" CONTENT="Build a model">
+<META NAME="keywords" CONTENT="examples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="examples.css">
+
+<LINK REL="next" HREF="modify_a_model.html">
+<LINK REL="previous" HREF="load_and_solve_a_model_fro.html">
+<LINK REL="up" HREF="example_tour.html">
+<LINK REL="next" HREF="modify_a_model.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html240"
+  HREF="modify_a_model.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html238"
+  HREF="example_tour.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html232"
+  HREF="load_and_solve_a_model_fro.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html241"
+  HREF="modify_a_model.html">Modify a model</A>
+<B> Up:</B> <A NAME="tex2html239"
+  HREF="example_tour.html">Example tour</A>
+<B> Previous:</B> <A NAME="tex2html233"
+  HREF="load_and_solve_a_model_fro.html">Load and solve a</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00013000000000000000"></A>
+<A NAME="subsection:Building"></A>
+<BR>
+Build a model
+</H2>
+<B>Examples:</B> diet, facility, mip1, piecewise, qcp, qp, sos, sudoku, workforce1, workforce2, workforce3, workforce4
+
+<P>
+Several of the Gurobi examples build models from scratch.  We start by
+focusing on two, <code>mip1</code> and <code>sos</code>, which build very simple
+models to illustrate the basic process.
+
+<P>
+Typically, the first step in building a model is to create an empty
+model.  This is done using the <code>GRBnewmodel</code> function in C:
+<PRE>
+  error = GRBnewmodel(env, &amp;model, "mip1", 0, NULL, NULL, NULL, NULL);
+</PRE>
+You can optionally create a set of variables when you create the
+model, as well as specifying bounds, objective coefficients, and names
+for these variables.  These examples add new variables separately.
+
+<P>
+In C++, C#, and Java, you create a new model using the <code>GRBModel</code>
+constructor.  In Java, this looks like:
+<PRE>
+  GRBModel model = new GRBModel(env);
+</PRE>
+In Python, the class is called <code>Model</code>, and its constructor is
+similar to the <code>GRBModel</code> constructor for C++ and Java.
+
+<P>
+Once the model has been created, the typical next step is to add
+variables.  In C, you use the <code>GRBaddvars</code> function to add
+one or more variables:
+<PRE>
+  error = GRBaddvars(model, 3, 0, NULL, NULL, NULL, obj, NULL, NULL, vtype, NULL);
+</PRE>
+In C++, Java, and Python, you use the <code>addVar</code> method on the
+<code>Model</code> object (<code>AddVar</code> in C#).  In
+Java, this looks like:
+<PRE>
+  GRBVar x = model.addVar(0.0, 1.0, -1.0, GRB.BINARY, "x");
+</PRE>
+The new variable's lower bound, upper bound, objective coefficient,
+type, and name are specified as arguments.  In C++ and Python, you can
+omit these arguments and use default values; see the
+<A NAME="tex2html2"
+  HREF="../refman/refman.html">Gurobi Reference Manual</A>
+for details.
+
+<P>
+After adding variables to the model, the next step is to call the
+update function (<code>GRBupdatemodel()</code> in C, <code>model.update()</code>
+in C++, Java, and Python, <code>model.Update()</code> in C#).  Model
+modifications are performed in a <EM>lazy</EM> fashion in the Gurobi
+optimizer -- they don't affect the model until the next update or
+optimize call.  You <EM>cannot</EM> utilize the new variables (e.g., in
+constraints) until you call the update function.
+
+<P>
+The next step is to add constraints to the model.  Linear constraints
+are added through the <code>GRBaddconstr</code> function in C:
+<PRE>
+  error = GRBaddconstr(model, 3, ind, val, GRB_LESS_EQUAL, 4.0, "c0");
+</PRE>
+To add a linear constraint in C, you must specify a list of variable
+indices and coefficients for the left-hand side, a sense for the constraint
+(e.g., <code>GRB_LESS_EQUAL</code>), and a right-hand side constant.  You can
+also give the constraint a name; if you omit the name, Gurobi will assign a default name for the constraint.
+
+<P>
+In C++, C#, Java, and Python, you build a linear constraint by first
+building linear expressions for the left- and right-hand sides.  In
+Java, which doesn't support operator overloading, you build an
+expression as follows:
+<PRE>
+  GRBLinExpr expr = new GRBLinExpr();
+  expr.addTerm(1.0, x); expr.addTerm(2.0, y); expr.addTerm(3.0, z);
+</PRE>
+You then use the <code>addConstr</code> method on the <code>Model</code> object to add
+a constraint using these linear expressions for the left- and right-hand sides:
+<PRE>
+  model.addConstr(expr, GRB_LESS_EQUAL, 4.0, "c0");
+</PRE>
+
+<P>
+For C++, C#, and Python, the standard mathematical operators such as
++, *, &lt;= have been overloaded so that the linear expression resembles
+a traditional mathematical expression.  In C++:
+<PRE>
+  model.addConstr(x + 2 * y + 3 * z &lt;= 4, "c0");
+</PRE>
+
+<P>
+Adding an special ordered set (SOS) constraint is similar.  In C, you add one
+or more SOS constraint using the <code>GRBaddsos</code> function:
+<PRE>
+  error = GRBaddsos(model, 1, 2, sostype, sosbeg, sosind, soswt);
+</PRE>
+For each SOS constraint, you must specify a list of members and a
+weight for each member.
+
+<P>
+In C++, C#, Java, and Python, you use the <code>addSOS</code> method on the
+<code>Model</code> object:
+<PRE>
+  model.addSOS(sosv1, soswt1, GRB.SOS_TYPE1);
+</PRE>
+
+<P>
+Once the model has been built, the typical next step is to optimize it
+(using <code>GRBoptimize</code> in C, <code>model.optimize</code> in C++,
+Java, and Python, or <code>model.Optimize</code> in C#).  You can then query
+the <code>X</code> attribute on the variables to retrieve the solution (and
+the <code>VarName</code> attribute to retrieve the variable name for each
+variable).  In C, the <code>X</code> attribute is retrieved as follows:
+<PRE>
+  error = GRBgetdblattrarray(model, GRB_DBL_ATTR_X, 0, 3, sol);
+</PRE>
+
+<P>
+In C++:
+<PRE>
+  cout &lt;&lt; x.get(GRB_StringAttr_VarName) &lt;&lt; " "
+       &lt;&lt; x.get(GRB_DoubleAttr_X) &lt;&lt; endl;
+  cout &lt;&lt; y.get(GRB_StringAttr_VarName) &lt;&lt; " "
+       &lt;&lt; y.get(GRB_DoubleAttr_X) &lt;&lt; endl;
+  cout &lt;&lt; z.get(GRB_StringAttr_VarName) &lt;&lt; " "
+       &lt;&lt; z.get(GRB_DoubleAttr_X) &lt;&lt; endl;
+</PRE>
+
+<P>
+In Java:
+<PRE>
+  System.out.println(x.get(GRB.StringAttr.VarName) +
+                     " " + x.get(GRB.DoubleAttr.X));
+  System.out.println(y.get(GRB.StringAttr.VarName) +
+                     " " + y.get(GRB.DoubleAttr.X));
+  System.out.println(z.get(GRB.StringAttr.VarName) +
+                     " " + z.get(GRB.DoubleAttr.X));
+</PRE>
+
+<P>
+In C#:
+<PRE>
+  Console.WriteLine(x.Get(GRB.StringAttr.VarName) +
+                    " " + x.Get(GRB.DoubleAttr.X));
+  Console.WriteLine(y.Get(GRB.StringAttr.VarName) +
+                    " " + y.Get(GRB.DoubleAttr.X));
+  Console.WriteLine(z.Get(GRB.StringAttr.VarName) +
+                    " " + z.Get(GRB.DoubleAttr.X));
+</PRE>
+
+<P>
+In Python:
+<PRE>
+  for v in m.getVars():
+    print v.varName, v.x
+</PRE>
+
+<P>
+When querying or modifying attribute values for an array of
+constraints or variables, it is generally more efficient to perform
+the action on the whole array at once.  This is quite natural in the C
+interface, where most of the attribute routines take array arguments.
+In the C++, C#, and Java interface, you can use the <code>get</code> and
+<code>set</code> methods on the <code>Model</code> object to work directly with
+arrays of attribute values.  In the <code>sudoku</code> Java example, this
+is done as follows:
+<PRE>
+  double[][][] x = model.get(GRB.DoubleAttr.X, vars);
+</PRE>
+Note that the Python interface doesn't have array query routines.
+Python is an interpreted language, and overheads associated with
+queries on individual attributes are a small contributor to overall
+runtime.
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html240"
+  HREF="modify_a_model.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html238"
+  HREF="example_tour.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html232"
+  HREF="load_and_solve_a_model_fro.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html241"
+  HREF="modify_a_model.html">Modify a model</A>
+<B> Up:</B> <A NAME="tex2html239"
+  HREF="example_tour.html">Example tour</A>
+<B> Previous:</B> <A NAME="tex2html233"
+  HREF="load_and_solve_a_model_fro.html">Load and solve a</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

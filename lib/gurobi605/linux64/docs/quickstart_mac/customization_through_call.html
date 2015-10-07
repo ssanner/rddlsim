@@ -1,0 +1,124 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Customization through callbacks</TITLE>
+<META NAME="description" CONTENT="Customization through callbacks">
+<META NAME="keywords" CONTENT="quickstart_mac">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="quickstart_mac.css">
+
+<LINK REL="next" HREF="the_gurobi_python_interfac.html">
+<LINK REL="previous" HREF="interface_customization.html">
+<LINK REL="up" HREF="interactive_shell.html">
+<LINK REL="next" HREF="the_gurobi_python_interfac.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html576"
+  HREF="the_gurobi_python_interfac.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html574"
+  HREF="interactive_shell.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html568"
+  HREF="interface_customization.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html577"
+  HREF="the_gurobi_python_interfac.html">The Gurobi Python Interface</A>
+<B> Up:</B> <A NAME="tex2html575"
+  HREF="interactive_shell.html">Interactive Shell</A>
+<B> Previous:</B> <A NAME="tex2html569"
+  HREF="interface_customization.html">Interface customization</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION000511000000000000000">
+Customization through callbacks</A>
+</H2>
+<P>
+<EM>Another type of customization we'd like to touch on briefly can be
+achieved through Gurobi callbacks.  Callbacks allow you to track the
+progress of the optimization process.  For the sake of our example,
+let's say you want the MIP optimizer to run for 10 seconds before
+quitting, but you don't want it to terminate before it finds a
+feasible solution.  The following callback method would implement this
+condition:
+</EM><PRE>
+from gurobipy import *
+
+def mycallback(model, where):
+  if where == GRB.Callback.MIP:
+    time = model.cbGet(GRB.Callback.RUNTIME)
+    best = model.cbGet(GRB.Callback.MIP_OBJBST)
+    if time &gt; 10 and best &lt; GRB.INFINITY:
+      model.terminate()
+</PRE>
+<P>
+<EM>Once you import this function (<code>from custom import *</code>), you
+can then say <code>m.optimize(mycallback)</code> to obtain the desired
+termination behavior.  Alternatively, you could define your own custom
+optimize method that always invokes the callback:
+</EM><PRE>
+def myopt(model):
+  model.optimize(mycallback)
+</PRE><EM>
+This would allow you to say <code>myopt(m)</code>.
+</EM>
+<P>
+<EM>You can pass arbitrary data into your callback through the model
+object.  For example, if you set <code>m._mydata = 1</code> before calling
+<EM>optimize()</EM>, you can query <code>m._mydata</code> inside your
+callback function.  Note that the names of user data fields must begin
+with an underscore.
+</EM>
+<P>
+<EM>This callback example is included in
+<code>&lt;installdir&gt;/examples/python/custom.py</code>. 
+Type <code>from custom import *</code> to import the callback and the
+<EM>myopt()</EM> function.
+</EM>
+<P>
+<EM>You can type <code>help(GRB.Callback)</code> for more information on
+callbacks.  You can also refer to the <code>Callback</code> class
+documentation in the <A NAME="tex2html26"
+  HREF="../refman/refman.html">Gurobi Reference
+  Manual</A>.
+</EM>
+<P>
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html576"
+  HREF="the_gurobi_python_interfac.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html574"
+  HREF="interactive_shell.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html568"
+  HREF="interface_customization.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html577"
+  HREF="the_gurobi_python_interfac.html">The Gurobi Python Interface</A>
+<B> Up:</B> <A NAME="tex2html575"
+  HREF="interactive_shell.html">Interactive Shell</A>
+<B> Previous:</B> <A NAME="tex2html569"
+  HREF="interface_customization.html">Interface customization</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

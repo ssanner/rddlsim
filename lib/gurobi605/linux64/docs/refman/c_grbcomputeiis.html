@@ -1,0 +1,146 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>GRBcomputeIIS</TITLE>
+<META NAME="description" CONTENT="GRBcomputeIIS">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="c_grbfeasrelax.html">
+<LINK REL="previous" HREF="c_grboptimizeasync.html">
+<LINK REL="up" HREF="c_model_solution.html">
+<LINK REL="next" HREF="c_grbfeasrelax.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html1565"
+  HREF="c_grbfeasrelax.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1563"
+  HREF="c_model_solution.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1557"
+  HREF="c_grboptimizeasync.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1566"
+  HREF="c_grbfeasrelax.html">GRBfeasrelax</A>
+<B> Up:</B> <A NAME="tex2html1564"
+  HREF="c_model_solution.html">Model Solution</A>
+<B> Previous:</B> <A NAME="tex2html1558"
+  HREF="c_grboptimizeasync.html">GRBoptimizeasync</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00023300000000000000"></A>
+<A NAME="routine:GRBcomputeIIS"></A>
+<BR>
+GRBcomputeIIS
+</H3>
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">GRBcomputeIIS</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT">GRBmodel</TD>
+<TD ALIGN="LEFT">*model )</TD>
+</TR>
+</TABLE>
+
+<P>
+Compute an Irreducible Inconsistent Subsystem (IIS).  An IIS is a
+subset of the constraints and variable bounds of the original model.
+If all constraints in the model except those in the IIS are removed,
+the model is still infeasible.  However, further removing any one
+member of the IIS produces a feasible result.
+
+<P>
+This routine populates the
+<A HREF="iisconstr.html#attr:IISConstr">IISConstr</A>,
+<A HREF="iisqconstr.html#attr:IISQConstr">IISQConstr</A>,
+<A HREF="iissos.html#attr:IISSOS">IISSOS</A>,
+<A HREF="iislb.html#attr:IISLB">IISLB</A>, and
+<A HREF="iisub.html#attr:IISUB">IISUB</A>
+attributes.  You can
+also obtain information about the results of the IIS computation by
+writing a <code>.ilp</code> format file (see <A HREF="c_grbwrite.html#routine:GRBwrite">GRBwrite</A>).
+This file contains only the IIS from the original model.
+
+<P>
+Note that this routine can be used to compute IISs for both continuous
+and MIP models.
+
+<P>
+
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Return value:</SPAN></BIG>
+
+<P>
+A non-zero return value indicates that a problem occurred while computing the IIS.
+Refer to the <A HREF="error_codes.html#sec:ErrorCodes">Error Code</A> table for a
+list of possible return values.  Details on the error can be obtained
+by calling <A HREF="c_grbgeterrormsg.html#routine:GRBgeterrormsg">GRBgeterrormsg</A>.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">model</SPAN>: The infeasible model.  This routine will return an
+  error if the input model is feasible.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Important note:</SPAN></BIG>
+
+<P>
+This routine only reports whether the computation ran into an error.
+Query the
+<A HREF="iisconstr.html#attr:IISConstr">IISConstr</A>,
+<A HREF="iisqconstr.html#attr:IISQConstr">IISQConstr</A>,
+<A HREF="iissos.html#attr:IISSOS">IISSOS</A>,
+<A HREF="iislb.html#attr:IISLB">IISLB</A>, or
+<A HREF="iisub.html#attr:IISUB">IISUB</A>
+attributes to determine the result of the computation
+(see the <A HREF="attributes.html#sec:Attributes">Attributes</A> section for more
+information on querying attributes).
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Example usage:</SPAN></BIG><PRE>
+  error = GRBcomputeIIS(model);
+</PRE>
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1565"
+  HREF="c_grbfeasrelax.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1563"
+  HREF="c_model_solution.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1557"
+  HREF="c_grboptimizeasync.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1566"
+  HREF="c_grbfeasrelax.html">GRBfeasrelax</A>
+<B> Up:</B> <A NAME="tex2html1564"
+  HREF="c_model_solution.html">Model Solution</A>
+<B> Previous:</B> <A NAME="tex2html1558"
+  HREF="c_grboptimizeasync.html">GRBoptimizeasync</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

@@ -1,0 +1,260 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>GRBQuadExpr.addTerms()</TITLE>
+<META NAME="description" CONTENT="GRBQuadExpr.addTerms()">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="java_grbquadexpr_clear.html">
+<LINK REL="previous" HREF="java_grbquadexpr_addterm.html">
+<LINK REL="up" HREF="java_grbquadexpr.html">
+<LINK REL="next" HREF="java_grbquadexpr_clear.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html5412"
+  HREF="java_grbquadexpr_clear.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html5410"
+  HREF="java_grbquadexpr.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html5404"
+  HREF="java_grbquadexpr_addterm.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html5413"
+  HREF="java_grbquadexpr_clear.html">GRBQuadExpr.clear()</A>
+<B> Up:</B> <A NAME="tex2html5411"
+  HREF="java_grbquadexpr.html">GRBQuadExpr</A>
+<B> Previous:</B> <A NAME="tex2html5405"
+  HREF="java_grbquadexpr_addterm.html">GRBQuadExpr.addTerm()</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00069500000000000000"></A>
+<A NAME="javamethod:GRBQuadExpr.addTerms"></A>
+<BR>
+GRBQuadExpr.addTerms()
+</H3>
+
+<P>
+Add new terms into a quadratic expression.
+
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">void</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">addTerms</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT">double[]</TD>
+<TD ALIGN="LEFT">coeffs,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">GRBVar[]</TD>
+<TD ALIGN="LEFT">vars )</TD>
+</TR>
+</TABLE>
+
+<UL>
+Add a list of linear terms into a quadratic expression.  Note that the
+lengths of the two argument arrays must be equal.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">coeffs</SPAN>: Coefficients for new terms.
+
+<P>
+ <SPAN  CLASS="textbf">vars</SPAN>: Variables for new terms.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">void</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">addTerms</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT">double[]</TD>
+<TD ALIGN="LEFT">coeffs,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">GRBVar[]</TD>
+<TD ALIGN="LEFT">vars,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">start,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">len )</TD>
+</TR>
+</TABLE>
+
+<UL>
+Add new linear terms into a quadratic expression.  This signature
+allows you to use arrays to hold the coefficients and variables that
+describe the linear terms in an array without being forced to add a
+term for each entry in the array.  The <code>start</code> and <code>len</code>
+arguments allow you to specify which terms to add.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">coeffs</SPAN>: Coefficients for new terms.
+
+<P>
+ <SPAN  CLASS="textbf">vars</SPAN>: Variables for new terms.
+
+<P>
+ <SPAN  CLASS="textbf">start</SPAN>: The first term in the list to add.
+
+<P>
+ <SPAN  CLASS="textbf">len</SPAN>: The number of terms to add.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">void</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">addTerms</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT">double[]</TD>
+<TD ALIGN="LEFT">coeffs,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">GRBVar[]</TD>
+<TD ALIGN="LEFT">vars1,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">GRBVar[]</TD>
+<TD ALIGN="LEFT">vars2 )</TD>
+</TR>
+</TABLE>
+
+<UL>
+Add a list of quadratic terms into a quadratic expression.  Note that
+the lengths of the three argument arrays must be equal.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">coeffs</SPAN>: Coefficients for new quadratic terms.
+
+<P>
+ <SPAN  CLASS="textbf">vars1</SPAN>: First variables for new quadratic terms.
+
+<P>
+ <SPAN  CLASS="textbf">vars2</SPAN>: Second variables for new quadratic terms.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">void</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">addTerms</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT">double[]</TD>
+<TD ALIGN="LEFT">coeffs,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">GRBVar[]</TD>
+<TD ALIGN="LEFT">vars1,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">GRBVar[]</TD>
+<TD ALIGN="LEFT">vars2,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">start,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">len )</TD>
+</TR>
+</TABLE>
+
+<UL>
+Add new quadratic terms into a quadratic expression.  This signature
+allows you to use arrays to hold the coefficients and variables that
+describe the terms in an array without being forced to add a term for
+each entry in the array.  The <code>start</code> and <code>len</code> arguments
+allow you to specify which terms to add.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">coeffs</SPAN>: Coefficients for new quadratic terms.
+
+<P>
+ <SPAN  CLASS="textbf">vars1</SPAN>: First variables for new quadratic terms.
+
+<P>
+ <SPAN  CLASS="textbf">vars2</SPAN>: Second variables for new quadratic terms.
+
+<P>
+ <SPAN  CLASS="textbf">start</SPAN>: The first term in the list to add.
+
+<P>
+ <SPAN  CLASS="textbf">len</SPAN>: The number of terms to add.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html5412"
+  HREF="java_grbquadexpr_clear.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html5410"
+  HREF="java_grbquadexpr.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html5404"
+  HREF="java_grbquadexpr_addterm.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html5413"
+  HREF="java_grbquadexpr_clear.html">GRBQuadExpr.clear()</A>
+<B> Up:</B> <A NAME="tex2html5411"
+  HREF="java_grbquadexpr.html">GRBQuadExpr</A>
+<B> Previous:</B> <A NAME="tex2html5405"
+  HREF="java_grbquadexpr_addterm.html">GRBQuadExpr.addTerm()</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

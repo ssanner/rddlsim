@@ -1,0 +1,140 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>GRBgetconcurrentenv</TITLE>
+<META NAME="description" CONTENT="GRBgetconcurrentenv">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="c_grbdiscardconcurrentenvs.html">
+<LINK REL="previous" HREF="c_grbfreeenv.html">
+<LINK REL="up" HREF="c_environment_creation_and.html">
+<LINK REL="next" HREF="c_grbdiscardconcurrentenvs.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html1216"
+  HREF="c_grbdiscardconcurrentenvs.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1214"
+  HREF="c_environment_creation_and.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1208"
+  HREF="c_grbfreeenv.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1217"
+  HREF="c_grbdiscardconcurrentenvs.html">GRBdiscardconcurrentenvs</A>
+<B> Up:</B> <A NAME="tex2html1215"
+  HREF="c_environment_creation_and.html">Environment Creation and Destruction</A>
+<B> Previous:</B> <A NAME="tex2html1209"
+  HREF="c_grbfreeenv.html">GRBfreeenv</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00021400000000000000"></A>
+<A NAME="routine:GRBgetconcurrentenv"></A>
+<BR>
+GRBgetconcurrentenv
+</H3>
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">GRBenv *</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">GRBgetconcurrentenv</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT">GRBmodel</TD>
+<TD ALIGN="LEFT">*model,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">num )</TD>
+</TR>
+</TABLE>
+
+<P>
+Create/retrieve a concurrent environment for a model.
+
+<P>
+This routine provides fine-grained control over the concurrent
+optimizer.  By creating your own concurrent environments and setting
+appropriate parameters on these environments (e.g., the
+<A HREF="method.html#parameter:Method">Method</A>
+parameter), you can control exactly which strategies the concurrent
+optimizer employs.  For example, if you create two concurrent
+environments, and set
+<code>Method</code> to primal simplex for one and
+dual simplex for the other, subsequent concurrent optimizer runs will
+use the two simplex algorithms rather than the default choices.
+
+<P>
+Note that you must create contiguously numbered concurrent
+environments, starting with <code>num=0</code>.  For example, if you want
+three concurrent environments, they must be numbered 0, 1, and 2.
+
+<P>
+Once you create concurrent environments, they will be used for every
+subsequent concurrent optimization on that model.  Use
+<A HREF="c_grbdiscardconcurrentenvs.html#routine:GRBdiscardconcurrentenvs">GRBdiscardconcurrentenvs</A>
+to revert back to default concurrent optimizer behavior.
+
+<P>
+
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Return value:</SPAN></BIG>
+
+<P>
+The concurrent environment.  A <TT>NULL</TT> return value
+indicates that there was a problem creating the environment.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">model</SPAN>: The model for the concurrent environment.
+
+<P>
+ <SPAN  CLASS="textbf">num</SPAN>: The concurrent environment number.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Example usage:</SPAN></BIG><PRE>
+  GRBenv *env0 = GRBgetconcurrentenv(model, 0);
+  GRBenv *env1 = GRBgetconcurrentenv(model, 1);
+</PRE>
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1216"
+  HREF="c_grbdiscardconcurrentenvs.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1214"
+  HREF="c_environment_creation_and.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1208"
+  HREF="c_grbfreeenv.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1217"
+  HREF="c_grbdiscardconcurrentenvs.html">GRBdiscardconcurrentenvs</A>
+<B> Up:</B> <A NAME="tex2html1215"
+  HREF="c_environment_creation_and.html">Environment Creation and Destruction</A>
+<B> Previous:</B> <A NAME="tex2html1209"
+  HREF="c_grbfreeenv.html">GRBfreeenv</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

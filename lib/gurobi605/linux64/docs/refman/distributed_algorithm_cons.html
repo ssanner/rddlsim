@@ -1,0 +1,135 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Distributed Algorithm Considerations</TITLE>
+<META NAME="description" CONTENT="Distributed Algorithm Considerations">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="previous" HREF="writing_your_own_distribut.html">
+<LINK REL="up" HREF="distributed_parallel_algor.html">
+<LINK REL="next" HREF="gurobi_compute_server.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html12536"
+  HREF="gurobi_compute_server.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html12534"
+  HREF="distributed_parallel_algor.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html12530"
+  HREF="writing_your_own_distribut.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html12537"
+  HREF="gurobi_compute_server.html">Gurobi Compute Server</A>
+<B> Up:</B> <A NAME="tex2html12535"
+  HREF="distributed_parallel_algor.html">Distributed Parallel Algorithms</A>
+<B> Previous:</B> <A NAME="tex2html12531"
+  HREF="writing_your_own_distribut.html">Writing Your Own Distributed</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION000243000000000000000">
+Distributed Algorithm Considerations</A>
+</H2>
+
+<P>
+So far in this section, we've focused almost entirely on configuration and setup
+issues for the distributed algorithms in this section.  These
+algorithms have been designed to be nearly indistinguishable from the
+single machine versions.  Our hope is that, if you know how
+to use the single machine version, you'll find it straightforward to use
+the distributed version.
+The distributed algorithms respect all of
+the usual parameters.  For distributed MIP, you can adjust strategies,
+adjust tolerances, set limits, etc.  For concurrent MIP, you can allow Gurobi
+to choose the settings for each machine automatically or you can use
+<A HREF="concurrent_optimizer.html#sec:ConcurrentControl">concurrent environments</A> to make
+your own choices.  For distributed tuning, you can use the usual
+tuning parameters, including
+<A HREF="tunetimelimit.html#parameter:TuneTimeLimit">TuneTimeLimit</A>,
+<A HREF="tunetrials.html#parameter:TuneTrials">TuneTrials</A>, and
+<A HREF="tuneoutput.html#parameter:TuneOutput">TuneOutput</A>.
+
+<P>
+<SPAN  CLASS="textbf">Performance Across Distributed Workers</SPAN>
+
+<P>
+There are a few things to be aware of when using distributed
+algorithms, though.  One relates to relative machine performance.  As
+we noted earlier, distributed algorithms work best if all of the
+workers give very similar performance.  For example, if one machine in
+your worker pool were much slower than the others in a distributed
+tuning run, any parameter sets tested on the slower machine would
+appear to be less effective than if they were run on a faster machine.
+Similar considerations apply for distributed MIP and distributed
+concurrent.  We strongly recommend that you use machines with very
+similar performance.  Note that if your machines have similarly
+performing cores but different numbers of cores, we suggest that you
+use the <A HREF="threads.html#parameter:Threads">Threads</A> parameter to make
+sure that all machines use the same number of cores.
+
+<P>
+<SPAN  CLASS="textbf">Callbacks</SPAN>
+
+<P>
+Another difference between the distributed algorithms and our
+single-machine algorithms is in the callbacks.  The
+distributed MIP and distributed concurrent solvers do not
+provide the full range of callbacks that are available with our
+standard solvers.  They will only provide the <code>MIP</code>,
+<code>MIPNODE</code>, and <code>POLLING</code> callbacks.
+See the
+<A HREF="callback_codes.html#sec:CallbackCodes">Callback</A>
+section for details on the different callback types.
+
+<P>
+<SPAN  CLASS="textbf">Logging</SPAN>
+
+<P>
+The distributed algorithms provide slightly different logging
+information from the standard algorithms.  Consult the
+<A HREF="distributed_mip_logging.html#sec:DistributedMIPLogging">Distributed MIP Logging</A>
+section for details.
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html12536"
+  HREF="gurobi_compute_server.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html12534"
+  HREF="distributed_parallel_algor.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html12530"
+  HREF="writing_your_own_distribut.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html12537"
+  HREF="gurobi_compute_server.html">Gurobi Compute Server</A>
+<B> Up:</B> <A NAME="tex2html12535"
+  HREF="distributed_parallel_algor.html">Distributed Parallel Algorithms</A>
+<B> Previous:</B> <A NAME="tex2html12531"
+  HREF="writing_your_own_distribut.html">Writing Your Own Distributed</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

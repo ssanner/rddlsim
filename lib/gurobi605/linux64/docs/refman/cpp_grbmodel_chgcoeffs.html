@@ -1,0 +1,137 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>GRBModel::chgCoeffs()</TITLE>
+<META NAME="description" CONTENT="GRBModel::chgCoeffs()">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="cpp_grbmodel_computeiis.html">
+<LINK REL="previous" HREF="cpp_grbmodel_chgcoeff.html">
+<LINK REL="up" HREF="cpp_grbmodel.html">
+<LINK REL="next" HREF="cpp_grbmodel_computeiis.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html2922"
+  HREF="cpp_grbmodel_computeiis.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html2920"
+  HREF="cpp_grbmodel.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html2914"
+  HREF="cpp_grbmodel_chgcoeff.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html2923"
+  HREF="cpp_grbmodel_computeiis.html">GRBModel::computeIIS()</A>
+<B> Up:</B> <A NAME="tex2html2921"
+  HREF="cpp_grbmodel.html">GRBModel</A>
+<B> Previous:</B> <A NAME="tex2html2915"
+  HREF="cpp_grbmodel_chgcoeff.html">GRBModel::chgCoeff()</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000421100000000000000"></A>
+<A NAME="cppmethod:GRBModel::chgCoeffs"></A>
+<BR>
+GRBModel::chgCoeffs()
+</H3>
+
+<P>
+Change a list of coefficients in the model.  Each desired change is
+captured using a <code>GRBVar</code> object, a <code>GRBConstr</code> object,
+and a desired coefficient for the specified variable in the specified
+constraint.  The entries in the input arrays each correspond to a
+single desired coefficient change.  If you make multiple changes to
+the same coefficient, the last one will be applied.
+
+<P>
+Note that the changes won't take effect until the next call to
+<A HREF="cpp_grbmodel_optimize.html#cppmethod:GRBModel::optimize">GRBModel::optimize</A> or
+<A HREF="cpp_grbmodel_update.html#cppmethod:GRBModel::update">GRBModel::update</A> on that
+model.
+
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">void</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">chgCoeffs</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT">const GRBConstr*</TD>
+<TD ALIGN="LEFT">constrs,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">const GRBVar*</TD>
+<TD ALIGN="LEFT">vars,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">const double*</TD>
+<TD ALIGN="LEFT">vals,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">len )</TD>
+</TR>
+</TABLE>
+
+<UL>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">constrs</SPAN>: Constraints for coefficients to be changed.
+
+<P>
+ <SPAN  CLASS="textbf">vars</SPAN>: Variables for coefficients to be changed.
+
+<P>
+ <SPAN  CLASS="textbf">vals</SPAN>: Desired new values for coefficients.
+
+<P>
+ <SPAN  CLASS="textbf">len</SPAN>: Number of coefficients to change (length of
+<TT>vars</TT>, <TT>constrs</TT>, and <TT>vals</TT> arrays).
+
+<P>
+</LI>
+</UL>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html2922"
+  HREF="cpp_grbmodel_computeiis.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html2920"
+  HREF="cpp_grbmodel.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html2914"
+  HREF="cpp_grbmodel_chgcoeff.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html2923"
+  HREF="cpp_grbmodel_computeiis.html">GRBModel::computeIIS()</A>
+<B> Up:</B> <A NAME="tex2html2921"
+  HREF="cpp_grbmodel.html">GRBModel</A>
+<B> Previous:</B> <A NAME="tex2html2915"
+  HREF="cpp_grbmodel_chgcoeff.html">GRBModel::chgCoeff()</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

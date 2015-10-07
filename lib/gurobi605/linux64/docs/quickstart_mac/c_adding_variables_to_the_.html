@@ -1,0 +1,128 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Adding variables to the model</TITLE>
+<META NAME="description" CONTENT="Adding variables to the model">
+<META NAME="keywords" CONTENT="quickstart_mac">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="quickstart_mac.css">
+
+<LINK REL="next" HREF="c_changing_the_objective_s.html">
+<LINK REL="previous" HREF="c_creating_the_model.html">
+<LINK REL="up" HREF="c_interface.html">
+<LINK REL="next" HREF="c_changing_the_objective_s.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html665"
+  HREF="c_changing_the_objective_s.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html663"
+  HREF="c_interface.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html657"
+  HREF="c_creating_the_model.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html666"
+  HREF="c_changing_the_objective_s.html">Changing the objective sense</A>
+<B> Up:</B> <A NAME="tex2html664"
+  HREF="c_interface.html">C Interface</A>
+<B> Previous:</B> <A NAME="tex2html658"
+  HREF="c_creating_the_model.html">Creating the model</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00075000000000000000">
+Adding variables to the model</A>
+</H2>
+<P>
+<EM>Once we create a Gurobi model, we can start adding variables and
+constraints to it.  In our example, we'll begin by adding variables:
+</EM><PRE>
+  /* Add variables */
+  obj[0] = 1; obj[1] = 1; obj[2] = 2;
+  vtype[0] = GRB_BINARY; vtype[1] = GRB_BINARY; vtype[2] = GRB_BINARY;
+  error = GRBaddvars(model, 3, 0, NULL, NULL, NULL, obj, NULL, NULL, vtype,
+                     NULL);
+</PRE><EM>
+The first argument to <EM>GRBaddvars()</EM> is the model to which the
+variables are being added.  The second is the number of added
+variables (3 in our example).
+</EM>
+<P>
+<EM>Arguments three through six describe the constraint matrix
+coefficients associated with the new variables.  The third argument
+gives the number of non-zero constraint matrix entries associated with
+the new variables, and the next three arguments give details on these
+non-zeros.  In our example, we'll be adding these non-zeros when we
+add the constraints. Thus, the non-zero count here is zero, and the
+following three arguments are all <code>NULL</code>.
+</EM>
+<P>
+<EM>The seventh argument to <EM>GRBaddvars()</EM> is the linear objective
+coefficient for each new variable.  Since our example aims to maximize
+the objective, and by default Gurobi will minimize the objective,
+we'll need to change the objective sense.  This is done in the next
+statement.  Note we could have multiplied the objective coefficients
+by -1 instead (since maximizing <SPAN CLASS="MATH"><IMG
+ WIDTH="25" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.png"
+ ALT="$c'x$"></SPAN> is equivalent to minimizing
+<SPAN CLASS="MATH"><IMG
+ WIDTH="37" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img4.png"
+ ALT="$-c'x$"></SPAN>).
+</EM>
+<P>
+<EM>The next two arguments specify the lower and upper bounds of the
+variables, respectively.  The <code>NULL</code> values indicate that these
+variables should take their default values (0.0 and 1.0 for binary
+variables).
+</EM>
+<P>
+<EM>The tenth argument specifies the types of the variables.  In this
+example, the variables are all binary (<code>GRB_BINARY</code>).
+</EM>
+<P>
+<EM>The final argument gives the names of the variables.  In this case, we
+allow the variable names to take their default values
+(<code>X0, X1, and X2</code>).
+</EM>
+<P>
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html665"
+  HREF="c_changing_the_objective_s.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html663"
+  HREF="c_interface.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html657"
+  HREF="c_creating_the_model.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html666"
+  HREF="c_changing_the_objective_s.html">Changing the objective sense</A>
+<B> Up:</B> <A NAME="tex2html664"
+  HREF="c_interface.html">C Interface</A>
+<B> Previous:</B> <A NAME="tex2html658"
+  HREF="c_creating_the_model.html">Creating the model</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

@@ -1,0 +1,224 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Starting Gurobi Remote Services</TITLE>
+<META NAME="description" CONTENT="Starting Gurobi Remote Services">
+<META NAME="keywords" CONTENT="quickstart_mac">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="quickstart_mac.css">
+
+<LINK REL="next" HREF="testing_your_license.html">
+<LINK REL="previous" HREF="setting_up_and_using_a_com.html">
+<LINK REL="up" HREF="retrieving_and_setting_up_.html">
+<LINK REL="next" HREF="upgrading_gurobi_remote_se.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html375"
+  HREF="upgrading_gurobi_remote_se.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html373"
+  HREF="retrieving_and_setting_up_.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html367"
+  HREF="creating_a_compute_server_.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html376"
+  HREF="upgrading_gurobi_remote_se.html">Upgrading Gurobi Remote Services</A>
+<B> Up:</B> <A NAME="tex2html374"
+  HREF="retrieving_and_setting_up_.html">Retrieving and Setting Up</A>
+<B> Previous:</B> <A NAME="tex2html368"
+  HREF="creating_a_compute_server_.html">Creating a Compute Server</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00035000000000000000"></A>
+<A NAME="subsection:startremoteservices"></A>
+<BR>
+Starting Gurobi Remote Services
+</H2>
+<P>
+<EM><B>Important note: you only need to start Gurobi Remote Services if you are
+  setting up a Compute Server or a distributed worker (for use in distributed
+  algorihms).  If you are not
+  sure whether you need to start Gurobi Remote Services, you can examine the
+  contents of your <code>gurobi.lic</code> file.  If it contains the line
+  <code>CSENABLED=1</code>, then you need Gurobi Remote Services.
+  If it contains a line that begins with <code>DISTRIBUTED=</code>, and if
+  you plan to run distributed algorithms, then you also need Gurobi
+  Remote Services.</B>
+</EM>
+<P>
+<EM>On Mac systems, Gurobi Remote Services is a daemon that allows a
+server to perform Gurobi computations on behalf of other client
+machines.  The set of services the server provides depends on your
+license.  If you are setting up a machine as a distributed worker, no
+license is required.  In this case, the only service provided by the
+server is to act as a worker in a distributed algorithm.  If you have
+a Compute Server license, then servers running Gurobi Remote Services
+can provide a variety of services, including offloading computation
+from a set of clients, balancing computational load among the servers,
+and providing failover capabilities, in addition to acting as a
+distributed worker.
+</EM>
+<P>
+<EM>To start the Gurobi Remote Services daemon, run the program
+<code>grb_rs</code> (with no arguments) on your server.  You only need to do
+this once -- Gurobi Remote Services will keep running until you stop
+it (or until the machine is shut down).  If you are setting up a
+Gurobi Compute Server, be sure that the license key file has been
+installed before starting Gurobi Remote Services.  Note that Gurobi
+Remote Services runs as a user process, so you do not need root
+privileges to start it.
+</EM>
+<P>
+<EM>If you would like Gurobi Remote Services to restart automatically when the
+machine is rebooted, there are a number of options for doing so
+(including <code>launchd</code> and <code>/etc/rc.local</code>).  You should talk
+to your system administrator.
+</EM>
+<P>
+<EM>Note that if you would like the Compute Server to restart when the
+machine is rebooted, you should ask your system administrator to start
+it from <code>/etc/rc.local</code>.  If your Gurobi installation and
+license key file are in their default locations, then adding the following
+should suffice:
+</EM><PRE>
+/Library/gurobi600/mac64/bin/grb_rs
+</PRE>
+<P>
+<EM><SPAN  CLASS="textbf">Gurobi Remote Services parameters</SPAN>
+</EM>
+<P>
+<EM>Note that Gurobi Remote Services has a few user-configurable parameters.
+You can set these by creating a <code>grb_rs.cnf</code> file and placing
+it in the same directory as <code>grb_rs</code>.  Please
+consult the
+<A NAME="tex2html15"
+  HREF="../refman/gurobi_remote_services.html">Gurobi Remote Services section of the Reference Manual</A>
+for details.
+</EM>
+<P>
+<EM><SPAN  CLASS="textbf">Starting and stopping the grb_rs Gurobi daemon</SPAN>
+</EM>
+<P>
+<EM>To stop Gurobi Remote Services if it is already running, you can issue the
+<code>grb_rs -s</code> command.  You can also use the <code>ps</code> command to
+find the relevant process ID, and the <code>kill</code> command to terminate
+that process.
+</EM>
+<P>
+<EM>Output from Gurobi Remote Services goes to the system log
+(<code>/var/log/system.log</code>).  You will need to modify
+<code>/etc/syslog.conf</code> to see these messages, since
+by default OS X only allows error message in the system log.
+Once you have modified <code>syslog.conf</code>,
+you should see a message similar to the
+following when you start the server:
+</EM><PRE>
+Mar  9 12:37:21 mymachine grb[7917]: Gurobi Remote Services started: Sat Mar  9 12:37:21 2013
+</PRE><EM>
+By default, Gurobi Remote Services only produces logging output when it
+starts.  Start Gurobi Remote Services with the <code>-v</code> switch to obtain
+more detailed logging information.  For example, this option will
+generate a log message each time a client job starts
+</EM>
+<P>
+<EM><SPAN  CLASS="textbf">Firewalls</SPAN>
+</EM>
+<P>
+<EM>If you run into trouble accessing Gurobi Remote Services,
+check to see if the server is running firewall software that
+might be blocking access to some ports.  Gurobi Remote Services uses
+port numbers 61000-65000 by default, so you'll need to open access to
+these ports on the server.  Please consult the documentation for your
+firewall software to determine how to do this.  If there's a conflict
+on the default port, you can choose a different one by adding a
+<code>PORT</code> line <EM>to both the server and the client license key
+  files</EM>:
+</EM><PRE>
+PORT=46325
+</PRE><EM>
+You can choose any available port number.
+</EM>
+<P>
+<EM><SPAN  CLASS="textbf">Next steps</SPAN>
+</EM>
+<P>
+<EM>Once you've set up Gurobi Remote Services, you should test
+the state of the server.  Type this command on your server:
+</EM><PRE>
+gurobi_cl --server=localhost --status
+</PRE><EM>
+If the output includes the following line:
+</EM><PRE>
+Gurobi Remote Services functioning normally
+</PRE><EM>
+then Remote Services is ready for use.
+</EM>
+<P>
+<EM>Client programs will need to know how to reach your server.
+If you are using Gurobi Compute Server, this is typically done with a
+<A HREF="creating_a_compute_server_.html#subsection:clientlicensecompute">client license file</A>.
+You should set that up now.
+</EM>
+<P>
+<EM>If you've set up distributed workers in order to run a distributed
+algorithm, you'll use the
+<A NAME="tex2html16"
+  HREF="../refman/workerpool.html">WorkerPool</A>
+parameter to
+tell the client machine how to access the servers.  When you are
+ready, you can obtain more information in the
+<A NAME="tex2html17"
+  HREF="../refman/distributed_parallel_algor.html">distributed algorithm section of the Reference
+  Manual</A>
+</EM>
+<P>
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html377"
+  HREF="upgrading_gurobi_remote_se.html">Upgrading Gurobi Remote Services</A>
+</UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html375"
+  HREF="upgrading_gurobi_remote_se.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html373"
+  HREF="retrieving_and_setting_up_.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html367"
+  HREF="creating_a_compute_server_.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html376"
+  HREF="upgrading_gurobi_remote_se.html">Upgrading Gurobi Remote Services</A>
+<B> Up:</B> <A NAME="tex2html374"
+  HREF="retrieving_and_setting_up_.html">Retrieving and Setting Up</A>
+<B> Previous:</B> <A NAME="tex2html368"
+  HREF="creating_a_compute_server_.html">Creating a Compute Server</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

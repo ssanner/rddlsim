@@ -1,0 +1,111 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Results</TITLE>
+<META NAME="description" CONTENT="Results">
+<META NAME="keywords" CONTENT="quickstart_mac">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="quickstart_mac.css">
+
+<LINK REL="previous" HREF="py_flow_conservation_const.html">
+<LINK REL="up" HREF="py_python_dictionary_examp.html">
+<LINK REL="next" HREF="py_building_and_running_th.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html1457"
+  HREF="py_building_and_running_th.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1455"
+  HREF="py_python_dictionary_examp.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1451"
+  HREF="py_flow_conservation_const.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1458"
+  HREF="py_building_and_running_th.html">Building and running the</A>
+<B> Up:</B> <A NAME="tex2html1456"
+  HREF="py_python_dictionary_examp.html">Python Dictionary Example</A>
+<B> Previous:</B> <A NAME="tex2html1452"
+  HREF="py_flow_conservation_const.html">Flow conservation constraints</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION0001131100000000000000">
+Results</A>
+</H3>
+<P>
+<EM>Once we've added the model constraints, we call <code>optimize</code> and
+then output the optimal solution:
+</EM><PRE>
+if m.status == GRB.status.OPTIMAL:
+  for h in commodities:
+    print '\nOptimal flows for', h, ':'
+    for i,j in arcs:
+      if flow[h,i,j].x &gt; 0:
+        print i, '-&gt;', j, ':', flow[h,i,j].x
+</PRE>
+<P>
+<EM>If you run the example (<code>gurobi.bat netflow.py</code> on Windows,
+or <code>gurobi.sh netflow.py</code> on Linux and Mac), you should
+see the following output:
+</EM><PRE>
+Optimize a model with 16 rows, 12 columns and 36 nonzeros
+Presolve removed 16 rows and 12 columns
+Presolve time: 0.00s
+Presolve: All rows and columns removed
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0    5.5000000e+03   0.000000e+00   0.000000e+00      0s
+
+Solved in 0 iterations and 0.00 seconds
+Optimal objective  5.500000000e+03
+
+Optimal flows for Pencils :
+Detroit -&gt; Boston : 50.0
+Denver -&gt; New York : 50.0
+Denver -&gt; Seattle : 10.0
+
+Optimal flows for Pens :
+Detroit -&gt; Boston : 30.0
+Detroit -&gt; New York : 30.0
+Denver -&gt; Boston : 10.0
+Denver -&gt; Seattle : 30.0
+</PRE>
+<P>
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1457"
+  HREF="py_building_and_running_th.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1455"
+  HREF="py_python_dictionary_examp.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1451"
+  HREF="py_flow_conservation_const.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1458"
+  HREF="py_building_and_running_th.html">Building and running the</A>
+<B> Up:</B> <A NAME="tex2html1456"
+  HREF="py_python_dictionary_examp.html">Python Dictionary Example</A>
+<B> Previous:</B> <A NAME="tex2html1452"
+  HREF="py_flow_conservation_const.html">Flow conservation constraints</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

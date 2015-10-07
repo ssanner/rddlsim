@@ -1,0 +1,208 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>diet_vb.vb</TITLE>
+<META NAME="description" CONTENT="diet_vb.vb">
+<META NAME="keywords" CONTENT="examples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="examples.css">
+
+<LINK REL="next" HREF="facility_vb_vb.html">
+<LINK REL="previous" HREF="dense_vb_vb.html">
+<LINK REL="up" HREF="visual_basic_examples.html">
+<LINK REL="next" HREF="facility_vb_vb.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html1641"
+  HREF="facility_vb_vb.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1639"
+  HREF="visual_basic_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1633"
+  HREF="dense_vb_vb.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1642"
+  HREF="facility_vb_vb.html">facility_vb.vb</A>
+<B> Up:</B> <A NAME="tex2html1640"
+  HREF="visual_basic_examples.html">Visual Basic Examples</A>
+<B> Previous:</B> <A NAME="tex2html1634"
+  HREF="dense_vb_vb.html">dense_vb.vb</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00025300000000000000"></A>
+<A NAME="subsubsection:diet_vb.vb"></A>
+<BR>
+diet_vb.vb
+</H3>
+
+<P>
+<BR>
+<PRE  CLASS="verbatim">' Copyright 2014, Gurobi Optimization, Inc.
+
+' Solve the classic diet model, showing how to add constraints
+' to an existing model.
+
+Imports System
+Imports Gurobi
+
+Class diet_vb
+    Shared Sub Main()
+        Try
+
+            ' Nutrition guidelines, based on
+            ' USDA Dietary Guidelines for Americans, 2005
+            ' http://www.health.gov/DietaryGuidelines/dga2005/
+            Dim Categories As String() = New String() {"calories", "protein", "fat", _
+                                                       "sodium"}
+            Dim nCategories As Integer = Categories.Length
+            Dim minNutrition As Double() = New Double() {1800, 91, 0, 0}
+            Dim maxNutrition As Double() = New Double() {2200, GRB.INFINITY, 65, 1779}
+
+            ' Set of foods
+            Dim Foods As String() = New String() {"hamburger", "chicken", "hot dog", _
+                                                  "fries", "macaroni", "pizza", _
+                                                  "salad", "milk", "ice cream"}
+            Dim nFoods As Integer = Foods.Length
+            Dim cost As Double() = New Double() {2.49, 2.89, 1.5R, 1.89, 2.09, 1.99, _
+                                                 2.49, 0.89, 1.59}
+
+            ' Nutrition values for the foods
+            ' hamburger
+            ' chicken
+            ' hot dog
+            ' fries
+            ' macaroni
+            ' pizza
+            ' salad
+            ' milk
+            ' ice cream
+            Dim nutritionValues As Double(,) = New Double(,) {{410, 24, 26, 730}, _
+                                                              {420, 32, 10, 1190}, _
+                                                              {560, 20, 32, 1800}, _
+                                                              {380, 4, 19, 270}, _
+                                                              {320, 12, 10, 930}, _
+                                                              {320, 15, 12, 820}, _
+                                                              {320, 31, 12, 1230}, _
+                                                              {100, 8, 2.5, 125}, _
+                                                              {330, 8, 10, 180}}
+
+            ' Model
+            Dim env As New GRBEnv()
+            Dim model As New GRBModel(env)
+            model.Set(GRB.StringAttr.ModelName, "diet")
+
+            ' Create decision variables for the nutrition information,
+            ' which we limit via bounds
+            Dim nutrition As GRBVar() = New GRBVar(nCategories - 1) {}
+            For i As Integer = 0 To nCategories - 1
+                nutrition(i) = model.AddVar(minNutrition(i), maxNutrition(i), 0, _
+                                            GRB.CONTINUOUS, Categories(i))
+            Next
+
+            ' Create decision variables for the foods to buy
+            Dim buy As GRBVar() = New GRBVar(nFoods - 1) {}
+            For j As Integer = 0 To nFoods - 1
+                buy(j) = model.AddVar(0, GRB.INFINITY, cost(j), GRB.CONTINUOUS, _
+                                      Foods(j))
+            Next
+
+            ' The objective is to minimize the costs
+            model.Set(GRB.IntAttr.ModelSense, 1)
+
+            ' Update model to integrate new variables
+            model.Update()
+
+            ' Nutrition constraints
+            For i As Integer = 0 To nCategories - 1
+                Dim ntot As GRBLinExpr = 0
+                For j As Integer = 0 To nFoods - 1
+                    ntot.AddTerm(nutritionValues(j, i), buy(j))
+                Next
+                model.AddConstr(ntot = nutrition(i), Categories(i))
+            Next
+
+            ' Solve
+            model.Optimize()
+            PrintSolution(model, buy, nutrition)
+
+            Console.WriteLine(vbLf &amp; "Adding constraint: at most 6 servings of dairy")
+            model.AddConstr(buy(7) + buy(8) &lt;= 6, "limit_dairy")
+
+            ' Solve
+            model.Optimize()
+
+            PrintSolution(model, buy, nutrition)
+
+            ' Dispose of model and env
+            model.Dispose()
+            env.Dispose()
+
+        Catch e As GRBException
+            Console.WriteLine("Error code: " &amp; e.ErrorCode &amp; ". " &amp; e.Message)
+        End Try
+    End Sub
+
+    Private Shared Sub PrintSolution(ByVal model As GRBModel, ByVal buy As GRBVar(), _
+                                     ByVal nutrition As GRBVar())
+        If model.Get(GRB.IntAttr.Status) = GRB.Status.OPTIMAL Then
+            Console.WriteLine(vbLf &amp; "Cost: " &amp; model.Get(GRB.DoubleAttr.ObjVal))
+            Console.WriteLine(vbLf &amp; "Buy:")
+            For j As Integer = 0 To buy.Length - 1
+                If buy(j).Get(GRB.DoubleAttr.X) &gt; 0.0001 Then
+                    Console.WriteLine(buy(j).Get(GRB.StringAttr.VarName) &amp; " " &amp; _
+                                      buy(j).Get(GRB.DoubleAttr.X))
+                End If
+            Next
+            Console.WriteLine(vbLf &amp; "Nutrition:")
+            For i As Integer = 0 To nutrition.Length - 1
+                Console.WriteLine(nutrition(i).Get(GRB.StringAttr.VarName) &amp; " " &amp; _
+                                  nutrition(i).Get(GRB.DoubleAttr.X))
+            Next
+        Else
+            Console.WriteLine("No solution")
+        End If
+    End Sub
+End Class
+</PRE>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1641"
+  HREF="facility_vb_vb.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1639"
+  HREF="visual_basic_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1633"
+  HREF="dense_vb_vb.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1642"
+  HREF="facility_vb_vb.html">facility_vb.vb</A>
+<B> Up:</B> <A NAME="tex2html1640"
+  HREF="visual_basic_examples.html">Visual Basic Examples</A>
+<B> Previous:</B> <A NAME="tex2html1634"
+  HREF="dense_vb_vb.html">dense_vb.vb</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

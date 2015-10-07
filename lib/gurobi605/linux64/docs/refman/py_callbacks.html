@@ -1,0 +1,134 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Callbacks</TITLE>
+<META NAME="description" CONTENT="Callbacks">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="py_gurobierror.html">
+<LINK REL="previous" HREF="py_column.html">
+<LINK REL="up" HREF="py_python_api_details.html">
+<LINK REL="next" HREF="py_gurobierror.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html9022"
+  HREF="py_gurobierror.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html9020"
+  HREF="py_python_api_details.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html9014"
+  HREF="py_column_size.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html9023"
+  HREF="py_gurobierror.html">GurobiError</A>
+<B> Up:</B> <A NAME="tex2html9021"
+  HREF="py_python_api_details.html">Python API Details</A>
+<B> Previous:</B> <A NAME="tex2html9015"
+  HREF="py_column_size.html">Column.size()</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION0001011000000000000000"></A>
+<A NAME="pythonclass:Callback"></A>
+<BR>
+Callbacks
+</H2>
+
+<P>
+Gurobi callback class.  A callback is a user function that is called
+periodically by the Gurobi optimizer in order to allow the user to
+query or modify the state of the optimization.  More precisely, if you
+pass a function that takes two arguments (<code>model</code> and
+<code>where</code>) as the argument to
+<A HREF="py_model_optimize.html#pythonmethod:Model.optimize">Model.optimize</A>, your
+function will be called during the optimization.  Your callback
+function can then call
+<A HREF="py_model_cbget.html#pythonmethod:Model.cbGet">Model.cbGet</A> to query the
+optimizer for details on the state of the optimization.  Your callback
+can call other callback methods to terminate the optimization,
+retrieve variable values for the current node relaxation, retrieve
+values for the new MIP solution, insert a new heuristic solution into
+the MIP search, or add a new MIP cutting plane.
+
+<P>
+The Gurobi callback class provides a set of constants that are used
+within the user callback function.  The first set of constants in this
+class list the options for the <code>where</code> argument to the user
+callback function.  The <code>where</code> argument indicates from where in
+the optimization process the user callback is being called. Options
+are listed in the <A HREF="callback_codes.html#sec:CallbackCodes">Callback Codes</A>
+section of this document.
+
+<P>
+The other set of constants in this class list the options for the
+<code>what</code> argument to
+<A HREF="py_model_cbget.html#pythonmethod:Model.cbGet">Model.cbGet</A>.  The
+<code>what</code> argument is used by the user callback to indicate what piece
+of status information it would like to retrieve.  The full list of
+options can be found in the <A HREF="callback_codes.html#sec:CallbackCodes">Callback
+  Codes</A> section.  As with the <code>where</code>
+argument, you refer to a <code>what</code> constant through
+<code>GRB.callback</code>.  For example, the simplex objective value would be
+requested using <code>GRB.callback.SPX_OBJVAL</code>.
+
+<P>
+If you would like to pass data to your callback function, you can do
+so through the <A HREF="py_model.html#pythonclass:Model">Model</A> object.  For
+example, if your program includes the statement
+<code>model._value = 1</code> before the optimization begins,
+then your callback function can
+query the value of <code>model._value</code>.  Note that the name of the
+user data field must begin with an underscore.
+
+<P>
+When solving a model using multiple threads, note that the user
+callback is only ever called from a single thread, so you don't need
+to worry about the thread-safety of your callback.
+
+<P>
+You can look at <code>callback.py</code> in the examples directory for
+details of how to use Gurobi callbacks.
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html9022"
+  HREF="py_gurobierror.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html9020"
+  HREF="py_python_api_details.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html9014"
+  HREF="py_column_size.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html9023"
+  HREF="py_gurobierror.html">GurobiError</A>
+<B> Up:</B> <A NAME="tex2html9021"
+  HREF="py_python_api_details.html">Python API Details</A>
+<B> Previous:</B> <A NAME="tex2html9015"
+  HREF="py_column_size.html">Column.size()</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

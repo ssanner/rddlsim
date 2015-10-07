@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Model.setObjective()</TITLE>
+<META NAME="description" CONTENT="Model.setObjective()">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="py_model_setpwlobj.html">
+<LINK REL="previous" HREF="py_model_setattr.html">
+<LINK REL="up" HREF="py_model.html">
+<LINK REL="next" HREF="py_model_setpwlobj.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html8360"
+  HREF="py_model_setpwlobj.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html8358"
+  HREF="py_model.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html8352"
+  HREF="py_model_setattr.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html8361"
+  HREF="py_model_setpwlobj.html">Model.setPWLObj()</A>
+<B> Up:</B> <A NAME="tex2html8359"
+  HREF="py_model.html">Model</A>
+<B> Previous:</B> <A NAME="tex2html8353"
+  HREF="py_model_setattr.html">Model.setAttr()</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION0001024700000000000000"></A>
+<A NAME="pythonmethod:Model.setObjective"></A>
+<BR>
+Model.setObjective()
+</H3>
+<BIG CLASS="LARGE">
+<FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">setObjective</SPAN></FONT></BIG> ( expr, sense=None )
+
+<P>
+Set the model objective equal to a linear or quadratic expression.
+
+<P>
+Note that you can also modify a linear model objective using the
+<A HREF="obj.html#attr:Obj">Obj</A>
+variable attribute.  If you wish to mix and match these two
+approaches, please note that this method will replace the existing
+objective.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">expr</SPAN>: New objective expression.  Argument can be a
+linear or quadratic expression (an objective of type
+<A HREF="py_linexpr.html#pythonclass:LinExpr">LinExpr</A> or
+<A HREF="py_quadexpr.html#pythonclass:QuadExpr">QuadExpr</A>).
+
+<P>
+ <SPAN  CLASS="textbf">sense (optional)</SPAN>: Optimization sense
+  (<TT>GRB.MINIMIZE</TT> for minimization, <TT>GRB.MAXIMIZE</TT>
+  for maximization).  Omit this argument to use the
+  <TT>ModelSense</TT> attribute value to determine the sense.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Example usage:</SPAN></BIG><PRE>
+  model.setObjective(x + y, GRB.MAXIMIZE)
+  model.setObjective(x*x + y*y)
+</PRE>
+
+<P>
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html8360"
+  HREF="py_model_setpwlobj.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html8358"
+  HREF="py_model.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html8352"
+  HREF="py_model_setattr.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html8361"
+  HREF="py_model_setpwlobj.html">Model.setPWLObj()</A>
+<B> Up:</B> <A NAME="tex2html8359"
+  HREF="py_model.html">Model</A>
+<B> Previous:</B> <A NAME="tex2html8353"
+  HREF="py_model_setattr.html">Model.setAttr()</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

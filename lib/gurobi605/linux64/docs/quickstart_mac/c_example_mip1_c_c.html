@@ -1,0 +1,201 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Example mip1_c.c</TITLE>
+<META NAME="description" CONTENT="Example mip1_c.c">
+<META NAME="keywords" CONTENT="quickstart_mac">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="quickstart_mac.css">
+
+<LINK REL="next" HREF="c_example_details.html">
+<LINK REL="previous" HREF="c_interface.html">
+<LINK REL="up" HREF="c_interface.html">
+<LINK REL="next" HREF="c_example_details.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html625"
+  HREF="c_example_details.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html623"
+  HREF="c_interface.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html617"
+  HREF="c_interface.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html626"
+  HREF="c_example_details.html">Example details</A>
+<B> Up:</B> <A NAME="tex2html624"
+  HREF="c_interface.html">C Interface</A>
+<B> Previous:</B> <A NAME="tex2html618"
+  HREF="c_interface.html">C Interface</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00071000000000000000">
+Example mip1_c.c</A>
+</H2>
+<P>
+<EM>This is the complete source code for our example (also available as 
+<code>&lt;installdir&gt;/examples/c/mip1_c.c</code>)...
+</EM>
+<P><PRE>
+#include &lt;stdlib.h&gt;
+#include &lt;stdio.h&gt;
+#include "gurobi_c.h"
+
+int
+main(int   argc,
+     char *argv[])
+{
+  GRBenv   *env   = NULL;
+  GRBmodel *model = NULL;
+  int       error = 0;
+  double    sol[3];
+  int       ind[3];
+  double    val[3];
+  double    obj[3];
+  char      vtype[3];
+  int       optimstatus;
+  double    objval;
+  int       zero = 0;
+
+  /* Create environment */
+
+  error = GRBloadenv(&amp;env, "mip1.log");
+  if (error || env == NULL) {
+    fprintf(stderr, "Error: could not create environment\n");
+    exit(1);
+  }
+
+  /* Create an empty model */
+
+  error = GRBnewmodel(env, &amp;model, "mip1", 0, NULL, NULL, NULL, NULL, NULL);
+  if (error) goto QUIT;
+
+
+  /* Add variables */
+
+  obj[0] = 1; obj[1] = 1; obj[2] = 2;
+  vtype[0] = GRB_BINARY; vtype[1] = GRB_BINARY; vtype[2] = GRB_BINARY;
+  error = GRBaddvars(model, 3, 0, NULL, NULL, NULL, obj, NULL, NULL, vtype,
+                     NULL);
+  if (error) goto QUIT;
+
+  /* Change objective sense to maximization */
+
+  error = GRBsetintattr(model, GRB_INT_ATTR_MODELSENSE, GRB_MAXIMIZE);
+  if (error) goto QUIT;
+
+  /* Integrate new variables */
+
+  error = GRBupdatemodel(model);
+  if (error) goto QUIT;
+
+
+  /* First constraint: x + 2 y + 3 z &lt;= 4 */
+
+  ind[0] = 0; ind[1] = 1; ind[2] = 2;
+  val[0] = 1; val[1] = 2; val[2] = 3;
+
+  error = GRBaddconstr(model, 3, ind, val, GRB_LESS_EQUAL, 4.0, NULL);
+  if (error) goto QUIT;
+
+  /* Second constraint: x + y &gt;= 1 */
+
+  ind[0] = 0; ind[1] = 1;
+  val[0] = 1; val[1] = 1;
+
+  error = GRBaddconstr(model, 2, ind, val, GRB_GREATER_EQUAL, 1.0, NULL);
+  if (error) goto QUIT;
+
+  /* Optimize model */
+
+  error = GRBoptimize(model);
+  if (error) goto QUIT;
+
+  /* Write model to 'mip1.lp' */
+
+  error = GRBwrite(model, "mip1.lp");
+  if (error) goto QUIT;
+
+  /* Capture solution information */
+
+  error = GRBgetintattr(model, GRB_INT_ATTR_STATUS, &amp;optimstatus);
+  if (error) goto QUIT;
+
+  error = GRBgetdblattr(model, GRB_DBL_ATTR_OBJVAL, &amp;objval);
+  if (error) goto QUIT;
+
+  error = GRBgetdblattrarray(model, GRB_DBL_ATTR_X, 0, 3, sol);
+  if (error) goto QUIT;
+
+  printf("\nOptimization complete\n");
+  if (optimstatus == GRB_OPTIMAL) {
+    printf("Optimal objective: %.4e\n", objval);
+
+    printf("  x=%.0f, y=%.0f, z=%.0f\n", sol[0], sol[1], sol[2]);
+  } else if (optimstatus == GRB_INF_OR_UNBD) {
+    printf("Model is infeasible or unbounded\n");
+  } else {
+    printf("Optimization was stopped early\n");
+  }
+
+QUIT:
+
+  /* Error reporting */
+
+  if (error) {
+    printf("ERROR: %s\n", GRBgeterrormsg(env));
+    exit(1);
+  }
+
+  /* Free model */
+
+  GRBfreemodel(model);
+
+  /* Free environment */
+
+  GRBfreeenv(env);
+
+  return 0;
+}
+</PRE>
+<P>
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html625"
+  HREF="c_example_details.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html623"
+  HREF="c_interface.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html617"
+  HREF="c_interface.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html626"
+  HREF="c_example_details.html">Example details</A>
+<B> Up:</B> <A NAME="tex2html624"
+  HREF="c_interface.html">C Interface</A>
+<B> Previous:</B> <A NAME="tex2html618"
+  HREF="c_interface.html">C Interface</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

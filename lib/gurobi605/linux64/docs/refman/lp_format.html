@@ -1,0 +1,360 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>LP format</TITLE>
+<META NAME="description" CONTENT="LP format">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="rlp_format.html">
+<LINK REL="previous" HREF="rew_format.html">
+<LINK REL="up" HREF="model_file_formats.html">
+<LINK REL="next" HREF="rlp_format.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html12229"
+  HREF="rlp_format.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html12227"
+  HREF="model_file_formats.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html12221"
+  HREF="rew_format.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html12230"
+  HREF="rlp_format.html">RLP format</A>
+<B> Up:</B> <A NAME="tex2html12228"
+  HREF="model_file_formats.html">Model File Formats</A>
+<B> Previous:</B> <A NAME="tex2html12222"
+  HREF="rew_format.html">REW format</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION000183000000000000000"></A>
+<A NAME="format:LP"></A>
+<BR>
+LP format
+</H2>
+
+<P>
+The LP format captures an optimization model in a way that is easier
+for humans to read than MPS format, and can often be more natural to
+produce.  One limitation of the LP format is that it doesn't preserve
+several model properties.  In particular, LP files do not preserve
+column order when read, and they typically don't preserve the exact
+numerical values of the coefficients (although this isn't inherent to
+the format).
+
+<P>
+Unlike MPS files, LP files do not rely on fixed field widths.  Line
+breaks and white space characters are used to separate objects.  Here
+is a simple example:
+<PRE>
+\ LP format example
+
+Maximize
+  x + y + z
+Subject To
+  c0: x + y = 1
+  c1: x + 5 y + 2 z &lt;= 10
+  qc0: x + y + [ x ^ 2 - 2 x * y + 3 y ^ 2 ] &lt;= 5
+Bounds
+  0 &lt;= x &lt;= 5
+  z &gt;= 2
+Generals
+  x y z
+End
+</PRE>
+
+<P>
+The backslash symbol starts a comment; the remainder of that
+line is ignored.
+
+<P>
+Variable names play a major role in LP files.  Each variable must have
+its own unique name.  The name should be no longer than 255
+characters, and to avoid confusing the LP parser, it should not begin
+with a number, or with any of the characters
+<code>+, -, *, &lt;, &gt;, =, or :</code>.
+
+<P>
+Note that white space is not optional in the Gurobi LP format.  Thus,
+for example, the text <code>x+y+z</code> would be treated as a single
+variable name, while <code>x + y + z</code> would be treated as a three
+term expression.
+
+<P>
+LP files are structured as a list of sections, where each section
+captures a logical piece of the whole optimization model.  Sections
+begin with particular keywords, and must generally come in a fixed
+order, although a few are allowed to be interchanged.
+
+<P>
+<SPAN  CLASS="textbf">Objective Section</SPAN>
+
+<P>
+The first section in an LP file is the objective section.  This
+section begins with one of the following six headers, on its own line:
+<EM>minimize</EM>, <EM>maximize</EM>, <EM>minimum</EM>, <EM>maximum</EM>,
+<EM>min</EM>, or <EM>max</EM>.  Capitalization in the header is ignored.
+The header is then followed by a linear or quadratic expression that
+captures the objective function.
+
+<P>
+The objective optionally begins with a label.  A label consists of a
+name, followed by a colon character, following by a space.  A space is
+allowed between the name and the colon, but not required.
+
+<P>
+The objective then continues with a list of linear terms, separated by
+the <code>+</code> or <code>-</code> operators.  A term can contain a
+coefficient and a variable (e.g., <code>4.5 x</code>), or just a variable
+(e.g., <code>x</code>).  The objective can be spread over many lines, or it
+may be listed on a single line.  Line breaks can come between tokens,
+but never within tokens.
+
+<P>
+The objective may optionally continue with a list of quadratic terms.
+The quadratic portion of the objective expression begins with a
+<code>[</code> symbol and ends with a <code>]</code> symbol, followed by
+<code>/ 2</code>.  These brackets should enclose one or more quadratic terms.
+Either squared terms (e.g., <code>2 x ^ 2</code>) or product terms
+(e.g., <code>3 x * y</code>) are accepted.  Coefficients on the quadratic
+terms are optional.
+
+<P>
+For each variable with a piecewise-linear objective, the objective
+section will include a <code>__pwl(x)</code> term, where <code>x</code> is the
+name of the variable.  You should view these as comments; they are
+ignored by the LP reader. The actual piecewise-linear expressions are
+pulled from the later <code>PWLObj</code> section.
+
+<P>
+The objective expression must always end with a line break.
+
+<P>
+An objective section might look like the following:
+<PRE>
+Minimize
+  obj: 3.1 x + 4.5 y + 10 z + [ x ^ 2 + 2 x * y + 3 y ^ 2 ] / 2
+</PRE>
+
+<P>
+The objective section is optional.  The objective is set to 0 when it
+is not present.
+
+<P>
+<SPAN  CLASS="textbf">Constraints Section</SPAN>
+
+<P>
+The next section is the constraints section.  It begins with one of the
+following headers, on its own line: <EM>subject to</EM>,
+<EM>such that</EM>, <EM>st</EM>, or <EM>s.t.</EM>.
+Capitalization is ignored.
+
+<P>
+The constraint section can have an arbitrary number of constraints.
+Each constraint starts with an optional label (constraint name,
+followed by a colon, followed by a space), continues with a linear
+expression, followed by an optional quadratic expression (enclosed
+in square brackets), and ends with a comparison operator, followed by a
+numerical value, followed by a line break.  Valid comparison
+operators are <code>=</code>, <code>&lt;=</code>, <code>&lt;</code>, <code>&gt;=</code>, or
+<code>&gt;</code>.  Note that LP format does not distinguish between strict and
+non-strict inequalities, so for example <code>&lt;</code> and <code>&lt;=</code> are
+equivalent.
+
+<P>
+Note that the left-hand side of a constraint may not contain a
+constant term; the constant must appear on the right-hand side.
+
+<P>
+The following is a simple example of a valid linear constraint:
+<PRE>
+  c0: 2.5 x + 2.3 y + 5.3 z &lt;= 8.1
+</PRE>
+The following is a valid quadratic constraint:
+<PRE>
+  qc0: 3.1 x + 4.5 y + 10 z + [ x ^ 2 + 2 x * y + 3 y ^ 2 ] &lt;= 10
+</PRE>
+
+<P>
+Every LP format file must have a constraints section.
+
+<P>
+<SPAN  CLASS="textbf">Lazy Constraints Section</SPAN>
+
+<P>
+The next section is the lazy constraints section.  It begins
+with the line <code>Lazy Constraints</code>, and continues with a list of
+linear constraints in the exact same format as the linear constraints
+in the constraints section.  For example:
+<PRE>
+Lazy Constraints
+  c0: 2.5 x + 2.3 y + 5.3 z &lt;= 8.1
+</PRE>
+
+<P>
+Lazy constraints are handled differently from other constraints by the
+MIP solver.  A lazy constraint only becomes active when the MIP solver
+finds a candidate solution that violates the constraint.
+
+<P>
+This section is optional.
+
+<P>
+<SPAN  CLASS="textbf">Bounds Section</SPAN>
+
+<P>
+The next section is the bounds section.  It begins with the word
+<code>Bounds</code>, on its own line, and is followed by a list of variable
+bounds.  Each line specifies the lower bound, the upper bound, or both
+for a single variable.  The keywords <code>inf</code> or <code>infinity</code>
+can be used in the bounds section to specify infinite bounds.  A bound
+line can also indicate that a variable is <code>free</code>, meaning that
+it is unbounded in either direction.
+
+<P>
+Here are examples of valid bound lines:
+<PRE>
+  0 &lt;= x0 &lt;= 1
+  x1 &lt;= 1.2
+  x2 &gt;= 3
+  x3 free
+  x2 &gt;= -Inf
+</PRE>
+
+<P>
+It is not necessary to specify bounds for all variables; by default,
+each variable has a lower bound of 0 and an infinite upper bound.  In
+fact, the entire bounds section is optional.
+
+<P>
+<SPAN  CLASS="textbf">Variable Type Section</SPAN>
+
+<P>
+The next section is the variable types section.  Variables can be
+designated as being either binary, general integer, or
+semi-continuous.  In all cases, the designation is applied by first
+providing the appropriate header (on its own line), and then listing
+the variables that have the associated type.  For example:
+<PRE>
+Binary
+  x y z
+</PRE>
+Variable type designations don't need to appear in any particular
+order (e.g., general integers can either precede or follow binaries).
+If a variable is included in multiple sections, the last one
+determines the variable type.
+
+<P>
+Valid keywords for variable type headers are: <EM>binary</EM>, <EM>  binaries</EM>, <EM>bin</EM>, <EM>general</EM>, <EM>generals</EM>, <EM>  gen</EM>, <EM>semi-continuous</EM>, <EM>semis</EM>, or <EM>semi</EM>.
+
+<P>
+The variable types section is optional.  By default, variables are
+assumed to be continuous.
+
+<P>
+<SPAN  CLASS="textbf">SOS Section</SPAN>
+
+<P>
+An LP file can contain a section that captures SOS constraints of type
+1 or type 2.  The SOS section begins with the <code>SOS</code> header on
+its own line (capitalization isn't important).  An arbitrary number of
+SOS constraints can follow.  An SOS constraint starts with a name,
+followed by a colon (unlike linear constraints, the name is not
+optional here).  Next comes the SOS type, which can be either
+<code>S1</code> or <code>S2</code>.  The type is followed by a pair of colons.
+
+<P>
+Next come the members of the SOS set, along with their weights.  Each
+member is captured using the variable name, followed by a colon,
+followed by the associated weight.  Spaces can optionally be placed
+before and after the colon.  An SOS constraint must end with a line
+break.
+
+<P>
+Here's an example of an SOS section containing two SOS constraints:
+<PRE>
+SOS
+  sos1: S1 :: x1 : 1  x2 : 2  x3 : 3
+  sos2: S2 :: x4:8.5  x5:10.2  x6:18.3
+</PRE>
+
+<P>
+The SOS section is optional.
+
+<P>
+<SPAN  CLASS="textbf">PWLObj Section</SPAN>
+
+<P>
+An LP file can contain a section that captures piecewise-linear
+objective functions.  The PWL section begins with the <code>PWLObj</code>
+header on its own line (capitalization isn't important).  Each
+piecewise-linear objective function is associated with a model
+variable.  A PWL function starts with the corresponding variable name,
+followed immediately by a colon (the name is not optional).  Next come
+the points that define the piecewise-linear function.  These points
+are represented as <code>(x, y)</code> pairs, with parenthesis surrounding
+the two values and a comma separating them.  A PWL function must end
+with a line break.
+
+<P>
+Here's an example of a PWLObj section containing two simple
+piecewise-linear functions:
+<PRE>
+PWLObj
+  x1: (1, 1) (2, 2) (3, 4)
+  x2: (1, 3) (3, 5) (100, 300)
+</PRE>
+
+<P>
+The PWLObj section is optional.
+
+<P>
+<SPAN  CLASS="textbf">End statement</SPAN>
+
+<P>
+The last line in an LP format file should be an <code>End</code> statement.
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html12229"
+  HREF="rlp_format.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html12227"
+  HREF="model_file_formats.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html12221"
+  HREF="rew_format.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html12230"
+  HREF="rlp_format.html">RLP format</A>
+<B> Up:</B> <A NAME="tex2html12228"
+  HREF="model_file_formats.html">Model File Formats</A>
+<B> Previous:</B> <A NAME="tex2html12222"
+  HREF="rew_format.html">REW format</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

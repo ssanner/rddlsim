@@ -1,0 +1,229 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>workforce1_c++.cpp</TITLE>
+<META NAME="description" CONTENT="workforce1_c++.cpp">
+<META NAME="keywords" CONTENT="examples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="examples.css">
+
+<LINK REL="next" HREF="workforce2_cpp_cpp.html">
+<LINK REL="previous" HREF="tune_cpp_cpp.html">
+<LINK REL="up" HREF="cpp_examples.html">
+<LINK REL="next" HREF="workforce2_cpp_cpp.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html1005"
+  HREF="workforce2_cpp_cpp.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1003"
+  HREF="cpp_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html997"
+  HREF="tune_cpp_cpp.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1006"
+  HREF="workforce2_cpp_cpp.html">workforce2_c++.cpp</A>
+<B> Up:</B> <A NAME="tex2html1004"
+  HREF="cpp_examples.html">C++ Examples</A>
+<B> Previous:</B> <A NAME="tex2html998"
+  HREF="tune_cpp_cpp.html">tune_c++.cpp</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000222100000000000000"></A>
+<A NAME="subsubsection:workforce1_c++.cpp"></A>
+<BR>
+workforce1_c++.cpp
+</H3>
+
+<P>
+<BR>
+<PRE  CLASS="verbatim">/* Copyright 2014, Gurobi Optimization, Inc. */
+
+/* Assign workers to shifts; each worker may or may not be available on a
+   particular day. If the problem cannot be solved, use IIS to find a set of
+   conflicting constraints. Note that there may be additional conflicts
+   besides what is reported via IIS. */
+
+#include "gurobi_c++.h"
+#include &lt;sstream&gt;
+using namespace std;
+
+int
+main(int argc,
+     char *argv[])
+{
+  GRBEnv* env = 0;
+  GRBConstr* c = 0;
+  GRBVar** x = 0;
+  int xCt = 0;
+  try
+  {
+
+    // Sample data
+    const int nShifts = 14;
+    const int nWorkers = 7;
+
+    // Sets of days and workers
+    string Shifts[] =
+      { "Mon1", "Tue2", "Wed3", "Thu4", "Fri5", "Sat6",
+        "Sun7", "Mon8", "Tue9", "Wed10", "Thu11", "Fri12", "Sat13",
+        "Sun14" };
+    string Workers[] =
+      { "Amy", "Bob", "Cathy", "Dan", "Ed", "Fred", "Gu" };
+
+    // Number of workers required for each shift
+    double shiftRequirements[] =
+      { 3, 2, 4, 4, 5, 6, 5, 2, 2, 3, 4, 6, 7, 5 };
+
+    // Amount each worker is paid to work one shift
+    double pay[] = { 10, 12, 10, 8, 8, 9, 11 };
+
+    // Worker availability: 0 if the worker is unavailable for a shift
+    double availability[][nShifts] =
+      { { 0, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1 },
+        { 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 0 },
+        { 0, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1 },
+        { 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1 },
+        { 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1 },
+        { 1, 1, 1, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 1 },
+        { 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 } };
+
+    // Model
+    env = new GRBEnv();
+    GRBModel model = GRBModel(*env);
+    model.set(GRB_StringAttr_ModelName, "assignment");
+
+    // Assignment variables: x[w][s] == 1 if worker w is assigned
+    // to shift s. Since an assignment model always produces integer
+    // solutions, we use continuous variables and solve as an LP.
+    x = new GRBVar*[nWorkers];
+    for (int w = 0; w &lt; nWorkers; ++w)
+    {
+      x[w] = model.addVars(nShifts);
+      xCt++;
+      model.update();
+      for (int s = 0; s &lt; nShifts; ++s)
+      {
+        ostringstream vname;
+        vname &lt;&lt; Workers[w] &lt;&lt; "." &lt;&lt; Shifts[s];
+        x[w][s].set(GRB_DoubleAttr_UB, availability[w][s]);
+        x[w][s].set(GRB_DoubleAttr_Obj, pay[w]);
+        x[w][s].set(GRB_StringAttr_VarName, vname.str());
+      }
+    }
+
+    // The objective is to minimize the total pay costs
+    model.set(GRB_IntAttr_ModelSense, 1);
+
+    // Update model to integrate new variables
+    model.update();
+
+    // Constraint: assign exactly shiftRequirements[s] workers
+    // to each shift s
+    for (int s = 0; s &lt; nShifts; ++s)
+    {
+      GRBLinExpr lhs = 0;
+      for (int w = 0; w &lt; nWorkers; ++w)
+      {
+        lhs += x[w][s];
+      }
+      model.addConstr(lhs == shiftRequirements[s], Shifts[s]);
+    }
+
+    // Optimize
+    model.optimize();
+    int status = model.get(GRB_IntAttr_Status);
+    if (status == GRB_UNBOUNDED)
+    {
+      cout &lt;&lt; "The model cannot be solved "
+      &lt;&lt; "because it is unbounded" &lt;&lt; endl;
+      return 1;
+    }
+    if (status == GRB_OPTIMAL)
+    {
+      cout &lt;&lt; "The optimal objective is " &lt;&lt;
+      model.get(GRB_DoubleAttr_ObjVal) &lt;&lt; endl;
+      return 0;
+    }
+    if ((status != GRB_INF_OR_UNBD) &amp;&amp; (status != GRB_INFEASIBLE))
+    {
+      cout &lt;&lt; "Optimization was stopped with status " &lt;&lt; status &lt;&lt; endl;
+      return 1;
+    }
+
+    // do IIS
+    cout &lt;&lt; "The model is infeasible; computing IIS" &lt;&lt; endl;
+    model.computeIIS();
+    cout &lt;&lt; "\nThe following constraint(s) "
+    &lt;&lt; "cannot be satisfied:" &lt;&lt; endl;
+    c = model.getConstrs();
+    for (int i = 0; i &lt; model.get(GRB_IntAttr_NumConstrs); ++i)
+    {
+      if (c[i].get(GRB_IntAttr_IISConstr) == 1)
+      {
+        cout &lt;&lt; c[i].get(GRB_StringAttr_ConstrName) &lt;&lt; endl;
+      }
+    }
+
+  }
+  catch (GRBException e)
+  {
+    cout &lt;&lt; "Error code = " &lt;&lt; e.getErrorCode() &lt;&lt; endl;
+    cout &lt;&lt; e.getMessage() &lt;&lt; endl;
+  }
+  catch (...)
+  {
+    cout &lt;&lt; "Exception during optimization" &lt;&lt; endl;
+  }
+
+  delete[] c;
+  for (int i = 0; i &lt; xCt; ++i) {
+    delete[] x[i];
+  }
+  delete[] x;
+  delete env;
+  return 0;
+}
+</PRE>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1005"
+  HREF="workforce2_cpp_cpp.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1003"
+  HREF="cpp_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html997"
+  HREF="tune_cpp_cpp.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1006"
+  HREF="workforce2_cpp_cpp.html">workforce2_c++.cpp</A>
+<B> Up:</B> <A NAME="tex2html1004"
+  HREF="cpp_examples.html">C++ Examples</A>
+<B> Previous:</B> <A NAME="tex2html998"
+  HREF="tune_cpp_cpp.html">tune_c++.cpp</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

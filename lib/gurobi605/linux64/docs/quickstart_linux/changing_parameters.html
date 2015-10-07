@@ -1,0 +1,201 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Changing parameters</TITLE>
+<META NAME="description" CONTENT="Changing parameters">
+<META NAME="keywords" CONTENT="quickstart_linux">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="quickstart_linux.css">
+
+<LINK REL="next" HREF="parameter_tuning_tool.html">
+<LINK REL="previous" HREF="simple_experimentation_wit.html">
+<LINK REL="up" HREF="interactive_shell.html">
+<LINK REL="next" HREF="parameter_tuning_tool.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html512"
+  HREF="parameter_tuning_tool.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html510"
+  HREF="interactive_shell.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html504"
+  HREF="simple_experimentation_wit.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html513"
+  HREF="parameter_tuning_tool.html">Parameter tuning tool</A>
+<B> Up:</B> <A NAME="tex2html511"
+  HREF="interactive_shell.html">Interactive Shell</A>
+<B> Previous:</B> <A NAME="tex2html505"
+  HREF="simple_experimentation_wit.html">Simple experimentation with a</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00055000000000000000">
+Changing parameters</A>
+</H2>
+
+<P>
+Rather than continuing optimization on a difficult model like
+<code>glass4</code>, it is sometimes useful to try different parameter
+settings.  When the lower bound moves slowly, as it does on this
+model, one potentially useful parameter is <code>MIPFocus</code>, which
+adjusts the high-level MIP solution strategy.  Let us now set this
+parameter to value 1, which changes the focus of the MIP search to
+finding good feasible solutions.  There are two ways to change the
+parameter value.  You can either use method <EM>m.setParam()</EM>:
+<PRE>
+gurobi&gt; m.setParam('MIPFocus', 1)
+Changed value of parameter MIPFocus to 1
+   Prev: 0   Min: 0   Max: 3   Default: 0
+</PRE>
+...or you can use the <code>m.params</code> class...
+<PRE>
+gurobi&gt; m.params.MIPFocus = 1
+Changed value of parameter MIPFocus to 1
+   Prev: 0   Min: 0   Max: 3   Default: 0
+</PRE>
+Once the parameter has been changed, we call
+<EM>m.reset()</EM> to reset the optimization on our model and then
+<EM>m.optimize()</EM> to start a new optimization run:
+<PRE>
+gurobi&gt; m.reset()
+gurobi&gt; m.optimize()
+Optimize a model with 396 Rows, 322 Columns and 1815 NonZeros
+Presolve removed 4 rows and 5 columns
+Presolve time: 0.00s
+Presolved: 392 Rows, 317 Columns, 1815 Nonzeros
+Found heuristic solution: objective 3.691696e+09
+
+Root relaxation: objective 8.000024e+08, 72 iterations, 0.00 seconds
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0 8.0000e+08    0   72 3.6917e+09 8.0000e+08  78.3%     -    0s
+     0     0 8.0000e+08    0   72 3.6917e+09 8.0000e+08  78.3%     -    0s
+     0     0 8.0000e+08    0   72 3.6917e+09 8.0000e+08  78.3%     -    0s
+     0     0 8.0000e+08    0   73 3.6917e+09 8.0000e+08  78.3%     -    0s
+H    0     0                    3.075022e+09 8.0000e+08  74.0%     -    0s
+H    0     0                    3.020023e+09 8.0000e+08  73.5%     -    0s
+     0     0 8.0000e+08    0   76 3.0200e+09 8.0000e+08  73.5%     -    0s
+     0     0 8.0000e+08    0   75 3.0200e+09 8.0000e+08  73.5%     -    0s
+H    0     0                    2.550024e+09 8.0000e+08  68.6%     -    0s
+H    0     2                    2.175020e+09 8.0000e+08  63.2%     -    0s
+     0     2 8.0000e+08    0   75 2.1750e+09 8.0000e+08  63.2%     -    0s
+H   95    98                    2.150020e+09 8.0000e+08  62.8%   4.6    0s
+H   96    98                    2.120018e+09 8.0000e+08  62.3%   4.6    0s
+H  101   103                    2.116687e+09 8.0000e+08  62.2%   4.5    0s
+H  110   103                    2.100017e+09 8.0000e+08  61.9%   4.3    0s
+H  352   325                    2.000018e+09 8.0000e+08  60.0%   4.2    0s
+H  406   375                    1.991686e+09 8.0000e+08  59.8%   4.0    0s
+H 1074   888                    1.981836e+09 8.0000e+08  59.6%   3.5    0s
+H 1078   889                    1.966686e+09 8.0000e+08  59.3%   3.5    0s
+H 1107   878                    1.900018e+09 8.0000e+08  57.9%   3.5    0s
+H 1696  1125                    1.800017e+09 8.0000e+08  55.6%   3.4    0s
+H 1845  1146                    1.800017e+09 8.0000e+08  55.6%   4.2    1s
+H 1863  1087                    1.733350e+09 8.0000e+08  53.8%   4.3    1s
+H 2353  1273                    1.733350e+09 8.0000e+08  53.8%   4.3    1s
+H 2517  1299                    1.700016e+09 8.0000e+08  52.9%   4.3    1s
+H 2598  1248                    1.666682e+09 8.0000e+08  52.0%   4.3    1s
+H 2733  1252                    1.633349e+09 8.0000e+08  51.0%   4.2    1s
+ 14259  7927 1.5000e+09   85   28 1.6333e+09 8.0000e+08  51.0%   3.5    5s
+ 24846 14278 1.1000e+09   49   55 1.6333e+09 8.0001e+08  51.0%   3.5   10s
+H25035 13985                    1.600016e+09 8.0001e+08  50.0%   3.5   10s
+H25066 14020                    1.600016e+09 8.0001e+08  50.0%   3.5   10s
+H25072 13532                    1.583350e+09 8.0001e+08  49.5%   3.5   10s
+H26218 14083                    1.575016e+09 8.0001e+08  49.2%   3.5   10s
+H26326 14118                    1.566682e+09 8.0001e+08  48.9%   3.5   10s
+H26577 13650                    1.525016e+09 8.0001e+08  47.5%   3.5   10s
+
+Interrupt request received
+
+Cutting planes:
+  Gomory: 6
+  Implied bound: 26
+  MIR: 60
+
+Explored 30546 nodes (107810 simplex iterations) in 11.81 seconds
+Thread count was 8 (of 8 available processors)
+
+Solve interrupted
+Best objective 1.5250155750e+09, best bound 8.0000520000e+08, gap 47.5412%
+</PRE>
+
+<P>
+Results are consistent with our expectations.  We find a better
+solution sooner by shifting the focus towards finding feasible
+solutions (objective value <code>1.525e9</code> versus <code>1.6e9</code>).
+
+<P>
+The <EM>setParam()</EM> method is designed to be quite flexible and
+forgiving.  It accepts wildcards as arguments, and it ignores
+character case.  Thus, the following commands are all equivalent:
+<PRE>
+gurobi&gt; m.setParam('NODELIMIT', 100)
+gurobi&gt; m.setParam('NodeLimit', 100)
+gurobi&gt; m.setParam('Node*', 100)
+gurobi&gt; m.setParam('N???Limit, 100)
+</PRE>
+You can use wildcards to get a list of matching parameters:
+<PRE>
+gurobi&gt; m.setParam('*Cuts', 2)
+Matching parameters: ['Cuts', 'CliqueCuts', 'CoverCuts', 'FlowCoverCuts',
+'FlowPathCuts', 'GUBCoverCuts', 'ImpliedCuts', 'MIPSepCuts', 'MIRCuts', 'ModKCuts',
+'NetworkCuts', 'SubMIPCuts', 'ZeroHalfCuts']
+</PRE>
+
+<P>
+Note that <code>Model.Params</code> is a bit less forgiving than
+<EM>setParam()</EM>.  In particular, wildcards are not allowed
+with this approach.  You don't have to worry about capitalization of
+parameter names in either approach, though, so
+<code>m.params.Heuristics</code> and <code>m.params.heuristics</code> are
+equivalent.
+
+<P>
+The full set of available parameters can be browsed using the
+<EM>paramHelp()</EM> command.  You can obtain further information on a
+specific parameter (e.g., <code>MIPGap</code>) by typing
+<code>paramHelp('MIPGap')</code>.
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html512"
+  HREF="parameter_tuning_tool.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html510"
+  HREF="interactive_shell.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html504"
+  HREF="simple_experimentation_wit.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html513"
+  HREF="parameter_tuning_tool.html">Parameter tuning tool</A>
+<B> Up:</B> <A NAME="tex2html511"
+  HREF="interactive_shell.html">Interactive Shell</A>
+<B> Previous:</B> <A NAME="tex2html505"
+  HREF="simple_experimentation_wit.html">Simple experimentation with a</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

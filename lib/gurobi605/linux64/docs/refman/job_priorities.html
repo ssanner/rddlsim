@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Job Priorities</TITLE>
+<META NAME="description" CONTENT="Job Priorities">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="performance_considerations.html">
+<LINK REL="previous" HREF="client_configuration.html">
+<LINK REL="up" HREF="compute_server_usage.html">
+<LINK REL="next" HREF="performance_considerations.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html12596"
+  HREF="performance_considerations.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html12594"
+  HREF="compute_server_usage.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html12588"
+  HREF="client_configuration.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html12597"
+  HREF="performance_considerations.html">Performance Considerations on a</A>
+<B> Up:</B> <A NAME="tex2html12595"
+  HREF="compute_server_usage.html">Compute Server Usage</A>
+<B> Previous:</B> <A NAME="tex2html12589"
+  HREF="client_configuration.html">Client Configuration</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000252200000000000000"></A>
+<A NAME="sec:CSPriorities"></A>
+<BR>
+Job Priorities
+</H3>
+
+<P>
+As noted earlier, Gurobi Compute Servers support job priorities.  You
+can assign an integer priority between -100 and 100 to each job (the
+default is 0).  When choosing among queued jobs, the Compute Server
+will run the highest priority job first.  Note that servers will never
+preempt running jobs.
+
+<P>
+We have chosen to give priority 100 a special meaning.  A priority 100
+job will start immediately, even if this means that a server will
+exceed its job limit.  You should be cautious with priority 100 jobs,
+since submitting too many at once could lead to very high server
+loads, which could lead to poor performance and even crashes in extreme
+cases.
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html12596"
+  HREF="performance_considerations.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html12594"
+  HREF="compute_server_usage.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html12588"
+  HREF="client_configuration.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html12597"
+  HREF="performance_considerations.html">Performance Considerations on a</A>
+<B> Up:</B> <A NAME="tex2html12595"
+  HREF="compute_server_usage.html">Compute Server Usage</A>
+<B> Previous:</B> <A NAME="tex2html12589"
+  HREF="client_configuration.html">Client Configuration</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

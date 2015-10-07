@@ -1,0 +1,508 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>C++ API Overview</TITLE>
+<META NAME="description" CONTENT="C++ API Overview">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="cpp_api_details.html">
+<LINK REL="previous" HREF="c_api_details.html">
+<LINK REL="up" HREF="refman.html">
+<LINK REL="next" HREF="cpp_api_details.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html2489"
+  HREF="cpp_api_details.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html2487"
+  HREF="refman.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html2481"
+  HREF="c_grbgetbasishead.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html2490"
+  HREF="cpp_api_details.html">C++ API Details</A>
+<B> Up:</B> <A NAME="tex2html2488"
+  HREF="refman.html">Gurobi Optimizer Reference Manual</A>
+<B> Previous:</B> <A NAME="tex2html2482"
+  HREF="c_grbgetbasishead.html">GRBgetBasisHead</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00030000000000000000"></A>
+<A NAME="sec:C++"></A>
+<BR>
+C++ API Overview
+</H1>
+
+<P>
+This section documents the Gurobi C++ interface.  This manual begins
+with a quick overview of the classes exposed in the interface and the
+most important methods on those classes.  It then continues with a
+<A HREF="cpp_api_details.html#sec:C++-details">comprehensive presentation of all of the available classes and
+methods</A>.
+
+<P>
+If you are new to the Gurobi Optimizer, we suggest that you start with
+the
+<A NAME="tex2html6"
+  HREF="../quickstart/quickstart.html">Quick Start Guide</A>
+or the
+<A NAME="tex2html7"
+  HREF="../examples/examples.html">Example Tour</A>.
+These
+documents provide concrete examples of how to use the classes and
+methods described here.
+
+<P>
+<SPAN  CLASS="textbf">Environments</SPAN>
+
+<P>
+The first step in using the Gurobi C++ interface is to create an
+environment object.  Environments are represented using the
+<A HREF="cpp_grbenv.html#cppclass:GRBEnv">GRBEnv</A> class.  An environment acts as
+the container for all data associated with a set of optimization runs.
+You will generally only need one environment object in your program.
+
+<P>
+<SPAN  CLASS="textbf">Models</SPAN>
+
+<P>
+You can create one or more optimization models within an environment.
+Each model is represented as an object of class
+<A HREF="cpp_grbmodel.html#cppclass:GRBModel">GRBModel</A>.  A model consists
+of a set of decision variables (objects of class
+<A HREF="cpp_grbvar.html#cppclass:GRBVar">GRBVar</A>), a linear
+or quadratic objective function on those variables (specified using
+<A HREF="cpp_grbmodel_setobjective.html#cppmethod:GRBModel::setObjective">GRBModel::setObjective</A>),
+and a set of constraints on these variables (objects of class
+<A HREF="cpp_grbconstr.html#cppclass:GRBConstr">GRBConstr</A>,
+<A HREF="cpp_grbqconstr.html#cppclass:GRBQConstr">GRBQConstr</A>,
+or <A HREF="cpp_grbsos.html#cppclass:GRBSOS">GRBSOS</A>).  Each variable has an
+associated lower bound, upper bound, and type (continuous, binary,
+etc.).  Each linear or quadratic constraint has an associated sense
+(less-than-or-equal, greater-than-or-equal, or equal), and right-hand
+side value.
+
+<P>
+Linear constraints are specified by building linear expressions
+(objects of class <A HREF="cpp_grblinexpr.html#cppclass:GRBLinExpr">GRBLinExpr</A>), and
+then specifying relationships between these expressions (for example,
+requiring that one expression be equal to another).
+Quadratic constraints are built in a similar fashion, but using
+quadratic expressions (objects of class
+<A HREF="cpp_grbquadexpr.html#cppclass:GRBQuadExpr">GRBQuadExpr</A>) instead.
+
+<P>
+An optimization model may be specified all at once, by loading the
+model from a file (using the appropriate
+<A HREF="cpp_grbmodel2.html#cppmethod:GRBModel">GRBModel</A> constructor), or built
+incrementally, by first constructing an empty object of class
+<A HREF="cpp_grbmodel.html#cppclass:GRBModel">GRBModel</A> and then subsequently
+calling <A HREF="cpp_grbmodel_addvar.html#cppmethod:GRBModel::addVar">GRBModel::addVar</A>
+or <A HREF="cpp_grbmodel_addvars.html#cppmethod:GRBModel::addVars">GRBModel::addVars</A> to
+add additional variables, and
+<A HREF="cpp_grbmodel_addconstr.html#cppmethod:GRBModel::addConstr">GRBModel::addConstr</A> or
+<A HREF="cpp_grbmodel_addqconstr.html#cppmethod:GRBModel::addQConstr">GRBModel::addQConstr</A>
+to add additional constraints.  Models are dynamic entities; you can
+always add or remove variables or constraints.
+
+<P>
+We often refer to the <EM>class</EM> of an optimization model.  A model
+with a linear objective function, linear constraints, and continuous
+variables is a <EM>Linear Program (LP)</EM>.  If the objective is
+quadratic, the model is a <EM>Quadratic Program (QP)</EM>.  If any of the
+constraints are quadratic, the model is a
+<EM>Quadratically-Constrained Program (QCP)</EM>.
+We'll sometimes also discuss a special case of QCP,
+the
+<EM>Second-Order Cone Program (SOCP)</EM>.  If the model contains any
+integer variables, semi-continuous variables, semi-integer variables,
+or Special Ordered Set (SOS) constraints, the model is a
+<EM>Mixed Integer Program (MIP)</EM>.  We'll also sometimes discuss
+special cases of MIP,
+including
+<EM>Mixed Integer Linear Programs (MILP)</EM>,
+<EM>Mixed Integer Quadratic Programs (MIQP)</EM>,
+<EM>Mixed Integer Quadratically-Constrained Programs (MIQCP)</EM>,
+and
+<EM>Mixed Integer Second-Order Cone Programs (MISOCP)</EM>.
+The Gurobi Optimizer handles all of these model classes.
+
+<P>
+<SPAN  CLASS="textbf">Solving a Model</SPAN>
+
+<P>
+Once you have built a model, you can call
+<A HREF="cpp_grbmodel_optimize.html#cppmethod:GRBModel::optimize">GRBModel::optimize</A> to
+compute a solution.  By default,
+<A HREF="cpp_grbmodel_optimize.html#cppmethod:GRBModel::optimize">optimize</A>
+will use the
+<A HREF="concurrent_optimizer.html#sec:Concurrent">concurrent optimizer</A>
+to solve LP models,
+the barrier algorithm to solve QP and QCP models, and
+the branch-and-cut algorithm to solve mixed integer models.  The
+solution is stored in a set of <EM>attributes</EM> of the model.  These
+attributes can be queried using a set of attribute query methods on
+the
+<A HREF="cpp_grbmodel.html#cppclass:GRBModel">GRBModel</A>,
+<A HREF="cpp_grbvar.html#cppclass:GRBVar">GRBVar</A>,
+<A HREF="cpp_grbconstr.html#cppclass:GRBConstr">GRBConstr</A>, and
+<A HREF="cpp_grbqconstr.html#cppclass:GRBQConstr">GRBQConstr</A> classes.
+
+<P>
+The Gurobi algorithms keep careful track of the state of the model, so
+calls to
+<A HREF="cpp_grbmodel_optimize.html#cppmethod:GRBModel::optimize">GRBModel::optimize</A>
+will only perform further optimization if relevant data has changed
+since the model was last optimized.  If you would like to discard
+previously computed solution information and restart the optimization
+from scratch without changing the model, you can call
+<A HREF="cpp_grbmodel_reset.html#cppmethod:GRBModel::reset">GRBModel::reset</A>.
+
+<P>
+After a MIP model has been solved, you can call
+<A HREF="cpp_grbmodel_fixedmodel.html#cppmethod:GRBModel::fixedModel">GRBModel::fixedModel</A> to
+compute the associated <EM>fixed</EM> model.  This model is identical
+to the input model, except that all integer variables are fixed to
+their values in the MIP solution.  In some applications, it is useful
+to compute information on this continuous version of the MIP model
+(e.g., dual variables, sensitivity information, etc.).
+
+<P>
+<SPAN  CLASS="textbf">Infeasible Models</SPAN>
+
+<P>
+You have a few options if a model is found to be infeasible.  You can
+try to diagnose the cause of the infeasibility, attempt to repair the
+infeasibility, or both.  To obtain information that can be useful for
+diagnosing the cause of an infeasibility, call
+<A HREF="cpp_grbmodel_computeiis.html#cppmethod:GRBModel::computeIIS">GRBModel::computeIIS</A>
+to compute an
+Irreducible Inconsistent Subsystem (IIS).  This method can be used
+for both continuous and MIP models, but you should be aware that the
+MIP version can be quite expensive.  This method populates a set of
+IIS attributes.
+
+<P>
+To attempt to repair an infeasibility, call
+<A HREF="cpp_grbmodel_feasrelax.html#cppmethod:GRBModel::feasRelax">GRBModel::feasRelax</A>
+to compute a
+feasibility relaxation for the model.  This relaxation allows you to
+find a solution that minimizes the magnitude of the constraint
+violation.
+
+<P>
+<SPAN  CLASS="textbf">Querying and Modifying Attributes</SPAN>
+
+<P>
+Most of the information associated with a Gurobi model is stored in a
+set of attributes.  Some attributes are associated with the variables
+of the model, some with the constraints of the model, and some with
+the model itself.  To give a simple example, solving an optimization
+model causes the <code>X</code> variable attribute to be populated.
+Attributes such as <code>X</code> that are computed by the Gurobi optimizer
+cannot be modified directly by the user, while others, such as the
+variable lower bound (the <code>LB</code> attribute) can.
+
+<P>
+Attributes are queried using
+<A HREF="cpp_grbvar_get.html#cppmethod:GRBVar::get">GRBVar::get</A>,
+<A HREF="cpp_grbconstr_get.html#cppmethod:GRBConstr::get">GRBConstr::get</A>,
+<A HREF="cpp_grbqconstr_get.html#cppmethod:GRBQConstr::get">GRBQConstr::get</A>, or
+<A HREF="cpp_grbmodel_get.html#cppmethod:GRBModel::get">GRBModel::get</A>,
+and modified using
+<A HREF="cpp_grbvar_set.html#cppmethod:GRBVar::set">GRBVar::set</A>,
+<A HREF="cpp_grbconstr_set.html#cppmethod:GRBConstr::set">GRBConstr::set</A>,
+<A HREF="cpp_grbqconstr_set.html#cppmethod:GRBQConstr::set">GRBQConstr::set</A>, or
+<A HREF="cpp_grbmodel_set.html#cppmethod:GRBModel::set">GRBModel::set</A>.
+Attributes are grouped into a set of enums by type
+(<A HREF="cpp_grb_charattr.html#cppenum:GRB_CharAttr">GRB_CharAttr</A>,
+<A HREF="cpp_grb_doubleattr.html#cppenum:GRB_DoubleAttr">GRB_DoubleAttr</A>,
+<A HREF="cpp_grb_intattr.html#cppenum:GRB_IntAttr">GRB_IntAttr</A>,
+<A HREF="cpp_grb_stringattr.html#cppenum:GRB_StringAttr">GRB_StringAttr</A>).
+The <code>get()</code> and <code>set()</code> methods are overloaded, so the
+type of the attribute determines the type of the returned value.
+Thus, <code>constr.get(GRB.DoubleAttr.RHS)</code> returns a double,
+while <code>constr.get(GRB.CharAttr.Sense)</code> returns a char.
+
+<P>
+If you wish to retrieve attribute values for a set of variables or
+constraints, it is usually more efficient to use the array methods on
+the associated <A HREF="cpp_grbmodel.html#cppclass:GRBModel">GRBModel</A> object.
+Method
+<A HREF="cpp_grbmodel_get.html#cppmethod:GRBModel::get">GRBModel::get</A>
+includes signatures that allow you to query or modify attribute values
+for arrays of variables or constraints.
+
+<P>
+The full list of attributes can be found in the
+<A HREF="attributes.html#sec:Attributes">Attributes</A> section.
+
+<P>
+<SPAN  CLASS="textbf">Additional Model Modification Information</SPAN>
+
+<P>
+Most modifications to an existing model are done through the attribute
+interface (e.g., changes to variable bounds, constraint right-hand
+sides, etc.).  The main exceptions are modifications to the constraint
+matrix and the objective function.
+
+<P>
+The constraint matrix can be modified in a few ways.  The first is to
+call the
+<A HREF="cpp_grbmodel_chgcoeffs.html#cppmethod:GRBModel::chgCoeffs">chgCoeffs</A> method on a
+<A HREF="cpp_grbmodel.html#cppclass:GRBModel">GRBModel</A> object to change individual
+matrix coefficients.  This method can be used to modify the value of an
+existing non-zero, to set an existing non-zero to zero, or to create a
+new non-zero.  The constraint matrix is also modified when you remove
+a variable or constraint from the model (through the
+<A HREF="cpp_grbmodel_remove.html#cppmethod:GRBModel::remove">GRBModel::remove</A> method).
+The non-zero values associated with the deleted constraint or
+variable are removed along with the constraint or variable itself.
+
+<P>
+The model objective function can also be modified in a few ways.  The
+easiest is to build an expression that captures the objective function
+(a <A HREF="cpp_grblinexpr.html#cppclass:GRBLinExpr">GRBLinExpr</A> or
+<A HREF="cpp_grbquadexpr.html#cppclass:GRBQuadExpr">GRBQuadExpr</A> object),
+and then pass that expression to method
+<A HREF="cpp_grbmodel_setobjective.html#cppmethod:GRBModel::setObjective">GRBModel::setObjective</A>.
+If you wish to modify the objective, you can simply call
+<code>setObjective</code> again with a new <code>GRBLinExpr</code> or
+<code>GRBQuadExpr</code> object.
+
+<P>
+For linear objective functions, an alternative to <code>setObjective</code>
+is to use the <code>Obj</code> variable attribute to modify individual
+linear objective coefficients.
+
+<P>
+If your variables have piecewise-linear objectives, you can specify
+them using the <A HREF="cpp_grbmodel_setpwlobj.html#cppmethod:GRBModel::setPWLObj">setPWLObj</A>
+method.  Call this method once for each relevant variable.  The Gurobi
+simplex solver includes algorithmic support for convex
+piecewise-linear objective functions, so for continuous models you
+should see a substantial performance benefit from using this feature.
+To clear a previously specified piecewise-linear objective function,
+simply set the <code>Obj</code> attribute on the corresponding variable to
+0.
+
+<P>
+<SPAN  CLASS="textbf">Lazy Updates</SPAN>
+
+<P>
+One very important item to note about attribute and model
+modifications in the Gurobi optimizer is that they are performed in a
+<EM>lazy</EM> fashion, meaning that they don't actually affect the
+model until the next call
+to <A HREF="cpp_grbmodel_optimize.html#cppmethod:GRBModel::optimize">optimize</A> or
+<A HREF="cpp_grbmodel_update.html#cppmethod:GRBModel::update">update</A> on that model
+object.  This approach provides the advantage that the model remains
+unchanged while you are in the process of making multiple
+modifications.  The downside, of course, is that you have to remember
+to call <A HREF="cpp_grbmodel_update.html#cppmethod:GRBModel::update">update</A> in order to
+see the effect of your changes.
+
+<P>
+If you forget to call update, your program won't crash.  The most
+common symptom of a missing update is a <TT>NOT_IN_MODEL</TT>
+exception, which indicates that the object you are trying to reference
+isn't in the model yet.
+
+<P>
+<SPAN  CLASS="textbf">Managing Parameters</SPAN>
+
+<P>
+The Gurobi optimizer provides a set of parameters to allow you to
+control many of the details of the optimization process.  Factors like
+feasibility and optimality tolerances, choices of algorithms,
+strategies for exploring the MIP search tree, etc., can be controlled
+by modifying Gurobi parameters before beginning the optimization.
+Parameters are set using methods on
+a <A HREF="cpp_grbenv.html#cppclass:GRBEnv">GRBEnv</A> object
+(e.g., <A HREF="cpp_grbenv_set.html#cppmethod:GRBEnv::set">GRBEnv::set</A>).  Current
+values may also be retrieved with
+<A HREF="cpp_grbenv_get.html#cppmethod:GRBEnv::get">GRBEnv::get</A>.
+Parameters can be of type <EM>int</EM>, <EM>double</EM>, or <EM>string</EM>.  You can also read a set of parameter settings from a file
+using
+<A HREF="cpp_grbenv_readparams.html#cppmethod:GRBEnv::readParams">GRBEnv::readParams</A>,
+or write the set of changed parameters using
+<A HREF="cpp_grbenv_writeparams.html#cppmethod:GRBEnv::writeParams">GRBEnv::writeParams</A>.
+
+<P>
+We also include an automated parameter tuning tool that explores many
+different sets of parameter changes in order to find a set that
+improves performance.  You can call
+<A HREF="cpp_grbmodel_tune.html#cppmethod:GRBModel::tune">GRBModel::tune</A>
+to invoke the tuning tool on a model.
+Refer to the
+<A HREF="parameter_tuning_tool.html#sec:Tuning">parameter tuning tool</A>
+section for more information.
+
+<P>
+One thing we should note is that each model gets its own copy of the
+environment when it is created.  Parameter changes to the original
+environment therefore have no effect on existing models.  Use
+<A HREF="cpp_grbmodel_getenv.html#cppmethod:GRBModel::getEnv">GRBModel::getEnv</A> to retrieve the
+environment associated with a particular model if you want to change a
+parameter for that model.
+
+<P>
+The full list of Gurobi parameters can be found in the
+<A HREF="parameters.html#sec:Parameters">Parameters</A> section.
+
+<P>
+<SPAN  CLASS="textbf">Memory Management</SPAN>
+
+<P>
+Memory management must always be considered in C++ programs.  In
+particular, the Gurobi library and the user program share the same C++
+heap, so the user must be aware of certain aspects of how the Gurobi
+library uses this heap.  The basic rules for managing memory when
+using the Gurobi optimizer are as follows:
+
+<UL>
+<LI>As with other dynamically allocated C++ objects,
+<A HREF="cpp_grbenv.html#cppclass:GRBEnv">GRBEnv</A> or
+ <A HREF="cpp_grbmodel.html#cppclass:GRBModel">GRBModel</A> objects should be freed
+using the associated destructors.  In other words, given a
+<code>GRBModel</code> object <code>m</code>, you should call <code>delete m</code> when
+you are no longer using <code>m</code>.
+</LI>
+<LI>Objects that are associated with a model (e.g.,
+<A HREF="cpp_grbconstr.html#cppclass:GRBConstr">GRBConstr</A>,
+<A HREF="cpp_grbsos.html#cppclass:GRBSOS">GRBSOS</A>,
+and <A HREF="cpp_grbvar.html#cppclass:GRBVar">GRBVar</A> objects) are managed by the
+model.  In particular, deleting a model will delete all of the
+associated objects.  Similarly, removing an object from a model
+(using <A HREF="cpp_grbmodel_remove.html#cppmethod:GRBModel::remove">GRBModel::remove</A>)
+will also delete the object.
+</LI>
+<LI>Some Gurobi methods return an array of objects or values.
+For
+example, <A HREF="cpp_grbmodel_addvars.html#cppmethod:GRBModel::addVars">GRBModel::addVars</A>
+returns an array of <code>GRBVar</code> objects.  It is the user's
+responsibility to free the returned array (using <code>delete[]</code>).
+The reference manual indicates when a method returns a heap-allocated
+result.
+</LI>
+</UL>
+
+<P>
+One consequence of these rules is that you must be careful not to use
+an object once it has been freed.  This is no doubt quite clear for
+environments and models, where you call the destructors explicitly,
+but may be less clear for constraints and variables, which are
+implicitly deleted when the associated model is deleted.
+
+<P>
+<SPAN  CLASS="textbf">Monitoring Progress - Logging and Callbacks</SPAN>
+
+<P>
+Progress of the optimization can be monitored through Gurobi logging.
+By default, Gurobi will send output to the screen.  A few simple
+controls are available for modifying the default logging behavior.  If
+you would like to direct output to a file as well as to the screen,
+specify the log file name in the <A HREF="cpp_grbenv2.html#cppmethod:GRBEnv">GRBEnv</A> constructor.  You can modify the
+<A HREF="logfile.html#parameter:LogFile">LogFile</A>
+ parameter if you wish to redirect the log to a
+different file after creating the environment object.  The frequency
+of logging output can be controlled with the
+<A HREF="displayinterval.html#parameter:DisplayInterval">DisplayInterval</A>
+parameter, and logging can be turned off entirely with the
+<A HREF="outputflag.html#parameter:OutputFlag">OutputFlag</A>
+parameter.  A detailed description of the Gurobi log
+file can be found in the <A HREF="logging.html#sec:Logging">Logging</A> section.
+
+<P>
+More detailed progress monitoring can be done through the
+<A HREF="cpp_grbcallback.html#cppclass:GRBCallback">GRBCallback</A> class.
+The
+<A HREF="cpp_grbmodel_setcallback.html#cppmethod:GRBModel::setCallback">GRBModel::setCallback</A> method
+allows you to receive a periodic callback from the Gurobi optimizer.
+You do this by sub-classing
+the <A HREF="cpp_grbcallback.html#cppclass:GRBCallback">GRBCallback</A> abstract class,
+and writing your own <code>callback()</code> method on this class.  You can
+call
+<A HREF="cpp_grbcallback_getdoublei.html#cppmethod:GRBCallback::getDoubleInfo">GRBCallback::getDoubleInfo</A>,
+<A HREF="cpp_grbcallback_getintinfo.html#cppmethod:GRBCallback::getIntInfo">GRBCallback::getIntInfo</A>,
+<A HREF="cpp_grbcallback_getstringi.html#cppmethod:GRBCallback::getStringInfo">GRBCallback::getStringInfo</A>,
+or
+<A HREF="cpp_grbcallback_getsolutio.html#cppmethod:GRBCallback::getSolution">GRBCallback::getSolution</A>
+from within the callback to obtain additional information about the
+state of the optimization.
+
+<P>
+<SPAN  CLASS="textbf">Modifying Solver Behavior - Callbacks</SPAN>
+
+<P>
+Callbacks can also be used to modify the behavior of the Gurobi
+optimizer.  The simplest control callback is
+<A HREF="cpp_grbcallback_abort.html#cppmethod:GRBCallback::abort">GRBCallback::abort</A>,
+which asks the optimizer to terminate at the earliest convenient
+point.  Method
+<A HREF="cpp_grbcallback_setsolutio.html#cppmethod:GRBCallback::setSolution">GRBCallback::setSolution</A>
+allows you to inject a feasible solution (or partial solution) during
+the solution of a MIP model.  Methods
+<A HREF="cpp_grbcallback_addcut.html#cppmethod:GRBCallback::addCut">GRBCallback::addCut</A>
+and
+<A HREF="cpp_grbcallback_addlazy.html#cppmethod:GRBCallback::addLazy">GRBCallback::addLazy</A>
+allow you to add <EM>cutting planes</EM> and <EM>lazy constraints</EM>
+during a MIP optimization, respectively.
+
+<P>
+<SPAN  CLASS="textbf">Error Handling</SPAN>
+
+<P>
+All of the methods in the Gurobi C++ library can throw an exception
+of type <A HREF="cpp_grbexception.html#cppclass:GRBException">GRBException</A>.  When an
+exception occurs, additional information on the error can be obtained
+by retrieving the error code (using method
+<code>GRBException::getErrorCode</code>), or by retrieving the exception message
+(using method <code>GRBException::getMessage</code>).
+The list of possible error return codes can be found in
+the <A HREF="error_codes.html#sec:ErrorCodes">Error Codes</A> section.
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html2489"
+  HREF="cpp_api_details.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html2487"
+  HREF="refman.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html2481"
+  HREF="c_grbgetbasishead.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html2490"
+  HREF="cpp_api_details.html">C++ API Details</A>
+<B> Up:</B> <A NAME="tex2html2488"
+  HREF="refman.html">Gurobi Optimizer Reference Manual</A>
+<B> Previous:</B> <A NAME="tex2html2482"
+  HREF="c_grbgetbasishead.html">GRBgetBasisHead</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

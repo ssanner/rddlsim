@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Lists and Tuples</TITLE>
+<META NAME="description" CONTENT="Lists and Tuples">
+<META NAME="keywords" CONTENT="quickstart_mac">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="quickstart_mac.css">
+
+<LINK REL="next" HREF="py_dictionaries.html">
+<LINK REL="previous" HREF="py_motivation.html">
+<LINK REL="up" HREF="py_python_dictionary_examp.html">
+<LINK REL="next" HREF="py_dictionaries.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html1369"
+  HREF="py_dictionaries.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1367"
+  HREF="py_python_dictionary_examp.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1361"
+  HREF="py_motivation.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1370"
+  HREF="py_dictionaries.html">Dictionaries</A>
+<B> Up:</B> <A NAME="tex2html1368"
+  HREF="py_python_dictionary_examp.html">Python Dictionary Example</A>
+<B> Previous:</B> <A NAME="tex2html1362"
+  HREF="py_motivation.html">Motivation</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000113200000000000000">
+Lists and Tuples</A>
+</H3>
+<P>
+<EM>The <code>list</code> data structure is central to most Python programs;
+Gurobi Python programs are no exception.  We'll also rely heavily on a
+similar data structure, the <code>tuple</code>.  Tuples are crucial to
+providing efficient and convenient access to Gurobi decision variables
+in Gurobi Python programs.  The difference between a list and a tuple
+is subtle but important.  We'll discuss it shortly.
+</EM>
+<P>
+<EM>Lists and tuples are both simply ordered collections of Python
+objects.  A list is created and displayed as a comma-separated
+list of member objects, enclosed in square brackets.  A tuple is
+similar, except that the member objects are enclosed in parenthesis.
+For example, <code>[1, 2, 3]</code> is a list, while
+<code>(1, 2, 3)</code> is a tuple.  Similarly,
+<code>['Pens', 'Denver', 'New York']</code> is a list,
+while
+<code>('Pens', 'Denver', 'New York')</code> is a tuple.
+</EM>
+<P>
+<EM>You can retrieve individual entries from a list or tuple using
+square brackets and zero-based indices:
+</EM><PRE>
+gurobi&gt; l = [1, 2.0, 'abc']
+gurobi&gt; t = (1, 2.0, 'abc')
+gurobi&gt; print l[0]
+1
+gurobi&gt; print t[1]
+2.0
+gurobi&gt; print l[2]
+abc
+</PRE>
+<P>
+<EM>What's the difference between a list and a tuple?  A tuple is
+<EM>immutable</EM>, meaning that you can't modify it once it has been
+created.  By contrast, you can add new members to a list, remove
+members, change existing members, etc.  This immutable property
+allows you to use tuples as indices for <code>dictionaries</code>.
+</EM>
+<P>
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1369"
+  HREF="py_dictionaries.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1367"
+  HREF="py_python_dictionary_examp.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1361"
+  HREF="py_motivation.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1370"
+  HREF="py_dictionaries.html">Dictionaries</A>
+<B> Up:</B> <A NAME="tex2html1368"
+  HREF="py_python_dictionary_examp.html">Python Dictionary Example</A>
+<B> Previous:</B> <A NAME="tex2html1362"
+  HREF="py_motivation.html">Motivation</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

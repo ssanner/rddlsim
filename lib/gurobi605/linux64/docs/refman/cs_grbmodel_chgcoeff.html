@@ -1,0 +1,128 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>GRBModel.ChgCoeff()</TITLE>
+<META NAME="description" CONTENT="GRBModel.ChgCoeff()">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="cs_grbmodel_chgcoeffs.html">
+<LINK REL="previous" HREF="cs_grbmodel_addvars.html">
+<LINK REL="up" HREF="cs_grbmodel.html">
+<LINK REL="next" HREF="cs_grbmodel_chgcoeffs.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html6288"
+  HREF="cs_grbmodel_chgcoeffs.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html6286"
+  HREF="cs_grbmodel.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html6280"
+  HREF="cs_grbmodel_addvars.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html6289"
+  HREF="cs_grbmodel_chgcoeffs.html">GRBModel.ChgCoeffs()</A>
+<B> Up:</B> <A NAME="tex2html6287"
+  HREF="cs_grbmodel.html">GRBModel</A>
+<B> Previous:</B> <A NAME="tex2html6281"
+  HREF="cs_grbmodel_addvars.html">GRBModel.AddVars()</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000821000000000000000"></A>
+<A NAME="dotnetmethod:GRBModel.ChgCoeff"></A>
+<BR>
+GRBModel.ChgCoeff()
+</H3>
+
+<P>
+Change one coefficient in the model.  The desired change is captured
+using a <A HREF="cs_grbvar.html#dotnetclass:GRBVar">GRBVar</A> object, a
+<A HREF="cs_grbconstr.html#dotnetclass:GRBConstr">GRBConstr</A> object, and a desired
+coefficient for the specified variable in the specified constraint.
+If you make multiple changes to the same coefficient, the last one
+will be applied.
+
+<P>
+Note that the change won't take effect until the next call to
+<A HREF="cs_grbmodel_optimize.html#dotnetmethod:GRBModel.Optimize">GRBModel.Optimize</A> or
+<A HREF="cs_grbmodel_update.html#dotnetmethod:GRBModel.Update">GRBModel.Update</A> on that
+model.
+
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">void</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">ChgCoeff</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT">GRBConstr</TD>
+<TD ALIGN="LEFT">constr,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">GRBVar</TD>
+<TD ALIGN="LEFT">var,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">double</TD>
+<TD ALIGN="LEFT">newvalue )</TD>
+</TR>
+</TABLE>
+
+<UL>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">constr</SPAN>: Constraint for coefficient to be changed.
+
+<P>
+ <SPAN  CLASS="textbf">var</SPAN>: Variable for coefficient to be changed.
+
+<P>
+ <SPAN  CLASS="textbf">newvalue</SPAN>: Desired new value for coefficient.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html6288"
+  HREF="cs_grbmodel_chgcoeffs.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html6286"
+  HREF="cs_grbmodel.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html6280"
+  HREF="cs_grbmodel_addvars.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html6289"
+  HREF="cs_grbmodel_chgcoeffs.html">GRBModel.ChgCoeffs()</A>
+<B> Up:</B> <A NAME="tex2html6287"
+  HREF="cs_grbmodel.html">GRBModel</A>
+<B> Previous:</B> <A NAME="tex2html6281"
+  HREF="cs_grbmodel_addvars.html">GRBModel.AddVars()</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

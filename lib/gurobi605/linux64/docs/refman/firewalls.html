@@ -1,0 +1,108 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Firewalls</TITLE>
+<META NAME="description" CONTENT="Firewalls">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="administrative_commands.html">
+<LINK REL="previous" HREF="gurobi_remote_services_par.html">
+<LINK REL="up" HREF="setting_up_and_administeri.html">
+<LINK REL="next" HREF="administrative_commands.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html12477"
+  HREF="administrative_commands.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html12475"
+  HREF="setting_up_and_administeri.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html12469"
+  HREF="gurobi_remote_services_par.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html12478"
+  HREF="administrative_commands.html">Administrative Commands</A>
+<B> Up:</B> <A NAME="tex2html12476"
+  HREF="setting_up_and_administeri.html">Setting Up and Administering</A>
+<B> Previous:</B> <A NAME="tex2html12470"
+  HREF="gurobi_remote_services_par.html">Gurobi Remote Services Parameters</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000231200000000000000"></A>
+<A NAME="sec:ServicesFirewalls"></A>
+<BR>
+Firewalls
+</H3>
+
+<P>
+A machine running Gurobi Remote Services communicates with clients through a
+number of network ports on the server machine.  By default, it uses
+ports 61000-65000.  You generally don't need to be aware of the
+details, since in most cases the server will either silently allow
+Gurobi Remote Services to use these ports or it will ask you to confirm that
+these ports can be used.  However, some situations require you to
+manually open these ports.
+
+<P>
+One notable example is Amazon EC2, where most network ports are closed
+by default.  You'll need to create an EC2 <EM>Security Group</EM> (or
+modify your default group) when you start your instance in order to
+open these ports.
+
+<P>
+If for some reason our default port range is unavailable on your
+server, you can include a <code>PORT=</code> statement <EM>in both the
+  client and the server license files</EM> to choose a different range.
+For example, the line:
+<PRE>
+PORT=43000
+</PRE>
+would use ports 43000-47000 instead.
+
+<P>
+If you run into trouble with firewall issues, we suggest you share
+this section with your network administrator.
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html12477"
+  HREF="administrative_commands.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html12475"
+  HREF="setting_up_and_administeri.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html12469"
+  HREF="gurobi_remote_services_par.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html12478"
+  HREF="administrative_commands.html">Administrative Commands</A>
+<B> Up:</B> <A NAME="tex2html12476"
+  HREF="setting_up_and_administeri.html">Setting Up and Administering</A>
+<B> Previous:</B> <A NAME="tex2html12470"
+  HREF="gurobi_remote_services_par.html">Gurobi Remote Services Parameters</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

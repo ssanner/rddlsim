@@ -1,0 +1,169 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>lpmethod_c.c</TITLE>
+<META NAME="description" CONTENT="lpmethod_c.c">
+<META NAME="keywords" CONTENT="examples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="examples.css">
+
+<LINK REL="next" HREF="lpmod_c_c.html">
+<LINK REL="previous" HREF="lp_c_c.html">
+<LINK REL="up" HREF="c_examples.html">
+<LINK REL="next" HREF="lpmod_c_c.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html603"
+  HREF="lpmod_c_c.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html601"
+  HREF="c_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html595"
+  HREF="lp_c_c.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html604"
+  HREF="lpmod_c_c.html">lpmod_c.c</A>
+<B> Up:</B> <A NAME="tex2html602"
+  HREF="c_examples.html">C Examples</A>
+<B> Previous:</B> <A NAME="tex2html596"
+  HREF="lp_c_c.html">lp_c.c</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00021800000000000000"></A>
+<A NAME="subsubsection:lpmethod_c.c"></A>
+<BR>
+lpmethod_c.c
+</H3>
+
+<P>
+<BR>
+<PRE  CLASS="verbatim">/* Copyright 2014, Gurobi Optimization, Inc. */
+
+/* Solve a model with different values of the Method parameter;
+   show which value gives the shortest solve time. */
+
+#include &lt;stdlib.h&gt;
+#include &lt;stdio.h&gt;
+#include "gurobi_c.h"
+
+int
+main(int   argc,
+     char *argv[])
+{
+  GRBenv   *env = NULL, *menv;
+  GRBmodel *m = NULL;
+  int       error = 0;
+  int       i;
+  int       optimstatus;
+  int       bestMethod = -1;
+  double    bestTime;
+
+  if (argc &lt; 2)
+  {
+    fprintf(stderr, "Usage: lpmethod_c filename\n");
+    exit(1);
+  }
+
+  error = GRBloadenv(&amp;env, "lpmethod.log");
+  if (error) goto QUIT;
+
+  /* Read model */
+  error = GRBreadmodel(env, argv[1], &amp;m);
+  if (error) goto QUIT;
+  menv = GRBgetenv(m);
+  error = GRBgetdblparam(menv, "TimeLimit", &amp;bestTime);
+  if (error) goto QUIT;
+
+  /* Solve the model with different values of Method */
+  for (i = 0; i &lt;= 2; ++i)
+  {
+    error = GRBresetmodel(m);
+    if (error) goto QUIT;
+    error = GRBsetintparam(menv, "Method", i);
+    if (error) goto QUIT;
+    error = GRBoptimize(m);
+    if (error) goto QUIT;
+    error = GRBgetintattr(m, "Status", &amp;optimstatus);
+    if (error) goto QUIT;
+    if (optimstatus == GRB_OPTIMAL) {
+      error = GRBgetdblattr(m, "Runtime", &amp;bestTime);
+      if (error) goto QUIT;
+      bestMethod = i;
+      /* Reduce the TimeLimit parameter to save time
+         with other methods */
+      error = GRBsetdblparam(menv, "TimeLimit", bestTime);
+      if (error) goto QUIT;
+    }
+  }
+
+  /* Report which method was fastest */
+  if (bestMethod == -1) {
+    printf("Unable to solve this model\n");
+  } else {
+    printf("Solved in %f seconds with Method: %i\n",
+           bestTime, bestMethod);
+  }
+
+QUIT:
+
+  /* Error reporting */
+
+  if (error)
+  {
+    printf("ERROR: %s\n", GRBgeterrormsg(env));
+    exit(1);
+  }
+
+  /* Free model */
+
+  GRBfreemodel(m);
+
+  /* Free environment */
+
+  GRBfreeenv(env);
+
+  return 0;
+}
+</PRE>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html603"
+  HREF="lpmod_c_c.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html601"
+  HREF="c_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html595"
+  HREF="lp_c_c.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html604"
+  HREF="lpmod_c_c.html">lpmod_c.c</A>
+<B> Up:</B> <A NAME="tex2html602"
+  HREF="c_examples.html">C Examples</A>
+<B> Previous:</B> <A NAME="tex2html596"
+  HREF="lp_c_c.html">lp_c.c</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

@@ -1,0 +1,160 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>params_c++.cpp</TITLE>
+<META NAME="description" CONTENT="params_c++.cpp">
+<META NAME="keywords" CONTENT="examples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="examples.css">
+
+<LINK REL="next" HREF="piecewise_cpp_cpp.html">
+<LINK REL="previous" HREF="mip2_cpp_cpp.html">
+<LINK REL="up" HREF="cpp_examples.html">
+<LINK REL="next" HREF="piecewise_cpp_cpp.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html915"
+  HREF="piecewise_cpp_cpp.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html913"
+  HREF="cpp_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html907"
+  HREF="mip2_cpp_cpp.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html916"
+  HREF="piecewise_cpp_cpp.html">piecewise_c++.cpp</A>
+<B> Up:</B> <A NAME="tex2html914"
+  HREF="cpp_examples.html">C++ Examples</A>
+<B> Previous:</B> <A NAME="tex2html908"
+  HREF="mip2_cpp_cpp.html">mip2_c++.cpp</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000221200000000000000"></A>
+<A NAME="subsubsection:params_c++.cpp"></A>
+<BR>
+params_c++.cpp
+</H3>
+
+<P>
+<BR>
+<PRE  CLASS="verbatim">/* Copyright 2014, Gurobi Optimization, Inc. */
+
+/* Use parameters that are associated with a model.
+
+   A MIP is solved for 5 seconds with different sets of parameters.
+   The one with the smallest MIP gap is selected, and the optimization
+   is resumed until the optimal solution is found.
+*/
+
+#include "gurobi_c++.h"
+using namespace std;
+
+int
+main(int argc,
+     char *argv[])
+{
+  if (argc &lt; 2)
+  {
+    cout &lt;&lt; "Usage: params_c++ filename" &lt;&lt; endl;
+    return 1;
+  }
+
+  GRBEnv* env = 0;
+  GRBModel *bestModel = 0, *m = 0;
+  try
+  {
+    // Read model and verify that it is a MIP
+    env = new GRBEnv();
+    m = new GRBModel(*env, argv[1]);
+    if (m-&gt;get(GRB_IntAttr_IsMIP) == 0)
+    {
+      cout &lt;&lt; "The model is not an integer program" &lt;&lt; endl;
+      return 1;
+    }
+
+    // Set a 5 second time limit
+    m-&gt;getEnv().set(GRB_DoubleParam_TimeLimit, 5);
+
+    // Now solve the model with different values of MIPFocus
+    bestModel = new GRBModel(*m);
+    bestModel-&gt;optimize();
+    for (int i = 1; i &lt;= 3; ++i)
+    {
+      m-&gt;reset();
+      m-&gt;getEnv().set(GRB_IntParam_MIPFocus, i);
+      m-&gt;optimize();
+      if (bestModel-&gt;get(GRB_DoubleAttr_MIPGap) &gt;
+                  m-&gt;get(GRB_DoubleAttr_MIPGap))
+      {
+        swap(bestModel, m);
+      }
+    }
+
+    // Finally, delete the extra model, reset the time limit and
+    // continue to solve the best model to optimality
+    delete m;
+    m = 0;
+    bestModel-&gt;getEnv().set(GRB_DoubleParam_TimeLimit, GRB_INFINITY);
+    bestModel-&gt;optimize();
+    cout &lt;&lt; "Solved with MIPFocus: " &lt;&lt;
+    bestModel-&gt;getEnv().get(GRB_IntParam_MIPFocus) &lt;&lt; endl;
+
+  }
+  catch (GRBException e)
+  {
+    cout &lt;&lt; "Error code = " &lt;&lt; e.getErrorCode() &lt;&lt; endl;
+    cout &lt;&lt; e.getMessage() &lt;&lt; endl;
+  }
+  catch (...)
+  {
+    cout &lt;&lt; "Error during optimization" &lt;&lt; endl;
+  }
+
+  delete bestModel;
+  delete m;
+  delete env;
+  return 0;
+}
+</PRE>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html915"
+  HREF="piecewise_cpp_cpp.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html913"
+  HREF="cpp_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html907"
+  HREF="mip2_cpp_cpp.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html916"
+  HREF="piecewise_cpp_cpp.html">piecewise_c++.cpp</A>
+<B> Up:</B> <A NAME="tex2html914"
+  HREF="cpp_examples.html">C++ Examples</A>
+<B> Previous:</B> <A NAME="tex2html908"
+  HREF="mip2_cpp_cpp.html">mip2_c++.cpp</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

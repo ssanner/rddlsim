@@ -1,0 +1,155 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Starting a token server</TITLE>
+<META NAME="description" CONTENT="Starting a token server">
+<META NAME="keywords" CONTENT="quickstart_linux">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="quickstart_linux.css">
+
+<LINK REL="next" HREF="upgrading_a_token_server.html">
+<LINK REL="previous" HREF="retrieving_a_single_use_or.html">
+<LINK REL="up" HREF="setting_up_and_using_a_sin.html">
+<LINK REL="next" HREF="upgrading_a_token_server.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html313"
+  HREF="upgrading_a_token_server.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html311"
+  HREF="setting_up_and_using_a_sin.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html305"
+  HREF="retrieving_a_single_use_or.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html314"
+  HREF="upgrading_a_token_server.html">Upgrading a token server</A>
+<B> Up:</B> <A NAME="tex2html312"
+  HREF="setting_up_and_using_a_sin.html">Setting up and using</A>
+<B> Previous:</B> <A NAME="tex2html306"
+  HREF="retrieving_a_single_use_or.html">Retrieving a Single-Use or</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00033200000000000000"></A>
+<A NAME="subsubsection:starttokenserver"></A>
+<BR>
+Starting a token server
+</H3>
+
+<P>
+<B>Important note: most Gurobi licenses do not use the token server.
+  You should only follow these instructions if you are setting up
+  a single-use or floating license.  If you are not sure whether
+  you need to start a token server, you can examine the
+  contents of your <code>gurobi.lic</code> file.
+  If it contains the line <code>TYPE=TOKEN</code>, then you need
+  a token server.</B>
+
+<P>
+To start the Linux token server daemon, run the program <code>grb_ts</code>
+(with no arguments) on your token server machine.  You only need to do
+this once -- the token server will keep running until you stop it (or
+until the machine is shut down).  Be sure that the license key file
+has been installed before running this program.  Note that the token
+server runs as a user process, so you do not need root privileges to
+start it.
+
+<P>
+If you would like the token server to restart automatically when the
+machine is rebooted, there are a number of options for doing so
+(including <code>/etc/rc.local</code> and <code>upstart</code>).  You should talk
+to your system administrator.
+
+<P>
+To stop a running token server, you can issue the <code>grb_ts -s</code>
+command.  You can also use the <code>ps</code> command to find the relevant
+process ID, and the <code>kill</code> command to terminate that process.
+
+<P>
+Output from the token server goes to the system log
+(<code>/var/log/syslog</code>).  You should see a message similar to the
+following when you start the server:
+<PRE>
+Mar  9 12:37:21 mymachine grb[7917]: Gurobi Token Server started: Sat Mar  9 12:37:21 2013
+</PRE>
+By default, the token server only produces logging output when it
+starts.  To obtain more detailed logging information, start the token
+server with the <code>-v</code> switch.  This will produce a log message
+each time a token is checked in or out.
+
+<P>
+<SPAN  CLASS="textbf">Firewalls</SPAN>
+
+<P>
+If you run into trouble accessing the token server, check to see if
+the server is running firewall software that is blocking
+access to some ports.  The Gurobi token server uses port number 41954
+by default, so you'll need to open access to that port on the server.
+Please consult the documentation for your firewall software to
+determine how to do this.  If there's a conflict on the default port,
+you can choose a different one by adding a <code>PORT</code> line to both
+the server and the client license key files:
+<PRE>
+PORT=46325
+</PRE>
+You can choose any available port number.
+
+<P>
+<SPAN  CLASS="textbf">Next steps</SPAN>
+
+<P>
+Clients of the token server also need simple license files.
+Your next step is to set up a
+<A HREF="creating_a_token_server_cl.html#subsection:clientlicensetoken">client license</A>.
+
+<P>
+Once your token server is running and you've set up a client
+license, you can move on to
+<A HREF="testing_your_license.html#subsection:testlicense">testing the license</A>.
+
+<P>
+Once you've set up a client license, you can test the state of the
+token server at any time, as well as get a list of the clients that
+are currently using tokens, by typing <code>gurobi_cl --tokens</code>.
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html313"
+  HREF="upgrading_a_token_server.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html311"
+  HREF="setting_up_and_using_a_sin.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html305"
+  HREF="retrieving_a_single_use_or.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html314"
+  HREF="upgrading_a_token_server.html">Upgrading a token server</A>
+<B> Up:</B> <A NAME="tex2html312"
+  HREF="setting_up_and_using_a_sin.html">Setting up and using</A>
+<B> Previous:</B> <A NAME="tex2html306"
+  HREF="retrieving_a_single_use_or.html">Retrieving a Single-Use or</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

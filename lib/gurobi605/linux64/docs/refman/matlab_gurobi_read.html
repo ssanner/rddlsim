@@ -1,0 +1,118 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>gurobi_read()</TITLE>
+<META NAME="description" CONTENT="gurobi_read()">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="matlab_gurobi_write.html">
+<LINK REL="previous" HREF="matlab_reading_and_writing.html">
+<LINK REL="up" HREF="matlab_reading_and_writing.html">
+<LINK REL="next" HREF="matlab_gurobi_write.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html9221"
+  HREF="matlab_gurobi_write.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html9219"
+  HREF="matlab_reading_and_writing.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html9213"
+  HREF="matlab_reading_and_writing.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html9222"
+  HREF="matlab_gurobi_write.html">gurobi_write()</A>
+<B> Up:</B> <A NAME="tex2html9220"
+  HREF="matlab_reading_and_writing.html">Reading and writing models</A>
+<B> Previous:</B> <A NAME="tex2html9214"
+  HREF="matlab_reading_and_writing.html">Reading and writing models</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000112100000000000000"></A>
+<A NAME="matlabfunction:gurobi_read"></A>
+<BR>
+gurobi_read()
+</H3>
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">gurobi_read</SPAN></FONT></BIG></TD>
+<TD ALIGN="LEFT">( filename )</TD>
+</TR>
+</TABLE>
+
+<P>
+Reads a model from a file.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">filename</SPAN>: Name of the file to read. Note that the type of
+  the file is encoded in the file name suffix. The filename suffix
+  should be one of .mps, .rew, .lp, .rlp, or .ilp
+  (see the <A HREF="model_file_formats.html#sec:FileFormats">file formats</A>
+  section for details on Gurobi file
+  formats). The files can be compressed, so additional suffixes of
+  .gz, .bz2, .zip, or .7z are accepted. The file name may contain * or
+  ? wildcards. No file is read when no wildcard match is found. If
+  more than one match is found, this routine will attempt to read the
+  first matching file.
+
+<P>
+
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Return value:</SPAN></BIG>
+
+<P>
+A model struct containing multiple named
+  fields. See the
+  <A HREF="matlab_gurobi.html#matlabfunction:gurobi">gurobi</A> function for a
+  description of these fields and their contents.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Example usage:</SPAN></BIG><PRE>
+model = gurobi_read('etamacro.mps');
+result = gurobi(model)
+</PRE>
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html9221"
+  HREF="matlab_gurobi_write.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html9219"
+  HREF="matlab_reading_and_writing.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html9213"
+  HREF="matlab_reading_and_writing.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html9222"
+  HREF="matlab_gurobi_write.html">gurobi_write()</A>
+<B> Up:</B> <A NAME="tex2html9220"
+  HREF="matlab_reading_and_writing.html">Reading and writing models</A>
+<B> Previous:</B> <A NAME="tex2html9214"
+  HREF="matlab_reading_and_writing.html">Reading and writing models</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

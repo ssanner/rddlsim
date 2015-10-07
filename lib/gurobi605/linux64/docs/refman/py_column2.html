@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Column()</TITLE>
+<META NAME="description" CONTENT="Column()">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="py_column_addterms.html">
+<LINK REL="previous" HREF="py_column.html">
+<LINK REL="up" HREF="py_column.html">
+<LINK REL="next" HREF="py_column_addterms.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html8944"
+  HREF="py_column_addterms.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html8942"
+  HREF="py_column.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html8936"
+  HREF="py_column.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html8945"
+  HREF="py_column_addterms.html">Column.addTerms()</A>
+<B> Up:</B> <A NAME="tex2html8943"
+  HREF="py_column.html">Column</A>
+<B> Previous:</B> <A NAME="tex2html8937"
+  HREF="py_column.html">Column</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION0001010100000000000000"></A>
+<A NAME="pythonmethod:Column"></A>
+<BR>
+Column()
+</H3>
+<BIG CLASS="LARGE">
+<FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">Column</SPAN></FONT></BIG> ( coeffs=None, constrs=None )
+
+
+<P>
+Column constructor.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">coeffs (optional)</SPAN>: Lists the coefficients associated
+    with the members of <TT>constrs</TT>.
+
+<P>
+ <SPAN  CLASS="textbf">constrs (optional)</SPAN>: Constraint or constraints that
+  participate in expression.  If <TT>constrs</TT> is a list, then
+  <TT>coeffs</TT> must contain a list of the same length.  If <TT>constrs</TT>
+  is a single constraint, then <TT>coeffs</TT> must be a scalar.
+
+<P>
+
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Return value:</SPAN></BIG>
+
+<P>
+An expression object.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Example usage:</SPAN></BIG><PRE>
+  col = Column()
+  col = Column(3, c1)
+  col = Column([1.0, 2.0], [c1, c2])
+</PRE>
+
+<P>
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html8944"
+  HREF="py_column_addterms.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html8942"
+  HREF="py_column.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html8936"
+  HREF="py_column.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html8945"
+  HREF="py_column_addterms.html">Column.addTerms()</A>
+<B> Up:</B> <A NAME="tex2html8943"
+  HREF="py_column.html">Column</A>
+<B> Previous:</B> <A NAME="tex2html8937"
+  HREF="py_column.html">Column</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

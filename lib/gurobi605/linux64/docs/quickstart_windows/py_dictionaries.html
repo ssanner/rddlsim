@@ -1,0 +1,156 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Dictionaries</TITLE>
+<META NAME="description" CONTENT="Dictionaries">
+<META NAME="keywords" CONTENT="quickstart_windows">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="quickstart_windows.css">
+
+<LINK REL="next" HREF="py_list_comprehension.html">
+<LINK REL="previous" HREF="py_lists_and_tuples.html">
+<LINK REL="up" HREF="py_python_dictionary_examp.html">
+<LINK REL="next" HREF="py_list_comprehension.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html1378"
+  HREF="py_list_comprehension.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1376"
+  HREF="py_python_dictionary_examp.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1370"
+  HREF="py_lists_and_tuples.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1379"
+  HREF="py_list_comprehension.html">List comprehension</A>
+<B> Up:</B> <A NAME="tex2html1377"
+  HREF="py_python_dictionary_examp.html">Python Dictionary Example</A>
+<B> Previous:</B> <A NAME="tex2html1371"
+  HREF="py_lists_and_tuples.html">Lists and Tuples</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000113300000000000000">
+Dictionaries</A>
+</H3>
+
+<P>
+A Python <code>dictionary</code> allows you to map arbitrary <code>key</code>
+values to pieces of data.  Any <EM>immutable</EM> Python object can be
+used as a key: an integer, a floating-point number, a string, or even
+a tuple.
+
+<P>
+To give an example, the following statements create a dictionary <code>x</code>,
+and then associates a value <code>1</code> with key
+<code>('Pens', 'Denver', 'New York')</code>
+<PRE>
+gurobi&gt; x = {}  # creates an empty dictionary
+gurobi&gt; x[('Pens', 'Denver', 'New York')] = 1
+gurobi&gt; print x[('Pens', 'Denver', 'New York')]
+1
+</PRE>
+Python allows you to omit the parenthesis when accessing
+a dictionary using a tuple, so the following is also valid:
+<PRE>
+gurobi&gt; x = {}
+gurobi&gt; x['Pens', 'Denver', 'New York'] = 2
+gurobi&gt; print x['Pens', 'Denver', 'New York']
+2
+</PRE>
+We've stored integers in the dictionary here, but dictionaries can
+hold arbitrary objects.  In particular, they can hold Gurobi
+decision variables:
+<PRE>
+gurobi&gt; x['Pens', 'Denver', 'New York'] = model.addVar()
+gurobi&gt; print x['Pens', 'Denver', 'New York']
+&lt;gurobi.Var *Awaiting Model Update*&gt;
+</PRE>
+
+<P>
+To initialize a dictionary, you can of course simply perform
+assignments for each relevant key:
+<PRE>
+gurobi&gt; values = {}
+gurobi&gt; values['zero'] = 0
+gurobi&gt; values['one'] = 1
+gurobi&gt; values['two'] = 2
+</PRE>
+You can also use the Python dictionary initialization construct:
+<PRE>
+gurobi&gt; values = { 'zero': 0, 'one': 1, 'two': 2 }
+gurobi&gt; print values['zero']
+0
+gurobi&gt; print values['one']
+1
+</PRE>
+
+<P>
+We have included a utility routine in the Gurobi Python interface that
+simplifies dictionary initialization for a case that arises frequently
+in mathematical modeling.  The <code>multidict</code> function allows you
+to initialize one or more dictionaries in a single statement.  The
+function takes a dictionary as its argument, where the value
+associated with each key is a list of length <code>n</code>.  The function
+splits these lists into individual entries, creating <code>n</code>
+separate dictionaries.  The function returns a list.  The first
+result is the list of shared key values, followed by the <code>n</code>
+individual dictionaries:
+<PRE>
+gurobi&gt; names, lower, upper = multidict({ 'x': [0, 1], 'y': [1, 2], 'z': [0, 3] })
+gurobi&gt; print names
+['x', 'y', 'z']
+gurobi&gt; print lower
+{'x': 0, 'y': 1, 'z': 0}
+gurobi&gt; print upper
+{'x': 1, 'y': 2, 'z': 3}
+</PRE>
+Note that you can also apply this function to a dictionary where each
+key maps to a scalar value.  In that case, the function simply returns
+the list of keys as the first result, and the original dictionary as
+the second.
+
+<P>
+You will see this function in several of our Python examples.
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1378"
+  HREF="py_list_comprehension.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1376"
+  HREF="py_python_dictionary_examp.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1370"
+  HREF="py_lists_and_tuples.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1379"
+  HREF="py_list_comprehension.html">List comprehension</A>
+<B> Up:</B> <A NAME="tex2html1377"
+  HREF="py_python_dictionary_examp.html">Python Dictionary Example</A>
+<B> Previous:</B> <A NAME="tex2html1371"
+  HREF="py_lists_and_tuples.html">Lists and Tuples</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

@@ -1,0 +1,150 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>GRBModel::setObjective()</TITLE>
+<META NAME="description" CONTENT="GRBModel::setObjective()">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="cpp_grbmodel_setpwlobj.html">
+<LINK REL="previous" HREF="cpp_grbmodel_set.html">
+<LINK REL="up" HREF="cpp_grbmodel.html">
+<LINK REL="next" HREF="cpp_grbmodel_setpwlobj.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html3222"
+  HREF="cpp_grbmodel_setpwlobj.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html3220"
+  HREF="cpp_grbmodel.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html3214"
+  HREF="cpp_grbmodel_set.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html3223"
+  HREF="cpp_grbmodel_setpwlobj.html">GRBModel::setPWLObj()</A>
+<B> Up:</B> <A NAME="tex2html3221"
+  HREF="cpp_grbmodel.html">GRBModel</A>
+<B> Previous:</B> <A NAME="tex2html3215"
+  HREF="cpp_grbmodel_set.html">GRBModel::set()</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000424100000000000000"></A>
+<A NAME="cppmethod:GRBModel::setObjective"></A>
+<BR>
+GRBModel::setObjective()
+</H3>
+
+<P>
+Set the model objective equal to a linear or quadratic expression.
+
+<P>
+Note that you can also modify the linear portion of a model objective
+using the
+<A HREF="obj.html#attr:Obj">Obj</A> variable attribute.  If you wish to mix and
+match these two approaches, please note that this method replaces the
+entire existing objective, while the <code>Obj</code> attribute can be used
+to modify individual linear terms.
+
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">void</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">setObjective</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT">GRBLinExpr</TD>
+<TD ALIGN="LEFT">linexpr,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">sense=0 )</TD>
+</TR>
+</TABLE>
+
+<UL>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">linexpr</SPAN>: New linear model objective.
+
+<P>
+ <SPAN  CLASS="textbf">sense (optional)</SPAN>: Optimization sense
+  (<TT>GRB_MINIMIZE</TT> for minimization, <TT>GRB_MAXIMIZE</TT>
+  for maximization).  Omit this argument to use the <TT>ModelSense</TT>
+  attribute value to determine the sense.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">void</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">setObjective</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT">GRBQuadExpr</TD>
+<TD ALIGN="LEFT">quadexpr,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">sense=0 )</TD>
+</TR>
+</TABLE>
+
+<UL>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">quadexpr</SPAN>: New quadratic model objective.
+
+<P>
+ <SPAN  CLASS="textbf">sense (optional)</SPAN>: Optimization sense
+  (<TT>GRB_MINIMIZE</TT> for minimization, <TT>GRB_MAXIMIZE</TT>
+  for maximization).  Omit this argument to use the <TT>ModelSense</TT>
+  attribute value.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html3222"
+  HREF="cpp_grbmodel_setpwlobj.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html3220"
+  HREF="cpp_grbmodel.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html3214"
+  HREF="cpp_grbmodel_set.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html3223"
+  HREF="cpp_grbmodel_setpwlobj.html">GRBModel::setPWLObj()</A>
+<B> Up:</B> <A NAME="tex2html3221"
+  HREF="cpp_grbmodel.html">GRBModel</A>
+<B> Previous:</B> <A NAME="tex2html3215"
+  HREF="cpp_grbmodel_set.html">GRBModel::set()</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

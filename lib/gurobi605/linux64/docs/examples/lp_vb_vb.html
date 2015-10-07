@@ -1,0 +1,138 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>lp_vb.vb</TITLE>
+<META NAME="description" CONTENT="lp_vb.vb">
+<META NAME="keywords" CONTENT="examples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="examples.css">
+
+<LINK REL="next" HREF="lpmethod_vb_vb.html">
+<LINK REL="previous" HREF="fixanddive_vb_vb.html">
+<LINK REL="up" HREF="visual_basic_examples.html">
+<LINK REL="next" HREF="lpmethod_vb_vb.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html1681"
+  HREF="lpmethod_vb_vb.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1679"
+  HREF="visual_basic_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1673"
+  HREF="fixanddive_vb_vb.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1682"
+  HREF="lpmethod_vb_vb.html">lpmethod_vb.vb</A>
+<B> Up:</B> <A NAME="tex2html1680"
+  HREF="visual_basic_examples.html">Visual Basic Examples</A>
+<B> Previous:</B> <A NAME="tex2html1674"
+  HREF="fixanddive_vb_vb.html">fixanddive_vb.vb</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00025700000000000000"></A>
+<A NAME="subsubsection:lp_vb.vb"></A>
+<BR>
+lp_vb.vb
+</H3>
+
+<P>
+<BR>
+<PRE  CLASS="verbatim">' Copyright 2014, Gurobi Optimization, Inc.
+'
+' This example reads an LP model from a file and solves it.
+' If the model is infeasible or unbounded, the example turns off
+' presolve and solves the model again. If the model is infeasible,
+' the example computes an Irreducible Inconsistent Subsystem (IIS),
+' and writes it to a file.
+
+Imports System
+Imports Gurobi
+
+Class lp_vb
+    Shared Sub Main(ByVal args As String())
+
+        If args.Length &lt; 1 Then
+            Console.WriteLine("Usage: lp_vb filename")
+            Return
+        End If
+
+        Try
+            Dim env As GRBEnv = New GRBEnv("lp1.log")
+            Dim model As GRBModel = New GRBModel(env, args(0))
+
+            model.Optimize()
+
+            Dim optimstatus As Integer = model.Get(GRB.IntAttr.Status)
+
+            If optimstatus = GRB.Status.INF_OR_UNBD Then
+                model.GetEnv().Set(GRB.IntParam.Presolve, 0)
+                model.Optimize()
+                optimstatus = model.Get(GRB.IntAttr.Status)
+            End If
+
+            If optimstatus = GRB.Status.OPTIMAL Then
+                Dim objval As Double = model.Get(GRB.DoubleAttr.ObjVal)
+                Console.WriteLine("Optimal objective: " &amp; objval)
+            ElseIf optimstatus = GRB.Status.INFEASIBLE Then
+                Console.WriteLine("Model is infeasible")
+                model.ComputeIIS()
+                model.Write("model.ilp")
+            ElseIf optimstatus = GRB.Status.UNBOUNDED Then
+                Console.WriteLine("Model is unbounded")
+            Else
+                Console.WriteLine("Optimization was stopped with status = " &amp; _
+                                  optimstatus)
+            End If
+
+            ' Dispose of model and env
+            model.Dispose()
+            env.Dispose()
+
+        Catch e As GRBException
+            Console.WriteLine("Error code: " &amp; e.ErrorCode &amp; ". " &amp; e.Message)
+        End Try
+    End Sub
+End Class
+</PRE>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1681"
+  HREF="lpmethod_vb_vb.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1679"
+  HREF="visual_basic_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1673"
+  HREF="fixanddive_vb_vb.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1682"
+  HREF="lpmethod_vb_vb.html">lpmethod_vb.vb</A>
+<B> Up:</B> <A NAME="tex2html1680"
+  HREF="visual_basic_examples.html">Visual Basic Examples</A>
+<B> Previous:</B> <A NAME="tex2html1674"
+  HREF="fixanddive_vb_vb.html">fixanddive_vb.vb</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

@@ -1,0 +1,2122 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>GRBModel.set()</TITLE>
+<META NAME="description" CONTENT="GRBModel.set()">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="java_grbmodel_setobjective.html">
+<LINK REL="previous" HREF="java_grbmodel_setcallback.html">
+<LINK REL="up" HREF="java_grbmodel.html">
+<LINK REL="next" HREF="java_grbmodel_setobjective.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html4979"
+  HREF="java_grbmodel_setobjective.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html4977"
+  HREF="java_grbmodel.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html4971"
+  HREF="java_grbmodel_setcallback.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html4980"
+  HREF="java_grbmodel_setobjective.html">GRBModel.setObjective()</A>
+<B> Up:</B> <A NAME="tex2html4978"
+  HREF="java_grbmodel.html">GRBModel</A>
+<B> Previous:</B> <A NAME="tex2html4972"
+  HREF="java_grbmodel_setcallback.html">GRBModel.setCallback()</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000624000000000000000"></A>
+<A NAME="javamethod:GRBModel.set"></A>
+<BR>
+GRBModel.set()
+</H3>
+
+<P>
+Set the value(s) of an attribute.  Use this method for scalar model
+attributes, or for arrays of constraint or variable attributes.
+
+<P>
+
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">void</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">set</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT"><A HREF="java_grb_charattr.html#javaenum:GRB.CharAttr">GRB.CharAttr</A></TD>
+<TD ALIGN="LEFT">attr,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">GRBVar[]</TD>
+<TD ALIGN="LEFT">vars,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">char[]</TD>
+<TD ALIGN="LEFT">newvalues )</TD>
+</TR>
+</TABLE>
+
+<UL>
+Set a char-valued variable attribute for an array of variables.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">attr</SPAN>: The attribute being modified.
+
+<P>
+ <SPAN  CLASS="textbf">vars</SPAN>: The variables whose attribute values are being modified.
+
+<P>
+ <SPAN  CLASS="textbf">newvalues</SPAN>: The desired new values for the attribute for each
+input variable.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">void</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">set</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT"><A HREF="java_grb_charattr.html#javaenum:GRB.CharAttr">GRB.CharAttr</A></TD>
+<TD ALIGN="LEFT">attr,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">GRBVar[]</TD>
+<TD ALIGN="LEFT">vars,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">char[]</TD>
+<TD ALIGN="LEFT">newvalues,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">start,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">len )</TD>
+</TR>
+</TABLE>
+
+<UL>
+Set a char-valued variable attribute for a sub-array of variables.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">attr</SPAN>: The attribute being modified.
+
+<P>
+ <SPAN  CLASS="textbf">vars</SPAN>: A one-dimensional array of variables whose attribute
+  values are being modified.
+
+<P>
+ <SPAN  CLASS="textbf">newvalues</SPAN>: The desired new values for the attribute for each
+input variable.
+
+<P>
+ <SPAN  CLASS="textbf">start</SPAN>: The index of the first variable of interest in the list.
+
+<P>
+ <SPAN  CLASS="textbf">len</SPAN>: The number of variables.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">void</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">set</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT"><A HREF="java_grb_charattr.html#javaenum:GRB.CharAttr">GRB.CharAttr</A></TD>
+<TD ALIGN="LEFT">attr,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">GRBVar[][]</TD>
+<TD ALIGN="LEFT">vars,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">char[][]</TD>
+<TD ALIGN="LEFT">newvalues )</TD>
+</TR>
+</TABLE>
+
+<UL>
+Set a char-valued variable attribute for a two-dimensional array of
+variables.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">attr</SPAN>: The attribute being modified.
+
+<P>
+ <SPAN  CLASS="textbf">vars</SPAN>: A two-dimensional array of variables whose attribute
+  values are being modified.
+
+<P>
+ <SPAN  CLASS="textbf">newvalues</SPAN>: The desired new values for the attribute for each
+input variable.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">void</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">set</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT"><A HREF="java_grb_charattr.html#javaenum:GRB.CharAttr">GRB.CharAttr</A></TD>
+<TD ALIGN="LEFT">attr,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">GRBVar[][][]</TD>
+<TD ALIGN="LEFT">vars,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">char[][][]</TD>
+<TD ALIGN="LEFT">newvalues )</TD>
+</TR>
+</TABLE>
+
+<UL>
+Set a char-valued variable attribute for a three-dimensional array
+of variables.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">attr</SPAN>: The attribute being modified.
+
+<P>
+ <SPAN  CLASS="textbf">vars</SPAN>: A three-dimensional array of variables whose attribute
+  values are being modified.
+
+<P>
+ <SPAN  CLASS="textbf">newvalues</SPAN>: The desired new values for the attribute for each
+input variable.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">void</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">set</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT"><A HREF="java_grb_charattr.html#javaenum:GRB.CharAttr">GRB.CharAttr</A></TD>
+<TD ALIGN="LEFT">attr,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">GRBConstr[]</TD>
+<TD ALIGN="LEFT">constrs,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">char[]</TD>
+<TD ALIGN="LEFT">newvalues )</TD>
+</TR>
+</TABLE>
+
+<UL>
+Set a char-valued constraint attribute for an array of constraints.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">attr</SPAN>: The attribute being modified.
+
+<P>
+ <SPAN  CLASS="textbf">constrs</SPAN>: The constraints whose attribute values are being modified.
+
+<P>
+ <SPAN  CLASS="textbf">newvalues</SPAN>: The desired new values for the attribute for each
+input constraint.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">void</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">set</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT"><A HREF="java_grb_charattr.html#javaenum:GRB.CharAttr">GRB.CharAttr</A></TD>
+<TD ALIGN="LEFT">attr,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">GRBConstr[]</TD>
+<TD ALIGN="LEFT">constrs,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">char[]</TD>
+<TD ALIGN="LEFT">newvalues,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">start,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">len )</TD>
+</TR>
+</TABLE>
+
+<UL>
+Set a char-valued constraint attribute for a sub-array of constraints.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">attr</SPAN>: The attribute being modified.
+
+<P>
+ <SPAN  CLASS="textbf">constrs</SPAN>: A one-dimensional array of constraints whose attribute
+  values are being modified.
+
+<P>
+ <SPAN  CLASS="textbf">newvalues</SPAN>: The desired new values for the attribute for each
+input constraint.
+
+<P>
+ <SPAN  CLASS="textbf">start</SPAN>: The index of the first constraint of interest in the list.
+
+<P>
+ <SPAN  CLASS="textbf">len</SPAN>: The number of constraints.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">void</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">set</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT"><A HREF="java_grb_charattr.html#javaenum:GRB.CharAttr">GRB.CharAttr</A></TD>
+<TD ALIGN="LEFT">attr,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">GRBConstr[][]</TD>
+<TD ALIGN="LEFT">constrs,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">char[][]</TD>
+<TD ALIGN="LEFT">newvalues )</TD>
+</TR>
+</TABLE>
+
+<UL>
+Set a char-valued constraint attribute for a two-dimensional array of
+constraints.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">attr</SPAN>: The attribute being modified.
+
+<P>
+ <SPAN  CLASS="textbf">constrs</SPAN>: A two-dimensional array of constraints whose attribute
+  values are being modified.
+
+<P>
+ <SPAN  CLASS="textbf">newvalues</SPAN>: The desired new values for the attribute for each
+input constraint.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">void</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">set</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT"><A HREF="java_grb_charattr.html#javaenum:GRB.CharAttr">GRB.CharAttr</A></TD>
+<TD ALIGN="LEFT">attr,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">GRBConstr[][][]</TD>
+<TD ALIGN="LEFT">constrs,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">char[][][]</TD>
+<TD ALIGN="LEFT">newvalues )</TD>
+</TR>
+</TABLE>
+
+<UL>
+Set a char-valued constraint attribute for a three-dimensional array
+of constraints.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">attr</SPAN>: The attribute being modified.
+
+<P>
+ <SPAN  CLASS="textbf">constrs</SPAN>: A three-dimensional array of constraints whose attribute
+  values are being modified.
+
+<P>
+ <SPAN  CLASS="textbf">newvalues</SPAN>: The desired new values for the attribute for each
+input constraint.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">void</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">set</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT"><A HREF="java_grb_charattr.html#javaenum:GRB.CharAttr">GRB.CharAttr</A></TD>
+<TD ALIGN="LEFT">attr,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">GRBQConstr[]</TD>
+<TD ALIGN="LEFT">qconstrs,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">char[]</TD>
+<TD ALIGN="LEFT">newvalues )</TD>
+</TR>
+</TABLE>
+
+<UL>
+Set a char-valued quadratic constraint attribute for an array of quadratic constraints.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">attr</SPAN>: The attribute being modified.
+
+<P>
+ <SPAN  CLASS="textbf">qconstrs</SPAN>: The quadratic constraints whose attribute values are being modified.
+
+<P>
+ <SPAN  CLASS="textbf">newvalues</SPAN>: The desired new values for the attribute for each
+input quadratic constraint.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">void</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">set</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT"><A HREF="java_grb_charattr.html#javaenum:GRB.CharAttr">GRB.CharAttr</A></TD>
+<TD ALIGN="LEFT">attr,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">GRBQConstr[]</TD>
+<TD ALIGN="LEFT">qconstrs,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">char[]</TD>
+<TD ALIGN="LEFT">newvalues,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">start,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">len )</TD>
+</TR>
+</TABLE>
+
+<UL>
+Set a char-valued quadratic constraint attribute for a sub-array of quadratic constraints.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">attr</SPAN>: The attribute being modified.
+
+<P>
+ <SPAN  CLASS="textbf">qconstrs</SPAN>: A one-dimensional array of quadratic constraints whose attribute
+  values are being modified.
+
+<P>
+ <SPAN  CLASS="textbf">newvalues</SPAN>: The desired new values for the attribute for each
+input quadratic constraint.
+
+<P>
+ <SPAN  CLASS="textbf">start</SPAN>: The index of the first quadratic constraint of interest in the list.
+
+<P>
+ <SPAN  CLASS="textbf">len</SPAN>: The number of quadratic constraints.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">void</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">set</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT"><A HREF="java_grb_charattr.html#javaenum:GRB.CharAttr">GRB.CharAttr</A></TD>
+<TD ALIGN="LEFT">attr,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">GRBQConstr[][]</TD>
+<TD ALIGN="LEFT">qconstrs,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">char[][]</TD>
+<TD ALIGN="LEFT">newvalues )</TD>
+</TR>
+</TABLE>
+
+<UL>
+Set a char-valued quadratic constraint attribute for a two-dimensional array of
+quadratic constraints.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">attr</SPAN>: The attribute being modified.
+
+<P>
+ <SPAN  CLASS="textbf">qconstrs</SPAN>: A two-dimensional array of quadratic constraints whose attribute
+  values are being modified.
+
+<P>
+ <SPAN  CLASS="textbf">newvalues</SPAN>: The desired new values for the attribute for each
+input quadratic constraint.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">void</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">set</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT"><A HREF="java_grb_charattr.html#javaenum:GRB.CharAttr">GRB.CharAttr</A></TD>
+<TD ALIGN="LEFT">attr,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">GRBQConstr[][][]</TD>
+<TD ALIGN="LEFT">qconstrs,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">char[][][]</TD>
+<TD ALIGN="LEFT">newvalues )</TD>
+</TR>
+</TABLE>
+
+<UL>
+Set a char-valued quadratic constraint attribute for a three-dimensional array
+of quadratic constraints.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">attr</SPAN>: The attribute being modified.
+
+<P>
+ <SPAN  CLASS="textbf">qconstrs</SPAN>: A three-dimensional array of quadratic constraints whose attribute
+  values are being modified.
+
+<P>
+ <SPAN  CLASS="textbf">newvalues</SPAN>: The desired new values for the attribute for each
+input quadratic constraint.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">void</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">set</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT"><A HREF="java_grb_doubleattr.html#javaenum:GRB.DoubleAttr">GRB.DoubleAttr</A></TD>
+<TD ALIGN="LEFT">attr,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">double</TD>
+<TD ALIGN="LEFT">newvalue )</TD>
+</TR>
+</TABLE>
+
+<UL>
+Set the value of a double-valued model attribute.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">attr</SPAN>: The attribute being modified.
+
+<P>
+ <SPAN  CLASS="textbf">newvalue</SPAN>: The desired new value for the attribute.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">void</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">set</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT"><A HREF="java_grb_doubleattr.html#javaenum:GRB.DoubleAttr">GRB.DoubleAttr</A></TD>
+<TD ALIGN="LEFT">attr,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">GRBVar[]</TD>
+<TD ALIGN="LEFT">vars,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">double[]</TD>
+<TD ALIGN="LEFT">newvalues )</TD>
+</TR>
+</TABLE>
+
+<UL>
+Set a double-valued variable attribute for an array of variables.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">attr</SPAN>: The attribute being modified.
+
+<P>
+ <SPAN  CLASS="textbf">vars</SPAN>: The variables whose attribute values are being modified.
+
+<P>
+ <SPAN  CLASS="textbf">newvalues</SPAN>: The desired new values for the attribute for each
+input variable.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">void</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">set</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT"><A HREF="java_grb_doubleattr.html#javaenum:GRB.DoubleAttr">GRB.DoubleAttr</A></TD>
+<TD ALIGN="LEFT">attr,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">GRBVar[]</TD>
+<TD ALIGN="LEFT">vars,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">double[]</TD>
+<TD ALIGN="LEFT">newvalues,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">start,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">len )</TD>
+</TR>
+</TABLE>
+
+<UL>
+Set a double-valued variable attribute for a sub-array of variables.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">attr</SPAN>: The attribute being modified.
+
+<P>
+ <SPAN  CLASS="textbf">vars</SPAN>: A one-dimensional array of variables whose attribute
+  values are being modified.
+
+<P>
+ <SPAN  CLASS="textbf">newvalues</SPAN>: The desired new values for the attribute for each
+input variable.
+
+<P>
+ <SPAN  CLASS="textbf">start</SPAN>: The index of the first variable of interest in the list.
+
+<P>
+ <SPAN  CLASS="textbf">len</SPAN>: The number of variables.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">void</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">set</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT"><A HREF="java_grb_doubleattr.html#javaenum:GRB.DoubleAttr">GRB.DoubleAttr</A></TD>
+<TD ALIGN="LEFT">attr,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">GRBVar[][]</TD>
+<TD ALIGN="LEFT">vars,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">double[][]</TD>
+<TD ALIGN="LEFT">newvalues )</TD>
+</TR>
+</TABLE>
+
+<UL>
+Set a double-valued variable attribute for a two-dimensional array of
+variables.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">attr</SPAN>: The attribute being modified.
+
+<P>
+ <SPAN  CLASS="textbf">vars</SPAN>: A two-dimensional array of variables whose attribute
+  values are being modified.
+
+<P>
+ <SPAN  CLASS="textbf">newvalues</SPAN>: The desired new values for the attribute for each
+input variable.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">void</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">set</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT"><A HREF="java_grb_doubleattr.html#javaenum:GRB.DoubleAttr">GRB.DoubleAttr</A></TD>
+<TD ALIGN="LEFT">attr,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">GRBVar[][][]</TD>
+<TD ALIGN="LEFT">vars,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">double[][][]</TD>
+<TD ALIGN="LEFT">newvalues )</TD>
+</TR>
+</TABLE>
+
+<UL>
+Set a double-valued variable attribute for a three-dimensional array
+of variables.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">attr</SPAN>: The attribute being modified.
+
+<P>
+ <SPAN  CLASS="textbf">vars</SPAN>: A three-dimensional array of variables whose attribute
+  values are being modified.
+
+<P>
+ <SPAN  CLASS="textbf">newvalues</SPAN>: The desired new values for the attribute for each
+input variable.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">void</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">set</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT"><A HREF="java_grb_doubleattr.html#javaenum:GRB.DoubleAttr">GRB.DoubleAttr</A></TD>
+<TD ALIGN="LEFT">attr,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">GRBConstr[]</TD>
+<TD ALIGN="LEFT">constrs,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">double[]</TD>
+<TD ALIGN="LEFT">newvalues )</TD>
+</TR>
+</TABLE>
+
+<UL>
+Set a double-valued constraint attribute for an array of constraints.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">attr</SPAN>: The attribute being modified.
+
+<P>
+ <SPAN  CLASS="textbf">constrs</SPAN>: The constraints whose attribute values are being modified.
+
+<P>
+ <SPAN  CLASS="textbf">newvalues</SPAN>: The desired new values for the attribute for each
+input constraint.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">void</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">set</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT"><A HREF="java_grb_doubleattr.html#javaenum:GRB.DoubleAttr">GRB.DoubleAttr</A></TD>
+<TD ALIGN="LEFT">attr,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">GRBConstr[]</TD>
+<TD ALIGN="LEFT">constrs,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">double[]</TD>
+<TD ALIGN="LEFT">newvalues,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">start,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">len )</TD>
+</TR>
+</TABLE>
+
+<UL>
+Set a double-valued constraint attribute for a sub-array of constraints.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">attr</SPAN>: The attribute being modified.
+
+<P>
+ <SPAN  CLASS="textbf">constrs</SPAN>: A one-dimensional array of constraints whose attribute
+  values are being modified.
+
+<P>
+ <SPAN  CLASS="textbf">newvalues</SPAN>: The desired new values for the attribute for each
+input constraint.
+
+<P>
+ <SPAN  CLASS="textbf">start</SPAN>: The first constraint of interest in the list.
+
+<P>
+ <SPAN  CLASS="textbf">len</SPAN>: The number of constraints.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">void</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">set</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT"><A HREF="java_grb_doubleattr.html#javaenum:GRB.DoubleAttr">GRB.DoubleAttr</A></TD>
+<TD ALIGN="LEFT">attr,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">GRBConstr[][]</TD>
+<TD ALIGN="LEFT">constrs,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">double[][]</TD>
+<TD ALIGN="LEFT">newvalues )</TD>
+</TR>
+</TABLE>
+
+<UL>
+Set a double-valued constraint attribute for a two-dimensional array of
+constraints.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">attr</SPAN>: The attribute being modified.
+
+<P>
+ <SPAN  CLASS="textbf">constrs</SPAN>: A two-dimensional array of constraints whose attribute
+  values are being modified.
+
+<P>
+ <SPAN  CLASS="textbf">newvalues</SPAN>: The desired new values for the attribute for each
+input constraint.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">void</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">set</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT"><A HREF="java_grb_doubleattr.html#javaenum:GRB.DoubleAttr">GRB.DoubleAttr</A></TD>
+<TD ALIGN="LEFT">attr,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">GRBConstr[][][]</TD>
+<TD ALIGN="LEFT">constrs,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">double[][][]</TD>
+<TD ALIGN="LEFT">newvalues )</TD>
+</TR>
+</TABLE>
+
+<UL>
+Set a double-valued constraint attribute for a three-dimensional array
+of constraints.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">attr</SPAN>: The attribute being modified.
+
+<P>
+ <SPAN  CLASS="textbf">constrs</SPAN>: A three-dimensional array of constraints whose attribute
+  values are being modified.
+
+<P>
+ <SPAN  CLASS="textbf">newvalues</SPAN>: The desired new values for the attribute for each
+input constraint.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">void</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">set</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT"><A HREF="java_grb_doubleattr.html#javaenum:GRB.DoubleAttr">GRB.DoubleAttr</A></TD>
+<TD ALIGN="LEFT">attr,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">GRBQConstr[]</TD>
+<TD ALIGN="LEFT">qconstrs,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">double[]</TD>
+<TD ALIGN="LEFT">newvalues )</TD>
+</TR>
+</TABLE>
+
+<UL>
+Set a double-valued quadratic constraint attribute for an array of quadratic constraints.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">attr</SPAN>: The attribute being modified.
+
+<P>
+ <SPAN  CLASS="textbf">qconstrs</SPAN>: The quadratic constraints whose attribute values are being modified.
+
+<P>
+ <SPAN  CLASS="textbf">newvalues</SPAN>: The desired new values for the attribute for each
+input quadratic constraint.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">void</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">set</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT"><A HREF="java_grb_doubleattr.html#javaenum:GRB.DoubleAttr">GRB.DoubleAttr</A></TD>
+<TD ALIGN="LEFT">attr,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">GRBQConstr[]</TD>
+<TD ALIGN="LEFT">qconstrs,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">double[]</TD>
+<TD ALIGN="LEFT">newvalues,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">start,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">len )</TD>
+</TR>
+</TABLE>
+
+<UL>
+Set a double-valued quadratic constraint attribute for a sub-array of quadratic constraints.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">attr</SPAN>: The attribute being modified.
+
+<P>
+ <SPAN  CLASS="textbf">qconstrs</SPAN>: A one-dimensional array of quadratic constraints whose attribute
+  values are being modified.
+
+<P>
+ <SPAN  CLASS="textbf">newvalues</SPAN>: The desired new values for the attribute for each
+input quadratic constraint.
+
+<P>
+ <SPAN  CLASS="textbf">start</SPAN>: The first quadratic constraint of interest in the list.
+
+<P>
+ <SPAN  CLASS="textbf">len</SPAN>: The number of quadratic constraints.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">void</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">set</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT"><A HREF="java_grb_doubleattr.html#javaenum:GRB.DoubleAttr">GRB.DoubleAttr</A></TD>
+<TD ALIGN="LEFT">attr,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">GRBQConstr[][]</TD>
+<TD ALIGN="LEFT">qconstrs,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">double[][]</TD>
+<TD ALIGN="LEFT">newvalues )</TD>
+</TR>
+</TABLE>
+
+<UL>
+Set a double-valued quadratic constraint attribute for a two-dimensional array of
+quadratic constraints.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">attr</SPAN>: The attribute being modified.
+
+<P>
+ <SPAN  CLASS="textbf">qconstrs</SPAN>: A two-dimensional array of quadratic constraints whose attribute
+  values are being modified.
+
+<P>
+ <SPAN  CLASS="textbf">newvalues</SPAN>: The desired new values for the attribute for each
+input quadratic constraint.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">void</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">set</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT"><A HREF="java_grb_doubleattr.html#javaenum:GRB.DoubleAttr">GRB.DoubleAttr</A></TD>
+<TD ALIGN="LEFT">attr,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">GRBQConstr[][][]</TD>
+<TD ALIGN="LEFT">qconstrs,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">double[][][]</TD>
+<TD ALIGN="LEFT">newvalues )</TD>
+</TR>
+</TABLE>
+
+<UL>
+Set a double-valued quadratic constraint attribute for a three-dimensional array
+of quadratic constraints.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">attr</SPAN>: The attribute being modified.
+
+<P>
+ <SPAN  CLASS="textbf">qconstrs</SPAN>: A three-dimensional array of quadratic constraints whose attribute
+  values are being modified.
+
+<P>
+ <SPAN  CLASS="textbf">newvalues</SPAN>: The desired new values for the attribute for each
+input quadratic constraint.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">void</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">set</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT"><A HREF="java_grb_intattr.html#javaenum:GRB.IntAttr">GRB.IntAttr</A></TD>
+<TD ALIGN="LEFT">attr,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">newvalue )</TD>
+</TR>
+</TABLE>
+
+<UL>
+Set the value of an int-valued model attribute.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">attr</SPAN>: The attribute being modified.
+
+<P>
+ <SPAN  CLASS="textbf">newvalue</SPAN>: The desired new value for the attribute.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">void</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">set</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT"><A HREF="java_grb_intattr.html#javaenum:GRB.IntAttr">GRB.IntAttr</A></TD>
+<TD ALIGN="LEFT">attr,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">GRBVar[]</TD>
+<TD ALIGN="LEFT">vars,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int[]</TD>
+<TD ALIGN="LEFT">newvalues )</TD>
+</TR>
+</TABLE>
+
+<UL>
+Set an int-valued variable attribute for an array of variables.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">attr</SPAN>: The attribute being modified.
+
+<P>
+ <SPAN  CLASS="textbf">vars</SPAN>: The variables whose attribute values are being modified.
+
+<P>
+ <SPAN  CLASS="textbf">newvalues</SPAN>: The desired new values for the attribute for each
+input variable.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">void</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">set</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT"><A HREF="java_grb_intattr.html#javaenum:GRB.IntAttr">GRB.IntAttr</A></TD>
+<TD ALIGN="LEFT">attr,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">GRBVar[]</TD>
+<TD ALIGN="LEFT">vars,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int[]</TD>
+<TD ALIGN="LEFT">newvalues,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">start,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">len )</TD>
+</TR>
+</TABLE>
+
+<UL>
+Set an int-valued variable attribute for a sub-array of variables.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">attr</SPAN>: The attribute being modified.
+
+<P>
+ <SPAN  CLASS="textbf">vars</SPAN>: A one-dimensional array of variables whose attribute
+  values are being modified.
+
+<P>
+ <SPAN  CLASS="textbf">newvalues</SPAN>: The desired new values for the attribute for each
+input variable.
+
+<P>
+ <SPAN  CLASS="textbf">start</SPAN>: The index of the first variable of interest in the list.
+
+<P>
+ <SPAN  CLASS="textbf">len</SPAN>: The number of variables.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">void</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">set</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT"><A HREF="java_grb_intattr.html#javaenum:GRB.IntAttr">GRB.IntAttr</A></TD>
+<TD ALIGN="LEFT">attr,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">GRBVar[][]</TD>
+<TD ALIGN="LEFT">vars,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int[][]</TD>
+<TD ALIGN="LEFT">newvalues )</TD>
+</TR>
+</TABLE>
+
+<UL>
+Set an int-valued variable attribute for a two-dimensional array of
+variables.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">attr</SPAN>: The attribute being modified.
+
+<P>
+ <SPAN  CLASS="textbf">vars</SPAN>: A two-dimensional array of variables whose attribute
+  values are being modified.
+
+<P>
+ <SPAN  CLASS="textbf">newvalues</SPAN>: The desired new values for the attribute for each
+input variable.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">void</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">set</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT"><A HREF="java_grb_intattr.html#javaenum:GRB.IntAttr">GRB.IntAttr</A></TD>
+<TD ALIGN="LEFT">attr,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">GRBVar[][][]</TD>
+<TD ALIGN="LEFT">vars,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int[][][]</TD>
+<TD ALIGN="LEFT">newvalues )</TD>
+</TR>
+</TABLE>
+
+<UL>
+Set an int-valued variable attribute for a three-dimensional array
+of variables.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">attr</SPAN>: The attribute being modified.
+
+<P>
+ <SPAN  CLASS="textbf">vars</SPAN>: A three-dimensional array of variables whose attribute
+  values are being modified.
+
+<P>
+ <SPAN  CLASS="textbf">newvalues</SPAN>: The desired new values for the attribute for each
+input variable.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">void</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">set</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT"><A HREF="java_grb_intattr.html#javaenum:GRB.IntAttr">GRB.IntAttr</A></TD>
+<TD ALIGN="LEFT">attr,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">GRBConstr[]</TD>
+<TD ALIGN="LEFT">constrs,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int[]</TD>
+<TD ALIGN="LEFT">newvalues )</TD>
+</TR>
+</TABLE>
+
+<UL>
+Set an int-valued constraint attribute for an array of constraints.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">attr</SPAN>: The attribute being modified.
+
+<P>
+ <SPAN  CLASS="textbf">constrs</SPAN>: The constraints whose attribute values are being modified.
+
+<P>
+ <SPAN  CLASS="textbf">newvalues</SPAN>: The desired new values for the attribute for each
+input constraint.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">void</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">set</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT"><A HREF="java_grb_intattr.html#javaenum:GRB.IntAttr">GRB.IntAttr</A></TD>
+<TD ALIGN="LEFT">attr,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">GRBConstr[]</TD>
+<TD ALIGN="LEFT">constrs,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int[]</TD>
+<TD ALIGN="LEFT">newvalues,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">start,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">len )</TD>
+</TR>
+</TABLE>
+
+<UL>
+Set an int-valued constraint attribute for a sub-array of constraints.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">attr</SPAN>: The attribute being modified.
+
+<P>
+ <SPAN  CLASS="textbf">constrs</SPAN>: A one-dimensional array of constraints whose attribute
+  values are being modified.
+
+<P>
+ <SPAN  CLASS="textbf">newvalues</SPAN>: The desired new values for the attribute for each
+input constraint.
+
+<P>
+ <SPAN  CLASS="textbf">start</SPAN>: The index of the first constraint of interest in the list.
+
+<P>
+ <SPAN  CLASS="textbf">len</SPAN>: The number of constraints.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">void</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">set</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT"><A HREF="java_grb_intattr.html#javaenum:GRB.IntAttr">GRB.IntAttr</A></TD>
+<TD ALIGN="LEFT">attr,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">GRBConstr[][]</TD>
+<TD ALIGN="LEFT">constrs,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int[][]</TD>
+<TD ALIGN="LEFT">newvalues )</TD>
+</TR>
+</TABLE>
+
+<UL>
+Set an int-valued constraint attribute for a two-dimensional array of
+constraints.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">attr</SPAN>: The attribute being modified.
+
+<P>
+ <SPAN  CLASS="textbf">constrs</SPAN>: A two-dimensional array of constraints whose attribute
+  values are being modified.
+
+<P>
+ <SPAN  CLASS="textbf">newvalues</SPAN>: The desired new values for the attribute for each
+input constraint.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">void</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">set</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT"><A HREF="java_grb_intattr.html#javaenum:GRB.IntAttr">GRB.IntAttr</A></TD>
+<TD ALIGN="LEFT">attr,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">GRBConstr[][][]</TD>
+<TD ALIGN="LEFT">constrs,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int[][][]</TD>
+<TD ALIGN="LEFT">newvalues )</TD>
+</TR>
+</TABLE>
+
+<UL>
+Set an int-valued constraint attribute for a three-dimensional array
+of constraints.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">attr</SPAN>: The attribute being modified.
+
+<P>
+ <SPAN  CLASS="textbf">constrs</SPAN>: A three-dimensional array of constraints whose attribute
+  values are being modified.
+
+<P>
+ <SPAN  CLASS="textbf">newvalues</SPAN>: The desired new values for the attribute for each
+input constraint.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">void</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">set</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT"><A HREF="java_grb_stringattr.html#javaenum:GRB.StringAttr">GRB.StringAttr</A></TD>
+<TD ALIGN="LEFT">attr,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">String</TD>
+<TD ALIGN="LEFT">newvalue )</TD>
+</TR>
+</TABLE>
+
+<UL>
+Set the value of a String-valued model attribute.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">attr</SPAN>: The attribute being modified.
+
+<P>
+ <SPAN  CLASS="textbf">newvalue</SPAN>: The desired new value for the attribute.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">void</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">set</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT"><A HREF="java_grb_stringattr.html#javaenum:GRB.StringAttr">GRB.StringAttr</A></TD>
+<TD ALIGN="LEFT">attr,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">GRBVar[]</TD>
+<TD ALIGN="LEFT">vars,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">String[]</TD>
+<TD ALIGN="LEFT">newvalues )</TD>
+</TR>
+</TABLE>
+
+<UL>
+Set a String-valued variable attribute for an array of variables.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">attr</SPAN>: The attribute being modified.
+
+<P>
+ <SPAN  CLASS="textbf">vars</SPAN>: The variables whose attribute values are being modified.
+
+<P>
+ <SPAN  CLASS="textbf">newvalues</SPAN>: The desired new values for the attribute for each
+input variable.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">void</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">set</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT"><A HREF="java_grb_stringattr.html#javaenum:GRB.StringAttr">GRB.StringAttr</A></TD>
+<TD ALIGN="LEFT">attr,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">GRBVar[]</TD>
+<TD ALIGN="LEFT">vars,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">String[]</TD>
+<TD ALIGN="LEFT">newvalues,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">start,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">len )</TD>
+</TR>
+</TABLE>
+
+<UL>
+Set a String-valued variable attribute for a sub-array of variables.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">attr</SPAN>: The attribute being modified.
+
+<P>
+ <SPAN  CLASS="textbf">vars</SPAN>: A one-dimensional array of variables whose attribute
+  values are being modified.
+
+<P>
+ <SPAN  CLASS="textbf">newvalues</SPAN>: The desired new values for the attribute for each
+input variable.
+
+<P>
+ <SPAN  CLASS="textbf">start</SPAN>: The index of the first variable of interest in the list.
+
+<P>
+ <SPAN  CLASS="textbf">len</SPAN>: The number of variables.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">void</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">set</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT"><A HREF="java_grb_stringattr.html#javaenum:GRB.StringAttr">GRB.StringAttr</A></TD>
+<TD ALIGN="LEFT">attr,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">GRBVar[][]</TD>
+<TD ALIGN="LEFT">vars,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">String[][]</TD>
+<TD ALIGN="LEFT">newvalues )</TD>
+</TR>
+</TABLE>
+
+<UL>
+Set a String-valued variable attribute for a two-dimensional array of
+variables.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">attr</SPAN>: The attribute being modified.
+
+<P>
+ <SPAN  CLASS="textbf">vars</SPAN>: A two-dimensional array of variables whose attribute
+  values are being modified.
+
+<P>
+ <SPAN  CLASS="textbf">newvalues</SPAN>: The desired new values for the attribute for each
+input variable.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">void</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">set</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT"><A HREF="java_grb_stringattr.html#javaenum:GRB.StringAttr">GRB.StringAttr</A></TD>
+<TD ALIGN="LEFT">attr,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">GRBVar[][][]</TD>
+<TD ALIGN="LEFT">vars,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">String[][][]</TD>
+<TD ALIGN="LEFT">newvalues )</TD>
+</TR>
+</TABLE>
+
+<UL>
+Set a String-valued variable attribute for a three-dimensional array
+of variables.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">attr</SPAN>: The attribute being modified.
+
+<P>
+ <SPAN  CLASS="textbf">vars</SPAN>: A three-dimensional array of variables whose attribute
+  values are being modified.
+
+<P>
+ <SPAN  CLASS="textbf">newvalues</SPAN>: The desired new values for the attribute for each
+input variable.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">void</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">set</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT"><A HREF="java_grb_stringattr.html#javaenum:GRB.StringAttr">GRB.StringAttr</A></TD>
+<TD ALIGN="LEFT">attr,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">GRBConstr[]</TD>
+<TD ALIGN="LEFT">constrs,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">String[]</TD>
+<TD ALIGN="LEFT">newvalues )</TD>
+</TR>
+</TABLE>
+
+<UL>
+Set a String-valued constraint attribute for an array of constraints.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">attr</SPAN>: The attribute being modified.
+
+<P>
+ <SPAN  CLASS="textbf">constrs</SPAN>: The constraints whose attribute values are being modified.
+
+<P>
+ <SPAN  CLASS="textbf">newvalues</SPAN>: The desired new values for the attribute for each
+input constraint.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">void</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">set</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT"><A HREF="java_grb_stringattr.html#javaenum:GRB.StringAttr">GRB.StringAttr</A></TD>
+<TD ALIGN="LEFT">attr,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">GRBConstr[]</TD>
+<TD ALIGN="LEFT">constrs,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">String[]</TD>
+<TD ALIGN="LEFT">newvalues,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">start,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">len )</TD>
+</TR>
+</TABLE>
+
+<UL>
+Set a String-valued constraint attribute for a sub-array of constraints.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">attr</SPAN>: The attribute being modified.
+
+<P>
+ <SPAN  CLASS="textbf">constrs</SPAN>: A one-dimensional array of constraints whose attribute
+  values are being modified.
+
+<P>
+ <SPAN  CLASS="textbf">newvalues</SPAN>: The desired new values for the attribute for each
+input constraint.
+
+<P>
+ <SPAN  CLASS="textbf">start</SPAN>: The index of the first constraint of interest in the list.
+
+<P>
+ <SPAN  CLASS="textbf">len</SPAN>: The number of constraints.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">void</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">set</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT"><A HREF="java_grb_stringattr.html#javaenum:GRB.StringAttr">GRB.StringAttr</A></TD>
+<TD ALIGN="LEFT">attr,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">GRBConstr[][]</TD>
+<TD ALIGN="LEFT">constrs,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">String[][]</TD>
+<TD ALIGN="LEFT">newvalues )</TD>
+</TR>
+</TABLE>
+
+<UL>
+Set a String-valued constraint attribute for a two-dimensional array of
+constraints.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">attr</SPAN>: The attribute being modified.
+
+<P>
+ <SPAN  CLASS="textbf">constrs</SPAN>: A two-dimensional array of constraints whose attribute
+  values are being modified.
+
+<P>
+ <SPAN  CLASS="textbf">newvalues</SPAN>: The desired new values for the attribute for each
+input constraint.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">void</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">set</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT"><A HREF="java_grb_stringattr.html#javaenum:GRB.StringAttr">GRB.StringAttr</A></TD>
+<TD ALIGN="LEFT">attr,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">GRBConstr[][][]</TD>
+<TD ALIGN="LEFT">constrs,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">String[][][]</TD>
+<TD ALIGN="LEFT">newvalues )</TD>
+</TR>
+</TABLE>
+
+<UL>
+Set a String-valued constraint attribute for a three-dimensional array
+of constraints.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">attr</SPAN>: The attribute being modified.
+
+<P>
+ <SPAN  CLASS="textbf">constrs</SPAN>: A three-dimensional array of constraints whose attribute
+  values are being modified.
+
+<P>
+ <SPAN  CLASS="textbf">newvalues</SPAN>: The desired new values for the attribute for each
+input constraint.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">void</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">set</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT"><A HREF="java_grb_stringattr.html#javaenum:GRB.StringAttr">GRB.StringAttr</A></TD>
+<TD ALIGN="LEFT">attr,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">GRBQConstr[]</TD>
+<TD ALIGN="LEFT">qconstrs,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">String[]</TD>
+<TD ALIGN="LEFT">newvalues )</TD>
+</TR>
+</TABLE>
+
+<UL>
+Set a String-valued quadratic constraint attribute for an array of quadratic constraints.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">attr</SPAN>: The attribute being modified.
+
+<P>
+ <SPAN  CLASS="textbf">qconstrs</SPAN>: The quadratic constraints whose attribute values are being modified.
+
+<P>
+ <SPAN  CLASS="textbf">newvalues</SPAN>: The desired new values for the attribute for each
+input quadratic constraint.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">void</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">set</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT"><A HREF="java_grb_stringattr.html#javaenum:GRB.StringAttr">GRB.StringAttr</A></TD>
+<TD ALIGN="LEFT">attr,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">GRBQConstr[]</TD>
+<TD ALIGN="LEFT">qconstrs,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">String[]</TD>
+<TD ALIGN="LEFT">newvalues,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">start,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">len )</TD>
+</TR>
+</TABLE>
+
+<UL>
+Set a String-valued quadratic constraint attribute for a sub-array of quadratic constraints.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">attr</SPAN>: The attribute being modified.
+
+<P>
+ <SPAN  CLASS="textbf">qconstrs</SPAN>: A one-dimensional array of quadratic constraints whose attribute
+  values are being modified.
+
+<P>
+ <SPAN  CLASS="textbf">newvalues</SPAN>: The desired new values for the attribute for each
+input quadratic constraint.
+
+<P>
+ <SPAN  CLASS="textbf">start</SPAN>: The index of the first quadratic constraint of interest in the list.
+
+<P>
+ <SPAN  CLASS="textbf">len</SPAN>: The number of quadratic constraints.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">void</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">set</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT"><A HREF="java_grb_stringattr.html#javaenum:GRB.StringAttr">GRB.StringAttr</A></TD>
+<TD ALIGN="LEFT">attr,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">GRBQConstr[][]</TD>
+<TD ALIGN="LEFT">qconstrs,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">String[][]</TD>
+<TD ALIGN="LEFT">newvalues )</TD>
+</TR>
+</TABLE>
+
+<UL>
+Set a String-valued quadratic constraint attribute for a two-dimensional array of
+quadratic constraints.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">attr</SPAN>: The attribute being modified.
+
+<P>
+ <SPAN  CLASS="textbf">qconstrs</SPAN>: A two-dimensional array of quadratic constraints whose attribute
+  values are being modified.
+
+<P>
+ <SPAN  CLASS="textbf">newvalues</SPAN>: The desired new values for the attribute for each
+input quadratic constraint.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">void</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">set</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT"><A HREF="java_grb_stringattr.html#javaenum:GRB.StringAttr">GRB.StringAttr</A></TD>
+<TD ALIGN="LEFT">attr,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">GRBQConstr[][][]</TD>
+<TD ALIGN="LEFT">qconstrs,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">String[][][]</TD>
+<TD ALIGN="LEFT">newvalues )</TD>
+</TR>
+</TABLE>
+
+<UL>
+Set a String-valued quadratic constraint attribute for a three-dimensional array
+of quadratic constraints.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">attr</SPAN>: The attribute being modified.
+
+<P>
+ <SPAN  CLASS="textbf">qconstrs</SPAN>: A three-dimensional array of quadratic constraints whose attribute
+  values are being modified.
+
+<P>
+ <SPAN  CLASS="textbf">newvalues</SPAN>: The desired new values for the attribute for each
+input quadratic constraint.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html4979"
+  HREF="java_grbmodel_setobjective.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html4977"
+  HREF="java_grbmodel.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html4971"
+  HREF="java_grbmodel_setcallback.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html4980"
+  HREF="java_grbmodel_setobjective.html">GRBModel.setObjective()</A>
+<B> Up:</B> <A NAME="tex2html4978"
+  HREF="java_grbmodel.html">GRBModel</A>
+<B> Previous:</B> <A NAME="tex2html4972"
+  HREF="java_grbmodel_setcallback.html">GRBModel.setCallback()</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

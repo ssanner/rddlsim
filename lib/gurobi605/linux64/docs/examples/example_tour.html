@@ -1,0 +1,201 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Example tour</TITLE>
+<META NAME="description" CONTENT="Example tour">
+<META NAME="keywords" CONTENT="examples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="examples.css">
+
+<LINK REL="next" HREF="example_source_code.html">
+<LINK REL="previous" HREF="examples.html">
+<LINK REL="up" HREF="examples.html">
+<LINK REL="next" HREF="a_list_of_the_gurobi_examp.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html200"
+  HREF="a_list_of_the_gurobi_examp.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html198"
+  HREF="examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html192"
+  HREF="examples.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html201"
+  HREF="a_list_of_the_gurobi_examp.html">A list of the</A>
+<B> Up:</B> <A NAME="tex2html199"
+  HREF="examples.html">Gurobi Optimizer Example Tour</A>
+<B> Previous:</B> <A NAME="tex2html193"
+  HREF="examples.html">Gurobi Optimizer Example Tour</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00010000000000000000"></A>
+<A NAME="section:Overview"></A>
+<BR>
+Example tour
+</H1>
+
+<P>
+This document provides a
+quick guided tour of the Gurobi examples; we will try to highlight
+some of the most important features of these examples.  Full source
+code is provided in this document, so you are free to explore the
+examples in full detail.
+
+<P>
+Wherever possible, we try to discuss the examples in a manner that is independent of programming languages.  We will refer to each example
+using a brief, language independent name.  You will need to map this
+name to the specific source file name for your language.  For example,
+the <code>facility</code> example corresponds to six different
+implementations, one in C
+(<A HREF="facility_c_c.html#subsubsection:facility_c.c">facility_c.c</A>), one in C++
+(<A HREF="facility_cpp_cpp.html#subsubsection:facility_c++.cpp">facility_c++.cpp</A>),
+one in Java
+(<A HREF="facility_java.html#subsubsection:Facility.java">Facility.java</A>),
+one in C#
+(<A HREF="facility_cs_cs.html#subsubsection:facility_cs.cs">facility_cs.cs</A>),
+one in Visual Basic
+(<A HREF="facility_vb_vb.html#subsubsection:facility_vb.vb">facility_vb.vb</A>),
+and one
+in Python (<A HREF="facility_py.html#subsubsection:facility.py">facility.py</A>).  If
+you would like to look at the language implementation for a particular
+example, please refer to the appropriate example source file.
+
+<P>
+<SPAN  CLASS="textbf">Topics covered in the examples</SPAN>
+
+<P>
+The easiest place to start your introduction to the Gurobi examples is
+probably with the examples that <A HREF="load_and_solve_a_model_fro.html#subsection:Loading">load and solve a model from a file</A>.  These
+demonstrate the most basic capabilities of the Gurobi libraries.  They
+also demonstrate the use of model attributes, which are an important
+concept in the Gurobi optimizer.
+
+<P>
+Once you are comfortable with these examples, you should move on to
+the examples that <A HREF="build_a_model.html#subsection:Building">build a model</A>
+from scratch.  These show you how to create variables and constraints,
+and add them to an optimization model.  They also illustrate the use
+of <EM>lazy updates</EM>, which you will need to understand in order to
+use the Gurobi libraries.
+
+<P>
+The next topic covered in this document is <A HREF="modify_a_model.html#subsection:Modification">model
+  modification</A>.  The Gurobi distribution
+includes examples that add and remove constraints, add variables, and
+change variable types, bounds and objective coefficients.  You modify
+a model in much the same way that you build a model from scratch, but
+there are some important differences involving the use of the solution
+information.
+
+<P>
+Next, this document covers <A HREF="change_parameters.html#subsection:Parameters">parameter
+  changes</A>.  The <code>params</code> example
+shows you how to change parameters, and in particular how to use
+different parameter settings for different models.
+
+<P>
+On a related note, the <A HREF="automated_parameter_tuning.html#subsection:Tuning">tuning</A>
+section demonstrates the use of our automated tuning tool.  This tool
+searches for parameter settings that improve performance on a
+particular model.
+
+<P>
+The <A HREF="diagnose_and_cope_with_inf.html#subsection:Infeasibility">infeasibility</A> section
+considers a few examples that cope with model infeasibility.  Some use
+an Irreducible Inconsistent Subsystem (IIS) to handle the
+infeasibility, while others relax constraints.
+
+<P>
+One useful MIP feature that is worth understanding is <A HREF="mip_starts.html#subsection:Starts">MIP
+  starts</A>.  A MIP start allows you to specify a
+known feasible solution to the MIP solver.  The solution provides a
+bound on the objective of the best possible solution, which can help
+to limit the MIP search.  The solution also provides a potential start
+point for the local search heuristics that are utilized by the Gurobi
+MIP solver.
+
+<P>
+It is possible to achieve model-data separation when using our Python
+interface, as is often done in modeling languages, but you need to
+make use of Python modules to do so.  The <A HREF="model_data_separation_in_p.html#subsection:ModelDataSeparation">model-data
+  separation</A> section provides an
+example of how this is done.  It considers two versions of the diet
+example, which obtain model data from very different places. Both use
+the same file to formulate and solve the actual optimization model
+on that data.
+
+<P>
+The final topic we cover in this document is <A HREF="callbacks.html#subsection:Callbacks">Gurobi
+  callbacks</A>.  Callbacks allow the user to
+obtain periodic progress information related to the optimization.
+
+<P>
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html202"
+  HREF="a_list_of_the_gurobi_examp.html">A list of the Gurobi examples</A>
+<LI><A NAME="tex2html203"
+  HREF="load_and_solve_a_model_fro.html">Load and solve a model from a file</A>
+<LI><A NAME="tex2html204"
+  HREF="build_a_model.html">Build a model</A>
+<LI><A NAME="tex2html205"
+  HREF="modify_a_model.html">Modify a model</A>
+<LI><A NAME="tex2html206"
+  HREF="change_parameters.html">Change parameters</A>
+<LI><A NAME="tex2html207"
+  HREF="automated_parameter_tuning.html">Automated Parameter Tuning</A>
+<LI><A NAME="tex2html208"
+  HREF="diagnose_and_cope_with_inf.html">Diagnose and cope with infeasibility</A>
+<LI><A NAME="tex2html209"
+  HREF="mip_starts.html">MIP starts</A>
+<LI><A NAME="tex2html210"
+  HREF="model_data_separation_in_p.html">Model-data separation in Python</A>
+<LI><A NAME="tex2html211"
+  HREF="callbacks.html">Callbacks</A>
+</UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html200"
+  HREF="a_list_of_the_gurobi_examp.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html198"
+  HREF="examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html192"
+  HREF="examples.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html201"
+  HREF="a_list_of_the_gurobi_examp.html">A list of the</A>
+<B> Up:</B> <A NAME="tex2html199"
+  HREF="examples.html">Gurobi Optimizer Example Tour</A>
+<B> Previous:</B> <A NAME="tex2html193"
+  HREF="examples.html">Gurobi Optimizer Example Tour</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

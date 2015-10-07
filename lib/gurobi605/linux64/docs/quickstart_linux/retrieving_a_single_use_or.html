@@ -1,0 +1,172 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Retrieving a Single-Use or Floating license</TITLE>
+<META NAME="description" CONTENT="Retrieving a Single-Use or Floating license">
+<META NAME="keywords" CONTENT="quickstart_linux">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="quickstart_linux.css">
+
+<LINK REL="next" HREF="starting_a_token_server.html">
+<LINK REL="previous" HREF="setting_up_and_using_a_sin.html">
+<LINK REL="up" HREF="setting_up_and_using_a_sin.html">
+<LINK REL="next" HREF="starting_a_token_server.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html303"
+  HREF="starting_a_token_server.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html301"
+  HREF="setting_up_and_using_a_sin.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html295"
+  HREF="setting_up_and_using_a_sin.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html304"
+  HREF="starting_a_token_server.html">Starting a token server</A>
+<B> Up:</B> <A NAME="tex2html302"
+  HREF="setting_up_and_using_a_sin.html">Setting up and using</A>
+<B> Previous:</B> <A NAME="tex2html296"
+  HREF="setting_up_and_using_a_sin.html">Setting up and using</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00033100000000000000"></A>
+<A NAME="subsubsection:retrievetokenserver"></A>
+<BR>
+Retrieving a Single-Use or Floating license
+</H3>
+
+<P>
+If you are using a single-use or floating license, you will need to
+choose a machine to act as your Gurobi token server.  This token server
+doles out tokens to client machines.  A client will request a token
+from the token server when it creates a Gurobi environment, and it
+will return the token when it destroys that environment.  For a
+single-use license, the client and the token server must be the same
+machine.  For a floating license, the client machine can be any
+machine that can reach the token server over your network (including
+the token server itself).  The client can run any supported operating
+system.  Thus, for example, a Linux client can request tokens from a
+Windows token server.
+
+<P>
+Once you've chosen a machine to act as your token server, you'll need
+to run the <code>grbgetkey</code> command on that machine to retrieve your
+Gurobi license key.  Note that the machine must be connected to the
+Internet in order to run this command. An Internet connection is not
+required after you have obtained your license key.
+
+<P>
+If your computer isn't connected to the Internet or if your network
+security system does not allow the command below to function,
+we also offer a
+manual license key process.  You'll find manual instructions at the
+bottom of the License Detail page (by following the link labeled
+<EM>click here for additional instructions</EM>).
+
+<P>
+The exact <EM>grbgetkey</EM> command to run for a specific license is
+indicated at the bottom of the License Detail page (e.g.,
+<code>grbgetkey 253e22f3-...</code>).  We recommend that you use copy-paste
+to copy the entire <code>grbgetkey</code> command from our website and paste
+it into a shell window.
+
+<P>
+The <code>grbgetkey</code> program passes identifying information about
+your machine back to our website, and the website responds with your
+license key.  Once this exchange has occurred, <code>grbgetkey</code> will
+ask for the name of the directory in which to store your license
+key file (<code>gurobi.lic</code>).  You should see a prompt that looks
+like this:
+
+<DIV ALIGN="CENTER">
+<DIV ALIGN="CENTER">
+
+</DIV><IMG
+  WIDTH="600" HEIGHT="385" ALIGN="BOTTOM" BORDER="0"
+ SRC="./getkey_linux.png"
+ ALT="Image getkey_linux">
+
+</DIV>
+
+<P>
+You can store the license key file anywhere, but we strongly recommend
+that you accept the default location by hitting <EM>Enter</EM>. Setting
+up a non-default location is error-prone and a frequent source of
+trouble.
+
+<P>
+<SPAN  CLASS="textbf">Using a non-default license file location</SPAN>
+
+<P>
+When you run the Linux version of the Gurobi Optimizer, it will look for the
+<code>gurobi.lic</code> key file in three different default locations.  It
+will always look in your home directory.  In
+addition, Gurobi Optimizer 6.0.0 will also look in
+<code>/opt/gurobi</code> and <code>/opt/gurobi600</code>.
+
+<P>
+If you would like to use a non-default license key file
+location, you can do so by setting environment variable
+<code>GRB_LICENSE_FILE</code> to point to the license key file.  <EM>  Important note: the environment variable should point to the license
+  key file itself, not to the directory that contains the file.</EM>
+
+<P>
+You can set an environment variable by adding a
+line to your <code>.bashrc</code> file:
+<PRE>
+  export GRB_LICENSE_FILE=/usr/home/jones/gurobi.lic
+</PRE>
+For <code>csh</code> shell users, you should add the following to
+your <code>.cshrc</code> file:
+<PRE>
+  setenv GRB_LICENSE_FILE /usr/home/jones/gurobi.lic
+</PRE>
+Set the variable to point to the actual location of your license key file.
+
+<P>
+Once you have followed the steps above and have obtained
+a license key file, your next step is to
+<A HREF="starting_a_token_server.html#subsubsection:starttokenserver">start the token server</A>.
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html303"
+  HREF="starting_a_token_server.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html301"
+  HREF="setting_up_and_using_a_sin.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html295"
+  HREF="setting_up_and_using_a_sin.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html304"
+  HREF="starting_a_token_server.html">Starting a token server</A>
+<B> Up:</B> <A NAME="tex2html302"
+  HREF="setting_up_and_using_a_sin.html">Setting up and using</A>
+<B> Previous:</B> <A NAME="tex2html296"
+  HREF="setting_up_and_using_a_sin.html">Setting up and using</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

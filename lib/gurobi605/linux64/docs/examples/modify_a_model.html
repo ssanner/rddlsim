@@ -1,0 +1,215 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Modify a model</TITLE>
+<META NAME="description" CONTENT="Modify a model">
+<META NAME="keywords" CONTENT="examples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="examples.css">
+
+<LINK REL="next" HREF="change_parameters.html">
+<LINK REL="previous" HREF="build_a_model.html">
+<LINK REL="up" HREF="example_tour.html">
+<LINK REL="next" HREF="change_parameters.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html250"
+  HREF="change_parameters.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html248"
+  HREF="example_tour.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html242"
+  HREF="build_a_model.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html251"
+  HREF="change_parameters.html">Change parameters</A>
+<B> Up:</B> <A NAME="tex2html249"
+  HREF="example_tour.html">Example tour</A>
+<B> Previous:</B> <A NAME="tex2html243"
+  HREF="build_a_model.html">Build a model</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00014000000000000000"></A>
+<A NAME="subsection:Modification"></A>
+<BR>
+Modify a model
+</H2>
+<B>Examples:</B> diet, feasopt, fixanddive, lpmod, sensitivity, workforce3, workforce4
+
+<P>
+This section considers model modification.  Modification can take many
+forms, including adding constraints or variables, deleting constraints or variables, modifying constraint and variable attributes, changing
+constraint coefficients, etc.  Here is a sample of some types of model modification.
+
+<P>
+<SPAN  CLASS="textbf">diet</SPAN>
+
+<P>
+This example builds
+a linear model that solves the classic diet problem: to find the
+minimum cost diet that satisfies a set of daily nutritional
+requirements.  Once the model has been formulated and solved, the
+example adds an additional constraint to limit the number of servings
+of dairy products, and solves the model again.  Let's focus on the model modification.
+
+<P>
+Adding constraints to a model that has already been solved is no
+different from adding constraints when constructing an initial model.
+In Python, we can introduce a limit of 6 dairy servings through the
+following constraint:
+<PRE>
+  m.addConstr(buy[7] + buy[8] &lt;= 6, "limit_dairy")
+</PRE>
+For linear models, the previously computed solution can be used as an
+efficient <EM>warm start</EM> for the modified model.  The Gurobi
+solver retains the previous solution, so the next <code>optimize</code>
+call automatically starts from the previous solution.
+
+<P>
+<SPAN  CLASS="textbf">lpmod</SPAN>
+
+<P>
+Changing a variable bound is also straightforward.  The
+<code>lpmod</code> example changes a single variable bound, then
+re-solves the model
+in two different ways.  A variable bound can be changed by modifying
+the <code>UB</code> or <code>LB</code> attribute of the variable.  In C:
+<PRE>
+  error = GRBsetdblattrelement(model, GRB_DBL_ATTR_UB, var, 0.0);
+</PRE>
+In Python:
+<PRE>
+  minVar.ub = 0
+</PRE>
+The model is re-solved simply by calling the <code>optimize</code> method
+again.  For a continuous model, this starts the optimization from the
+previous solution.  To illustrate the difference when solving the
+model from an initial, unsolved state, the <code>lpmod</code> example calls
+the <code>reset</code> function.  In C:
+<PRE>
+  error = GRBresetmodel(model);
+</PRE>
+In C++, Java, and Python:
+<PRE>
+  m.reset()
+</PRE>
+In C#:
+<PRE>
+  m.Reset()
+</PRE>
+When we call the optimize method after resetting the model,
+optimization starts from scratch.  Although the difference in
+computation time is insignificant for this tiny example, the warm
+start can make a big difference for larger models.
+
+<P>
+<SPAN  CLASS="textbf">fixanddive</SPAN>
+
+<P>
+The <code>fixanddive</code> example provides another example of bound
+modification.  In this case, we repeatedly modify a set of variable
+bounds, utilizing warm starts each time.  In C, variables are fixed
+as follows:
+<PRE>
+  for (j = 0; j &lt; nfix; ++j)
+  {
+    fixval = floor(fractional[j].X + 0.5);
+    error = GRBsetdblattrelement(model, "LB", fractional[j].index, fixval);
+    if (error) goto QUIT;
+    error = GRBsetdblattrelement(model, "UB", fractional[j].index, fixval);
+    if (error) goto QUIT;
+  }
+</PRE>
+In Python, they are fixed as follows:
+<PRE>
+  for i in range(nfix):
+    v = fractional[i]
+    fixval = int(v.x + 0.5)
+    v.lb = fixval
+    v.ub = fixval
+</PRE>
+Again, the subsequent call to <code>optimize</code> starts from the
+previous solution.
+
+<P>
+<SPAN  CLASS="textbf">sensitivity</SPAN>
+
+<P>
+The <code>sensitivity</code> example computes the amount by which the
+optimal objective changes if each binary variable is fixed at either 0
+or 1. For each binary variable, the example creates and solves a copy
+of the model with new upper and lower bounds.  This example is a MIP,
+so Gurobi can not make use of advanced start information.  As a
+result, the model is solved from scratch after each bound
+modification.
+
+<P>
+<SPAN  CLASS="textbf">feasopt</SPAN>
+
+<P>
+The last modification example we consider is <code>feasopt</code>, which
+adds variables to existing constraints and also changes the
+optimization objective.  Setting the objective to zero is
+straightforward: simply call <code>setObjective</code> with a zero
+argument:
+<PRE>
+  m.setObjective(0)
+</PRE>
+Adding new variables is somewhat more complex.  In the example, we
+want to add artificial variable(s) to each constraint in order to
+allow the constraint to be relaxed.  We use two artificial variables
+for equality constraints and one for all other constraints.
+The Python code for adding a
+single artificial variable to constraint <code>c</code> is:
+<PRE>
+  feasModel.addVar(obj=1.0, name="ArtP_" + c.Constrname, column=Column([1], [c]))
+</PRE>
+We use the <code>column</code> argument of the <code>addVar</code> method to
+specify the set of constraints in which the new variable participates,
+as well as the associated coefficients.  In this example, the new
+variable only participates in the constraint to be relaxed.  Default
+values are used here for all variables attributes except the objective
+and the variable name.
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html250"
+  HREF="change_parameters.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html248"
+  HREF="example_tour.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html242"
+  HREF="build_a_model.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html251"
+  HREF="change_parameters.html">Change parameters</A>
+<B> Up:</B> <A NAME="tex2html249"
+  HREF="example_tour.html">Example tour</A>
+<B> Previous:</B> <A NAME="tex2html243"
+  HREF="build_a_model.html">Build a model</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

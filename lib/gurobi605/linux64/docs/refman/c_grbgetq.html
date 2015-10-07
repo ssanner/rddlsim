@@ -1,0 +1,169 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>GRBgetq</TITLE>
+<META NAME="description" CONTENT="GRBgetq">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="c_grbgetqconstr.html">
+<LINK REL="previous" HREF="c_grbgetpwlobj.html">
+<LINK REL="up" HREF="c_model_queries.html">
+<LINK REL="next" HREF="c_grbgetqconstr.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html1685"
+  HREF="c_grbgetqconstr.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1683"
+  HREF="c_model_queries.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1677"
+  HREF="c_grbgetpwlobj.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1686"
+  HREF="c_grbgetqconstr.html">GRBgetqconstr</A>
+<B> Up:</B> <A NAME="tex2html1684"
+  HREF="c_model_queries.html">Model Queries</A>
+<B> Previous:</B> <A NAME="tex2html1678"
+  HREF="c_grbgetpwlobj.html">GRBgetpwlobj</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00024600000000000000"></A>
+<A NAME="routine:GRBgetq"></A>
+<BR>
+GRBgetq
+</H3>
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">GRBgetq</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT">GRBmodel</TD>
+<TD ALIGN="LEFT">*model,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">*numqnzP,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">*qrow,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">*qcol,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">double</TD>
+<TD ALIGN="LEFT">*qval )</TD>
+</TR>
+</TABLE>
+
+<P>
+Retrieve all quadratic objective terms.  The <code>qrow</code>,
+<code>qcol</code>, and <code>qval</code> arguments must be large enough
+to hold the result.  You can query the
+<A HREF="numqnzs.html#attr:NumQNZs">NumQNZs</A>
+attribute to determine how many terms will be returned.
+
+<P>
+
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Return value:</SPAN></BIG>
+
+<P>
+A non-zero return value indicates that a problem occurred while retrieving the quadratic objective terms.
+Refer to the <A HREF="error_codes.html#sec:ErrorCodes">Error Code</A> table for a
+list of possible return values.  Details on the error can be obtained
+by calling <A HREF="c_grbgeterrormsg.html#routine:GRBgeterrormsg">GRBgeterrormsg</A>.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">model</SPAN>: The model from which the quadratic objective terms should be
+retrieved.
+
+<P>
+ <SPAN  CLASS="textbf">numqnzP</SPAN>: The number of quadratic objective terms retrieved.
+
+<P>
+ <SPAN  CLASS="textbf">qrow</SPAN>: Row indices associated with quadratic terms.
+  A quadratic term is represented using three values: a pair of
+  indices (stored in <TT>qrow</TT> and <TT>qcol</TT>), and a coefficient
+  (stored in <TT>qval</TT>).  The array arguments give the corresponding
+  values for each quadratic term.  To give an example, if the quadratic
+  terms in the model are <!-- MATH
+ $2 x0^2 + x0 * x1 + x1^2$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="149" HEIGHT="33" ALIGN="MIDDLE" BORDER="0"
+ SRC="img8.png"
+ ALT="$2 x0^2 + x0 * x1 +
+x1^2$"></SPAN>, this routine
+  would return <TT>qrow[] = {0, 0, 1}</TT>, <TT>qcol[] = {0, 1,
+    1}</TT>, and <TT>qval[] = {2, 1, 1}</TT>.
+
+<P>
+ <SPAN  CLASS="textbf">qcol</SPAN>: Column indices associated with quadratic terms.
+  See the description of the <TT>qrow</TT> argument for more information.
+
+<P>
+ <SPAN  CLASS="textbf">qval</SPAN>: Numerical values associated with quadratic terms.
+  See the description of the <TT>qrow</TT> argument for more information.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Example usage:</SPAN></BIG><PRE>
+  int     qnz;
+  int    *qrow, *qcol;
+  double *qval;
+
+  error = GRBgetdblattr(model, GRB_DBL_ATTR_NUMQNZS, &amp;qnz);
+  /* ...allocate qrow, qcol, qval to hold 'qnz' values... */
+  error = GRBgetq(model, &amp;qnz, qrow, qcol, qval);
+</PRE>
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1685"
+  HREF="c_grbgetqconstr.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1683"
+  HREF="c_model_queries.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1677"
+  HREF="c_grbgetpwlobj.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1686"
+  HREF="c_grbgetqconstr.html">GRBgetqconstr</A>
+<B> Up:</B> <A NAME="tex2html1684"
+  HREF="c_model_queries.html">Model Queries</A>
+<B> Previous:</B> <A NAME="tex2html1678"
+  HREF="c_grbgetpwlobj.html">GRBgetpwlobj</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

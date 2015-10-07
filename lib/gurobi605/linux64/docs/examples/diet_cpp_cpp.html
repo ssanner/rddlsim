@@ -1,0 +1,218 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>diet_c++.cpp</TITLE>
+<META NAME="description" CONTENT="diet_c++.cpp">
+<META NAME="keywords" CONTENT="examples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="examples.css">
+
+<LINK REL="next" HREF="facility_cpp_cpp.html">
+<LINK REL="previous" HREF="dense_cpp_cpp.html">
+<LINK REL="up" HREF="cpp_examples.html">
+<LINK REL="next" HREF="facility_cpp_cpp.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html825"
+  HREF="facility_cpp_cpp.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html823"
+  HREF="cpp_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html817"
+  HREF="dense_cpp_cpp.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html826"
+  HREF="facility_cpp_cpp.html">facility_c++.cpp</A>
+<B> Up:</B> <A NAME="tex2html824"
+  HREF="cpp_examples.html">C++ Examples</A>
+<B> Previous:</B> <A NAME="tex2html818"
+  HREF="dense_cpp_cpp.html">dense_c++.cpp</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00022300000000000000"></A>
+<A NAME="subsubsection:diet_c++.cpp"></A>
+<BR>
+diet_c++.cpp
+</H3>
+
+<P>
+<BR>
+<PRE  CLASS="verbatim">/* Copyright 2014, Gurobi Optimization, Inc. */
+
+/* Solve the classic diet model, showing how to add constraints
+   to an existing model. */
+
+#include "gurobi_c++.h"
+using namespace std;
+
+void printSolution(GRBModel&amp; model, int nCategories, int nFoods,
+                   GRBVar* buy, GRBVar* nutrition) throw(GRBException);
+
+int
+main(int argc,
+     char *argv[])
+{
+  GRBEnv* env = 0;
+  GRBVar* nutrition = 0;
+  GRBVar* buy = 0;
+  try
+  {
+
+    // Nutrition guidelines, based on
+    // USDA Dietary Guidelines for Americans, 2005
+    // http://www.health.gov/DietaryGuidelines/dga2005/
+    const int nCategories = 4;
+    string Categories[] =
+      { "calories", "protein", "fat", "sodium" };
+    double minNutrition[] = { 1800, 91, 0, 0 };
+    double maxNutrition[] = { 2200, GRB_INFINITY, 65, 1779 };
+
+    // Set of foods
+    const int nFoods = 9;
+    string Foods[] =
+      { "hamburger", "chicken", "hot dog", "fries",
+        "macaroni", "pizza", "salad", "milk", "ice cream" };
+    double cost[] =
+      { 2.49, 2.89, 1.50, 1.89, 2.09, 1.99, 2.49, 0.89, 1.59 };
+
+    // Nutrition values for the foods
+    double nutritionValues[][nCategories] = {
+                      { 410, 24, 26, 730 },    // hamburger
+                      { 420, 32, 10, 1190 },   // chicken
+                      { 560, 20, 32, 1800 },   // hot dog
+                      { 380, 4, 19, 270 },     // fries
+                      { 320, 12, 10, 930 },    // macaroni
+                      { 320, 15, 12, 820 },    // pizza
+                      { 320, 31, 12, 1230 },   // salad
+                      { 100, 8, 2.5, 125 },    // milk
+                      { 330, 8, 10, 180 }      // ice cream
+                    };
+
+    // Model
+    env = new GRBEnv();
+    GRBModel model = GRBModel(*env);
+    model.set(GRB_StringAttr_ModelName, "diet");
+
+    // Create decision variables for the nutrition information,
+    // which we limit via bounds
+    nutrition = model.addVars(minNutrition, maxNutrition, 0, 0,
+                              Categories, nCategories);
+
+    // Create decision variables for the foods to buy
+    buy = model.addVars(0, 0, cost, 0, Foods, nFoods);
+
+    // The objective is to minimize the costs
+    model.set(GRB_IntAttr_ModelSense, 1);
+
+    // Update model to integrate new variables
+    model.update();
+
+    // Nutrition constraints
+    for (int i = 0; i &lt; nCategories; ++i)
+    {
+      GRBLinExpr ntot = 0;
+      for (int j = 0; j &lt; nFoods; ++j)
+      {
+        ntot += nutritionValues[j][i] * buy[j];
+      }
+      model.addConstr(ntot == nutrition[i], Categories[i]);
+    }
+
+    // Solve
+    model.optimize();
+    printSolution(model, nCategories, nFoods, buy, nutrition);
+
+    cout &lt;&lt; "\nAdding constraint: at most 6 servings of dairy" &lt;&lt; endl;
+    model.addConstr(buy[7] + buy[8] &lt;= 6.0, "limit_dairy");
+
+    // Solve
+    model.optimize();
+    printSolution(model, nCategories, nFoods, buy, nutrition);
+
+  }
+  catch (GRBException e)
+  {
+    cout &lt;&lt; "Error code = " &lt;&lt; e.getErrorCode() &lt;&lt; endl;
+    cout &lt;&lt; e.getMessage() &lt;&lt; endl;
+  }
+  catch (...)
+  {
+    cout &lt;&lt; "Exception during optimization" &lt;&lt; endl;
+  }
+
+  delete[] nutrition;
+  delete[] buy;
+  delete env;
+  return 0;
+}
+
+void printSolution(GRBModel&amp; model, int nCategories, int nFoods,
+                   GRBVar* buy, GRBVar* nutrition) throw(GRBException)
+{
+  if (model.get(GRB_IntAttr_Status) == GRB_OPTIMAL)
+  {
+    cout &lt;&lt; "\nCost: " &lt;&lt; model.get(GRB_DoubleAttr_ObjVal) &lt;&lt; endl;
+    cout &lt;&lt; "\nBuy:" &lt;&lt; endl;
+    for (int j = 0; j &lt; nFoods; ++j)
+    {
+      if (buy[j].get(GRB_DoubleAttr_X) &gt; 0.0001)
+      {
+        cout &lt;&lt; buy[j].get(GRB_StringAttr_VarName) &lt;&lt; " " &lt;&lt;
+        buy[j].get(GRB_DoubleAttr_X) &lt;&lt; endl;
+      }
+    }
+    cout &lt;&lt; "\nNutrition:" &lt;&lt; endl;
+    for (int i = 0; i &lt; nCategories; ++i)
+    {
+      cout &lt;&lt; nutrition[i].get(GRB_StringAttr_VarName) &lt;&lt; " " &lt;&lt;
+      nutrition[i].get(GRB_DoubleAttr_X) &lt;&lt; endl;
+    }
+  }
+  else
+  {
+    cout &lt;&lt; "No solution" &lt;&lt; endl;
+  }
+}
+</PRE>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html825"
+  HREF="facility_cpp_cpp.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html823"
+  HREF="cpp_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html817"
+  HREF="dense_cpp_cpp.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html826"
+  HREF="facility_cpp_cpp.html">facility_c++.cpp</A>
+<B> Up:</B> <A NAME="tex2html824"
+  HREF="cpp_examples.html">C++ Examples</A>
+<B> Previous:</B> <A NAME="tex2html818"
+  HREF="dense_cpp_cpp.html">dense_c++.cpp</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

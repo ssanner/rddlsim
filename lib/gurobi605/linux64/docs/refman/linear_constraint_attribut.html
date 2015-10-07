@@ -1,0 +1,125 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Linear Constraint Attributes</TITLE>
+<META NAME="description" CONTENT="Linear Constraint Attributes">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="sos_attributes.html">
+<LINK REL="previous" HREF="variable_attributes.html">
+<LINK REL="up" HREF="attributes.html">
+<LINK REL="next" HREF="sense.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html10083"
+  HREF="sense.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html10081"
+  HREF="attributes.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html10075"
+  HREF="unbdray.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html10084"
+  HREF="sense.html">Sense</A>
+<B> Up:</B> <A NAME="tex2html10082"
+  HREF="attributes.html">Attributes</A>
+<B> Previous:</B> <A NAME="tex2html10076"
+  HREF="unbdray.html">UnbdRay</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION000133000000000000000">
+Linear Constraint Attributes</A>
+</H2>
+
+<P>
+These are linear constraint attributes, meaning that they are
+associated with specific linear constraints in the model.  You should
+use one of the various <code>get</code> routines to retrieve the value of
+an attribute.  These are described at the beginning of
+<A HREF="attributes.html#sec:Attributes">this section</A>).
+For the object-oriented interfaces, linear constraint attributes are
+retrieved by invoking the <code>get</code> method on a constraint object.
+For attributes that can be modified directly by the user, you can use
+one of the various <code>set</code> methods.
+
+<P>
+Attempting to query an attribute that is not available will produce an
+error.  In C, the attribute query routine will return a
+<code>GRB_ERROR_DATA_NOT_AVAILABLE</code> error code.  The object-oriented
+interfaces will throw an exception.
+
+<P>
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html10085"
+  HREF="sense.html">Sense</A>
+<LI><A NAME="tex2html10086"
+  HREF="rhs.html">RHS</A>
+<LI><A NAME="tex2html10087"
+  HREF="constrname.html">ConstrName</A>
+<LI><A NAME="tex2html10088"
+  HREF="pi.html">Pi</A>
+<LI><A NAME="tex2html10089"
+  HREF="slack.html">Slack</A>
+<LI><A NAME="tex2html10090"
+  HREF="cbasis.html">CBasis</A>
+<LI><A NAME="tex2html10091"
+  HREF="dstart.html">DStart</A>
+<LI><A NAME="tex2html10092"
+  HREF="lazy.html">Lazy</A>
+<LI><A NAME="tex2html10093"
+  HREF="iisconstr.html">IISConstr</A>
+<LI><A NAME="tex2html10094"
+  HREF="sarhslow.html">SARHSLow</A>
+<LI><A NAME="tex2html10095"
+  HREF="sarhsup.html">SARHSUp</A>
+<LI><A NAME="tex2html10096"
+  HREF="farkasdual.html">FarkasDual</A>
+</UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html10083"
+  HREF="sense.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html10081"
+  HREF="attributes.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html10075"
+  HREF="unbdray.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html10084"
+  HREF="sense.html">Sense</A>
+<B> Up:</B> <A NAME="tex2html10082"
+  HREF="attributes.html">Attributes</A>
+<B> Previous:</B> <A NAME="tex2html10076"
+  HREF="unbdray.html">UnbdRay</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

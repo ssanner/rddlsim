@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>GRBQConstr</TITLE>
+<META NAME="description" CONTENT="GRBQConstr">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="java_grbsos.html">
+<LINK REL="previous" HREF="java_grbconstr.html">
+<LINK REL="up" HREF="java_api_details.html">
+<LINK REL="next" HREF="java_grbqconstr_get.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html5129"
+  HREF="java_grbqconstr_get.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html5127"
+  HREF="java_api_details.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html5121"
+  HREF="java_grbconstr_set.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html5130"
+  HREF="java_grbqconstr_get.html">GRBQConstr.get()</A>
+<B> Up:</B> <A NAME="tex2html5128"
+  HREF="java_api_details.html">Java API Details</A>
+<B> Previous:</B> <A NAME="tex2html5122"
+  HREF="java_grbconstr_set.html">GRBConstr.set()</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00065000000000000000"></A>
+<A NAME="javaclass:GRBQConstr"></A>
+<BR>
+GRBQConstr
+</H2>
+
+<P>
+Gurobi quadratic constraint object.  Quadratic constraints are always
+associated with a particular model.  You create a quadratic constraint
+object by adding a quadratic constraint to a model (using
+<A HREF="java_grbmodel_addqconstr.html#javamethod:GRBModel.addQConstr">GRBModel.addQConstr</A>),
+rather than by using a <code>GRBQConstr</code> constructor.
+
+<P>
+The methods on quadratic constraint objects are used to get and set
+constraint attributes.  For example, quadratic constraint right-hand
+sides can be queried by calling
+<A HREF="java_grbqconstr_get.html#javamethod:GRBQConstr.get">get</A>(<code>GRB.DoubleAttr.QCRHS</code>).
+Note, however, that it is generally more
+efficient to query attributes for a set of constraints at once.  This
+is done using the attribute query method on the <code>GRBModel</code>
+object (<A HREF="java_grbmodel_get.html#javamethod:GRBModel.get">GRBModel.get</A>).
+
+<P>
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html5131"
+  HREF="java_grbqconstr_get.html">GRBQConstr.get()</A>
+<LI><A NAME="tex2html5132"
+  HREF="java_grbqconstr_set.html">GRBQConstr.set()</A>
+</UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html5129"
+  HREF="java_grbqconstr_get.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html5127"
+  HREF="java_api_details.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html5121"
+  HREF="java_grbconstr_set.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html5130"
+  HREF="java_grbqconstr_get.html">GRBQConstr.get()</A>
+<B> Up:</B> <A NAME="tex2html5128"
+  HREF="java_api_details.html">Java API Details</A>
+<B> Previous:</B> <A NAME="tex2html5122"
+  HREF="java_grbconstr_set.html">GRBConstr.set()</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

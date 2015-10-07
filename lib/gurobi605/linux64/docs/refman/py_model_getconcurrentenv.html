@@ -1,0 +1,134 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Model.getConcurrentEnv()</TITLE>
+<META NAME="description" CONTENT="Model.getConcurrentEnv()">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="py_model_getconstrbyname.html">
+<LINK REL="previous" HREF="py_model_getcol.html">
+<LINK REL="up" HREF="py_model.html">
+<LINK REL="next" HREF="py_model_getconstrbyname.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html8060"
+  HREF="py_model_getconstrbyname.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html8058"
+  HREF="py_model.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html8052"
+  HREF="py_model_getcol.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html8061"
+  HREF="py_model_getconstrbyname.html">Model.getConstrByName()</A>
+<B> Up:</B> <A NAME="tex2html8059"
+  HREF="py_model.html">Model</A>
+<B> Previous:</B> <A NAME="tex2html8053"
+  HREF="py_model_getcol.html">Model.getCol()</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION0001021700000000000000"></A>
+<A NAME="pythonmethod:Model.getConcurrentEnv"></A>
+<BR>
+Model.getConcurrentEnv()
+</H3>
+<BIG CLASS="LARGE">
+<FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">getConcurrentEnv</SPAN></FONT></BIG> ( num )
+
+<P>
+Create/retrieve a concurrent environment for a model.
+
+<P>
+This method provides fine-grained control over the concurrent
+optimizer.  By creating your own concurrent environments and setting
+appropriate parameters on these environments (e.g., the
+<A HREF="method.html#parameter:Method">Method</A>
+parameter), you can control exactly which strategies the concurrent
+optimizer employs.  For example, if you create two concurrent
+environments, and set <code>Method</code> to primal simplex for one and
+dual simplex for the other, subsequent concurrent optimizer runs will
+use the two simplex algorithms rather than the default choices.
+
+<P>
+Note that you must create contiguously numbered concurrent
+environments, starting with <code>num=0</code>.  For example, if you want
+three concurrent environments, they must be numbered 0, 1, and 2.
+
+<P>
+Once you create concurrent environments, they will be used for every
+subsequent concurrent optimization on that model.  Use
+<A HREF="py_model_discardconcurrent.html#pythonmethod:Model.discardConcurrentEnvs">discardConcurrentEnvs</A>
+to revert back to default concurrent optimizer behavior.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">num</SPAN>: The concurrent environment number.
+
+<P>
+
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Return value:</SPAN></BIG>
+
+<P>
+The concurrent environment for the model.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Example usage:</SPAN></BIG><PRE>
+  env0 = model.getConcurrentEnv(0)
+  env1 = model.getConcurrentEnv(1)
+
+  env0.setParam('Method', 0)
+  env0.setParam('Method', 1)
+
+  model.optimize()
+
+  model.discardConcurrentEnvs()
+</PRE>
+
+<P>
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html8060"
+  HREF="py_model_getconstrbyname.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html8058"
+  HREF="py_model.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html8052"
+  HREF="py_model_getcol.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html8061"
+  HREF="py_model_getconstrbyname.html">Model.getConstrByName()</A>
+<B> Up:</B> <A NAME="tex2html8059"
+  HREF="py_model.html">Model</A>
+<B> Previous:</B> <A NAME="tex2html8053"
+  HREF="py_model_getcol.html">Model.getCol()</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

@@ -1,0 +1,126 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Creating a token server client license</TITLE>
+<META NAME="description" CONTENT="Creating a token server client license">
+<META NAME="keywords" CONTENT="quickstart_mac">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="quickstart_mac.css">
+
+<LINK REL="previous" HREF="upgrading_a_token_server.html">
+<LINK REL="up" HREF="setting_up_and_using_a_sin.html">
+<LINK REL="next" HREF="setting_up_and_using_a_com.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html335"
+  HREF="setting_up_and_using_a_com.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html333"
+  HREF="setting_up_and_using_a_sin.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html329"
+  HREF="upgrading_a_token_server.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html336"
+  HREF="setting_up_and_using_a_com.html">Setting up and using</A>
+<B> Up:</B> <A NAME="tex2html334"
+  HREF="setting_up_and_using_a_sin.html">Setting up and using</A>
+<B> Previous:</B> <A NAME="tex2html330"
+  HREF="upgrading_a_token_server.html">Upgrading a token server</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00033400000000000000"></A>
+<A NAME="subsection:clientlicensetoken"></A>
+<BR>
+Creating a token server client license
+</H3>
+<P>
+<EM>The purpose of a token server client license is quite simple: it tells
+the client where to find the Gurobi token server.  You
+can create this file yourself (using a text editor).  The client
+<code>gurobi.lic</code> file should contain a single line of text:
+</EM><PRE>
+TOKENSERVER=mymachine.mydomain.com
+</PRE><EM>
+or:
+</EM><PRE>
+TOKENSERVER=192.168.1.100
+</PRE><EM>
+You should of course substitute the name or IP address of your token server
+in the example above.
+</EM>
+<P>
+<EM>We strongly recommend that you place your client <code>gurobi.lic</code>
+file in a default location for your platform (either your home
+directory or <code>/Library/gurobi</code>).  Setting up a non-default location
+is error-prone and a frequent source of trouble. (If you still want to
+use a non-default location, please refer to the instructions that
+appeared <A HREF="retrieving_a_single_use_or.html#subsubsection:retrievetokenserver">earlier in this
+  section</A>).
+</EM>
+<P>
+<EM>If your client and the token server are both running on the same
+machine (e.g., for a single-use license), they can
+share a single <code>gurobi.lic</code> file.  You just need to
+add the following line to the <code>gurobi.lic</code> file
+you obtained from our website:
+</EM><PRE>
+TOKENSERVER=localhost
+</PRE><EM>
+The token server will ignore this line, and the client will ignore
+everything but this line.  Your other option
+when both client and server are running on the same machine is to create a separate
+<code>gurobi.lic</code> file for the client, and to set the
+<code>GRB_LICENSE_FILE</code> environment variable to point to this file
+(following the earlier instructions for
+<A HREF="retrieving_a_single_use_or.html#subsubsection:retrievetokenserver">using a non-default license location</A>).
+</EM>
+<P>
+<EM>Once your client license is in place, you can
+<A HREF="testing_your_license.html#subsection:testlicense">test the license</A>.
+If you are unable to connect to the server, you'll need to make sure
+the server is installed and running.  Please consult the instructions
+for
+<A HREF="starting_a_token_server.html#subsubsection:starttokenserver">starting a token server</A>
+for more information.
+</EM>
+<P>
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html335"
+  HREF="setting_up_and_using_a_com.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html333"
+  HREF="setting_up_and_using_a_sin.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html329"
+  HREF="upgrading_a_token_server.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html336"
+  HREF="setting_up_and_using_a_com.html">Setting up and using</A>
+<B> Up:</B> <A NAME="tex2html334"
+  HREF="setting_up_and_using_a_sin.html">Setting up and using</A>
+<B> Previous:</B> <A NAME="tex2html330"
+  HREF="upgrading_a_token_server.html">Upgrading a token server</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

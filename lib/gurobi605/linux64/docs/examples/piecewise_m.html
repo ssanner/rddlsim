@@ -1,0 +1,156 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>piecewise.m</TITLE>
+<META NAME="description" CONTENT="piecewise.m">
+<META NAME="keywords" CONTENT="examples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="examples.css">
+
+<LINK REL="next" HREF="qcp_m.html">
+<LINK REL="previous" HREF="mip1_m.html">
+<LINK REL="up" HREF="matlab_examples.html">
+<LINK REL="next" HREF="qcp_m.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html2277"
+  HREF="qcp_m.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html2275"
+  HREF="matlab_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html2269"
+  HREF="mip1_m.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html2278"
+  HREF="qcp_m.html">qcp.m</A>
+<B> Up:</B> <A NAME="tex2html2276"
+  HREF="matlab_examples.html">MATLAB Examples</A>
+<B> Previous:</B> <A NAME="tex2html2270"
+  HREF="mip1_m.html">mip1.m</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00027700000000000000"></A>
+<A NAME="subsubsection:piecewise.m"></A>
+<BR>
+piecewise.m
+</H3>
+
+<P>
+<BR>
+<PRE  CLASS="verbatim">% Copyright 2014, Gurobi Optimization, Inc.
+
+% This example considers the following separable, convex problem:
+%
+%   minimize    f(x) - y + g(z)
+%   subject to  x + 2 y + 3 z &lt;= 4
+%               x +   y       &gt;= 1
+%               x,    y,    z &lt;= 1
+%
+% where f(u) = exp(-u) and g(u) = 2 u^2 - 4 u, for all real u. It
+% formulates and solves a simpler LP model by approximating f and
+% g with piecewise-linear functions. Then it transforms the model
+% into a MIP by negating the approximation for f, which corresponds
+% to a non-convex piecewise-linear function, and solves it again.
+
+names = {'x'; 'y'; 'z'};
+
+try
+    clear model;
+    model.A = sparse([1 2 3; 1 1 0]);
+    model.obj = [0; -1; 0];
+    model.rhs = [4; 1];
+    model.sense = '&lt;&gt;';
+    model.vtype = 'C';
+    model.lb = [0; 0; 0];
+    model.ub = [1; 1; 1];
+    model.varnames = names;
+
+    % Compute f and g on 101 points in [0,1]
+    u = linspace(0.0, 1.0, 101);
+    f = exp(-u);
+    g = 2*u.^2 - 4*u;
+
+    % Set piecewise linear objective f(x)
+    model.pwlobj(1).var = 1;
+    model.pwlobj(1).x   = u;
+    model.pwlobj(1).y   = f;
+
+    % Set piecewise linear objective g(z)
+    model.pwlobj(2).var   = 3;
+    model.pwlobj(2).x     = u;
+    model.pwlobj(2).y     = g;
+
+    % Optimize model as LP
+    result = gurobi(model);
+
+    disp(result);
+
+    for v=1:length(names)
+        fprintf('%s %d\n', names{v}, result.x(v));
+    end
+
+    fprintf('Obj: %e\n', result.objval);
+
+    % Negate piecewise-linear objective function for x
+    f = -f;
+    model.pwlobj(1).y = f;
+
+    gurobi_write(model, 'pwl.lp')
+
+    % Optimize model as a MIP
+    result = gurobi(model);
+
+    disp(result);
+
+    for v=1:length(names)
+        fprintf('%s %d\n', names{v}, result.x(v));
+    end
+
+    fprintf('Obj: %e\n', result.objval);
+
+catch gurobiError
+     fprintf('Error reported\n');
+end
+</PRE>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html2277"
+  HREF="qcp_m.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html2275"
+  HREF="matlab_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html2269"
+  HREF="mip1_m.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html2278"
+  HREF="qcp_m.html">qcp.m</A>
+<B> Up:</B> <A NAME="tex2html2276"
+  HREF="matlab_examples.html">MATLAB Examples</A>
+<B> Previous:</B> <A NAME="tex2html2270"
+  HREF="mip1_m.html">mip1.m</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

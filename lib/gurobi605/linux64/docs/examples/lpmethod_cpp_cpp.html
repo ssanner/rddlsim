@@ -1,0 +1,139 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>lpmethod_c++.cpp</TITLE>
+<META NAME="description" CONTENT="lpmethod_c++.cpp">
+<META NAME="keywords" CONTENT="examples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="examples.css">
+
+<LINK REL="next" HREF="lpmod_cpp_cpp.html">
+<LINK REL="previous" HREF="lp_cpp_cpp.html">
+<LINK REL="up" HREF="cpp_examples.html">
+<LINK REL="next" HREF="lpmod_cpp_cpp.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html875"
+  HREF="lpmod_cpp_cpp.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html873"
+  HREF="cpp_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html867"
+  HREF="lp_cpp_cpp.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html876"
+  HREF="lpmod_cpp_cpp.html">lpmod_c++.cpp</A>
+<B> Up:</B> <A NAME="tex2html874"
+  HREF="cpp_examples.html">C++ Examples</A>
+<B> Previous:</B> <A NAME="tex2html868"
+  HREF="lp_cpp_cpp.html">lp_c++.cpp</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00022800000000000000"></A>
+<A NAME="subsubsection:lpmethod_c++.cpp"></A>
+<BR>
+lpmethod_c++.cpp
+</H3>
+
+<P>
+<BR>
+<PRE  CLASS="verbatim">/* Copyright 2014, Gurobi Optimization, Inc. */
+
+/* Solve a model with different values of the Method parameter;
+   show which value gives the shortest solve time. */
+
+#include "gurobi_c++.h"
+using namespace std;
+
+int
+main(int   argc,
+     char *argv[])
+{
+
+  if (argc &lt; 2)
+  {
+    cout &lt;&lt; "Usage: lpmethod_c++ filename" &lt;&lt; endl;
+    return 1;
+  }
+
+  try {
+    // Read model
+    GRBEnv env = GRBEnv();
+    GRBModel m = GRBModel(env, argv[1]);
+    GRBEnv menv = m.getEnv();
+
+    // Solve the model with different values of Method
+    int    bestMethod = -1;
+    double bestTime = menv.get(GRB_DoubleParam_TimeLimit);
+    for (int i = 0; i &lt;= 2; ++i) {
+      m.reset();
+      menv.set(GRB_IntParam_Method, i);
+      m.optimize();
+      if (m.get(GRB_IntAttr_Status) == GRB_OPTIMAL) {
+        bestTime = m.get(GRB_DoubleAttr_Runtime);
+        bestMethod = i;
+        // Reduce the TimeLimit parameter to save time
+        // with other methods
+        menv.set(GRB_DoubleParam_TimeLimit, bestTime);
+      }
+    }
+
+    // Report which method was fastest
+    if (bestMethod == -1) {
+      cout &lt;&lt; "Unable to solve this model" &lt;&lt; endl;
+    } else {
+      cout &lt;&lt; "Solved in " &lt;&lt; bestTime
+        &lt;&lt; " seconds with Method: " &lt;&lt; bestMethod &lt;&lt; endl;
+    }
+  } catch(GRBException e) {
+    cout &lt;&lt; "Error code = " &lt;&lt; e.getErrorCode() &lt;&lt; endl;
+    cout &lt;&lt; e.getMessage() &lt;&lt; endl;
+  } catch(...) {
+    cout &lt;&lt; "Exception during optimization" &lt;&lt; endl;
+  }
+
+  return 0;
+}
+</PRE>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html875"
+  HREF="lpmod_cpp_cpp.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html873"
+  HREF="cpp_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html867"
+  HREF="lp_cpp_cpp.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html876"
+  HREF="lpmod_cpp_cpp.html">lpmod_c++.cpp</A>
+<B> Up:</B> <A NAME="tex2html874"
+  HREF="cpp_examples.html">C++ Examples</A>
+<B> Previous:</B> <A NAME="tex2html868"
+  HREF="lp_cpp_cpp.html">lp_c++.cpp</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

@@ -1,0 +1,197 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Attribute Examples</TITLE>
+<META NAME="description" CONTENT="Attribute Examples">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="previous" HREF="quality_attributes.html">
+<LINK REL="up" HREF="attributes.html">
+<LINK REL="next" HREF="c_attribute_examples.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html10718"
+  HREF="c_attribute_examples.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html10716"
+  HREF="attributes.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html10712"
+  HREF="intviosum.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html10719"
+  HREF="c_attribute_examples.html">C Attribute Examples</A>
+<B> Up:</B> <A NAME="tex2html10717"
+  HREF="attributes.html">Attributes</A>
+<B> Previous:</B> <A NAME="tex2html10713"
+  HREF="intviosum.html">IntVioSum</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION000137000000000000000"></A>
+<A NAME="sec:AttributeExamples"></A>
+<BR>
+Attribute Examples
+</H2>
+
+<P>
+The same attributes exist in all of the Gurobi APIs, but the
+approaches used to query and modify them, and the means by which you
+refer to them vary.  Consider the <code>LB</code> attribute, which captures
+the lower bound on a variable.  You would refer to this attribute as
+follows in the different Gurobi APIs:
+<BR><TABLE CELLPADDING=3 BORDER="1">
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf">Language</SPAN></TH>
+<TH ALIGN="LEFT"><SPAN  CLASS="textbf">Attribute</SPAN></TH>
+</TR>
+<TR><TD ALIGN="LEFT">C</TD>
+<TD ALIGN="LEFT"><TT>GRB_DBL_ATTR_LB</TT></TD>
+</TR>
+<TR><TD ALIGN="LEFT">C++</TD>
+<TD ALIGN="LEFT"><TT>GRB_DoubleAttr_LB</TT></TD>
+</TR>
+<TR><TD ALIGN="LEFT">Java</TD>
+<TD ALIGN="LEFT"><TT>GRB.DoubleAttr.LB</TT></TD>
+</TR>
+<TR><TD ALIGN="LEFT">.NET</TD>
+<TD ALIGN="LEFT"><TT>GRB.DoubleAttr.LB</TT></TD>
+</TR>
+<TR><TD ALIGN="LEFT">Python</TD>
+<TD ALIGN="LEFT"><TT>GRB.attr.lb</TT>, or just <TT>var.lb</TT></TD>
+</TR>
+</TABLE>
+
+<P>
+To query the value of this attribute for an individual variable in
+the different API's, you would do the following:
+<BR><TABLE CELLPADDING=3 BORDER="1">
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf">Language</SPAN></TH>
+<TH ALIGN="LEFT"><SPAN  CLASS="textbf">Attribute Query Example</SPAN></TH>
+</TR>
+<TR><TD ALIGN="LEFT">C</TD>
+<TD ALIGN="LEFT"><A HREF="c_grbgetdblattrelement.html#routine:GRBgetdblattrelement">GRBgetdblattrelement</A><TT>(model, GRB_DBL_ATTR_LB, var_index, &amp;value);</TT></TD>
+</TR>
+<TR><TD ALIGN="LEFT">C++</TD>
+<TD ALIGN="LEFT"><A HREF="cpp_grbvar_get.html#cppmethod:GRBVar::get">var.get</A><TT>(GRB_DoubleAttr_LB)</TT></TD>
+</TR>
+<TR><TD ALIGN="LEFT">Java</TD>
+<TD ALIGN="LEFT"><A HREF="java_grbvar_get.html#javamethod:GRBVar.get">var.get</A><TT>(GRB.DoubleAttr.LB)</TT></TD>
+</TR>
+<TR><TD ALIGN="LEFT">.NET</TD>
+<TD ALIGN="LEFT"><A HREF="cs_grbvar_get.html#dotnetmethod:GRBVar.Get">var.Get</A><TT>(GRB.DoubleAttr.LB)</TT></TD>
+</TR>
+<TR><TD ALIGN="LEFT">Python</TD>
+<TD ALIGN="LEFT"><A HREF="py_var_getattr.html#pythonmethod:Var.getAttr">var.getAttr</A><TT>(GRB.attr.lb)</TT>, or just <TT>var.lb</TT></TD>
+</TR>
+</TABLE>
+
+<P>
+Our APIs also include routines for querying attribute values for
+multiple variables or constraints at once, which is more
+efficient.
+
+<P>
+Attributes are referred to using a set of <code>enum</code> types in C++,
+Java, and .NET (one enum for double-valued attributes, one for
+int-valued attributes, etc.).  In C and Python, the names listed above
+are simply constants that take string values.  For example,
+<code>GRB_DBL_ATTR_LB</code> is defined in the C layer as:
+<PRE>
+#define GRB_DBL_ATTR_LB "LB"
+</PRE>
+In C and Python, you have the option of using the strings directly
+when calling attribute methods.  If you wish to do so, note that
+character case and underscores are ignored.  Thus, <code>MIN_COEFF</code>
+and <code>MinCoeff</code> are equivalent.
+
+<P>
+One important point to note about attributes modification is that it
+is done in a <EM>lazy</EM> fashion.  Modifications don't actually
+affect the model until the next request to either update or optimize
+the model (<A HREF="c_grbupdatemodel.html#routine:GRBupdatemodel">GRBupdatemodel</A> or
+<A HREF="c_grboptimize.html#routine:GRBoptimize">GRBoptimize</A> in C).
+
+<P>
+Refer to the following sections for more detailed examples of how to
+query or modify attributes from our various API's:
+
+<UL>
+<LI><A HREF="c_attribute_examples.html#CAttributeExamples">C</A>
+</LI>
+<LI><A HREF="cpp_attribute_examples.html#C++AttributeExamples">C++</A>
+</LI>
+<LI><A HREF="cs_attribute_examples.html#CSAttributeExamples">C#</A>
+</LI>
+<LI><A HREF="java_attribute_examples.html#JavaAttributeExamples">Java</A>
+</LI>
+<LI><A HREF="python_attribute_examples.html#PythonAttributeExamples">Python</A>
+</LI>
+<LI><A HREF="visual_basic_attribute_exa.html#VBAttributeExamples">Visual Basic</A>
+</LI>
+</UL>
+You can also also browse our
+<A NAME="tex2html16"
+  HREF="../examples/examples.html">Examples</A>
+to get a better sense of how to use our attribute interface.
+
+<P>
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html10720"
+  HREF="c_attribute_examples.html">C Attribute Examples</A>
+<LI><A NAME="tex2html10721"
+  HREF="cpp_attribute_examples.html">C++ Attribute Examples</A>
+<LI><A NAME="tex2html10722"
+  HREF="cs_attribute_examples.html">C# Attribute Examples</A>
+<LI><A NAME="tex2html10723"
+  HREF="java_attribute_examples.html">Java Attribute Examples</A>
+<LI><A NAME="tex2html10724"
+  HREF="python_attribute_examples.html">Python Attribute Examples</A>
+<LI><A NAME="tex2html10725"
+  HREF="visual_basic_attribute_exa.html">Visual Basic Attribute Examples</A>
+</UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html10718"
+  HREF="c_attribute_examples.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html10716"
+  HREF="attributes.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html10712"
+  HREF="intviosum.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html10719"
+  HREF="c_attribute_examples.html">C Attribute Examples</A>
+<B> Up:</B> <A NAME="tex2html10717"
+  HREF="attributes.html">Attributes</A>
+<B> Previous:</B> <A NAME="tex2html10713"
+  HREF="intviosum.html">IntVioSum</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

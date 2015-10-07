@@ -1,0 +1,191 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>mip2_cs.cs</TITLE>
+<META NAME="description" CONTENT="mip2_cs.cs">
+<META NAME="keywords" CONTENT="examples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="examples.css">
+
+<LINK REL="next" HREF="params_cs_cs.html">
+<LINK REL="previous" HREF="mip1_cs_cs.html">
+<LINK REL="up" HREF="cs_examples.html">
+<LINK REL="next" HREF="params_cs_cs.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html1449"
+  HREF="params_cs_cs.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1447"
+  HREF="cs_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1441"
+  HREF="mip1_cs_cs.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1450"
+  HREF="params_cs_cs.html">params_cs.cs</A>
+<B> Up:</B> <A NAME="tex2html1448"
+  HREF="cs_examples.html">C# Examples</A>
+<B> Previous:</B> <A NAME="tex2html1442"
+  HREF="mip1_cs_cs.html">mip1_cs.cs</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000241100000000000000"></A>
+<A NAME="subsubsection:mip2_cs.cs"></A>
+<BR>
+mip2_cs.cs
+</H3>
+
+<P>
+<BR>
+<PRE  CLASS="verbatim">/* Copyright 2014, Gurobi Optimization, Inc. */
+
+/* This example reads a MIP model from a file, solves it and
+   prints the objective values from all feasible solutions
+   generated while solving the MIP. Then it creates the fixed
+   model and solves that model. */
+
+using System;
+using Gurobi;
+
+class mip2_cs
+{
+  static void Main(string[] args)
+  {
+    if (args.Length &lt; 1) {
+      Console.Out.WriteLine("Usage: mip2_cs filename");
+      return;
+    }
+
+    try {
+      GRBEnv    env   = new GRBEnv();
+      GRBModel  model = new GRBModel(env, args[0]);
+      if (model.Get(GRB.IntAttr.IsMIP) == 0) {
+        Console.WriteLine("Model is not a MIP");
+        return;
+      }
+
+      model.Optimize();
+
+      int optimstatus = model.Get(GRB.IntAttr.Status);
+      double objval = 0;
+      if (optimstatus == GRB.Status.OPTIMAL) {
+        objval = model.Get(GRB.DoubleAttr.ObjVal);
+        Console.WriteLine("Optimal objective: " + objval);
+      } else if (optimstatus == GRB.Status.INF_OR_UNBD) {
+        Console.WriteLine("Model is infeasible or unbounded");
+        return;
+      } else if (optimstatus == GRB.Status.INFEASIBLE) {
+        Console.WriteLine("Model is infeasible");
+        return;
+      } else if (optimstatus == GRB.Status.UNBOUNDED) {
+        Console.WriteLine("Model is unbounded");
+        return;
+      } else {
+        Console.WriteLine("Optimization was stopped with status = "
+                           + optimstatus);
+        return;
+      }
+
+      /* Iterate over the solutions and compute the objectives */
+
+      GRBVar[] vars = model.GetVars();
+      model.GetEnv().Set(GRB.IntParam.OutputFlag, 0);
+
+      Console.WriteLine();
+      for (int k = 0; k &lt; model.Get(GRB.IntAttr.SolCount); ++k) {
+        model.GetEnv().Set(GRB.IntParam.SolutionNumber, k);
+        double objn = 0.0;
+
+        for (int j = 0; j &lt; vars.Length; j++) {
+          objn += vars[j].Get(GRB.DoubleAttr.Obj)
+            * vars[j].Get(GRB.DoubleAttr.Xn);
+        }
+
+        Console.WriteLine("Solution " + k + " has objective: " + objn);
+      }
+      Console.WriteLine();
+      model.GetEnv().Set(GRB.IntParam.OutputFlag, 1);
+
+      /* Create a fixed model, turn off presolve and solve */
+
+      GRBModel fixedmodel = model.FixedModel();
+
+      fixedmodel.GetEnv().Set(GRB.IntParam.Presolve, 0);
+
+      fixedmodel.Optimize();
+
+      int foptimstatus = fixedmodel.Get(GRB.IntAttr.Status);
+
+      if (foptimstatus != GRB.Status.OPTIMAL) {
+        Console.WriteLine("Error: fixed model isn't optimal");
+        return;
+      }
+
+      double fobjval = fixedmodel.Get(GRB.DoubleAttr.ObjVal);
+
+      if (Math.Abs(fobjval - objval) &gt; 1.0e-6 * (1.0 + Math.Abs(objval))) {
+        Console.WriteLine("Error: objective values are different");
+        return;
+      }
+
+      GRBVar[] fvars  = fixedmodel.GetVars();
+      double[] x      = fixedmodel.Get(GRB.DoubleAttr.X, fvars);
+      string[] vnames = fixedmodel.Get(GRB.StringAttr.VarName, fvars);
+
+      for (int j = 0; j &lt; fvars.Length; j++) {
+        if (x[j] != 0.0) Console.WriteLine(vnames[j] + " " + x[j]);
+      }
+
+      // Dispose of models and env
+      fixedmodel.Dispose();
+      model.Dispose();
+      env.Dispose();
+
+    } catch (GRBException e) {
+      Console.WriteLine("Error code: " + e.ErrorCode + ". " + e.Message);
+    }
+  }
+}
+</PRE>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1449"
+  HREF="params_cs_cs.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1447"
+  HREF="cs_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1441"
+  HREF="mip1_cs_cs.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1450"
+  HREF="params_cs_cs.html">params_cs.cs</A>
+<B> Up:</B> <A NAME="tex2html1448"
+  HREF="cs_examples.html">C# Examples</A>
+<B> Previous:</B> <A NAME="tex2html1442"
+  HREF="mip1_cs_cs.html">mip1_cs.cs</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

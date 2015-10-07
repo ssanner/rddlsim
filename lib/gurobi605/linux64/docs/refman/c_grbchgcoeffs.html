@@ -1,0 +1,163 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>GRBchgcoeffs</TITLE>
+<META NAME="description" CONTENT="GRBchgcoeffs">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="c_grbdelconstrs.html">
+<LINK REL="previous" HREF="c_grbaddvars.html">
+<LINK REL="up" HREF="c_model_creation_and_modif.html">
+<LINK REL="next" HREF="c_grbdelconstrs.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html1390"
+  HREF="c_grbdelconstrs.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1388"
+  HREF="c_model_creation_and_modif.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1382"
+  HREF="c_grbaddvars.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1391"
+  HREF="c_grbdelconstrs.html">GRBdelconstrs</A>
+<B> Up:</B> <A NAME="tex2html1389"
+  HREF="c_model_creation_and_modif.html">Model Creation and Modification</A>
+<B> Previous:</B> <A NAME="tex2html1383"
+  HREF="c_grbaddvars.html">GRBaddvars</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000221300000000000000"></A>
+<A NAME="routine:GRBchgcoeffs"></A>
+<BR>
+GRBchgcoeffs
+</H3>
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">GRBchgcoeffs</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT">GRBmodel</TD>
+<TD ALIGN="LEFT">*model,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">numchgs,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">*cind,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">*vind,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">double</TD>
+<TD ALIGN="LEFT">*val )</TD>
+</TR>
+</TABLE>
+
+<P>
+Change a set of constraint matrix coefficients.  This routine can be
+used to set a non-zero coefficient to zero, to create a non-zero
+coefficient where the coefficient is currently zero, or to change an
+existing non-zero coefficient to a new non-zero value.  If you make
+multiple changes to the same coefficient, the last one will be
+applied.
+
+<P>
+Note that the changes won't take effect until the next call to
+<A HREF="c_grboptimize.html#routine:GRBoptimize">GRBoptimize</A> or
+<A HREF="c_grbupdatemodel.html#routine:GRBupdatemodel">GRBupdatemodel</A>.
+
+<P>
+If your constraint matrix may contain more than 2 billion non-zero
+values, you should consider using the
+<A HREF="c_grbxchgcoeffs.html#routine:GRBXchgcoeffs">GRBXchgcoeffs</A> variant of this routine.
+
+<P>
+
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Return value:</SPAN></BIG>
+
+<P>
+A non-zero return value indicates that a problem occurred while performing the modification.
+Refer to the <A HREF="error_codes.html#sec:ErrorCodes">Error Code</A> table for a
+list of possible return values.  Details on the error can be obtained
+by calling <A HREF="c_grbgeterrormsg.html#routine:GRBgeterrormsg">GRBgeterrormsg</A>.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">model</SPAN>: The model to modify.
+
+<P>
+ <SPAN  CLASS="textbf">numchgs</SPAN>: The number of coefficients to modify.
+
+<P>
+ <SPAN  CLASS="textbf">cind</SPAN>: Constraint indices for the coefficients to modify.
+
+<P>
+ <SPAN  CLASS="textbf">vind</SPAN>: Variable indices for the coefficients to modify.
+
+<P>
+ <SPAN  CLASS="textbf">val</SPAN>: The new values for the coefficients.  For example, if
+  <TT>cind[0] = 1</TT>, <TT>vind[0] = 3</TT>, and <TT>val[0] = 2.0</TT>,
+  then the coefficient in constraint 1 associated with variable 3
+  would be changed to 2.0.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Example usage:</SPAN></BIG><PRE>
+  int cind[] = {0, 1};
+  int vind[] = {0, 0};
+  double val[] = {1.0, 1.0};
+  error = GRBchgcoeffs(model, 2, cind, vind, val);
+</PRE>
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1390"
+  HREF="c_grbdelconstrs.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1388"
+  HREF="c_model_creation_and_modif.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1382"
+  HREF="c_grbaddvars.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1391"
+  HREF="c_grbdelconstrs.html">GRBdelconstrs</A>
+<B> Up:</B> <A NAME="tex2html1389"
+  HREF="c_model_creation_and_modif.html">Model Creation and Modification</A>
+<B> Previous:</B> <A NAME="tex2html1383"
+  HREF="c_grbaddvars.html">GRBaddvars</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

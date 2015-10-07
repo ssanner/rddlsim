@@ -1,0 +1,14 @@
+This directory contains the Gurobi R package file.
+
+To install the R interface, find the exact name of this package file
+for your platform (the 64-bit Linux package is in the file
+gurobi_6.0-5_R_x86_64-pc-linux-gnu.tar.gz, while the Windows
+package is in file gurobi_6.0-5.zip), and issue the R command:
+
+> install.packages('<R-package-file>')
+
+Please see the Quick Start Guide for more information about installation.
+The R interface is also described in the Reference Manual, and
+documentation can be accessed within R by typing:
+
+> ?gurobi::gurobi

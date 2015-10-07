@@ -1,0 +1,162 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Solving models with the Gurobi MATLAB interface</TITLE>
+<META NAME="description" CONTENT="Solving models with the Gurobi MATLAB interface">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="matlab_reading_and_writing.html">
+<LINK REL="previous" HREF="matlab_api_overview.html">
+<LINK REL="up" HREF="matlab_api_overview.html">
+<LINK REL="next" HREF="matlab_gurobi.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html9190"
+  HREF="matlab_gurobi.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html9188"
+  HREF="matlab_api_overview.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html9182"
+  HREF="matlab_api_overview.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html9191"
+  HREF="matlab_gurobi.html">gurobi()</A>
+<B> Up:</B> <A NAME="tex2html9189"
+  HREF="matlab_api_overview.html">MATLAB API Overview</A>
+<B> Previous:</B> <A NAME="tex2html9183"
+  HREF="matlab_api_overview.html">MATLAB API Overview</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION000111000000000000000"></A>
+<A NAME="matlab:solving"></A>
+<BR>
+Solving models with the Gurobi MATLAB interface
+</H2>
+
+<P>
+The Gurobi MATLAB interface can be used to solve optimization problems of
+the following form:
+<BR><TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">minimize</TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $x^TQx + c^Tx + \mathrm{alpha}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="148" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img34.png"
+ ALT="$x^TQx + c^Tx + \mathrm{alpha}$"></SPAN></TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+</TR>
+<TR><TD ALIGN="LEFT">subject to</TD>
+<TD ALIGN="LEFT"><SPAN CLASS="MATH"><IMG
+ WIDTH="53" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.png"
+ ALT="$Ax = b$"></SPAN></TD>
+<TD ALIGN="LEFT">(linear constraints)</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $\ell \le x \le u$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="71" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img36.png"
+ ALT="$\ell \le x \le u$"></SPAN></TD>
+<TD ALIGN="LEFT">(bound constraints)</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">some <SPAN CLASS="MATH"><IMG
+ WIDTH="20" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img37.png"
+ ALT="$x_j$"></SPAN> integral</TD>
+<TD ALIGN="LEFT">(integrality constraints)</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">some <SPAN CLASS="MATH"><IMG
+ WIDTH="21" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img38.png"
+ ALT="$x_k$"></SPAN> lie within second order cones</TD>
+<TD ALIGN="LEFT">(cone constraints)</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $x^TQc\, x + q^Tx \le \mathrm{beta}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="152" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img39.png"
+ ALT="$x^TQc  x + q^Tx \le \mathrm{beta}$"></SPAN></TD>
+<TD ALIGN="LEFT">(quadratic constraints)</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">some <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img40.png"
+ ALT="$x_i$"></SPAN> in SOS</TD>
+<TD ALIGN="LEFT">(special ordered set constraints)</TD>
+</TR>
+</TABLE>
+
+<P>
+Many of the model components listed here are optional.  For example,
+integrality constraints may be omitted.  We'll discuss the details of
+how models are represented shortly.
+
+<P>
+The function <A HREF="matlab_gurobi.html#matlabfunction:gurobi">gurobi</A>, described
+next, allows you to take a model represented using MATLAB matrices and
+solve it with the Gurobi Optimizer.
+
+<P>
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html9192"
+  HREF="matlab_gurobi.html">gurobi()</A>
+</UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html9190"
+  HREF="matlab_gurobi.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html9188"
+  HREF="matlab_api_overview.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html9182"
+  HREF="matlab_api_overview.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html9191"
+  HREF="matlab_gurobi.html">gurobi()</A>
+<B> Up:</B> <A NAME="tex2html9189"
+  HREF="matlab_api_overview.html">MATLAB API Overview</A>
+<B> Previous:</B> <A NAME="tex2html9183"
+  HREF="matlab_api_overview.html">MATLAB API Overview</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

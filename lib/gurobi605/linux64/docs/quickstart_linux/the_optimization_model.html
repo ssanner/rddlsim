@@ -1,0 +1,147 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>The optimization model</TITLE>
+<META NAME="description" CONTENT="The optimization model">
+<META NAME="keywords" CONTENT="quickstart_linux">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="quickstart_linux.css">
+
+<LINK REL="next" HREF="the_model_file.html">
+<LINK REL="previous" HREF="the_problem_statement_prod.html">
+<LINK REL="up" HREF="solving_a_simple_model_the.html">
+<LINK REL="next" HREF="the_model_file.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html422"
+  HREF="the_model_file.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html420"
+  HREF="solving_a_simple_model_the.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html414"
+  HREF="the_problem_statement_prod.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html423"
+  HREF="the_model_file.html">The model file</A>
+<B> Up:</B> <A NAME="tex2html421"
+  HREF="solving_a_simple_model_the.html">Solving a Simple Model</A>
+<B> Previous:</B> <A NAME="tex2html415"
+  HREF="the_problem_statement_prod.html">The problem statement -</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00042000000000000000">
+The optimization model</A>
+</H2>
+
+<P>
+In order to formulate this as an optimization problem, we'll need to
+do three things.
+
+<UL>
+<LI>First, we'll need to define the decision variables.
+The goal of the optimization is to choose values for these variables.
+</LI>
+<LI>Second, we'll define a linear objective function.  This is the function we'd like to minimize (or maximize).
+</LI>
+<LI>Third, we'll define the linear
+constraints.
+</LI>
+</UL>
+
+<P>
+The Gurobi Optimizer will consider all assignments of
+values to decision variables that satisfy the specified linear
+constraints, and return one that optimizes the stated objective
+function.
+
+<P>
+The variables in this problem are quite straightforward.  The solver
+will need to decide how many of each coin to produce.  It is
+convenient to give the decision variables meaningful names.  In this
+case, we'll call the variables <EM>Pennies</EM>, <EM>Nickels</EM>,
+<EM>Dimes</EM>, <EM>Quarters</EM>, and <EM>Dollars</EM>.  We'll also
+introduce variables that capture the quantities of the various
+minerals actually used by the solution.  We'll call them
+<EM>Cu</EM>, <EM>Ni</EM>, <EM>Zi</EM>, and <EM>Mn</EM>.
+
+<P>
+Recall that the objective of our optimization problem is to maximize
+the total dollar value of the coins produced.  Each penny produced
+is worth 0.01 dollars, each nickel is worth 0.05 dollars, etc.  This
+gives the following linear objective:
+<PRE>
+  maximize: 0.01 Pennies + 0.05 Nickels + 0.1 Dimes + 0.25 Quarters + 1 Dollars
+</PRE>
+
+<P>
+The constraints of this model come from the fact that producing a coin
+consumes certain quantities of the available minerals, and the supplies
+of those minerals are limited.  We'll capture these relationships in
+two parts.  First, we'll create an equation for each mineral that
+captures the amount of that mineral that is consumed.  For copper,
+that equation would be:
+<PRE>
+  Cu = 0.06 Pennies + 3.8 Nickels + 2.1 Dimes + 5.2 Quarters + 7.2 Dollars
+</PRE>
+The coefficients for this equation come from the earlier coin
+specification table: one penny uses 0.06g of copper, one nickel
+uses 3.8g, etc.
+
+<P>
+The model must also capture the available quantities of each mineral.
+If we have 1000 grams of copper available, then the constraint would be:
+<PRE>
+  Cu &lt;= 1000
+</PRE>
+For our example, we'll assume we have 1000 grams of copper and 50
+grams of the other minerals.
+
+<P>
+There is actually one other set of constraints that must be captured
+in order for our model to accurately reflect the physical realities of
+our problem.  While a dime is worth 10 cents, half of a dime isn't
+worth 5 cents.  The variables that capture the number of each coin
+produced must take integer values.
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html422"
+  HREF="the_model_file.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html420"
+  HREF="solving_a_simple_model_the.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html414"
+  HREF="the_problem_statement_prod.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html423"
+  HREF="the_model_file.html">The model file</A>
+<B> Up:</B> <A NAME="tex2html421"
+  HREF="solving_a_simple_model_the.html">Solving a Simple Model</A>
+<B> Previous:</B> <A NAME="tex2html415"
+  HREF="the_problem_statement_prod.html">The problem statement -</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

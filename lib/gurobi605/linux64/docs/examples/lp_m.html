@@ -1,0 +1,117 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>lp.m</TITLE>
+<META NAME="description" CONTENT="lp.m">
+<META NAME="keywords" CONTENT="examples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="examples.css">
+
+<LINK REL="next" HREF="lp2_m.html">
+<LINK REL="previous" HREF="linprog_m.html">
+<LINK REL="up" HREF="matlab_examples.html">
+<LINK REL="next" HREF="lp2_m.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html2247"
+  HREF="lp2_m.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html2245"
+  HREF="matlab_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html2239"
+  HREF="linprog_m.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html2248"
+  HREF="lp2_m.html">lp2.m</A>
+<B> Up:</B> <A NAME="tex2html2246"
+  HREF="matlab_examples.html">MATLAB Examples</A>
+<B> Previous:</B> <A NAME="tex2html2240"
+  HREF="linprog_m.html">linprog.m</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00027400000000000000"></A>
+<A NAME="subsubsection:lp.m"></A>
+<BR>
+lp.m
+</H3>
+
+<P>
+<BR>
+<PRE  CLASS="verbatim">% Copyright 2014, Gurobi Optimization, Inc.
+%
+% This example formulates and solves the following simple LP model:
+% maximize
+%       x + 2 y + 3 z
+% subject to
+%       x +   y        &lt;= 1
+%             y +   z  &lt;= 1
+%
+clear model;
+model.A = sparse([1 1 0; 0 1 1]);
+model.obj = [1 2 3];
+model.modelsense = 'Max';
+model.rhs = [1 1];
+model.sense = [ '&lt;' '&lt;'];
+
+result = gurobi(model)
+
+disp(result.objval);
+disp(result.x);
+
+% Alterantive representation of A - as sparse triplet matrix
+i = [1; 1; 2; 2];
+j = [1; 2; 2; 3];
+x = [1; 1; 1; 1];
+model.A = sparse(i, j, x, 2, 3);
+
+clear params;
+params.method = 2;
+params.timelimit = 100;
+
+result = gurobi(model, params);
+
+disp(result.objval);
+disp(result.x)
+</PRE>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html2247"
+  HREF="lp2_m.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html2245"
+  HREF="matlab_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html2239"
+  HREF="linprog_m.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html2248"
+  HREF="lp2_m.html">lp2.m</A>
+<B> Up:</B> <A NAME="tex2html2246"
+  HREF="matlab_examples.html">MATLAB Examples</A>
+<B> Previous:</B> <A NAME="tex2html2240"
+  HREF="linprog_m.html">linprog.m</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

@@ -1,0 +1,193 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Solving a Model</TITLE>
+<META NAME="description" CONTENT="Solving a Model">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="gurobi_remote_services_and.html">
+<LINK REL="previous" HREF="gurobi_command_line_tool.html">
+<LINK REL="up" HREF="gurobi_command_line_tool.html">
+<LINK REL="next" HREF="gurobi_remote_services_and.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html12382"
+  HREF="gurobi_remote_services_and.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html12380"
+  HREF="gurobi_command_line_tool.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html12374"
+  HREF="gurobi_command_line_tool.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html12383"
+  HREF="gurobi_remote_services_and.html">Gurobi Remote Services and</A>
+<B> Up:</B> <A NAME="tex2html12381"
+  HREF="gurobi_command_line_tool.html">Gurobi Command-Line Tool</A>
+<B> Previous:</B> <A NAME="tex2html12375"
+  HREF="gurobi_command_line_tool.html">Gurobi Command-Line Tool</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION000201000000000000000"></A>
+<A NAME="subsection:CLSolve"></A>
+<BR>
+Solving a Model
+</H2>
+
+<P>
+The command-line tool provides an easy way to solve a model stored in
+a file.  The model can be stored in several different formats,
+including MPS, REW, LP, and RLP, and the file can optionally be
+compressed using <code>gzip</code>, <code>bzip2</code>, or <code>7z</code>.  See the
+<A HREF="model_file_formats.html#sec:FileFormats">File Format</A> discussion for more
+information on accepted formats.
+
+<P>
+The most basic command-line command is the following:
+<PRE>
+gurobi_cl model.mps
+</PRE>
+This will read the model from the indicated file, optimize it, and
+display the Gurobi log file as the solve proceeds.
+
+<P>
+You can optionally include an arbitrary number of
+<code>parameter=value</code> commands before the name of the file.
+For example:
+<PRE>
+gurobi_cl Method=2 TimeLimit=100 model.mps
+</PRE>
+The full set of Gurobi parameters is described in the
+<A HREF="parameters.html#sec:Parameters">Parameter</A> section.
+
+<P>
+Gurobi Compute Server users can add the <code>--server=</code> switch
+to specify a server.  For example, the command:
+<PRE>
+gurobi_cl --server=server1 Method=2 TimeLimit=100 model.mps
+</PRE>
+would solve the model stored in file <code>model.mps</code> on machine
+<code>server1</code>, assuming it is running Gurobi Compute Server.  If the
+Compute Server has an access password, use the <code>--password=</code>
+switch to specify it.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Writing Result Files</SPAN></BIG>
+<A NAME="subsubsection:CLResultFiles"></A>
+<P>
+While it is often useful to simply solve a model and display the log,
+it is also common to want to review the resulting solution.  You can
+use the <A HREF="resultfile.html#parameter:ResultFile">ResultFile</A> parameter to
+write the solution to a file:
+<PRE>
+gurobi_cl ResultFile=model.sol model.mps
+</PRE>
+The file name suffix determines the type of file written.
+Useful file formats for solution information are <code>.sol</code> (for
+solution vectors) and <code>.bas</code> (for simplex basis information).
+Again, you should consult the section on <A HREF="model_file_formats.html#sec:FileFormats">File
+  Formats</A> for a list of the supported formats
+
+<P>
+If you have an infeasible model, you may want to examine a
+corresponding Irreducible Inconsistent Subsystem (IIS) to identify the
+cause of the infeasibility.  You can ask the command-line tool to
+write a <code>.ilp</code> format file.  It will attempt to solve the model,
+and if the model is found to be infeasible, it will automatically
+compute an IIS and write it to the requested file name.
+
+<P>
+Another use of <code>ResultFile</code> is to translate between file formats.
+For example, if you want to translate a model from MPS format to LP
+format, you could issue the following command:
+<PRE>
+gurobi_cl TimeLimit=0 ResultFile=model.lp model.mps
+</PRE>
+Gurobi can write compressed files directly, so this command would also
+work (assuming that <code>7zip</code> is installed on your machine):
+<PRE>
+gurobi_cl TimeLimit=0 ResultFile=model.lp.7z model.mps
+</PRE>
+
+<P>
+The <code>ResultFile</code> parameter works differently from other
+parameters in the command-line interface.  While a parameter normally
+takes a single value, you can actually specify multiple result files.
+For example, the following command:
+<PRE>
+gurobi_cl ResultFile=model.sol ResultFile=model.bas model.mps
+</PRE>
+will write two files.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Reading Input Files</SPAN></BIG>
+<A NAME="subsubsection:CLInputFiles"></A>
+<P>
+You can use the <A HREF="inputfile.html#parameter:InputFile">InputFile</A>
+parameter to read input files during the optimization.  The most
+common input formats are <code>.bas</code> (a simplex basis), <code>.mst</code> (a
+MIP start), and <code>.ord</code> (a MIP priority order).  For example, the
+following command:
+<PRE>
+gurobi_cl InputFile=model.bas model.mps
+</PRE>
+would start the optimization of the continuous model stored in file
+<code>model.mps</code> using the basis provided in file <code>model.bas</code>.
+
+<P>
+Reading input files is equivalent to setting the values of Gurobi
+attributes.  A <code>.bas</code> file populates the
+<A HREF="vbasis.html#attr:VBasis">VBasis</A> and
+<A HREF="cbasis.html#attr:CBasis">CBasis</A> attributes, a <code>.mst</code> file
+populates the <A HREF="start.html#attr:Start">Start</A> attribute, and a
+<code>.ord</code> file populates the
+<A HREF="branchpriority.html#attr:BranchPriority">BranchPriority</A> attribute.
+
+<P>
+Again, you should consult the <A HREF="model_file_formats.html#sec:FileFormats">File
+  Formats</A> section for more information on
+supported file formats
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html12382"
+  HREF="gurobi_remote_services_and.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html12380"
+  HREF="gurobi_command_line_tool.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html12374"
+  HREF="gurobi_command_line_tool.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html12383"
+  HREF="gurobi_remote_services_and.html">Gurobi Remote Services and</A>
+<B> Up:</B> <A NAME="tex2html12381"
+  HREF="gurobi_command_line_tool.html">Gurobi Command-Line Tool</A>
+<B> Previous:</B> <A NAME="tex2html12375"
+  HREF="gurobi_command_line_tool.html">Gurobi Command-Line Tool</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

@@ -1,0 +1,268 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>MIP Models</TITLE>
+<META NAME="description" CONTENT="MIP Models">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="previous" HREF="continuous_models.html">
+<LINK REL="up" HREF="parameter_guidelines.html">
+<LINK REL="next" HREF="parameter_descriptions.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html10936"
+  HREF="parameter_descriptions.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html10934"
+  HREF="parameter_guidelines.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html10930"
+  HREF="continuous_models.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html10937"
+  HREF="parameter_descriptions.html">Parameter Descriptions</A>
+<B> Up:</B> <A NAME="tex2html10935"
+  HREF="parameter_guidelines.html">Parameter Guidelines</A>
+<B> Previous:</B> <A NAME="tex2html10931"
+  HREF="continuous_models.html">Continuous Models</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000141200000000000000">
+MIP Models</A>
+</H3>
+
+<P>
+While default settings generally work well, MIP models will often
+benefit from parameter tuning.  We offer the following guidelines,
+but we also encourage you to experiment.
+
+<P>
+<SPAN  CLASS="textbf">Most Important Parameters</SPAN>
+
+<P>
+The two most important Gurobi settings when solving a MIP model are
+probably the <code>Threads</code> and <code>MIPFocus</code> parameters.  The
+<code>Threads</code> parameter controls the number of threads used by the
+parallel MIP solver to solve the model.  The default is to use all
+cores in the machine.  If you wish to leave some available for other
+activities, adjust this parameter accordingly.
+
+<P>
+The <code>MIPFocus</code> parameter allows you to modify your high-level
+solution strategy, depending on your goals.  By default, the Gurobi
+MIP solver strikes a balance between finding new feasible solutions
+and proving that the current solution is optimal.  If you are more
+interested in good quality feasible solutions, you can select
+<code> MIPFocus=1</code>.  If you believe the solver is having no trouble
+finding the optimal solution, and wish to focus more attention on
+proving optimality, select <code>MIPFocus=2</code>.  If the best objective
+bound is moving very slowly (or not at all), you may want to try
+<code>MIPFocus=3</code> to focus on the bound.
+
+<P>
+<SPAN  CLASS="textbf">Solution Improvement</SPAN>
+
+<P>
+The <code>ImproveStartTime</code> and <code>ImproveStartGap</code> parameters
+can also be used to modify your high-level solution strategy, but in a
+different way.  These parameters allow you to give up on proving
+optimality at a certain point in the search, and instead focus all
+attention on finding better feasible solutions from that point onward.
+The <code>ImproveStartTime</code> parameter allows you to make this
+transition after the specified time has elapsed, while the
+<code>ImproveStartGap</code> parameter makes the transition when the
+specified optimality gap has been achieved.
+
+<P>
+<SPAN  CLASS="textbf">Termination</SPAN>
+
+<P>
+Another important set of Gurobi parameters affect solver termination.
+If the solver is unable to find a proven optimal solution within the
+desired time, you will need to indicate how to limit the search.  The
+simplest option is to limit runtime using the <code>TimeLimit</code>
+parameter.  Another common termination choice for MIP models is to set
+the <code>MIPGap</code> parameter.  The <code>MIPGap</code> parameter allows you
+to indicate that optimization should stop when the relative gap
+between the best known solution and the best known bound on the
+solution objective is less than the specified value.  You
+can terminate when the absolute gap is below a desired
+threshold using the <code>MIPGapAbs</code> parameter.  Other
+termination options include <code>NodeLimit</code>, <code>IterationLimit</code>,
+<code>SolutionLimit</code>, and <code>Cutoff</code>.  The first three indicate
+that optimization should terminate when the number of branch-and-bound
+nodes, the total number of simplex iterations, or the number of
+discovered feasible integer solutions exceeds the specified value,
+respectively.  The <code>Cutoff</code> parameter indicates that the solver
+should only consider solutions whose objective values are better than
+the specified value, and should terminate if no such solutions are
+found.
+
+<P>
+<SPAN  CLASS="textbf">Reducing Memory Usage</SPAN>
+
+<P>
+If you find that the Gurobi optimizer exhausts memory when solving a
+MIP, you should modify the <code>NodefileStart</code> parameter.  When the
+amount of memory used to store nodes (measured in GBytes) exceeds the
+specified parameter value, nodes are written to disk.  We recommend a
+setting of <code>0.5</code>, but you may wish to choose a different value,
+depending on the memory available in your machine.  By default, nodes
+are written to the current working directory.  The <code>NodefileDir</code>
+parameter can be used to choose a different location.
+
+<P>
+If you still exhaust memory after setting the <code>NodefileStart</code>
+parameter to a small value, you should try limiting the thread count.
+Each thread in parallel MIP requires a copy of the model, as well as
+several other large data structures.  Reducing the <code>Threads</code>
+parameter can sometimes significantly reduce memory usage.
+
+<P>
+<SPAN  CLASS="textbf">Speeding Up The Root Relaxation</SPAN>
+
+<P>
+The root relaxation in a MIP model can sometimes be quite expensive to
+solve.  If you find that a lot of time is spent here, consider using
+the <code>Method</code> parameter to select a different continuous
+algorithm for the root.  For example, <code>Method=2</code> would select
+the parallel barrier algorithm at the root, and <code>Method=3</code> would
+select the concurrent solver.  Note that you can choose a different
+algorithm for the MIP node relaxations using the <code>NodeMethod</code>
+parameter, but it is rarely beneficial to change this from the default
+(dual simplex).
+
+<P>
+<SPAN  CLASS="textbf">Heuristics</SPAN>
+
+<P>
+A few Gurobi parameters control internal MIP strategies.  The
+<code>Heuristics</code> parameter controls the fraction of runtime spent on
+feasibility heuristics.  Increasing the parameter can lead to more and
+better feasible solutions, but it will also reduce the rate of
+progress in the best bound.  The <code>SubMIPNodes</code> parameter
+controls the number of nodes explored in some of the more
+sophisticated local search heuristics inside the Gurobi solver.  You
+can increase this if you are having trouble finding good feasible
+solutions.  The <code>MinRelNodes</code>, <code>PumpPasses</code>, and
+<code>ZeroObjNodes</code> parameters control a set of expensive heuristics
+whose goal is to find a feasible solution.  All are invoked at the end
+of the MIP root node, but only if no feasible solution has been found
+already.  Try these if you are having trouble finding any feasible
+solutions.
+
+<P>
+<SPAN  CLASS="textbf">Cutting Planes</SPAN>
+
+<P>
+The Gurobi MIP solver employs a wide range of cutting plane
+strategies.  The aggressiveness of these strategies can be controlled
+at a coarse level through the <code>Cuts</code> parameter, and at a finer
+grain through a further set of cuts parameters (e.g.,
+<code>FlowCoverCuts</code>, <code>MIRCuts</code>, etc.).  Each cut parameter can be
+set to Aggressive (2), Conservative (1), Automatic (-1), or None (0).
+The more specific parameters override the more general, so for example
+setting <code>MIRCuts</code> to None (0) while also setting <code>Cuts</code> to
+Aggressive (2) would aggressively generate all cut types, except MIR
+cuts which would not be generated.  Very easy models can sometimes
+benefit from turning cuts off, while extremely difficult models can
+benefit from turning them to their Aggressive setting.
+
+<P>
+<SPAN  CLASS="textbf">Presolve</SPAN>
+
+<P>
+Presolve behavior can be modified with a set of parameters.  The
+<code>Presolve</code> parameter sets the aggressiveness level of presolve.
+Options are Aggressive (2), Conservative (1), Automatic (-1), or None
+(0).  More aggressive application of presolve takes more time, but can
+sometimes lead to a significantly tighter model.  The
+<code>PrePasses</code> provides finer-grain control of presolve.  It limits
+the number of passes presolve performs.  Setting it to a small value
+(e.g., 3) can reduce presolve runtime.  The <code>Aggregate</code>
+parameter controls whether presolve performs constraint aggregation.
+Aggregation typically leads to a smaller formulation, but in rare
+cases it can introduce numerical issues.  The <code>AggFill</code>
+parameter controls aggregation at a finer grain.  It controls how much
+fill is tolerated in the constraint matrix from a single variable
+aggregation.  The <code>PreSparsify</code> parameter enables an algorithm
+that can sometimes significantly reduce the number of nonzero values
+in the constraint matrix.
+
+<P>
+<SPAN  CLASS="textbf">Additional Parameters</SPAN>
+
+<P>
+The <code>Symmetry</code> parameter controls symmetry detection.  The
+default value usually works well.  The <code>VarBranch</code> parameter
+controls the branching variable selection strategy within the
+branch-and-bound process.  Variable selection can have a significant
+impact on overall time to solution, but the default strategy is
+usually the best choice.
+
+<P>
+<SPAN  CLASS="textbf">Tolerances</SPAN>
+
+<P>
+The Gurobi solver includes a set of numerical tolerance parameters.
+These rarely require adjustment, and are included for advanced users
+who are having trouble with the numerical properties of their models.
+The <code>FeasibilityTol</code>, <code>IntFeasTol</code>, <code>MarkowitzTol</code>,
+and <code>OptimalityTol</code> parameters allow you to adjust the primal
+feasibility tolerance, the integer feasibility tolerance, the
+Markowitz tolerance for simplex basis factorization, and the dual
+feasibility tolerance, respectively.
+
+<P>
+
+<P>
+
+<P>
+
+<P>
+
+<P>
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html10936"
+  HREF="parameter_descriptions.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html10934"
+  HREF="parameter_guidelines.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html10930"
+  HREF="continuous_models.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html10937"
+  HREF="parameter_descriptions.html">Parameter Descriptions</A>
+<B> Up:</B> <A NAME="tex2html10935"
+  HREF="parameter_guidelines.html">Parameter Guidelines</A>
+<B> Previous:</B> <A NAME="tex2html10931"
+  HREF="continuous_models.html">Continuous Models</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

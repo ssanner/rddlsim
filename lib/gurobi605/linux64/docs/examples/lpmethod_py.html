@@ -1,0 +1,117 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>lpmethod.py</TITLE>
+<META NAME="description" CONTENT="lpmethod.py">
+<META NAME="keywords" CONTENT="examples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="examples.css">
+
+<LINK REL="next" HREF="lpmod_py.html">
+<LINK REL="previous" HREF="lp_py.html">
+<LINK REL="up" HREF="python_examples.html">
+<LINK REL="next" HREF="lpmod_py.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html2019"
+  HREF="lpmod_py.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html2017"
+  HREF="python_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html2011"
+  HREF="lp_py.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html2020"
+  HREF="lpmod_py.html">lpmod.py</A>
+<B> Up:</B> <A NAME="tex2html2018"
+  HREF="python_examples.html">Python Examples</A>
+<B> Previous:</B> <A NAME="tex2html2012"
+  HREF="lp_py.html">lp.py</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000261300000000000000"></A>
+<A NAME="subsubsection:lpmethod.py"></A>
+<BR>
+lpmethod.py
+</H3>
+
+<P>
+<BR>
+<PRE  CLASS="verbatim">#!/usr/bin/python
+
+# Copyright 2014, Gurobi Optimization, Inc.
+
+# Solve a model with different values of the Method parameter;
+# show which value gives the shortest solve time.
+
+import sys
+from gurobipy import *
+
+if len(sys.argv) &lt; 2:
+    print('Usage: lpmethod.py filename')
+    quit()
+
+# Read model
+m = read(sys.argv[1])
+
+# Solve the model with different values of Method
+bestTime = m.params.timeLimit
+bestMethod = -1
+for i in range(3):
+    m.reset()
+    m.params.method = i
+    m.optimize()
+    if m.status == GRB.status.OPTIMAL:
+        bestTime = m.Runtime
+        bestMethod = i
+        # Reduce the TimeLimit parameter to save time with other methods
+        m.params.timeLimit = bestTime
+
+# Report which method was fastest
+if bestMethod == -1:
+    print('Unable to solve this model')
+else:
+    print('Solved in %g seconds with Method %d' % (bestTime, bestMethod))
+</PRE>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html2019"
+  HREF="lpmod_py.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html2017"
+  HREF="python_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html2011"
+  HREF="lp_py.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html2020"
+  HREF="lpmod_py.html">lpmod.py</A>
+<B> Up:</B> <A NAME="tex2html2018"
+  HREF="python_examples.html">Python Examples</A>
+<B> Previous:</B> <A NAME="tex2html2012"
+  HREF="lp_py.html">lp.py</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

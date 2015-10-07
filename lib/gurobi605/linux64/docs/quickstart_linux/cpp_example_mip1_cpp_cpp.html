@@ -1,0 +1,141 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Example mip1_c++.cpp</TITLE>
+<META NAME="description" CONTENT="Example mip1_c++.cpp">
+<META NAME="keywords" CONTENT="quickstart_linux">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="quickstart_linux.css">
+
+<LINK REL="next" HREF="cpp_example_details.html">
+<LINK REL="previous" HREF="cpp_interface.html">
+<LINK REL="up" HREF="cpp_interface.html">
+<LINK REL="next" HREF="cpp_example_details.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html751"
+  HREF="cpp_example_details.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html749"
+  HREF="cpp_interface.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html743"
+  HREF="cpp_interface.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html752"
+  HREF="cpp_example_details.html">Example details</A>
+<B> Up:</B> <A NAME="tex2html750"
+  HREF="cpp_interface.html">C++ Interface</A>
+<B> Previous:</B> <A NAME="tex2html744"
+  HREF="cpp_interface.html">C++ Interface</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00081000000000000000">
+Example mip1_c++.cpp</A>
+</H2>
+
+<P>
+This is the complete source code for our example (also available in 
+<code>&lt;installdir&gt;/examples/c++/mip1_c++.cpp</code>)...
+
+<P>
+<PRE>
+#include "gurobi_c++.h"
+using namespace std;
+
+int
+main(int   argc,
+     char *argv[])
+{
+  try {
+    GRBEnv env = GRBEnv();
+
+    GRBModel model = GRBModel(env);
+
+    // Create variables
+
+    GRBVar x = model.addVar(0.0, 1.0, 0.0, GRB_BINARY, "x");
+    GRBVar y = model.addVar(0.0, 1.0, 0.0, GRB_BINARY, "y");
+    GRBVar z = model.addVar(0.0, 1.0, 0.0, GRB_BINARY, "z");
+
+    // Integrate new variables
+
+    model.update();
+
+    // Set objective: maximize x + y + 2 z
+
+    model.setObjective(x + y + 2 * z, GRB_MAXIMIZE);
+
+    // Add constraint: x + 2 y + 3 z &lt;= 4
+
+    model.addConstr(x + 2 * y + 3 * z &lt;= 4, "c0");
+
+    // Add constraint: x + y &gt;= 1
+
+    model.addConstr(x + y &gt;= 1, "c1");
+
+    // Optimize model
+
+    model.optimize();
+
+    cout &lt;&lt; x.get(GRB_StringAttr_VarName) &lt;&lt; " "
+         &lt;&lt; x.get(GRB_DoubleAttr_X) &lt;&lt; endl;
+    cout &lt;&lt; y.get(GRB_StringAttr_VarName) &lt;&lt; " "
+         &lt;&lt; y.get(GRB_DoubleAttr_X) &lt;&lt; endl;
+    cout &lt;&lt; z.get(GRB_StringAttr_VarName) &lt;&lt; " "
+         &lt;&lt; z.get(GRB_DoubleAttr_X) &lt;&lt; endl;
+
+    cout &lt;&lt; "Obj: " &lt;&lt; model.get(GRB_DoubleAttr_ObjVal) &lt;&lt; endl;
+
+  } catch(GRBException e) {
+    cout &lt;&lt; "Error code = " &lt;&lt; e.getErrorCode() &lt;&lt; endl;
+    cout &lt;&lt; e.getMessage() &lt;&lt; endl;
+  } catch(...) {
+    cout &lt;&lt; "Exception during optimization" &lt;&lt; endl;
+  }
+
+  return 0;
+}
+</PRE>
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html751"
+  HREF="cpp_example_details.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html749"
+  HREF="cpp_interface.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html743"
+  HREF="cpp_interface.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html752"
+  HREF="cpp_example_details.html">Example details</A>
+<B> Up:</B> <A NAME="tex2html750"
+  HREF="cpp_interface.html">C++ Interface</A>
+<B> Previous:</B> <A NAME="tex2html744"
+  HREF="cpp_interface.html">C++ Interface</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

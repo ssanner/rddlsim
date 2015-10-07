@@ -1,0 +1,123 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>GRBModel.GetTuneResult()</TITLE>
+<META NAME="description" CONTENT="GRBModel.GetTuneResult()">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="cs_grbmodel_getvarbyname.html">
+<LINK REL="previous" HREF="cs_grbmodel_getsoss.html">
+<LINK REL="up" HREF="cs_grbmodel.html">
+<LINK REL="next" HREF="cs_grbmodel_getvarbyname.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html6498"
+  HREF="cs_grbmodel_getvarbyname.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html6496"
+  HREF="cs_grbmodel.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html6490"
+  HREF="cs_grbmodel_getsoss.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html6499"
+  HREF="cs_grbmodel_getvarbyname.html">GRBModel.GetVarByName()</A>
+<B> Up:</B> <A NAME="tex2html6497"
+  HREF="cs_grbmodel.html">GRBModel</A>
+<B> Previous:</B> <A NAME="tex2html6491"
+  HREF="cs_grbmodel_getsoss.html">GRBModel.GetSOSs()</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000823100000000000000"></A>
+<A NAME="dotnetmethod:GRBModel.GetTuneResult"></A>
+<BR>
+GRBModel.GetTuneResult()
+</H3>
+
+<P>
+Use this method to retrieve the results of a previous
+<A HREF="cs_grbmodel_tune.html#dotnetmethod:GRBModel.Tune">Tune</A> call.  Calling this
+method with argument <code>n</code> causes tuned parameter set <code>n</code> to
+be copied into the model.  Parameter sets are stored in order of
+decreasing quality, with parameter set 0 being the best.  The number
+of available sets is stored in attribute
+<A HREF="tuneresultcount.html#attr:TuneResultCount">TuneResultCount</A>.
+
+<P>
+Once you have retrieved a tuning result, you can
+call
+<A HREF="cs_grbmodel_optimize.html#dotnetmethod:GRBModel.Optimize">optimize</A> to
+use these parameter settings to optimize the model,
+or
+<A HREF="cs_grbmodel_write.html#dotnetmethod:GRBModel.Write">write</A> to write
+the changed parameters to a <TT>.prm</TT> file.
+
+<P>
+Please refer to the <A HREF="parameter_tuning_tool.html#sec:Tuning">parameter
+  tuning</A> section for details on the tuning
+tool.
+
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">void</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">GetTuneResult</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">n )</TD>
+</TR>
+</TABLE>
+
+<UL>
+
+<P>
+ <SPAN  CLASS="textbf">n</SPAN>: The index of the tuning result to retrieve.  The best
+  result is available as index 0.  The number of stored results is
+  available in attribute
+  <A HREF="tuneresultcount.html#attr:TuneResultCount">TuneResultCount</A>.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html6498"
+  HREF="cs_grbmodel_getvarbyname.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html6496"
+  HREF="cs_grbmodel.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html6490"
+  HREF="cs_grbmodel_getsoss.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html6499"
+  HREF="cs_grbmodel_getvarbyname.html">GRBModel.GetVarByName()</A>
+<B> Up:</B> <A NAME="tex2html6497"
+  HREF="cs_grbmodel.html">GRBModel</A>
+<B> Previous:</B> <A NAME="tex2html6491"
+  HREF="cs_grbmodel_getsoss.html">GRBModel.GetSOSs()</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

@@ -1,0 +1,110 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>WorkerPool</TITLE>
+<META NAME="description" CONTENT="WorkerPool">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="zerohalfcuts.html">
+<LINK REL="previous" HREF="workerpassword.html">
+<LINK REL="up" HREF="parameter_descriptions.html">
+<LINK REL="next" HREF="zerohalfcuts.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html12037"
+  HREF="zerohalfcuts.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html12035"
+  HREF="parameter_descriptions.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html12029"
+  HREF="workerpassword.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html12038"
+  HREF="zerohalfcuts.html">ZeroHalfCuts</A>
+<B> Up:</B> <A NAME="tex2html12036"
+  HREF="parameter_descriptions.html">Parameter Descriptions</A>
+<B> Previous:</B> <A NAME="tex2html12030"
+  HREF="workerpassword.html">WorkerPassword</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION0001429900000000000000"></A>
+<A NAME="parameter:WorkerPool"></A>
+<BR>
+WorkerPool
+</H3>
+Pool of machines to use for distributed algorithms
+
+<TABLE CELLPADDING=3>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf">Type:</SPAN></TH>
+<TD ALIGN="LEFT">string</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf">Default value:</SPAN></TH>
+<TD ALIGN="LEFT">""</TD>
+</TR>
+</TABLE>
+
+<P>
+When using a distributed algorithm (distributed MIP, distributed
+concurrent, or distributed tuning), this parameter allows you to
+specify a comma-separated list of machines that can be used as
+workers.  These machines must be running Gurobi Remote Services.  You can
+refer to these workers using their names or their IP addresses.  You
+should specify the access password, if there is one, in the
+<A HREF="workerpassword.html#parameter:WorkerPassword">WorkerPassword</A> parameter.
+
+<P>
+To give an example, if you have two machines named
+<TT>server1.mydomain.com</TT> and <TT>server2.mydomain.com</TT>, with IP
+addresses 192.168.1.100 and 192.168.1.101, you could set
+the <code>WorkerPool</code> to 
+<TT>"server1.mydomain.com,server2.mydomain.com"</TT> or
+<TT>"192.168.1.100,192.168.1.101"</TT>.
+
+<P>
+For examples of how to query or modify parameter values from
+our different APIs, refer to our
+<A HREF="parameter_examples.html#sec:ParameterExamples">Parameter Examples</A>.
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html12037"
+  HREF="zerohalfcuts.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html12035"
+  HREF="parameter_descriptions.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html12029"
+  HREF="workerpassword.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html12038"
+  HREF="zerohalfcuts.html">ZeroHalfCuts</A>
+<B> Up:</B> <A NAME="tex2html12036"
+  HREF="parameter_descriptions.html">Parameter Descriptions</A>
+<B> Previous:</B> <A NAME="tex2html12030"
+  HREF="workerpassword.html">WorkerPassword</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

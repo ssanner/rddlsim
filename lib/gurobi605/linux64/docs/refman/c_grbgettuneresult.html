@@ -1,0 +1,149 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>GRBgettuneresult</TITLE>
+<META NAME="description" CONTENT="GRBgettuneresult">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="c_grbgetdblparam.html">
+<LINK REL="previous" HREF="c_grbtunemodel.html">
+<LINK REL="up" HREF="c_parameter_management_and.html">
+<LINK REL="next" HREF="c_grbgetdblparam.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html2176"
+  HREF="c_grbgetdblparam.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html2174"
+  HREF="c_parameter_management_and.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html2168"
+  HREF="c_grbtunemodel.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html2177"
+  HREF="c_grbgetdblparam.html">GRBgetdblparam</A>
+<B> Up:</B> <A NAME="tex2html2175"
+  HREF="c_parameter_management_and.html">Parameter Management and Tuning</A>
+<B> Previous:</B> <A NAME="tex2html2169"
+  HREF="c_grbtunemodel.html">GRBtunemodel</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00027200000000000000"></A>
+<A NAME="routine:GRBgettuneresult"></A>
+<BR>
+GRBgettuneresult
+</H3>
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">GRBgettuneresult</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT">GRBmodel</TD>
+<TD ALIGN="LEFT">*model,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">n )</TD>
+</TR>
+</TABLE>
+
+<P>
+Use this routine to retrieve the results of a previous
+<A HREF="c_grbtunemodel.html#routine:GRBtunemodel">GRBtunemodel</A> call.  Calling this
+routine with argument <code>n</code> causes tuned parameter set <code>n</code>
+to be copied into the model.  Parameter sets are stored in order of
+decreasing quality, with parameter set 0 being the best.  The number
+of available sets is stored in attribute
+<A HREF="tuneresultcount.html#attr:TuneResultCount">TuneResultCount</A>.
+
+<P>
+Once you have retrieved a tuning result, you can call
+<A HREF="c_grboptimize.html#routine:GRBoptimize">GRBoptimize</A> to use these parameter
+settings to optimize the model, or
+<A HREF="c_grbwrite.html#routine:GRBwrite">GRBwrite</A> to write the changed
+parameters to a <code>.prm</code> file.
+
+<P>
+Please refer to the <A HREF="parameter_tuning_tool.html#sec:Tuning">parameter
+  tuning</A> section for details on the tuning
+tool.
+
+<P>
+
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Return value:</SPAN></BIG>
+
+<P>
+A non-zero return value indicates that a problem occurred while retrieving a tuning result.
+Refer to the <A HREF="error_codes.html#sec:ErrorCodes">Error Code</A> table for a
+list of possible return values.  Details on the error can be obtained
+by calling <A HREF="c_grbgeterrormsg.html#routine:GRBgeterrormsg">GRBgeterrormsg</A>.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">model</SPAN>: A model that has previously been used as the
+argument of <A HREF="c_grbtunemodel.html#routine:GRBtunemodel">GRBtunemodel</A>.
+
+<P>
+ <SPAN  CLASS="textbf">n</SPAN>: The index of the tuning result to retrieve.  The best
+  result is available as index 0.  The number of stored results is
+  available in attribute
+  <A HREF="tuneresultcount.html#attr:TuneResultCount">TuneResultCount</A>.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Example usage:</SPAN></BIG><PRE>
+  error = GRBtunemodel(model);
+  if (error) goto QUIT;
+
+  error = GRBgetintattr(model, "TuneResultCount", &amp;nresults);
+  if (error) goto QUIT;
+
+  if (nresults &gt; 0) {
+    error = GRBgettuneresult(model, 0);
+    if (error) goto QUIT;
+  }
+</PRE>
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html2176"
+  HREF="c_grbgetdblparam.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html2174"
+  HREF="c_parameter_management_and.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html2168"
+  HREF="c_grbtunemodel.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html2177"
+  HREF="c_grbgetdblparam.html">GRBgetdblparam</A>
+<B> Up:</B> <A NAME="tex2html2175"
+  HREF="c_parameter_management_and.html">Parameter Management and Tuning</A>
+<B> Previous:</B> <A NAME="tex2html2169"
+  HREF="c_grbtunemodel.html">GRBtunemodel</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

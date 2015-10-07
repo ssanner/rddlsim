@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Model.read()</TITLE>
+<META NAME="description" CONTENT="Model.read()">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="py_model_relax.html">
+<LINK REL="previous" HREF="py_model_cbsetsolution.html">
+<LINK REL="up" HREF="py_model.html">
+<LINK REL="next" HREF="py_model_relax.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html8310"
+  HREF="py_model_relax.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html8308"
+  HREF="py_model.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html8302"
+  HREF="py_model_cbsetsolution.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html8311"
+  HREF="py_model_relax.html">Model.relax()</A>
+<B> Up:</B> <A NAME="tex2html8309"
+  HREF="py_model.html">Model</A>
+<B> Previous:</B> <A NAME="tex2html8303"
+  HREF="py_model_cbsetsolution.html">Model.cbSetSolution()</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION0001024200000000000000"></A>
+<A NAME="pythonmethod:Model.read"></A>
+<BR>
+Model.read()
+</H3>
+<BIG CLASS="LARGE">
+<FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">read</SPAN></FONT></BIG> ( filename )
+
+<P>
+This method is the general entry point for importing data from a file
+into a model.  It can be used to read basis files for continuous
+models, start vectors for MIP models, or parameter settings.  The type
+of data read is determined by the file suffix.
+File formats are described in the
+<A HREF="model_file_formats.html#sec:FileFormats">File Format</A> section.
+
+<P>
+Note that this isn't the method to use if you want to read a new
+model from a file.  For that, use the
+<A HREF="py_read.html#pythonmethod:read">read</A> command.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">filename</SPAN>: Name of the file to read. The suffix on the file
+  must be either <TT>.bas</TT> (for an LP basis), <TT>.mst</TT> (for a
+  MIP start), <TT>.ord</TT> (for a priority order), or <TT>.prm</TT>
+  (for a parameter file). The suffix may optionally be followed by
+  <TT>.zip</TT>, <TT>.gz</TT>, <TT>.bz2</TT>, or <TT>.7z</TT>.  The file
+  name may contain <TT>*</TT> or <TT>?</TT> wildcards.  No file is read
+  when no wildcard match is found.  If more than one match is found,
+  this method will attempt to read the first matching file.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Example usage:</SPAN></BIG><PRE>
+  model.read('input.bas')
+  model.read('input.mst')
+</PRE>
+
+<P>
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html8310"
+  HREF="py_model_relax.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html8308"
+  HREF="py_model.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html8302"
+  HREF="py_model_cbsetsolution.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html8311"
+  HREF="py_model_relax.html">Model.relax()</A>
+<B> Up:</B> <A NAME="tex2html8309"
+  HREF="py_model.html">Model</A>
+<B> Previous:</B> <A NAME="tex2html8303"
+  HREF="py_model_cbsetsolution.html">Model.cbSetSolution()</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

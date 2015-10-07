@@ -1,0 +1,130 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Simple Python Example</TITLE>
+<META NAME="description" CONTENT="Simple Python Example">
+<META NAME="keywords" CONTENT="quickstart_linux">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="quickstart_linux.css">
+
+<LINK REL="next" HREF="py_example_mip1_py.html">
+<LINK REL="previous" HREF="py_python_interface.html">
+<LINK REL="up" HREF="py_python_interface.html">
+<LINK REL="next" HREF="py_example_mip1_py.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html1206"
+  HREF="py_example_mip1_py.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1204"
+  HREF="py_python_interface.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1198"
+  HREF="py_python_interface.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1207"
+  HREF="py_example_mip1_py.html">Example mip1.py</A>
+<B> Up:</B> <A NAME="tex2html1205"
+  HREF="py_python_interface.html">Python Interface</A>
+<B> Previous:</B> <A NAME="tex2html1199"
+  HREF="py_python_interface.html">Python Interface</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION000111000000000000000"></A>
+<A NAME="subsection:simplepython"></A>
+<BR>
+Simple Python Example
+</H2>
+
+<P>
+This section will work through a simple Python example in order to
+illustrate the use of the Gurobi Python interface.  The example builds
+a model, optimizes it, and outputs the optimal objective value.
+
+<P>
+Our example optimizes the following model:
+<DIV ALIGN="CENTER">
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="RIGHT"><B>maximize</B></TD>
+<TD ALIGN="RIGHT">x</TD>
+<TD ALIGN="RIGHT">+</TD>
+<TD ALIGN="RIGHT">y</TD>
+<TD ALIGN="RIGHT">+</TD>
+<TD ALIGN="RIGHT">2 z</TD>
+<TD ALIGN="RIGHT">&nbsp;</TD>
+<TD ALIGN="RIGHT">&nbsp;</TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><B>subject to</B></TD>
+<TD ALIGN="RIGHT">x</TD>
+<TD ALIGN="RIGHT">+</TD>
+<TD ALIGN="RIGHT">2 y</TD>
+<TD ALIGN="RIGHT">+</TD>
+<TD ALIGN="RIGHT">3 z</TD>
+<TD ALIGN="RIGHT"><SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$\leq$"></SPAN></TD>
+<TD ALIGN="RIGHT">4</TD>
+</TR>
+<TR><TD ALIGN="RIGHT">&nbsp;</TD>
+<TD ALIGN="RIGHT">x</TD>
+<TD ALIGN="RIGHT">+</TD>
+<TD ALIGN="RIGHT">y</TD>
+<TD ALIGN="RIGHT">&nbsp;</TD>
+<TD ALIGN="RIGHT">&nbsp;</TD>
+<TD ALIGN="RIGHT"><SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$\geq$"></SPAN></TD>
+<TD ALIGN="RIGHT">1</TD>
+</TR>
+<TR><TD ALIGN="RIGHT">&nbsp;</TD>
+<TD ALIGN="CENTER" COLSPAN=6><SPAN>x, y, z binary</SPAN></TD>
+<TD ALIGN="RIGHT">&nbsp;</TD>
+</TR>
+</TABLE>
+</DIV>
+Note that this is the same model that was modeled and optimized in the
+<A HREF="c_interface.html#section:C">C Interface</A> section.
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1206"
+  HREF="py_example_mip1_py.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1204"
+  HREF="py_python_interface.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1198"
+  HREF="py_python_interface.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1207"
+  HREF="py_example_mip1_py.html">Example mip1.py</A>
+<B> Up:</B> <A NAME="tex2html1205"
+  HREF="py_python_interface.html">Python Interface</A>
+<B> Previous:</B> <A NAME="tex2html1199"
+  HREF="py_python_interface.html">Python Interface</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

@@ -1,0 +1,108 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Constr.setAttr()</TITLE>
+<META NAME="description" CONTENT="Constr.setAttr()">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="previous" HREF="py_constr_sameas.html">
+<LINK REL="up" HREF="py_constr.html">
+<LINK REL="next" HREF="py_qconstr.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html8500"
+  HREF="py_qconstr.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html8498"
+  HREF="py_constr.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html8494"
+  HREF="py_constr_sameas.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html8501"
+  HREF="py_qconstr.html">QConstr</A>
+<B> Up:</B> <A NAME="tex2html8499"
+  HREF="py_constr.html">Constr</A>
+<B> Previous:</B> <A NAME="tex2html8495"
+  HREF="py_constr_sameas.html">Constr.sameAs()</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000104300000000000000"></A>
+<A NAME="pythonmethod:Constr.setAttr"></A>
+<BR>
+Constr.setAttr()
+</H3>
+<BIG CLASS="LARGE">
+<FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">setAttr</SPAN></FONT></BIG> ( attrname, newvalue )
+
+<P>
+Set the value of a constraint attribute.  Note that attribute changes
+are handled in a lazy fashion.  The effect of a change isn't visible
+until the next call to
+<A HREF="py_model_update.html#pythonmethod:Model.update">Model.update</A> or
+<A HREF="py_model_optimize.html#pythonmethod:Model.optimize">Model.optimize</A>.
+
+<P>
+The full list of available attributes can be found in the
+<A HREF="attributes.html#sec:Attributes">Attributes</A> section.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">attrname</SPAN>: The attribute being modified.
+
+<P>
+ <SPAN  CLASS="textbf">newvalue</SPAN>: The desired new value of the attribute.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Example usage:</SPAN></BIG><PRE>
+  constr.setAttr(GRB.attr.rhs, 0.0)
+  constr.setAttr("rhs", 0.0)
+</PRE>
+
+<P>
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html8500"
+  HREF="py_qconstr.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html8498"
+  HREF="py_constr.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html8494"
+  HREF="py_constr_sameas.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html8501"
+  HREF="py_qconstr.html">QConstr</A>
+<B> Up:</B> <A NAME="tex2html8499"
+  HREF="py_constr.html">Constr</A>
+<B> Previous:</B> <A NAME="tex2html8495"
+  HREF="py_constr_sameas.html">Constr.sameAs()</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

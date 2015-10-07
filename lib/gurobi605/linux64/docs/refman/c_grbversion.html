@@ -1,0 +1,120 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>GRBversion</TITLE>
+<META NAME="description" CONTENT="GRBversion">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="previous" HREF="c_grbcbget.html">
+<LINK REL="up" HREF="c_monitoring_progress_logg.html">
+<LINK REL="next" HREF="c_modifying_solver_behavio.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html2347"
+  HREF="c_modifying_solver_behavio.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html2345"
+  HREF="c_monitoring_progress_logg.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html2341"
+  HREF="c_grbcbget.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html2348"
+  HREF="c_modifying_solver_behavio.html">Modifying Solver Behavior -</A>
+<B> Up:</B> <A NAME="tex2html2346"
+  HREF="c_monitoring_progress_logg.html">Monitoring Progress - Logging</A>
+<B> Previous:</B> <A NAME="tex2html2342"
+  HREF="c_grbcbget.html">GRBcbget</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00028500000000000000"></A>
+<A NAME="routine:GRBversion"></A>
+<BR>
+GRBversion
+</H3>
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">void</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">GRBversion</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">*majorP,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">*minorP,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">*technicalP )</TD>
+</TR>
+</TABLE>
+
+<P>
+Return the Gurobi library version number (major, minor, and technical).
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">majorP</SPAN>: The location in which the major version number
+  should be placed. May be <TT>NULL</TT>. 
+
+<P>
+ <SPAN  CLASS="textbf">minorP</SPAN>: The location in which the minor version number
+  should be placed. May be <TT>NULL</TT>. 
+
+<P>
+ <SPAN  CLASS="textbf">technicalP</SPAN>: The location in which the technical version number
+  should be placed. May be <TT>NULL</TT>. 
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Example usage:</SPAN></BIG><PRE>
+  int major, minor, technical;
+  GRBversion(&amp;major, &amp;minor, &amp;technical);
+  printf("Gurobi library version %d.%d.%d\n", major, minor, technical);
+</PRE>
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html2347"
+  HREF="c_modifying_solver_behavio.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html2345"
+  HREF="c_monitoring_progress_logg.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html2341"
+  HREF="c_grbcbget.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html2348"
+  HREF="c_modifying_solver_behavio.html">Modifying Solver Behavior -</A>
+<B> Up:</B> <A NAME="tex2html2346"
+  HREF="c_monitoring_progress_logg.html">Monitoring Progress - Logging</A>
+<B> Previous:</B> <A NAME="tex2html2342"
+  HREF="c_grbcbget.html">GRBcbget</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Overloaded Operators</TITLE>
+<META NAME="description" CONTENT="Overloaded Operators">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="cs_grbcallback.html">
+<LINK REL="previous" HREF="cs_grbcolumn.html">
+<LINK REL="up" HREF="cs_net_api_details.html">
+<LINK REL="next" HREF="cs_oper_le.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html7225"
+  HREF="cs_oper_le.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html7223"
+  HREF="cs_net_api_details.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html7217"
+  HREF="cs_grbcolumn_size.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html7226"
+  HREF="cs_oper_le.html">operator &lt;=</A>
+<B> Up:</B> <A NAME="tex2html7224"
+  HREF="cs_net_api_details.html">.NET API Details</A>
+<B> Previous:</B> <A NAME="tex2html7218"
+  HREF="cs_grbcolumn_size.html">GRBColumn.Size</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION000812000000000000000"></A>
+<A NAME="dotnetclass:overloaded"></A>
+<BR>
+Overloaded Operators
+</H2>
+
+<P>
+The Gurobi .NET interface overloads several arithmetic and comparison
+operators.  Overloaded arithmetic operators (<code>+, -, *, /</code>) are used
+to create linear and quadratic expressions.  Overloaded comparison operators
+(<code>&lt;=, &gt;=, and ==</code>) are used to build linear and quadratic
+constraints.
+
+<P>
+Note that the results of overloaded comparison operators are
+generally never stored in user variables. They are immediately passed to
+<A HREF="cs_grbmodel_addconstr.html#dotnetmethod:GRBModel.AddConstr">GRBModel.AddConstr</A> or
+<A HREF="cs_grbmodel_addqconstr.html#dotnetmethod:GRBModel.AddQConstr">GRBModel.AddQConstr</A>.
+
+<P>
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html7227"
+  HREF="cs_oper_le.html">operator &lt;=</A>
+<LI><A NAME="tex2html7228"
+  HREF="cs_oper_ge.html">operator &gt;=</A>
+<LI><A NAME="tex2html7229"
+  HREF="cs_oper_equal.html">operator ==</A>
+<LI><A NAME="tex2html7230"
+  HREF="cs_oper_plus.html">operator +</A>
+<LI><A NAME="tex2html7231"
+  HREF="cs_oper_minus.html">operator -</A>
+<LI><A NAME="tex2html7232"
+  HREF="cs_oper_times.html">operator *</A>
+<LI><A NAME="tex2html7233"
+  HREF="cs_oper_div.html">operator /</A>
+<LI><A NAME="tex2html7234"
+  HREF="cs_implicit_cast.html">implicit cast</A>
+</UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html7225"
+  HREF="cs_oper_le.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html7223"
+  HREF="cs_net_api_details.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html7217"
+  HREF="cs_grbcolumn_size.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html7226"
+  HREF="cs_oper_le.html">operator &lt;=</A>
+<B> Up:</B> <A NAME="tex2html7224"
+  HREF="cs_net_api_details.html">.NET API Details</A>
+<B> Previous:</B> <A NAME="tex2html7218"
+  HREF="cs_grbcolumn_size.html">GRBColumn.Size</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

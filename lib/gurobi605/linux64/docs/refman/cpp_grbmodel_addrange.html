@@ -1,0 +1,141 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>GRBModel::addRange()</TITLE>
+<META NAME="description" CONTENT="GRBModel::addRange()">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="cpp_grbmodel_addranges.html">
+<LINK REL="previous" HREF="cpp_grbmodel_addqconstr.html">
+<LINK REL="up" HREF="cpp_grbmodel.html">
+<LINK REL="next" HREF="cpp_grbmodel_addranges.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html2862"
+  HREF="cpp_grbmodel_addranges.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html2860"
+  HREF="cpp_grbmodel.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html2854"
+  HREF="cpp_grbmodel_addqconstr.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html2863"
+  HREF="cpp_grbmodel_addranges.html">GRBModel::addRanges()</A>
+<B> Up:</B> <A NAME="tex2html2861"
+  HREF="cpp_grbmodel.html">GRBModel</A>
+<B> Previous:</B> <A NAME="tex2html2855"
+  HREF="cpp_grbmodel_addqconstr.html">GRBModel::addQConstr()</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00042500000000000000"></A>
+<A NAME="cppmethod:GRBModel::addRange"></A>
+<BR>
+GRBModel::addRange()
+</H3>
+
+<P>
+Add a single range constraint to a model.  A range constraint
+states that the value of the input expression must be between
+the specified <code>lower</code> and <code>upper</code> bounds in any solution.
+
+<P>
+Note that range constraints are stored internally as equality
+constraints.  We add an extra variable to the model to capture the
+range information.  Thus, the
+<A HREF="sense.html#attr:Sense">Sense</A>
+attribute on a range constraint will always be <code>GRB_EQUAL</code>.
+
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">GRBConstr</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">addRange</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT">const GRBLinExpr&amp;</TD>
+<TD ALIGN="LEFT">expr,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">double</TD>
+<TD ALIGN="LEFT">lower,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">double</TD>
+<TD ALIGN="LEFT">upper,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">string</TD>
+<TD ALIGN="LEFT">name="" )</TD>
+</TR>
+</TABLE>
+
+<UL>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">expr</SPAN>: Linear expression for new range constraint.
+
+<P>
+ <SPAN  CLASS="textbf">lower</SPAN>: Lower bound for linear expression.
+
+<P>
+ <SPAN  CLASS="textbf">upper</SPAN>: Upper bound for linear expression.
+
+<P>
+ <SPAN  CLASS="textbf">name (optional)</SPAN>: Name for new constraint.
+
+<P>
+
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Return value:</SPAN></BIG>
+
+<P>
+New constraint object.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html2862"
+  HREF="cpp_grbmodel_addranges.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html2860"
+  HREF="cpp_grbmodel.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html2854"
+  HREF="cpp_grbmodel_addqconstr.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html2863"
+  HREF="cpp_grbmodel_addranges.html">GRBModel::addRanges()</A>
+<B> Up:</B> <A NAME="tex2html2861"
+  HREF="cpp_grbmodel.html">GRBModel</A>
+<B> Previous:</B> <A NAME="tex2html2855"
+  HREF="cpp_grbmodel_addqconstr.html">GRBModel::addQConstr()</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

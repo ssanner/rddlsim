@@ -1,0 +1,163 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>GRBColumn.addTerms()</TITLE>
+<META NAME="description" CONTENT="GRBColumn.addTerms()">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="java_grbcolumn_clear.html">
+<LINK REL="previous" HREF="java_grbcolumn_addterm.html">
+<LINK REL="up" HREF="java_grbcolumn.html">
+<LINK REL="next" HREF="java_grbcolumn_clear.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html5548"
+  HREF="java_grbcolumn_clear.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html5546"
+  HREF="java_grbcolumn.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html5540"
+  HREF="java_grbcolumn_addterm.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html5549"
+  HREF="java_grbcolumn_clear.html">GRBColumn.clear()</A>
+<B> Up:</B> <A NAME="tex2html5547"
+  HREF="java_grbcolumn.html">GRBColumn</A>
+<B> Previous:</B> <A NAME="tex2html5541"
+  HREF="java_grbcolumn_addterm.html">GRBColumn.addTerm()</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000610300000000000000"></A>
+<A NAME="javamethod:GRBColumn.addTerms"></A>
+<BR>
+GRBColumn.addTerms()
+</H3>
+
+<P>
+Add new terms into a column.
+
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">void</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">addTerms</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT">double[]</TD>
+<TD ALIGN="LEFT">coeffs,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">GRBConstr[]</TD>
+<TD ALIGN="LEFT">constrs )</TD>
+</TR>
+</TABLE>
+
+<UL>
+Add a list of terms into a column.  Note that the lengths of the two
+argument arrays must be equal.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">coeffs</SPAN>: Coefficients for added constraints.
+
+<P>
+ <SPAN  CLASS="textbf">constrs</SPAN>: Constraints to add to column.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">void</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">addTerms</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT">double[]</TD>
+<TD ALIGN="LEFT">coeffs,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">GRBConstr[]</TD>
+<TD ALIGN="LEFT">constrs,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">start,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">len )</TD>
+</TR>
+</TABLE>
+
+<UL>
+Add new terms into a column.  This signature allows you to use
+arrays to hold the coefficients and constraints that describe the
+terms in an array without being forced to add an term for each
+member in the array.  The <code>start</code> and <code>len</code> arguments
+allow you to specify which terms to add.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">coeffs</SPAN>: Coefficients for added constraints.
+
+<P>
+ <SPAN  CLASS="textbf">constrs</SPAN>: Constraints to add to column.
+
+<P>
+ <SPAN  CLASS="textbf">start</SPAN>: The first term in the list to add.
+
+<P>
+ <SPAN  CLASS="textbf">len</SPAN>: The number of terms to add.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html5548"
+  HREF="java_grbcolumn_clear.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html5546"
+  HREF="java_grbcolumn.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html5540"
+  HREF="java_grbcolumn_addterm.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html5549"
+  HREF="java_grbcolumn_clear.html">GRBColumn.clear()</A>
+<B> Up:</B> <A NAME="tex2html5547"
+  HREF="java_grbcolumn.html">GRBColumn</A>
+<B> Previous:</B> <A NAME="tex2html5541"
+  HREF="java_grbcolumn_addterm.html">GRBColumn.addTerm()</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

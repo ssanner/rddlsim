@@ -1,0 +1,134 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Visual Basic Attribute Examples</TITLE>
+<META NAME="description" CONTENT="Visual Basic Attribute Examples">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="previous" HREF="python_attribute_examples.html">
+<LINK REL="up" HREF="attribute_examples.html">
+<LINK REL="next" HREF="parameters.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html10782"
+  HREF="parameters.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html10780"
+  HREF="attribute_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html10776"
+  HREF="python_attribute_examples.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html10783"
+  HREF="parameters.html">Parameters</A>
+<B> Up:</B> <A NAME="tex2html10781"
+  HREF="attribute_examples.html">Attribute Examples</A>
+<B> Previous:</B> <A NAME="tex2html10777"
+  HREF="python_attribute_examples.html">Python Attribute Examples</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000137600000000000000"></A>
+<A NAME="VBAttributeExamples"></A>
+<BR>
+Visual Basic Attribute Examples
+</H3>
+
+<P>
+Consider the case where you have a Gurobi model <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img57.png"
+ ALT="$m$"></SPAN>.  You can
+retrieve the number of variables in the model by querying the
+<A HREF="numvars.html#attr:NumVars">NumVars</A> model attribute
+using the
+<A HREF="cs_grbmodel_get.html#dotnetmethod:GRBModel.Get">Get</A> method:
+<PRE>
+  cols = m.Get(GRB.IntAttr.NumVars);
+</PRE>
+
+<P>
+If you've performed optimization on the model, the optimal objective
+value can be obtained by querying the
+<A HREF="objval.html#attr:ObjVal">ObjVal</A> model attribute:
+<PRE>
+  obj = m.Get(GRB.DoubleAttr.ObjVal);
+</PRE>
+
+<P>
+If you'd like to query the value that a variable takes in the computed
+solution, you can query the <A HREF="x.html#attr:X">X</A> attribute for the
+corresponding variable object:
+<PRE>
+  vars = m.GetVars()
+  For j As Integer = 0 To cols - 1
+    xj = vars[j].Get(GRB.DoubleAttr.X)
+</PRE>
+You can also query the value of <SPAN CLASS="MATH"><IMG
+ WIDTH="19" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img61.png"
+ ALT="$X$"></SPAN> for multiple variables in a single
+<A HREF="cs_grbmodel_get.html#dotnetmethod:GRBModel.Get">Get</A> call
+on the model <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img57.png"
+ ALT="$m$"></SPAN>:
+<PRE>
+  xvals = m.Get(GRB.DoubleAttr.X, m.GetVars()))
+</PRE>
+
+<P>
+For each attribute query method, there's an analogous <SPAN CLASS="MATH"><IMG
+ WIDTH="28" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img62.png"
+ ALT="$Set$"></SPAN> routine.
+To set the upper bound of a variable, for example:
+<PRE>
+  v = m.GetVars()[0]
+  v.Set(GRB.DoubleAttr.UB, 0)
+</PRE>
+(In this example, we've set the upper bound for the first variable in the
+model to 0).
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html10782"
+  HREF="parameters.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html10780"
+  HREF="attribute_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html10776"
+  HREF="python_attribute_examples.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html10783"
+  HREF="parameters.html">Parameters</A>
+<B> Up:</B> <A NAME="tex2html10781"
+  HREF="attribute_examples.html">Attribute Examples</A>
+<B> Previous:</B> <A NAME="tex2html10777"
+  HREF="python_attribute_examples.html">Python Attribute Examples</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

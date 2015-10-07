@@ -1,0 +1,136 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Model Creation and Modification</TITLE>
+<META NAME="description" CONTENT="Model Creation and Modification">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="c_model_solution.html">
+<LINK REL="previous" HREF="c_environment_creation_and.html">
+<LINK REL="up" HREF="c_api_details.html">
+<LINK REL="next" HREF="c_grbloadmodel.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html1234"
+  HREF="c_grbloadmodel.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1232"
+  HREF="c_api_details.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1226"
+  HREF="c_grbdiscardconcurrentenvs.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1235"
+  HREF="c_grbloadmodel.html">GRBloadmodel</A>
+<B> Up:</B> <A NAME="tex2html1233"
+  HREF="c_api_details.html">C API Details</A>
+<B> Previous:</B> <A NAME="tex2html1227"
+  HREF="c_grbdiscardconcurrentenvs.html">GRBdiscardconcurrentenvs</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00022000000000000000">
+Model Creation and Modification</A>
+</H2>
+
+<P>
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html1236"
+  HREF="c_grbloadmodel.html">GRBloadmodel</A>
+<LI><A NAME="tex2html1237"
+  HREF="c_grbnewmodel.html">GRBnewmodel</A>
+<LI><A NAME="tex2html1238"
+  HREF="c_grbcopymodel.html">GRBcopymodel</A>
+<LI><A NAME="tex2html1239"
+  HREF="c_grbaddconstr.html">GRBaddconstr</A>
+<LI><A NAME="tex2html1240"
+  HREF="c_grbaddconstrs.html">GRBaddconstrs</A>
+<LI><A NAME="tex2html1241"
+  HREF="c_grbaddqconstr.html">GRBaddqconstr</A>
+<LI><A NAME="tex2html1242"
+  HREF="c_grbaddqpterms.html">GRBaddqpterms</A>
+<LI><A NAME="tex2html1243"
+  HREF="c_grbaddrangeconstr.html">GRBaddrangeconstr</A>
+<LI><A NAME="tex2html1244"
+  HREF="c_grbaddrangeconstrs.html">GRBaddrangeconstrs</A>
+<LI><A NAME="tex2html1245"
+  HREF="c_grbaddsos.html">GRBaddsos</A>
+<LI><A NAME="tex2html1246"
+  HREF="c_grbaddvar.html">GRBaddvar</A>
+<LI><A NAME="tex2html1247"
+  HREF="c_grbaddvars.html">GRBaddvars</A>
+<LI><A NAME="tex2html1248"
+  HREF="c_grbchgcoeffs.html">GRBchgcoeffs</A>
+<LI><A NAME="tex2html1249"
+  HREF="c_grbdelconstrs.html">GRBdelconstrs</A>
+<LI><A NAME="tex2html1250"
+  HREF="c_grbdelq.html">GRBdelq</A>
+<LI><A NAME="tex2html1251"
+  HREF="c_grbdelqconstrs.html">GRBdelqconstrs</A>
+<LI><A NAME="tex2html1252"
+  HREF="c_grbdelsos.html">GRBdelsos</A>
+<LI><A NAME="tex2html1253"
+  HREF="c_grbdelvars.html">GRBdelvars</A>
+<LI><A NAME="tex2html1254"
+  HREF="c_grbsetpwlobj.html">GRBsetpwlobj</A>
+<LI><A NAME="tex2html1255"
+  HREF="c_grbupdatemodel.html">GRBupdatemodel</A>
+<LI><A NAME="tex2html1256"
+  HREF="c_grbfreemodel.html">GRBfreemodel</A>
+<LI><A NAME="tex2html1257"
+  HREF="c_grbxaddconstrs.html">GRBXaddconstrs</A>
+<LI><A NAME="tex2html1258"
+  HREF="c_grbxaddrangeconstrs.html">GRBXaddrangeconstrs</A>
+<LI><A NAME="tex2html1259"
+  HREF="c_grbxaddvars.html">GRBXaddvars</A>
+<LI><A NAME="tex2html1260"
+  HREF="c_grbxchgcoeffs.html">GRBXchgcoeffs</A>
+<LI><A NAME="tex2html1261"
+  HREF="c_grbxloadmodel.html">GRBXloadmodel</A>
+</UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1234"
+  HREF="c_grbloadmodel.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1232"
+  HREF="c_api_details.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1226"
+  HREF="c_grbdiscardconcurrentenvs.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1235"
+  HREF="c_grbloadmodel.html">GRBloadmodel</A>
+<B> Up:</B> <A NAME="tex2html1233"
+  HREF="c_api_details.html">C API Details</A>
+<B> Previous:</B> <A NAME="tex2html1227"
+  HREF="c_grbdiscardconcurrentenvs.html">GRBdiscardconcurrentenvs</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

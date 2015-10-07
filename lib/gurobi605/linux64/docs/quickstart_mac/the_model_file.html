@@ -1,0 +1,174 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>The model file</TITLE>
+<META NAME="description" CONTENT="The model file">
+<META NAME="keywords" CONTENT="quickstart_mac">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="quickstart_mac.css">
+
+<LINK REL="next" HREF="solving_the_model_using_th.html">
+<LINK REL="previous" HREF="the_optimization_model.html">
+<LINK REL="up" HREF="solving_a_simple_model_the.html">
+<LINK REL="next" HREF="solving_the_model_using_th.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html436"
+  HREF="solving_the_model_using_th.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html434"
+  HREF="solving_a_simple_model_the.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html428"
+  HREF="the_optimization_model.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html437"
+  HREF="solving_the_model_using_th.html">Solving the model using</A>
+<B> Up:</B> <A NAME="tex2html435"
+  HREF="solving_a_simple_model_the.html">Solving a Simple Model</A>
+<B> Previous:</B> <A NAME="tex2html429"
+  HREF="the_optimization_model.html">The optimization model</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00043000000000000000">
+The model file</A>
+</H2>
+<P>
+<EM>The Gurobi Optimizer provides a variety of options for expressing
+an optimization model.  Typically, you would build the model using an
+interface to a programming languages (C, C++, C#, Java, etc.)  or
+using a higher-level application environment (a spreadsheet, a
+modeling system, MATLAB, R, etc.).  However, to keep our example as
+simple as possible, we're going to read the model from an LP
+format file.  The LP format was designed to be human readable, and as
+such it is well suited for our needs.
+</EM>
+<P>
+<EM>The LP format is mostly self-explanatory.  Here is our model:
+</EM><PRE>
+Maximize
+  .01 Pennies + .05 Nickels + .1 Dimes + .25 Quarters + 1 Dollars
+Subject To
+  Copper: .06 Pennies + 3.8 Nickels + 2.1 Dimes + 5.2 Quarters + 7.2 Dollars -
+     Cu = 0
+  Nickel: 1.2 Nickels + .2 Dimes + .5 Quarters + .2 Dollars -
+     Ni = 0
+  Zinc: 2.4 Pennies + .5 Dollars - Zi = 0
+  Manganese: .3 Dollars - Mn = 0
+Bounds
+  Cu &lt;= 1000
+  Ni &lt;= 50
+  Zi &lt;= 50
+  Mn &lt;= 50
+Integers
+  Pennies Nickels Dimes Quarters Dollars
+End
+</PRE>
+<P>
+<EM>You'll find this model in file <code>coins.lp</code> in the
+<code>&lt;installdir&gt;/examples/data</code> directory of your Gurobi
+distribution.  Specifically, assuming you've installed
+Gurobi 6.0.0 in the recommended location, you'll find the file in
+<code>/Library/gurobi600/mac64/examples/data/coins.lp</code>.
+</EM>
+<P>
+<EM>To modify this file, open it in a text editor.
+</EM>
+<P>
+<EM><SPAN  CLASS="textbf">Editing the LP file</SPAN>
+</EM>
+<P>
+<EM>Before you consider making any modifications to this file or
+creating your own, we should point out a few rules about LP format files.
+</EM>
+<P>
+<EM>1. Ordering of the sections
+</EM>
+<P>
+<EM>Our example contains an objective section (<code>Maximize...</code>), a constraint section
+(<code>Subject To...</code>), a variable bound section (<code>Bounds...</code>),
+and an integrality section (<code>Integers...</code>).  The sections must come
+in that order.  The complete list of section types and the associated
+ordering rules can be found in the file format section of the
+<A NAME="tex2html20"
+  HREF="../refman/refman.html">Gurobi Reference Manual</A>.
+</EM>
+<P>
+<EM>2. Separating tokens
+</EM>
+<P>
+<EM>Tokens must be separated by either a space or a
+newline.  Thus, for example, the term:
+</EM><PRE>
++ .1 Dimes
+</PRE><EM>
+must include a space or newline between <code>+</code> and <code>.1</code>, and
+another between <code>.1</code> and <code>Dimes</code>.
+</EM>
+<P>
+<EM>3. Arranging variables
+</EM>
+<P>
+<EM>Variables must always appear on the left-hand side of a constraint.  The right-hand side is always a constant.  Thus, our constraint:
+</EM><PRE>
+  Cu = .06 Pennies + 3.8 Nickels + 2.1 Dimes + 5.2 Quarters + 7.2 Dollars
+</PRE><EM>
+...becomes...
+</EM><PRE>
+  .06 Pennies + 3.8 Nickels + 2.1 Dimes + 5.2 Quarters + 7.2 Dollars - Cu = 0
+</PRE>
+<P>
+<EM>4. Variable default bounds
+</EM>
+<P>
+<EM>Unless stated otherwise, a variable has a zero lower
+bound and an infinite upper bound.  Thus, <code>Cu &lt;= 1000</code> really
+means <code>0 &lt;= Cu &lt;= 1000</code>.  Similarly, any variable not mentioned in the
+<code>Bounds</code> section may take any non-negative value.
+</EM>
+<P>
+<EM>Full details on the LP file format are
+provided in the file format section of the
+<A NAME="tex2html21"
+  HREF="../refman/refman.html">Gurobi Reference Manual</A>.
+</EM>
+<P>
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html436"
+  HREF="solving_the_model_using_th.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html434"
+  HREF="solving_a_simple_model_the.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html428"
+  HREF="the_optimization_model.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html437"
+  HREF="solving_the_model_using_th.html">Solving the model using</A>
+<B> Up:</B> <A NAME="tex2html435"
+  HREF="solving_a_simple_model_the.html">Solving a Simple Model</A>
+<B> Previous:</B> <A NAME="tex2html429"
+  HREF="the_optimization_model.html">The optimization model</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

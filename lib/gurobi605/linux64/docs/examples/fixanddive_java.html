@@ -1,0 +1,205 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Fixanddive.java</TITLE>
+<META NAME="description" CONTENT="Fixanddive.java">
+<META NAME="keywords" CONTENT="examples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="examples.css">
+
+<LINK REL="next" HREF="lp_java.html">
+<LINK REL="previous" HREF="feasopt_java.html">
+<LINK REL="up" HREF="java_examples.html">
+<LINK REL="next" HREF="lp_java.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html1127"
+  HREF="lp_java.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1125"
+  HREF="java_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1119"
+  HREF="feasopt_java.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1128"
+  HREF="lp_java.html">Lp.java</A>
+<B> Up:</B> <A NAME="tex2html1126"
+  HREF="java_examples.html">Java Examples</A>
+<B> Previous:</B> <A NAME="tex2html1120"
+  HREF="feasopt_java.html">Feasopt.java</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00023600000000000000"></A>
+<A NAME="subsubsection:Fixanddive.java"></A>
+<BR>
+Fixanddive.java
+</H3>
+
+<P>
+<BR>
+<PRE  CLASS="verbatim">/* Copyright 2014, Gurobi Optimization, Inc. */
+
+/* Implement a simple MIP heuristic.  Relax the model,
+ sort variables based on fractionality, and fix the 25% of
+ the fractional variables that are closest to integer variables.
+ Repeat until either the relaxation is integer feasible or
+ linearly infeasible. */
+
+import gurobi.*;
+import java.util.*;
+
+public class Fixanddive {
+  public static void main(String[] args) {
+
+    // Comparison class used to sort variable list based on relaxation
+    // fractionality
+
+    class FractionalCompare implements Comparator&lt;GRBVar&gt; {
+      public int compare(GRBVar v1, GRBVar v2) {
+        try {
+          double sol1 = Math.abs(v1.get(GRB.DoubleAttr.X));
+          double sol2 = Math.abs(v2.get(GRB.DoubleAttr.X));
+          double frac1 = Math.abs(sol1 - Math.floor(sol1 + 0.5));
+          double frac2 = Math.abs(sol2 - Math.floor(sol2 + 0.5));
+          if (frac1 &lt; frac2) {
+            return -1;
+          } else if (frac1 == frac2) {
+            return 0;
+          } else {
+            return 1;
+          }
+        } catch (GRBException e) {
+          System.out.println("Error code: " + e.getErrorCode() + ". " +
+              e.getMessage());
+        }
+        return 0;
+      }
+    }
+
+    if (args.length &lt; 1) {
+      System.out.println("Usage: java Fixanddive filename");
+      System.exit(1);
+    }
+
+    try {
+      // Read model
+      GRBEnv env = new GRBEnv();
+      GRBModel model = new GRBModel(env, args[0]);
+
+      // Collect integer variables and relax them
+      ArrayList&lt;GRBVar&gt; intvars = new ArrayList&lt;GRBVar&gt;();
+      for (GRBVar v : model.getVars()) {
+        if (v.get(GRB.CharAttr.VType) != GRB.CONTINUOUS) {
+          intvars.add(v);
+          v.set(GRB.CharAttr.VType, GRB.CONTINUOUS);
+        }
+      }
+
+      model.getEnv().set(GRB.IntParam.OutputFlag, 0);
+      model.optimize();
+
+      // Perform multiple iterations. In each iteration, identify the first
+      // quartile of integer variables that are closest to an integer value
+      // in the relaxation, fix them to the nearest integer, and repeat.
+
+      for (int iter = 0; iter &lt; 1000; ++iter) {
+
+        // create a list of fractional variables, sorted in order of
+        // increasing distance from the relaxation solution to the nearest
+        // integer value
+
+        ArrayList&lt;GRBVar&gt; fractional = new ArrayList&lt;GRBVar&gt;();
+        for (GRBVar v : intvars) {
+          double sol = Math.abs(v.get(GRB.DoubleAttr.X));
+          if (Math.abs(sol - Math.floor(sol + 0.5)) &gt; 1e-5) {
+            fractional.add(v);
+          }
+        }
+
+        System.out.println("Iteration " + iter + ", obj " +
+            model.get(GRB.DoubleAttr.ObjVal) + ", fractional " +
+            fractional.size());
+
+        if (fractional.size() == 0) {
+          System.out.println("Found feasible solution - objective " +
+              model.get(GRB.DoubleAttr.ObjVal));
+          break;
+        }
+
+        // Fix the first quartile to the nearest integer value
+
+        Collections.sort(fractional, new FractionalCompare());
+        int nfix = Math.max(fractional.size() / 4, 1);
+        for (int i = 0; i &lt; nfix; ++i) {
+          GRBVar v = fractional.get(i);
+          double fixval = Math.floor(v.get(GRB.DoubleAttr.X) + 0.5);
+          v.set(GRB.DoubleAttr.LB, fixval);
+          v.set(GRB.DoubleAttr.UB, fixval);
+          System.out.println("  Fix " + v.get(GRB.StringAttr.VarName) +
+              " to " + fixval + " ( rel " + v.get(GRB.DoubleAttr.X) + " )");
+        }
+
+        model.optimize();
+
+        // Check optimization result
+
+        if (model.get(GRB.IntAttr.Status) != GRB.Status.OPTIMAL) {
+          System.out.println("Relaxation is infeasible");
+          break;
+        }
+      }
+
+      // Dispose of model and environment
+      model.dispose();
+      env.dispose();
+
+    } catch (GRBException e) {
+      System.out.println("Error code: " + e.getErrorCode() + ". " +
+          e.getMessage());
+    }
+  }
+
+}
+</PRE>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1127"
+  HREF="lp_java.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1125"
+  HREF="java_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1119"
+  HREF="feasopt_java.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1128"
+  HREF="lp_java.html">Lp.java</A>
+<B> Up:</B> <A NAME="tex2html1126"
+  HREF="java_examples.html">Java Examples</A>
+<B> Previous:</B> <A NAME="tex2html1120"
+  HREF="feasopt_java.html">Feasopt.java</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

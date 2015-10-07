@@ -1,0 +1,244 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>sudoku_vb.vb</TITLE>
+<META NAME="description" CONTENT="sudoku_vb.vb">
+<META NAME="keywords" CONTENT="examples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="examples.css">
+
+<LINK REL="next" HREF="tsp_vb_vb.html">
+<LINK REL="previous" HREF="sos_vb_vb.html">
+<LINK REL="up" HREF="visual_basic_examples.html">
+<LINK REL="next" HREF="tsp_vb_vb.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html1791"
+  HREF="tsp_vb_vb.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1789"
+  HREF="visual_basic_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1783"
+  HREF="sos_vb_vb.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1792"
+  HREF="tsp_vb_vb.html">tsp_vb.vb</A>
+<B> Up:</B> <A NAME="tex2html1790"
+  HREF="visual_basic_examples.html">Visual Basic Examples</A>
+<B> Previous:</B> <A NAME="tex2html1784"
+  HREF="sos_vb_vb.html">sos_vb.vb</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000251800000000000000"></A>
+<A NAME="subsubsection:sudoku_vb.vb"></A>
+<BR>
+sudoku_vb.vb
+</H3>
+
+<P>
+<BR>
+<PRE  CLASS="verbatim">' Copyright 2014, Gurobi Optimization, Inc.
+'
+' Sudoku example.
+'
+' The Sudoku board is a 9x9 grid, which is further divided into a 3x3 grid
+' of 3x3 grids.  Each cell in the grid must take a value from 0 to 9.
+' No two grid cells in the same row, column, or 3x3 subgrid may take the
+' same value.
+
+' In the MIP formulation, binary variables x(i,j,v) indicate whether
+' cell &lt;i,j&gt; takes value 'v'.  The constraints are as follows:
+'   1. Each cell must take exactly one value (sum_v x(i,j,v) = 1)
+'   2. Each value is used exactly once per row (sum_i x(i,j,v) = 1)
+'   3. Each value is used exactly once per column (sum_j x(i,j,v) = 1)
+'   4. Each value is used exactly once per 3x3 subgrid (sum_grid x(i,j,v) = 1)
+'
+' Input datasets for this example can be found in examples/data/sudoku*.
+
+Imports System
+Imports System.IO
+Imports Gurobi
+
+Class sudoku_vb
+    Shared Sub Main(ByVal args as String())
+        Dim n As Integer = 9
+        Dim s As Integer = 3
+
+        If args.Length &lt; 1 Then
+            Console.WriteLine("Usage: sudoku_vb filename")
+            Return
+        End If
+
+        Try
+            Dim env As New GRBEnv()
+            Dim model As New GRBModel(env)
+
+            ' Create 3-D array of model variables
+
+            Dim vars As GRBVar(,,) = New GRBVar(n - 1, n - 1, n - 1) {}
+
+            For i As Integer = 0 To n - 1
+                For j As Integer = 0 To n - 1
+                    For v As Integer = 0 To n - 1
+                        Dim st As String = "G_" &amp; i &amp; "_" &amp; j &amp; "_" &amp; v
+                        vars(i, j, v) = model.AddVar(0.0, 1.0, 0.0, GRB.BINARY, st)
+                    Next
+                Next
+            Next
+
+            ' Integrate variables into model
+
+            model.Update()
+
+            ' Add constraints
+
+            Dim expr As GRBLinExpr
+
+            ' Each cell must take one value
+
+            For i As Integer = 0 To n - 1
+                For j As Integer = 0 To n - 1
+                    expr = 0
+                    For v As Integer = 0 To n - 1
+                        expr.AddTerm(1.0, vars(i, j, v))
+                    Next
+                    Dim st As String = "V_" &amp; i &amp; "_" &amp; j
+                    model.AddConstr(expr = 1, st)
+                Next
+            Next
+
+            ' Each value appears once per row
+
+            For i As Integer = 0 To n - 1
+                For v As Integer = 0 To n - 1
+                    expr = 0
+                    For j As Integer = 0 To n - 1
+                        expr.AddTerm(1.0, vars(i, j, v))
+                    Next
+                    Dim st As String = "R_" &amp; i &amp; "_" &amp; v
+                    model.AddConstr(expr = 1, st)
+                Next
+            Next
+
+            ' Each value appears once per column
+
+            For j As Integer = 0 To n - 1
+                For v As Integer = 0 To n - 1
+                    expr = 0
+                    For i As Integer = 0 To n - 1
+                        expr.AddTerm(1.0, vars(i, j, v))
+                    Next
+                    Dim st As String = "C_" &amp; j &amp; "_" &amp; v
+                    model.AddConstr(expr = 1, st)
+                Next
+            Next
+
+            ' Each value appears once per sub-grid
+
+            For v As Integer = 0 To n - 1
+                For i0 As Integer = 0 To s - 1
+                    For j0 As Integer = 0 To s - 1
+                        expr = 0
+                        For i1 As Integer = 0 To s - 1
+                            For j1 As Integer = 0 To s - 1
+                                expr.AddTerm(1.0, vars(i0 * s + i1, j0 * s + j1, v))
+                            Next
+                        Next
+                        Dim st As String = "Sub_" &amp; v &amp; "_" &amp; i0 &amp; "_" &amp; j0
+                        model.AddConstr(expr = 1, st)
+                    Next
+                Next
+            Next
+
+            ' Update model
+
+            model.Update()
+
+            ' Fix variables associated with pre-specified cells
+
+            Dim sr As StreamReader = File.OpenText(args(0))
+
+            For i As Integer = 0 To n - 1
+                Dim input As String = sr.ReadLine()
+                For j As Integer = 0 To n - 1
+                    Dim val As Integer = Microsoft.VisualBasic.Asc(input(j)) - 48 - 1
+                    ' 0-based
+                    If val &gt;= 0 Then
+                        vars(i, j, val).Set(GRB.DoubleAttr.LB, 1.0)
+                    End If
+                Next
+            Next
+
+            ' Optimize model
+
+            model.Optimize()
+
+            ' Write model to file
+            model.Write("sudoku.lp")
+
+            Dim x As Double(,,) = model.Get(GRB.DoubleAttr.X, vars)
+
+            Console.WriteLine()
+            For i As Integer = 0 To n - 1
+                For j As Integer = 0 To n - 1
+                    For v As Integer = 0 To n - 1
+                        If x(i, j, v) &gt; 0.5 Then
+                            Console.Write(v + 1)
+                        End If
+                    Next
+                Next
+                Console.WriteLine()
+            Next
+
+            ' Dispose of model and env
+            model.Dispose()
+            env.Dispose()
+
+        Catch e As GRBException
+            Console.WriteLine("Error code: " &amp; e.ErrorCode &amp; ". " &amp; e.Message)
+        End Try
+    End Sub
+End Class
+</PRE>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1791"
+  HREF="tsp_vb_vb.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1789"
+  HREF="visual_basic_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1783"
+  HREF="sos_vb_vb.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1792"
+  HREF="tsp_vb_vb.html">tsp_vb.vb</A>
+<B> Up:</B> <A NAME="tex2html1790"
+  HREF="visual_basic_examples.html">Visual Basic Examples</A>
+<B> Previous:</B> <A NAME="tex2html1784"
+  HREF="sos_vb_vb.html">sos_vb.vb</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

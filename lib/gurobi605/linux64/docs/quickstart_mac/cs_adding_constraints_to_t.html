@@ -1,0 +1,113 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Adding constraints to the model</TITLE>
+<META NAME="description" CONTENT="Adding constraints to the model">
+<META NAME="keywords" CONTENT="quickstart_mac">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="quickstart_mac.css">
+
+<LINK REL="next" HREF="cs_optimizing_the_model.html">
+<LINK REL="previous" HREF="cs_setting_the_objective.html">
+<LINK REL="up" HREF="cs_net_interface_cs.html">
+<LINK REL="next" HREF="cs_optimizing_the_model.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html1117"
+  HREF="cs_optimizing_the_model.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1115"
+  HREF="cs_net_interface_cs.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1109"
+  HREF="cs_setting_the_objective.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1118"
+  HREF="cs_optimizing_the_model.html">Optimizing the model</A>
+<B> Up:</B> <A NAME="tex2html1116"
+  HREF="cs_net_interface_cs.html">.NET Interface (C#)</A>
+<B> Previous:</B> <A NAME="tex2html1110"
+  HREF="cs_setting_the_objective.html">Setting the objective</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION000108000000000000000">
+Adding constraints to the model</A>
+</H2>
+<P>
+<EM>The next step in the example is to add the constraints:
+</EM><PRE>
+  // Add constraint: x + 2 y + 3 z &lt;= 4
+  model.AddConstr(x + 2 * y + 3 * z &lt;= 4.0, "c0");
+
+  // Add constraint: x + y &gt;= 1
+  model.AddConstr(x + y &gt;= 1.0, "c1");
+</PRE><EM>
+As with variables, constraints are always associated with a specific
+model.  They are created using the <EM>AddConstr()</EM> or
+<EM>AddConstrs()</EM> methods on the model object.
+</EM>
+<P>
+<EM>We again use overloaded arithmetic operators to build linear
+expressions.  The comparison operators are also overloaded to make it
+easy to build constraints.
+</EM>
+<P>
+<EM>The second argument to <code>AddConstr</code> gives the constraint name.
+</EM>
+<P>
+<EM>The Gurobi .NET interface also allows you to add constraints by
+building linear expressions in a term-by-term fashion:
+</EM><PRE>
+  GRBLinExpr expr = 0.0;
+  expr.AddTerm(1.0, x);
+  expr.AddTerm(2.0, x);
+  expr.AddTerm(3.0, x);
+  model.AddConstr(expr, GRB.LESS_EQUAL, 4.0, "c0");
+</PRE><EM>
+This particular <EM>AddConstr()</EM> signature takes a linear
+expression that captures the left-hand side of the constraint as its
+first argument, the sense of the constraint as its second argument,
+and a linear expression that captures the right-hand side of the
+constraint as its third argument.  The constraint name is given as the
+fourth argument.
+</EM>
+<P>
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1117"
+  HREF="cs_optimizing_the_model.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1115"
+  HREF="cs_net_interface_cs.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1109"
+  HREF="cs_setting_the_objective.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1118"
+  HREF="cs_optimizing_the_model.html">Optimizing the model</A>
+<B> Up:</B> <A NAME="tex2html1116"
+  HREF="cs_net_interface_cs.html">.NET Interface (C#)</A>
+<B> Previous:</B> <A NAME="tex2html1110"
+  HREF="cs_setting_the_objective.html">Setting the objective</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

@@ -1,0 +1,236 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>feasopt_c.c</TITLE>
+<META NAME="description" CONTENT="feasopt_c.c">
+<META NAME="keywords" CONTENT="examples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="examples.css">
+
+<LINK REL="next" HREF="fixanddive_c_c.html">
+<LINK REL="previous" HREF="facility_c_c.html">
+<LINK REL="up" HREF="c_examples.html">
+<LINK REL="next" HREF="fixanddive_c_c.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html573"
+  HREF="fixanddive_c_c.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html571"
+  HREF="c_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html565"
+  HREF="facility_c_c.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html574"
+  HREF="fixanddive_c_c.html">fixanddive_c.c</A>
+<B> Up:</B> <A NAME="tex2html572"
+  HREF="c_examples.html">C Examples</A>
+<B> Previous:</B> <A NAME="tex2html566"
+  HREF="facility_c_c.html">facility_c.c</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00021500000000000000"></A>
+<A NAME="subsubsection:feasopt_c.c"></A>
+<BR>
+feasopt_c.c
+</H3>
+
+<P>
+<BR>
+<PRE  CLASS="verbatim">/* Copyright 2014, Gurobi Optimization, Inc. */
+
+/* This example reads a MIP model from a file, adds artificial
+   variables to each constraint, and then minimizes the sum of the
+   artificial variables.  A solution with objective zero corresponds
+   to a feasible solution to the input model.
+   We can also use FeasRelax feature to do it. In this example, we
+   use minrelax=1, i.e. optimizing the returned model finds a solution
+   that minimizes the original objective, but only from among those
+   solutions that minimize the sum of the artificial variables. */
+
+#include &lt;stdlib.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;math.h&gt;
+#include &lt;string.h&gt;
+#include "gurobi_c.h"
+
+int
+main(int   argc,
+     char *argv[])
+{
+  GRBenv   *env       = NULL;
+  GRBmodel *model     = NULL;
+  GRBmodel *feasmodel = NULL;
+  double   *rhspen      = NULL;
+  int       error = 0;
+  int       i, j;
+  int       numvars, numconstrs;
+  char      sense;
+  int       vind[1];
+  double    vval[1];
+  double    feasobj;
+  char      *cname, *vname;
+
+  if (argc &lt; 2)
+  {
+    fprintf(stderr, "Usage: feasopt_c filename\n");
+    exit(1);
+  }
+
+  error = GRBloadenv(&amp;env, "feasopt.log");
+  if (error) goto QUIT;
+
+  error = GRBreadmodel(env, argv[1], &amp;model);
+  if (error) goto QUIT;
+
+  /* Create a copy to use FeasRelax feature later */
+
+  feasmodel = GRBcopymodel(model);
+  if (error) goto QUIT;
+
+  /* clear objective */
+  error = GRBgetintattr(model, "NumVars", &amp;numvars);
+  if (error) goto QUIT;
+  for (j = 0; j &lt; numvars; ++j)
+  {
+    error = GRBsetdblattrelement(model, "Obj", j, 0.0);
+    if (error) goto QUIT;
+  }
+
+  /* add slack variables */
+  error = GRBgetintattr(model, "NumConstrs", &amp;numconstrs);
+  if (error) goto QUIT;
+  for (i = 0; i &lt; numconstrs; ++i)
+  {
+    error = GRBgetcharattrelement(model, "Sense", i, &amp;sense);
+    if (error) goto QUIT;
+    if (sense != '&gt;')
+    {
+      error = GRBgetstrattrelement(model, "ConstrName", i, &amp;cname);
+      if (error) goto QUIT;
+      vname = malloc(sizeof(char) * (6 + strlen(cname)));
+      if (!vname) goto QUIT;
+      strcpy(vname, "ArtN_");
+      strcat(vname, cname);
+      vind[0] = i;
+      vval[0] = -1.0;
+      error = GRBaddvar(model, 1, vind, vval, 1.0, 0.0, GRB_INFINITY,
+                        GRB_CONTINUOUS, vname);
+      if (error) goto QUIT;
+      free(vname);
+    }
+    if (sense != '&lt;')
+    {
+      error = GRBgetstrattrelement(model, "ConstrName", i, &amp;cname);
+      if (error) goto QUIT;
+      vname = malloc(sizeof(char) * (6 + strlen(cname)));
+      if (!vname) goto QUIT;
+      strcpy(vname, "ArtP_");
+      strcat(vname, cname);
+      vind[0] = i;
+      vval[0] = 1.0;
+      error = GRBaddvar(model, 1, vind, vval, 1.0, 0.0, GRB_INFINITY,
+                        GRB_CONTINUOUS, vname);
+      if (error) goto QUIT;
+      free(vname);
+    }
+  }
+  error = GRBupdatemodel(model);
+  if (error) goto QUIT;
+
+  /* optimize modified model */
+  error = GRBwrite(model, "feasopt.lp");
+  if (error) goto QUIT;
+
+  error = GRBoptimize(model);
+  if (error) goto QUIT;
+
+  /* Use FeasRelax feature */
+
+  rhspen = (double *) malloc(numconstrs*sizeof(double));
+  if (rhspen == NULL) {
+    printf("ERROR: out of memory\n");
+    goto QUIT;
+  }
+
+  /* set penalties for artificial variables */
+  for (i = 0; i &lt; numconstrs; i++) rhspen[i] = 1;
+
+  /* create a FeasRelax model with the original objective recovered
+     and enforcement on minimum of aretificial variables */
+  error = GRBfeasrelax(feasmodel, GRB_FEASRELAX_LINEAR, 1,
+                       NULL, NULL, rhspen, &amp;feasobj);
+  if (error) goto QUIT;
+
+  /* optimize FeasRelax model */
+  error = GRBwrite(feasmodel, "feasopt1.lp");
+  if (error) goto QUIT;
+
+  error = GRBoptimize(feasmodel);
+  if (error) goto QUIT;
+
+
+QUIT:
+
+  /* Error reporting */
+
+  if (error)
+  {
+    printf("ERROR: %s\n", GRBgeterrormsg(env));
+    exit(1);
+  }
+
+  /* Free models, env and etc. */
+
+  if (rhspen) free(rhspen);
+
+  GRBfreemodel(model);
+  GRBfreemodel(feasmodel);
+
+  GRBfreeenv(env);
+
+  return 0;
+}
+</PRE>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html573"
+  HREF="fixanddive_c_c.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html571"
+  HREF="c_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html565"
+  HREF="facility_c_c.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html574"
+  HREF="fixanddive_c_c.html">fixanddive_c.c</A>
+<B> Up:</B> <A NAME="tex2html572"
+  HREF="c_examples.html">C Examples</A>
+<B> Previous:</B> <A NAME="tex2html566"
+  HREF="facility_c_c.html">facility_c.c</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

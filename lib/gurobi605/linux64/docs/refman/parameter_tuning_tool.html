@@ -1,0 +1,169 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Parameter Tuning Tool</TITLE>
+<META NAME="description" CONTENT="Parameter Tuning Tool">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="gurobi_remote_services.html">
+<LINK REL="previous" HREF="concurrent_optimizer.html">
+<LINK REL="up" HREF="refman.html">
+<LINK REL="next" HREF="command_line_tuning.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html12410"
+  HREF="command_line_tuning.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html12408"
+  HREF="refman.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html12402"
+  HREF="concurrent_optimizer.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html12411"
+  HREF="command_line_tuning.html">Command-Line Tuning</A>
+<B> Up:</B> <A NAME="tex2html12409"
+  HREF="refman.html">Gurobi Optimizer Reference Manual</A>
+<B> Previous:</B> <A NAME="tex2html12403"
+  HREF="concurrent_optimizer.html">Concurrent Optimizer</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION000220000000000000000"></A>
+<A NAME="sec:Tuning"></A>
+<BR>
+Parameter Tuning Tool
+</H1>
+
+<P>
+The Gurobi Optimizer provides a wide variety of
+<A HREF="parameters.html#sec:Parameters">parameters</A> that allow you to control
+the operation of the optimization engines.  The level of control
+varies from extremely coarse-grained (e.g., the
+<A HREF="method.html#parameter:Method">Method</A> parameter, which allows you to
+choose the algorithm used to solve continuous models) to very
+fine-grained (e.g., the
+<A HREF="markowitztol.html#parameter:MarkowitzTol">MarkowitzTol</A> parameter, which
+allows you to adjust the tolerances used during simplex basis
+factorization).  While these parameters provide a tremendous amount of
+user control, the immense space of possible options can present a
+significant challenge when you are searching for parameter settings
+that improve performance on a particular model.  The purpose of the
+Gurobi tuning tool is to automate this search.
+
+<P>
+The Gurobi tuning tool performs multiple solves on your model,
+choosing different parameter settings for each solve, in a search for
+settings that improve runtime.  The longer you let it run, the more
+likely it is to find a significant improvement.  If you are using a
+<A HREF="gurobi_compute_server.html#sec:ComputeServer">Gurobi Compute Server</A>, you can
+harness the power of multiple machines to perform
+<A HREF="distributed_parallel_algor.html#sec:DistributedAlgorithms">distributed parallel tuning</A>
+in order to speed up the search for effective parameter settings.
+
+<P>
+The tuning tool can be invoked through two different interfaces.  You
+can either use the <code>grbtune</code>
+<A HREF="command_line_tuning.html#sec:TuningCommandLine">command-line tool</A>, or you can
+invoke it from one of our
+<A HREF="tuning_api.html#sec:TuningAPI">programming language APIs</A>.  Both approaches
+share the same underlying tuning algorithm, and both allow you to
+modify the same set of tuning parameters.
+
+<P>
+A number of tuning-related parameters allow you to control the
+operation of the tuning tool.  The most important is probably
+<A HREF="tunetimelimit.html#parameter:TuneTimeLimit">TuneTimeLimit</A>, which controls
+the amount of time spent searching for an improving parameter set.
+Other parameters include
+<A HREF="tunetrials.html#parameter:TuneTrials">TuneTrials</A> (which attempts to
+limit the impact of randomness on the result),
+<A HREF="tuneresults.html#parameter:TuneResults">TuneResults</A> (which controls the
+number of results that are returned), and
+<A HREF="tuneoutput.html#parameter:TuneOutput">TuneOutput</A> (which controls the
+amount of output produced by the tool).
+
+<P>
+Before we discuss the actual operation of the tuning tool, let us
+first provide a few caveats about the results.  While parameter
+settings can have a big performance effect for many models, they
+aren't going to solve every performance issue.  One reason is simply
+that there are many models for which even the best possible choice of
+parameter settings won't produce an acceptable result.  Some models
+are simply too large and/or difficult to solve, while others may have
+numerical issues that can't be fixed with parameter changes.
+
+<P>
+Another limitation of automated tuning is that performance on a model
+can experience significant variations due to random effects
+(particularly for MIP models).  This is the nature of search.  The
+Gurobi algorithms often have to choose from among multiple, equally
+appealing alternatives.  Seemingly innocuous changes to the model
+(such as changing the order of the constraint or variables), or subtle
+changes to the algorithm (such as modifying the random number seed)
+can lead to different choices.  Often times, breaking a single tie in
+a different way can lead to an entirely different search.  We've seen
+cases where subtle changes in the search produce 100X performance
+swings.  While the tuning tool tries to limit the impact of these
+effects, the final result will typically still be heavily influenced
+by such issues.
+
+<P>
+The bottom line is that automated performance tuning is meant to give
+suggestions for parameters that could produce consistent, reliable
+improvements on your models.  It is not meant to be a replacement for
+efficient modeling or careful performance testing.
+
+<P>
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html12412"
+  HREF="command_line_tuning.html">Command-Line Tuning</A>
+<LI><A NAME="tex2html12413"
+  HREF="tuning_api.html">Tuning API</A>
+</UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html12410"
+  HREF="command_line_tuning.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html12408"
+  HREF="refman.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html12402"
+  HREF="concurrent_optimizer.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html12411"
+  HREF="command_line_tuning.html">Command-Line Tuning</A>
+<B> Up:</B> <A NAME="tex2html12409"
+  HREF="refman.html">Gurobi Optimizer Reference Manual</A>
+<B> Previous:</B> <A NAME="tex2html12403"
+  HREF="concurrent_optimizer.html">Concurrent Optimizer</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

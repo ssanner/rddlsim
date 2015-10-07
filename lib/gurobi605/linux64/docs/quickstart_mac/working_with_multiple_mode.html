@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Working with multiple models</TITLE>
+<META NAME="description" CONTENT="Working with multiple models">
+<META NAME="keywords" CONTENT="quickstart_mac">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="quickstart_mac.css">
+
+<LINK REL="next" HREF="help.html">
+<LINK REL="previous" HREF="using_a_gurobi_env_file.html">
+<LINK REL="up" HREF="interactive_shell.html">
+<LINK REL="next" HREF="help.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html546"
+  HREF="help.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html544"
+  HREF="interactive_shell.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html538"
+  HREF="using_a_gurobi_env_file.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html547"
+  HREF="help.html">Help</A>
+<B> Up:</B> <A NAME="tex2html545"
+  HREF="interactive_shell.html">Interactive Shell</A>
+<B> Previous:</B> <A NAME="tex2html539"
+  HREF="using_a_gurobi_env_file.html">Using a gurobi.env file</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00058000000000000000">
+Working with multiple models</A>
+</H2>
+<P>
+<EM>The Gurobi shell allows you to work with multiple models
+simultaneously.  For example...
+</EM><PRE>
+gurobi&gt; a = read('c:/gurobi600/win64/examples/data/p0033')
+Read MPS format model from file c:/gurobi600/win64/examples/data/p0033.mps
+Reading time = 0.00 seconds
+P0033: 16 Rows, 33 Columns, 98 NonZeros.
+gurobi&gt; b = read('c:/gurobi600/win64/examples/data/stein9')
+Read MPS format model from file c:/gurobi600/win64/examples/data/stein9.mps
+Reading time = 0.00 seconds
+STEIN9: 13 Rows, 9 Columns, 45 NonZeros.
+</PRE><EM>
+The <EM>models()</EM> command gives a list of all active models.
+</EM><PRE>
+gurobi&gt; models()
+Currently loaded models:
+a : &lt;gurobi.Model MIP instance P0033: 16 constrs, 33 vars&gt;
+b : &lt;gurobi.Model MIP instance STEIN9: 13 constrs, 9 vars&gt;
+</PRE>
+<P>
+<EM>Note that parameters can be set for a
+particular model with the <EM>Model.setParam()</EM> method or the
+<code>Model.Params</code> class, or they can be changed for all models in the
+Gurobi shell by using the global <EM>setParam()</EM> method.
+</EM>
+<P>
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html546"
+  HREF="help.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html544"
+  HREF="interactive_shell.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html538"
+  HREF="using_a_gurobi_env_file.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html547"
+  HREF="help.html">Help</A>
+<B> Up:</B> <A NAME="tex2html545"
+  HREF="interactive_shell.html">Interactive Shell</A>
+<B> Previous:</B> <A NAME="tex2html539"
+  HREF="using_a_gurobi_env_file.html">Using a gurobi.env file</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

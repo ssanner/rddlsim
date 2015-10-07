@@ -1,0 +1,264 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>fixanddive_c.c</TITLE>
+<META NAME="description" CONTENT="fixanddive_c.c">
+<META NAME="keywords" CONTENT="examples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="examples.css">
+
+<LINK REL="next" HREF="lp_c_c.html">
+<LINK REL="previous" HREF="feasopt_c_c.html">
+<LINK REL="up" HREF="c_examples.html">
+<LINK REL="next" HREF="lp_c_c.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html583"
+  HREF="lp_c_c.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html581"
+  HREF="c_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html575"
+  HREF="feasopt_c_c.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html584"
+  HREF="lp_c_c.html">lp_c.c</A>
+<B> Up:</B> <A NAME="tex2html582"
+  HREF="c_examples.html">C Examples</A>
+<B> Previous:</B> <A NAME="tex2html576"
+  HREF="feasopt_c_c.html">feasopt_c.c</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00021600000000000000"></A>
+<A NAME="subsubsection:fixanddive_c.c"></A>
+<BR>
+fixanddive_c.c
+</H3>
+
+<P>
+<BR>
+<PRE  CLASS="verbatim">/* Copyright 2014, Gurobi Optimization, Inc. */
+
+/* Implement a simple MIP heuristic.  Relax the model,
+   sort variables based on fractionality, and fix the 25% of
+   the fractional variables that are closest to integer variables.
+   Repeat until either the relaxation is integer feasible or
+   linearly infeasible. */
+
+#include &lt;stdlib.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;math.h&gt;
+#include "gurobi_c.h"
+
+typedef struct
+{
+  int index;
+  double X;
+}
+var_t ;
+
+int vcomp(const void* v1, const void* v2);
+
+
+int
+main(int   argc,
+     char *argv[])
+{
+  GRBenv   *env   = NULL, *modelenv = NULL;
+  GRBmodel *model = NULL;
+  int       error = 0;
+  int       j, iter, nfix;
+  int       numvars, numintvars, numfractional;
+  int      *intvars = NULL;
+  int       status;
+  char      vtype, *vname;
+  double    sol, obj, fixval;
+  var_t    *fractional = NULL;
+
+  if (argc &lt; 2)
+  {
+    fprintf(stderr, "Usage: fixanddive_c filename\n");
+    exit(1);
+  }
+
+  error = GRBloadenv(&amp;env, "fixanddive.log");
+  if (error) goto QUIT;
+
+  /* Read model */
+  error = GRBreadmodel(env, argv[1], &amp;model);
+  if (error) goto QUIT;
+
+  /* Collect integer variables and relax them */
+  error = GRBgetintattr(model, "NumVars", &amp;numvars);
+  if (error) goto QUIT;
+  error = GRBgetintattr(model, "NumIntVars", &amp;numintvars);
+  if (error) goto QUIT;
+  intvars = malloc(sizeof(int) * numintvars);
+  if (!intvars) goto QUIT;
+  fractional = malloc(sizeof(var_t) * numintvars);
+  if (!fractional) goto QUIT;
+  numfractional = 0;
+  for (j = 0; j &lt; numvars; j++)
+  {
+    error = GRBgetcharattrelement(model, "VType", j, &amp;vtype);
+    if (error) goto QUIT;
+    if (vtype != GRB_CONTINUOUS)
+    {
+      intvars[numfractional++] = j;
+      error = GRBsetcharattrelement(model, "VType", j, GRB_CONTINUOUS);
+      if (error) goto QUIT;
+    }
+  }
+
+  modelenv = GRBgetenv(model);
+  if (!modelenv) goto QUIT;
+  error = GRBsetintparam(modelenv, "OutputFlag", 0);
+  if (error) goto QUIT;
+  error = GRBoptimize(model);
+  if (error) goto QUIT;
+
+  /* Perform multiple iterations. In each iteration, identify the first
+     quartile of integer variables that are closest to an integer value
+     in the relaxation, fix them to the nearest integer, and repeat. */
+
+  for (iter = 0; iter &lt; 1000; ++iter)
+  {
+
+    /* create a list of fractional variables, sorted in order of
+       increasing distance from the relaxation solution to the nearest
+       integer value */
+
+    numfractional = 0;
+    for (j = 0; j &lt; numintvars; ++j)
+    {
+      error = GRBgetdblattrelement(model, "X", intvars[j], &amp;sol);
+      if (error) goto QUIT;
+      if (fabs(sol - floor(sol + 0.5)) &gt; 1e-5)
+      {
+        fractional[numfractional].index = intvars[j];
+        fractional[numfractional++].X = sol;
+      }
+    }
+
+    error = GRBgetdblattr(model, "ObjVal", &amp;obj);
+    if (error) goto QUIT;
+    printf("Iteration %i, obj %f, fractional %i\n",
+           iter, obj, numfractional);
+
+    if (numfractional == 0)
+    {
+      printf("Found feasible solution - objective %f\n", obj);
+      break;
+    }
+
+    /* Fix the first quartile to the nearest integer value */
+    qsort(fractional, numfractional, sizeof(var_t), vcomp);
+    nfix = numfractional / 4;
+    nfix = (nfix &gt; 1) ? nfix : 1;
+    for (j = 0; j &lt; nfix; ++j)
+    {
+      fixval = floor(fractional[j].X + 0.5);
+      error = GRBsetdblattrelement(model, "LB", fractional[j].index, fixval);
+      if (error) goto QUIT;
+      error = GRBsetdblattrelement(model, "UB", fractional[j].index, fixval);
+      if (error) goto QUIT;
+      error = GRBgetstrattrelement(model, "VarName",
+                                   fractional[j].index, &amp;vname);
+      if (error) goto QUIT;
+      printf("  Fix %s to %f ( rel %f )\n", vname, fixval, fractional[j].X);
+    }
+
+    error = GRBoptimize(model);
+    if (error) goto QUIT;
+
+    /* Check optimization result */
+
+    error = GRBgetintattr(model, "Status", &amp;status);
+    if (error) goto QUIT;
+    if (status != GRB_OPTIMAL)
+    {
+      printf("Relaxation is infeasible\n");
+      break;
+    }
+  }
+
+
+QUIT:
+
+  /* Error reporting */
+
+  if (error)
+  {
+    printf("ERROR: %s\n", GRBgeterrormsg(env));
+    exit(1);
+  }
+
+  /* Free data */
+
+  free(intvars);
+  free(fractional);
+
+  /* Free model */
+
+  GRBfreemodel(model);
+
+  /* Free environment */
+
+  GRBfreeenv(env);
+
+  return 0;
+}
+
+
+int vcomp(const void* v1, const void* v2)
+{
+  double sol1, sol2, frac1, frac2;
+  sol1 = fabs(((var_t *)v1)-&gt;X);
+  sol2 = fabs(((var_t *)v2)-&gt;X);
+  frac1 = fabs(sol1 - floor(sol1 + 0.5));
+  frac2 = fabs(sol2 - floor(sol2 + 0.5));
+  return (frac1 &lt; frac2) ? -1 : ((frac1 == frac2) ? 0 : 1);
+}
+</PRE>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html583"
+  HREF="lp_c_c.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html581"
+  HREF="c_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html575"
+  HREF="feasopt_c_c.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html584"
+  HREF="lp_c_c.html">lp_c.c</A>
+<B> Up:</B> <A NAME="tex2html582"
+  HREF="c_examples.html">C Examples</A>
+<B> Previous:</B> <A NAME="tex2html576"
+  HREF="feasopt_c_c.html">feasopt_c.c</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

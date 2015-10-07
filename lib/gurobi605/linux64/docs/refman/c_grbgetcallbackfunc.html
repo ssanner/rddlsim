@@ -1,0 +1,119 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>GRBgetcallbackfunc</TITLE>
+<META NAME="description" CONTENT="GRBgetcallbackfunc">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="c_grbcbget.html">
+<LINK REL="previous" HREF="c_grbsetcallbackfunc.html">
+<LINK REL="up" HREF="c_monitoring_progress_logg.html">
+<LINK REL="next" HREF="c_grbcbget.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html2329"
+  HREF="c_grbcbget.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html2327"
+  HREF="c_monitoring_progress_logg.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html2321"
+  HREF="c_grbsetcallbackfunc.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html2330"
+  HREF="c_grbcbget.html">GRBcbget</A>
+<B> Up:</B> <A NAME="tex2html2328"
+  HREF="c_monitoring_progress_logg.html">Monitoring Progress - Logging</A>
+<B> Previous:</B> <A NAME="tex2html2322"
+  HREF="c_grbsetcallbackfunc.html">GRBsetcallbackfunc</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00028300000000000000"></A>
+<A NAME="routine:GRBgetcallbackfunc"></A>
+<BR>
+GRBgetcallbackfunc
+</H3>
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">GRBgetcallbackfunc</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT">GRBmodel</TD>
+<TD ALIGN="LEFT">*model,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">(**cb)(GRBmodel *model, void *cbdata, int where, void *usrdata) )</TD>
+</TR>
+</TABLE>
+
+<P>
+Retrieve the current user callback function.
+
+<P>
+
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Return value:</SPAN></BIG>
+
+<P>
+A non-zero return value indicates that a problem occurred while retrieving the user callback.
+Refer to the <A HREF="error_codes.html#sec:ErrorCodes">Error Code</A> table for a
+list of possible return values.  Details on the error can be obtained
+by calling <A HREF="c_grbgeterrormsg.html#routine:GRBgeterrormsg">GRBgeterrormsg</A>.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">model</SPAN>: The model in which the callback should be installed.
+
+<P>
+ <SPAN  CLASS="textbf">cb</SPAN>: A function pointer to the user callback function.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Example usage:</SPAN></BIG><PRE>
+  int (*mycallback)(GRBmodel *model, void *cbdata, int where, void *usrdata);
+  error = GRBgetcallbackfunc(model, &amp;mycallback);
+</PRE>
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html2329"
+  HREF="c_grbcbget.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html2327"
+  HREF="c_monitoring_progress_logg.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html2321"
+  HREF="c_grbsetcallbackfunc.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html2330"
+  HREF="c_grbcbget.html">GRBcbget</A>
+<B> Up:</B> <A NAME="tex2html2328"
+  HREF="c_monitoring_progress_logg.html">Monitoring Progress - Logging</A>
+<B> Previous:</B> <A NAME="tex2html2322"
+  HREF="c_grbsetcallbackfunc.html">GRBsetcallbackfunc</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

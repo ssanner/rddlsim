@@ -1,0 +1,276 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>tsp_vb.vb</TITLE>
+<META NAME="description" CONTENT="tsp_vb.vb">
+<META NAME="keywords" CONTENT="examples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="examples.css">
+
+<LINK REL="next" HREF="tune_vb_vb.html">
+<LINK REL="previous" HREF="sudoku_vb_vb.html">
+<LINK REL="up" HREF="visual_basic_examples.html">
+<LINK REL="next" HREF="tune_vb_vb.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html1801"
+  HREF="tune_vb_vb.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1799"
+  HREF="visual_basic_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1793"
+  HREF="sudoku_vb_vb.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1802"
+  HREF="tune_vb_vb.html">tune_vb.vb</A>
+<B> Up:</B> <A NAME="tex2html1800"
+  HREF="visual_basic_examples.html">Visual Basic Examples</A>
+<B> Previous:</B> <A NAME="tex2html1794"
+  HREF="sudoku_vb_vb.html">sudoku_vb.vb</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000251900000000000000"></A>
+<A NAME="subsubsection:tsp_vb.vb"></A>
+<BR>
+tsp_vb.vb
+</H3>
+
+<P>
+<BR>
+<PRE  CLASS="verbatim">' Copyright 2014, Gurobi Optimization, Inc.
+'
+' Solve a traveling salesman problem on a randomly generated set of
+' points using lazy constraints.   The base MIP model only includes
+' 'degree-2' constraints, requiring each node to have exactly
+' two incident edges.  Solutions to this model may contain subtours -
+' tours that don't visit every node.  The lazy constraint callback
+' adds new constraints to cut them off.
+
+Imports Gurobi
+
+Class tsp_vb
+    Inherits GRBCallback
+    Private vars As GRBVar(,)
+
+    Public Sub New(xvars As GRBVar(,))
+        vars = xvars
+    End Sub
+
+    ' Subtour elimination callback.    Whenever a feasible solution is found,
+    ' find the smallest subtour, and add a subtour elimination constraint
+    ' if the tour doesn't visit every node.
+
+    Protected Overrides Sub Callback()
+        Try
+            If where = GRB.Callback.MIPSOL Then
+                ' Found an integer feasible solution - does it visit every node?
+
+                Dim n As Integer = vars.GetLength(0)
+                Dim tour As Integer() = findsubtour(GetSolution(vars))
+
+                If tour.Length &lt; n Then
+                    ' Add subtour elimination constraint
+                    Dim expr As GRBLinExpr = 0
+                    For i As Integer = 0 To tour.Length - 1
+                        For j As Integer = i + 1 To tour.Length - 1
+                            expr.AddTerm(1.0, vars(tour(i), tour(j)))
+                        Next
+                    Next
+                    AddLazy(expr &lt;= tour.Length - 1)
+                End If
+            End If
+        Catch e As GRBException
+            Console.WriteLine("Error code: " &amp; e.ErrorCode &amp; ". " &amp; e.Message)
+            Console.WriteLine(e.StackTrace)
+        End Try
+    End Sub
+
+    ' Given an integer-feasible solution 'sol', returns the smallest
+    ' sub-tour (as a list of node indices).
+
+    Protected Shared Function findsubtour(sol As Double(,)) As Integer()
+        Dim n As Integer = sol.GetLength(0)
+        Dim seen As Boolean() = New Boolean(n - 1) {}
+        Dim tour As Integer() = New Integer(n - 1) {}
+        Dim bestind As Integer, bestlen As Integer
+        Dim i As Integer, node As Integer, len As Integer, start As Integer
+
+        For i = 0 To n - 1
+            seen(i) = False
+        Next
+
+        start = 0
+        bestlen = n+1
+        bestind = -1
+        node = 0
+        While start &lt; n
+            For node = 0 To n - 1
+                if Not seen(node)
+                    Exit For
+                End if
+            Next
+            if node = n
+                Exit While
+            End if
+            For len = 0 To n - 1
+                tour(start+len) = node
+                seen(node) = true
+                For i = 0 To n - 1
+                    if sol(node, i) &gt; 0.5 AndAlso Not seen(i)
+                        node = i
+                        Exit For
+                    End If
+                Next
+                If i = n
+                    len = len + 1
+                    If len &lt; bestlen
+                        bestlen = len
+                        bestind = start
+                    End If
+                    start = start + len
+                    Exit For
+                End If
+            Next
+        End While
+
+        For i = 0 To bestlen - 1
+          tour(i) = tour(bestind+i)
+        Next
+        System.Array.Resize(tour, bestlen)
+
+        Return tour
+    End Function
+
+    ' Euclidean distance between points 'i' and 'j'
+
+    Protected Shared Function distance(x As Double(), y As Double(), _
+                                       i As Integer, j As Integer) As Double
+        Dim dx As Double = x(i) - x(j)
+        Dim dy As Double = y(i) - y(j)
+        Return Math.Sqrt(dx * dx + dy * dy)
+    End Function
+
+    Public Shared Sub Main(args As String())
+
+        If args.Length &lt; 1 Then
+            Console.WriteLine("Usage: tsp_vb nnodes")
+            Return
+        End If
+
+        Dim n As Integer = Convert.ToInt32(args(0))
+
+        Try
+            Dim env As New GRBEnv()
+            Dim model As New GRBModel(env)
+
+            ' Must set LazyConstraints parameter when using lazy constraints
+
+            model.GetEnv().Set(GRB.IntParam.LazyConstraints, 1)
+
+            Dim x As Double() = New Double(n - 1) {}
+            Dim y As Double() = New Double(n - 1) {}
+
+            Dim r As New Random()
+            For i As Integer = 0 To n - 1
+                x(i) = r.NextDouble()
+                y(i) = r.NextDouble()
+            Next
+
+            ' Create variables
+
+            Dim vars As GRBVar(,) = New GRBVar(n - 1, n - 1) {}
+
+            For i As Integer = 0 To n - 1
+                For j As Integer = 0 To i
+                    vars(i, j) = model.AddVar(0.0, 1.0, distance(x, y, i, j), _
+                                              GRB.BINARY, "x" &amp; i &amp; "_" &amp; j)
+                    vars(j, i) = vars(i, j)
+                Next
+            Next
+
+            ' Integrate variables
+
+            model.Update()
+
+            ' Degree-2 constraints
+
+            For i As Integer = 0 To n - 1
+                Dim expr As GRBLinExpr = 0
+                For j As Integer = 0 To n - 1
+                    expr.AddTerm(1.0, vars(i, j))
+                Next
+                model.AddConstr(expr = 2.0, "deg2_" &amp; i)
+            Next
+
+            ' Forbid edge from node back to itself
+
+            For i As Integer = 0 To n - 1
+                vars(i, i).Set(GRB.DoubleAttr.UB, 0.0)
+            Next
+
+            model.SetCallback(New tsp_vb(vars))
+            model.Optimize()
+
+            If model.Get(GRB.IntAttr.SolCount) &gt; 0 Then
+                Dim tour As Integer() = findsubtour(model.Get(GRB.DoubleAttr.X, vars))
+
+                Console.Write("Tour: ")
+                For i As Integer = 0 To tour.Length - 1
+                    Console.Write(tour(i) &amp; " ")
+                Next
+                Console.WriteLine()
+            End If
+
+            ' Dispose of model and environment
+            model.Dispose()
+
+            env.Dispose()
+        Catch e As GRBException
+            Console.WriteLine("Error code: " &amp; e.ErrorCode &amp; ". " &amp; e.Message)
+            Console.WriteLine(e.StackTrace)
+        End Try
+    End Sub
+End Class
+</PRE>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1801"
+  HREF="tune_vb_vb.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1799"
+  HREF="visual_basic_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1793"
+  HREF="sudoku_vb_vb.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1802"
+  HREF="tune_vb_vb.html">tune_vb.vb</A>
+<B> Up:</B> <A NAME="tex2html1800"
+  HREF="visual_basic_examples.html">Visual Basic Examples</A>
+<B> Previous:</B> <A NAME="tex2html1794"
+  HREF="sudoku_vb_vb.html">sudoku_vb.vb</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

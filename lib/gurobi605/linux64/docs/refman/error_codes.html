@@ -1,0 +1,269 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Error Codes</TITLE>
+<META NAME="description" CONTENT="Error Codes">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="model_file_formats.html">
+<LINK REL="previous" HREF="callback_codes.html">
+<LINK REL="up" HREF="refman.html">
+<LINK REL="next" HREF="model_file_formats.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html12179"
+  HREF="model_file_formats.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html12177"
+  HREF="refman.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html12171"
+  HREF="callback_codes.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html12180"
+  HREF="model_file_formats.html">Model File Formats</A>
+<B> Up:</B> <A NAME="tex2html12178"
+  HREF="refman.html">Gurobi Optimizer Reference Manual</A>
+<B> Previous:</B> <A NAME="tex2html12172"
+  HREF="callback_codes.html">Callback Codes</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION000170000000000000000"></A>
+<A NAME="sec:ErrorCodes"></A>
+<BR>
+Error Codes
+</H1>
+
+<P>
+Errors can arise in most of the Gurobi library routines.  In the C
+interface, library routines return an integer error code.  In the C++,
+Java, .NET, and Python interfaces, Gurobi methods can throw an
+exception (a <A HREF="cpp_grbexception.html#cppclass:GRBException">C++ exception</A>, a
+<A HREF="java_grbexception.html#javaclass:GRBException">Java exception</A>, a
+<A HREF="cs_grbexception.html#dotnetclass:GRBException">.NET exception</A>, or a
+<A HREF="py_gurobierror.html#pythonclass:GurobiError">Python exception</A>)
+
+<P>
+Underlying all Gurobi error reporting is a set of error codes.  These
+are integer values, but we recommend that you use one of the
+pre-defined error code constants to check the error status in your
+program.  Each error code has a name, and each language requires a
+prefix on this name to obtain the appropriate constant.  You would
+access error code <code>OUT_OF_MEMORY</code> in the following ways
+from the available Gurobi interfaces:
+<BR><TABLE CELLPADDING=3 BORDER="1">
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf">Language</SPAN></TH>
+<TH ALIGN="LEFT"><SPAN  CLASS="textbf">Error Code</SPAN></TH>
+</TR>
+<TR><TD ALIGN="LEFT">C</TD>
+<TD ALIGN="LEFT"><TT>GRB_ERROR_OUT_OF_MEMORY</TT></TD>
+</TR>
+<TR><TD ALIGN="LEFT">C++</TD>
+<TD ALIGN="LEFT"><TT>GRB_ERROR_OUT_OF_MEMORY</TT></TD>
+</TR>
+<TR><TD ALIGN="LEFT">Java</TD>
+<TD ALIGN="LEFT"><TT>GRB.Error.OUT_OF_MEMORY</TT></TD>
+</TR>
+<TR><TD ALIGN="LEFT">.NET</TD>
+<TD ALIGN="LEFT"><TT>GRB.Error.OUT_OF_MEMORY</TT></TD>
+</TR>
+<TR><TD ALIGN="LEFT">Python</TD>
+<TD ALIGN="LEFT"><TT>GRB.Error.OUT_OF_MEMORY</TT></TD>
+</TR>
+</TABLE>
+
+<P>
+Note that when an error occurs, it produces both an error code and an
+error message. The message can be obtained through
+<A HREF="c_grbgeterrormsg.html#routine:GRBgeterrormsg">GRBgeterrormessage</A> in C,
+through
+<A HREF="cpp_grbexception_getmessag.html#cppmethod:GRBException::getMessage">GRBException::getMessage()</A>
+in C++, through the inherited <code>getMessage()</code> method on the
+<A HREF="java_grbexception.html#javaclass:GRBException">GRBException</A> class in Java,
+through the inherited <code>Message</code> property on the
+<A HREF="cs_grbexception.html#dotnetclass:GRBException">GRBException</A> class in .NET, or
+through the <code>e.message</code> attribute on the
+<A HREF="py_gurobierror.html#pythonclass:GurobiError">GurobiError</A> object in Python.
+
+<P>
+Possible error codes are:
+<BR>
+<P>
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf">Error code</SPAN></TH>
+<TH ALIGN="LEFT"><SPAN  CLASS="textbf">Error number</SPAN></TH>
+<TH ALIGN="LEFT"><SPAN  CLASS="textbf">Description</SPAN></TH>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>OUT_OF_MEMORY</TT></SPAN></TH>
+<TD ALIGN="LEFT">10001</TD>
+<TD ALIGN="LEFT">Available memory was exhausted</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>NULL_ARGUMENT</TT></SPAN></TH>
+<TD ALIGN="LEFT">10002</TD>
+<TD ALIGN="LEFT"><code>NULL</code> input value provided for a required argument</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>INVALID_ARGUMENT</TT></SPAN></TH>
+<TD ALIGN="LEFT">10003</TD>
+<TD ALIGN="LEFT">An invalid value was provided for a routine argument</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>UNKNOWN_ATTRIBUTE</TT></SPAN></TH>
+<TD ALIGN="LEFT">10004</TD>
+<TD ALIGN="LEFT">Tried to query or set an unknown attribute</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>DATA_NOT_AVAILABLE</TT></SPAN></TH>
+<TD ALIGN="LEFT">10005</TD>
+<TD ALIGN="LEFT">Attempted to query or set an attribute that could not be accessed at that time</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>INDEX_OUT_OF_RANGE</TT></SPAN></TH>
+<TD ALIGN="LEFT">10006</TD>
+<TD ALIGN="LEFT">Tried to query or set an attribute, but one or more of the provided indices (e.g., constraint index, variable index) was outside the range of valid values</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>UNKNOWN_PARAMETER</TT></SPAN></TH>
+<TD ALIGN="LEFT">10007</TD>
+<TD ALIGN="LEFT">Tried to query or set an unknown parameter</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>VALUE_OUT_OF_RANGE</TT></SPAN></TH>
+<TD ALIGN="LEFT">10008</TD>
+<TD ALIGN="LEFT">Tried to set a parameter to a value that is outside the parameter's valid range</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>NO_LICENSE</TT></SPAN></TH>
+<TD ALIGN="LEFT">10009</TD>
+<TD ALIGN="LEFT">Failed to obtain a valid license</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>SIZE_LIMIT_EXCEEDED</TT></SPAN></TH>
+<TD ALIGN="LEFT">10010</TD>
+<TD ALIGN="LEFT">Attempted to solve a model that is larger than the limit for a demo license</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>CALLBACK</TT></SPAN></TH>
+<TD ALIGN="LEFT">10011</TD>
+<TD ALIGN="LEFT">Problem in callback</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>FILE_READ</TT></SPAN></TH>
+<TD ALIGN="LEFT">10012</TD>
+<TD ALIGN="LEFT">Failed to read the requested file</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>FILE_WRITE</TT></SPAN></TH>
+<TD ALIGN="LEFT">10013</TD>
+<TD ALIGN="LEFT">Failed to write the requested file</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>NUMERIC</TT></SPAN></TH>
+<TD ALIGN="LEFT">10014</TD>
+<TD ALIGN="LEFT">Numerical error during requested operation</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>IIS_NOT_INFEASIBLE</TT></SPAN></TH>
+<TD ALIGN="LEFT">10015</TD>
+<TD ALIGN="LEFT">Attempted to perform infeasibility analysis on a feasible model</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>NOT_FOR_MIP</TT></SPAN></TH>
+<TD ALIGN="LEFT">10016</TD>
+<TD ALIGN="LEFT">Requested operation not valid for a MIP model</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>OPTIMIZATION_IN_PROGRESS</TT></SPAN></TH>
+<TD ALIGN="LEFT">10017</TD>
+<TD ALIGN="LEFT">Tried to query or modify a model while optimization was in progress</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>DUPLICATES</TT></SPAN></TH>
+<TD ALIGN="LEFT">10018</TD>
+<TD ALIGN="LEFT">Constraint, variable, or SOS contained duplicated indices</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>NODEFILE</TT></SPAN></TH>
+<TD ALIGN="LEFT">10019</TD>
+<TD ALIGN="LEFT">Error in reading or writing a node file during MIP optimization</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>Q_NOT_PSD</TT></SPAN></TH>
+<TD ALIGN="LEFT">10020</TD>
+<TD ALIGN="LEFT">Q matrix in QP model is not positive semi-definite</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>QCP_EQUALITY_CONSTRAINT</TT></SPAN></TH>
+<TD ALIGN="LEFT">10021</TD>
+<TD ALIGN="LEFT">QCP equality constraint specified (only inequalities are supported)</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>NETWORK</TT></SPAN></TH>
+<TD ALIGN="LEFT">10022</TD>
+<TD ALIGN="LEFT">Problem communicating with the Gurobi Compute Server</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>JOB_REJECTED</TT></SPAN></TH>
+<TD ALIGN="LEFT">10023</TD>
+<TD ALIGN="LEFT">Gurobi Compute Server responded, but was unable to process the job
+    (typically because the queuing time exceeded the user-specified
+     timeout or because the queue has exceeded its maximum capacity)</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>NOT_SUPPORTED</TT></SPAN></TH>
+<TD ALIGN="LEFT">10024</TD>
+<TD ALIGN="LEFT">Indicates that a Gurobi feature is not supported under your
+    usage environment (for example, some advanced features are
+    not supported in a Compute Server environment)</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>EXCEED_2B_NONZEROS</TT></SPAN></TH>
+<TD ALIGN="LEFT">10025</TD>
+<TD ALIGN="LEFT">Indicates that the user has called a query routine on a model
+    with more than 2 billion non-zero entries, and the result
+    would exceed the maximum size that can be returned by that
+    query routine.  The solution is typically to move to the
+    <code>GRBX</code> version of that query routine.</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>INVALID_PIECEWISE_OBJ</TT></SPAN></TH>
+<TD ALIGN="LEFT">10026</TD>
+<TD ALIGN="LEFT">Piecewise-linear objectives must have certain properties (as described
+    in the documentation for the various <code>setPWLObj</code> methods).
+    This error indicates that one of those properties was violated.</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>NOT_IN_MODEL</TT></SPAN></TH>
+<TD ALIGN="LEFT">20001</TD>
+<TD ALIGN="LEFT">Tried to use a constraint or variable that is not in the model, either because it was removed or because it has not yet been added</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>FAILED_TO_CREATE_MODEL</TT></SPAN></TH>
+<TD ALIGN="LEFT">20002</TD>
+<TD ALIGN="LEFT">Failed to create the requested model</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>INTERNAL</TT></SPAN></TH>
+<TD ALIGN="LEFT">20003</TD>
+<TD ALIGN="LEFT">Internal Gurobi error</TD>
+</TR>
+</TABLE>
+
+<P>
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html12179"
+  HREF="model_file_formats.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html12177"
+  HREF="refman.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html12171"
+  HREF="callback_codes.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html12180"
+  HREF="model_file_formats.html">Model File Formats</A>
+<B> Up:</B> <A NAME="tex2html12178"
+  HREF="refman.html">Gurobi Optimizer Reference Manual</A>
+<B> Previous:</B> <A NAME="tex2html12172"
+  HREF="callback_codes.html">Callback Codes</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

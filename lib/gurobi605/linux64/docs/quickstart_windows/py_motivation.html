@@ -1,0 +1,125 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Motivation</TITLE>
+<META NAME="description" CONTENT="Motivation">
+<META NAME="keywords" CONTENT="quickstart_windows">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="quickstart_windows.css">
+
+<LINK REL="next" HREF="py_lists_and_tuples.html">
+<LINK REL="previous" HREF="py_python_dictionary_examp.html">
+<LINK REL="up" HREF="py_python_dictionary_examp.html">
+<LINK REL="next" HREF="py_lists_and_tuples.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html1358"
+  HREF="py_lists_and_tuples.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1356"
+  HREF="py_python_dictionary_examp.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1350"
+  HREF="py_python_dictionary_examp.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1359"
+  HREF="py_lists_and_tuples.html">Lists and Tuples</A>
+<B> Up:</B> <A NAME="tex2html1357"
+  HREF="py_python_dictionary_examp.html">Python Dictionary Example</A>
+<B> Previous:</B> <A NAME="tex2html1351"
+  HREF="py_python_dictionary_examp.html">Python Dictionary Example</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000113100000000000000">
+Motivation</A>
+</H3>
+
+<P>
+At the heart of any optimization model lies a set of decision
+variables.  Finding a convenient way to store and access these
+variables can often represent the main challenge in implementing the
+model.  While the variables in some models map naturally to simple
+programming language constructs (e.g., <code>x[i]</code> for contiguous
+integer values <code>i</code>), other models can present a much greater
+challenge.  For example, consider a model that optimizes the flow of
+multiple different commodities through a supply network.  You might
+have a variable <code>x['Pens', 'Denver', 'New York']</code> that
+captures the flow of a manufactured item (pens in this example) from
+Denver to New York.  At the same time, you might <EM>not</EM> want to
+have a variable <code>x['Pencils', 'Denver', 'Seattle']</code>, since not all
+combinations of commodities, source cities, and destination cities
+represent valid paths through the network.  Representing a sparse set
+of decision variables in a typical programming language can
+be cumbersome.
+
+<P>
+To compound the challenge, you typically need to build constraints
+that involve subsets of these decision variables.  For example, in our
+network flow model you might want to put an upper bound on the total
+flow that enters a particular city.  You could certainly collect the
+relevant decision variables by iterating over all possible cities and
+selecting only those variables that capture possible flow from that
+source city into the desired destination city.  However, this is
+clearly wasteful if not all origin-destination pairs are valid.  In a
+large network problem, the inefficiency of this approach could lead to
+major performance issues.  Handling this efficiently can require
+complex data structures.
+
+<P>
+The Gurobi Python interface has been designed to make the issues we've
+just described quite easy to manage.  We'll present a specific example
+of how this is done shortly.  Before we do, though, we'll need to
+describe a few important constructs: <code>lists</code>, <code>tuples</code>,
+<code>dictionaries</code>, <code>list comprehension</code>, and the
+<code>tuplelist</code> class.  The first four are standard Python concepts
+that are particularly important in our interface, while the last is a
+custom class that we've added to the Gurobi Python interface.
+
+<P>
+A quick reminder: you can consult the <A NAME="tex2html43"
+  HREF="http://docs.python.org/release/2.7.5/tutorial/datastructures.html">online Python
+  documentation</A>
+for additional information on any of the Python data structures
+mentioned here.
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1358"
+  HREF="py_lists_and_tuples.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1356"
+  HREF="py_python_dictionary_examp.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1350"
+  HREF="py_python_dictionary_examp.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1359"
+  HREF="py_lists_and_tuples.html">Lists and Tuples</A>
+<B> Up:</B> <A NAME="tex2html1357"
+  HREF="py_python_dictionary_examp.html">Python Dictionary Example</A>
+<B> Previous:</B> <A NAME="tex2html1351"
+  HREF="py_python_dictionary_examp.html">Python Dictionary Example</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

@@ -1,0 +1,150 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>GRBCallback::getNodeRel()</TITLE>
+<META NAME="description" CONTENT="GRBCallback::getNodeRel()">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="cpp_grbcallback_getsolutio.html">
+<LINK REL="previous" HREF="cpp_grbcallback_getintinfo.html">
+<LINK REL="up" HREF="cpp_grbcallback.html">
+<LINK REL="next" HREF="cpp_grbcallback_getsolutio.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html3994"
+  HREF="cpp_grbcallback_getsolutio.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html3992"
+  HREF="cpp_grbcallback.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html3986"
+  HREF="cpp_grbcallback_getintinfo.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html3995"
+  HREF="cpp_grbcallback_getsolutio.html">GRBCallback::getSolution()</A>
+<B> Up:</B> <A NAME="tex2html3993"
+  HREF="cpp_grbcallback.html">GRBCallback</A>
+<B> Previous:</B> <A NAME="tex2html3987"
+  HREF="cpp_grbcallback_getintinfo.html">GRBCallback::getIntInfo()</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000412700000000000000"></A>
+<A NAME="cppmethod:GRBCallback::getNodeRel"></A>
+<BR>
+GRBCallback::getNodeRel()
+</H3>
+
+<P>
+Retrieve values from the node relaxation solution at the current node.
+Only available when the <code>where</code> member variable is equal to
+<TT>GRB_CB_MIPNODE</TT>, and <TT>GRB_CB_MIPNODE_STATUS</TT> is equal
+to <TT>GRB_OPTIMAL</TT>.
+
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">double</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">getNodeRel</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT">GRBVar</TD>
+<TD ALIGN="LEFT">v )</TD>
+</TR>
+</TABLE>
+
+<UL>
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">v</SPAN>: The variable whose value is desired.
+
+<P>
+
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Return value:</SPAN></BIG>
+
+<P>
+The value of the specified variable in the
+  node relaxation for the current node.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">double*</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">getNodeRel</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT">const GRBVar*</TD>
+<TD ALIGN="LEFT">xvars,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">len )</TD>
+</TR>
+</TABLE>
+
+<UL>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">xvars</SPAN>: The list of variables whose values are desired.
+
+<P>
+ <SPAN  CLASS="textbf">len</SPAN>: The number of variables in the list.
+
+<P>
+
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Return value:</SPAN></BIG>
+
+<P>
+The values of the specified variables in the
+  node relaxation for the current node. Note that the result is
+  heap-allocated, and must be returned to the heap by the user.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html3994"
+  HREF="cpp_grbcallback_getsolutio.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html3992"
+  HREF="cpp_grbcallback.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html3986"
+  HREF="cpp_grbcallback_getintinfo.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html3995"
+  HREF="cpp_grbcallback_getsolutio.html">GRBCallback::getSolution()</A>
+<B> Up:</B> <A NAME="tex2html3993"
+  HREF="cpp_grbcallback.html">GRBCallback</A>
+<B> Previous:</B> <A NAME="tex2html3987"
+  HREF="cpp_grbcallback_getintinfo.html">GRBCallback::getIntInfo()</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

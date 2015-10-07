@@ -1,0 +1,840 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Attributes</TITLE>
+<META NAME="description" CONTENT="Attributes">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="parameters.html">
+<LINK REL="previous" HREF="r_api_overview.html">
+<LINK REL="up" HREF="refman.html">
+<LINK REL="next" HREF="model_attributes.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html9257"
+  HREF="model_attributes.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html9255"
+  HREF="refman.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html9249"
+  HREF="r_api_overview.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html9258"
+  HREF="model_attributes.html">Model Attributes</A>
+<B> Up:</B> <A NAME="tex2html9256"
+  HREF="refman.html">Gurobi Optimizer Reference Manual</A>
+<B> Previous:</B> <A NAME="tex2html9250"
+  HREF="r_api_overview.html">R API Overview</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION000130000000000000000"></A>
+<A NAME="sec:Attributes"></A>
+<BR>
+Attributes
+</H1>
+
+<P>
+The primary mechanism for querying and modifying properties of a
+Gurobi model is through the attribute interface.  A variety of
+different attributes are available.  Some are only populated at
+certain times (e.g., those related to the solution of a model), while
+others are available at all times (e.g., the number of variables in
+the model).  Attributes can be associated with variables (e.g.,
+lower bounds), constraints (e.g., the right-hand side), SOSs
+(e.g., IIS membership), or with the model as a whole (e.g., the
+objective value for the current solution).
+
+<P>
+The following tables list the full set of Gurobi attributes.  The
+attributes have been grouped by type: model attributes take scalar
+values, while variable, constraint, and SOS attributes contain one
+entry per variable, constraint, or SOS in the model.  The APIs provide
+methods to query attribute values for individual constraints or
+variables, or to query their values for arrays of constraints or
+variables (refer to our
+<A HREF="attribute_examples.html#sec:AttributeExamples">Attribute Examples</A>
+section for examples).  Array queries are generally more efficient.
+
+<P>
+Note that the attributes that provide solution quality information
+have been split off into a separate table at the end of this section.
+These attributes are also associated with the model as a whole.
+
+<P>
+Some solution attributes require information that is only computed by
+certain Gurobi algorithms.  Such cases are noted in the
+detailed attribute descriptions that follow.  For
+example, the <code>VBasis</code> and <code>CBasis</code> attributes can only be
+queried when a simplex basis is available (a basis is available when a
+continuous model has been solved using primal simplex, dual simplex,
+or barrier with crossover).  Sensitivity information
+(<code>SAObjLow</code>, <code>SAObjUp</code>, etc.)  is also only available
+for basic solutions.
+
+<P>
+<SPAN  CLASS="textbf">Model attributes:</SPAN>
+
+<P>
+These attributes provide information about the overall model (as
+opposed to information about individual variables or constraints in
+the model).
+
+<P>
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf">Attribute name</SPAN></TH>
+<TH ALIGN="LEFT"><SPAN  CLASS="textbf">Description</SPAN></TH>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="numvars.html#attr:NumVars">NumVars</A></TD>
+<TD ALIGN="LEFT">Number of variables</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="numconstrs.html#attr:NumConstrs">NumConstrs</A></TD>
+<TD ALIGN="LEFT">Number of linear constraints</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="numsos.html#attr:NumSOS">NumSOS</A></TD>
+<TD ALIGN="LEFT">Number of SOS constraints</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="numqconstrs.html#attr:NumQConstrs">NumQConstrs</A></TD>
+<TD ALIGN="LEFT">Number of quadratic constraints</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="numnzs.html#attr:NumNZs">NumNZs</A></TD>
+<TD ALIGN="LEFT">Number of non-zero coefficients in the constraint matrix</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="numqnzs.html#attr:NumQNZs">NumQNZs</A></TD>
+<TD ALIGN="LEFT">Number of non-zero quadratic objective terms</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="numintvars.html#attr:NumIntVars">NumQCNZs</A></TD>
+<TD ALIGN="LEFT">Number of non-zero terms in quadratic constraints</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="numintvars.html#attr:NumIntVars">NumIntVars</A></TD>
+<TD ALIGN="LEFT">Number of integer variables</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="numbinvars.html#attr:NumBinVars">NumBinVars</A></TD>
+<TD ALIGN="LEFT">Number of binary variables</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="numpwlobjvars.html#attr:NumPWLObjVars">NumPWLObjVars</A></TD>
+<TD ALIGN="LEFT">Number of variables with piecewise-linear objective functions.</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="modelname.html#attr:ModelName">ModelName</A></TD>
+<TD ALIGN="LEFT">Model name</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="modelsense.html#attr:ModelSense">ModelSense</A></TD>
+<TD ALIGN="LEFT">Model sense (minimization or maximization)</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="objcon.html#attr:ObjCon">ObjCon</A></TD>
+<TD ALIGN="LEFT">Constant offset for objective function</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="objval.html#attr:ObjVal">ObjVal</A></TD>
+<TD ALIGN="LEFT">Objective value for current solution</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="objbound.html#attr:ObjBound">ObjBound</A></TD>
+<TD ALIGN="LEFT">Best available objective bound (lower bound for minimization, upper bound for maximization)</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="objboundc.html#attr:ObjBoundC">ObjBoundC</A></TD>
+<TD ALIGN="LEFT">Best available objective bound, without rounding (lower bound for minimization, upper bound for maximization)</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="mipgap.html#attr:MIPGap">MIPGap</A></TD>
+<TD ALIGN="LEFT">Current relative MIP optimality gap</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="runtime.html#attr:Runtime">Runtime</A></TD>
+<TD ALIGN="LEFT">Runtime for most recent optimization</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="status.html#attr:Status">Status</A></TD>
+<TD ALIGN="LEFT">Current optimization status</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="solcount.html#attr:SolCount">SolCount</A></TD>
+<TD ALIGN="LEFT">Number of solutions found</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="itercount.html#attr:IterCount">IterCount</A></TD>
+<TD ALIGN="LEFT">Number of simplex iterations performed in most recent optimization</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="baritercount.html#attr:BarIterCount">BarIterCount</A></TD>
+<TD ALIGN="LEFT">Number of barrier iterations performed in most recent optimization</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="nodecount.html#attr:NodeCount">NodeCount</A></TD>
+<TD ALIGN="LEFT">Number of branch-and-cut nodes explored in most recent optimization</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="ismip.html#attr:IsMIP">IsMIP</A></TD>
+<TD ALIGN="LEFT">Indicates whether the model is a MIP</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="isqp.html#attr:IsQP">IsQP</A></TD>
+<TD ALIGN="LEFT">Indicates whether the model is a QP/MIQP</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="isqcp.html#attr:IsQCP">IsQCP</A></TD>
+<TD ALIGN="LEFT">Indicates whether the model is a QCP/MIQCP</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="iisminimal.html#attr:IISMinimal">IISMinimal</A></TD>
+<TD ALIGN="LEFT">Indicates whether the current IIS is minimal</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="maxcoeff.html#attr:MaxCoeff">MaxCoeff</A></TD>
+<TD ALIGN="LEFT">Maximum constraint matrix coefficient (in absolute value)</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="mincoeff.html#attr:MinCoeff">MinCoeff</A></TD>
+<TD ALIGN="LEFT">Minimum (non-zero) constraint matrix coefficient (in absolute value)</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="maxbound.html#attr:MaxBound">MaxBound</A></TD>
+<TD ALIGN="LEFT">Maximum finite variable bound</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="minbound.html#attr:MinBound">MinBound</A></TD>
+<TD ALIGN="LEFT">Minimum finite variable bound</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="maxobjcoeff.html#attr:MaxObjCoeff">MaxObjCoeff</A></TD>
+<TD ALIGN="LEFT">Maximum linear objective coefficient (in absolute value)</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="minobjcoeff.html#attr:MinObjCoeff">MinObjCoeff</A></TD>
+<TD ALIGN="LEFT">Minimum (non-zero) linear objective coefficient (in absolute value)</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="maxrhs.html#attr:MaxRHS">MaxRHS</A></TD>
+<TD ALIGN="LEFT">Maximum constraint right-hand side (in absolute value)</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="minrhs.html#attr:MinRHS">MinRHS</A></TD>
+<TD ALIGN="LEFT">Minimum (non-zero) constraint right-hand side (in absolute value)</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="kappa.html#attr:Kappa">Kappa</A></TD>
+<TD ALIGN="LEFT">Estimated basis condition number</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="kappaexact.html#attr:KappaExact">KappaExact</A></TD>
+<TD ALIGN="LEFT">Exact basis condition number</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="farkasproof.html#attr:FarkasProof">FarkasProof</A></TD>
+<TD ALIGN="LEFT">Magnitude of infeasibility violation in Farkas infeasibility proof</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="tuneresultcount.html#attr:TuneResultCount">TuneResultCount</A></TD>
+<TD ALIGN="LEFT">Number of improved parameter sets found by tuning tool</TD>
+</TR>
+</TABLE>
+
+<P>
+<SPAN  CLASS="textbf">Variable attributes:</SPAN>
+
+<P>
+These attributes provide information that is associated with specific
+variables.
+
+<P>
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf">Attribute name</SPAN></TH>
+<TH ALIGN="LEFT"><SPAN  CLASS="textbf">Description</SPAN></TH>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="lb.html#attr:LB">LB</A></TD>
+<TD ALIGN="LEFT">Lower bound</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="ub.html#attr:UB">UB</A></TD>
+<TD ALIGN="LEFT">Upper bound</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="obj.html#attr:Obj">Obj</A></TD>
+<TD ALIGN="LEFT">Linear objective coefficient</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="vtype.html#attr:VType">VType</A></TD>
+<TD ALIGN="LEFT">Variable type (continuous, binary, integer, etc.)</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="varname.html#attr:VarName">VarName</A></TD>
+<TD ALIGN="LEFT">Variable name</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="x.html#attr:X">X</A></TD>
+<TD ALIGN="LEFT">Value in the current solution</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="xn.html#attr:Xn">Xn</A></TD>
+<TD ALIGN="LEFT">Value in a sub-optimal MIP solution</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="rc.html#attr:RC">RC</A></TD>
+<TD ALIGN="LEFT">Reduced cost</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="start.html#attr:Start">Start</A></TD>
+<TD ALIGN="LEFT">MIP start value (for constructing an initial MIP solution)</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="branchpriority.html#attr:BranchPriority">BranchPriority</A></TD>
+<TD ALIGN="LEFT">Branching priority</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="vbasis.html#attr:VBasis">VBasis</A></TD>
+<TD ALIGN="LEFT">Basis status</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="pstart.html#attr:PStart">PStart</A></TD>
+<TD ALIGN="LEFT">Simplex start vector</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="iislb.html#attr:IISLB">IISLB</A></TD>
+<TD ALIGN="LEFT">Indicates whether the lower bound participate in the IIS</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="iisub.html#attr:IISUB">IISUB</A></TD>
+<TD ALIGN="LEFT">Indicates whether the upper bound participate in the IIS</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="pwlobjcvx.html#attr:PWLObjCvx">PWLObjCvx</A></TD>
+<TD ALIGN="LEFT">Indicates whether the variable has a convex piecewise-linear objective</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="saobjlow.html#attr:SAObjLow">SAObjLow</A></TD>
+<TD ALIGN="LEFT">Objective coefficient sensitivity information</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="saobjup.html#attr:SAObjUp">SAObjUp</A></TD>
+<TD ALIGN="LEFT">Objective coefficient sensitivity information</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="salblow.html#attr:SALBLow">SALBLow</A></TD>
+<TD ALIGN="LEFT">Lower bound sensitivity information</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="salbup.html#attr:SALBUp">SALBUp</A></TD>
+<TD ALIGN="LEFT">Lower bound sensitivity information</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="saublow.html#attr:SAUBLow">SAUBLow</A></TD>
+<TD ALIGN="LEFT">Upper bound sensitivity information</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="saubup.html#attr:SAUBUp">SAUBUp</A></TD>
+<TD ALIGN="LEFT">Upper bound sensitivity information</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="unbdray.html#attr:UnbdRay">UnbdRay</A></TD>
+<TD ALIGN="LEFT">Unbounded ray</TD>
+</TR>
+</TABLE>
+
+<P>
+<SPAN  CLASS="textbf">Linear constraint attributes:</SPAN>
+
+<P>
+These attributes provide information that is associated with specific
+linear constraints.
+
+<P>
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf">Attribute name</SPAN></TH>
+<TH ALIGN="LEFT"><SPAN  CLASS="textbf">Description</SPAN></TH>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="sense.html#attr:Sense">Sense</A></TD>
+<TD ALIGN="LEFT">Constraint sense (<TT>'&lt;'</TT>, <TT>'&gt;'</TT>, or <TT>'='</TT>)</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="rhs.html#attr:RHS">RHS</A></TD>
+<TD ALIGN="LEFT">Right-hand side value</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="constrname.html#attr:ConstrName">ConstrName</A></TD>
+<TD ALIGN="LEFT">Constraint name</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="pi.html#attr:Pi">Pi</A></TD>
+<TD ALIGN="LEFT">Dual value (also known as the <EM>shadow price</EM>)</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="slack.html#attr:Slack">Slack</A></TD>
+<TD ALIGN="LEFT">Slack in the current solution</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="cbasis.html#attr:CBasis">CBasis</A></TD>
+<TD ALIGN="LEFT">Basis status</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="dstart.html#attr:DStart">DStart</A></TD>
+<TD ALIGN="LEFT">Simplex start vector</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="lazy.html#attr:Lazy">Lazy</A></TD>
+<TD ALIGN="LEFT">Determines whether a constraint is treated as a lazy constraint</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="iisconstr.html#attr:IISConstr">IISConstr</A></TD>
+<TD ALIGN="LEFT">Indicates whether the constraint participates in the IIS</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="sarhslow.html#attr:SARHSLow">SARHSLow</A></TD>
+<TD ALIGN="LEFT">Right-hand-side sensitivity information</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="sarhsup.html#attr:SARHSUp">SARHSUp</A></TD>
+<TD ALIGN="LEFT">Right-hand-side sensitivity information</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="farkasdual.html#attr:FarkasDual">FarkasDual</A></TD>
+<TD ALIGN="LEFT">Farkas infeasibility proof</TD>
+</TR>
+</TABLE>
+
+<P>
+<SPAN  CLASS="textbf">SOS attributes:</SPAN>
+
+<P>
+These attributes provide information that is associated with specific
+Special-Ordered Set (SOS) constraints.
+
+<P>
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf">Attribute name</SPAN></TH>
+<TH ALIGN="LEFT"><SPAN  CLASS="textbf">Description</SPAN></TH>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="iissos.html#attr:IISSOS">IISSOS</A></TD>
+<TD ALIGN="LEFT">Indicates whether the SOS constraint participates in the IIS</TD>
+</TR>
+</TABLE>
+
+<P>
+<SPAN  CLASS="textbf">Quadratic constraint attributes:</SPAN>
+
+<P>
+These attributes provide information that is associated with specific
+quadratic constraints.
+
+<P>
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf">Attribute name</SPAN></TH>
+<TH ALIGN="LEFT"><SPAN  CLASS="textbf">Description</SPAN></TH>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="qcsense.html#attr:QCSense">QCSense</A></TD>
+<TD ALIGN="LEFT">Constraint sense (<TT>'&lt;'</TT>, <TT>'&gt;'</TT>, or <TT>'='</TT>)</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="qcrhs.html#attr:QCRHS">QCRHS</A></TD>
+<TD ALIGN="LEFT">Right-hand side</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="qcname.html#attr:QCName">QCName</A></TD>
+<TD ALIGN="LEFT">Quadratic constraint name</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="qcpi.html#attr:QCPi">QCPi</A></TD>
+<TD ALIGN="LEFT">Dual value</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="qcslack.html#attr:QCSlack">QCSlack</A></TD>
+<TD ALIGN="LEFT">Slack in the current solution</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="iisqconstr.html#attr:IISQConstr">IISQConstr</A></TD>
+<TD ALIGN="LEFT">Indicates whether the quadratic constraint participates in the IIS</TD>
+</TR>
+</TABLE>
+
+<P>
+<SPAN  CLASS="textbf">Solution quality attributes:</SPAN>
+
+<P>
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf">Attribute name</SPAN></TH>
+<TH ALIGN="LEFT"><SPAN  CLASS="textbf">Description</SPAN></TH>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="boundvio.html#attr:BoundVio">BoundVio</A></TD>
+<TD ALIGN="LEFT">Maximum (unscaled) bound violation</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="boundsvio.html#attr:BoundSVio">BoundSVio</A></TD>
+<TD ALIGN="LEFT">Maximum (scaled) bound violation</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="boundvioindex.html#attr:BoundVioIndex">BoundVioIndex</A></TD>
+<TD ALIGN="LEFT">Index of variable with the largest (unscaled) bound violation</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="boundsvioindex.html#attr:BoundSVioIndex">BoundSVioIndex</A></TD>
+<TD ALIGN="LEFT">Index of variable with the largest (scaled) bound violation</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="boundviosum.html#attr:BoundVioSum">BoundVioSum</A></TD>
+<TD ALIGN="LEFT">Sum of (unscaled) bound violations</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="boundsviosum.html#attr:BoundSVioSum">BoundSVioSum</A></TD>
+<TD ALIGN="LEFT">Sum of (scaled) bound violations</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="constrvio.html#attr:ConstrVio">ConstrVio</A></TD>
+<TD ALIGN="LEFT">Maximum (unscaled) constraint violation</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="constrsvio.html#attr:ConstrSVio">ConstrSVio</A></TD>
+<TD ALIGN="LEFT">Maximum (scaled) constraint violation</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="constrvioindex.html#attr:ConstrVioIndex">ConstrVioIndex</A></TD>
+<TD ALIGN="LEFT">Index of constraint with the largest (unscaled) violation</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="constrsvioindex.html#attr:ConstrSVioIndex">ConstrSVioIndex</A></TD>
+<TD ALIGN="LEFT">Index of constraint with  the largest (scaled) violation</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="constrviosum.html#attr:ConstrVioSum">ConstrVioSum</A></TD>
+<TD ALIGN="LEFT">Sum of (unscaled) constraint violations</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="constrsviosum.html#attr:ConstrSVioSum">ConstrSVioSum</A></TD>
+<TD ALIGN="LEFT">Sum of (scaled) constraint violations</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="constrresidual.html#attr:ConstrResidual">ConstrResidual</A></TD>
+<TD ALIGN="LEFT">Maximum (unscaled) primal constraint error</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="constrsresidual.html#attr:ConstrSResidual">ConstrSResidual</A></TD>
+<TD ALIGN="LEFT">Maximum (scaled) primal constraint error</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="constrresidualindex.html#attr:ConstrResidualIndex">ConstrResidualIndex</A></TD>
+<TD ALIGN="LEFT">Index of constraint with the largest (unscaled) primal constraint error</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="constrsresidualindex.html#attr:ConstrSResidualIndex">ConstrSResidualIndex</A></TD>
+<TD ALIGN="LEFT">Index of constraint with the largest (scaled) primal constraint error</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="constrresidualsum.html#attr:ConstrResidualSum">ConstrResidualSum</A></TD>
+<TD ALIGN="LEFT">Sum of (unscaled) primal constraint errors</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="constrsresidualsum.html#attr:ConstrSResidualSum">ConstrSResidualSum</A></TD>
+<TD ALIGN="LEFT">Sum of (scaled) primal constraint errors</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="dualvio.html#attr:DualVio">DualVio</A></TD>
+<TD ALIGN="LEFT">Maximum (unscaled) reduced cost violation</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="dualsvio.html#attr:DualSVio">DualSVio</A></TD>
+<TD ALIGN="LEFT">Maximum (scaled) reduced cost violation</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="dualvioindex.html#attr:DualVioIndex">DualVioIndex</A></TD>
+<TD ALIGN="LEFT">Index of variable with the largest (unscaled) reduced cost violation</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="dualsvioindex.html#attr:DualSVioIndex">DualSVioIndex</A></TD>
+<TD ALIGN="LEFT">Index of variable with the largest (scaled) reduced cost violation</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="dualviosum.html#attr:DualVioSum">DualVioSum</A></TD>
+<TD ALIGN="LEFT">Sum of (unscaled) reduced cost violations</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="dualsviosum.html#attr:DualSVioSum">DualSVioSum</A></TD>
+<TD ALIGN="LEFT">Sum of (scaled) reduced cost violations</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="dualresidual.html#attr:DualResidual">DualResidual</A></TD>
+<TD ALIGN="LEFT">Maximum (unscaled) dual constraint error</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="dualsresidual.html#attr:DualSResidual">DualSResidual</A></TD>
+<TD ALIGN="LEFT">Maximum (scaled) dual constraint error</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="dualresidualindex.html#attr:DualResidualIndex">DualResidualIndex</A></TD>
+<TD ALIGN="LEFT">Index of variable with the largest (unscaled) dual constraint error</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="dualsresidualindex.html#attr:DualSResidualIndex">DualSResidualIndex</A></TD>
+<TD ALIGN="LEFT">Index of variable with the largest (scaled) dual constraint error</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="dualresidualsum.html#attr:DualResidualSum">DualResidualSum</A></TD>
+<TD ALIGN="LEFT">Sum of (unscaled) dual constraint errors</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="dualsresidualsum.html#attr:DualSResidualSum">DualSResidualSum</A></TD>
+<TD ALIGN="LEFT">Sum of (scaled) dual constraint errors</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="complvio.html#attr:ComplVio">ComplVio</A></TD>
+<TD ALIGN="LEFT">Maximum complementarity violation</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="complvioindex.html#attr:ComplVioIndex">ComplVioIndex</A></TD>
+<TD ALIGN="LEFT">Index of variable with the largest complementarity violation</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="complviosum.html#attr:ComplVioSum">ComplVioSum</A></TD>
+<TD ALIGN="LEFT">Sum of complementarity violations</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="intvio.html#attr:IntVio">IntVio</A></TD>
+<TD ALIGN="LEFT">Maximum integrality violation</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="intvioindex.html#attr:IntVioIndex">IntVioIndex</A></TD>
+<TD ALIGN="LEFT">Index of variable with the largest integrality violation</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="intviosum.html#attr:IntVioSum">IntVioSum</A></TD>
+<TD ALIGN="LEFT">Sum of integrality violations</TD>
+</TR>
+</TABLE>
+
+<P>
+
+<P>
+
+<P>
+
+<P>
+
+<P>
+
+<P>
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html9259"
+  HREF="model_attributes.html">Model Attributes</A>
+<UL>
+<LI><A NAME="tex2html9260"
+  HREF="numconstrs.html">NumConstrs</A>
+<LI><A NAME="tex2html9261"
+  HREF="numvars.html">NumVars</A>
+<LI><A NAME="tex2html9262"
+  HREF="numsos.html">NumSOS</A>
+<LI><A NAME="tex2html9263"
+  HREF="numqconstrs.html">NumQConstrs</A>
+<LI><A NAME="tex2html9264"
+  HREF="numnzs.html">NumNZs</A>
+<LI><A NAME="tex2html9265"
+  HREF="numqnzs.html">NumQNZs</A>
+<LI><A NAME="tex2html9266"
+  HREF="numqcnzs.html">NumQCNZs</A>
+<LI><A NAME="tex2html9267"
+  HREF="numintvars.html">NumIntVars</A>
+<LI><A NAME="tex2html9268"
+  HREF="numbinvars.html">NumBinVars</A>
+<LI><A NAME="tex2html9269"
+  HREF="numpwlobjvars.html">NumPWLObjVars</A>
+<LI><A NAME="tex2html9270"
+  HREF="modelname.html">ModelName</A>
+<LI><A NAME="tex2html9271"
+  HREF="modelsense.html">ModelSense</A>
+<LI><A NAME="tex2html9272"
+  HREF="objcon.html">ObjCon</A>
+<LI><A NAME="tex2html9273"
+  HREF="objval.html">ObjVal</A>
+<LI><A NAME="tex2html9274"
+  HREF="objbound.html">ObjBound</A>
+<LI><A NAME="tex2html9275"
+  HREF="objboundc.html">ObjBoundC</A>
+<LI><A NAME="tex2html9276"
+  HREF="mipgap.html">MIPGap</A>
+<LI><A NAME="tex2html9277"
+  HREF="runtime.html">Runtime</A>
+<LI><A NAME="tex2html9278"
+  HREF="status.html">Status</A>
+<LI><A NAME="tex2html9279"
+  HREF="solcount.html">SolCount</A>
+<LI><A NAME="tex2html9280"
+  HREF="itercount.html">IterCount</A>
+<LI><A NAME="tex2html9281"
+  HREF="baritercount.html">BarIterCount</A>
+<LI><A NAME="tex2html9282"
+  HREF="nodecount.html">NodeCount</A>
+<LI><A NAME="tex2html9283"
+  HREF="ismip.html">IsMIP</A>
+<LI><A NAME="tex2html9284"
+  HREF="isqp.html">IsQP</A>
+<LI><A NAME="tex2html9285"
+  HREF="isqcp.html">IsQCP</A>
+<LI><A NAME="tex2html9286"
+  HREF="iisminimal.html">IISMinimal</A>
+<LI><A NAME="tex2html9287"
+  HREF="maxcoeff.html">MaxCoeff</A>
+<LI><A NAME="tex2html9288"
+  HREF="mincoeff.html">MinCoeff</A>
+<LI><A NAME="tex2html9289"
+  HREF="maxbound.html">MaxBound</A>
+<LI><A NAME="tex2html9290"
+  HREF="minbound.html">MinBound</A>
+<LI><A NAME="tex2html9291"
+  HREF="maxobjcoeff.html">MaxObjCoeff</A>
+<LI><A NAME="tex2html9292"
+  HREF="minobjcoeff.html">MinObjCoeff</A>
+<LI><A NAME="tex2html9293"
+  HREF="maxrhs.html">MaxRHS</A>
+<LI><A NAME="tex2html9294"
+  HREF="minrhs.html">MinRHS</A>
+<LI><A NAME="tex2html9295"
+  HREF="kappa.html">Kappa</A>
+<LI><A NAME="tex2html9296"
+  HREF="kappaexact.html">KappaExact</A>
+<LI><A NAME="tex2html9297"
+  HREF="farkasproof.html">FarkasProof</A>
+<LI><A NAME="tex2html9298"
+  HREF="tuneresultcount.html">TuneResultCount</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html9299"
+  HREF="variable_attributes.html">Variable Attributes</A>
+<UL>
+<LI><A NAME="tex2html9300"
+  HREF="lb.html">LB</A>
+<LI><A NAME="tex2html9301"
+  HREF="ub.html">UB</A>
+<LI><A NAME="tex2html9302"
+  HREF="obj.html">Obj</A>
+<LI><A NAME="tex2html9303"
+  HREF="vtype.html">VType</A>
+<LI><A NAME="tex2html9304"
+  HREF="varname.html">VarName</A>
+<LI><A NAME="tex2html9305"
+  HREF="x.html">X</A>
+<LI><A NAME="tex2html9306"
+  HREF="xn.html">Xn</A>
+<LI><A NAME="tex2html9307"
+  HREF="rc.html">RC</A>
+<LI><A NAME="tex2html9308"
+  HREF="start.html">Start</A>
+<LI><A NAME="tex2html9309"
+  HREF="branchpriority.html">BranchPriority</A>
+<LI><A NAME="tex2html9310"
+  HREF="vbasis.html">VBasis</A>
+<LI><A NAME="tex2html9311"
+  HREF="pstart.html">PStart</A>
+<LI><A NAME="tex2html9312"
+  HREF="iislb.html">IISLB</A>
+<LI><A NAME="tex2html9313"
+  HREF="iisub.html">IISUB</A>
+<LI><A NAME="tex2html9314"
+  HREF="pwlobjcvx.html">PWLObjCvx</A>
+<LI><A NAME="tex2html9315"
+  HREF="saobjlow.html">SAObjLow</A>
+<LI><A NAME="tex2html9316"
+  HREF="saobjup.html">SAObjUp</A>
+<LI><A NAME="tex2html9317"
+  HREF="salblow.html">SALBLow</A>
+<LI><A NAME="tex2html9318"
+  HREF="salbup.html">SALBUp</A>
+<LI><A NAME="tex2html9319"
+  HREF="saublow.html">SAUBLow</A>
+<LI><A NAME="tex2html9320"
+  HREF="saubup.html">SAUBUp</A>
+<LI><A NAME="tex2html9321"
+  HREF="unbdray.html">UnbdRay</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html9322"
+  HREF="linear_constraint_attribut.html">Linear Constraint Attributes</A>
+<UL>
+<LI><A NAME="tex2html9323"
+  HREF="sense.html">Sense</A>
+<LI><A NAME="tex2html9324"
+  HREF="rhs.html">RHS</A>
+<LI><A NAME="tex2html9325"
+  HREF="constrname.html">ConstrName</A>
+<LI><A NAME="tex2html9326"
+  HREF="pi.html">Pi</A>
+<LI><A NAME="tex2html9327"
+  HREF="slack.html">Slack</A>
+<LI><A NAME="tex2html9328"
+  HREF="cbasis.html">CBasis</A>
+<LI><A NAME="tex2html9329"
+  HREF="dstart.html">DStart</A>
+<LI><A NAME="tex2html9330"
+  HREF="lazy.html">Lazy</A>
+<LI><A NAME="tex2html9331"
+  HREF="iisconstr.html">IISConstr</A>
+<LI><A NAME="tex2html9332"
+  HREF="sarhslow.html">SARHSLow</A>
+<LI><A NAME="tex2html9333"
+  HREF="sarhsup.html">SARHSUp</A>
+<LI><A NAME="tex2html9334"
+  HREF="farkasdual.html">FarkasDual</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html9335"
+  HREF="sos_attributes.html">SOS Attributes</A>
+<UL>
+<LI><A NAME="tex2html9336"
+  HREF="iissos.html">IISSOS</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html9337"
+  HREF="quadratic_constraint_attri.html">Quadratic Constraint Attributes</A>
+<UL>
+<LI><A NAME="tex2html9338"
+  HREF="qcsense.html">QCSense</A>
+<LI><A NAME="tex2html9339"
+  HREF="qcrhs.html">QCRHS</A>
+<LI><A NAME="tex2html9340"
+  HREF="qcname.html">QCName</A>
+<LI><A NAME="tex2html9341"
+  HREF="qcpi.html">QCPi</A>
+<LI><A NAME="tex2html9342"
+  HREF="qcslack.html">QCSlack</A>
+<LI><A NAME="tex2html9343"
+  HREF="iisqconstr.html">IISQConstr</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html9344"
+  HREF="quality_attributes.html">Quality Attributes</A>
+<UL>
+<LI><A NAME="tex2html9345"
+  HREF="boundvio.html">BoundVio</A>
+<LI><A NAME="tex2html9346"
+  HREF="boundsvio.html">BoundSVio</A>
+<LI><A NAME="tex2html9347"
+  HREF="boundvioindex.html">BoundVioIndex</A>
+<LI><A NAME="tex2html9348"
+  HREF="boundsvioindex.html">BoundSVioIndex</A>
+<LI><A NAME="tex2html9349"
+  HREF="boundviosum.html">BoundVioSum</A>
+<LI><A NAME="tex2html9350"
+  HREF="boundsviosum.html">BoundSVioSum</A>
+<LI><A NAME="tex2html9351"
+  HREF="constrvio.html">ConstrVio</A>
+<LI><A NAME="tex2html9352"
+  HREF="constrsvio.html">ConstrSVio</A>
+<LI><A NAME="tex2html9353"
+  HREF="constrvioindex.html">ConstrVioIndex</A>
+<LI><A NAME="tex2html9354"
+  HREF="constrsvioindex.html">ConstrSVioIndex</A>
+<LI><A NAME="tex2html9355"
+  HREF="constrviosum.html">ConstrVioSum</A>
+<LI><A NAME="tex2html9356"
+  HREF="constrsviosum.html">ConstrSVioSum</A>
+<LI><A NAME="tex2html9357"
+  HREF="constrresidual.html">ConstrResidual</A>
+<LI><A NAME="tex2html9358"
+  HREF="constrsresidual.html">ConstrSResidual</A>
+<LI><A NAME="tex2html9359"
+  HREF="constrresidualindex.html">ConstrResidualIndex</A>
+<LI><A NAME="tex2html9360"
+  HREF="constrsresidualindex.html">ConstrSResidualIndex</A>
+<LI><A NAME="tex2html9361"
+  HREF="constrresidualsum.html">ConstrResidualSum</A>
+<LI><A NAME="tex2html9362"
+  HREF="constrsresidualsum.html">ConstrSResidualSum</A>
+<LI><A NAME="tex2html9363"
+  HREF="dualvio.html">DualVio</A>
+<LI><A NAME="tex2html9364"
+  HREF="dualsvio.html">DualSVio</A>
+<LI><A NAME="tex2html9365"
+  HREF="dualvioindex.html">DualVioIndex</A>
+<LI><A NAME="tex2html9366"
+  HREF="dualsvioindex.html">DualSVioIndex</A>
+<LI><A NAME="tex2html9367"
+  HREF="dualviosum.html">DualVioSum</A>
+<LI><A NAME="tex2html9368"
+  HREF="dualsviosum.html">DualSVioSum</A>
+<LI><A NAME="tex2html9369"
+  HREF="dualresidual.html">DualResidual</A>
+<LI><A NAME="tex2html9370"
+  HREF="dualsresidual.html">DualSResidual</A>
+<LI><A NAME="tex2html9371"
+  HREF="dualresidualindex.html">DualResidualIndex</A>
+<LI><A NAME="tex2html9372"
+  HREF="dualsresidualindex.html">DualSResidualIndex</A>
+<LI><A NAME="tex2html9373"
+  HREF="dualresidualsum.html">DualResidualSum</A>
+<LI><A NAME="tex2html9374"
+  HREF="dualsresidualsum.html">DualSResidualSum</A>
+<LI><A NAME="tex2html9375"
+  HREF="complvio.html">ComplVio</A>
+<LI><A NAME="tex2html9376"
+  HREF="complvioindex.html">ComplVioIndex</A>
+<LI><A NAME="tex2html9377"
+  HREF="complviosum.html">ComplVioSum</A>
+<LI><A NAME="tex2html9378"
+  HREF="intvio.html">IntVio</A>
+<LI><A NAME="tex2html9379"
+  HREF="intvioindex.html">IntVioIndex</A>
+<LI><A NAME="tex2html9380"
+  HREF="intviosum.html">IntVioSum</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html9381"
+  HREF="attribute_examples.html">Attribute Examples</A>
+<UL>
+<LI><A NAME="tex2html9382"
+  HREF="c_attribute_examples.html">C Attribute Examples</A>
+<LI><A NAME="tex2html9383"
+  HREF="cpp_attribute_examples.html">C++ Attribute Examples</A>
+<LI><A NAME="tex2html9384"
+  HREF="cs_attribute_examples.html">C# Attribute Examples</A>
+<LI><A NAME="tex2html9385"
+  HREF="java_attribute_examples.html">Java Attribute Examples</A>
+<LI><A NAME="tex2html9386"
+  HREF="python_attribute_examples.html">Python Attribute Examples</A>
+<LI><A NAME="tex2html9387"
+  HREF="visual_basic_attribute_exa.html">Visual Basic Attribute Examples</A>
+</UL></UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html9257"
+  HREF="model_attributes.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html9255"
+  HREF="refman.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html9249"
+  HREF="r_api_overview.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html9258"
+  HREF="model_attributes.html">Model Attributes</A>
+<B> Up:</B> <A NAME="tex2html9256"
+  HREF="refman.html">Gurobi Optimizer Reference Manual</A>
+<B> Previous:</B> <A NAME="tex2html9250"
+  HREF="r_api_overview.html">R API Overview</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

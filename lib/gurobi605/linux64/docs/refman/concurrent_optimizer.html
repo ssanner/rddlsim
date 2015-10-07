@@ -1,0 +1,218 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Concurrent Optimizer</TITLE>
+<META NAME="description" CONTENT="Concurrent Optimizer">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="parameter_tuning_tool.html">
+<LINK REL="previous" HREF="gurobi_command_line_tool.html">
+<LINK REL="up" HREF="refman.html">
+<LINK REL="next" HREF="parameter_tuning_tool.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html12400"
+  HREF="parameter_tuning_tool.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html12398"
+  HREF="refman.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html12392"
+  HREF="gurobi_remote_services_and.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html12401"
+  HREF="parameter_tuning_tool.html">Parameter Tuning Tool</A>
+<B> Up:</B> <A NAME="tex2html12399"
+  HREF="refman.html">Gurobi Optimizer Reference Manual</A>
+<B> Previous:</B> <A NAME="tex2html12393"
+  HREF="gurobi_remote_services_and.html">Gurobi Remote Services and</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION000210000000000000000"></A>
+<A NAME="sec:Concurrent"></A>
+<BR>
+Concurrent Optimizer
+</H1>
+
+<P>
+Concurrent optimization is a simple approach for exploiting multiple
+processors.  It starts multiple, independent solves on a model, using
+different strategies for each.  Optimization terminates when the
+first one completes.  By pursuing multiple different strategies
+simultaneously, the concurrent optimizer can often obtain a solution
+faster than it would if it had to choose a single strategy.
+
+<P>
+Concurrent optimization is our default choice for solving LP models,
+and a user-selectable option for solving MIP models.  The concurrent
+optimizer can be controlled in a few different ways.  These will be
+discussed in this section.  To avoid confusion when reporting results
+from multiple simultaneous solves, we've chosen to produce simplified
+<A HREF="#sec:ConcurrentLog">logs</A> and
+<A HREF="#sec:ConcurrentCallbacks">callbacks</A> when performing
+concurrent optimization.  These will also be discussed in this
+section.
+
+<P>
+<SPAN  CLASS="textbf">Controlling Concurrent Optimization</SPAN>
+<A NAME="sec:ConcurrentControl"></A>
+<P>
+If you wish to use the concurrent optimizer to solve your model, the
+steps you need to take depend on the model type.  As mentioned
+earlier, the concurrent optimizer is the default choice for LP models.
+This choice is controlled by the
+<A HREF="method.html#parameter:Method">Method</A> parameter.  For MIP models,
+you can select the concurrent optimizer by modifying the
+<A HREF="concurrentmip.html#parameter:ConcurrentMIP">ConcurrentMIP</A> parameter.
+
+<P>
+When controlling the concurrent optimizer using these parameters, the
+strategies used for the different independent solves are chosen
+automatically.  While we reserve the right to change our choices in
+the future, for LP models we currently devote the first concurrent
+thread to dual simplex, the second through fourth to a single parallel
+barrier solve, and the fifth to primal simplex.  Additional threads
+are devoted to the one parallel barrier solve.  Thus, for example, a
+concurrent LP solve using four threads would devote one thread to dual
+simplex and three to parallel barrier.  For MIP, we divide available
+threads evenly among the independent solves, and we choose different
+values for the <A HREF="mipfocus.html#parameter:MIPFocus">MIPFocus</A> and
+<A HREF="seed.html#parameter:Seed">Seed</A> parameters for each.
+
+<P>
+If you want more control over concurrent optimization (e.g., to choose
+the exact strategies used for each independent solve), you can do so
+by creating two or more <EM>concurrent environments</EM>.  These can be
+created via API routines (in
+<A HREF="c_grbgetconcurrentenv.html#routine:GRBgetconcurrentenv">C</A>,
+<A HREF="cpp_grbmodel_getconcurrent.html#cppmethod:GRBModel::getConcurrentEnv">C++</A>,
+<A HREF="java_grbmodel_getconcurren.html#javamethod:GRBModel.getConcurrentEnv">Java</A>,
+<A HREF="cs_grbmodel_getconcurrente.html#dotnetmethod:GRBModel.GetConcurrentEnv">.NET</A>, or
+<A HREF="py_model_getconcurrentenv.html#pythonmethod:Model.getConcurrentEnv">Python</A>), or they
+can be created from <code>.prm</code> files using the
+<A HREF="concurrentsettings.html#parameter:ConcurrentSettings">ConcurrentSettings</A>
+parameter if you are using our command-line interface.  Once these
+have been created, subsequent optimization calls will start one
+independent solve for each concurrent environment you created.  To
+control the strategies used for each solve, you simply set the
+parameters in each environment to the values you would like them to
+take in the corresponding solve.  For example, if you create two
+concurrent environments and set the <code>MIPFocus</code> parameter to 1 in
+the first and 2 in the second, subsequent MIP optimize calls will
+perform two solves in parallel, one with <code>MIPFocus=1</code> and the
+other with <code>MIPFocus=2</code>.
+
+<P>
+<SPAN  CLASS="textbf">Logging</SPAN>
+<A NAME="sec:ConcurrentLog"></A>
+<P>
+Your first indication that the concurrent optimizer is being used is
+output in the Gurobi log that looks like this...
+<PRE>
+Concurrent LP optimizer: dual simplex and barrier
+Showing barrier log only...
+</PRE>
+...or like this...
+<PRE>
+Concurrent MIP optimizer: 2 concurrent instances (2 threads per instance)
+</PRE>
+These log lines indicate how many independent solves will be launched.
+For the LP case, the lines also indicate which methods will be used
+for each.
+
+<P>
+Since it would be quite confusing to see results from multiple solves
+interleaved in a single log, we've chosen to use a simplified log
+format for concurrent optimization.  For concurrent LP, we only
+present the log for a single solve.  For concurrent MIP, the log is
+similar to our standard MIP log, except that it only provides periodic
+summary information (see the <A HREF="mip_logging.html#sec:MIPLogging">MIP
+  logging</A> section if you are unfamiliar with our
+standard MIP log).  Each concurrent MIP log line shows the objective
+for the best feasible solution found by any of the independent solves
+to that point, the best objective bound proved by any of the
+independent solves, and the relative gap between these two values:
+<PRE>
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0      -      -      -   24.00000   13.00000  45.8%          0s
+     0     0      -      -      -   16.50000   13.21154  19.9%          0s
+     0     0      -      -      -   16.50000   13.25000  19.7%          0s
+     0     0      -      -      -   16.50000   13.37500  18.9%          0s
+     0     0      -      -      -   16.50000   13.37500  18.9%          0s
+     0     0      -      -      -   16.50000   13.37500  18.9%          0s
+     0     6      -      -      -   15.50000   13.37500  13.7%          0s
+   310   149      -      -      -   15.00000   13.66923  8.87%          0s
+  3873  1634      -      -      -   15.00000   14.00000  6.67%          5s
+  9652  4298      -      -      -   15.00000   14.12500  5.83%         10s
+ 16535  6991      -      -      -   15.00000   14.18056  5.46%         15s
+ 23610  9427      -      -      -   15.00000   14.22333  5.18%         20s
+...
+</PRE>
+We also include node counts from one of the independent solves, as
+well as elapsed times, to give some indication of forward progress.
+
+<P>
+<SPAN  CLASS="textbf">Callbacks</SPAN>
+<A NAME="sec:ConcurrentCallbacks"></A>
+<P>
+Rather than providing callbacks from multiple independent solves
+simultaneously, we've again chosen to simplify behavior for the
+concurrent optimizer.  In particular, we only supply callbacks from a
+single solve.  A few consequences of this choice:
+
+<UL>
+<LI>Information retrieved by your callback (solutions,
+  objective bounds, etc.) will come from a single model.
+</LI>
+<LI>User cutting planes are only applied to a single model.
+</LI>
+<LI>You aren't allowed to use lazy constraints with concurrent MIP,
+  since they would only be applied to one model.
+</LI>
+</UL>
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html12400"
+  HREF="parameter_tuning_tool.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html12398"
+  HREF="refman.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html12392"
+  HREF="gurobi_remote_services_and.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html12401"
+  HREF="parameter_tuning_tool.html">Parameter Tuning Tool</A>
+<B> Up:</B> <A NAME="tex2html12399"
+  HREF="refman.html">Gurobi Optimizer Reference Manual</A>
+<B> Previous:</B> <A NAME="tex2html12393"
+  HREF="gurobi_remote_services_and.html">Gurobi Remote Services and</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

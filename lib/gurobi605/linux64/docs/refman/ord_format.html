@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>ORD format</TITLE>
+<META NAME="description" CONTENT="ORD format">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="bas_format.html">
+<LINK REL="previous" HREF="mst_format.html">
+<LINK REL="up" HREF="model_file_formats.html">
+<LINK REL="next" HREF="bas_format.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html12269"
+  HREF="bas_format.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html12267"
+  HREF="model_file_formats.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html12261"
+  HREF="mst_format.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html12270"
+  HREF="bas_format.html">BAS format</A>
+<B> Up:</B> <A NAME="tex2html12268"
+  HREF="model_file_formats.html">Model File Formats</A>
+<B> Previous:</B> <A NAME="tex2html12262"
+  HREF="mst_format.html">MST format</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION000187000000000000000"></A>
+<A NAME="format:ORD"></A>
+<BR>
+ORD format
+</H2>
+
+<P>
+A priority ordering (ORD) file is used to input a set of variable
+priority orders.  Reading a priority file (using
+<A HREF="c_grbread.html#routine:GRBread">GRBread</A>, for example) modifies the MIP
+branch variable selection.  When choosing a branching variable from
+among a set of fractional variables, the Gurobi MIP solver will always
+choose a variable with higher priority over one with a lower priority.
+
+<P>
+The file consists of variable-value pairs, each on its own line.
+The file contains one line for each variable in the model.
+Any line that starts with the hash sign (#) is treated as
+a comment line and is ignored.
+The following is a simple example:
+<PRE>
+# Branch priority file
+x 1
+y 1
+z -1
+</PRE>
+Variables have a default branch priority value of 0, so it is not
+necessary to specify values for all variables.
+
+<P>
+Importing a priority order file is equivalent to replacing the
+<A HREF="branchpriority.html#attr:BranchPriority">BranchPriority</A>
+attribute value for each variable in the
+model.  Note that you can still modify the <code>BranchPriority</code>
+attribute after importing an ordering file.
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html12269"
+  HREF="bas_format.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html12267"
+  HREF="model_file_formats.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html12261"
+  HREF="mst_format.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html12270"
+  HREF="bas_format.html">BAS format</A>
+<B> Up:</B> <A NAME="tex2html12268"
+  HREF="model_file_formats.html">Model File Formats</A>
+<B> Previous:</B> <A NAME="tex2html12262"
+  HREF="mst_format.html">MST format</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

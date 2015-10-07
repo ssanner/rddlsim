@@ -1,0 +1,139 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>feasopt.py</TITLE>
+<META NAME="description" CONTENT="feasopt.py">
+<META NAME="keywords" CONTENT="examples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="examples.css">
+
+<LINK REL="next" HREF="fixanddive_py.html">
+<LINK REL="previous" HREF="facility_py.html">
+<LINK REL="up" HREF="python_examples.html">
+<LINK REL="next" HREF="fixanddive_py.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html1989"
+  HREF="fixanddive_py.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1987"
+  HREF="python_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1981"
+  HREF="facility_py.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1990"
+  HREF="fixanddive_py.html">fixanddive.py</A>
+<B> Up:</B> <A NAME="tex2html1988"
+  HREF="python_examples.html">Python Examples</A>
+<B> Previous:</B> <A NAME="tex2html1982"
+  HREF="facility_py.html">facility.py</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000261000000000000000"></A>
+<A NAME="subsubsection:feasopt.py"></A>
+<BR>
+feasopt.py
+</H3>
+
+<P>
+<BR>
+<PRE  CLASS="verbatim">#!/usr/bin/python
+
+# Copyright 2014, Gurobi Optimization, Inc.
+
+# This example reads a MIP model from a file, adds artificial
+# variables to each constraint, and then minimizes the sum of the
+# artificial variables.  A solution with objective zero corresponds
+# to a feasible solution to the input model.
+#
+# We can also use FeasRelax feature to do it. In this example, we
+# use minrelax=1, i.e. optimizing the returned model finds a solution
+# that minimizes the original objective, but only from among those
+# solutions that minimize the sum of the artificial variables.
+
+import sys
+from gurobipy import *
+
+if len(sys.argv) &lt; 2:
+    print('Usage: feasopt.py filename')
+    quit()
+
+feasmodel = gurobi.read(sys.argv[1])
+
+#create a copy to use FeasRelax feature later
+
+feasmodel1 = feasmodel.copy()
+
+# clear objective
+
+feasmodel.setObjective(0.0)
+
+# add slack variables
+
+for c in feasmodel.getConstrs():
+    sense = c.sense
+    if sense != '&gt;':
+        feasmodel.addVar(obj=1.0, name="ArtN_" + c.constrName,
+                         column=Column([-1], [c]))
+    if sense != '&lt;':
+        feasmodel.addVar(obj=1.0, name="ArtP_" + c.constrName,
+                         column=Column([1], [c]))
+
+feasmodel.update()
+
+# optimize modified model
+
+feasmodel.write('feasopt.lp')
+
+feasmodel.optimize()
+
+# use FeasRelax feature
+
+feasmodel1.feasRelaxS(0, True, False, True);
+
+feasmodel1.write("feasopt1.lp");
+
+feasmodel1.optimize();
+</PRE>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1989"
+  HREF="fixanddive_py.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1987"
+  HREF="python_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1981"
+  HREF="facility_py.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1990"
+  HREF="fixanddive_py.html">fixanddive.py</A>
+<B> Up:</B> <A NAME="tex2html1988"
+  HREF="python_examples.html">Python Examples</A>
+<B> Previous:</B> <A NAME="tex2html1982"
+  HREF="facility_py.html">facility.py</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

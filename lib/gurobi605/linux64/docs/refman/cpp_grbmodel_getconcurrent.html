@@ -1,0 +1,132 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>GRBModel::getConcurrentEnv()</TITLE>
+<META NAME="description" CONTENT="GRBModel::getConcurrentEnv()">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="cpp_grbmodel_getconstrbyna.html">
+<LINK REL="previous" HREF="cpp_grbmodel_getcol.html">
+<LINK REL="up" HREF="cpp_grbmodel.html">
+<LINK REL="next" HREF="cpp_grbmodel_getconstrbyna.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html3002"
+  HREF="cpp_grbmodel_getconstrbyna.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html3000"
+  HREF="cpp_grbmodel.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html2994"
+  HREF="cpp_grbmodel_getcol.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html3003"
+  HREF="cpp_grbmodel_getconstrbyna.html">GRBModel::getConstrByName()</A>
+<B> Up:</B> <A NAME="tex2html3001"
+  HREF="cpp_grbmodel.html">GRBModel</A>
+<B> Previous:</B> <A NAME="tex2html2995"
+  HREF="cpp_grbmodel_getcol.html">GRBModel::getCol()</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000421900000000000000"></A>
+<A NAME="cppmethod:GRBModel::getConcurrentEnv"></A>
+<BR>
+GRBModel::getConcurrentEnv()
+</H3>
+
+<P>
+Create/retrieve a concurrent environment for a model.
+
+<P>
+This method provides fine-grained control over the concurrent
+optimizer.  By creating your own concurrent environments and setting
+appropriate parameters on these environments (e.g., the
+<A HREF="method.html#parameter:Method">Method</A>
+parameter), you can control exactly which strategies the concurrent
+optimizer employs.  For example, if you create two concurrent
+environments, and set <code>Method</code> to primal simplex for one and
+dual simplex for the other, subsequent concurrent optimizer runs will
+use the two simplex algorithms rather than the default choices.
+
+<P>
+Note that you must create contiguously numbered concurrent
+environments, starting with <code>num=0</code>.  For example, if you want
+three concurrent environments, they must be numbered 0, 1, and 2.
+
+<P>
+Once you create concurrent environments, they will be used for every
+subsequent concurrent optimization on that model.  Use
+<A HREF="cpp_grbmodel_discardconcur.html#cppmethod:GRBModel::discardConcurrentEnvs">discardConcurrentEnvs</A>
+to revert back to default concurrent optimizer behavior.
+
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">GRBEnv</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">getConcurrentEnv</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">num )</TD>
+</TR>
+</TABLE>
+
+<UL>
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">num</SPAN>: The concurrent environment number.
+
+<P>
+
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Return value:</SPAN></BIG>
+
+<P>
+The concurrent environment for the model.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html3002"
+  HREF="cpp_grbmodel_getconstrbyna.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html3000"
+  HREF="cpp_grbmodel.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html2994"
+  HREF="cpp_grbmodel_getcol.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html3003"
+  HREF="cpp_grbmodel_getconstrbyna.html">GRBModel::getConstrByName()</A>
+<B> Up:</B> <A NAME="tex2html3001"
+  HREF="cpp_grbmodel.html">GRBModel</A>
+<B> Previous:</B> <A NAME="tex2html2995"
+  HREF="cpp_grbmodel_getcol.html">GRBModel::getCol()</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

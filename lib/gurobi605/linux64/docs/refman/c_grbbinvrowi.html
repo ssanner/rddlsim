@@ -1,0 +1,150 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>GRBBinvRowi</TITLE>
+<META NAME="description" CONTENT="GRBBinvRowi">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="c_grbgetbasishead.html">
+<LINK REL="previous" HREF="c_grbbinvcolj.html">
+<LINK REL="up" HREF="c_advanced_simplex_routine.html">
+<LINK REL="next" HREF="c_grbgetbasishead.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html2471"
+  HREF="c_grbgetbasishead.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html2469"
+  HREF="c_advanced_simplex_routine.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html2463"
+  HREF="c_grbbinvcolj.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html2472"
+  HREF="c_grbgetbasishead.html">GRBgetBasisHead</A>
+<B> Up:</B> <A NAME="tex2html2470"
+  HREF="c_advanced_simplex_routine.html">Advanced simplex routines</A>
+<B> Previous:</B> <A NAME="tex2html2464"
+  HREF="c_grbbinvcolj.html">GRBBinvColj</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000211400000000000000"></A>
+<A NAME="routine:GRBBinvRowi"></A>
+<BR>
+GRBBinvRowi
+</H3>
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">GRBBinvRowi</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT">GRBmodel</TD>
+<TD ALIGN="LEFT">*model,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">i,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">GRBsvec</TD>
+<TD ALIGN="LEFT">*x )</TD>
+</TR>
+</TABLE>
+
+<P>
+Computes a single <EM>tableau row</EM>.  More precisely,
+this routine returns row
+<SPAN CLASS="MATH"><IMG
+ WIDTH="10" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img30.png"
+ ALT="$i$"></SPAN> from the matrix <SPAN CLASS="MATH"><IMG
+ WIDTH="46" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img31.png"
+ ALT="$B^{-1} A$"></SPAN>, where <SPAN CLASS="MATH"><IMG
+ WIDTH="34" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img32.png"
+ ALT="$B^{-1}$"></SPAN> is the inverse
+of the basis matrix
+and <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img28.png"
+ ALT="$A$"></SPAN> is the constaint matrix.  Note that the tableau
+will contain columns corresponding to the variables in the model,
+and also columns corresponding to artificial and slack variables
+associated with constraints.
+
+<P>
+
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Return value:</SPAN></BIG>
+
+<P>
+A non-zero return value indicates that a problem occurred while computing the desired vector.
+Refer to the <A HREF="error_codes.html#sec:ErrorCodes">Error Code</A> table for a
+list of possible return values.  Details on the error can be obtained
+by calling <A HREF="c_grbgeterrormsg.html#routine:GRBgeterrormsg">GRBgeterrormsg</A>.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">model</SPAN>: The model.  Note that the model must have a current
+optimal basis, as computed by
+<A HREF="c_grboptimize.html#routine:GRBoptimize">GRBoptimize</A>.
+
+<P>
+ <SPAN  CLASS="textbf">i</SPAN>: The index of the desired tableau row.
+
+<P>
+ <SPAN  CLASS="textbf">x</SPAN>: The result vector.  The result will
+contain one entry for each non-zero value.  Note
+that the result may contain values for slack variables; the
+slack on row <TT>i</TT> will have index <TT>cols+i</TT>,
+where <TT>cols</TT> is the number of columns in the model.  The
+user is responsible for allocating the <TT>ind</TT> and <TT>val</TT>
+fields to be large enough to hold the largest possible result.
+For this routine, the result could have one entry for each variable
+in the model, plus one entry for each constraint.
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html2471"
+  HREF="c_grbgetbasishead.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html2469"
+  HREF="c_advanced_simplex_routine.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html2463"
+  HREF="c_grbbinvcolj.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html2472"
+  HREF="c_grbgetbasishead.html">GRBgetBasisHead</A>
+<B> Up:</B> <A NAME="tex2html2470"
+  HREF="c_advanced_simplex_routine.html">Advanced simplex routines</A>
+<B> Previous:</B> <A NAME="tex2html2464"
+  HREF="c_grbbinvcolj.html">GRBBinvColj</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

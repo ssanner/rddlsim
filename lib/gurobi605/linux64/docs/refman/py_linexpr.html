@@ -1,0 +1,204 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>LinExpr</TITLE>
+<META NAME="description" CONTENT="LinExpr">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="py_quadexpr.html">
+<LINK REL="previous" HREF="py_sos.html">
+<LINK REL="up" HREF="py_python_api_details.html">
+<LINK REL="next" HREF="py_linexpr2.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html8559"
+  HREF="py_linexpr2.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html8557"
+  HREF="py_python_api_details.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html8551"
+  HREF="py_sos_getattr.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html8560"
+  HREF="py_linexpr2.html">LinExpr()</A>
+<B> Up:</B> <A NAME="tex2html8558"
+  HREF="py_python_api_details.html">Python API Details</A>
+<B> Previous:</B> <A NAME="tex2html8552"
+  HREF="py_sos_getattr.html">SOS.getAttr()</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION000107000000000000000"></A>
+<A NAME="pythonclass:LinExpr"></A>
+<BR>
+LinExpr
+</H2>
+
+<P>
+Gurobi linear expression object.  A linear expression consists of a
+constant term, plus a list of coefficient-variable pairs that capture
+the linear terms.  Linear expressions are used to build constraints.
+They are temporary objects that typically have short lifespans.
+
+<P>
+You generally build linear expressions using overloaded operators.
+For example, if <code>x</code> is a <A HREF="py_var.html#pythonclass:Var">Var</A>
+object, then <code>x + 1</code> is a
+<A HREF="#pythonclass:LinExpr">LinExpr</A> object.  Expressions
+can be built from constants (e.g., <code>expr = 0</code>), variables (e.g.,
+<code>expr = 1 * x + 2 * y</code>), or from other expressions (e.g.,
+<code>expr2 = 2 * expr1 + x</code>, or <code>expr3 = expr1 + 2 * expr2</code>).
+You can also modify existing expressions (e.g., <code>expr += x</code>, or
+<code>expr2 -= expr1</code>).
+
+<P>
+The full list of overloaded operators on
+<A HREF="#pythonclass:LinExpr">LinExpr</A> objects is as follows:
+<code>+</code>, <code>+=</code>,
+<code>-</code>, <code>-=</code>, <code>*</code>, <code>*=</code>, and <code>/</code>.
+In Python parlance, we've defined the following
+<code>LinExpr</code> functions:
+<code>__add__</code>, <code>__radd__</code>, <code>__iadd__</code>,
+<code>__sub__</code>, <code>__rsub__</code>, <code>__isub__</code>,
+<code>__mul__</code>, <code>__rmul__</code>, <code>__imul__</code>, and
+<code>__div__</code>.
+
+<P>
+We've also overloaded the comparison operators
+(<A HREF="py_linexpr_eq_.html#pythonmethod:LinExpr.__eq__">==</A>,
+<A HREF="py_linexpr_le_.html#pythonmethod:LinExpr.__le__">&lt;=</A>, and
+<A HREF="py_linexpr_ge_.html#pythonmethod:LinExpr.__ge__">&gt;=</A>), to make
+it easier to build constraints from linear expressions.
+
+<P>
+You can also use <A HREF="py_linexpr_add.html#pythonmethod:LinExpr.add">add</A> or
+<A HREF="py_linexpr_addterms.html#pythonmethod:LinExpr.addTerms">addTerms</A> to modify
+expressions.  The <A HREF="py_linexpr2.html#pythonmethod:LinExpr">LinExpr()</A>
+constructor can be used to build expressions.  Another option is
+<A HREF="py_quicksum.html#pythonmethod:quicksum">quicksum</A>; it is a more
+efficient version of the Python <code>sum</code> function.  Terms can be
+removed from an expression using
+<A HREF="py_linexpr_remove.html#pythonmethod:LinExpr.remove">remove</A>.
+
+<P>
+Note that the cost of building expressions depends heavily on the
+approach you use.  While you can generally ignore this issue when
+building small expressions, you should be aware of a few efficiency
+issues when building large expressions:
+
+<UL>
+<LI>While the Python <code>sum</code> function can be used to build
+  expressions, it should be avoided.  Its cost is quadratic in the
+  length of the expression.
+</LI>
+<LI>For similar reasons, you should avoid using
+  <code>expr = expr + x</code> in a loop.  Building large expressions in
+  this way also leads to quadratic runtimes.
+</LI>
+<LI>The <A HREF="py_quicksum.html#pythonmethod:quicksum">quicksum</A> function is
+  much quicker than <code>sum</code>, as are loops over <code>expr += x</code> or
+  <A HREF="py_linexpr_add.html#pythonmethod:LinExpr.add">expr.add(x)</A>.  These
+  approaches are fast enough for most programs, but they may still be
+  expensive for very large expressions.
+</LI>
+<LI>The two most efficient ways to build large linear expressions
+  are <A HREF="py_linexpr_addterms.html#pythonmethod:LinExpr.addTerms">addTerms</A> or the
+  <A HREF="py_linexpr2.html#pythonmethod:LinExpr">LinExpr()</A> constructor.
+</LI>
+</UL>
+
+<P>
+Individual terms in a linear expression can be queried using the
+<A HREF="py_linexpr_getvar.html#pythonmethod:LinExpr.getVar">getVar</A>,
+<A HREF="py_linexpr_getcoeff.html#pythonmethod:LinExpr.getCoeff">getCoeff</A>, and
+<A HREF="py_linexpr_getconstant.html#pythonmethod:LinExpr.getConstant">getConstant</A> methods.
+You can query the number of terms in the expression using the
+<A HREF="py_linexpr_size.html#pythonmethod:LinExpr.size">size</A> method.
+
+<P>
+Note that a linear expression may contain multiple terms that involve
+the same variable.  These duplicate terms are merged when creating a
+constraint from an expression, but they may be visible when inspecting
+individual terms in the expression (e.g., when using
+<A HREF="py_linexpr_getvar.html#pythonmethod:LinExpr.getVar">getVar</A>).
+
+<P>
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html8561"
+  HREF="py_linexpr2.html">LinExpr()</A>
+<LI><A NAME="tex2html8562"
+  HREF="py_linexpr_add.html">LinExpr.add()</A>
+<LI><A NAME="tex2html8563"
+  HREF="py_linexpr_addconstant.html">LinExpr.addConstant()</A>
+<LI><A NAME="tex2html8564"
+  HREF="py_linexpr_addterms.html">LinExpr.addTerms()</A>
+<LI><A NAME="tex2html8565"
+  HREF="py_linexpr_clear.html">LinExpr.clear()</A>
+<LI><A NAME="tex2html8566"
+  HREF="py_linexpr_copy.html">LinExpr.copy()</A>
+<LI><A NAME="tex2html8567"
+  HREF="py_linexpr_getconstant.html">LinExpr.getConstant()</A>
+<LI><A NAME="tex2html8568"
+  HREF="py_linexpr_getcoeff.html">LinExpr.getCoeff()</A>
+<LI><A NAME="tex2html8569"
+  HREF="py_linexpr_getvalue.html">LinExpr.getValue()</A>
+<LI><A NAME="tex2html8570"
+  HREF="py_linexpr_getvar.html">LinExpr.getVar()</A>
+<LI><A NAME="tex2html8571"
+  HREF="py_linexpr_remove.html">LinExpr.remove()</A>
+<LI><A NAME="tex2html8572"
+  HREF="py_linexpr_size.html">LinExpr.size()</A>
+<LI><A NAME="tex2html8573"
+  HREF="py_linexpr_eq_.html">LinExpr.__eq__()</A>
+<LI><A NAME="tex2html8574"
+  HREF="py_linexpr_le_.html">LinExpr.__le__()</A>
+<LI><A NAME="tex2html8575"
+  HREF="py_linexpr_ge_.html">LinExpr.__ge__()</A>
+</UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html8559"
+  HREF="py_linexpr2.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html8557"
+  HREF="py_python_api_details.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html8551"
+  HREF="py_sos_getattr.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html8560"
+  HREF="py_linexpr2.html">LinExpr()</A>
+<B> Up:</B> <A NAME="tex2html8558"
+  HREF="py_python_api_details.html">Python API Details</A>
+<B> Previous:</B> <A NAME="tex2html8552"
+  HREF="py_sos_getattr.html">SOS.getAttr()</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

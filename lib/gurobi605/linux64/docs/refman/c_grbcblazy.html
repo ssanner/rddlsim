@@ -1,0 +1,195 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>GRBcblazy</TITLE>
+<META NAME="description" CONTENT="GRBcblazy">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="c_grbcbsolution.html">
+<LINK REL="previous" HREF="c_grbcbcut.html">
+<LINK REL="up" HREF="c_modifying_solver_behavio.html">
+<LINK REL="next" HREF="c_grbcbsolution.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html2381"
+  HREF="c_grbcbsolution.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html2379"
+  HREF="c_modifying_solver_behavio.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html2373"
+  HREF="c_grbcbcut.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html2382"
+  HREF="c_grbcbsolution.html">GRBcbsolution</A>
+<B> Up:</B> <A NAME="tex2html2380"
+  HREF="c_modifying_solver_behavio.html">Modifying Solver Behavior -</A>
+<B> Previous:</B> <A NAME="tex2html2374"
+  HREF="c_grbcbcut.html">GRBcbcut</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00029200000000000000"></A>
+<A NAME="routine:GRBcblazy"></A>
+<BR>
+GRBcblazy
+</H3>
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">GRBcblazy</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT">void</TD>
+<TD ALIGN="LEFT">*cbdata,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">lazylen,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">const int</TD>
+<TD ALIGN="LEFT">*lazyind,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">const double</TD>
+<TD ALIGN="LEFT">*lazyval,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">char</TD>
+<TD ALIGN="LEFT">lazysense,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">double</TD>
+<TD ALIGN="LEFT">lazyrhs )</TD>
+</TR>
+</TABLE>
+
+<P>
+Add a new lazy constraint to the MIP model from within a user callback
+routine.  Note that this routine can only be called when the
+<code>where</code> value on the callback routine is either
+<code>GRB_CB_MIPNODE</code> or <code>GRB_CB_MIPSOL</code> (see the
+<A HREF="callback_codes.html#sec:CallbackCodes">Callback Codes</A> section for
+more information).
+
+<P>
+Lazy constraints are typically used when the full set of constraints
+for a MIP model is too large to represent explicitly.  By only
+including the constraints that are actually violated by solutions
+found during the branch-and-cut search, it is sometimes possible to
+find a proven optimal solution while only adding a fraction of the
+full set of constraints.
+
+<P>
+You would typically add a lazy constraint by querying the current node
+solution (by calling <A HREF="c_grbcbget.html#routine:GRBcbget">GRBcbget</A> from a
+<code>GRB_CB_MIPSOL</code> or <code>GRB_CB_MIPNODE</code> callback, using
+<code>what=GRB_CB_MIPSOL_SOL</code> or <code>what=GRB_CB_MIPNODE_REL</code>),
+and then calling <code>GRBcblazy()</code> to add a constraint that cuts off
+the solution.  Gurobi guarantees that you will have the opportunity to
+cut off any solutions that would otherwise be considered feasible.
+
+<P>
+Your callback should be prepared to cut off solutions that violate any
+of your lazy constraints, including those that have already been
+added.  Node solutions will usually respect previously added lazy
+constraints, but not always.
+
+<P>
+Note that you must set the
+<A HREF="lazyconstraints.html#parameter:LazyConstraints">LazyConstraints</A>
+parameter if you want to use lazy constraints.
+
+<P>
+
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Return value:</SPAN></BIG>
+
+<P>
+A non-zero return value indicates that a problem occurred while adding the lazy constraint.
+Refer to the <A HREF="error_codes.html#sec:ErrorCodes">Error Code</A> table for a
+list of possible return values.  Details on the error can be obtained
+by calling <A HREF="c_grbgeterrormsg.html#routine:GRBgeterrormsg">GRBgeterrormsg</A>.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">cbdata</SPAN>: The <TT>cbdata</TT> argument that was passed into the
+  user callback by the Gurobi optimizer.  This argument must be passed
+  unmodified from the user callback to <TT>GRBcblazy()</TT>.
+
+<P>
+ <SPAN  CLASS="textbf">lazylen</SPAN>: The number of non-zero coefficients in the new lazy
+constraint.
+
+<P>
+ <SPAN  CLASS="textbf">lazyind</SPAN>: Variable indices for non-zero values in the new
+  lazy constraint.
+
+<P>
+ <SPAN  CLASS="textbf">lazyval</SPAN>: Numerical values for non-zero values in the new
+  lazy constraint.
+
+<P>
+ <SPAN  CLASS="textbf">lazysense</SPAN>: Sense for the new lazy constraint.  Options are
+<TT>GRB_LESS_EQUAL</TT>, <TT>GRB_EQUAL</TT>,
+or <TT>GRB_GREATER_EQUAL</TT>.
+
+<P>
+ <SPAN  CLASS="textbf">lazyrhs</SPAN>: Right-hand-side value for the new lazy constraint.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Example usage:</SPAN></BIG><PRE>
+  if (where == GRB_CB_MIPSOL) {
+    int lazyind[] = {0, 1};
+    double lazyval[] = {1.0, 1.0};
+    error = GRBcblazy(cbdata, 2, lazyind, lazyval, GRB_LESS_EQUAL, 1.0);
+    if (error) return 0;
+  }
+</PRE>
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html2381"
+  HREF="c_grbcbsolution.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html2379"
+  HREF="c_modifying_solver_behavio.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html2373"
+  HREF="c_grbcbcut.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html2382"
+  HREF="c_grbcbsolution.html">GRBcbsolution</A>
+<B> Up:</B> <A NAME="tex2html2380"
+  HREF="c_modifying_solver_behavio.html">Modifying Solver Behavior -</A>
+<B> Previous:</B> <A NAME="tex2html2374"
+  HREF="c_grbcbcut.html">GRBcbcut</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

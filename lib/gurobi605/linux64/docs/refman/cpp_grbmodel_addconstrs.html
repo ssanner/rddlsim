@@ -1,0 +1,184 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>GRBModel::addConstrs()</TITLE>
+<META NAME="description" CONTENT="GRBModel::addConstrs()">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="cpp_grbmodel_addqconstr.html">
+<LINK REL="previous" HREF="cpp_grbmodel_addconstr.html">
+<LINK REL="up" HREF="cpp_grbmodel.html">
+<LINK REL="next" HREF="cpp_grbmodel_addqconstr.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html2842"
+  HREF="cpp_grbmodel_addqconstr.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html2840"
+  HREF="cpp_grbmodel.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html2834"
+  HREF="cpp_grbmodel_addconstr.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html2843"
+  HREF="cpp_grbmodel_addqconstr.html">GRBModel::addQConstr()</A>
+<B> Up:</B> <A NAME="tex2html2841"
+  HREF="cpp_grbmodel.html">GRBModel</A>
+<B> Previous:</B> <A NAME="tex2html2835"
+  HREF="cpp_grbmodel_addconstr.html">GRBModel::addConstr()</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00042300000000000000"></A>
+<A NAME="cppmethod:GRBModel::addConstrs"></A>
+<BR>
+GRBModel::addConstrs()
+</H3>
+
+<P>
+Add new linear constraints to a model.
+
+<P>
+We recommend that you build your model one constraint at a time (using
+<A HREF="cpp_grbmodel_addconstr.html#cppmethod:GRBModel::addConstr">addConstr</A>), since it
+introduces no significant overhead and we find that it produces
+simpler code.  Feel free to use these methods if you disagree, though.
+
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">GRBConstr*</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">addConstrs</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">count )</TD>
+</TR>
+</TABLE>
+
+<UL>
+
+<P>
+Add <code>count</code> new linear constraints to a model.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">count</SPAN>: Number of constraints to add to the model.  The new
+  constraints are all of the form <TT>0 &lt;= 0</TT>.
+
+<P>
+
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Return value:</SPAN></BIG>
+
+<P>
+Array of new constraint objects.  Note that the result
+is heap-allocated, and must be returned to the heap by the user.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">GRBConstr*</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">addConstrs</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT">const GRBLinExpr*</TD>
+<TD ALIGN="LEFT">lhsExprs,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">const char*</TD>
+<TD ALIGN="LEFT">senses,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">const double*</TD>
+<TD ALIGN="LEFT">rhsVals,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">const string*</TD>
+<TD ALIGN="LEFT">names,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">count )</TD>
+</TR>
+</TABLE>
+
+<UL>
+Add <code>count</code> new linear constraints to a model.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">lhsExprs</SPAN>: Left-hand side expressions for the new linear constraints.
+
+<P>
+ <SPAN  CLASS="textbf">senses</SPAN>: Senses for new linear constraints (<TT>GRB_LESS_EQUAL</TT>,
+  <TT>GRB_EQUAL</TT>, or <TT>GRB_GREATER_EQUAL</TT>).
+
+<P>
+ <SPAN  CLASS="textbf">rhsVals</SPAN>: Right-hand side values for the new linear constraints.
+
+<P>
+ <SPAN  CLASS="textbf">names</SPAN>: Names for new constraints.
+
+<P>
+ <SPAN  CLASS="textbf">count</SPAN>: Number of constraints to add.
+
+<P>
+
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Return value:</SPAN></BIG>
+
+<P>
+Array of new constraint objects.  Note that the result
+is heap-allocated, and must be returned to the heap by the user.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html2842"
+  HREF="cpp_grbmodel_addqconstr.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html2840"
+  HREF="cpp_grbmodel.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html2834"
+  HREF="cpp_grbmodel_addconstr.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html2843"
+  HREF="cpp_grbmodel_addqconstr.html">GRBModel::addQConstr()</A>
+<B> Up:</B> <A NAME="tex2html2841"
+  HREF="cpp_grbmodel.html">GRBModel</A>
+<B> Previous:</B> <A NAME="tex2html2835"
+  HREF="cpp_grbmodel_addconstr.html">GRBModel::addConstr()</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

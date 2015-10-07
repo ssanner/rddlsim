@@ -1,0 +1,127 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Automated Parameter Tuning</TITLE>
+<META NAME="description" CONTENT="Automated Parameter Tuning">
+<META NAME="keywords" CONTENT="examples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="examples.css">
+
+<LINK REL="next" HREF="diagnose_and_cope_with_inf.html">
+<LINK REL="previous" HREF="change_parameters.html">
+<LINK REL="up" HREF="example_tour.html">
+<LINK REL="next" HREF="diagnose_and_cope_with_inf.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html270"
+  HREF="diagnose_and_cope_with_inf.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html268"
+  HREF="example_tour.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html262"
+  HREF="change_parameters.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html271"
+  HREF="diagnose_and_cope_with_inf.html">Diagnose and cope with</A>
+<B> Up:</B> <A NAME="tex2html269"
+  HREF="example_tour.html">Example tour</A>
+<B> Previous:</B> <A NAME="tex2html263"
+  HREF="change_parameters.html">Change parameters</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00016000000000000000"></A>
+<A NAME="subsection:Tuning"></A>
+<BR>
+Automated Parameter Tuning
+</H2>
+<B>Example:</B> tune
+
+<P>
+The next example we consider is <code>tune</code>, which demonstrates the
+use of our automated parameter tuning tool.  This tool searches for
+parameter settings that improve performance on a model.  While you
+would typically invoke the tool through the command line, using our
+<code>grbtune</code> program, it can also be invoked from our APIs.  We'll
+provide only a cursory description of the tool here.  We recommend that
+you consult the <EM>Parameter Tuning Tool</EM> section of the
+<A NAME="tex2html3"
+  HREF="../refman/refman.html">Gurobi Reference Manual</A>
+for
+more precise details.
+
+<P>
+Our tuning example demonstrates a typical use of the tuning tool.  You
+would start by invoking the tool on a model.  In C:
+<PRE>
+  error = GRBtunemodel(model);
+</PRE>
+In Java:
+<PRE>
+  model.tune();
+</PRE>
+This routine solves the model multiple times, with different parameter
+settings, to find settings that improve performance.
+
+<P>
+Once tuning is complete, you would then use <code>GetTuneResult</code> to
+retrieve the result.  In C:
+<PRE>
+  error = GRBgettuneresult(model, 0);
+</PRE>
+In Java:
+<PRE>
+  model.getTuneResult(0);
+</PRE>
+The numerical argument indicates which tuning result to retrieve (0 is
+the best result, 1 is the second-best, etc.).  This routine loads the
+requested parameter set into the environment associated with the
+argument model.
+
+<P>
+Once the tune parameter settings have been loaded into the model, you
+can then call <code>Optimize</code> to use these parameters to solve the
+model, or you can call <code>Write</code> to write these parameters to a
+<code>.prm</code> file.
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html270"
+  HREF="diagnose_and_cope_with_inf.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html268"
+  HREF="example_tour.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html262"
+  HREF="change_parameters.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html271"
+  HREF="diagnose_and_cope_with_inf.html">Diagnose and cope with</A>
+<B> Up:</B> <A NAME="tex2html269"
+  HREF="example_tour.html">Example tour</A>
+<B> Previous:</B> <A NAME="tex2html263"
+  HREF="change_parameters.html">Change parameters</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

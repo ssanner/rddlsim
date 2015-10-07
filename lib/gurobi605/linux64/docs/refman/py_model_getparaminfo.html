@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Model.getParamInfo()</TITLE>
+<META NAME="description" CONTENT="Model.getParamInfo()">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="py_model_getqcrow.html">
+<LINK REL="previous" HREF="py_model_getqconstrs.html">
+<LINK REL="up" HREF="py_model.html">
+<LINK REL="next" HREF="py_model_getqcrow.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html8120"
+  HREF="py_model_getqcrow.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html8118"
+  HREF="py_model.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html8112"
+  HREF="py_model_getqconstrs.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html8121"
+  HREF="py_model_getqcrow.html">Model.getQCRow()</A>
+<B> Up:</B> <A NAME="tex2html8119"
+  HREF="py_model.html">Model</A>
+<B> Previous:</B> <A NAME="tex2html8113"
+  HREF="py_model_getqconstrs.html">Model.getQConstrs()</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION0001022300000000000000"></A>
+<A NAME="pythonmethod:Model.getParamInfo"></A>
+<BR>
+Model.getParamInfo()
+</H3>
+<BIG CLASS="LARGE">
+<FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">getParamInfo</SPAN></FONT></BIG> ( paramname )
+
+<P>
+Retrieve information about a Gurobi parameter, including the type, the
+current value, the minimum and maximum allowed values, and the default
+value.
+
+<P>
+Please consult the <A HREF="parameters.html#sec:Parameters">parameter section</A>
+for a complete list of Gurobi parameters, including descriptions of
+their purposes and their minimum, maximum, and default values.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">paramname</SPAN>: String containing the name of the parameter of
+  interest.  The name can include '*' and '?' wildcards.  If more than
+  one parameter matches, the matching names are listed and the method
+  returns <TT>None</TT>.
+
+<P>
+
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Return value:</SPAN></BIG>
+
+<P>
+Returns a 6-entry tuple that contains: the
+  parameter name, the parameter type, the current value, the minimum
+  value, the maximum value, and the default value.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Example usage:</SPAN></BIG><PRE>
+  print model.getParamInfo('Heuristics')
+</PRE>
+
+<P>
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html8120"
+  HREF="py_model_getqcrow.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html8118"
+  HREF="py_model.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html8112"
+  HREF="py_model_getqconstrs.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html8121"
+  HREF="py_model_getqcrow.html">Model.getQCRow()</A>
+<B> Up:</B> <A NAME="tex2html8119"
+  HREF="py_model.html">Model</A>
+<B> Previous:</B> <A NAME="tex2html8113"
+  HREF="py_model_getqconstrs.html">Model.getQConstrs()</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

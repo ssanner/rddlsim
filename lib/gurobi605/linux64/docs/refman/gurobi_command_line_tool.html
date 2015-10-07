@@ -1,0 +1,150 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Gurobi Command-Line Tool</TITLE>
+<META NAME="description" CONTENT="Gurobi Command-Line Tool">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="concurrent_optimizer.html">
+<LINK REL="previous" HREF="logging.html">
+<LINK REL="up" HREF="refman.html">
+<LINK REL="next" HREF="solving_a_model.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html12370"
+  HREF="solving_a_model.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html12368"
+  HREF="refman.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html12362"
+  HREF="distributed_mip_logging.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html12371"
+  HREF="solving_a_model.html">Solving a Model</A>
+<B> Up:</B> <A NAME="tex2html12369"
+  HREF="refman.html">Gurobi Optimizer Reference Manual</A>
+<B> Previous:</B> <A NAME="tex2html12363"
+  HREF="distributed_mip_logging.html">Distributed MIP Logging</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION000200000000000000000"></A>
+<A NAME="sec:CommandLine"></A>
+<BR>
+Gurobi Command-Line Tool
+</H1>
+
+<P>
+The Gurobi command-line tool allows you to perform simple commands
+without the overhead or complexity of an interactive interface.  While
+the most basic usage of the command-line tool is quite
+straightforward, the tool has a number of uses that are perhaps less
+obvious.  This section talks about its full capabilities.
+
+<P>
+To use this tool, you'll need to type commands into a command-line
+interface.  Linux and Mac users can use a <EM>Terminal</EM> window.
+Windows users will need to open a <EM>Command Prompt</EM> (also known
+as a <EM>Console</EM> window or a <code>cmd</code> window).  To launch one,
+hold down the <EM>Start</EM> and <EM>R</EM> keys simultaneously, and
+then type <code>cmd</code> into the <EM>Run</EM> box that appears.
+
+<P>
+The command to solve a model using the command-line tool is:
+<PRE>
+gurobi_cl [parameter=value]* modelfile
+</PRE>
+The Gurobi log file is printed to the screen as the model solves, and
+the command terminates when the solve is complete.  Parameters are
+chosen from among the <A HREF="parameters.html#sec:Parameters">Gurobi
+  parameters</A>.  The final argument is the name of
+a file that contains an optimization model, stored in MPS or LP
+format.  You can learn more about using the command-line tool to solve
+models in <A HREF="solving_a_model.html#subsection:CLSolve">this section</A>.
+
+<P>
+The command-line tool can also be used to administer <A HREF="gurobi_remote_services.html#sec:RemoteServices">Gurobi
+  Remote Services</A> and <A HREF="gurobi_compute_server.html#sec:ComputeServer">Gurobi
+  Compute Server</A>.  The syntax for
+this usage is:
+<PRE>
+gurobi_cl [--command]*
+</PRE>
+A list of supported commands can be found in
+<A HREF="gurobi_remote_services_and.html#subsection:CLRSAdmin">this section</A>.
+
+<P>
+Tthe command-line tool can also be used to check on the status of a
+Gurobi token server.  The command is:
+<PRE>
+gurobi_cl --tokens
+</PRE>
+This command will show you whether the token server is currently
+serving tokens, and which users and machines are currently using
+tokens.
+
+<P>
+You can also type:
+<PRE>
+gurobi_cl --help
+</PRE>
+to get help on the use of the tool, or:
+<PRE>
+gurobi_cl --version
+</PRE>
+to get version information.
+
+<P>
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html12372"
+  HREF="solving_a_model.html">Solving a Model</A>
+<LI><A NAME="tex2html12373"
+  HREF="gurobi_remote_services_and.html">Gurobi Remote Services and Compute Server Administration</A>
+</UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html12370"
+  HREF="solving_a_model.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html12368"
+  HREF="refman.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html12362"
+  HREF="distributed_mip_logging.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html12371"
+  HREF="solving_a_model.html">Solving a Model</A>
+<B> Up:</B> <A NAME="tex2html12369"
+  HREF="refman.html">Gurobi Optimizer Reference Manual</A>
+<B> Previous:</B> <A NAME="tex2html12363"
+  HREF="distributed_mip_logging.html">Distributed MIP Logging</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

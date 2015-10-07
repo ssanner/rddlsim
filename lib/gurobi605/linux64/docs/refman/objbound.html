@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>ObjBound</TITLE>
+<META NAME="description" CONTENT="ObjBound">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="objboundc.html">
+<LINK REL="previous" HREF="objval.html">
+<LINK REL="up" HREF="model_attributes.html">
+<LINK REL="next" HREF="objboundc.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html9585"
+  HREF="objboundc.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html9583"
+  HREF="model_attributes.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html9577"
+  HREF="objval.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html9586"
+  HREF="objboundc.html">ObjBoundC</A>
+<B> Up:</B> <A NAME="tex2html9584"
+  HREF="model_attributes.html">Model Attributes</A>
+<B> Previous:</B> <A NAME="tex2html9578"
+  HREF="objval.html">ObjVal</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION0001311500000000000000"></A>
+<A NAME="attr:ObjBound"></A>
+<BR>
+ObjBound
+</H3>
+<TABLE CELLPADDING=3>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf">Type:</SPAN></TH>
+<TD ALIGN="LEFT">double</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf">Modifiable:</SPAN></TH>
+<TD ALIGN="LEFT">No</TD>
+</TR>
+</TABLE>
+
+<P>
+The best known bound on the optimal objective.  When solving a MIP
+model, the algorithm maintains both a lower bound and an upper bound
+on the optimal objective value.  For a minimization model, the upper
+bound is the objective of the best known feasible solution, while the
+lower bound gives a bound on the best possible objective.
+
+<P>
+In contrast to <A HREF="objboundc.html#attr:ObjBoundC">ObjBoundC</A>, this attribute
+takes advantage of objective integrality information to round
+to a tighter bound.  For example, if the objective is known to take an
+integral value and the current best bound is 1.5,
+<code>ObjBound</code> will return 2.0 while <code>ObjBoundC</code> will
+return 1.5.
+
+<P>
+
+<P>
+For examples of how to query or modify attributes, refer to
+our <A HREF="attribute_examples.html#sec:AttributeExamples">Attribute Examples</A>.
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html9585"
+  HREF="objboundc.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html9583"
+  HREF="model_attributes.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html9577"
+  HREF="objval.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html9586"
+  HREF="objboundc.html">ObjBoundC</A>
+<B> Up:</B> <A NAME="tex2html9584"
+  HREF="model_attributes.html">Model Attributes</A>
+<B> Previous:</B> <A NAME="tex2html9578"
+  HREF="objval.html">ObjVal</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

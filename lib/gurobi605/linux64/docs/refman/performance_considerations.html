@@ -1,0 +1,126 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Performance Considerations on a Wide-Area Network (WAN)</TITLE>
+<META NAME="description" CONTENT="Performance Considerations on a Wide-Area Network (WAN)">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="callbacks.html">
+<LINK REL="previous" HREF="job_priorities.html">
+<LINK REL="up" HREF="compute_server_usage.html">
+<LINK REL="next" HREF="callbacks.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html12606"
+  HREF="callbacks.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html12604"
+  HREF="compute_server_usage.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html12598"
+  HREF="job_priorities.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html12607"
+  HREF="callbacks.html">Callbacks</A>
+<B> Up:</B> <A NAME="tex2html12605"
+  HREF="compute_server_usage.html">Compute Server Usage</A>
+<B> Previous:</B> <A NAME="tex2html12599"
+  HREF="job_priorities.html">Job Priorities</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000252300000000000000"></A>
+<A NAME="sec:CSPerformance"></A>
+<BR>
+Performance Considerations on a Wide-Area Network (WAN)
+</H3>
+
+<P>
+While using Gurobi Compute Server doesn't typically require you to
+make any modifications to your code, performance considerations can
+sometimes force you to do some tuning when your client and server are
+connected by a slow network (e.g., the internet).  We'll briefly talk
+about the source of the issue, and the changes required to work around
+it.
+
+<P>
+In a Gurobi Compute Server, a call to a Gurobi routine typically
+results in network messages between the client and the server.
+While each
+individual message is not that expensive, sending hundreds or
+thousands of messages can be quite time-consuming.  Compute
+Server makes heavy use of caching to reduce the number of such messages.
+However, not all methods are cached.
+As a result, we
+suggest that you avoid doing the following things:
+
+<UL>
+<LI>Retrieving the non-zero values for individual
+rows and columns of the constraint matrix (using, for example,
+<A HREF="c_grbgetconstrs.html#routine:GRBgetconstrs">GRBgetconstrs</A> in C,
+<A HREF="cpp_grbmodel_getrow.html#cppmethod:GRBModel::getRow">GRBModel::getRow</A> in C++,
+<A HREF="java_grbmodel_getrow.html#javamethod:GRBModel.getRow">GRBModel.getRow</A> in Java,
+<A HREF="cs_grbmodel_getrow.html#dotnetmethod:GRBModel.GetRow">GRBModel.GetRow</A> in .NET, and
+<A HREF="py_model_getrow.html#pythonmethod:Model.getRow">Model.getRow</A> in Python).
+</LI>
+<LI>Retrieving individual string-valued attributes.
+</LI>
+</UL>
+
+<P>
+Please note that you don't need to be too concerned about this issue.
+Caching generally works well.  In particular, when building a model,
+our <EM>lazy update</EM> approach avoids the issue entirely.  You
+should feel free to build your model one constraint at a time, for
+example.  Your changes are communicated to the server in one large
+message when you request a model update.
+
+<P>
+Of course, network overhead depends on both the number of messages
+that are sent and the sizes of these messages.  We automatically
+perform data compression to reduce the time spent transfering very
+large messages.  However, as you may expect, you will notice some lag
+when solving very large models over slow networks.
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html12606"
+  HREF="callbacks.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html12604"
+  HREF="compute_server_usage.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html12598"
+  HREF="job_priorities.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html12607"
+  HREF="callbacks.html">Callbacks</A>
+<B> Up:</B> <A NAME="tex2html12605"
+  HREF="compute_server_usage.html">Compute Server Usage</A>
+<B> Previous:</B> <A NAME="tex2html12599"
+  HREF="job_priorities.html">Job Priorities</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

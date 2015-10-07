@@ -1,0 +1,161 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Developing for Compute Server</TITLE>
+<META NAME="description" CONTENT="Developing for Compute Server">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="acknowledgement_of_3rd_par.html">
+<LINK REL="previous" HREF="callbacks.html">
+<LINK REL="up" HREF="compute_server_usage.html">
+<LINK REL="next" HREF="acknowledgement_of_3rd_par.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html12626"
+  HREF="acknowledgement_of_3rd_par.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html12624"
+  HREF="compute_server_usage.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html12618"
+  HREF="callbacks.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html12627"
+  HREF="acknowledgement_of_3rd_par.html">Acknowledgement of 3rd Party</A>
+<B> Up:</B> <A NAME="tex2html12625"
+  HREF="compute_server_usage.html">Compute Server Usage</A>
+<B> Previous:</B> <A NAME="tex2html12619"
+  HREF="callbacks.html">Callbacks</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000252500000000000000"></A>
+<A NAME="sec:CSFeatures"></A>
+<BR>
+Developing for Compute Server
+</H3>
+
+<P>
+With only a few exceptions, using Gurobi Compute Server requires no
+changes to your program.  This section covers the exceptions.  We'll
+talk about program robustness issues that may arise specifically
+in a Compute Server environment, and we'll give a full list of the
+Gurobi features that aren't supported in Compute Server.
+
+<P>
+<SPAN  CLASS="textbf">Coding for Robustness</SPAN>
+
+<P>
+Client-server computing introduces a few robustness situations that
+you wouldn't face when all of your computation happens on a single
+machine.  Specifically, by passing data between a client and a server,
+your program is dependent on both machines being available, and on an
+uninterrupted network connection between the two systems.  The queuing
+and failover capabilities of Gurobi Compute Server can handle the vast
+majority of issues that may come up, but you can take a few additional
+steps in your program if you want to achieve the maximum possible
+robustness.
+
+<P>
+The one scenario you may need to guard against is the situation where
+you lose the connection to the server while the portion of your
+program that builds and solves an optimization model is running.
+Gurobi Compute Server will automatically route queued jobs to another
+server, but jobs that are running when the server goes down are
+interrupted (the client will receive a
+<A HREF="error_codes.html#sec:ErrorCodes">NETWORK</A> error).
+If you want your program
+to be able to survive such failures, you will need to architect it in
+such a way that it will rebuild and resolve the optimization model in
+response to a <code>NETWORK</code> error.  The exact steps for doing so are
+application dependent, but they generally involve encapsulating the
+code between the initial Gurobi environment creation and the last
+Gurobi call into a function that can be reinvoked in case of an error.
+
+<P>
+<SPAN  CLASS="textbf">Features Not Supported in Compute Server</SPAN>
+
+<P>
+As noted earlier, there are a few Gurobi features that are not
+supported in Compute Server.  We've mentioned some of them already,
+but we'll give the full list here for completeness.  You will need to
+avoid using these features if you want your application to
+work in a Compute Server environment.
+
+<P>
+The unsupported features are:
+
+<UL>
+<LI><B>Lazy constraints:</B> While we do provide <code>MIPSOL</code>
+  callbacks, we don't allow you to add lazy constraints to cut
+  off the associated MIP solutions.
+</LI>
+<LI><B>User cuts:</B> The <code>MIPNODE</code> callback isn't supported,
+  so you won't have the opportunity to add your own cuts.
+  User cuts aren't necessary for correctness, but applications
+  that heavily rely on them may experience performance issues.
+</LI>
+<LI><B>Multi-threading within a single Gurobi environment:</B>
+  This isn't actually supported in Gurobi programs in general,
+  but the results in a Compute Server environment are sufficiently
+  difficult to track down that we wanted to mention it again here.
+  All models built from an environment share a single socket
+  connection to the Compute Server.  This one socket can't
+  handle multiple simultaneous messages.  If you wish to
+  call Gurobi from multiple threads in the same program, you
+  should make sure that each thread works within its own
+  Gurobi environment.
+</LI>
+<LI><B>Advanced simplex basis routines:</B> The C routines that work
+  with the simplex basis (
+  <A HREF="c_grbfsolve.html#routine:GRBFSolve">GRBFSolve</A>,
+  <A HREF="c_grbbsolve.html#routine:GRBBSolve">GRBBSolve</A>,
+  <A HREF="c_grbbinvcolj.html#routine:GRBBinvColj">GRBBinvColj</A>,
+  <A HREF="c_grbbinvrowi.html#routine:GRBBinvRowi">GRBBinvRowi</A>, and
+  <A HREF="c_grbgetbasishead.html#routine:GRBgetBasisHead">GRBgetBasisHead</A>) are not
+  supported.
+</LI>
+</UL>
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html12626"
+  HREF="acknowledgement_of_3rd_par.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html12624"
+  HREF="compute_server_usage.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html12618"
+  HREF="callbacks.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html12627"
+  HREF="acknowledgement_of_3rd_par.html">Acknowledgement of 3rd Party</A>
+<B> Up:</B> <A NAME="tex2html12625"
+  HREF="compute_server_usage.html">Compute Server Usage</A>
+<B> Previous:</B> <A NAME="tex2html12619"
+  HREF="callbacks.html">Callbacks</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

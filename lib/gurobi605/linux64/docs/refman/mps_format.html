@@ -1,0 +1,421 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>MPS format</TITLE>
+<META NAME="description" CONTENT="MPS format">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="rew_format.html">
+<LINK REL="previous" HREF="model_file_formats.html">
+<LINK REL="up" HREF="model_file_formats.html">
+<LINK REL="next" HREF="rew_format.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html12209"
+  HREF="rew_format.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html12207"
+  HREF="model_file_formats.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html12201"
+  HREF="model_file_formats.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html12210"
+  HREF="rew_format.html">REW format</A>
+<B> Up:</B> <A NAME="tex2html12208"
+  HREF="model_file_formats.html">Model File Formats</A>
+<B> Previous:</B> <A NAME="tex2html12202"
+  HREF="model_file_formats.html">Model File Formats</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION000181000000000000000"></A>
+<A NAME="format:MPS"></A>
+<BR>
+MPS format
+</H2>
+
+<P>
+MPS format is the oldest and most widely used format for storing math
+programming models.  There are actually two variants of this format in
+wide use.  In fixed format, the various fields must always start at
+fixed columns in the file.  Free format is very similar, but the
+fields are separated by white space instead of appearing in specific
+columns.  One important practical difference between the two formats
+is in name length.  In fixed format, row and column names are exactly
+8 characters, and spaces are part of the name.  In free format, names
+can be arbitrarily long (although the Gurobi reader places a 255
+character limit on name length), and names may not contain spaces.
+The Gurobi MPS reader reads both MPS types, and recognizes the format
+automatically.
+
+<P>
+Note that any line that begins with the <code>*</code> character is a
+comment.  The contents of that line are ignored.
+
+<P>
+<SPAN  CLASS="textbf">NAME section</SPAN>
+
+<P>
+The first section in an MPS format file is the <code>NAME</code> section.
+It gives the name of the model:
+<PRE>
+NAME        AFIRO
+</PRE>
+In fixed format, the model name starts in column 15.
+
+<P>
+<SPAN  CLASS="textbf">ROWS section</SPAN>
+
+<P>
+The next section is the <code>ROWS</code> section.  It begins with the word
+<code>ROWS</code> on its own line, and continues with one line for each row
+in the model.  These lines indicate the constraint type (<code>E</code> for
+equality, <code>L</code> for less-than-or-equal, or <code>G</code> for
+greater-than-or-equal), and the constraint name.  In fixed format, the
+type appears in column 2 and the row name starts in column 5.  Here's
+a simple example:
+<PRE>
+ROWS
+ E  R09
+ E  R10
+ L  X05
+ N  COST
+</PRE>
+Note that an <code>N</code> in the type field indicates that the row is a
+<EM>free row</EM>.  The first free row is traditionally used as the
+objective function, while additional free rows are ignored.
+
+<P>
+<SPAN  CLASS="textbf">COLUMNS section</SPAN>
+
+<P>
+The next and typically largest section of an MPS file is the
+<code>COLUMNS</code> section, which lists the columns in the model and the
+non-zero coefficients associated with each.  Each line in the columns
+section provides a column name, followed by either zero, one, or two
+non-zero coefficients from that column.  Coefficients are specified
+using a row name first, followed by a floating-point value.  Consider
+the following example:
+<PRE>
+COLUMNS
+    X01         X48           .301   R09         -1.
+    X01         R10          -1.06   X05          1.
+    X02         X21            -1.   R09          1.
+    X02         COST           -4.
+</PRE>
+The first line indicates that column <code>X01</code> has a non-zero in row
+<code>X48</code> with coefficient <code>.301</code>, and a non-zero in row
+<code>R09</code> with coefficient <code>-1.0</code>.  Note that multiple lines
+associated with the same column must be contiguous in the file.
+
+<P>
+In fixed format, the column name starts in column 5, the row name for
+the first non-zero starts in column 15, and the value for the first
+non-zero starts in column 25.  If a second non-zero is present, the
+row name starts in column 40 and the value starts in column 50.
+
+<P>
+<SPAN  CLASS="textbf">Integrality markers</SPAN>
+
+<P>
+The <code>COLUMNS</code> section can optionally include integrality
+markers.  The variables introduced between a pair of markers must take
+integer values.  The beginning of an integer section is marked by
+an <code>INTORG</code> marker:
+<PRE>
+    MARK0000  'MARKER'                 'INTORG'
+</PRE>
+The end of the section is marked by an <code>INTEND</code> marker:
+<PRE>
+    MARK0000  'MARKER'                 'INTEND'
+</PRE>
+The first field (beginning in column 5 in fixed format) is the name of
+the marker (which is ignored).  The second field (in column 15 in
+fixed format) must be equal to the string <code>'MARKER'</code> (including
+the single quotes).  The third field (in column 40 in fixed format) is
+<code>'INTORG'</code> at the start and <code>'INTEND'</code> at the end of the
+integer section.
+
+<P>
+The <code>COLUMNS</code> section can contain an arbitrary number of such
+marker pairs.
+
+<P>
+<SPAN  CLASS="textbf">RHS section</SPAN>
+
+<P>
+The next section of an MPS file is the <code>RHS</code> section, which
+specifies right-hand side values.  Each line in this section may
+contain one or two right-hand side values.
+<PRE>
+RHS
+    B           X50           310.   X51          300.
+    B           X05            80.   X17           80.
+</PRE>
+The first line above indicates that row <code>X50</code> has a right-hand
+side value of <code>310</code>, and <code>X51</code> has a right-hand side value
+of <code>300</code>.  In fixed format, the variable name for the first
+bound starts in column 15, and the first bound value starts in column
+25.  For the second bound, the variable name starts in column 40 and
+the value starts in column 50.  The name of the RHS is specified in
+the first field (column 5 in fixed format), but this name is ignored
+by the Gurobi reader.  If a row is not mentioned anywhere in the
+<code>RHS</code> section, that row takes a right-hand side value of
+<code>0</code>.
+
+<P>
+<SPAN  CLASS="textbf">BOUNDS section</SPAN>
+
+<P>
+The next section in an MPS file is the optional <code>BOUNDS</code>
+section.  By default, each variable takes a lower bound of 0 and an
+infinite upper bound.  Each line in this section can modify the lower
+bound of a variable, the upper bound, or both.  Each line indicates a
+bound type (in column 2 in fixed format), a bound name (ignored), a
+variable name (in column 15 in fixed format), and a bound value (in
+columns 25 in fixed format).  The different bound types, and the
+meaning of the associate bound value, are as follows:
+<BR><TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="LEFT">LO</TD>
+<TD ALIGN="LEFT">lower bound</TD>
+</TR>
+<TR><TD ALIGN="LEFT">UP</TD>
+<TD ALIGN="LEFT">upper bound</TD>
+</TR>
+<TR><TD ALIGN="LEFT">FX</TD>
+<TD ALIGN="LEFT">variable is fixed at the specified value</TD>
+</TR>
+<TR><TD ALIGN="LEFT">FR</TD>
+<TD ALIGN="LEFT">free variable (no lower or upper bound)</TD>
+</TR>
+<TR><TD ALIGN="LEFT">MI</TD>
+<TD ALIGN="LEFT">infinite lower bound</TD>
+</TR>
+<TR><TD ALIGN="LEFT">PL</TD>
+<TD ALIGN="LEFT">infinite upper bound</TD>
+</TR>
+<TR><TD ALIGN="LEFT">BV</TD>
+<TD ALIGN="LEFT">variable is binary (equal 0 or 1)</TD>
+</TR>
+<TR><TD ALIGN="LEFT">LI</TD>
+<TD ALIGN="LEFT">lower bound for integer variable</TD>
+</TR>
+<TR><TD ALIGN="LEFT">UI</TD>
+<TD ALIGN="LEFT">upper bound for integer variable</TD>
+</TR>
+<TR><TD ALIGN="LEFT">SC</TD>
+<TD ALIGN="LEFT">upper bound for semi-continuous variable</TD>
+</TR>
+</TABLE>
+
+<P>
+Consider the following example:
+<PRE>
+BOUNDS
+ UP BND         X50            80.
+ LO BND         X51            20.
+ FX BND         X52            30.
+</PRE>
+In this <code>BOUNDS</code> section, variable <code>X50</code> gets a upper
+bound of <code>80</code> (lower bound is unchanged at <code>0</code>,
+<code>X51</code> gets a lower bound of <code>20</code> (infinite upper bound is
+unchanged), and <code>X52</code> is fixed at <code>30</code>.
+
+<P>
+<SPAN  CLASS="textbf">QUADOBJ section</SPAN>
+
+<P>
+The next section in an MPS file is the optional <code>QUADOBJ</code>
+section, which contains quadratic objective terms.  Each line in this
+section represents a single non-zero value in the lower triangle of
+the Q matrix.  The names of the two variable that participate in the
+quadratic term are found first (starting in columns 5 and 15 in fixed
+format), followed by the numerical value of the coefficient (in column
+25 in fixed format).  By convention, the Q matrix has an implicit
+one-half multiplier associated with it.  Here's an example containing
+three quadratic terms:
+<PRE>
+QUADOBJ
+    X01       X01       10.0
+    X01       X02       2.0
+    X02       X02       2.0
+</PRE>
+These three terms would represent the quadratic function
+<!-- MATH
+ $(10 X01^2 + 2 X01 * X02 + 2 X02 * X01 + 2 X02^2)/2$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="357" HEIGHT="33" ALIGN="MIDDLE" BORDER="0"
+ SRC="img66.png"
+ ALT="$(10 X01^2 + 2 X01 * X02 + 2 X02 * X01 + 2 X02^2)/2$"></SPAN>
+(recall that the single off-diagonal term actually represents
+a pair of non-zero values in the symmetric Q matrix).
+
+<P>
+<SPAN  CLASS="textbf">QCMATRIX section</SPAN>
+
+<P>
+The next section in an MPS file is the optional <code>QCMATRIX</code>
+section, which contains quadratic terms for quadratic constraints.
+Each quadratic constraint gets it's own header.  The header includes
+the <code>QCMATRIX</code> label (starting in column 1), followed by the name
+of the quadratic constraint (starting in column 12).  The lines that
+follow each represent a single non-zero in the corresponding quadratic
+constraint.  The names of the two participating variables appear first
+(in columns 5 and 15), followed by the coefficient value (in column
+26). Here's an example of a quadratic expression:
+<PRE>
+QCMATRIX   qc0
+    X01       X01       10.0
+    X01       X02       1.0
+    X02       X02       5.0
+</PRE>
+Note that the linear terms, the sense, and the right-hand side value
+for the quadratic constraint appear in the <code>COLUMNS</code>,
+<code>ROWS</code>, and <code>RHS</code> sections, respectively.
+
+<P>
+<SPAN  CLASS="textbf">PWLOBJ section</SPAN>
+
+<P>
+The next section in an MPS file is the optional <code>PWLOBJ</code> section,
+which contains piecewise-linear objective functions.  Each line in
+this section represents a single point in a piecewise-linear objective
+function.  The name of the associated variable appears first (starting
+in column 4), followed by the x and y coordinates of the point
+(starting in columns 14 and 17).  Here's an example containing two
+piecewise-linear expressions, for variables <code>X01</code> and <code>X02</code>,
+each with three points:
+<PRE>
+   X01       1  1
+   X01       2  2
+   X01       3  4
+   X02       1  1
+   X02       3  5
+   X02       7  10
+</PRE>
+
+<P>
+<SPAN  CLASS="textbf">SOS section</SPAN>
+
+<P>
+The next section in an MPS file is the optional <code>SOS</code> section.
+The representation for a single SOS constraint contains one line that
+provides the type of the SOS set (<code>S1</code> for SOS type 1 or
+<code>S2</code> for SOS type 2, found in column 2 in fixed format) and the
+name of the SOS set (column 5 in fixed format) of the SOS set.  This
+is followed by one line for each SOS member.  The member line gives
+the name of the member (column 5 in fixed format) and the associated
+weight (column 15 in fixed format).  Here's an example containing two
+SOS2 sets.
+<PRE>
+SOS
+ S2 sos1
+    x1           1
+    x2           2
+    x3           3
+ S2 sos2
+    x3           1
+    x4           2
+    x5           3
+</PRE>
+
+<P>
+<SPAN  CLASS="textbf">QCMATRIX section</SPAN>
+
+<P>
+The next section in an MPS file contains zero or more <code>QCMATRIX</code>
+blocks.  These blocks contain the quadratic terms associated with the
+quadratic constraints.  There should be one block for each quadratic
+constraint in the model.
+
+<P>
+Each <code>QCMATRIX</code> block starts with a line that indicates the name
+of the associated quadratic constraint (starting in column 12 in fixed
+format).  This is followed by one of more quadratic terms.  Each term
+is described on one line, which indicates the names of the two
+involved variables (starting in columns 5 and 15 in fixed format),
+followed by the coefficient (in column 25 in fixed format).
+For example:
+<PRE>
+QCMATRIX   QC0
+    X01       X01       10.0
+    X01       X02       2.0
+    X02       X01       2.0
+    X02       X02       2.0
+</PRE>
+These three terms would indicate that quadratic constraint <code>QC0</code>
+contains terms <SPAN CLASS="MATH"><IMG
+ WIDTH="58" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img67.png"
+ ALT="$10 X01^2$"></SPAN>, <SPAN CLASS="MATH"><IMG
+ WIDTH="88" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img68.png"
+ ALT="$4 X01*X02$"></SPAN>, and
+<SPAN CLASS="MATH"><IMG
+ WIDTH="49" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img69.png"
+ ALT="$2 X02^2$"></SPAN>.  Linear terms for constraint <code>QC0</code> would
+appear in
+the <code>COLUMNS</code> section.  Note that a <code>QCMATRIX</code> block
+must contain a symmetric matrix, so for example an <code>X01*X02</code>
+term must be accompanied by a matching <code>X02*X01</code> term.
+
+<P>
+<SPAN  CLASS="textbf">ENDATA</SPAN>
+
+<P>
+The final line in an MPS file must be an <code>ENDATA</code> statement.
+
+<P>
+<SPAN  CLASS="textbf">Additional notes</SPAN>
+
+<P>
+Note that in the Gurobi optimizer, MPS models are always written in
+full precision.  That means that if you write a model and then read it
+back, the data associated with the resulting model will be bit-for-bit
+identical to the original data.
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html12209"
+  HREF="rew_format.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html12207"
+  HREF="model_file_formats.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html12201"
+  HREF="model_file_formats.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html12210"
+  HREF="rew_format.html">REW format</A>
+<B> Up:</B> <A NAME="tex2html12208"
+  HREF="model_file_formats.html">Model File Formats</A>
+<B> Previous:</B> <A NAME="tex2html12202"
+  HREF="model_file_formats.html">Model File Formats</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

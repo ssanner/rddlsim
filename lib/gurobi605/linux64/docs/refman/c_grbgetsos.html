@@ -1,0 +1,186 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>GRBgetsos</TITLE>
+<META NAME="description" CONTENT="GRBgetsos">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="c_grbgetvarbyname.html">
+<LINK REL="previous" HREF="c_grbgetqconstr.html">
+<LINK REL="up" HREF="c_model_queries.html">
+<LINK REL="next" HREF="c_grbgetvarbyname.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html1705"
+  HREF="c_grbgetvarbyname.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1703"
+  HREF="c_model_queries.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1697"
+  HREF="c_grbgetqconstr.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1706"
+  HREF="c_grbgetvarbyname.html">GRBgetvarbyname</A>
+<B> Up:</B> <A NAME="tex2html1704"
+  HREF="c_model_queries.html">Model Queries</A>
+<B> Previous:</B> <A NAME="tex2html1698"
+  HREF="c_grbgetqconstr.html">GRBgetqconstr</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00024800000000000000"></A>
+<A NAME="routine:GRBgetsos"></A>
+<BR>
+GRBgetsos
+</H3>
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">GRBgetsos</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT">GRBmodel</TD>
+<TD ALIGN="LEFT">*model,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">*nummembersP,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">*sostype,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">*beg,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">*ind,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">double</TD>
+<TD ALIGN="LEFT">*weight,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">start,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">len )</TD>
+</TR>
+</TABLE>
+
+<P>
+Retrieve the members and weights of a set of SOS constraints.  Typical
+usage is to call this routine twice.  In the first call, you specify
+the requested SOS constraints, with <code>NULL</code> values for <code>ind</code> and
+<code>weight</code>.  The routine returns the total number of members for
+the specified SOS constraints in <code>nummembersP</code>.  That allows you
+to make certain that <code>ind</code> and <code>weight</code> are of sufficient
+size to hold the result of the second call.
+
+<P>
+
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Return value:</SPAN></BIG>
+
+<P>
+A non-zero return value indicates that a problem occurred while retrieving the SOS members.
+Refer to the <A HREF="error_codes.html#sec:ErrorCodes">Error Code</A> table for a
+list of possible return values.  Details on the error can be obtained
+by calling <A HREF="c_grbgeterrormsg.html#routine:GRBgeterrormsg">GRBgeterrormsg</A>.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">model</SPAN>: The model from which the SOS constraints should be retrieved.
+
+<P>
+ <SPAN  CLASS="textbf">nummembersP</SPAN>: The total number of SOS members retrieved.
+
+<P>
+ <SPAN  CLASS="textbf">sostype</SPAN>: The types of the SOS constraints.  Possible values are
+                   <TT>GRB_SOS_TYPE1</TT> or <TT>GRB_SOS_TYPE2</TT>
+
+<P>
+ <SPAN  CLASS="textbf">beg</SPAN>: SOS constraints are returned in Compressed Sparse Row
+  (CSR) format.  Each SOS constraint in the model is represented as a
+  list of index-value pairs, where each index entry provides the
+  variable index for an SOS member, and each value entry provides the
+  corresponding SOS constraint weight.  Each SOS constraint has an
+  associated <TT>beg</TT> value, indicating the start position of the
+  members of that constraint in the <TT>ind</TT> and <TT>weight</TT>
+  arrays.  The members for SOS constraint <TT>i</TT> immediately follow
+  those for constraint <TT>i-1</TT> in <TT>ind</TT> and <TT>weight</TT>.
+  Thus, <TT>beg[i]</TT> indicates both the index of the first member of
+  SOS constraint <TT>i</TT> and the end of the member list for SOS
+  constraint <TT>i-1</TT>.  For example, consider the case where
+  <TT>beg[2] = 10</TT> and <TT>beg[3] = 12</TT>.  This would indicate
+  that SOS constraint 2 has two members.  Their
+  variable indices can be found in <TT>ind[10]</TT> and
+  <TT>ind[11]</TT>, and their SOS weights can be
+  found in <TT>weight[10]</TT> and <TT>weight[11]</TT>.
+
+<P>
+ <SPAN  CLASS="textbf">ind</SPAN>: Variable indices associated with SOS members.
+  See the description of the <TT>beg</TT> argument for more information.
+
+<P>
+ <SPAN  CLASS="textbf">weight</SPAN>: Weights associated with SOS members.
+  See the description of the <TT>beg</TT> argument for more information.
+
+<P>
+ <SPAN  CLASS="textbf">start</SPAN>: The index of the first SOS constraint to retrieve.
+
+<P>
+ <SPAN  CLASS="textbf">len</SPAN>: The number of SOS constraints to retrieve.
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1705"
+  HREF="c_grbgetvarbyname.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1703"
+  HREF="c_model_queries.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1697"
+  HREF="c_grbgetqconstr.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1706"
+  HREF="c_grbgetvarbyname.html">GRBgetvarbyname</A>
+<B> Up:</B> <A NAME="tex2html1704"
+  HREF="c_model_queries.html">Model Queries</A>
+<B> Previous:</B> <A NAME="tex2html1698"
+  HREF="c_grbgetqconstr.html">GRBgetqconstr</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

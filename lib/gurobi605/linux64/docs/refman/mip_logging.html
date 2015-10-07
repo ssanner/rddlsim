@@ -1,0 +1,246 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>MIP Logging</TITLE>
+<META NAME="description" CONTENT="MIP Logging">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="distributed_mip_logging.html">
+<LINK REL="previous" HREF="sifting_logging.html">
+<LINK REL="up" HREF="logging.html">
+<LINK REL="next" HREF="distributed_mip_logging.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html12352"
+  HREF="distributed_mip_logging.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html12350"
+  HREF="logging.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html12344"
+  HREF="sifting_logging.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html12353"
+  HREF="distributed_mip_logging.html">Distributed MIP Logging</A>
+<B> Up:</B> <A NAME="tex2html12351"
+  HREF="logging.html">Logging</A>
+<B> Previous:</B> <A NAME="tex2html12345"
+  HREF="sifting_logging.html">Sifting Logging</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION000194000000000000000"></A>
+<A NAME="sec:MIPLogging"></A>
+<BR>
+MIP Logging
+</H2>
+
+<P>
+The MIP log can be divided into three sections: the presolve section,
+the simplex progress section, and the summary section.
+
+<P>
+<SPAN  CLASS="textbf">Presolve Section</SPAN>
+
+<P>
+As with the simplex and barrier logs, the first section of the MIP log
+is the presolve section.  Here is presolve output for MIPLIB model
+<code>mas76</code>:
+<PRE>
+Presolve removed 0 rows and 3 columns
+Presolve time: 0.00s
+Presolved: 12 Rows, 148 Columns, 1615 Nonzeros
+</PRE>
+In this example, presolve was able to remove 3 columns.  The final
+line shows the size of the model that is passed to the branch-and-cut
+algorithm.
+
+<P>
+<SPAN  CLASS="textbf">Progress Section</SPAN>
+
+<P>
+The next section in the MIP log tracks the progress of the
+branch-and-cut search.  The search involves a number of different
+steps, so this section typically contains a lot of detailed
+information.  The first thing to observe in the log for example
+<code>mas76</code> is these lines:
+<PRE>
+Found heuristic solution: objective 93644.999
+Found heuristic solution: objective 87658.484
+Found heuristic solution: objective 80811.127
+</PRE>
+These indicate that the Gurobi heuristics found three integer feasible
+solutions before the root relaxation was solved.
+
+<P>
+The next thing you will see in the log is the root relaxation solution
+display.  For a model where the root solves quickly, this display
+contains a single line:
+<PRE>
+Root relaxation: objective 3.889390e+04, 43 iterations, 0.00 seconds
+</PRE>
+
+<P>
+For models where the root relaxation takes more time (MIPLIB model
+<code>dano3mip</code>, for example), the Gurobi solver will automatically
+include a detailed simplex log for the relaxation itself:
+<PRE>
+Root relaxation log...
+
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+    8370    5.6894789e+02   3.032449e+05   0.000000e+00      5s
+   13770    5.6906050e+02   2.875568e+06   0.000000e+00     10s
+   18758    5.6924158e+02   7.523521e+06   0.000000e+00     15s
+   25649    5.7101828e+02   1.463095e+06   0.000000e+00     20s
+   31400    5.7146225e+02   6.748823e+04   0.000000e+00     25s
+   34230    5.7623162e+02   0.000000e+00   0.000000e+00     28s
+
+Root relaxation: objective 5.762316e+02, 34230 iterations, 28.47 seconds
+</PRE>
+To be more precise, this more detailed log is triggered whenever the
+root relaxation requires more than the
+<A HREF="displayinterval.html#parameter:DisplayInterval">DisplayInterval</A>
+parameter value (5 seconds by default).
+
+<P>
+The next section provides progress information on the branch-and-cut
+tree search:
+<PRE>
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0  38893.904    0   11  80811.127  38893.904  51.9%     -    0s
+H    0     0                       45476.147  38893.904  14.5%     -    0s
+     0     0  38903.750    0   13  45476.147  38903.750  14.5%     -    0s
+     0     0  38926.214    0   12  45476.147  38926.214  14.4%     -    0s
+     0     0  38950.968    0   13  45476.147  38950.968  14.3%     -    0s
+     0     0  38952.279    0   14  45476.147  38952.279  14.3%     -    0s
+H    0     2                       43875.000  38952.279  11.2%     -    0s
+H    0     2                       40005.054  38952.279  2.63%     -    0s
+     0     2  38952.279    0   14  40005.054  38952.279  2.63%     -    0s
+ 96386 22115     cutoff   37       40005.054  39504.729  1.25%   4.0    5s
+ 203266 12649     cutoff   30       40005.054  39756.344  0.62%   3.9   10s
+</PRE>
+This display is somewhat dense with information, but each column is
+hopefully fairly easy to understand.  The <code>Nodes</code> section (the
+first two columns) provides general quantitative information on the
+progress of the search.  The first column shows the number of
+branch-and-cut nodes that have been explored to that point, while
+the second shows the number of leaf nodes in the search tree that
+remain unexplored.  At times, there will be an <code>H</code> or <code>*</code>
+character at the beginning of the output line.  These indicate that a
+new feasible solution has been found, either by a MIP heuristic
+(<code>H</code>) or by branching (<code>*</code>).
+
+<P>
+The <code>Current Node</code> section provides information on the specific
+node that was explored at that point in the branch-and-cut tree.  It
+shows the objective of the associated relaxation, the depth of that
+node in the branch-and-cut tree, and the number of integer variables
+that have non-integral values in the associated relaxation.
+
+<P>
+The <code>Objective Bounds</code> section provides information on the best
+known objective value for a feasible solution (i.e., the objective
+value of the current incumbent), and the current objective bound
+provided by leaf nodes of the search tree.  The optimal objective
+value is always between these two values.  The third column in this
+section (<code>Gap</code>) shows the relative gap between the two objective
+bounds.  When this gap is smaller than the
+<A HREF="mipgap2.html#parameter:MIPGap">MIPGap</A> parameter,
+optimization terminates.
+
+<P>
+The <code>Work</code> section of the log provides information on how much
+work has been performed to that point.  The first column shows the
+average number of simplex iterations performed per node in the
+branch-and-cut tree.  The final column shows the elapsed time since
+the solve began.
+
+<P>
+By default, the Gurobi MIP solver prints a log line every 5 seconds
+(although the interval can sometimes be longer for models with
+particularly time-consuming nodes).  The interval between log lines
+can be adjusted with the
+<A HREF="displayinterval.html#parameter:DisplayInterval">DisplayInterval</A> parameter
+(see the <A HREF="parameters.html#sec:Parameters">Parameter</A> section of this
+document for more information).
+
+<P>
+Note that the explored node count often stays at 0 for an extended
+period.  This means that the Gurobi MIP solver is processing the root
+node.  The Gurobi solver can often expend a significant amount of
+effort on the root node, generating cutting planes and trying various
+heuristics in order to reduce the size of the subsequent
+branch-and-cut tree.
+
+<P>
+<SPAN  CLASS="textbf">Summary Section</SPAN>
+
+<P>
+The third section in the log provides summary information once the MIP
+solver has finished:
+<PRE>
+Cutting planes:
+  Gomory: 6
+  Cover: 5
+  MIR: 8
+
+Explored 226525 nodes (854805 simplex iterations) in 11.15 seconds
+Thread count was 2 (of 2 available processors)
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 4.0005054142e+04, best bound 4.0001112908e+04, gap 0.0099%
+</PRE>
+In this example, the Gurobi solver required just over 11 seconds to
+solve the model to optimality, and it used two processors to do so
+(the processor count can be limited with the
+<A HREF="threads.html#parameter:Threads">Threads</A>
+parameter).  The gap between the best feasible solution objective and
+the best bound is just under 0.01%, which produces an <code>Optimal</code>
+termination status, since the achieved gap is smaller than the default
+<A HREF="mipgap2.html#parameter:MIPGap">MIPGap</A>
+parameter value.
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html12352"
+  HREF="distributed_mip_logging.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html12350"
+  HREF="logging.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html12344"
+  HREF="sifting_logging.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html12353"
+  HREF="distributed_mip_logging.html">Distributed MIP Logging</A>
+<B> Up:</B> <A NAME="tex2html12351"
+  HREF="logging.html">Logging</A>
+<B> Previous:</B> <A NAME="tex2html12345"
+  HREF="sifting_logging.html">Sifting Logging</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

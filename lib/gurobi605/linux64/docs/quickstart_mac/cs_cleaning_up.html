@@ -1,0 +1,90 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Cleaning up</TITLE>
+<META NAME="description" CONTENT="Cleaning up">
+<META NAME="keywords" CONTENT="quickstart_mac">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="quickstart_mac.css">
+
+<LINK REL="next" HREF="cs_error_handling.html">
+<LINK REL="previous" HREF="cs_reporting_results_attri.html">
+<LINK REL="up" HREF="cs_net_interface_cs.html">
+<LINK REL="next" HREF="cs_error_handling.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html1147"
+  HREF="cs_error_handling.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1145"
+  HREF="cs_net_interface_cs.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1139"
+  HREF="cs_reporting_results_attri.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1148"
+  HREF="cs_error_handling.html">Error handling</A>
+<B> Up:</B> <A NAME="tex2html1146"
+  HREF="cs_net_interface_cs.html">.NET Interface (C#)</A>
+<B> Previous:</B> <A NAME="tex2html1140"
+  HREF="cs_reporting_results_attri.html">Reporting results - attributes</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION0001011000000000000000">
+Cleaning up</A>
+</H2>
+<P>
+<EM>The example concludes with <code>Dispose</code> calls:
+</EM><PRE>
+  model.Dispose();
+  env.Dispose();
+</PRE><EM>
+These reclaim the resources associated with the model and environment.
+Garbage collection would reclaim these eventually, but if your program
+doesn't exit immediately after performing the optimization, it is best
+to reclaim them explicitly.
+</EM>
+<P>
+<EM>Note that all models associated with an environment must be disposed
+before the environment itself is disposed.
+</EM>
+<P>
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1147"
+  HREF="cs_error_handling.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1145"
+  HREF="cs_net_interface_cs.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1139"
+  HREF="cs_reporting_results_attri.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1148"
+  HREF="cs_error_handling.html">Error handling</A>
+<B> Up:</B> <A NAME="tex2html1146"
+  HREF="cs_net_interface_cs.html">.NET Interface (C#)</A>
+<B> Previous:</B> <A NAME="tex2html1140"
+  HREF="cs_reporting_results_attri.html">Reporting results - attributes</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

@@ -1,0 +1,136 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>tune_cs.cs</TITLE>
+<META NAME="description" CONTENT="tune_cs.cs">
+<META NAME="keywords" CONTENT="examples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="examples.css">
+
+<LINK REL="next" HREF="workforce1_cs_cs.html">
+<LINK REL="previous" HREF="tsp_cs_cs.html">
+<LINK REL="up" HREF="cs_examples.html">
+<LINK REL="next" HREF="workforce1_cs_cs.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html1539"
+  HREF="workforce1_cs_cs.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1537"
+  HREF="cs_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1531"
+  HREF="tsp_cs_cs.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1540"
+  HREF="workforce1_cs_cs.html">workforce1_cs.cs</A>
+<B> Up:</B> <A NAME="tex2html1538"
+  HREF="cs_examples.html">C# Examples</A>
+<B> Previous:</B> <A NAME="tex2html1532"
+  HREF="tsp_cs_cs.html">tsp_cs.cs</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000242000000000000000"></A>
+<A NAME="subsubsection:tune_cs.cs"></A>
+<BR>
+tune_cs.cs
+</H3>
+
+<P>
+<BR>
+<PRE  CLASS="verbatim">/* Copyright 2014, Gurobi Optimization, Inc. */
+
+/* This example reads a model from a file and tunes it.
+   It then writes the best parameter settings to a file
+   and solves the model using these parameters. */
+
+using System;
+using Gurobi;
+
+class tune_cs
+{
+  static void Main(string[] args)
+  {
+    if (args.Length &lt; 1) {
+      Console.Out.WriteLine("Usage: tune_cs filename");
+      return;
+    }
+
+    try {
+      GRBEnv env = new GRBEnv();
+
+      // Read model from file
+      GRBModel model = new GRBModel(env, args[0]);
+
+      // Set the TuneResults parameter to 1
+      model.GetEnv().Set(GRB.IntParam.TuneResults, 1);
+
+      // Tune the model
+      model.Tune();
+
+      // Get the number of tuning results
+      int resultcount = model.Get(GRB.IntAttr.TuneResultCount);
+
+      if (resultcount &gt; 0) {
+
+        // Load the tuned parameters into the model's environment
+        model.GetTuneResult(0);
+
+        // Write the tuned parameters to a file
+        model.Write("tune.prm");
+
+        // Solve the model using the tuned parameters
+        model.Optimize();
+      }
+
+      // Dispose of model and environment
+      model.Dispose();
+      env.Dispose();
+
+    } catch (GRBException e) {
+      Console.WriteLine("Error code: " + e.ErrorCode + ". " + e.Message);
+    }
+  }
+}
+</PRE>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1539"
+  HREF="workforce1_cs_cs.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1537"
+  HREF="cs_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1531"
+  HREF="tsp_cs_cs.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1540"
+  HREF="workforce1_cs_cs.html">workforce1_cs.cs</A>
+<B> Up:</B> <A NAME="tex2html1538"
+  HREF="cs_examples.html">C# Examples</A>
+<B> Previous:</B> <A NAME="tex2html1532"
+  HREF="tsp_cs_cs.html">tsp_cs.cs</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

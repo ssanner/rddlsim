@@ -1,0 +1,404 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>A list of the Gurobi examples</TITLE>
+<META NAME="description" CONTENT="A list of the Gurobi examples">
+<META NAME="keywords" CONTENT="examples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="examples.css">
+
+<LINK REL="next" HREF="load_and_solve_a_model_fro.html">
+<LINK REL="previous" HREF="example_tour.html">
+<LINK REL="up" HREF="example_tour.html">
+<LINK REL="next" HREF="load_and_solve_a_model_fro.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html220"
+  HREF="load_and_solve_a_model_fro.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html218"
+  HREF="example_tour.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html212"
+  HREF="example_tour.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html221"
+  HREF="load_and_solve_a_model_fro.html">Load and solve a</A>
+<B> Up:</B> <A NAME="tex2html219"
+  HREF="example_tour.html">Example tour</A>
+<B> Previous:</B> <A NAME="tex2html213"
+  HREF="example_tour.html">Example tour</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00011000000000000000"></A>
+<A NAME="subsection:ExampleList"></A>
+<BR>
+A list of the Gurobi examples
+</H2>
+
+<P>
+We recommend that you begin by reading the overview of the examples
+(which begins in the <A HREF="load_and_solve_a_model_fro.html#subsection:Loading">next section</A>).
+However, if you'd like to dive directly into a specific example, the
+following is a list of all of the examples included in the Gurobi
+distribution, organized by basic function.  The source for the
+examples can be found by following the provided links, or in the
+<code>examples</code> directory of the Gurobi distribution.
+
+<P>
+<SPAN  CLASS="textbf">Read a model from a file</SPAN>
+
+<P>
+
+<UL>
+<LI><B>lp</B> - A very simple example that reads a continuous model
+  from a file, optimizes it, and writes the solution to a file.  If the
+  model is infeasible, it writes an Irreducible Inconsistent Subsystem
+  (IIS) instead.
+   <A HREF="lp_c_c.html#subsubsection:lp_c.c">C</A>,
+   <A HREF="lp_cpp_cpp.html#subsubsection:lp_c++.cpp">C++</A>,
+   <A HREF="lp_cs_cs.html#subsubsection:lp_cs.cs">C#</A>,
+   <A HREF="lp_java.html#subsubsection:Lp.java">Java</A>,
+   <A HREF="lp_py.html#subsubsection:lp.py">Python</A>,
+   <A HREF="lp_vb_vb.html#subsubsection:lp_vb.vb">VB</A>.
+</LI>
+<LI><B>mip2</B> - Reads a MIP model from a file, optimizes it, and
+  then solves the fixed version of the MIP model.
+   <A HREF="mip2_c_c.html#subsubsection:mip2_c.c">C</A>,
+   <A HREF="mip2_cpp_cpp.html#subsubsection:mip2_c++.cpp">C++</A>,
+   <A HREF="mip2_cs_cs.html#subsubsection:mip2_cs.cs">C#</A>,
+   <A HREF="mip2_java.html#subsubsection:Mip2.java">Java</A>,
+   <A HREF="mip2_py.html#subsubsection:mip2.py">Python</A>,
+   <A HREF="mip2_vb_vb.html#subsubsection:mip2_vb.vb">VB</A>.
+</LI>
+</UL>
+
+<P>
+<SPAN  CLASS="textbf">Build a simple model</SPAN>
+
+<P>
+
+<UL>
+<LI><B>mip1</B> - Builds a trivial MIP model, solves it, and prints
+  the solution.
+   <A HREF="mip1_c_c.html#subsubsection:mip1_c.c">C</A>,
+   <A HREF="mip1_cpp_cpp.html#subsubsection:mip1_c++.cpp">C++</A>,
+   <A HREF="mip1_cs_cs.html#subsubsection:mip1_cs.cs">C#</A>,
+   <A HREF="mip1_java.html#subsubsection:Mip1.java">Java</A>,
+   <A HREF="mip1_m.html#subsubsection:mip1.m">MATLAB</A>,
+   <A HREF="mip1_py.html#subsubsection:mip1.py">Python</A>,
+   <A HREF="mip_r.html#subsubsection:mip.R">R</A>,
+   <A HREF="mip1_vb_vb.html#subsubsection:mip1_vb.vb">VB</A>.
+</LI>
+<LI><B>piecewise</B> - Demonstrates the use of piecewise-linear
+  objective functions.
+   <A HREF="piecewise_c_c.html#subsubsection:piecewise_c.c">C</A>,
+   <A HREF="piecewise_cpp_cpp.html#subsubsection:piecewise_c++.cpp">C++</A>,
+   <A HREF="piecewise_cs_cs.html#subsubsection:piecewise_cs.cs">C#</A>,
+   <A HREF="piecewise_java.html#subsubsection:Piecewise.java">Java</A>,
+   <A HREF="piecewise_py.html#subsubsection:piecewise.py">Python</A>,
+   <A HREF="piecewise_vb_vb.html#subsubsection:piecewise_vb.vb">VB</A>.
+</LI>
+<LI><B>qp</B> - Builds a trivial QP model, solves it, converts it to
+  an MIQP model, and solves it again.
+   <A HREF="qp_c_c.html#subsubsection:qp_c.c">C</A>,
+   <A HREF="qp_cpp_cpp.html#subsubsection:qp_c++.cpp">C++</A>,
+   <A HREF="qp_cs_cs.html#subsubsection:qp_cs.cs">C#</A>,
+   <A HREF="qp_java.html#subsubsection:Qp.java">Java</A>,
+   <A HREF="qp_m.html#subsubsection:qp.m">MATLAB</A>,
+   <A HREF="qp_py.html#subsubsection:qp.py">Python</A>,
+   <A HREF="qp_r.html#subsubsection:qp.R">R</A>,
+   <A HREF="qp_vb_vb.html#subsubsection:qp_vb.vb">VB</A>.
+</LI>
+<LI><B>qcp</B> - Builds and solves a trivial QCP model.
+   <A HREF="qcp_c_c.html#subsubsection:qcp_c.c">C</A>,
+   <A HREF="qcp_cpp_cpp.html#subsubsection:qcp_c++.cpp">C++</A>,
+   <A HREF="qcp_cs_cs.html#subsubsection:qcp_cs.cs">C#</A>,
+   <A HREF="qcp_java.html#subsubsection:Qcp.java">Java</A>,
+   <A HREF="qcp_m.html#subsubsection:qcp.m">MATLAB</A>,
+   <A HREF="qcp_py.html#subsubsection:qcp.py">Python</A>,
+   <A HREF="qcp_r.html#subsubsection:qcp.R">R</A>,
+   <A HREF="qcp_vb_vb.html#subsubsection:qcp_vb.vb">VB</A>.
+</LI>
+<LI><B>sos</B> - Builds and solves a trivial SOS model.
+   <A HREF="sos_c_c.html#subsubsection:sos_c.c">C</A>,
+   <A HREF="sos_cpp_cpp.html#subsubsection:sos_c++.cpp">C++</A>,
+   <A HREF="sos_cs_cs.html#subsubsection:sos_cs.cs">C#</A>,
+   <A HREF="sos_java.html#subsubsection:Sos.java">Java</A>,
+   <A HREF="sos_m.html#subsubsection:sos.m">MATLAB</A>,
+   <A HREF="sos_py.html#subsubsection:sos.py">Python</A>,
+   <A HREF="sos_vb_vb.html#subsubsection:sos_vb.vb">VB</A>.
+</LI>
+<LI><B>dense</B> - Solves a model stored using dense matrices.
+  We don't recommend using dense matrices, but
+  this example may be helpful if your data is already in this format.
+   <A HREF="dense_c_c.html#subsubsection:dense_c.c">C</A>,
+   <A HREF="dense_cpp_cpp.html#subsubsection:dense_c++.cpp">C++</A>,
+   <A HREF="dense_cs_cs.html#subsubsection:dense_cs.cs">C#</A>,
+   <A HREF="dense_java.html#subsubsection:Dense.java">Java</A>,
+   <A HREF="dense_py.html#subsubsection:dense.py">Python</A>,
+   <A HREF="dense_vb_vb.html#subsubsection:dense_vb.vb">VB</A>.
+</LI>
+</UL>
+
+<P>
+<SPAN  CLASS="textbf">A few simple applications</SPAN>
+
+<P>
+
+<UL>
+<LI><B>diet</B> - Builds and solves the classic diet problem.
+  Demonstrates model construction and simple model modification -
+  after the initial model is solved, a constraint is added to limit the
+  number of dairy servings.
+   <A HREF="diet_c_c.html#subsubsection:diet_c.c">C</A>,
+   <A HREF="diet_cpp_cpp.html#subsubsection:diet_c++.cpp">C++</A>,
+   <A HREF="diet_cs_cs.html#subsubsection:diet_cs.cs">C#</A>,
+   <A HREF="diet_java.html#subsubsection:Diet.java">Java</A>,
+   <A HREF="diet_m.html#subsubsection:diet.m">MATLAB</A>,
+   <A HREF="diet_py.html#subsubsection:diet.py">Python</A>,
+   <A HREF="diet_vb_vb.html#subsubsection:diet_vb.vb">VB</A>.
+</LI>
+<LI><B>diet2, diet3, diet4, dietmodel</B> - Python-only variants of the
+  diet example that illustrate model-data separation.
+   <A HREF="diet2_py.html#subsubsection:diet2.py">diet2.py</A>,
+   <A HREF="diet3_py.html#subsubsection:diet3.py">diet3.py</A>,
+   <A HREF="diet4_py.html#subsubsection:diet4.py">diet4.py</A>,
+   <A HREF="dietmodel_py.html#subsubsection:dietmodel.py">dietmodel.py</A>.
+</LI>
+<LI><B>facility</B> - Simple facility location model: given a set
+  of plants and a set of warehouses, with transportation costs between
+  them, this example finds the least expensive set of plants to open
+  in order to satisfy product demand.  This example demonstrates the
+  use of MIP starts -- the example computes an initial, heuristic
+  solution and passes that solution to the MIP solver.
+   <A HREF="facility_c_c.html#subsubsection:facility_c.c">C</A>,
+   <A HREF="facility_cpp_cpp.html#subsubsection:facility_c++.cpp">C++</A>,
+   <A HREF="facility_cs_cs.html#subsubsection:facility_cs.cs">C#</A>,
+   <A HREF="facility_java.html#subsubsection:Facility.java">Java</A>,
+   <A HREF="facility_py.html#subsubsection:facility.py">Python</A>,
+   <A HREF="facility_vb_vb.html#subsubsection:facility_vb.vb">VB</A>.
+</LI>
+<LI><B>netflow</B> - A Python-only example that solves a multi-commodity
+  network flow model.  It demonstrates the use of several Python modeling
+  constructs, including dictionaries, tuples, and tuplelist objects.
+   <A HREF="netflow_py.html#subsubsection:netflow.py">Python</A>.
+</LI>
+<LI><B>sudoku</B> - Reads a Sudoku puzzle dataset from a file, builds
+  a MIP model to solve that model, solves it, and prints the solution.
+   <A HREF="sudoku_c_c.html#subsubsection:sudoku_c.c">C</A>,
+   <A HREF="sudoku_cpp_cpp.html#subsubsection:sudoku_c++.cpp">C++</A>,
+   <A HREF="sudoku_cs_cs.html#subsubsection:sudoku_cs.cs">C#</A>,
+   <A HREF="sudoku_java.html#subsubsection:Sudoku.java">Java</A>,
+   <A HREF="sudoku_py.html#subsubsection:sudoku.py">Python</A>,
+   <A HREF="sudoku_vb_vb.html#subsubsection:sudoku_vb.vb">VB</A>.
+</LI>
+<LI><B>workforce1</B> - Formulates and solves a workforce scheduling
+  model.  If the model is infeasible, the example computes and prints
+  an Irreducible Inconsistent Subsystem (IIS).
+   <A HREF="workforce1_c_c.html#subsubsection:workforce1_c.c">C</A>,
+   <A HREF="workforce1_cpp_cpp.html#subsubsection:workforce1_c++.cpp">C++</A>,
+   <A HREF="workforce1_cs_cs.html#subsubsection:workforce1_cs.cs">C#</A>,
+   <A HREF="workforce1_java.html#subsubsection:Workforce1.java">Java</A>,
+   <A HREF="workforce1_py.html#subsubsection:workforce1.py">Python</A>,
+   <A HREF="workforce1_vb_vb.html#subsubsection:workforce1_vb.vb">VB</A>.
+</LI>
+<LI><B>workforce2</B> - An enhancement of <code>workforce1</code>.  This
+  example solves the same workforce scheduling model, but if the model
+  is infeasible, it computes an IIS, removes one of the associated
+  constraints from the model, and re-solves.  This process is repeated
+  until the model becomes feasible.  Demonstrates constraint removal.
+   <A HREF="workforce2_c_c.html#subsubsection:workforce2_c.c">C</A>,
+   <A HREF="workforce2_cpp_cpp.html#subsubsection:workforce2_c++.cpp">C++</A>,
+   <A HREF="workforce2_cs_cs.html#subsubsection:workforce2_cs.cs">C#</A>,
+   <A HREF="workforce2_java.html#subsubsection:Workforce2.java">Java</A>,
+   <A HREF="workforce2_py.html#subsubsection:workforce2.py">Python</A>,
+   <A HREF="workforce2_vb_vb.html#subsubsection:workforce2_vb.vb">VB</A>.
+</LI>
+<LI><B>workforce3</B> - A different enhancement of
+  <code>workforce1</code>.  This example solves the same workforce
+  scheduling model, but if the model is infeasible, it adds artificial
+  variables to each constraint and minimizes the sum of the artificial
+  variables.  This corresponds to finding the minimum total change in
+  the right-hand side vector required in order to make the model
+  feasible.  Demonstrates variable addition.
+   <A HREF="workforce3_c_c.html#subsubsection:workforce3_c.c">C</A>,
+   <A HREF="workforce3_cpp_cpp.html#subsubsection:workforce3_c++.cpp">C++</A>,
+   <A HREF="workforce3_cs_cs.html#subsubsection:workforce3_cs.cs">C#</A>,
+   <A HREF="workforce3_java.html#subsubsection:Workforce3.java">Java</A>,
+   <A HREF="workforce3_py.html#subsubsection:workforce3.py">Python</A>,
+   <A HREF="workforce3_vb_vb.html#subsubsection:workforce3_vb.vb">VB</A>.
+</LI>
+<LI><B>workforce4</B> - An enhancement of workforce3.  This example
+  solves the same workforce scheduling model, but it starts with
+  artificial variables in each constraint.  It first minimizes the sum
+  of the artificial variables.  Then, it introduces a new quadratic
+  objective to balance the workload among the workers.  Demonstrates
+  optimization with multiple objective functions.
+   <A HREF="workforce4_c_c.html#subsubsection:workforce4_c.c">C</A>,
+   <A HREF="workforce4_cpp_cpp.html#subsubsection:workforce4_c++.cpp">C++</A>,
+   <A HREF="workforce4_cs_cs.html#subsubsection:workforce4_cs.cs">C#</A>,
+   <A HREF="workforce4_java.html#subsubsection:Workforce4.java">Java</A>,
+   <A HREF="workforce4_py.html#subsubsection:workforce4.py">Python</A>,
+   <A HREF="workforce4_vb_vb.html#subsubsection:workforce4_vb.vb">VB</A>.
+</LI>
+</UL>
+
+<P>
+<SPAN  CLASS="textbf">Illustrating specific features</SPAN>
+
+<P>
+
+<UL>
+<LI><B>feasopt</B> - Reads a MIP model from a file, adds artificial slack
+  variables to relax each constraint, and then minimizes the sum of
+  the artificial variables.  It then computes the same relaxation using
+  the <EM>feasibility relaxation</EM> feature. The example demonstrates
+  simple model modification by adding slack variables.  It also
+  demonstrates the feasibility relaxation feature.
+   <A HREF="feasopt_c_c.html#subsubsection:feasopt_c.c">C</A>,
+   <A HREF="feasopt_cpp_cpp.html#subsubsection:feasopt_c++.cpp">C++</A>,
+   <A HREF="feasopt_cs_cs.html#subsubsection:feasopt_cs.cs">C#</A>,
+   <A HREF="feasopt_java.html#subsubsection:Feasopt.java">Java</A>,
+   <A HREF="feasopt_py.html#subsubsection:feasopt.py">Python</A>,
+   <A HREF="feasopt_vb_vb.html#subsubsection:feasopt_vb.vb">VB</A>.
+</LI>
+<LI><B>lpmethod</B> - Demonstrates the use of different LP algorithms.
+  Reads a continuous model from a file and solves it using multiple
+  algorithms, reporting which is the quickest for that model.
+   <A HREF="lpmethod_c_c.html#subsubsection:lpmethod_c.c">C</A>,
+   <A HREF="lpmethod_cpp_cpp.html#subsubsection:lpmethod_c++.cpp">C++</A>,
+   <A HREF="lpmethod_cs_cs.html#subsubsection:lpmethod_cs.cs">C#</A>,
+   <A HREF="lpmethod_java.html#subsubsection:Lpmethod.java">Java</A>,
+   <A HREF="lpmethod_py.html#subsubsection:lpmethod.py">Python</A>,
+   <A HREF="lpmethod_vb_vb.html#subsubsection:lpmethod_vb.vb">VB</A>.
+</LI>
+<LI><B>lpmod</B> - Demonstrates the use of advanced starts in LP.
+  Reads a continuous model from a file, solves it, and
+  then modifies one variable bound.  The resulting model is then
+  solved in two different ways: starting from the solution of the
+  original model, or restarting from scratch.
+   <A HREF="lpmod_c_c.html#subsubsection:lpmod_c.c">C</A>,
+   <A HREF="lpmod_cpp_cpp.html#subsubsection:lpmod_c++.cpp">C++</A>,
+   <A HREF="lpmod_cs_cs.html#subsubsection:lpmod_cs.cs">C#</A>,
+   <A HREF="lpmod_java.html#subsubsection:Lpmod.java">Java</A>,
+   <A HREF="lpmod_py.html#subsubsection:lpmod.py">Python</A>,
+   <A HREF="lpmod_vb_vb.html#subsubsection:lpmod_vb.vb">VB</A>.
+</LI>
+<LI><B>params</B> - Demonstrates the use of Gurobi parameters.
+  Reads a MIP model from a file, and then spends 5
+  seconds solving the model with each of four different values of the
+  <code>MIPFocus</code> parameter.  It compares the optimality gaps for
+  the four different runs, and continues with the <code>MIPFocus</code>
+  value that produced the smallest gap.
+   <A HREF="params_c_c.html#subsubsection:params_c.c">C</A>,
+   <A HREF="params_cpp_cpp.html#subsubsection:params_c++.cpp">C++</A>,
+   <A HREF="params_cs_cs.html#subsubsection:params_cs.cs">C#</A>,
+   <A HREF="params_java.html#subsubsection:Params.java">Java</A>,
+   <A HREF="params_py.html#subsubsection:params.py">Python</A>,
+   <A HREF="params_vb_vb.html#subsubsection:params_vb.vb">VB</A>.
+</LI>
+<LI><B>sensitivity</B> - MIP sensitivity analysis.  Reads a MIP
+  model, solves it, and then computes the objective impact of fixing
+  each binary variable in the model to 0 or 1.  Demonstrates simple
+  MIP model modification by changing variable bounds.
+   <A HREF="sensitivity_c_c.html#subsubsection:sensitivity_c.c">C</A>,
+   <A HREF="sensitivity_cpp_cpp.html#subsubsection:sensitivity_c++.cpp">C++</A>,
+   <A HREF="sensitivity_cs_cs.html#subsubsection:sensitivity_cs.cs">C#</A>,
+   <A HREF="sensitivity_java.html#subsubsection:Sensitivity.java">Java</A>,
+   <A HREF="sensitivity_py.html#subsubsection:sensitivity.py">Python</A>,
+   <A HREF="sensitivity_vb_vb.html#subsubsection:sensitivity_vb.vb">VB</A>.
+</LI>
+<LI><B>tune</B> - Uses the parameter tuning tool to search for
+  improved parameter settings for a model.
+   <A HREF="tune_c_c.html#subsubsection:tune_c.c">C</A>,
+   <A HREF="tune_cpp_cpp.html#subsubsection:tune_c++.cpp">C++</A>,
+   <A HREF="tune_cs_cs.html#subsubsection:tune_cs.cs">C#</A>,
+   <A HREF="tune_java.html#subsubsection:Tune.java">Java</A>,
+   <A HREF="tune_py.html#subsubsection:tune.py">Python</A>,
+   <A HREF="tune_vb_vb.html#subsubsection:tune_vb.vb">VB</A>.
+</LI>
+<LI><B>fixanddive</B> - Implements a simple MIP heuristic.  It
+  reads a MIP model from a file, relaxes the integrality conditions,
+  and then solves the relaxation.  It then chooses a set of integer
+  variables that take integer or nearly integer values in the
+  relaxation, fixes them to the nearest integer, and solves the
+  relaxation again.  This process is repeated until the relaxation is
+  either integer feasible or linearly infeasible.  The example
+  demonstrates different types of model modification (relaxing
+  integrality conditions, changing variable bounds, etc.).
+   <A HREF="fixanddive_c_c.html#subsubsection:fixanddive_c.c">C</A>,
+   <A HREF="fixanddive_cpp_cpp.html#subsubsection:fixanddive_c++.cpp">C++</A>,
+   <A HREF="fixanddive_cs_cs.html#subsubsection:fixanddive_cs.cs">C#</A>,
+   <A HREF="fixanddive_java.html#subsubsection:Fixanddive.java">Java</A>,
+   <A HREF="fixanddive_py.html#subsubsection:fixanddive.py">Python</A>,
+   <A HREF="fixanddive_vb_vb.html#subsubsection:fixanddive_vb.vb">VB</A>.
+</LI>
+</UL>
+
+<P>
+<SPAN  CLASS="textbf">More advanced features</SPAN>
+
+<P>
+
+<UL>
+<LI><B>tsp</B> - Solves a traveling salesman problem using lazy
+  constraints.
+   <A HREF="tsp_c_c.html#subsubsection:tsp_c.c">C</A>,
+   <A HREF="tsp_cpp_cpp.html#subsubsection:tsp_c++.cpp">C++</A>,
+   <A HREF="tsp_cs_cs.html#subsubsection:tsp_cs.cs">C#</A>,
+   <A HREF="tsp_java.html#subsubsection:Tsp.java">Java</A>,
+   <A HREF="tsp_py.html#subsubsection:tsp.py">Python</A>,
+   <A HREF="tsp_vb_vb.html#subsubsection:tsp_vb.vb">VB</A>.
+</LI>
+<LI><B>callback</B> - Demonstrates the use of Gurobi callbacks.
+   <A HREF="callback_c_c.html#subsubsection:callback_c.c">C</A>,
+   <A HREF="callback_cpp_cpp.html#subsubsection:callback_c++.cpp">C++</A>,
+   <A HREF="callback_cs_cs.html#subsubsection:callback_cs.cs">C#</A>,
+   <A HREF="callback_java.html#subsubsection:Callback.java">Java</A>,
+   <A HREF="callback_py.html#subsubsection:callback.py">Python</A>,
+   <A HREF="callback_vb_vb.html#subsubsection:callback_vb.vb">VB</A>.
+</LI>
+</UL>
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html220"
+  HREF="load_and_solve_a_model_fro.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html218"
+  HREF="example_tour.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html212"
+  HREF="example_tour.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html221"
+  HREF="load_and_solve_a_model_fro.html">Load and solve a</A>
+<B> Up:</B> <A NAME="tex2html219"
+  HREF="example_tour.html">Example tour</A>
+<B> Previous:</B> <A NAME="tex2html213"
+  HREF="example_tour.html">Example tour</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

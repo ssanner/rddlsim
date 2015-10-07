@@ -1,0 +1,111 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>QuadExpr.addTerms()</TITLE>
+<META NAME="description" CONTENT="QuadExpr.addTerms()">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="py_quadexpr_clear.html">
+<LINK REL="previous" HREF="py_quadexpr_addconstant.html">
+<LINK REL="up" HREF="py_quadexpr.html">
+<LINK REL="next" HREF="py_quadexpr_clear.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html8788"
+  HREF="py_quadexpr_clear.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html8786"
+  HREF="py_quadexpr.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html8780"
+  HREF="py_quadexpr_addconstant.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html8789"
+  HREF="py_quadexpr_clear.html">QuadExpr.clear()</A>
+<B> Up:</B> <A NAME="tex2html8787"
+  HREF="py_quadexpr.html">QuadExpr</A>
+<B> Previous:</B> <A NAME="tex2html8781"
+  HREF="py_quadexpr_addconstant.html">QuadExpr.addConstant()</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000108400000000000000"></A>
+<A NAME="pythonmethod:QuadExpr.addTerms"></A>
+<BR>
+QuadExpr.addTerms()
+</H3>
+<BIG CLASS="LARGE">
+<FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">addTerms</SPAN></FONT></BIG> ( coeffs, vars, vars2=None )
+
+<P>
+Add new linear or quadratic terms into a quadratic expression.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">coeffs</SPAN>: Coefficients for new terms; either a list of
+  coefficients or a single coefficient.  The arguments must have
+  the same size.
+
+<P>
+ <SPAN  CLASS="textbf">vars</SPAN>: Variables for new terms; either a list of
+  variables or a single variable.  The arguments must have
+  the same size.
+
+<P>
+ <SPAN  CLASS="textbf">vars2 (optional)</SPAN>: Variables for new quadratic terms; either a list of
+  variables or a single variable.  Only present when you are adding quadratic
+  terms.  The arguments must have the same size.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Example usage:</SPAN></BIG><PRE>
+  expr.addTerms(1.0, x)
+  expr.addTerms([2.0, 3.0], [y, z])
+  expr.addTerms([2.0, 3.0], [x, y], [y, z])
+</PRE>
+
+<P>
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html8788"
+  HREF="py_quadexpr_clear.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html8786"
+  HREF="py_quadexpr.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html8780"
+  HREF="py_quadexpr_addconstant.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html8789"
+  HREF="py_quadexpr_clear.html">QuadExpr.clear()</A>
+<B> Up:</B> <A NAME="tex2html8787"
+  HREF="py_quadexpr.html">QuadExpr</A>
+<B> Previous:</B> <A NAME="tex2html8781"
+  HREF="py_quadexpr_addconstant.html">QuadExpr.addConstant()</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

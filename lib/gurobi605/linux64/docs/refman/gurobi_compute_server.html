@@ -1,0 +1,204 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Gurobi Compute Server</TITLE>
+<META NAME="description" CONTENT="Gurobi Compute Server">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="previous" HREF="distributed_parallel_algor.html">
+<LINK REL="up" HREF="refman.html">
+<LINK REL="next" HREF="setting_up_and_administeri2.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html12544"
+  HREF="setting_up_and_administeri2.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html12542"
+  HREF="refman.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html12538"
+  HREF="distributed_algorithm_cons.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html12545"
+  HREF="setting_up_and_administeri2.html">Setting Up and Administering</A>
+<B> Up:</B> <A NAME="tex2html12543"
+  HREF="refman.html">Gurobi Optimizer Reference Manual</A>
+<B> Previous:</B> <A NAME="tex2html12539"
+  HREF="distributed_algorithm_cons.html">Distributed Algorithm Considerations</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION000250000000000000000"></A>
+<A NAME="sec:ComputeServer"></A>
+<BR>
+Gurobi Compute Server
+</H1>
+
+<P>
+This section describes Gurobi Compute Server,
+an optional component of
+<A HREF="gurobi_remote_services.html#sec:RemoteServices">Gurobi Remote Services</A>
+that allows you to choose one or more servers to run your Gurobi
+computations.  You can then offload the work associated with solving
+optimization problems onto these servers from as many client machines
+as you like:
+<DIV ALIGN="CENTER">
+<IMG
+  WIDTH="334" HEIGHT="281" ALIGN="BOTTOM" BORDER="0"
+ SRC="./compute_server.png"
+ ALT="Image compute_server">
+</DIV>
+<P>
+<DIV ALIGN="CENTER">
+</DIV>
+
+<P>
+When considering a program that uses Gurobi Compute Server, you can
+think of the optimization as being split into two parts.
+A client program builds an optimization model using any of
+the standard Gurobi interfaces (C, C++, Java, .NET, Python, MATLAB,
+R).  This happens in the left box of this figure:
+<DIV ALIGN="CENTER">
+<IMG
+  WIDTH="805" HEIGHT="445" ALIGN="BOTTOM" BORDER="0"
+ SRC="./csapi.png"
+ ALT="Image csapi">
+</DIV>
+<P>
+<DIV ALIGN="CENTER">
+</DIV>
+
+<P>
+All of our API's sit on top of our C API.  The C API is in charge of
+building the internal model data structures, invoking the Gurobi
+algorithms, retrieving solution information, etc.  When running Gurobi
+on a single machine, the C API would build the necessary data
+structures in memory.  The Gurobi algorithms would take the data
+stored in these data structures as input, and produce solution data as
+output.
+
+<P>
+When running on a Compute Server, the C API instead passes model data
+to the server, where it is stored.  When the Gurobi algorithms are
+invoked, the C API simply passes a message to the server, indicating
+that optimization should be performed on the stored model data.
+Solution data is computed and stored on the server.  When the client
+program later queries the solution information, the client sends a
+message to the server in order to obtain the requested data.  All
+communication between the client and server happens behind the scenes,
+
+<P>
+In other words, the overall process can be viewed as happening in
+three phases:
+<DIV ALIGN="CENTER">
+<IMG
+  WIDTH="569" HEIGHT="439" ALIGN="BOTTOM" BORDER="0"
+ SRC="./cs_steps.png"
+ ALT="Image cs_steps">
+</DIV>
+<P>
+<DIV ALIGN="CENTER">
+</DIV>
+Of course, programs that use the Gurobi API's in more complex ways
+would have additional steps.
+
+<P>
+Gurobi Compute Servers support queuing and load balancing.  You can
+set a limit on the number of simultaneous jobs each Compute Server
+will run.  When this limit has been reached, subsequent jobs will be
+queued.  If you have multiple Compute Servers, the current job load is
+automatically balanced among the available servers.
+
+<P>
+<DIV ALIGN="CENTER">
+<IMG
+  WIDTH="468" HEIGHT="335" ALIGN="BOTTOM" BORDER="0"
+ SRC="./cs_queue.png"
+ ALT="Image cs_queue">
+</DIV>
+<P>
+<DIV ALIGN="CENTER">
+</DIV>
+
+<P>
+By default, the Gurobi job queue is serviced in a First-In, First-Out
+(FIFO) fashion.  However, jobs can be given different priorities
+(through a client license file, or through API calls).  Jobs with
+higher priorities are then selected from the queue before jobs with
+lower priorities.
+
+<P>
+While the Gurobi Compute Server is meant to be transparent to both
+developers and users, there are a few aspects of Compute Server usage
+that you do need to be aware of.  These include performance
+considerations, APIs for configuring client programs, and a few
+features that are not supported for Compute Server applications.
+Please proceeed to <A HREF="compute_server_usage.html#sec:CSUsage">Compute Server usage</A>
+for details.
+
+<P>
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html12546"
+  HREF="setting_up_and_administeri2.html">Setting Up and Administering a Gurobi Compute Server</A>
+<LI><A NAME="tex2html12547"
+  HREF="compute_server_usage.html">Compute Server Usage</A>
+<UL>
+<LI><A NAME="tex2html12548"
+  HREF="client_configuration.html">Client Configuration</A>
+<LI><A NAME="tex2html12549"
+  HREF="job_priorities.html">Job Priorities</A>
+<LI><A NAME="tex2html12550"
+  HREF="performance_considerations.html">Performance Considerations on a Wide-Area Network (WAN)</A>
+<LI><A NAME="tex2html12551"
+  HREF="callbacks.html">Callbacks</A>
+<LI><A NAME="tex2html12552"
+  HREF="developing_for_compute_ser.html">Developing for Compute Server</A>
+<LI><A NAME="tex2html12553"
+  HREF="acknowledgement_of_3rd_par.html">Acknowledgement of 3rd Party Icons</A>
+</UL></UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html12544"
+  HREF="setting_up_and_administeri2.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html12542"
+  HREF="refman.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html12538"
+  HREF="distributed_algorithm_cons.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html12545"
+  HREF="setting_up_and_administeri2.html">Setting Up and Administering</A>
+<B> Up:</B> <A NAME="tex2html12543"
+  HREF="refman.html">Gurobi Optimizer Reference Manual</A>
+<B> Previous:</B> <A NAME="tex2html12539"
+  HREF="distributed_algorithm_cons.html">Distributed Algorithm Considerations</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

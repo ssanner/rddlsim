@@ -1,0 +1,164 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>feasopt_c++.cpp</TITLE>
+<META NAME="description" CONTENT="feasopt_c++.cpp">
+<META NAME="keywords" CONTENT="examples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="examples.css">
+
+<LINK REL="next" HREF="fixanddive_cpp_cpp.html">
+<LINK REL="previous" HREF="facility_cpp_cpp.html">
+<LINK REL="up" HREF="cpp_examples.html">
+<LINK REL="next" HREF="fixanddive_cpp_cpp.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html845"
+  HREF="fixanddive_cpp_cpp.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html843"
+  HREF="cpp_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html837"
+  HREF="facility_cpp_cpp.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html846"
+  HREF="fixanddive_cpp_cpp.html">fixanddive_c++.cpp</A>
+<B> Up:</B> <A NAME="tex2html844"
+  HREF="cpp_examples.html">C++ Examples</A>
+<B> Previous:</B> <A NAME="tex2html838"
+  HREF="facility_cpp_cpp.html">facility_c++.cpp</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00022500000000000000"></A>
+<A NAME="subsubsection:feasopt_c++.cpp"></A>
+<BR>
+feasopt_c++.cpp
+</H3>
+
+<P>
+<BR>
+<PRE  CLASS="verbatim">/* Copyright 2014, Gurobi Optimization, Inc. */
+
+/* This example reads a MIP model from a file, adds artificial
+   variables to each constraint, and then minimizes the sum of the
+   artificial variables.  A solution with objective zero corresponds
+   to a feasible solution to the input model.
+   We can also use FeasRelax feature to do it. In this example, we
+   use minrelax=1, i.e. optimizing the returned model finds a solution
+   that minimizes the original objective, but only from among those
+   solutions that minimize the sum of the artificial variables. */
+
+#include "gurobi_c++.h"
+using namespace std;
+
+int
+main(int argc,
+     char *argv[])
+{
+  if (argc &lt; 2)
+  {
+    cout &lt;&lt; "Usage: feasopt_c++ filename" &lt;&lt; endl;
+    return 1;
+  }
+
+  GRBEnv* env = 0;
+  GRBConstr* c = 0;
+  try
+  {
+    env = new GRBEnv();
+    GRBModel feasmodel = GRBModel(*env, argv[1]);
+
+    // Create a copy to use FeasRelax feature later */
+    GRBModel feasmodel1 = GRBModel(feasmodel);
+
+    // clear objective
+    feasmodel.setObjective(GRBLinExpr(0.0));
+
+    // add slack variables
+    c = feasmodel.getConstrs();
+    for (int i = 0; i &lt; feasmodel.get(GRB_IntAttr_NumConstrs); ++i)
+    {
+      char sense = c[i].get(GRB_CharAttr_Sense);
+      if (sense != '&gt;')
+      {
+        double coef = -1.0;
+        feasmodel.addVar(0.0, GRB_INFINITY, 1.0, GRB_CONTINUOUS, 1,
+                         &amp;c[i], &amp;coef, "ArtN_" +
+                         c[i].get(GRB_StringAttr_ConstrName));
+      }
+      if (sense != '&lt;')
+      {
+        double coef = 1.0;
+        feasmodel.addVar(0.0, GRB_INFINITY, 1.0, GRB_CONTINUOUS, 1,
+                         &amp;c[i], &amp;coef, "ArtP_" +
+                         c[i].get(GRB_StringAttr_ConstrName));
+      }
+    }
+    feasmodel.update();
+
+    // optimize modified model
+    feasmodel.write("feasopt.lp");
+    feasmodel.optimize();
+
+    // use FeasRelax feature */
+    feasmodel1.feasRelax(GRB_FEASRELAX_LINEAR, true, false, true);
+    feasmodel1.write("feasopt1.lp");
+    feasmodel1.optimize();
+  }
+  catch (GRBException e)
+  {
+    cout &lt;&lt; "Error code = " &lt;&lt; e.getErrorCode() &lt;&lt; endl;
+    cout &lt;&lt; e.getMessage() &lt;&lt; endl;
+  }
+  catch (...)
+  {
+    cout &lt;&lt; "Error during optimization" &lt;&lt; endl;
+  }
+
+  delete[] c;
+  delete env;
+  return 0;
+}
+</PRE>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html845"
+  HREF="fixanddive_cpp_cpp.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html843"
+  HREF="cpp_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html837"
+  HREF="facility_cpp_cpp.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html846"
+  HREF="fixanddive_cpp_cpp.html">fixanddive_c++.cpp</A>
+<B> Up:</B> <A NAME="tex2html844"
+  HREF="cpp_examples.html">C++ Examples</A>
+<B> Previous:</B> <A NAME="tex2html838"
+  HREF="facility_cpp_cpp.html">facility_c++.cpp</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

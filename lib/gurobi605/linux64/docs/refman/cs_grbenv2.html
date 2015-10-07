@@ -1,0 +1,248 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>GRBEnv()</TITLE>
+<META NAME="description" CONTENT="GRBEnv()">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="cs_grbenv_dispose.html">
+<LINK REL="previous" HREF="cs_grbenv.html">
+<LINK REL="up" HREF="cs_grbenv.html">
+<LINK REL="next" HREF="cs_grbenv_dispose.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html6034"
+  HREF="cs_grbenv_dispose.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html6032"
+  HREF="cs_grbenv.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html6026"
+  HREF="cs_grbenv.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html6035"
+  HREF="cs_grbenv_dispose.html">GRBEnv.Dispose()</A>
+<B> Up:</B> <A NAME="tex2html6033"
+  HREF="cs_grbenv.html">GRBEnv</A>
+<B> Previous:</B> <A NAME="tex2html6027"
+  HREF="cs_grbenv.html">GRBEnv</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00081100000000000000"></A>
+<A NAME="dotnetmethod:GRBEnv"></A>
+<BR>
+GRBEnv()
+</H3>
+
+<P>
+Environment constructor.
+
+<P>
+Constructor for <code>GRBEnv</code> object.  If the constructor is called with no
+arguments, no log file will be written for the environment.
+
+<P>
+You have the option of constructing either a local environment, which
+solves Gurobi models on the local machine, or a client environment for
+a Gurobi compute server, which will solve Gurobi models on a server
+machine.  For the latter, choose the signature that allows you to
+specify the names of the Gurobi compute servers and the priority of the
+associated job.
+
+<P>
+Note that the <code>GRBEnv</code> constructor will check the current
+working directory for a file named <code>gurobi.env</code>, and it will
+attempt to read parameter settings from this file if it exists.  The
+file should be in <A HREF="prm_format.html#format:PRM">PRM</A> format (briefly, each
+line should contain a parameter name, followed by the desired value
+for that parameter).
+
+<P>
+In general, you should aim to create a single Gurobi environment
+object in your program, even if you plan to work with multiple models.
+Reusing one environment is much more efficient than creating and
+destroying multiple environments.
+
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">GRBEnv</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">GRBEnv</SPAN></FONT></BIG> ( )</TD>
+</TR>
+</TABLE>
+
+<UL>
+
+<P>
+Create a Gurobi environment (with logging disabled).
+
+<P>
+
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Return value:</SPAN></BIG>
+
+<P>
+An environment object (with no associated log file).
+
+<P>
+</LI>
+</UL>
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">GRBEnv</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">GRBEnv</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT">string</TD>
+<TD ALIGN="LEFT">logFileName )</TD>
+</TR>
+</TABLE>
+
+<UL>
+
+<P>
+Create a Gurobi environment (with logging enabled).
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">logFileName</SPAN>: The desired log file name.
+
+<P>
+
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Return value:</SPAN></BIG>
+
+<P>
+An environment object.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">GRBEnv</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">GRBEnv</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT">string</TD>
+<TD ALIGN="LEFT">logFileName,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">string</TD>
+<TD ALIGN="LEFT">computeserver,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">port,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">string</TD>
+<TD ALIGN="LEFT">password,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">priority,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">double</TD>
+<TD ALIGN="LEFT">timeout )</TD>
+</TR>
+</TABLE>
+
+<UL>
+Create a client Gurobi environment on a compute server.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">logFileName</SPAN>: The name of the log file for this environment.
+  Pass an empty string for no log file.
+
+<P>
+ <SPAN  CLASS="textbf">computeserver</SPAN>: A comma-separated list of Gurobi compute servers.
+  You can refer to compute server machines using their names or their IP
+  addresses.
+
+<P>
+ <SPAN  CLASS="textbf">port</SPAN>: The port number used to connect to the compute server.
+  You should pass a -1 value, which indicates that the default
+  port should be used, unless your server administrator has changed
+  our recommended port settings.
+
+<P>
+ <SPAN  CLASS="textbf">password</SPAN>: The password for gaining access to the specified compute servers.  Pass an empty string if no password is required.
+
+<P>
+ <SPAN  CLASS="textbf">priority</SPAN>: The priority of the job.  Priorities must
+  be between -100 and 100, with a default value of 0
+  (by convention).  Higher priority jobs are
+  chosen from the server job queue before lower priority jobs.  A
+  job with priority 100 runs immediately, bypassing the job queue
+  and ignoring the job limit on the server. You should
+  exercise caution with priority 100 jobs, since they can
+  severely overload a server, which can cause jobs to fail, and in
+  extreme cases can cause the server to crash.
+
+<P>
+ <SPAN  CLASS="textbf">timeout</SPAN>: Job timeout (in seconds).  If the job doesn't reach
+  the front of the queue before the specified timeout, the constructor
+  will throw a <TT>JOB_REJECTED</TT> exception.  Use a negative value to
+  indicate that the call should never timeout.
+
+<P>
+
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Return value:</SPAN></BIG>
+
+<P>
+An environment object.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html6034"
+  HREF="cs_grbenv_dispose.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html6032"
+  HREF="cs_grbenv.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html6026"
+  HREF="cs_grbenv.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html6035"
+  HREF="cs_grbenv_dispose.html">GRBEnv.Dispose()</A>
+<B> Up:</B> <A NAME="tex2html6033"
+  HREF="cs_grbenv.html">GRBEnv</A>
+<B> Previous:</B> <A NAME="tex2html6027"
+  HREF="cs_grbenv.html">GRBEnv</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

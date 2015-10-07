@@ -1,0 +1,131 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>GRBgetintparam</TITLE>
+<META NAME="description" CONTENT="GRBgetintparam">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="c_grbgetstrparam.html">
+<LINK REL="previous" HREF="c_grbgetdblparam.html">
+<LINK REL="up" HREF="c_parameter_management_and.html">
+<LINK REL="next" HREF="c_grbgetstrparam.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html2196"
+  HREF="c_grbgetstrparam.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html2194"
+  HREF="c_parameter_management_and.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html2188"
+  HREF="c_grbgetdblparam.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html2197"
+  HREF="c_grbgetstrparam.html">GRBgetstrparam</A>
+<B> Up:</B> <A NAME="tex2html2195"
+  HREF="c_parameter_management_and.html">Parameter Management and Tuning</A>
+<B> Previous:</B> <A NAME="tex2html2189"
+  HREF="c_grbgetdblparam.html">GRBgetdblparam</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00027400000000000000"></A>
+<A NAME="routine:GRBgetintparam"></A>
+<BR>
+GRBgetintparam
+</H3>
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">GRBgetintparam</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT">GRBenv</TD>
+<TD ALIGN="LEFT">*env,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">const char</TD>
+<TD ALIGN="LEFT">*paramname,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">*valueP )</TD>
+</TR>
+</TABLE>
+
+<P>
+Retrieve the value of an integer-valued parameter.
+
+<P>
+
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Return value:</SPAN></BIG>
+
+<P>
+A non-zero return value indicates that a problem occurred while retrieving the parameter.
+Refer to the <A HREF="error_codes.html#sec:ErrorCodes">Error Code</A> table for a
+list of possible return values.  Details on the error can be obtained
+by calling <A HREF="c_grbgeterrormsg.html#routine:GRBgeterrormsg">GRBgeterrormsg</A>.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">env</SPAN>: The environment whose parameter value is being queried.
+
+<P>
+ <SPAN  CLASS="textbf">paramname</SPAN>: The name of the parameter. 
+Please consult the <A HREF="parameters.html#sec:Parameters">parameter section</A>
+for a complete list of Gurobi parameters, including descriptions of
+their purposes and their minimum, maximum, and default values.
+
+<P>
+ <SPAN  CLASS="textbf">valueP</SPAN>: The location in which the current value of the
+  requested parameter should be placed.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Example usage:</SPAN></BIG><PRE>
+  int limit;
+  error = GRBgetintparam(GRBgetenv(model), "SolutionLimit", &amp;limit);
+</PRE>
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html2196"
+  HREF="c_grbgetstrparam.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html2194"
+  HREF="c_parameter_management_and.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html2188"
+  HREF="c_grbgetdblparam.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html2197"
+  HREF="c_grbgetstrparam.html">GRBgetstrparam</A>
+<B> Up:</B> <A NAME="tex2html2195"
+  HREF="c_parameter_management_and.html">Parameter Management and Tuning</A>
+<B> Previous:</B> <A NAME="tex2html2189"
+  HREF="c_grbgetdblparam.html">GRBgetdblparam</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

@@ -1,0 +1,176 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>lpmod_vb.vb</TITLE>
+<META NAME="description" CONTENT="lpmod_vb.vb">
+<META NAME="keywords" CONTENT="examples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="examples.css">
+
+<LINK REL="next" HREF="mip1_vb_vb.html">
+<LINK REL="previous" HREF="lpmethod_vb_vb.html">
+<LINK REL="up" HREF="visual_basic_examples.html">
+<LINK REL="next" HREF="mip1_vb_vb.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html1701"
+  HREF="mip1_vb_vb.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1699"
+  HREF="visual_basic_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1693"
+  HREF="lpmethod_vb_vb.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1702"
+  HREF="mip1_vb_vb.html">mip1_vb.vb</A>
+<B> Up:</B> <A NAME="tex2html1700"
+  HREF="visual_basic_examples.html">Visual Basic Examples</A>
+<B> Previous:</B> <A NAME="tex2html1694"
+  HREF="lpmethod_vb_vb.html">lpmethod_vb.vb</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00025900000000000000"></A>
+<A NAME="subsubsection:lpmod_vb.vb"></A>
+<BR>
+lpmod_vb.vb
+</H3>
+
+<P>
+<BR>
+<PRE  CLASS="verbatim">' Copyright 2014, Gurobi Optimization, Inc.
+'
+' This example reads an LP model from a file and solves it.
+' If the model can be solved, then it finds the smallest positive variable,
+' sets its upper bound to zero, and resolves the model two ways:
+' first with an advanced start, then without an advanced start
+' (i.e. from scratch).
+
+Imports System
+Imports Gurobi
+
+Class lpmod_vb
+    Shared Sub Main(ByVal args As String())
+
+        If args.Length &lt; 1 Then
+            Console.WriteLine("Usage: lpmod_vb filename")
+            Return
+        End If
+
+        Try
+            ' Read model and determine whether it is an LP
+            Dim env As New GRBEnv()
+            Dim model As New GRBModel(env, args(0))
+            If model.Get(GRB.IntAttr.IsMIP) &lt;&gt; 0 Then
+                Console.WriteLine("The model is not a linear program")
+                Environment.Exit(1)
+            End If
+
+            model.Optimize()
+
+            Dim status As Integer = model.Get(GRB.IntAttr.Status)
+
+            If (status = GRB.Status.INF_OR_UNBD) OrElse _
+               (status = GRB.Status.INFEASIBLE) OrElse _
+               (status = GRB.Status.UNBOUNDED) Then
+                Console.WriteLine("The model cannot be solved because it is " &amp; _
+                                  "infeasible or unbounded")
+                Environment.Exit(1)
+            End If
+
+            If status &lt;&gt; GRB.Status.OPTIMAL Then
+                Console.WriteLine("Optimization was stopped with status " &amp; status)
+                Environment.Exit(0)
+            End If
+
+            ' Find the smallest variable value
+            Dim minVal As Double = GRB.INFINITY
+            Dim minVar As GRBVar = Nothing
+            For Each v As GRBVar In model.GetVars()
+                Dim sol As Double = v.Get(GRB.DoubleAttr.X)
+                If (sol &gt; 0.0001) AndAlso _
+                   (sol &lt; minVal) AndAlso _
+                   (v.Get(GRB.DoubleAttr.LB) = 0.0) Then
+                    minVal = sol
+                    minVar = v
+                End If
+            Next
+
+            Console.WriteLine(vbLf &amp; "*** Setting " &amp; _
+                              minVar.Get(GRB.StringAttr.VarName) &amp; _
+                              " from " &amp; minVal &amp; " to zero ***" &amp; vbLf)
+            minVar.Set(GRB.DoubleAttr.UB, 0)
+
+            ' Solve from this starting point
+            model.Optimize()
+
+            ' Save iteration &amp; time info
+            Dim warmCount As Double = model.Get(GRB.DoubleAttr.IterCount)
+            Dim warmTime As Double = model.Get(GRB.DoubleAttr.Runtime)
+
+            ' Reset the model and resolve
+            Console.WriteLine(vbLf &amp; "*** Resetting and solving " &amp; _
+                              "without an advanced start ***" &amp; vbLf)
+            model.Reset()
+            model.Optimize()
+
+            Dim coldCount As Double = model.Get(GRB.DoubleAttr.IterCount)
+            Dim coldTime As Double = model.Get(GRB.DoubleAttr.Runtime)
+
+            Console.WriteLine(vbLf &amp; "*** Warm start: " &amp; warmCount &amp; _
+                              " iterations, " &amp; warmTime &amp; " seconds")
+
+            Console.WriteLine("*** Cold start: " &amp; coldCount &amp; " iterations, " &amp; _
+                              coldTime &amp; " seconds")
+
+            ' Dispose of model and env
+            model.Dispose()
+            env.Dispose()
+
+        Catch e As GRBException
+            Console.WriteLine("Error code: " &amp; e.ErrorCode &amp; ". " &amp; e.Message)
+        End Try
+    End Sub
+End Class
+</PRE>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1701"
+  HREF="mip1_vb_vb.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1699"
+  HREF="visual_basic_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1693"
+  HREF="lpmethod_vb_vb.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1702"
+  HREF="mip1_vb_vb.html">mip1_vb.vb</A>
+<B> Up:</B> <A NAME="tex2html1700"
+  HREF="visual_basic_examples.html">Visual Basic Examples</A>
+<B> Previous:</B> <A NAME="tex2html1694"
+  HREF="lpmethod_vb_vb.html">lpmethod_vb.vb</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

@@ -1,0 +1,129 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Sifting Logging</TITLE>
+<META NAME="description" CONTENT="Sifting Logging">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="mip_logging.html">
+<LINK REL="previous" HREF="barrier_logging.html">
+<LINK REL="up" HREF="logging.html">
+<LINK REL="next" HREF="mip_logging.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html12342"
+  HREF="mip_logging.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html12340"
+  HREF="logging.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html12334"
+  HREF="barrier_logging.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html12343"
+  HREF="mip_logging.html">MIP Logging</A>
+<B> Up:</B> <A NAME="tex2html12341"
+  HREF="logging.html">Logging</A>
+<B> Previous:</B> <A NAME="tex2html12335"
+  HREF="barrier_logging.html">Barrier Logging</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION000193000000000000000">
+Sifting Logging</A>
+</H2>
+
+<P>
+Sifting will sometimes be used within the dual simplex method, either
+as a result of an automatic choice by the Gurobi Optimizer or because
+the user selected it through the
+<A HREF="sifting.html#parameter:Sifting">Sifting</A> parameter.  The
+sifting log consists of three sections: the presolve section, the
+sifting progress section, and the summary section.  The first and last
+are identical to those for simplex, so we'll only discuss the middle
+section here.
+
+<P>
+<SPAN  CLASS="textbf">Sifting Progress Section</SPAN>
+
+<P>
+As we mentioned, output for sifting and dual simplex are
+indistinguishable until the progress section begins.  For sifting,
+the progress section begins with a clear indication that sifting
+has been selected:
+<PRE>
+Starting sifting (using dual simplex for sub-problems)...
+</PRE>
+The sifting algorithm performs a number of major iterations, where
+each iteration solves a smaller LP sub-problem.  It uses the result to
+update the current primal and dual solution.  The sifting log prints
+one line per major iteration, with information on the current primal
+and dual objective values:
+<PRE>
+    Iter     Pivots    Primal Obj      Dual Obj        Time
+       0          0     infinity      2.0000000e+01     11s
+       1       4662   1.5220652e+03   2.7034420e+02     12s
+       2       8917   1.3127217e+03   4.6530259e+02     13s
+       3      16601   1.1651147e+03   6.4767742e+02     17s
+       4      30060   1.0881514e+03   7.8842688e+02     29s
+       5      45169   1.0618879e+03   8.8656855e+02     46s
+       6      59566   1.0549766e+03   9.5404159e+02     64s
+       7      73614   1.0540577e+03   1.0172213e+03     82s
+</PRE>
+The first column in the log gives the major iteration number.  The
+second shows the total number of simplex iterations performed in
+solving the sifting sub-problems.  The third and fourth columns show
+the primal and dual objective values for the current solution.  The
+final column shows elapsed runtime.
+
+<P>
+The completion of sifting is indicated with the following
+message:
+<PRE>
+Sifting complete
+</PRE>
+The basis computed by sifting is then handed back to dual simplex, and
+the log from that point forward comes from the dual simplex algorithm.
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html12342"
+  HREF="mip_logging.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html12340"
+  HREF="logging.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html12334"
+  HREF="barrier_logging.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html12343"
+  HREF="mip_logging.html">MIP Logging</A>
+<B> Up:</B> <A NAME="tex2html12341"
+  HREF="logging.html">Logging</A>
+<B> Previous:</B> <A NAME="tex2html12335"
+  HREF="barrier_logging.html">Barrier Logging</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

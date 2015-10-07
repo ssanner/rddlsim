@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>GRBoptimize</TITLE>
+<META NAME="description" CONTENT="GRBoptimize">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="c_grboptimizeasync.html">
+<LINK REL="previous" HREF="c_model_solution.html">
+<LINK REL="up" HREF="c_model_solution.html">
+<LINK REL="next" HREF="c_grboptimizeasync.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html1545"
+  HREF="c_grboptimizeasync.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1543"
+  HREF="c_model_solution.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1537"
+  HREF="c_model_solution.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1546"
+  HREF="c_grboptimizeasync.html">GRBoptimizeasync</A>
+<B> Up:</B> <A NAME="tex2html1544"
+  HREF="c_model_solution.html">Model Solution</A>
+<B> Previous:</B> <A NAME="tex2html1538"
+  HREF="c_model_solution.html">Model Solution</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00023100000000000000"></A>
+<A NAME="routine:GRBoptimize"></A>
+<BR>
+GRBoptimize
+</H3>
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">GRBoptimize</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT">GRBmodel</TD>
+<TD ALIGN="LEFT">*model )</TD>
+</TR>
+</TABLE>
+
+<P>
+Optimize a model.  The algorithm used for the optimization depends on
+the model type (simplex or barrier for a continuous model;
+branch-and-cut for a MIP model).
+
+<P>
+
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Return value:</SPAN></BIG>
+
+<P>
+A non-zero return value indicates that a problem occurred while optimizing the model.
+Refer to the <A HREF="error_codes.html#sec:ErrorCodes">Error Code</A> table for a
+list of possible return values.  Details on the error can be obtained
+by calling <A HREF="c_grbgeterrormsg.html#routine:GRBgeterrormsg">GRBgeterrormsg</A>.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">model</SPAN>: The model to optimize.  Note that this routine only
+  reports whether the optimization ran into an error.  Query the
+  <TT>Status</TT> attribute to determine the result of the
+  optimization (see the <A HREF="attributes.html#sec:Attributes">Attributes</A>
+  section for more information on querying attributes).
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Example usage:</SPAN></BIG><PRE>
+  error = GRBoptimize(model);
+</PRE>
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1545"
+  HREF="c_grboptimizeasync.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1543"
+  HREF="c_model_solution.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1537"
+  HREF="c_model_solution.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1546"
+  HREF="c_grboptimizeasync.html">GRBoptimizeasync</A>
+<B> Up:</B> <A NAME="tex2html1544"
+  HREF="c_model_solution.html">Model Solution</A>
+<B> Previous:</B> <A NAME="tex2html1538"
+  HREF="c_model_solution.html">Model Solution</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

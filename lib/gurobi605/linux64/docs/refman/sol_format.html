@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>SOL format</TITLE>
+<META NAME="description" CONTENT="SOL format">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="prm_format.html">
+<LINK REL="previous" HREF="bas_format.html">
+<LINK REL="up" HREF="model_file_formats.html">
+<LINK REL="next" HREF="prm_format.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html12289"
+  HREF="prm_format.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html12287"
+  HREF="model_file_formats.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html12281"
+  HREF="bas_format.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html12290"
+  HREF="prm_format.html">PRM format</A>
+<B> Up:</B> <A NAME="tex2html12288"
+  HREF="model_file_formats.html">Model File Formats</A>
+<B> Previous:</B> <A NAME="tex2html12282"
+  HREF="bas_format.html">BAS format</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION000189000000000000000"></A>
+<A NAME="format:SOL"></A>
+<BR>
+SOL format
+</H2>
+
+<P>
+A Gurobi solution (SOL) file is used to output a solution vector.  It
+can be written (using <A HREF="c_grbwrite.html#routine:GRBwrite">GRBwrite</A>, for
+example) whenever a solution is available.
+
+<P>
+The file consists of variable-value pairs, each on its own line.
+The file contains one line for each variable in the model.
+The following is a simple example:
+<PRE>
+# Solution file
+x  1.0
+y  0.5
+z  0.2
+</PRE>
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html12289"
+  HREF="prm_format.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html12287"
+  HREF="model_file_formats.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html12281"
+  HREF="bas_format.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html12290"
+  HREF="prm_format.html">PRM format</A>
+<B> Up:</B> <A NAME="tex2html12288"
+  HREF="model_file_formats.html">Model File Formats</A>
+<B> Previous:</B> <A NAME="tex2html12282"
+  HREF="bas_format.html">BAS format</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

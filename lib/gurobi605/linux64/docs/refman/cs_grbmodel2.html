@@ -1,0 +1,192 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>GRBModel()</TITLE>
+<META NAME="description" CONTENT="GRBModel()">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="cs_grbmodel_addconstr.html">
+<LINK REL="previous" HREF="cs_grbmodel.html">
+<LINK REL="up" HREF="cs_grbmodel.html">
+<LINK REL="next" HREF="cs_grbmodel_addconstr.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html6198"
+  HREF="cs_grbmodel_addconstr.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html6196"
+  HREF="cs_grbmodel.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html6190"
+  HREF="cs_grbmodel.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html6199"
+  HREF="cs_grbmodel_addconstr.html">GRBModel.AddConstr()</A>
+<B> Up:</B> <A NAME="tex2html6197"
+  HREF="cs_grbmodel.html">GRBModel</A>
+<B> Previous:</B> <A NAME="tex2html6191"
+  HREF="cs_grbmodel.html">GRBModel</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00082100000000000000"></A>
+<A NAME="dotnetmethod:GRBModel"></A>
+<BR>
+GRBModel()
+</H3>
+
+<P>
+Constructor for <code>GRBModel</code>.  The simplest version creates an
+empty model.  You can then call
+<A HREF="cs_grbmodel_addvar.html#dotnetmethod:GRBModel.AddVar">AddVar</A> and
+<A HREF="cs_grbmodel_addconstr.html#dotnetmethod:GRBModel.AddConstr">AddConstr</A> to populate
+the model with variables and constraints.  The more complex
+constructors can read a model from a file, or make a copy of an
+existing model.
+
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">GRBModel</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">GRBModel</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT">GRBEnv</TD>
+<TD ALIGN="LEFT">env )</TD>
+</TR>
+</TABLE>
+
+<UL>
+
+<P>
+Model constructor.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">env</SPAN>: Environment for new model.
+
+<P>
+
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Return value:</SPAN></BIG>
+
+<P>
+New model object.  Model initially contains no variables
+or constraints.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">GRBModel</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">GRBModel</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT">GRBEnv</TD>
+<TD ALIGN="LEFT">env,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">string</TD>
+<TD ALIGN="LEFT">filename )</TD>
+</TR>
+</TABLE>
+
+<UL>
+Read a model from a file.  Note that the type of the file is encoded
+in the file name suffix.  Valid suffixes are <code>.mps</code>, <code>.rew</code>,
+<code>.lp</code>, <code>.rlp</code>, or <code>.ilp</code>.  The files can be compressed,
+so additional suffixes of <code>.zip</code>, <code>.gz</code>, <code>.bz2</code>, or
+<code>.7z</code> are accepted.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">env</SPAN>: Environment for new model.
+
+<P>
+ <SPAN  CLASS="textbf">modelname</SPAN>: Name of the file containing the model.
+
+<P>
+
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Return value:</SPAN></BIG>
+
+<P>
+New model object.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">GRBModel</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">GRBModel</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT">GRBModel</TD>
+<TD ALIGN="LEFT">model )</TD>
+</TR>
+</TABLE>
+
+<UL>
+
+<P>
+Create a copy of an existing model.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">model</SPAN>: Model to copy.
+
+<P>
+
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Return value:</SPAN></BIG>
+
+<P>
+New model object.  Model is a clone of the input model.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html6198"
+  HREF="cs_grbmodel_addconstr.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html6196"
+  HREF="cs_grbmodel.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html6190"
+  HREF="cs_grbmodel.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html6199"
+  HREF="cs_grbmodel_addconstr.html">GRBModel.AddConstr()</A>
+<B> Up:</B> <A NAME="tex2html6197"
+  HREF="cs_grbmodel.html">GRBModel</A>
+<B> Previous:</B> <A NAME="tex2html6191"
+  HREF="cs_grbmodel.html">GRBModel</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

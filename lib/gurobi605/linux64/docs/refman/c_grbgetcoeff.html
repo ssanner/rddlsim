@@ -1,0 +1,136 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>GRBgetcoeff</TITLE>
+<META NAME="description" CONTENT="GRBgetcoeff">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="c_grbgetconstrbyname.html">
+<LINK REL="previous" HREF="c_model_queries.html">
+<LINK REL="up" HREF="c_model_queries.html">
+<LINK REL="next" HREF="c_grbgetconstrbyname.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html1635"
+  HREF="c_grbgetconstrbyname.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1633"
+  HREF="c_model_queries.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1627"
+  HREF="c_model_queries.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1636"
+  HREF="c_grbgetconstrbyname.html">GRBgetconstrbyname</A>
+<B> Up:</B> <A NAME="tex2html1634"
+  HREF="c_model_queries.html">Model Queries</A>
+<B> Previous:</B> <A NAME="tex2html1628"
+  HREF="c_model_queries.html">Model Queries</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00024100000000000000"></A>
+<A NAME="routine:GRBgetcoeff"></A>
+<BR>
+GRBgetcoeff
+</H3>
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">GRBgetcoeff</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT">GRBmodel</TD>
+<TD ALIGN="LEFT">*model,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">constrind,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">varind,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">double</TD>
+<TD ALIGN="LEFT">*valP )</TD>
+</TR>
+</TABLE>
+
+<P>
+Retrieve a single constraint matrix coefficient.
+
+<P>
+
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Return value:</SPAN></BIG>
+
+<P>
+A non-zero return value indicates that a problem occurred while retrieving the coefficient.
+Refer to the <A HREF="error_codes.html#sec:ErrorCodes">Error Code</A> table for a
+list of possible return values.  Details on the error can be obtained
+by calling <A HREF="c_grbgeterrormsg.html#routine:GRBgeterrormsg">GRBgeterrormsg</A>.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">model</SPAN>: The model from which the coefficient should be retrieved.
+
+<P>
+ <SPAN  CLASS="textbf">constrind</SPAN>: The constraint index for the desired coefficient.
+
+<P>
+ <SPAN  CLASS="textbf">varind</SPAN>: The variable index for the desired coefficient.
+
+<P>
+ <SPAN  CLASS="textbf">valP</SPAN>: The location in which the requested matrix coefficient
+  should be placed.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Example usage:</SPAN></BIG><PRE>
+  double A12;
+  error = GRBgetcoeff(model, 1, 2, &amp;A12);
+</PRE>
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1635"
+  HREF="c_grbgetconstrbyname.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1633"
+  HREF="c_model_queries.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1627"
+  HREF="c_model_queries.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1636"
+  HREF="c_grbgetconstrbyname.html">GRBgetconstrbyname</A>
+<B> Up:</B> <A NAME="tex2html1634"
+  HREF="c_model_queries.html">Model Queries</A>
+<B> Previous:</B> <A NAME="tex2html1628"
+  HREF="c_model_queries.html">Model Queries</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

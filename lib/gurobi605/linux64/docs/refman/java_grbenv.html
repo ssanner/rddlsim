@@ -1,0 +1,129 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>GRBEnv</TITLE>
+<META NAME="description" CONTENT="GRBEnv">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="java_grbmodel.html">
+<LINK REL="previous" HREF="java_api_details.html">
+<LINK REL="up" HREF="java_api_details.html">
+<LINK REL="next" HREF="java_grbenv2.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html4404"
+  HREF="java_grbenv2.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html4402"
+  HREF="java_api_details.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html4396"
+  HREF="java_api_details.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html4405"
+  HREF="java_grbenv2.html">GRBEnv()</A>
+<B> Up:</B> <A NAME="tex2html4403"
+  HREF="java_api_details.html">Java API Details</A>
+<B> Previous:</B> <A NAME="tex2html4397"
+  HREF="java_api_details.html">Java API Details</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00061000000000000000"></A>
+<A NAME="javaclass:GRBEnv"></A>
+<BR>
+GRBEnv
+</H2>
+
+<P>
+Gurobi environment object.  Gurobi models are always associated with
+an environment.  You must create an environment before can you create
+and populate a model.  You will generally only need a single
+environment object in your program.
+
+<P>
+The methods on environment objects are mainly used to manage
+Gurobi parameters (e.g.,
+<A HREF="java_grbenv_get.html#javamethod:GRBEnv.get">get</A>,
+<A HREF="java_grbenv_getparaminfo.html#javamethod:GRBEnv.getParamInfo">getParamInfo</A>,
+<A HREF="java_grbenv_set.html#javamethod:GRBEnv.set">set</A>).
+
+<P>
+While the Java garbage collector will eventually collect an unused
+<code>GRBEnv</code> object, an environment will hold onto resources (Gurobi
+licenses, file descriptors, etc.) until that collection occurs.  If
+your program creates multiple <code>GRBEnv</code> objects, we recommend
+that you call <A HREF="java_grbenv_dispose.html#javamethod:GRBEnv.dispose">GRBEnv.dispose</A>
+when you are done using one.
+
+<P>
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html4406"
+  HREF="java_grbenv2.html">GRBEnv()</A>
+<LI><A NAME="tex2html4407"
+  HREF="java_grbenv_dispose.html">GRBEnv.dispose()</A>
+<LI><A NAME="tex2html4408"
+  HREF="java_grbenv_get.html">GRBEnv.get()</A>
+<LI><A NAME="tex2html4409"
+  HREF="java_grbenv_geterrormsg.html">GRBEnv.getErrorMsg()</A>
+<LI><A NAME="tex2html4410"
+  HREF="java_grbenv_getparaminfo.html">GRBEnv.getParamInfo()</A>
+<LI><A NAME="tex2html4411"
+  HREF="java_grbenv_message.html">GRBEnv.message()</A>
+<LI><A NAME="tex2html4412"
+  HREF="java_grbenv_readparams.html">GRBEnv.readParams()</A>
+<LI><A NAME="tex2html4413"
+  HREF="java_grbenv_release.html">GRBEnv.release()</A>
+<LI><A NAME="tex2html4414"
+  HREF="java_grbenv_resetparams.html">GRBEnv.resetParams()</A>
+<LI><A NAME="tex2html4415"
+  HREF="java_grbenv_set.html">GRBEnv.set()</A>
+<LI><A NAME="tex2html4416"
+  HREF="java_grbenv_writeparams.html">GRBEnv.writeParams()</A>
+</UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html4404"
+  HREF="java_grbenv2.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html4402"
+  HREF="java_api_details.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html4396"
+  HREF="java_api_details.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html4405"
+  HREF="java_grbenv2.html">GRBEnv()</A>
+<B> Up:</B> <A NAME="tex2html4403"
+  HREF="java_api_details.html">Java API Details</A>
+<B> Previous:</B> <A NAME="tex2html4397"
+  HREF="java_api_details.html">Java API Details</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

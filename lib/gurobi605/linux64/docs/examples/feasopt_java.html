@@ -1,0 +1,154 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Feasopt.java</TITLE>
+<META NAME="description" CONTENT="Feasopt.java">
+<META NAME="keywords" CONTENT="examples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="examples.css">
+
+<LINK REL="next" HREF="fixanddive_java.html">
+<LINK REL="previous" HREF="facility_java.html">
+<LINK REL="up" HREF="java_examples.html">
+<LINK REL="next" HREF="fixanddive_java.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html1117"
+  HREF="fixanddive_java.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1115"
+  HREF="java_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1109"
+  HREF="facility_java.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1118"
+  HREF="fixanddive_java.html">Fixanddive.java</A>
+<B> Up:</B> <A NAME="tex2html1116"
+  HREF="java_examples.html">Java Examples</A>
+<B> Previous:</B> <A NAME="tex2html1110"
+  HREF="facility_java.html">Facility.java</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00023500000000000000"></A>
+<A NAME="subsubsection:Feasopt.java"></A>
+<BR>
+Feasopt.java
+</H3>
+
+<P>
+<BR>
+<PRE  CLASS="verbatim">/* Copyright 2014, Gurobi Optimization, Inc. */
+
+/* This example reads a MIP model from a file, adds artificial
+   variables to each constraint, and then minimizes the sum of the
+   artificial variables.  A solution with objective zero corresponds
+   to a feasible solution to the input model.
+   We can also use FeasRelax feature to do it. In this example, we
+   use minrelax=1, i.e. optimizing the returned model finds a solution
+   that minimizes the original objective, but only from among those
+   solutions that minimize the sum of the artificial variables. */
+
+import gurobi.*;
+
+public class Feasopt {
+  public static void main(String[] args) {
+
+    if (args.length &lt; 1) {
+      System.out.println("Usage: java Feasopt filename");
+      System.exit(1);
+    }
+
+    try {
+      GRBEnv env = new GRBEnv();
+      GRBModel feasmodel = new GRBModel(env, args[0]);
+
+      // Create a copy to use FeasRelax feature later */
+      GRBModel feasmodel1 = new GRBModel(feasmodel);
+
+      // Clear objective
+      feasmodel.setObjective(new GRBLinExpr());
+
+      // Add slack variables
+      GRBConstr[] c = feasmodel.getConstrs();
+      for (int i = 0; i &lt; c.length; ++i) {
+        char sense = c[i].get(GRB.CharAttr.Sense);
+        if (sense != '&gt;') {
+          GRBConstr[] constrs = new GRBConstr[] { c[i] };
+          double[] coeffs = new double[] { -1 };
+          feasmodel.addVar(0.0, GRB.INFINITY, 1.0, GRB.CONTINUOUS, constrs,
+                           coeffs, "ArtN_" +
+                               c[i].get(GRB.StringAttr.ConstrName));
+        }
+        if (sense != '&lt;') {
+          GRBConstr[] constrs = new GRBConstr[] { c[i] };
+          double[] coeffs = new double[] { 1 };
+          feasmodel.addVar(0.0, GRB.INFINITY, 1.0, GRB.CONTINUOUS, constrs,
+                           coeffs, "ArtP_" +
+                               c[i].get(GRB.StringAttr.ConstrName));
+        }
+      }
+      feasmodel.update();
+
+      // Optimize modified model
+      feasmodel.write("feasopt.lp");
+      feasmodel.optimize();
+
+      // use FeasRelax feature */
+      feasmodel1.feasRelax(GRB.FEASRELAX_LINEAR, true, false, true);
+      feasmodel1.write("feasopt1.lp");
+      feasmodel1.optimize();
+
+      // Dispose of model and environment
+      feasmodel1.dispose();
+      feasmodel.dispose();
+      env.dispose();
+
+    } catch (GRBException e) {
+      System.out.println("Error code: " + e.getErrorCode() + ". " +
+          e.getMessage());
+    }
+  }
+}
+</PRE>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1117"
+  HREF="fixanddive_java.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1115"
+  HREF="java_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1109"
+  HREF="facility_java.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1118"
+  HREF="fixanddive_java.html">Fixanddive.java</A>
+<B> Up:</B> <A NAME="tex2html1116"
+  HREF="java_examples.html">Java Examples</A>
+<B> Previous:</B> <A NAME="tex2html1110"
+  HREF="facility_java.html">Facility.java</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

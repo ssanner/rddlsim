@@ -1,0 +1,147 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>GRBLinExpr</TITLE>
+<META NAME="description" CONTENT="GRBLinExpr">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="java_grbquadexpr.html">
+<LINK REL="previous" HREF="java_grbexpr.html">
+<LINK REL="up" HREF="java_api_details.html">
+<LINK REL="next" HREF="java_grblinexpr2.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html5197"
+  HREF="java_grblinexpr2.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html5195"
+  HREF="java_api_details.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html5189"
+  HREF="java_grbexpr_getvalue.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html5198"
+  HREF="java_grblinexpr2.html">GRBLinExpr()</A>
+<B> Up:</B> <A NAME="tex2html5196"
+  HREF="java_api_details.html">Java API Details</A>
+<B> Previous:</B> <A NAME="tex2html5190"
+  HREF="java_grbexpr_getvalue.html">GRBExpr.getValue()</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00068000000000000000"></A>
+<A NAME="javaclass:GRBLinExpr"></A>
+<BR>
+GRBLinExpr
+</H2>
+
+<P>
+Gurobi linear expression object.  A linear expression consists of a
+constant term, plus a list of coefficient-variable pairs that capture
+the linear terms.  Linear expressions are used to build constraints.
+They are temporary objects that typically have short lifespans.
+
+<P>
+The <code>GRBLinExpr</code> class is a sub-class of the abstract base
+class <A HREF="java_grbexpr.html#javaclass:GRBExpr">GRBExpr</A>.
+
+<P>
+You generally build linear expressions by starting with an empty
+expression (using the <A HREF="java_grblinexpr2.html#javamethod:GRBLinExpr">GRBLinExpr</A>
+constructor), and then adding terms.  Terms can be added individually,
+using <A HREF="java_grblinexpr_addterm.html#javamethod:GRBLinExpr.addTerm">addTerm</A>, or in
+groups, using <A HREF="java_grblinexpr_addterms.html#javamethod:GRBLinExpr.addTerms">addTerms</A>,
+or <A HREF="java_grblinexpr_multadd.html#javamethod:GRBLinExpr.multAdd">multAdd</A>.
+Terms can also be removed from an expression, using
+<A HREF="java_grblinexpr_remove.html#javamethod:GRBLinExpr.remove">remove</A>.
+
+<P>
+Individual terms in a linear expression can be queried using the
+<A HREF="java_grblinexpr_getvar.html#javamethod:GRBLinExpr.getVar">getVar</A>,
+<A HREF="java_grblinexpr_getcoeff.html#javamethod:GRBLinExpr.getCoeff">getCoeff</A>, and
+<A HREF="java_grblinexpr_getconstan.html#javamethod:GRBLinExpr.getConstant">getConstant</A> methods.
+You can query the number of terms in the expression using the
+<A HREF="java_grblinexpr_size.html#javamethod:GRBLinExpr.size">size</A> method.
+
+<P>
+Note that a linear expression may contain multiple terms that involve
+the same variable.  These duplicate terms are merged when creating a
+constraint from an expression, but they may be visible when inspecting
+individual terms in the expression (e.g., when using
+<A HREF="java_grblinexpr_getvar.html#javamethod:GRBLinExpr.getVar">getVar</A>).
+
+<P>
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html5199"
+  HREF="java_grblinexpr2.html">GRBLinExpr()</A>
+<LI><A NAME="tex2html5200"
+  HREF="java_grblinexpr_add.html">GRBLinExpr.add()</A>
+<LI><A NAME="tex2html5201"
+  HREF="java_grblinexpr_addconstan.html">GRBLinExpr.addConstant()</A>
+<LI><A NAME="tex2html5202"
+  HREF="java_grblinexpr_addterm.html">GRBLinExpr.addTerm()</A>
+<LI><A NAME="tex2html5203"
+  HREF="java_grblinexpr_addterms.html">GRBLinExpr.addTerms()</A>
+<LI><A NAME="tex2html5204"
+  HREF="java_grblinexpr_clear.html">GRBLinExpr.clear()</A>
+<LI><A NAME="tex2html5205"
+  HREF="java_grblinexpr_getconstan.html">GRBLinExpr.getConstant()</A>
+<LI><A NAME="tex2html5206"
+  HREF="java_grblinexpr_getcoeff.html">GRBLinExpr.getCoeff()</A>
+<LI><A NAME="tex2html5207"
+  HREF="java_grblinexpr_getvalue.html">GRBLinExpr.getValue()</A>
+<LI><A NAME="tex2html5208"
+  HREF="java_grblinexpr_getvar.html">GRBLinExpr.getVar()</A>
+<LI><A NAME="tex2html5209"
+  HREF="java_grblinexpr_multadd.html">GRBLinExpr.multAdd()</A>
+<LI><A NAME="tex2html5210"
+  HREF="java_grblinexpr_remove.html">GRBLinExpr.remove()</A>
+<LI><A NAME="tex2html5211"
+  HREF="java_grblinexpr_size.html">GRBLinExpr.size()</A>
+</UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html5197"
+  HREF="java_grblinexpr2.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html5195"
+  HREF="java_api_details.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html5189"
+  HREF="java_grbexpr_getvalue.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html5198"
+  HREF="java_grblinexpr2.html">GRBLinExpr()</A>
+<B> Up:</B> <A NAME="tex2html5196"
+  HREF="java_api_details.html">Java API Details</A>
+<B> Previous:</B> <A NAME="tex2html5190"
+  HREF="java_grbexpr_getvalue.html">GRBExpr.getValue()</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

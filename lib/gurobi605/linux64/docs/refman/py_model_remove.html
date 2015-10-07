@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Model.remove()</TITLE>
+<META NAME="description" CONTENT="Model.remove()">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="py_model_reset.html">
+<LINK REL="previous" HREF="py_model_relax.html">
+<LINK REL="up" HREF="py_model.html">
+<LINK REL="next" HREF="py_model_reset.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html8330"
+  HREF="py_model_reset.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html8328"
+  HREF="py_model.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html8322"
+  HREF="py_model_relax.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html8331"
+  HREF="py_model_reset.html">Model.reset()</A>
+<B> Up:</B> <A NAME="tex2html8329"
+  HREF="py_model.html">Model</A>
+<B> Previous:</B> <A NAME="tex2html8323"
+  HREF="py_model_relax.html">Model.relax()</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION0001024400000000000000"></A>
+<A NAME="pythonmethod:Model.remove"></A>
+<BR>
+Model.remove()
+</H3>
+<BIG CLASS="LARGE">
+<FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">remove</SPAN></FONT></BIG> ( item )
+
+<P>
+Remove a variable, linear constraint, quadratic constraint, or SOS from a model.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">item</SPAN>: The item to remove from the model.  The item can be a
+  <A HREF="py_var.html#pythonclass:Var">Var</A>, a
+  <A HREF="py_constr.html#pythonclass:Constr">Constr</A>,
+  <A HREF="py_qconstr.html#pythonclass:QConstr">QConstr</A>, or an
+  <A HREF="py_sos.html#pythonclass:SOS">SOS</A>
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Example usage:</SPAN></BIG><PRE>
+  model.remove(model.getVars()[0])
+  model.remove(model.getConstrs()[0])
+  model.remove(model.getQConstrs()[0])
+  model.remove(model.getSOS()[0])
+</PRE>
+
+<P>
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html8330"
+  HREF="py_model_reset.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html8328"
+  HREF="py_model.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html8322"
+  HREF="py_model_relax.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html8331"
+  HREF="py_model_reset.html">Model.reset()</A>
+<B> Up:</B> <A NAME="tex2html8329"
+  HREF="py_model.html">Model</A>
+<B> Previous:</B> <A NAME="tex2html8323"
+  HREF="py_model_relax.html">Model.relax()</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

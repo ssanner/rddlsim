@@ -1,0 +1,213 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Piecewise.java</TITLE>
+<META NAME="description" CONTENT="Piecewise.java">
+<META NAME="keywords" CONTENT="examples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="examples.css">
+
+<LINK REL="next" HREF="qcp_java.html">
+<LINK REL="previous" HREF="params_java.html">
+<LINK REL="up" HREF="java_examples.html">
+<LINK REL="next" HREF="qcp_java.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html1197"
+  HREF="qcp_java.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1195"
+  HREF="java_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1189"
+  HREF="params_java.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1198"
+  HREF="qcp_java.html">Qcp.java</A>
+<B> Up:</B> <A NAME="tex2html1196"
+  HREF="java_examples.html">Java Examples</A>
+<B> Previous:</B> <A NAME="tex2html1190"
+  HREF="params_java.html">Params.java</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000231300000000000000"></A>
+<A NAME="subsubsection:Piecewise.java"></A>
+<BR>
+Piecewise.java
+</H3>
+
+<P>
+<BR>
+<PRE  CLASS="verbatim">/* Copyright 2014, Gurobi Optimization, Inc. */
+
+/* This example considers the following separable, convex problem:
+
+     minimize    f(x) - y + g(z)
+     subject to  x + 2 y + 3 z &lt;= 4
+                 x +   y       &gt;= 1
+                 x,    y,    z &lt;= 1
+
+   where f(u) = exp(-u) and g(u) = 2 u^2 - 4 u, for all real u. It
+   formulates and solves a simpler LP model by approximating f and
+   g with piecewise-linear functions. Then it transforms the model
+   into a MIP by negating the approximation for f, which corresponds
+   to a non-convex piecewise-linear function, and solves it again.
+*/
+
+import gurobi.*;
+
+public class Piecewise {
+
+  private static double f(double u) { return Math.exp(-u); }
+  private static double g(double u) { return 2 * u * u - 4 * u; }
+
+  public static void main(String[] args) {
+    try {
+
+      // Create environment
+
+      GRBEnv env = new GRBEnv();
+
+      // Create a new model
+
+      GRBModel model = new GRBModel(env);
+
+      // Create variables
+
+      double lb = 0.0, ub = 1.0;
+
+      GRBVar x = model.addVar(lb, ub, 0.0, GRB.CONTINUOUS, "x");
+      GRBVar y = model.addVar(lb, ub, 0.0, GRB.CONTINUOUS, "y");
+      GRBVar z = model.addVar(lb, ub, 0.0, GRB.CONTINUOUS, "z");
+
+      // Integrate new variables
+
+      model.update();
+
+      // Set objective for y
+
+      GRBLinExpr obj = new GRBLinExpr();
+      obj.addTerm(-1.0, y);
+      model.setObjective(obj);
+
+      // Add piecewise-linear objective functions for x and z
+
+      int npts = 101;
+      double[] ptu = new double[npts];
+      double[] ptf = new double[npts];
+      double[] ptg = new double[npts];
+
+      for (int i = 0; i &lt; npts; i++) {
+        ptu[i] = lb + (ub - lb) * i / (npts - 1);
+        ptf[i] = f(ptu[i]);
+        ptg[i] = g(ptu[i]);
+      }
+
+      model.setPWLObj(x, ptu, ptf);
+      model.setPWLObj(z, ptu, ptg);
+
+      // Add constraint: x + 2 y + 3 z &lt;= 4
+
+      GRBLinExpr expr = new GRBLinExpr();
+      expr.addTerm(1.0, x); expr.addTerm(2.0, y); expr.addTerm(3.0, z);
+      model.addConstr(expr, GRB.LESS_EQUAL, 4.0, "c0");
+
+      // Add constraint: x + y &gt;= 1
+
+      expr = new GRBLinExpr();
+      expr.addTerm(1.0, x); expr.addTerm(1.0, y);
+      model.addConstr(expr, GRB.GREATER_EQUAL, 1.0, "c1");
+
+      // Optimize model as an LP
+
+      model.optimize();
+
+      System.out.println("IsMIP: " + model.get(GRB.IntAttr.IsMIP));
+
+      System.out.println(x.get(GRB.StringAttr.VarName)
+                         + " " +x.get(GRB.DoubleAttr.X));
+      System.out.println(y.get(GRB.StringAttr.VarName)
+                         + " " +y.get(GRB.DoubleAttr.X));
+      System.out.println(z.get(GRB.StringAttr.VarName)
+                         + " " +z.get(GRB.DoubleAttr.X));
+
+      System.out.println("Obj: " + model.get(GRB.DoubleAttr.ObjVal));
+
+      System.out.println();
+
+      // Negate piecewise-linear objective function for x
+
+      for (int i = 0; i &lt; npts; i++) {
+        ptf[i] = -ptf[i];
+      }
+
+      model.setPWLObj(x, ptu, ptf);
+
+      // Optimize model as a MIP
+
+      model.optimize();
+
+      System.out.println("IsMIP: " + model.get(GRB.IntAttr.IsMIP));
+
+      System.out.println(x.get(GRB.StringAttr.VarName)
+                         + " " +x.get(GRB.DoubleAttr.X));
+      System.out.println(y.get(GRB.StringAttr.VarName)
+                         + " " +y.get(GRB.DoubleAttr.X));
+      System.out.println(z.get(GRB.StringAttr.VarName)
+                         + " " +z.get(GRB.DoubleAttr.X));
+
+      System.out.println("Obj: " + model.get(GRB.DoubleAttr.ObjVal));
+
+      // Dispose of model and environment
+
+      model.dispose();
+      env.dispose();
+
+    } catch (GRBException e) {
+      System.out.println("Error code: " + e.getErrorCode() + ". " +
+          e.getMessage());
+    }
+  }
+}
+</PRE>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1197"
+  HREF="qcp_java.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1195"
+  HREF="java_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1189"
+  HREF="params_java.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1198"
+  HREF="qcp_java.html">Qcp.java</A>
+<B> Up:</B> <A NAME="tex2html1196"
+  HREF="java_examples.html">Java Examples</A>
+<B> Previous:</B> <A NAME="tex2html1190"
+  HREF="params_java.html">Params.java</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

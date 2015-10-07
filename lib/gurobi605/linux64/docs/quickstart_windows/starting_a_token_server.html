@@ -1,0 +1,160 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Starting a token server</TITLE>
+<META NAME="description" CONTENT="Starting a token server">
+<META NAME="keywords" CONTENT="quickstart_windows">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="quickstart_windows.css">
+
+<LINK REL="next" HREF="upgrading_a_token_server.html">
+<LINK REL="previous" HREF="retrieving_a_single_use_or.html">
+<LINK REL="up" HREF="setting_up_and_using_a_sin.html">
+<LINK REL="next" HREF="upgrading_a_token_server.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html316"
+  HREF="upgrading_a_token_server.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html314"
+  HREF="setting_up_and_using_a_sin.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html308"
+  HREF="retrieving_a_single_use_or.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html317"
+  HREF="upgrading_a_token_server.html">Upgrading a token server</A>
+<B> Up:</B> <A NAME="tex2html315"
+  HREF="setting_up_and_using_a_sin.html">Setting up and using</A>
+<B> Previous:</B> <A NAME="tex2html309"
+  HREF="retrieving_a_single_use_or.html">Retrieving a Single-Use or</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00033200000000000000"></A>
+<A NAME="subsubsection:starttokenserver"></A>
+<BR>
+Starting a token server
+</H3>
+
+<P>
+<B>Important note: most Gurobi licenses do not use the token server.
+  You should only follow these instructions if you are setting up
+  a single-use or floating license.  If you are not sure whether
+  you need to start a token server, you can examine the
+  contents of your <code>gurobi.lic</code> file.
+  If it contains the line <code>TYPE=TOKEN</code>, then you need
+  a token server.</B>
+
+<P>
+On a Windows system, you can start the token service by
+selecting the <EM>Gurobi Token Server</EM> menu item from the
+<EM>Gurobi</EM> folder of the <EM>Start</EM> menu.  You should only
+do so after you have installed the Gurobi license key file.
+
+<P>
+<SPAN  CLASS="textbf">Firewalls</SPAN>
+
+<P>
+The next step after starting the Gurobi token server depends on your
+anti-virus software and firewall settings.  Most anti-virus software
+will immediately ask you to confirm that you are allowing program
+<code>grb_ts.exe</code> to receive network traffic.  Once you confirm this, the
+token server will start serving tokens.  If you don't receive such a
+prompt, you will need to add <code>grb_ts.exe</code> to the firewall
+exceptions list.  To do this, select <EM>Allow a program through Windows firewall</EM> under the
+<EM>Security</EM> area of the Control Panel (labeled
+<EM>Allow an app through Windows firewall</EM> in Windows 8).
+
+<P>
+Some machines have more restrictive firewalls that may require
+additional action.  The Gurobi token server uses port 41954 by
+default.  If you are unable to reach the token server after taking the
+steps described, you should ask your network administrator for
+more information on how to open the required port.
+
+<P>
+<SPAN  CLASS="textbf">Starting and stopping the grb_ts Windows service</SPAN>
+
+<P>
+Once the token service has been started, you should see the
+<code>grb_ts</code> service listed in the <EM>Services</EM> tab of the Task
+Manager.  To start or stop the service, click on the <EM>Services</EM>
+button at the bottom-right of the <EM>Services</EM> tab, and then
+right-click on the <EM>Gurobi Token Server</EM> item on this screen.
+
+<P>
+You can also start or stop the Gurobi Token Server service from a
+Console window with administrator privileges.  Running
+<code>grb_ts -h</code> lists command-line options.  Issuing a
+<code>grb_ts -s</code> command stops a running token server.  If you are
+unfamiliar with running command-line commands on a Windows system, you
+can learn more <A HREF="windows_command_line.html#section:windowscommandline">here</A>.
+
+<P>
+Add the line
+<PRE>
+VERBOSE=1
+</PRE>
+to your <code>gurobi.lic</code> file to start the license service in verbose
+mode.  Verbose mode produces a log message (in the Windows Event Log)
+each time a token is checked in or out.
+
+<P>
+<SPAN  CLASS="textbf">Next steps</SPAN>
+
+<P>
+Clients of the token server also need simple license files.
+Your next step is to set up a
+<A HREF="creating_a_token_server_cl.html#subsection:clientlicensetoken">client license</A>.
+
+<P>
+Once your token server is running and you've set up a client
+license, you can move on to
+<A HREF="testing_your_license.html#subsection:testlicense">testing the license</A>.
+
+<P>
+Once you've set up a client license, you can test the state of the
+token server at any time, as well as get a list of the clients that
+are currently using tokens, by typing <code>gurobi_cl --tokens</code>.
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html316"
+  HREF="upgrading_a_token_server.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html314"
+  HREF="setting_up_and_using_a_sin.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html308"
+  HREF="retrieving_a_single_use_or.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html317"
+  HREF="upgrading_a_token_server.html">Upgrading a token server</A>
+<B> Up:</B> <A NAME="tex2html315"
+  HREF="setting_up_and_using_a_sin.html">Setting up and using</A>
+<B> Previous:</B> <A NAME="tex2html309"
+  HREF="retrieving_a_single_use_or.html">Retrieving a Single-Use or</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

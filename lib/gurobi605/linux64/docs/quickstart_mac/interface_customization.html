@@ -1,0 +1,122 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Interface customization</TITLE>
+<META NAME="description" CONTENT="Interface customization">
+<META NAME="keywords" CONTENT="quickstart_mac">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="quickstart_mac.css">
+
+<LINK REL="next" HREF="customization_through_call.html">
+<LINK REL="previous" HREF="help.html">
+<LINK REL="up" HREF="interactive_shell.html">
+<LINK REL="next" HREF="customization_through_call.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html566"
+  HREF="customization_through_call.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html564"
+  HREF="interactive_shell.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html558"
+  HREF="help.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html567"
+  HREF="customization_through_call.html">Customization through callbacks</A>
+<B> Up:</B> <A NAME="tex2html565"
+  HREF="interactive_shell.html">Interactive Shell</A>
+<B> Previous:</B> <A NAME="tex2html559"
+  HREF="help.html">Help</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION000510000000000000000">
+Interface customization</A>
+</H2>
+<P>
+<EM>The Gurobi interactive shell lives within a full featured scripting
+language.  This allows you to perform a wide range of customizations
+to suit your particular needs.  Creating custom functions requires
+some knowledge of the Python language, but you can achieve a lot by
+using a very limited set of language features.
+</EM>
+<P>
+<EM>Let us consider a simple example.  Imagine that you store your models
+in a certain directory on your disk.  Rather than having to type the
+full path whenever you read a model, you can create your own custom
+<code>read</code> method:
+</EM><PRE>
+gurobi&gt; def myread(filename):
+.......   return read('/home/john/models/'+filename)
+</PRE><EM>
+Note that the indentation of the second line is required.
+</EM>
+<P>
+<EM>Defining this function allows you to do the following:
+</EM><PRE>
+gurobi&gt; m = myread('stein9')
+Read MPS format model from file /home/john/models/stein9.mps
+</PRE>
+<P>
+<EM>If you don't want to type this function in each time you start the Gurobi
+shell, you can store it in a file.  The file would look like the following:
+</EM><PRE>
+from gurobipy import *
+
+def myread(filename):
+  return read('/home/john/models/'+filename)
+</PRE><EM>
+The <code>from gurobipy import *</code> line is required in order to allow
+you to use the <code>read</code> method from the Gurobi shell in your
+custom function.  The name of your customization file must end with a
+<code>.py</code> suffix.  If the file is named <code>custom.py</code>, you would
+then type:
+</EM><PRE>
+gurobi&gt; from custom import *
+</PRE><EM>
+in order to import this function.  One file can contain as many custom
+functions as you'd like (see <code>custom.py</code> in
+<code>&lt;installdir&gt;/examples/python</code> for an example).  If you wish to
+make site-wide customizations, you can also customize the
+<code>gurobi.py</code> file that is included in <code>&lt;installdir&gt;/lib</code>.
+</EM>
+<P>
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html566"
+  HREF="customization_through_call.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html564"
+  HREF="interactive_shell.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html558"
+  HREF="help.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html567"
+  HREF="customization_through_call.html">Customization through callbacks</A>
+<B> Up:</B> <A NAME="tex2html565"
+  HREF="interactive_shell.html">Interactive Shell</A>
+<B> Previous:</B> <A NAME="tex2html559"
+  HREF="help.html">Help</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

@@ -1,0 +1,233 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>sudoku_c++.cpp</TITLE>
+<META NAME="description" CONTENT="sudoku_c++.cpp">
+<META NAME="keywords" CONTENT="examples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="examples.css">
+
+<LINK REL="next" HREF="tsp_cpp_cpp.html">
+<LINK REL="previous" HREF="sos_cpp_cpp.html">
+<LINK REL="up" HREF="cpp_examples.html">
+<LINK REL="next" HREF="tsp_cpp_cpp.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html975"
+  HREF="tsp_cpp_cpp.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html973"
+  HREF="cpp_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html967"
+  HREF="sos_cpp_cpp.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html976"
+  HREF="tsp_cpp_cpp.html">tsp_c++.cpp</A>
+<B> Up:</B> <A NAME="tex2html974"
+  HREF="cpp_examples.html">C++ Examples</A>
+<B> Previous:</B> <A NAME="tex2html968"
+  HREF="sos_cpp_cpp.html">sos_c++.cpp</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000221800000000000000"></A>
+<A NAME="subsubsection:sudoku_c++.cpp"></A>
+<BR>
+sudoku_c++.cpp
+</H3>
+
+<P>
+<BR>
+<PRE  CLASS="verbatim">/* Copyright 2014, Gurobi Optimization, Inc. */
+/*
+  Sudoku example.
+
+  The Sudoku board is a 9x9 grid, which is further divided into a 3x3 grid
+  of 3x3 grids.  Each cell in the grid must take a value from 0 to 9.
+  No two grid cells in the same row, column, or 3x3 subgrid may take the
+  same value.
+
+  In the MIP formulation, binary variables x[i,j,v] indicate whether
+  cell &lt;i,j&gt; takes value 'v'.  The constraints are as follows:
+    1. Each cell must take exactly one value (sum_v x[i,j,v] = 1)
+    2. Each value is used exactly once per row (sum_i x[i,j,v] = 1)
+    3. Each value is used exactly once per column (sum_j x[i,j,v] = 1)
+    4. Each value is used exactly once per 3x3 subgrid (sum_grid x[i,j,v] = 1)
+
+  Input datasets for this example can be found in examples/data/sudoku*.
+*/
+
+#include "gurobi_c++.h"
+#include &lt;sstream&gt;
+using namespace std;
+
+#define sd 3
+#define n (sd*sd)
+
+string itos(int i) {stringstream s; s &lt;&lt; i; return s.str(); }
+
+int
+main(int   argc,
+     char *argv[])
+{
+  try {
+    GRBEnv env = GRBEnv();
+    GRBModel model = GRBModel(env);
+
+    GRBVar vars[n][n][n];
+    int i, j, v;
+
+    // Create 3-D array of model variables
+
+    for (i = 0; i &lt; n; i++) {
+      for (j = 0; j &lt; n; j++) {
+        for (v = 0; v &lt; n; v++) {
+          string s = "G_" + itos(i) + "_" + itos(j) + "_" + itos(v);
+          vars[i][j][v] = model.addVar(0.0, 1.0, 0.0, GRB_BINARY, s);
+        }
+      }
+    }
+
+    // Integrate variables into model
+
+    model.update();
+
+    // Add constraints
+
+    // Each cell must take one value
+
+    for (i = 0; i &lt; n; i++) {
+      for (j = 0; j &lt; n; j++) {
+        GRBLinExpr expr = 0;
+        for (v = 0; v &lt; n; v++)
+          expr += vars[i][j][v];
+        string s = "V_" + itos(i) + "_" + itos(j);
+        model.addConstr(expr, GRB_EQUAL, 1.0, s);
+      }
+    }
+
+    // Each value appears once per row
+
+    for (i = 0; i &lt; n; i++) {
+      for (v = 0; v &lt; n; v++) {
+        GRBLinExpr expr = 0;
+        for (j = 0; j &lt; n; j++)
+          expr += vars[i][j][v];
+        string s = "R_" + itos(i) + "_" + itos(v);
+        model.addConstr(expr == 1.0, s);
+      }
+    }
+
+    // Each value appears once per column
+
+    for (j = 0; j &lt; n; j++) {
+      for (v = 0; v &lt; n; v++) {
+        GRBLinExpr expr = 0;
+        for (i = 0; i &lt; n; i++)
+          expr += vars[i][j][v];
+        string s = "C_" + itos(j) + "_" + itos(v);
+        model.addConstr(expr == 1.0, s);
+      }
+    }
+
+    // Each value appears once per sub-grid
+
+    for (v = 0; v &lt; n; v++) {
+      for (int i0 = 0; i0 &lt; sd; i0++) {
+        for (int j0 = 0; j0 &lt; sd; j0++) {
+          GRBLinExpr expr = 0;
+          for (int i1 = 0; i1 &lt; sd; i1++) {
+            for (int j1 = 0; j1 &lt; sd; j1++) {
+              expr += vars[i0*sd+i1][j0*sd+j1][v];
+            }
+          }
+
+          string s = "Sub_" + itos(v) + "_" + itos(i0) + "_" + itos(j0);
+          model.addConstr(expr == 1.0, s);
+        }
+      }
+    }
+
+    // Fix variables associated with pre-specified cells
+
+    char input[10];
+    for (i = 0; i &lt; n; i++) {
+      cin &gt;&gt; input;
+      for (j = 0; j &lt; n; j++) {
+        int val = (int) input[j] - 48 - 1; // 0-based
+
+        if (val &gt;= 0)
+          vars[i][j][val].set(GRB_DoubleAttr_LB, 1.0);
+      }
+    }
+
+    // Optimize model
+
+    model.optimize();
+
+    // Write model to file
+
+    model.write("sudoku.lp");
+
+    cout &lt;&lt; endl;
+    for (i = 0; i &lt; n; i++) {
+      for (j = 0; j &lt; n; j++) {
+        for (v = 0; v &lt; n; v++) {
+          if (vars[i][j][v].get(GRB_DoubleAttr_X) &gt; 0.5)
+            cout &lt;&lt; v+1;
+        }
+      }
+      cout &lt;&lt; endl;
+    }
+    cout &lt;&lt; endl;
+  } catch(GRBException e) {
+    cout &lt;&lt; "Error code = " &lt;&lt; e.getErrorCode() &lt;&lt; endl;
+    cout &lt;&lt; e.getMessage() &lt;&lt; endl;
+  } catch (...) {
+    cout &lt;&lt; "Error during optimization" &lt;&lt; endl;
+  }
+
+  return 0;
+}
+</PRE>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html975"
+  HREF="tsp_cpp_cpp.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html973"
+  HREF="cpp_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html967"
+  HREF="sos_cpp_cpp.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html976"
+  HREF="tsp_cpp_cpp.html">tsp_c++.cpp</A>
+<B> Up:</B> <A NAME="tex2html974"
+  HREF="cpp_examples.html">C++ Examples</A>
+<B> Previous:</B> <A NAME="tex2html968"
+  HREF="sos_cpp_cpp.html">sos_c++.cpp</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

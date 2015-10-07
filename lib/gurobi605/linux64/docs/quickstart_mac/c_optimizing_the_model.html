@@ -1,0 +1,126 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Optimizing the model</TITLE>
+<META NAME="description" CONTENT="Optimizing the model">
+<META NAME="keywords" CONTENT="quickstart_mac">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="quickstart_mac.css">
+
+<LINK REL="next" HREF="c_error_reporting.html">
+<LINK REL="previous" HREF="c_adding_constraints_to_th.html">
+<LINK REL="up" HREF="c_interface.html">
+<LINK REL="next" HREF="c_error_reporting.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html705"
+  HREF="c_error_reporting.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html703"
+  HREF="c_interface.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html697"
+  HREF="c_adding_constraints_to_th.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html706"
+  HREF="c_error_reporting.html">Error reporting</A>
+<B> Up:</B> <A NAME="tex2html704"
+  HREF="c_interface.html">C Interface</A>
+<B> Previous:</B> <A NAME="tex2html698"
+  HREF="c_adding_constraints_to_th.html">Adding constraints to the</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00079000000000000000">
+Optimizing the model</A>
+</H2>
+<P>
+<EM>Now that the model has been built, the next step is to optimize it:
+</EM><PRE>
+  error = GRBoptimize(model);
+  if (error) goto QUIT;
+</PRE><EM>
+This routine performs the optimization and populates several internal
+model attributes, including the status of the optimization, the
+solution, etc.  Once the function returns, we can query the values of
+these attributes.  In particular, we can query the status of the
+optimization process by retrieving the value of the <code>Status</code>
+attribute...
+</EM><PRE>
+  error = GRBgetintattr(model, GRB_INT_ATTR_STATUS, &amp;optimstatus);
+  if (error) goto QUIT;
+</PRE><EM>
+The optimization status has many possible values.  An optimal solution
+to the model may have been found, or the model have been determined to
+be infeasible or unbounded, or the solution process may have been
+interrupted.  A list of possible statuses can be found in the
+<A NAME="tex2html28"
+  HREF="../refman/refman.html">Gurobi Reference Manual</A>.
+For our example, we know that the model is feasible, and we haven't
+modified any parameters that might cause the optimization to stop
+early (e.g., a time limit), so the status will be <code>GRB_OPTIMAL</code>.
+</EM>
+<P>
+<EM>Another important model attribute is the value of the objective function
+for the computed solution.  This is accessed through this call:
+</EM><PRE>
+  error = GRBgetdoubleattr(model, GRB_DBL_ATTR_OBJVAL, &amp;objval);
+  if (error) goto QUIT;
+</PRE><EM>
+Note that this call would return a non-zero error result if no
+solution was found for this model.
+</EM>
+<P>
+<EM>Once we know that the model was solved, we can extract the <code>X</code>
+attribute of the model, which contains the value for each variable in
+the computed solution:
+</EM><PRE>
+  error = GRBgetdoublearrayattr(model, GRB_DBL_ATTR_X, 0, 3, x);
+  if (error) goto QUIT;
+  printf("  x=%.0f, y=%.0f, z=%.0f", x[0], x[1], x[2]);
+</PRE><EM>
+This routine retrieves the values of an array-valued attribute.  The
+third and fourth arguments indicate the index of the first array
+element to be retrieved, and the number of elements to retrieve,
+respectively.  In this example we retrieve entries 0 through 2 (i.e.,
+all three of them)
+</EM>
+<P>
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html705"
+  HREF="c_error_reporting.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html703"
+  HREF="c_interface.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html697"
+  HREF="c_adding_constraints_to_th.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html706"
+  HREF="c_error_reporting.html">Error reporting</A>
+<B> Up:</B> <A NAME="tex2html704"
+  HREF="c_interface.html">C Interface</A>
+<B> Previous:</B> <A NAME="tex2html698"
+  HREF="c_adding_constraints_to_th.html">Adding constraints to the</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

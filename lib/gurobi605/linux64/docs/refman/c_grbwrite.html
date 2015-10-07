@@ -1,0 +1,132 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>GRBwrite</TITLE>
+<META NAME="description" CONTENT="GRBwrite">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="previous" HREF="c_grbread.html">
+<LINK REL="up" HREF="c_input_output.html">
+<LINK REL="next" HREF="c_attribute_management.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html1784"
+  HREF="c_attribute_management.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1782"
+  HREF="c_input_output.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1778"
+  HREF="c_grbread.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1785"
+  HREF="c_attribute_management.html">Attribute Management</A>
+<B> Up:</B> <A NAME="tex2html1783"
+  HREF="c_input_output.html">Input/Output</A>
+<B> Previous:</B> <A NAME="tex2html1779"
+  HREF="c_grbread.html">GRBread</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00025300000000000000"></A>
+<A NAME="routine:GRBwrite"></A>
+<BR>
+GRBwrite
+</H3>
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">GRBwrite</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT">GRBmodel</TD>
+<TD ALIGN="LEFT">*model,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">const char</TD>
+<TD ALIGN="LEFT">*filename )</TD>
+</TR>
+</TABLE>
+
+<P>
+This routine is the general entry point for writing optimization data
+to a file.  It can be used to write optimization models, solutions
+vectors, basis vectors, start vectors, or parameter settings.  The
+type of data written is determined by the file suffix.
+File formats are described in the
+<A HREF="model_file_formats.html#sec:FileFormats">File Format</A> section.
+
+<P>
+
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Return value:</SPAN></BIG>
+
+<P>
+A non-zero return value indicates that a problem occurred while writing the file.
+Refer to the <A HREF="error_codes.html#sec:ErrorCodes">Error Code</A> table for a
+list of possible return values.  Details on the error can be obtained
+by calling <A HREF="c_grbgeterrormsg.html#routine:GRBgeterrormsg">GRBgeterrormsg</A>.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">model</SPAN>: The model containing the data to be written.
+
+<P>
+ <SPAN  CLASS="textbf">filename</SPAN>: The name of the file to be written.  The file type
+  is encoded in the file name suffix.  Valid suffixes are
+  <TT>.mps</TT>, <TT>.rew</TT>, <TT>.lp</TT>, or <TT>.rlp</TT> for writing
+  the model itself, <TT>.ilp</TT> for writing just the IIS
+  associated with an infeasible model (see
+  <A HREF="c_grbcomputeiis.html#routine:GRBcomputeIIS">GRBcomputeIIS</A> for further
+  information), <TT>.sol</TT> for writing the current solution,
+  <TT>.mst</TT> for writing a start vector, <TT>.bas</TT> for writing an LP
+  basis, or <TT>.prm</TT> for writing modified parameter settings.  The
+  files can be compressed, so additional suffixes of <TT>.gz</TT>,
+  <TT>.bz2</TT>, or <TT>.7z</TT> are accepted.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Example usage:</SPAN></BIG><PRE>
+  error = GRBwrite(model, "/tmp/model.rlp.gz");
+</PRE>
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1784"
+  HREF="c_attribute_management.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1782"
+  HREF="c_input_output.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1778"
+  HREF="c_grbread.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1785"
+  HREF="c_attribute_management.html">Attribute Management</A>
+<B> Up:</B> <A NAME="tex2html1783"
+  HREF="c_input_output.html">Input/Output</A>
+<B> Previous:</B> <A NAME="tex2html1779"
+  HREF="c_grbread.html">GRBread</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

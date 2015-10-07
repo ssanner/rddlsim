@@ -1,0 +1,755 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Parameters</TITLE>
+<META NAME="description" CONTENT="Parameters">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="optimization_status_codes.html">
+<LINK REL="previous" HREF="attributes.html">
+<LINK REL="up" HREF="refman.html">
+<LINK REL="next" HREF="parameter_guidelines.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html10792"
+  HREF="parameter_guidelines.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html10790"
+  HREF="refman.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html10784"
+  HREF="visual_basic_attribute_exa.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html10793"
+  HREF="parameter_guidelines.html">Parameter Guidelines</A>
+<B> Up:</B> <A NAME="tex2html10791"
+  HREF="refman.html">Gurobi Optimizer Reference Manual</A>
+<B> Previous:</B> <A NAME="tex2html10785"
+  HREF="visual_basic_attribute_exa.html">Visual Basic Attribute Examples</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION000140000000000000000"></A>
+<A NAME="sec:Parameters"></A>
+<BR>
+Parameters
+</H1>
+
+<P>
+Parameters control the operation of the Gurobi solvers.  They must be
+modified before the optimization begins.  While you should feel free
+to experiment with different parameter settings, we recommend that you
+leave parameters at their default settings unless you find a
+compelling reason not to.  For a discussion of when you might want to
+change parameter values, refer to our
+<A HREF="parameter_guidelines.html#sec:ParameterGuidelines">Parameter Guidelines</A>.
+
+<P>
+The various Gurobi APIs all provide routines for querying and
+modifying parameter values. Refer to our
+<A HREF="parameter_examples.html#sec:ParameterExamples">Parameter Examples</A>
+for additional information.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Available Gurobi Parameters</SPAN></BIG>
+
+<P>
+<B>Termination:</B> These parameters affect the termination
+  of the algorithms.  If the algorithm exceeds any of these limits, it
+  will terminate and report a non-optimal termination status (see the
+  <A HREF="optimization_status_codes.html#sec:StatusCodes">Status Code</A> section for further
+  details).
+
+<P>
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf">Parameter name</SPAN></TH>
+<TH ALIGN="LEFT"><SPAN  CLASS="textbf">Purpose</SPAN></TH>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="bariterlimit.html#parameter:BarIterLimit">BarIterLimit</A></TD>
+<TD ALIGN="LEFT">Barrier iteration limit</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="cutoff.html#parameter:Cutoff">Cutoff</A></TD>
+<TD ALIGN="LEFT">Objective cutoff</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="iterationlimit.html#parameter:IterationLimit">IterationLimit</A></TD>
+<TD ALIGN="LEFT">Simplex iteration limit</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="nodelimit.html#parameter:NodeLimit">NodeLimit</A></TD>
+<TD ALIGN="LEFT">MIP node limit</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="solutionlimit.html#parameter:SolutionLimit">SolutionLimit</A></TD>
+<TD ALIGN="LEFT">MIP feasible solution limit</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="timelimit.html#parameter:TimeLimit">TimeLimit</A></TD>
+<TD ALIGN="LEFT">Time limit</TD>
+</TR>
+</TABLE>
+
+<P>
+<B>Tolerances:</B> These parameters control the allowable
+  feasibility or optimality violations.
+
+<P>
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf">Parameter name</SPAN></TH>
+<TH ALIGN="LEFT"><SPAN  CLASS="textbf">Purpose</SPAN></TH>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="barconvtol.html#parameter:BarConvTol">BarConvTol</A></TD>
+<TD ALIGN="LEFT">Barrier convergence tolerance</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="barqcpconvtol.html#parameter:BarQCPConvTol">BarQCPConvTol</A></TD>
+<TD ALIGN="LEFT">Barrier QCP convergence tolerance</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="feasibilitytol.html#parameter:FeasibilityTol">FeasibilityTol</A></TD>
+<TD ALIGN="LEFT">Primal feasibility tolerance</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="intfeastol.html#parameter:IntFeasTol">IntFeasTol</A></TD>
+<TD ALIGN="LEFT">Integer feasibility tolerance</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="markowitztol.html#parameter:MarkowitzTol">MarkowitzTol</A></TD>
+<TD ALIGN="LEFT">Threshold pivoting tolerance</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="mipgap2.html#parameter:MIPGap">MIPGap</A></TD>
+<TD ALIGN="LEFT">Relative MIP optimality gap</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="mipgapabs.html#parameter:MIPGapAbs">MIPGapAbs</A></TD>
+<TD ALIGN="LEFT">Absolute MIP optimality gap</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="optimalitytol.html#parameter:OptimalityTol">OptimalityTol</A></TD>
+<TD ALIGN="LEFT">Dual feasibility tolerance</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="psdtol.html#parameter:PSDTol">PSDTol</A></TD>
+<TD ALIGN="LEFT">Positive semi-definite tolerance</TD>
+</TR>
+</TABLE>
+
+<P>
+<B>Simplex:</B> These parameters control the operation of
+  the simplex algorithms.
+
+<P>
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf">Parameter name</SPAN></TH>
+<TH ALIGN="LEFT"><SPAN  CLASS="textbf">Purpose</SPAN></TH>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="infunbdinfo.html#parameter:InfUnbdInfo">InfUnbdInfo</A></TD>
+<TD ALIGN="LEFT">Generate additional info for infeasible/unbounded models</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="normadjust.html#parameter:NormAdjust">NormAdjust</A></TD>
+<TD ALIGN="LEFT">Simplex pricing norm</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="objscale.html#parameter:ObjScale">ObjScale</A></TD>
+<TD ALIGN="LEFT">Objective scaling</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="perturbvalue.html#parameter:PerturbValue">PerturbValue</A></TD>
+<TD ALIGN="LEFT">Simplex perturbation magnitude</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="quad.html#parameter:Quad">Quad</A></TD>
+<TD ALIGN="LEFT">Quad precision computation in simplex</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="scaleflag.html#parameter:ScaleFlag">ScaleFlag</A></TD>
+<TD ALIGN="LEFT">Model scaling</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="sifting.html#parameter:Sifting">Sifting</A></TD>
+<TD ALIGN="LEFT">Sifting within dual simplex</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="siftmethod.html#parameter:SiftMethod">SiftMethod</A></TD>
+<TD ALIGN="LEFT">LP method used to solve sifting sub-problems</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="simplexpricing.html#parameter:SimplexPricing">SimplexPricing</A></TD>
+<TD ALIGN="LEFT">Simplex variable pricing strategy</TD>
+</TR>
+</TABLE>
+
+<P>
+<B>Barrier:</B> These parameters control the operation of
+  the barrier solver.
+
+<P>
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf">Parameter name</SPAN></TH>
+<TH ALIGN="LEFT"><SPAN  CLASS="textbf">Purpose</SPAN></TH>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="barcorrectors.html#parameter:BarCorrectors">BarCorrectors</A></TD>
+<TD ALIGN="LEFT">Central correction limit</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="barhomogeneous.html#parameter:BarHomogeneous">BarHomogeneous</A></TD>
+<TD ALIGN="LEFT">Barrier homogeneous algorithm</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="barorder.html#parameter:BarOrder">BarOrder</A></TD>
+<TD ALIGN="LEFT">Barrier ordering algorithm</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="crossover.html#parameter:Crossover">Crossover</A></TD>
+<TD ALIGN="LEFT">Barrier crossover strategy</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="crossoverbasis.html#parameter:CrossoverBasis">CrossoverBasis</A></TD>
+<TD ALIGN="LEFT">Crossover initial basis construction strategy</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="qcpdual.html#parameter:QCPDual">QCPDual</A></TD>
+<TD ALIGN="LEFT">Compute dual variables for QCP models</TD>
+</TR>
+</TABLE>
+
+<P>
+<B>MIP:</B> These parameters control the operation of the
+  MIP algorithms.
+
+<P>
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf">Parameter name</SPAN></TH>
+<TH ALIGN="LEFT"><SPAN  CLASS="textbf">Purpose</SPAN></TH>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="branchdir.html#parameter:BranchDir">BranchDir</A></TD>
+<TD ALIGN="LEFT">Branch direction preference</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="concurrentjobs.html#parameter:ConcurrentJobs">ConcurrentJobs</A></TD>
+<TD ALIGN="LEFT">Enables distributed concurrent solver</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="concurrentmip.html#parameter:ConcurrentMIP">ConcurrentMIP</A></TD>
+<TD ALIGN="LEFT">Enables concurrent MIP solver</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="concurrentsettings.html#parameter:ConcurrentSettings">ConcurrentSettings</A></TD>
+<TD ALIGN="LEFT">Comma-separated list of .prm files - used to create concurrent environments</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="disconnected.html#parameter:Disconnected">Disconnected</A></TD>
+<TD ALIGN="LEFT">Disconnected component strategy</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="distributedmipjobs.html#parameter:DistributedMIPJobs">DistributedMIPJobs</A></TD>
+<TD ALIGN="LEFT">Enables the distributed MIP solver</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="heuristics.html#parameter:Heuristics">Heuristics</A></TD>
+<TD ALIGN="LEFT">Turn MIP heuristics up or down</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="improvestartgap.html#parameter:ImproveStartGap">ImproveStartGap</A></TD>
+<TD ALIGN="LEFT">Trigger solution improvement</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="improvestartnodes.html#parameter:ImproveStartNodes">ImproveStartNodes</A></TD>
+<TD ALIGN="LEFT">Trigger solution improvement</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="improvestarttime.html#parameter:ImproveStartTime">ImproveStartTime</A></TD>
+<TD ALIGN="LEFT">Trigger solution improvement</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="minrelnodes.html#parameter:MinRelNodes">MinRelNodes</A></TD>
+<TD ALIGN="LEFT">Minimum relaxation heuristic control</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="mipfocus.html#parameter:MIPFocus">MIPFocus</A></TD>
+<TD ALIGN="LEFT">Set the focus of the MIP solver</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="miqcpmethod.html#parameter:MIQCPMethod">MIQCPMethod</A></TD>
+<TD ALIGN="LEFT">Method used to solve MIQCP models</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="nodefiledir.html#parameter:NodefileDir">NodefileDir</A></TD>
+<TD ALIGN="LEFT">Directory for MIP node files</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="nodefilestart.html#parameter:NodefileStart">NodefileStart</A></TD>
+<TD ALIGN="LEFT">Memory threshold for writing MIP tree nodes to disk</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="nodemethod.html#parameter:NodeMethod">NodeMethod</A></TD>
+<TD ALIGN="LEFT">Method used to solve MIP node relaxations</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="pumppasses.html#parameter:PumpPasses">PumpPasses</A></TD>
+<TD ALIGN="LEFT">Feasibility pump heuristic control</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="rins.html#parameter:RINS">RINS</A></TD>
+<TD ALIGN="LEFT">RINS heuristic</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="solutionnumber.html#parameter:SolutionNumber">SolutionNumber</A></TD>
+<TD ALIGN="LEFT">Sub-optimal MIP solution retrieval</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="submipnodes.html#parameter:SubMIPNodes">SubMIPNodes</A></TD>
+<TD ALIGN="LEFT">Nodes explored by sub-MIP heuristics</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="symmetry.html#parameter:Symmetry">Symmetry</A></TD>
+<TD ALIGN="LEFT">MIP symmetry detection</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="varbranch.html#parameter:VarBranch">VarBranch</A></TD>
+<TD ALIGN="LEFT">Branch variable selection strategy</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="zeroobjnodes.html#parameter:ZeroObjNodes">ZeroObjNodes</A></TD>
+<TD ALIGN="LEFT">Zero objective heuristic control</TD>
+</TR>
+</TABLE>
+
+<P>
+<B>Tuning:</B> These parameters control the operation of the
+  parameter tuning tool.
+
+<P>
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf">Parameter name</SPAN></TH>
+<TH ALIGN="LEFT"><SPAN  CLASS="textbf">Purpose</SPAN></TH>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="tunejobs.html#parameter:TuneJobs">TuneJobs</A></TD>
+<TD ALIGN="LEFT">Enables distributed tuning</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="tuneoutput.html#parameter:TuneOutput">TuneOutput</A></TD>
+<TD ALIGN="LEFT">Tuning output level</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="tuneresults.html#parameter:TuneResults">TuneResults</A></TD>
+<TD ALIGN="LEFT">Number of improved parameter sets returned</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="tunetimelimit.html#parameter:TuneTimeLimit">TuneTimeLimit</A></TD>
+<TD ALIGN="LEFT">Time limit for tuning</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="tunetrials.html#parameter:TuneTrials">TuneTrials</A></TD>
+<TD ALIGN="LEFT">Perform multiple runs on each parameter set to limit the effect of random noise</TD>
+</TR>
+</TABLE>
+
+<P>
+<B>MIP Cuts:</B> These parameters affect the generation of
+  MIP cutting planes.  In all cases, a value of -1 corresponds to an
+  automatic setting, which allows the solver to determine the
+  appropriate level of aggressiveness in the cut generation.  Unless
+  otherwise noted, settings of 0, 1, and 2 correspond to no cut
+  generation, conservative cut generation, or aggressive cut
+  generation, respectively.  The <code>Cuts</code> parameter provides global
+  cut control, affecting the generation of all cuts.  This parameter
+  also has a setting of 3, which corresponds to very aggressive cut
+  generation.  The other parameters override the global <code>Cuts</code>
+  parameter (so setting <code>Cuts</code> to 2 and <code>CliqueCuts</code> to 0
+  would generate all cut types aggressively, except clique cuts which
+  would not be generated at all).
+
+<P>
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf">Parameter name</SPAN></TH>
+<TH ALIGN="LEFT"><SPAN  CLASS="textbf">Purpose</SPAN></TH>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="cuts.html#parameter:Cuts">Cuts</A></TD>
+<TD ALIGN="LEFT">Global cut generation control</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="cliquecuts.html#parameter:CliqueCuts">CliqueCuts</A></TD>
+<TD ALIGN="LEFT">Clique cut generation</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="covercuts.html#parameter:CoverCuts">CoverCuts</A></TD>
+<TD ALIGN="LEFT">Cover cut generation</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="flowcovercuts.html#parameter:FlowCoverCuts">FlowCoverCuts</A></TD>
+<TD ALIGN="LEFT">Flow cover cut generation</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="flowpathcuts.html#parameter:FlowPathCuts">FlowPathCuts</A></TD>
+<TD ALIGN="LEFT">Flow path cut generation</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="gubcovercuts.html#parameter:GUBCoverCuts">GUBCoverCuts</A></TD>
+<TD ALIGN="LEFT">GUB cover cut generation</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="impliedcuts.html#parameter:ImpliedCuts">ImpliedCuts</A></TD>
+<TD ALIGN="LEFT">Implied bound cut generation</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="mipsepcuts.html#parameter:MIPSepCuts">MIPSepCuts</A></TD>
+<TD ALIGN="LEFT">MIP separation cut generation</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="mircuts.html#parameter:MIRCuts">MIRCuts</A></TD>
+<TD ALIGN="LEFT">MIR cut generation</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="modkcuts.html#parameter:ModKCuts">ModKCuts</A></TD>
+<TD ALIGN="LEFT">Mod-k cut generation</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="networkcuts.html#parameter:NetworkCuts">NetworkCuts</A></TD>
+<TD ALIGN="LEFT">Network cut generation</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="submipcuts.html#parameter:SubMIPCuts">SubMIPCuts</A></TD>
+<TD ALIGN="LEFT">Sub-MIP cut generation</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="zerohalfcuts.html#parameter:ZeroHalfCuts">ZeroHalfCuts</A></TD>
+<TD ALIGN="LEFT">Zero-half cut generation</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="cutaggpasses.html#parameter:CutAggPasses">CutAggPasses</A></TD>
+<TD ALIGN="LEFT">Constraint aggregation passes performed during cut generation</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="cutpasses.html#parameter:CutPasses">CutPasses</A></TD>
+<TD ALIGN="LEFT">Root cutting plane pass limit</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="gomorypasses.html#parameter:GomoryPasses">GomoryPasses</A></TD>
+<TD ALIGN="LEFT">Root Gomory cut pass limit</TD>
+</TR>
+</TABLE>
+
+<P>
+<B>Distributed algorithms:</B> Parameters that are used to
+  control our distributed parallel algorithms (distributed MIP,
+  distributed concurrent, and distributed tuning).
+
+<P>
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf">Parameter name</SPAN></TH>
+<TH ALIGN="LEFT"><SPAN  CLASS="textbf">Purpose</SPAN></TH>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="workerpassword.html#parameter:WorkerPassword">WorkerPassword</A></TD>
+<TD ALIGN="LEFT">Password for distributed workers</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="workerpool.html#parameter:WorkerPool">WorkerPool</A></TD>
+<TD ALIGN="LEFT">List of available distributed workers</TD>
+</TR>
+</TABLE>
+
+<P>
+<B>Other:</B> Other parameters.
+
+<P>
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf">Parameter name</SPAN></TH>
+<TH ALIGN="LEFT"><SPAN  CLASS="textbf">Purpose</SPAN></TH>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="aggfill.html#parameter:AggFill">AggFill</A></TD>
+<TD ALIGN="LEFT">Allowed fill during presolve aggregation</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="aggregate.html#parameter:Aggregate">Aggregate</A></TD>
+<TD ALIGN="LEFT">Presolve aggregation control</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="displayinterval.html#parameter:DisplayInterval">DisplayInterval</A></TD>
+<TD ALIGN="LEFT">Frequency at which log lines are printed</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="dualreductions.html#parameter:DualReductions">DualReductions</A></TD>
+<TD ALIGN="LEFT">Disables dual reductions in presolve</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="feasrelaxbigm.html#parameter:FeasRelaxBigM">FeasRelaxBigM</A></TD>
+<TD ALIGN="LEFT">Big-M value for feasibility relaxations</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="iismethod.html#parameter:IISMethod">IISMethod</A></TD>
+<TD ALIGN="LEFT">IIS method</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="inputfile.html#parameter:InputFile">InputFile</A></TD>
+<TD ALIGN="LEFT">File to be read before optimization commences</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="lazyconstraints.html#parameter:LazyConstraints">LazyConstraints</A></TD>
+<TD ALIGN="LEFT">Programs that add lazy constraints must set this parameter</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="logfile.html#parameter:LogFile">LogFile</A></TD>
+<TD ALIGN="LEFT">Log file name</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="logtoconsole.html#parameter:LogToConsole">LogToConsole</A></TD>
+<TD ALIGN="LEFT">Console logging</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="method.html#parameter:Method">Method</A></TD>
+<TD ALIGN="LEFT">Algorithm used to solve continuous models</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="numericfocus.html#parameter:NumericFocus">NumericFocus</A></TD>
+<TD ALIGN="LEFT">Set the numerical focus</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="outputflag.html#parameter:OutputFlag">OutputFlag</A></TD>
+<TD ALIGN="LEFT">Solver output control</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="precrush.html#parameter:PreCrush">PreCrush</A></TD>
+<TD ALIGN="LEFT">Allows presolve to translate constraints on the original model to equivalent constraints on the presolved model</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="predeprow.html#parameter:PreDepRow">PreDepRow</A></TD>
+<TD ALIGN="LEFT">Presolve dependent row reduction</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="predual.html#parameter:PreDual">PreDual</A></TD>
+<TD ALIGN="LEFT">Presolve dualization</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="prepasses.html#parameter:PrePasses">PrePasses</A></TD>
+<TD ALIGN="LEFT">Presolve pass limit</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="preqlinearize.html#parameter:PreQLinearize">PreQLinearize</A></TD>
+<TD ALIGN="LEFT">Presolve Q matrix linearization</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="presolve.html#parameter:Presolve">Presolve</A></TD>
+<TD ALIGN="LEFT">Presolve level</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="presos1bigm.html#parameter:PreSOS1BigM">PreSOS1BigM</A></TD>
+<TD ALIGN="LEFT">Controls SOS1 converstion to binary form</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="presos2bigm.html#parameter:PreSOS2BigM">PreSOS2BigM</A></TD>
+<TD ALIGN="LEFT">Controls SOS2 converstion to binary form</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="presparsify.html#parameter:PreSparsify">PreSparsify</A></TD>
+<TD ALIGN="LEFT">Presolve sparsify reduction</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="resultfile.html#parameter:ResultFile">ResultFile</A></TD>
+<TD ALIGN="LEFT">Result file written upon completion of optimization</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="seed.html#parameter:Seed">Seed</A></TD>
+<TD ALIGN="LEFT">Modify the random number seed</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A HREF="threads.html#parameter:Threads">Threads</A></TD>
+<TD ALIGN="LEFT">Number of parallel threads to use</TD>
+</TR>
+</TABLE>
+
+<P>
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html10794"
+  HREF="parameter_guidelines.html">Parameter Guidelines</A>
+<UL>
+<LI><A NAME="tex2html10795"
+  HREF="continuous_models.html">Continuous Models</A>
+<LI><A NAME="tex2html10796"
+  HREF="mip_models.html">MIP Models</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html10797"
+  HREF="parameter_descriptions.html">Parameter Descriptions</A>
+<UL>
+<LI><A NAME="tex2html10798"
+  HREF="aggfill.html">AggFill</A>
+<LI><A NAME="tex2html10799"
+  HREF="aggregate.html">Aggregate</A>
+<LI><A NAME="tex2html10800"
+  HREF="barconvtol.html">BarConvTol</A>
+<LI><A NAME="tex2html10801"
+  HREF="barcorrectors.html">BarCorrectors</A>
+<LI><A NAME="tex2html10802"
+  HREF="barhomogeneous.html">BarHomogeneous</A>
+<LI><A NAME="tex2html10803"
+  HREF="barorder.html">BarOrder</A>
+<LI><A NAME="tex2html10804"
+  HREF="barqcpconvtol.html">BarQCPConvTol</A>
+<LI><A NAME="tex2html10805"
+  HREF="bariterlimit.html">BarIterLimit</A>
+<LI><A NAME="tex2html10806"
+  HREF="branchdir.html">BranchDir</A>
+<LI><A NAME="tex2html10807"
+  HREF="cliquecuts.html">CliqueCuts</A>
+<LI><A NAME="tex2html10808"
+  HREF="concurrentjobs.html">ConcurrentJobs</A>
+<LI><A NAME="tex2html10809"
+  HREF="concurrentmip.html">ConcurrentMIP</A>
+<LI><A NAME="tex2html10810"
+  HREF="concurrentsettings.html">ConcurrentSettings</A>
+<LI><A NAME="tex2html10811"
+  HREF="covercuts.html">CoverCuts</A>
+<LI><A NAME="tex2html10812"
+  HREF="crossover.html">Crossover</A>
+<LI><A NAME="tex2html10813"
+  HREF="crossoverbasis.html">CrossoverBasis</A>
+<LI><A NAME="tex2html10814"
+  HREF="cutoff.html">Cutoff</A>
+<LI><A NAME="tex2html10815"
+  HREF="cutaggpasses.html">CutAggPasses</A>
+<LI><A NAME="tex2html10816"
+  HREF="cutpasses.html">CutPasses</A>
+<LI><A NAME="tex2html10817"
+  HREF="cuts.html">Cuts</A>
+<LI><A NAME="tex2html10818"
+  HREF="disconnected.html">Disconnected</A>
+<LI><A NAME="tex2html10819"
+  HREF="displayinterval.html">DisplayInterval</A>
+<LI><A NAME="tex2html10820"
+  HREF="distributedmipjobs.html">DistributedMIPJobs</A>
+<LI><A NAME="tex2html10821"
+  HREF="dualreductions.html">DualReductions</A>
+<LI><A NAME="tex2html10822"
+  HREF="feasibilitytol.html">FeasibilityTol</A>
+<LI><A NAME="tex2html10823"
+  HREF="feasrelaxbigm.html">FeasRelaxBigM</A>
+<LI><A NAME="tex2html10824"
+  HREF="flowcovercuts.html">FlowCoverCuts</A>
+<LI><A NAME="tex2html10825"
+  HREF="flowpathcuts.html">FlowPathCuts</A>
+<LI><A NAME="tex2html10826"
+  HREF="gomorypasses.html">GomoryPasses</A>
+<LI><A NAME="tex2html10827"
+  HREF="gubcovercuts.html">GUBCoverCuts</A>
+<LI><A NAME="tex2html10828"
+  HREF="heuristics.html">Heuristics</A>
+<LI><A NAME="tex2html10829"
+  HREF="iismethod.html">IISMethod</A>
+<LI><A NAME="tex2html10830"
+  HREF="impliedcuts.html">ImpliedCuts</A>
+<LI><A NAME="tex2html10831"
+  HREF="improvestartgap.html">ImproveStartGap</A>
+<LI><A NAME="tex2html10832"
+  HREF="improvestartnodes.html">ImproveStartNodes</A>
+<LI><A NAME="tex2html10833"
+  HREF="improvestarttime.html">ImproveStartTime</A>
+<LI><A NAME="tex2html10834"
+  HREF="infunbdinfo.html">InfUnbdInfo</A>
+<LI><A NAME="tex2html10835"
+  HREF="inputfile.html">InputFile</A>
+<LI><A NAME="tex2html10836"
+  HREF="intfeastol.html">IntFeasTol</A>
+<LI><A NAME="tex2html10837"
+  HREF="iterationlimit.html">IterationLimit</A>
+<LI><A NAME="tex2html10838"
+  HREF="lazyconstraints.html">LazyConstraints</A>
+<LI><A NAME="tex2html10839"
+  HREF="logfile.html">LogFile</A>
+<LI><A NAME="tex2html10840"
+  HREF="logtoconsole.html">LogToConsole</A>
+<LI><A NAME="tex2html10841"
+  HREF="markowitztol.html">MarkowitzTol</A>
+<LI><A NAME="tex2html10842"
+  HREF="method.html">Method</A>
+<LI><A NAME="tex2html10843"
+  HREF="minrelnodes.html">MinRelNodes</A>
+<LI><A NAME="tex2html10844"
+  HREF="mipfocus.html">MIPFocus</A>
+<LI><A NAME="tex2html10845"
+  HREF="mipgap2.html">MIPGap</A>
+<LI><A NAME="tex2html10846"
+  HREF="mipgapabs.html">MIPGapAbs</A>
+<LI><A NAME="tex2html10847"
+  HREF="mipsepcuts.html">MIPSepCuts</A>
+<LI><A NAME="tex2html10848"
+  HREF="miqcpmethod.html">MIQCPMethod</A>
+<LI><A NAME="tex2html10849"
+  HREF="mircuts.html">MIRCuts</A>
+<LI><A NAME="tex2html10850"
+  HREF="modkcuts.html">ModKCuts</A>
+<LI><A NAME="tex2html10851"
+  HREF="networkcuts.html">NetworkCuts</A>
+<LI><A NAME="tex2html10852"
+  HREF="nodefiledir.html">NodefileDir</A>
+<LI><A NAME="tex2html10853"
+  HREF="nodefilestart.html">NodefileStart</A>
+<LI><A NAME="tex2html10854"
+  HREF="nodelimit.html">NodeLimit</A>
+<LI><A NAME="tex2html10855"
+  HREF="nodemethod.html">NodeMethod</A>
+<LI><A NAME="tex2html10856"
+  HREF="normadjust.html">NormAdjust</A>
+<LI><A NAME="tex2html10857"
+  HREF="numericfocus.html">NumericFocus</A>
+<LI><A NAME="tex2html10858"
+  HREF="objscale.html">ObjScale</A>
+<LI><A NAME="tex2html10859"
+  HREF="optimalitytol.html">OptimalityTol</A>
+<LI><A NAME="tex2html10860"
+  HREF="outputflag.html">OutputFlag</A>
+<LI><A NAME="tex2html10861"
+  HREF="perturbvalue.html">PerturbValue</A>
+<LI><A NAME="tex2html10862"
+  HREF="precrush.html">PreCrush</A>
+<LI><A NAME="tex2html10863"
+  HREF="predeprow.html">PreDepRow</A>
+<LI><A NAME="tex2html10864"
+  HREF="predual.html">PreDual</A>
+<LI><A NAME="tex2html10865"
+  HREF="prepasses.html">PrePasses</A>
+<LI><A NAME="tex2html10866"
+  HREF="preqlinearize.html">PreQLinearize</A>
+<LI><A NAME="tex2html10867"
+  HREF="presolve.html">Presolve</A>
+<LI><A NAME="tex2html10868"
+  HREF="presos1bigm.html">PreSOS1BigM</A>
+<LI><A NAME="tex2html10869"
+  HREF="presos2bigm.html">PreSOS2BigM</A>
+<LI><A NAME="tex2html10870"
+  HREF="presparsify.html">PreSparsify</A>
+<LI><A NAME="tex2html10871"
+  HREF="psdtol.html">PSDTol</A>
+<LI><A NAME="tex2html10872"
+  HREF="pumppasses.html">PumpPasses</A>
+<LI><A NAME="tex2html10873"
+  HREF="qcpdual.html">QCPDual</A>
+<LI><A NAME="tex2html10874"
+  HREF="quad.html">Quad</A>
+<LI><A NAME="tex2html10875"
+  HREF="resultfile.html">ResultFile</A>
+<LI><A NAME="tex2html10876"
+  HREF="rins.html">RINS</A>
+<LI><A NAME="tex2html10877"
+  HREF="scaleflag.html">ScaleFlag</A>
+<LI><A NAME="tex2html10878"
+  HREF="seed.html">Seed</A>
+<LI><A NAME="tex2html10879"
+  HREF="sifting.html">Sifting</A>
+<LI><A NAME="tex2html10880"
+  HREF="siftmethod.html">SiftMethod</A>
+<LI><A NAME="tex2html10881"
+  HREF="simplexpricing.html">SimplexPricing</A>
+<LI><A NAME="tex2html10882"
+  HREF="solutionlimit.html">SolutionLimit</A>
+<LI><A NAME="tex2html10883"
+  HREF="solutionnumber.html">SolutionNumber</A>
+<LI><A NAME="tex2html10884"
+  HREF="submipcuts.html">SubMIPCuts</A>
+<LI><A NAME="tex2html10885"
+  HREF="submipnodes.html">SubMIPNodes</A>
+<LI><A NAME="tex2html10886"
+  HREF="symmetry.html">Symmetry</A>
+<LI><A NAME="tex2html10887"
+  HREF="threads.html">Threads</A>
+<LI><A NAME="tex2html10888"
+  HREF="timelimit.html">TimeLimit</A>
+<LI><A NAME="tex2html10889"
+  HREF="tunejobs.html">TuneJobs</A>
+<LI><A NAME="tex2html10890"
+  HREF="tuneoutput.html">TuneOutput</A>
+<LI><A NAME="tex2html10891"
+  HREF="tuneresults.html">TuneResults</A>
+<LI><A NAME="tex2html10892"
+  HREF="tunetimelimit.html">TuneTimeLimit</A>
+<LI><A NAME="tex2html10893"
+  HREF="tunetrials.html">TuneTrials</A>
+<LI><A NAME="tex2html10894"
+  HREF="varbranch.html">VarBranch</A>
+<LI><A NAME="tex2html10895"
+  HREF="workerpassword.html">WorkerPassword</A>
+<LI><A NAME="tex2html10896"
+  HREF="workerpool.html">WorkerPool</A>
+<LI><A NAME="tex2html10897"
+  HREF="zerohalfcuts.html">ZeroHalfCuts</A>
+<LI><A NAME="tex2html10898"
+  HREF="zeroobjnodes.html">ZeroObjNodes</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html10899"
+  HREF="parameter_examples.html">Parameter Examples</A>
+<UL>
+<LI><A NAME="tex2html10900"
+  HREF="c_parameter_examples.html">C Parameter Examples</A>
+<LI><A NAME="tex2html10901"
+  HREF="cpp_parameter_examples.html">C++ Parameter Examples</A>
+<LI><A NAME="tex2html10902"
+  HREF="cs_parameter_examples.html">C# Parameter Examples</A>
+<LI><A NAME="tex2html10903"
+  HREF="java_parameter_examples.html">Java Parameter Examples</A>
+<LI><A NAME="tex2html10904"
+  HREF="matlab_parameter_examples.html">MATLAB Parameter Examples</A>
+<LI><A NAME="tex2html10905"
+  HREF="python_parameter_examples.html">Python Parameter Examples</A>
+<LI><A NAME="tex2html10906"
+  HREF="r_parameter_examples.html">R Parameter Examples</A>
+<LI><A NAME="tex2html10907"
+  HREF="visual_basic_parameter_exa.html">Visual Basic Parameter Examples</A>
+</UL></UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html10792"
+  HREF="parameter_guidelines.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html10790"
+  HREF="refman.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html10784"
+  HREF="visual_basic_attribute_exa.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html10793"
+  HREF="parameter_guidelines.html">Parameter Guidelines</A>
+<B> Up:</B> <A NAME="tex2html10791"
+  HREF="refman.html">Gurobi Optimizer Reference Manual</A>
+<B> Previous:</B> <A NAME="tex2html10785"
+  HREF="visual_basic_attribute_exa.html">Visual Basic Attribute Examples</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

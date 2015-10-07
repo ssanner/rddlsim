@@ -1,0 +1,125 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>GRBColumn</TITLE>
+<META NAME="description" CONTENT="GRBColumn">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="java_grbcallback.html">
+<LINK REL="previous" HREF="java_grbquadexpr.html">
+<LINK REL="up" HREF="java_api_details.html">
+<LINK REL="next" HREF="java_grbcolumn2.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html5510"
+  HREF="java_grbcolumn2.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html5508"
+  HREF="java_api_details.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html5502"
+  HREF="java_grbquadexpr_size.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html5511"
+  HREF="java_grbcolumn2.html">GRBColumn()</A>
+<B> Up:</B> <A NAME="tex2html5509"
+  HREF="java_api_details.html">Java API Details</A>
+<B> Previous:</B> <A NAME="tex2html5503"
+  HREF="java_grbquadexpr_size.html">GRBQuadExpr.size()</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION000610000000000000000"></A>
+<A NAME="javaclass:GRBColumn"></A>
+<BR>
+GRBColumn
+</H2>
+
+<P>
+Gurobi column object.  A column consists of a list of coefficient,
+constraint pairs.  Columns are used to represent the set of
+constraints in which a variable participates, and the associated
+coefficients.  They are temporary objects that typically have short
+lifespans.
+
+<P>
+You generally build columns by starting with an empty column (using
+the <A HREF="java_grbcolumn2.html#javamethod:GRBColumn">GRBColumn</A> constructor), and
+then adding terms.  Terms can be added individually, using
+<A HREF="java_grbcolumn_addterm.html#javamethod:GRBColumn.addTerm">addTerm</A>, or in groups,
+using <A HREF="java_grbcolumn_addterms.html#javamethod:GRBColumn.addTerms">addTerms</A>.  Terms
+can also be removed from a column, using
+<A HREF="java_grbcolumn_remove.html#javamethod:GRBColumn.remove">remove</A>.
+
+<P>
+Individual terms in a column can be queried using the
+<A HREF="java_grbcolumn_getconstr.html#javamethod:GRBColumn.getConstr">getConstr</A>, and
+<A HREF="java_grbcolumn_getcoeff.html#javamethod:GRBColumn.getCoeff">getCoeff</A> methods.  You
+can query the number of terms in the column using the
+<A HREF="java_grbcolumn_size.html#javamethod:GRBColumn.size">size</A> method.
+
+<P>
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html5512"
+  HREF="java_grbcolumn2.html">GRBColumn()</A>
+<LI><A NAME="tex2html5513"
+  HREF="java_grbcolumn_addterm.html">GRBColumn.addTerm()</A>
+<LI><A NAME="tex2html5514"
+  HREF="java_grbcolumn_addterms.html">GRBColumn.addTerms()</A>
+<LI><A NAME="tex2html5515"
+  HREF="java_grbcolumn_clear.html">GRBColumn.clear()</A>
+<LI><A NAME="tex2html5516"
+  HREF="java_grbcolumn_getcoeff.html">GRBColumn.getCoeff()</A>
+<LI><A NAME="tex2html5517"
+  HREF="java_grbcolumn_getconstr.html">GRBColumn.getConstr()</A>
+<LI><A NAME="tex2html5518"
+  HREF="java_grbcolumn_remove.html">GRBColumn.remove()</A>
+<LI><A NAME="tex2html5519"
+  HREF="java_grbcolumn_size.html">GRBColumn.size()</A>
+</UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html5510"
+  HREF="java_grbcolumn2.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html5508"
+  HREF="java_api_details.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html5502"
+  HREF="java_grbquadexpr_size.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html5511"
+  HREF="java_grbcolumn2.html">GRBColumn()</A>
+<B> Up:</B> <A NAME="tex2html5509"
+  HREF="java_api_details.html">Java API Details</A>
+<B> Previous:</B> <A NAME="tex2html5503"
+  HREF="java_grbquadexpr_size.html">GRBQuadExpr.size()</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

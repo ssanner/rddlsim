@@ -1,0 +1,135 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>ConcurrentMIP</TITLE>
+<META NAME="description" CONTENT="ConcurrentMIP">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="concurrentsettings.html">
+<LINK REL="previous" HREF="concurrentjobs.html">
+<LINK REL="up" HREF="parameter_descriptions.html">
+<LINK REL="next" HREF="concurrentsettings.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html11167"
+  HREF="concurrentsettings.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html11165"
+  HREF="parameter_descriptions.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html11159"
+  HREF="concurrentjobs.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html11168"
+  HREF="concurrentsettings.html">ConcurrentSettings</A>
+<B> Up:</B> <A NAME="tex2html11166"
+  HREF="parameter_descriptions.html">Parameter Descriptions</A>
+<B> Previous:</B> <A NAME="tex2html11160"
+  HREF="concurrentjobs.html">ConcurrentJobs</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION0001421200000000000000"></A>
+<A NAME="parameter:ConcurrentMIP"></A>
+<BR>
+ConcurrentMIP
+</H3>
+Enables the concurrent MIP solver
+
+<TABLE CELLPADDING=3>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf">Type:</SPAN></TH>
+<TD ALIGN="LEFT">int</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf">Default value:</SPAN></TH>
+<TD ALIGN="LEFT">1</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf">Minimum value:</SPAN></TH>
+<TD ALIGN="LEFT">1</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf">Maximum value:</SPAN></TH>
+<TD ALIGN="LEFT">MAXINT</TD>
+</TR>
+</TABLE>
+
+<P>
+This parameter enables the concurrent MIP solver.  When the parameter
+is set to value <code>n</code>, the MIP solver performs <code>n</code>
+independent MIP solves in parallel, with different parameter settings
+for each.  Optimization terminates when the first solve completes.
+
+<P>
+By default, Gurobi chooses the parameter settings used for each
+independent solve automatically.  You can create concurrent
+environments to choose your own parameter settings (refer to
+the <A HREF="concurrent_optimizer.html#sec:ConcurrentControl">concurrent optimization</A>
+section for details).  The intent of concurrent MIP solving is to
+introduce additional diversity into the MIP search.  This approach can
+sometimes solve models much faster than applying all available threads
+to a single MIP solve, especially on very large parallel machines.
+
+<P>
+The concurrent MIP solver divides available threads evenly among the
+independent solves.  For example, if you have 6 threads available and
+you set <code>ConcurrentMIP</code> to 2, the concurrent MIP solver will
+allocate 3 threads to each independent solve.  Note that the number of
+independent solves launched will not exceed the number of available
+threads.
+
+<P>
+The concurrent MIP solver produces a slightly different log from the
+standard MIP solver, and provides different callbacks as well.  Please
+refer to the
+<A HREF="concurrent_optimizer.html#sec:Concurrent">concurrent optimizer</A>
+discussion for additional details.
+
+<P>
+
+<SPAN  CLASS="textbf">Note:</SPAN> Only affects mixed integer programming (MIP) models 
+<BR>
+
+<P>
+For examples of how to query or modify parameter values from
+our different APIs, refer to our
+<A HREF="parameter_examples.html#sec:ParameterExamples">Parameter Examples</A>.
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html11167"
+  HREF="concurrentsettings.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html11165"
+  HREF="parameter_descriptions.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html11159"
+  HREF="concurrentjobs.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html11168"
+  HREF="concurrentsettings.html">ConcurrentSettings</A>
+<B> Up:</B> <A NAME="tex2html11166"
+  HREF="parameter_descriptions.html">Parameter Descriptions</A>
+<B> Previous:</B> <A NAME="tex2html11160"
+  HREF="concurrentjobs.html">ConcurrentJobs</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

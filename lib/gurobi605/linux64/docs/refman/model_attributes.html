@@ -1,0 +1,181 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Model Attributes</TITLE>
+<META NAME="description" CONTENT="Model Attributes">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="variable_attributes.html">
+<LINK REL="previous" HREF="attributes.html">
+<LINK REL="up" HREF="attributes.html">
+<LINK REL="next" HREF="numconstrs.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html9396"
+  HREF="numconstrs.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html9394"
+  HREF="attributes.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html9388"
+  HREF="attributes.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html9397"
+  HREF="numconstrs.html">NumConstrs</A>
+<B> Up:</B> <A NAME="tex2html9395"
+  HREF="attributes.html">Attributes</A>
+<B> Previous:</B> <A NAME="tex2html9389"
+  HREF="attributes.html">Attributes</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION000131000000000000000">
+Model Attributes</A>
+</H2>
+
+<P>
+These are model attributes, meaning that they are associated with the
+overall model (as opposed to being associated with a particular
+variable or constraint of the model).  You should use one of the
+various <code>get</code> routines to retrieve the value of an attribute.
+These are described at the beginning of
+<A HREF="attributes.html#sec:Attributes">this section</A>).
+For the object-oriented interfaces, model attributes are retrieved by
+invoking the <code>get</code> method on the model object itself.  For
+attributes that can be modified directly by the user, you can use one
+of the various <code>set</code> methods.
+
+<P>
+Attempting to query an attribute that is not available will produce an
+error.  In C, the attribute query routine will return a
+<code>GRB_ERROR_DATA_NOT_AVAILABLE</code>
+error code.  The object-oriented
+interfaces will throw an exception.
+
+<P>
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html9398"
+  HREF="numconstrs.html">NumConstrs</A>
+<LI><A NAME="tex2html9399"
+  HREF="numvars.html">NumVars</A>
+<LI><A NAME="tex2html9400"
+  HREF="numsos.html">NumSOS</A>
+<LI><A NAME="tex2html9401"
+  HREF="numqconstrs.html">NumQConstrs</A>
+<LI><A NAME="tex2html9402"
+  HREF="numnzs.html">NumNZs</A>
+<LI><A NAME="tex2html9403"
+  HREF="numqnzs.html">NumQNZs</A>
+<LI><A NAME="tex2html9404"
+  HREF="numqcnzs.html">NumQCNZs</A>
+<LI><A NAME="tex2html9405"
+  HREF="numintvars.html">NumIntVars</A>
+<LI><A NAME="tex2html9406"
+  HREF="numbinvars.html">NumBinVars</A>
+<LI><A NAME="tex2html9407"
+  HREF="numpwlobjvars.html">NumPWLObjVars</A>
+<LI><A NAME="tex2html9408"
+  HREF="modelname.html">ModelName</A>
+<LI><A NAME="tex2html9409"
+  HREF="modelsense.html">ModelSense</A>
+<LI><A NAME="tex2html9410"
+  HREF="objcon.html">ObjCon</A>
+<LI><A NAME="tex2html9411"
+  HREF="objval.html">ObjVal</A>
+<LI><A NAME="tex2html9412"
+  HREF="objbound.html">ObjBound</A>
+<LI><A NAME="tex2html9413"
+  HREF="objboundc.html">ObjBoundC</A>
+<LI><A NAME="tex2html9414"
+  HREF="mipgap.html">MIPGap</A>
+<LI><A NAME="tex2html9415"
+  HREF="runtime.html">Runtime</A>
+<LI><A NAME="tex2html9416"
+  HREF="status.html">Status</A>
+<LI><A NAME="tex2html9417"
+  HREF="solcount.html">SolCount</A>
+<LI><A NAME="tex2html9418"
+  HREF="itercount.html">IterCount</A>
+<LI><A NAME="tex2html9419"
+  HREF="baritercount.html">BarIterCount</A>
+<LI><A NAME="tex2html9420"
+  HREF="nodecount.html">NodeCount</A>
+<LI><A NAME="tex2html9421"
+  HREF="ismip.html">IsMIP</A>
+<LI><A NAME="tex2html9422"
+  HREF="isqp.html">IsQP</A>
+<LI><A NAME="tex2html9423"
+  HREF="isqcp.html">IsQCP</A>
+<LI><A NAME="tex2html9424"
+  HREF="iisminimal.html">IISMinimal</A>
+<LI><A NAME="tex2html9425"
+  HREF="maxcoeff.html">MaxCoeff</A>
+<LI><A NAME="tex2html9426"
+  HREF="mincoeff.html">MinCoeff</A>
+<LI><A NAME="tex2html9427"
+  HREF="maxbound.html">MaxBound</A>
+<LI><A NAME="tex2html9428"
+  HREF="minbound.html">MinBound</A>
+<LI><A NAME="tex2html9429"
+  HREF="maxobjcoeff.html">MaxObjCoeff</A>
+<LI><A NAME="tex2html9430"
+  HREF="minobjcoeff.html">MinObjCoeff</A>
+<LI><A NAME="tex2html9431"
+  HREF="maxrhs.html">MaxRHS</A>
+<LI><A NAME="tex2html9432"
+  HREF="minrhs.html">MinRHS</A>
+<LI><A NAME="tex2html9433"
+  HREF="kappa.html">Kappa</A>
+<LI><A NAME="tex2html9434"
+  HREF="kappaexact.html">KappaExact</A>
+<LI><A NAME="tex2html9435"
+  HREF="farkasproof.html">FarkasProof</A>
+<LI><A NAME="tex2html9436"
+  HREF="tuneresultcount.html">TuneResultCount</A>
+</UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html9396"
+  HREF="numconstrs.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html9394"
+  HREF="attributes.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html9388"
+  HREF="attributes.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html9397"
+  HREF="numconstrs.html">NumConstrs</A>
+<B> Up:</B> <A NAME="tex2html9395"
+  HREF="attributes.html">Attributes</A>
+<B> Previous:</B> <A NAME="tex2html9389"
+  HREF="attributes.html">Attributes</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

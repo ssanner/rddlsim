@@ -1,0 +1,127 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>sos.py</TITLE>
+<META NAME="description" CONTENT="sos.py">
+<META NAME="keywords" CONTENT="examples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="examples.css">
+
+<LINK REL="next" HREF="sudoku_py.html">
+<LINK REL="previous" HREF="sensitivity_py.html">
+<LINK REL="up" HREF="python_examples.html">
+<LINK REL="next" HREF="sudoku_py.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html2119"
+  HREF="sudoku_py.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html2117"
+  HREF="python_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html2111"
+  HREF="sensitivity_py.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html2120"
+  HREF="sudoku_py.html">sudoku.py</A>
+<B> Up:</B> <A NAME="tex2html2118"
+  HREF="python_examples.html">Python Examples</A>
+<B> Previous:</B> <A NAME="tex2html2112"
+  HREF="sensitivity_py.html">sensitivity.py</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000262300000000000000"></A>
+<A NAME="subsubsection:sos.py"></A>
+<BR>
+sos.py
+</H3>
+
+<P>
+<BR>
+<PRE  CLASS="verbatim">#!/usr/bin/python
+
+# Copyright 2014, Gurobi Optimization, Inc.
+
+# This example creates a very simple Special Ordered Set (SOS) model.
+# The model consists of 3 continuous variables, no linear constraints,
+# and a pair of SOS constraints of type 1.
+
+from gurobipy import *
+
+try:
+
+    # Create a new model
+
+    model = Model("sos")
+
+    # Create variables
+
+    x0 = model.addVar(ub=1.0, name="x0")
+    x1 = model.addVar(ub=1.0, name="x1")
+    x2 = model.addVar(ub=2.0, name="x2")
+
+    # Integrate new variables
+
+    model.update()
+
+    # Set objective
+    model.setObjective(2 * x0 + x1 + x2, GRB.MAXIMIZE)
+
+    # Add first SOS: x0 = 0 or x1 = 0
+    model.addSOS(GRB.SOS_TYPE1, [x0, x1], [1, 2])
+
+    # Add second SOS: x0 = 0 or x2 = 0
+    model.addSOS(GRB.SOS_TYPE1, [x0, x2], [1, 2])
+
+    model.optimize()
+
+    for v in model.getVars():
+        print('%s %g' % (v.varName, v.x))
+
+    print('Obj: %g' % model.objVal)
+
+except GurobiError:
+
+    print('Encountered an error')
+</PRE>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html2119"
+  HREF="sudoku_py.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html2117"
+  HREF="python_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html2111"
+  HREF="sensitivity_py.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html2120"
+  HREF="sudoku_py.html">sudoku.py</A>
+<B> Up:</B> <A NAME="tex2html2118"
+  HREF="python_examples.html">Python Examples</A>
+<B> Previous:</B> <A NAME="tex2html2112"
+  HREF="sensitivity_py.html">sensitivity.py</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

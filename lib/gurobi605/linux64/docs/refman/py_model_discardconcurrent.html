@@ -1,0 +1,105 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Model.discardConcurrentEnvs()</TITLE>
+<META NAME="description" CONTENT="Model.discardConcurrentEnvs()">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="py_model_feasrelaxs.html">
+<LINK REL="previous" HREF="py_model_copy.html">
+<LINK REL="up" HREF="py_model.html">
+<LINK REL="next" HREF="py_model_feasrelaxs.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html7990"
+  HREF="py_model_feasrelaxs.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html7988"
+  HREF="py_model.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html7982"
+  HREF="py_model_copy.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html7991"
+  HREF="py_model_feasrelaxs.html">Model.feasRelaxS()</A>
+<B> Up:</B> <A NAME="tex2html7989"
+  HREF="py_model.html">Model</A>
+<B> Previous:</B> <A NAME="tex2html7983"
+  HREF="py_model_copy.html">Model.copy()</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION0001021000000000000000"></A>
+<A NAME="pythonmethod:Model.discardConcurrentEnvs"></A>
+<BR>
+Model.discardConcurrentEnvs()
+</H3>
+<BIG CLASS="LARGE">
+<FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">discardConcurrentEnvs</SPAN></FONT></BIG> (  )
+
+<P>
+Discard concurrent environments for a model.
+
+<P>
+The concurrent environments created by
+<A HREF="py_model_getconcurrentenv.html#pythonmethod:Model.getConcurrentEnv">getConcurrentEnv</A>
+will be used by every subsequent call to the concurrent optimizer
+until the concurrent environments are discarded.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Example usage:</SPAN></BIG><PRE>
+  env0 = model.getConcurrentEnv(0)
+  env1 = model.getConcurrentEnv(1)
+
+  env0.setParam('Method', 0)
+  env1.setParam('Method', 1)
+
+  model.optimize()
+
+  model.discardConcurrentEnvs()
+</PRE>
+
+<P>
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html7990"
+  HREF="py_model_feasrelaxs.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html7988"
+  HREF="py_model.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html7982"
+  HREF="py_model_copy.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html7991"
+  HREF="py_model_feasrelaxs.html">Model.feasRelaxS()</A>
+<B> Up:</B> <A NAME="tex2html7989"
+  HREF="py_model.html">Model</A>
+<B> Previous:</B> <A NAME="tex2html7983"
+  HREF="py_model_copy.html">Model.copy()</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

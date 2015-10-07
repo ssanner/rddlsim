@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Setting the objective</TITLE>
+<META NAME="description" CONTENT="Setting the objective">
+<META NAME="keywords" CONTENT="quickstart_mac">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="quickstart_mac.css">
+
+<LINK REL="next" HREF="cs_adding_constraints_to_t.html">
+<LINK REL="previous" HREF="cs_updating_the_model_lazy.html">
+<LINK REL="up" HREF="cs_net_interface_cs.html">
+<LINK REL="next" HREF="cs_adding_constraints_to_t.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html1107"
+  HREF="cs_adding_constraints_to_t.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1105"
+  HREF="cs_net_interface_cs.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1099"
+  HREF="cs_updating_the_model_lazy.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1108"
+  HREF="cs_adding_constraints_to_t.html">Adding constraints to the</A>
+<B> Up:</B> <A NAME="tex2html1106"
+  HREF="cs_net_interface_cs.html">.NET Interface (C#)</A>
+<B> Previous:</B> <A NAME="tex2html1100"
+  HREF="cs_updating_the_model_lazy.html">Updating the model -</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION000107000000000000000">
+Setting the objective</A>
+</H2>
+<P>
+<EM>The next step in the example is to set the optimization
+objective:
+</EM><PRE>
+  // Set objective: maximize x + y + 2 z
+  model.SetObjective(x + y + 2 * z, GRB.MAXIMIZE);
+</PRE>
+<P>
+<EM>The objective is built here using overloaded operators.  The C#
+API overloads the arithmetic operators to allow you to build linear
+and quadratic expression involving Gurobi variables.
+</EM>
+<P>
+<EM>The second argument indicates that the sense is maximization.
+</EM>
+<P>
+<EM>Note that while this simple example builds the objective in a single
+statement using an explicit list of terms, more complex programs will
+typically build it incrementally.  For example:
+</EM><PRE>
+  GRBLinExpr obj = 0.0;
+  obj.AddTerm(1.0, x);
+  obj.AddTerm(1.0, y);
+  obj.AddTerm(2.0, z);
+  model.SetObjective(obj, GRB.MAXIMIZE);
+</PRE>
+<P>
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1107"
+  HREF="cs_adding_constraints_to_t.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1105"
+  HREF="cs_net_interface_cs.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1099"
+  HREF="cs_updating_the_model_lazy.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1108"
+  HREF="cs_adding_constraints_to_t.html">Adding constraints to the</A>
+<B> Up:</B> <A NAME="tex2html1106"
+  HREF="cs_net_interface_cs.html">.NET Interface (C#)</A>
+<B> Previous:</B> <A NAME="tex2html1100"
+  HREF="cs_updating_the_model_lazy.html">Updating the model -</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

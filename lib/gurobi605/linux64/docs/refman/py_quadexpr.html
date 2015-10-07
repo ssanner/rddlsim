@@ -1,0 +1,215 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>QuadExpr</TITLE>
+<META NAME="description" CONTENT="QuadExpr">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="py_tempconstr.html">
+<LINK REL="previous" HREF="py_linexpr.html">
+<LINK REL="up" HREF="py_python_api_details.html">
+<LINK REL="next" HREF="py_quadexpr2.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html8732"
+  HREF="py_quadexpr2.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html8730"
+  HREF="py_python_api_details.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html8724"
+  HREF="py_linexpr_ge_.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html8733"
+  HREF="py_quadexpr2.html">QuadExpr()</A>
+<B> Up:</B> <A NAME="tex2html8731"
+  HREF="py_python_api_details.html">Python API Details</A>
+<B> Previous:</B> <A NAME="tex2html8725"
+  HREF="py_linexpr_ge_.html">LinExpr.__ge__()</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION000108000000000000000"></A>
+<A NAME="pythonclass:QuadExpr"></A>
+<BR>
+QuadExpr
+</H2>
+
+<P>
+Gurobi quadratic expression object.  A quadratic expression consists
+of a linear expression plus a list of coefficient-variable-variable
+triples that capture the quadratic terms.  Quadratic expressions are
+used to build quadratic objective functions and quadratic constraints.
+They are temporary objects that typically have short lifespans.
+
+<P>
+You generally build quadratic expressions using overloaded operators.
+For example, if <code>x</code> is a <A HREF="py_var.html#pythonclass:Var">Var</A>
+object, then <code>x * x</code> is a
+<A HREF="#pythonclass:QuadExpr">QuadExpr</A> object.  Expressions
+can be built from constants (e.g., <code>expr = 0</code>), variables (e.g.,
+<code>expr = 1 * x *x + 2 * x * y</code>), or from other expressions (e.g.,
+<TT>expr2 = 2 * expr1 + x * x</TT>, or <code>expr3 = expr1 + 2 * expr2</code>).
+You can also modify existing expressions (e.g.,
+<code>expr += x * x</code>, or <code>expr2 -= expr1</code>).
+
+<P>
+The full list of overloaded operators
+on <A HREF="#pythonclass:QuadExpr">QuadExpr</A> objects
+is as follows:
+<code>+</code>, <code>+=</code>,
+<code>-</code>, <code>-=</code>, <code>*</code>, <code>*=</code>, and <code>/</code>.
+In Python parlance, we've defined the following
+<code>QuadExpr</code> functions:
+<code>__add__</code>, <code>__radd__</code>, <code>__iadd__</code>,
+<code>__sub__</code>, <code>__rsub__</code>, <code>__isub__</code>,
+<code>__mul__</code>, <code>__rmul__</code>, <code>__imul__</code>, and
+<code>__div__</code>.
+
+<P>
+We've also overloaded the comparison operators
+(<A HREF="py_quadexpr_eq_.html#pythonmethod:QuadExpr.__eq__">==</A>,
+<A HREF="py_quadexpr_le_.html#pythonmethod:QuadExpr.__le__">&lt;=</A>, and
+<A HREF="py_quadexpr_ge_.html#pythonmethod:QuadExpr.__ge__">&gt;=</A>), to make it
+easier to build constraints from quadratic expressions.
+
+<P>
+You can use <A HREF="py_quicksum.html#pythonmethod:quicksum">quicksum</A> to build
+quadratic expressions; it is a more efficient version of the Python
+<code>sum</code> function.  You can also use
+<A HREF="py_quadexpr_add.html#pythonmethod:QuadExpr.add">add</A> or
+<A HREF="py_quadexpr_addterms.html#pythonmethod:QuadExpr.addTerms">addTerms</A> to modify
+expressions.  Terms can be removed from an expression using
+<A HREF="py_quadexpr_remove.html#pythonmethod:QuadExpr.remove">remove</A>.
+
+<P>
+Note that the cost of building expressions depends heavily on the
+approach you use.  While you can generally ignore this issue when
+building small expressions, you should be aware of a few efficiency
+issues when building large expressions:
+
+<UL>
+<LI>While the Python <code>sum</code> function can be used to build
+  expressions, it should be avoided.  Its cost is quadratic in the
+  length of the expression.
+</LI>
+<LI>For similar reasons, you should avoid using
+  <code>expr = expr + x*x</code> in a loop.  Building large expressions in
+  this way also leads to quadratic runtimes.
+</LI>
+<LI>The <A HREF="py_quicksum.html#pythonmethod:quicksum">quicksum</A> function is
+  much quicker than <code>sum</code>, as are loops over <code>expr += x*x</code> or
+  <A HREF="py_quadexpr_add.html#pythonmethod:QuadExpr.add">expr.add(x*x)</A>.  These
+  approaches are fast enough for most programs, but they may still be
+  expensive for very large expressions.
+</LI>
+<LI>The most efficient way to build a large quadratic expression is
+  with a single call to
+  <A HREF="py_quadexpr_addterms.html#pythonmethod:QuadExpr.addTerms">addTerms</A>.
+</LI>
+</UL>
+
+<P>
+Individual quadratic terms in a quadratic expression can be queried
+using the <A HREF="py_quadexpr_getvar1.html#pythonmethod:QuadExpr.getVar1">getVar1</A>,
+<A HREF="py_quadexpr_getvar2.html#pythonmethod:QuadExpr.getVar2">getVar2</A>, and
+<A HREF="py_quadexpr_getcoeff.html#pythonmethod:QuadExpr.getCoeff">getCoeff</A> methods.  You
+can query the number of quadratic terms in the expression using the
+<A HREF="py_quadexpr_size.html#pythonmethod:QuadExpr.size">size</A> method.  To query the
+constant and linear terms associated with a quadratic expression, use
+<A HREF="py_quadexpr_getlinexpr.html#pythonmethod:QuadExpr.getLinExpr">getLinExpr</A> to obtain
+the linear portion of the quadratic expression, and then use the
+<A HREF="py_linexpr_getvar.html#pythonmethod:LinExpr.getVar">getVar</A>,
+<A HREF="py_linexpr_getcoeff.html#pythonmethod:LinExpr.getCoeff">getCoeff</A>, and
+<A HREF="py_linexpr_getconstant.html#pythonmethod:LinExpr.getConstant">getConstant</A> methods
+on this <A HREF="py_linexpr.html#pythonclass:LinExpr">LinExpr</A> object.
+
+<P>
+Note that a quadratic expression may contain multiple terms that
+involve the same variable pair.  These duplicate terms are merged when
+creating a constraint from an expression, but they may be visible when
+inspecting individual terms in the expression (e.g., when using
+<A HREF="py_quadexpr_getvar1.html#pythonmethod:QuadExpr.getVar1">getVar1</A> and
+<A HREF="py_quadexpr_getvar2.html#pythonmethod:QuadExpr.getVar2">getVar2</A>).
+
+<P>
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html8734"
+  HREF="py_quadexpr2.html">QuadExpr()</A>
+<LI><A NAME="tex2html8735"
+  HREF="py_quadexpr_add.html">QuadExpr.add()</A>
+<LI><A NAME="tex2html8736"
+  HREF="py_quadexpr_addconstant.html">QuadExpr.addConstant()</A>
+<LI><A NAME="tex2html8737"
+  HREF="py_quadexpr_addterms.html">QuadExpr.addTerms()</A>
+<LI><A NAME="tex2html8738"
+  HREF="py_quadexpr_clear.html">QuadExpr.clear()</A>
+<LI><A NAME="tex2html8739"
+  HREF="py_quadexpr_copy.html">QuadExpr.copy()</A>
+<LI><A NAME="tex2html8740"
+  HREF="py_quadexpr_getcoeff.html">QuadExpr.getCoeff()</A>
+<LI><A NAME="tex2html8741"
+  HREF="py_quadexpr_getlinexpr.html">QuadExpr.getLinExpr()</A>
+<LI><A NAME="tex2html8742"
+  HREF="py_quadexpr_getvalue.html">QuadExpr.getValue()</A>
+<LI><A NAME="tex2html8743"
+  HREF="py_quadexpr_getvar1.html">QuadExpr.getVar1()</A>
+<LI><A NAME="tex2html8744"
+  HREF="py_quadexpr_getvar2.html">QuadExpr.getVar2()</A>
+<LI><A NAME="tex2html8745"
+  HREF="py_quadexpr_remove.html">QuadExpr.remove()</A>
+<LI><A NAME="tex2html8746"
+  HREF="py_quadexpr_size.html">QuadExpr.size()</A>
+<LI><A NAME="tex2html8747"
+  HREF="py_quadexpr_eq_.html">QuadExpr.__eq__()</A>
+<LI><A NAME="tex2html8748"
+  HREF="py_quadexpr_le_.html">QuadExpr.__le__()</A>
+<LI><A NAME="tex2html8749"
+  HREF="py_quadexpr_ge_.html">QuadExpr.__ge__()</A>
+</UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html8732"
+  HREF="py_quadexpr2.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html8730"
+  HREF="py_python_api_details.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html8724"
+  HREF="py_linexpr_ge_.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html8733"
+  HREF="py_quadexpr2.html">QuadExpr()</A>
+<B> Up:</B> <A NAME="tex2html8731"
+  HREF="py_python_api_details.html">Python API Details</A>
+<B> Previous:</B> <A NAME="tex2html8725"
+  HREF="py_linexpr_ge_.html">LinExpr.__ge__()</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

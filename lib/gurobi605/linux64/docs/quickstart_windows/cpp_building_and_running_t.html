@@ -1,0 +1,125 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Building and running the example</TITLE>
+<META NAME="description" CONTENT="Building and running the example">
+<META NAME="keywords" CONTENT="quickstart_windows">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="quickstart_windows.css">
+
+<LINK REL="previous" HREF="cpp_error_handling.html">
+<LINK REL="up" HREF="cpp_interface.html">
+<LINK REL="next" HREF="java_interface.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html862"
+  HREF="java_interface.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html860"
+  HREF="cpp_interface.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html856"
+  HREF="cpp_error_handling.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html863"
+  HREF="java_interface.html">Java Interface</A>
+<B> Up:</B> <A NAME="tex2html861"
+  HREF="cpp_interface.html">C++ Interface</A>
+<B> Previous:</B> <A NAME="tex2html857"
+  HREF="cpp_error_handling.html">Error handling</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION000812000000000000000">
+Building and running the example</A>
+</H2>
+
+<P>
+To build and run the example, we refer the user to the files in
+<code>&lt;installdir&gt;/examples/build</code>.  For Windows platforms, this
+directory contains <code>C++_examples_2008.sln</code>,
+<code>C++_examples_2010.sln</code>, and <code>C++_examples_2012.sln</code>
+(Visual Studio 2008, 2010, and 2012 solution
+files for the C++ examples).  Double-clicking on the solution file will
+bring up Visual Studio.  Clicking on the <code>mip1_c++</code> project, and then
+selecting <EM>Run</EM> from the <EM>Build</EM> menu will compile and run
+the example.  For Linux or Mac OS platforms, the
+<code>&lt;installdir&gt;/examples/build</code> directory contains an example
+Makefile.  Typing <code>make mip1_c++</code> will build and run this
+example.
+
+<P>
+If you want to create your own project or makefile to build a C++
+program that calls Gurobi, the details will depend on your platform
+and development environment, but we'd like to point out a few common
+pitfalls:
+
+<UL>
+<LI>On Windows, be sure to choose the Gurobi C++ library that is
+  compatible with your Visual Studio version and your choice of
+  runtime library (Gurobi supports runtime library options <code>/MD</code>,
+  <code>/MDd</code>, <code>/MT</code>, and <code>/MTd</code>).  To give an example, use
+  file <code>gurobi_c++md2010.lib</code> when you choose runtime library
+  option /MD in Visual Studio 2010.  Similarly, use file
+  <code>gurobi_c++mtd2012.lib</code> when you choose runtime library option
+  /MTd in Visual Studio 2012.
+</LI>
+<LI>A C++ program that uses Gurobi must link in both the Gurobi C++
+  library (e.g., <code>gurobi_c++mt2010.lib</code> on Windows,
+  <code>libgurobi_c++.a</code> on Linux and Mac) <EM>and</EM> the Gurobi C
+  library (<code>gurobi60.lib</code> on Windows, <code>libgurobi60.so</code> on
+  Linux and Mac).
+</LI>
+</UL>
+
+<P>
+The C++ example directory <code>&lt;installdir&gt;/examples/c++</code> contains a
+number of examples.  We encourage you to browse and modify them in
+order to become more familiar with the Gurobi C++ interface.  We
+also encourage you to read the
+<A NAME="tex2html30"
+  HREF="../examples/examples.html">Gurobi Example Tour</A>
+for more information.
+
+<P>
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html862"
+  HREF="java_interface.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html860"
+  HREF="cpp_interface.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html856"
+  HREF="cpp_error_handling.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html863"
+  HREF="java_interface.html">Java Interface</A>
+<B> Up:</B> <A NAME="tex2html861"
+  HREF="cpp_interface.html">C++ Interface</A>
+<B> Previous:</B> <A NAME="tex2html857"
+  HREF="cpp_error_handling.html">Error handling</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

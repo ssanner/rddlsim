@@ -1,0 +1,392 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Python API Details</TITLE>
+<META NAME="description" CONTENT="Python API Details">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="matlab_api_overview.html">
+<LINK REL="previous" HREF="py_python_api_overview.html">
+<LINK REL="up" HREF="refman.html">
+<LINK REL="next" HREF="py_global_functions.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html7573"
+  HREF="py_global_functions.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html7571"
+  HREF="refman.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html7565"
+  HREF="py_python_api_overview.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html7574"
+  HREF="py_global_functions.html">Global Functions</A>
+<B> Up:</B> <A NAME="tex2html7572"
+  HREF="refman.html">Gurobi Optimizer Reference Manual</A>
+<B> Previous:</B> <A NAME="tex2html7566"
+  HREF="py_python_api_overview.html">Python API Overview</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION000100000000000000000">
+Python API Details</A>
+</H1>
+
+<P>
+<A NAME="sec:Python-details"></A>
+<P>
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html7575"
+  HREF="py_global_functions.html">Global Functions</A>
+<UL>
+<LI><A NAME="tex2html7576"
+  HREF="py_models.html">models()</A>
+<LI><A NAME="tex2html7577"
+  HREF="py_multidict.html">multidict()</A>
+<LI><A NAME="tex2html7578"
+  HREF="py_paramhelp.html">paramHelp()</A>
+<LI><A NAME="tex2html7579"
+  HREF="py_quicksum.html">quicksum()</A>
+<LI><A NAME="tex2html7580"
+  HREF="py_read.html">read()</A>
+<LI><A NAME="tex2html7581"
+  HREF="py_readparams.html">readParams()</A>
+<LI><A NAME="tex2html7582"
+  HREF="py_resetparams.html">resetParams()</A>
+<LI><A NAME="tex2html7583"
+  HREF="py_setparam.html">setParam()</A>
+<LI><A NAME="tex2html7584"
+  HREF="py_system.html">system()</A>
+<LI><A NAME="tex2html7585"
+  HREF="py_writeparams.html">writeParams()</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html7586"
+  HREF="py_model.html">Model</A>
+<UL>
+<LI><A NAME="tex2html7587"
+  HREF="py_model2.html">Model()</A>
+<LI><A NAME="tex2html7588"
+  HREF="py_model_addconstr.html">Model.addConstr()</A>
+<LI><A NAME="tex2html7589"
+  HREF="py_model_addqconstr.html">Model.addQConstr()</A>
+<LI><A NAME="tex2html7590"
+  HREF="py_model_addrange.html">Model.addRange()</A>
+<LI><A NAME="tex2html7591"
+  HREF="py_model_addsos.html">Model.addSOS()</A>
+<LI><A NAME="tex2html7592"
+  HREF="py_model_addvar.html">Model.addVar()</A>
+<LI><A NAME="tex2html7593"
+  HREF="py_model_chgcoeff.html">Model.chgCoeff()</A>
+<LI><A NAME="tex2html7594"
+  HREF="py_model_computeiis.html">Model.computeIIS()</A>
+<LI><A NAME="tex2html7595"
+  HREF="py_model_copy.html">Model.copy()</A>
+<LI><A NAME="tex2html7596"
+  HREF="py_model_discardconcurrent.html">Model.discardConcurrentEnvs()</A>
+<LI><A NAME="tex2html7597"
+  HREF="py_model_feasrelaxs.html">Model.feasRelaxS()</A>
+<LI><A NAME="tex2html7598"
+  HREF="py_model_feasrelax.html">Model.feasRelax()</A>
+<LI><A NAME="tex2html7599"
+  HREF="py_model_fixed.html">Model.fixed()</A>
+<LI><A NAME="tex2html7600"
+  HREF="py_model_getattr.html">Model.getAttr()</A>
+<LI><A NAME="tex2html7601"
+  HREF="py_model_getcoeff.html">Model.getCoeff()</A>
+<LI><A NAME="tex2html7602"
+  HREF="py_model_getcol.html">Model.getCol()</A>
+<LI><A NAME="tex2html7603"
+  HREF="py_model_getconcurrentenv.html">Model.getConcurrentEnv()</A>
+<LI><A NAME="tex2html7604"
+  HREF="py_model_getconstrbyname.html">Model.getConstrByName()</A>
+<LI><A NAME="tex2html7605"
+  HREF="py_model_getconstrs.html">Model.getConstrs()</A>
+<LI><A NAME="tex2html7606"
+  HREF="py_model_getobjective.html">Model.getObjective()</A>
+<LI><A NAME="tex2html7607"
+  HREF="py_model_getpwlobj.html">Model.getPWLObj()</A>
+<LI><A NAME="tex2html7608"
+  HREF="py_model_getqconstrs.html">Model.getQConstrs()</A>
+<LI><A NAME="tex2html7609"
+  HREF="py_model_getparaminfo.html">Model.getParamInfo()</A>
+<LI><A NAME="tex2html7610"
+  HREF="py_model_getqcrow.html">Model.getQCRow()</A>
+<LI><A NAME="tex2html7611"
+  HREF="py_model_getrow.html">Model.getRow()</A>
+<LI><A NAME="tex2html7612"
+  HREF="py_model_getsos.html">Model.getSOS()</A>
+<LI><A NAME="tex2html7613"
+  HREF="py_model_gettuneresult.html">Model.getTuneResult()</A>
+<LI><A NAME="tex2html7614"
+  HREF="py_model_getvarbyname.html">Model.getVarByName()</A>
+<LI><A NAME="tex2html7615"
+  HREF="py_model_getvars.html">Model.getVars()</A>
+<LI><A NAME="tex2html7616"
+  HREF="py_model_message.html">Model.message()</A>
+<LI><A NAME="tex2html7617"
+  HREF="py_model_optimize.html">Model.optimize()</A>
+<LI><A NAME="tex2html7618"
+  HREF="py_model_presolve.html">Model.presolve()</A>
+<LI><A NAME="tex2html7619"
+  HREF="py_model_printattr.html">Model.printAttr()</A>
+<LI><A NAME="tex2html7620"
+  HREF="py_model_printquality.html">Model.printQuality()</A>
+<LI><A NAME="tex2html7621"
+  HREF="py_model_printstats.html">Model.printStats()</A>
+<LI><A NAME="tex2html7622"
+  HREF="py_model_cbcut.html">Model.cbCut()</A>
+<LI><A NAME="tex2html7623"
+  HREF="py_model_cbget.html">Model.cbGet()</A>
+<LI><A NAME="tex2html7624"
+  HREF="py_model_cbgetnoderel.html">Model.cbGetNodeRel()</A>
+<LI><A NAME="tex2html7625"
+  HREF="py_model_cbgetsolution.html">Model.cbGetSolution()</A>
+<LI><A NAME="tex2html7626"
+  HREF="py_model_cblazy.html">Model.cbLazy()</A>
+<LI><A NAME="tex2html7627"
+  HREF="py_model_cbsetsolution.html">Model.cbSetSolution()</A>
+<LI><A NAME="tex2html7628"
+  HREF="py_model_read.html">Model.read()</A>
+<LI><A NAME="tex2html7629"
+  HREF="py_model_relax.html">Model.relax()</A>
+<LI><A NAME="tex2html7630"
+  HREF="py_model_remove.html">Model.remove()</A>
+<LI><A NAME="tex2html7631"
+  HREF="py_model_reset.html">Model.reset()</A>
+<LI><A NAME="tex2html7632"
+  HREF="py_model_setattr.html">Model.setAttr()</A>
+<LI><A NAME="tex2html7633"
+  HREF="py_model_setobjective.html">Model.setObjective()</A>
+<LI><A NAME="tex2html7634"
+  HREF="py_model_setpwlobj.html">Model.setPWLObj()</A>
+<LI><A NAME="tex2html7635"
+  HREF="py_model_setparam.html">Model.setParam()</A>
+<LI><A NAME="tex2html7636"
+  HREF="py_model_terminate.html">Model.terminate()</A>
+<LI><A NAME="tex2html7637"
+  HREF="py_model_tune.html">Model.tune()</A>
+<LI><A NAME="tex2html7638"
+  HREF="py_model_update.html">Model.update()</A>
+<LI><A NAME="tex2html7639"
+  HREF="py_model_write.html">Model.write()</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html7640"
+  HREF="py_var.html">Var</A>
+<UL>
+<LI><A NAME="tex2html7641"
+  HREF="py_var_getattr.html">Var.getAttr()</A>
+<LI><A NAME="tex2html7642"
+  HREF="py_var_sameas.html">Var.sameAs()</A>
+<LI><A NAME="tex2html7643"
+  HREF="py_var_setattr.html">Var.setAttr()</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html7644"
+  HREF="py_constr.html">Constr</A>
+<UL>
+<LI><A NAME="tex2html7645"
+  HREF="py_constr_getattr.html">Constr.getAttr()</A>
+<LI><A NAME="tex2html7646"
+  HREF="py_constr_sameas.html">Constr.sameAs()</A>
+<LI><A NAME="tex2html7647"
+  HREF="py_constr_setattr.html">Constr.setAttr()</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html7648"
+  HREF="py_qconstr.html">QConstr</A>
+<UL>
+<LI><A NAME="tex2html7649"
+  HREF="py_qconstr_getattr.html">QConstr.getAttr()</A>
+<LI><A NAME="tex2html7650"
+  HREF="py_qconstr_setattr.html">QConstr.setAttr()</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html7651"
+  HREF="py_sos.html">SOS</A>
+<UL>
+<LI><A NAME="tex2html7652"
+  HREF="py_sos_getattr.html">SOS.getAttr()</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html7653"
+  HREF="py_linexpr.html">LinExpr</A>
+<UL>
+<LI><A NAME="tex2html7654"
+  HREF="py_linexpr2.html">LinExpr()</A>
+<LI><A NAME="tex2html7655"
+  HREF="py_linexpr_add.html">LinExpr.add()</A>
+<LI><A NAME="tex2html7656"
+  HREF="py_linexpr_addconstant.html">LinExpr.addConstant()</A>
+<LI><A NAME="tex2html7657"
+  HREF="py_linexpr_addterms.html">LinExpr.addTerms()</A>
+<LI><A NAME="tex2html7658"
+  HREF="py_linexpr_clear.html">LinExpr.clear()</A>
+<LI><A NAME="tex2html7659"
+  HREF="py_linexpr_copy.html">LinExpr.copy()</A>
+<LI><A NAME="tex2html7660"
+  HREF="py_linexpr_getconstant.html">LinExpr.getConstant()</A>
+<LI><A NAME="tex2html7661"
+  HREF="py_linexpr_getcoeff.html">LinExpr.getCoeff()</A>
+<LI><A NAME="tex2html7662"
+  HREF="py_linexpr_getvalue.html">LinExpr.getValue()</A>
+<LI><A NAME="tex2html7663"
+  HREF="py_linexpr_getvar.html">LinExpr.getVar()</A>
+<LI><A NAME="tex2html7664"
+  HREF="py_linexpr_remove.html">LinExpr.remove()</A>
+<LI><A NAME="tex2html7665"
+  HREF="py_linexpr_size.html">LinExpr.size()</A>
+<LI><A NAME="tex2html7666"
+  HREF="py_linexpr_eq_.html">LinExpr.__eq__()</A>
+<LI><A NAME="tex2html7667"
+  HREF="py_linexpr_le_.html">LinExpr.__le__()</A>
+<LI><A NAME="tex2html7668"
+  HREF="py_linexpr_ge_.html">LinExpr.__ge__()</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html7669"
+  HREF="py_quadexpr.html">QuadExpr</A>
+<UL>
+<LI><A NAME="tex2html7670"
+  HREF="py_quadexpr2.html">QuadExpr()</A>
+<LI><A NAME="tex2html7671"
+  HREF="py_quadexpr_add.html">QuadExpr.add()</A>
+<LI><A NAME="tex2html7672"
+  HREF="py_quadexpr_addconstant.html">QuadExpr.addConstant()</A>
+<LI><A NAME="tex2html7673"
+  HREF="py_quadexpr_addterms.html">QuadExpr.addTerms()</A>
+<LI><A NAME="tex2html7674"
+  HREF="py_quadexpr_clear.html">QuadExpr.clear()</A>
+<LI><A NAME="tex2html7675"
+  HREF="py_quadexpr_copy.html">QuadExpr.copy()</A>
+<LI><A NAME="tex2html7676"
+  HREF="py_quadexpr_getcoeff.html">QuadExpr.getCoeff()</A>
+<LI><A NAME="tex2html7677"
+  HREF="py_quadexpr_getlinexpr.html">QuadExpr.getLinExpr()</A>
+<LI><A NAME="tex2html7678"
+  HREF="py_quadexpr_getvalue.html">QuadExpr.getValue()</A>
+<LI><A NAME="tex2html7679"
+  HREF="py_quadexpr_getvar1.html">QuadExpr.getVar1()</A>
+<LI><A NAME="tex2html7680"
+  HREF="py_quadexpr_getvar2.html">QuadExpr.getVar2()</A>
+<LI><A NAME="tex2html7681"
+  HREF="py_quadexpr_remove.html">QuadExpr.remove()</A>
+<LI><A NAME="tex2html7682"
+  HREF="py_quadexpr_size.html">QuadExpr.size()</A>
+<LI><A NAME="tex2html7683"
+  HREF="py_quadexpr_eq_.html">QuadExpr.__eq__()</A>
+<LI><A NAME="tex2html7684"
+  HREF="py_quadexpr_le_.html">QuadExpr.__le__()</A>
+<LI><A NAME="tex2html7685"
+  HREF="py_quadexpr_ge_.html">QuadExpr.__ge__()</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html7686"
+  HREF="py_tempconstr.html">TempConstr</A>
+<LI><A NAME="tex2html7687"
+  HREF="py_column.html">Column</A>
+<UL>
+<LI><A NAME="tex2html7688"
+  HREF="py_column2.html">Column()</A>
+<LI><A NAME="tex2html7689"
+  HREF="py_column_addterms.html">Column.addTerms()</A>
+<LI><A NAME="tex2html7690"
+  HREF="py_column_clear.html">Column.clear()</A>
+<LI><A NAME="tex2html7691"
+  HREF="py_column_copy.html">Column.copy()</A>
+<LI><A NAME="tex2html7692"
+  HREF="py_column_getcoeff.html">Column.getCoeff()</A>
+<LI><A NAME="tex2html7693"
+  HREF="py_column_getconstr.html">Column.getConstr()</A>
+<LI><A NAME="tex2html7694"
+  HREF="py_column_remove.html">Column.remove()</A>
+<LI><A NAME="tex2html7695"
+  HREF="py_column_size.html">Column.size()</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html7696"
+  HREF="py_callbacks.html">Callbacks</A>
+<LI><A NAME="tex2html7697"
+  HREF="py_gurobierror.html">GurobiError</A>
+<LI><A NAME="tex2html7698"
+  HREF="py_env.html">Env</A>
+<UL>
+<LI><A NAME="tex2html7699"
+  HREF="py_env2.html">Env()</A>
+<LI><A NAME="tex2html7700"
+  HREF="py_env_resetparams.html">Env.resetParams()</A>
+<LI><A NAME="tex2html7701"
+  HREF="py_env_setparam.html">Env.setParam()</A>
+<LI><A NAME="tex2html7702"
+  HREF="py_env_writeparams.html">Env.writeParams()</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html7703"
+  HREF="py_grb.html">GRB</A>
+<UL>
+<LI><A NAME="tex2html7704"
+  HREF="py_constants.html">Constants</A>
+<LI><A NAME="tex2html7705"
+  HREF="py_grb_attr.html">GRB.attr</A>
+<LI><A NAME="tex2html7706"
+  HREF="py_grb_param.html">GRB.param</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html7707"
+  HREF="py_tuplelist.html">tuplelist</A>
+<UL>
+<LI><A NAME="tex2html7708"
+  HREF="py_tuplelist2.html">tuplelist()</A>
+<LI><A NAME="tex2html7709"
+  HREF="py_tuplelist_select.html">tuplelist.select()</A>
+<LI><A NAME="tex2html7710"
+  HREF="py_tuplelist_clean.html">tuplelist.clean()</A>
+</UL></UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html7573"
+  HREF="py_global_functions.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html7571"
+  HREF="refman.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html7565"
+  HREF="py_python_api_overview.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html7574"
+  HREF="py_global_functions.html">Global Functions</A>
+<B> Up:</B> <A NAME="tex2html7572"
+  HREF="refman.html">Gurobi Optimizer Reference Manual</A>
+<B> Previous:</B> <A NAME="tex2html7566"
+  HREF="py_python_api_overview.html">Python API Overview</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

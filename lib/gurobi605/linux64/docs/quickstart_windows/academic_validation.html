@@ -1,0 +1,141 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Academic validation</TITLE>
+<META NAME="description" CONTENT="Academic validation">
+<META NAME="keywords" CONTENT="quickstart_windows">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="quickstart_windows.css">
+
+<LINK REL="previous" HREF="retrieving_a_free_academic.html">
+<LINK REL="up" HREF="retrieving_a_free_academic.html">
+<LINK REL="next" HREF="retrieving_a_named_user_or.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html272"
+  HREF="retrieving_a_named_user_or.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html270"
+  HREF="retrieving_a_free_academic.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html266"
+  HREF="retrieving_a_free_academic.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html273"
+  HREF="retrieving_a_named_user_or.html">Retrieving a Named-User or</A>
+<B> Up:</B> <A NAME="tex2html271"
+  HREF="retrieving_a_free_academic.html">Retrieving a Free Academic</A>
+<B> Previous:</B> <A NAME="tex2html267"
+  HREF="retrieving_a_free_academic.html">Retrieving a Free Academic</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00031100000000000000"></A>
+<A NAME="subsection:academicvalidation"></A>
+<BR>
+Academic validation
+</H3>
+
+<P>
+If you are using a free academic license, <code>grbgetkey</code> will
+perform an academic validation step before retrieving your license
+key.  This step checks your domain name against our list of known
+academic domains. This section will help you resolve validation
+errors.
+
+<P>
+<SPAN  CLASS="textbf">Not a recognized academic domain</SPAN>
+
+<P>
+If <code>grbgetkey</code> produces a message that looks like this:
+<PRE>
+  ERROR 303: hostname mymachine.mydomain (234.28.234.144) not recognized as
+  belonging to an academic domain
+</PRE>
+it means your domain isn't on our academic domain list.  Please make
+sure you are connected to your university network.  If you are
+validating a home machine and the university provides a VPN, please
+connect to it before retrieving your license.  If the reported host
+name is a valid university address, please send the specific error
+message you received to <code>support@gurobi.com</code> and we'll add your
+domain.
+
+<P>
+If you are having trouble validating your license through a VPN, note
+that some VPNs are configured to use <EM>split tunneling</EM>, where
+traffic to public internet sites is routed through your ISP.  You
+should ask your network administrator whether the VPN can be
+configured to route traffic to <code>gurobi.com</code> through the private
+network.
+
+<P>
+Some machines connect to the internet through a proxy server.
+Unfortunately, such configurations are incompatible with our academic
+validation process.
+
+<P>
+<SPAN  CLASS="textbf">No reverse DNS information</SPAN>
+
+<P>
+If <code>grbgetkey</code> produces a message that only references a numerical
+IP address, like this:
+<PRE>
+  ERROR 303: hostname 234.28.234.12 (234.28.234.100) not recognized as
+  belonging to an academic domain
+</PRE>
+it means your machine has no reverse DNS information.  This usually
+happens when you are connecting to the Internet through a DHCP server
+that does NAT (network address translation) or PAT (port address
+translation), but does not provide DNS information for its clients.
+The simplest way to resolve this issue is to ask your network
+administrator to add a DNS entry (a <EM>PTR record</EM>) for the DHCP
+device itself.
+
+<P>
+There is unfortunately no way for us to validate your
+academic license without reverse DNS information.  You can
+visit <A NAME="tex2html11"
+  HREF="http://www.gurobi.com/dns">this site</A>
+to check DNS information for your IP address and to
+obtain more information about reverse DNS.
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html272"
+  HREF="retrieving_a_named_user_or.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html270"
+  HREF="retrieving_a_free_academic.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html266"
+  HREF="retrieving_a_free_academic.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html273"
+  HREF="retrieving_a_named_user_or.html">Retrieving a Named-User or</A>
+<B> Up:</B> <A NAME="tex2html271"
+  HREF="retrieving_a_free_academic.html">Retrieving a Free Academic</A>
+<B> Previous:</B> <A NAME="tex2html267"
+  HREF="retrieving_a_free_academic.html">Retrieving a Free Academic</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

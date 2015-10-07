@@ -1,0 +1,133 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>GRBsync</TITLE>
+<META NAME="description" CONTENT="GRBsync">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="previous" HREF="c_grbresetmodel.html">
+<LINK REL="up" HREF="c_model_solution.html">
+<LINK REL="next" HREF="c_model_queries.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html1603"
+  HREF="c_model_queries.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1601"
+  HREF="c_model_solution.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1597"
+  HREF="c_grbresetmodel.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1604"
+  HREF="c_model_queries.html">Model Queries</A>
+<B> Up:</B> <A NAME="tex2html1602"
+  HREF="c_model_solution.html">Model Solution</A>
+<B> Previous:</B> <A NAME="tex2html1598"
+  HREF="c_grbresetmodel.html">GRBresetmodel</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00023700000000000000"></A>
+<A NAME="routine:GRBsync"></A>
+<BR>
+GRBsync
+</H3>
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">GRBsync</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT">GRBmodel</TD>
+<TD ALIGN="LEFT">*model )</TD>
+</TR>
+</TABLE>
+
+<P>
+Wait for a previous asynchronous optimization call to complete.
+
+<P>
+Calling
+<A HREF="c_grboptimizeasync.html#routine:GRBoptimizeasync">GRBoptimizeasync</A>
+returns control to the calling routine immediately.  The caller can
+perform other computations while optimization proceeds, and can check
+on the progress of the optimization by querying various model
+attributes.  The <code>GRBsync</code> call forces the calling program to wait
+until the asynchronous optimization completes.  You <EM>must</EM> call
+<code>GRBsync</code> before the corresponding model is freed.
+
+<P>
+The <code>GRBsync</code> call returns a non-zero error code if the
+optimization itself ran into any problems.  In other words, error
+codes returned by this method are those that <code>GRBoptimize</code> itself
+would have returned, had the original method not been asynchronous.
+
+<P>
+Note that you need to call <code>GRBsync</code> even if you know that the
+asynchronous optimization has already completed.
+
+<P>
+
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Return value:</SPAN></BIG>
+
+<P>
+A non-zero return value indicates that a problem occurred while solving the model.
+Refer to the <A HREF="error_codes.html#sec:ErrorCodes">Error Code</A> table for a
+list of possible return values.  Details on the error can be obtained
+by calling <A HREF="c_grbgeterrormsg.html#routine:GRBgeterrormsg">GRBgeterrormsg</A>.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">model</SPAN>: The model that is currently being solved.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Example usage:</SPAN></BIG><PRE>
+  error = GRBoptimizeasync(model);
+
+  /* ... perform other compute-intensive tasks... */
+
+  error = GRBsync(model);
+</PRE>
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1603"
+  HREF="c_model_queries.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1601"
+  HREF="c_model_solution.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1597"
+  HREF="c_grbresetmodel.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1604"
+  HREF="c_model_queries.html">Model Queries</A>
+<B> Up:</B> <A NAME="tex2html1602"
+  HREF="c_model_solution.html">Model Solution</A>
+<B> Previous:</B> <A NAME="tex2html1598"
+  HREF="c_grbresetmodel.html">GRBresetmodel</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

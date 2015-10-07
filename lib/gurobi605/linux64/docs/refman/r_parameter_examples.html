@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>R Parameter Examples</TITLE>
+<META NAME="description" CONTENT="R Parameter Examples">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="visual_basic_parameter_exa.html">
+<LINK REL="previous" HREF="python_parameter_examples.html">
+<LINK REL="up" HREF="parameter_examples.html">
+<LINK REL="next" HREF="visual_basic_parameter_exa.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html12141"
+  HREF="visual_basic_parameter_exa.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html12139"
+  HREF="parameter_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html12133"
+  HREF="python_parameter_examples.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html12142"
+  HREF="visual_basic_parameter_exa.html">Visual Basic Parameter Examples</A>
+<B> Up:</B> <A NAME="tex2html12140"
+  HREF="parameter_examples.html">Parameter Examples</A>
+<B> Previous:</B> <A NAME="tex2html12134"
+  HREF="python_parameter_examples.html">Python Parameter Examples</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000143700000000000000"></A>
+<A NAME="RParameterExamples"></A>
+<BR>
+R Parameter Examples
+</H3>
+
+<P>
+In the R interface, parameters are passed to Gurobi through a
+<code>list</code>.  To modify a parameter, you create a
+<code>named component</code> in the <code>list</code> with the appropriate name,
+and set it to the desired value.  For example, to set the
+<A HREF="timelimit.html#parameter:TimeLimit">TimeLimit</A> parameter to 100 you'd
+do:
+<PRE>
+  params &lt;- list(TimeLimit=100)
+</PRE>
+The case of the parameter name is ignored, as are underscores.  Thus,
+you could also do:
+<PRE>
+  params &lt;- list(timeLimit = 100)
+</PRE>
+...or...
+<PRE>
+  params &lt;- list(TIME_LIMIT = 100)
+</PRE>
+
+<P>
+All desired parameter changes should be stored in a single <code>list</code>,
+which is passed as the second parameter to the
+<A HREF="r_api_overview.html#rfunction:gurobi">gurobi</A> function.
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html12141"
+  HREF="visual_basic_parameter_exa.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html12139"
+  HREF="parameter_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html12133"
+  HREF="python_parameter_examples.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html12142"
+  HREF="visual_basic_parameter_exa.html">Visual Basic Parameter Examples</A>
+<B> Up:</B> <A NAME="tex2html12140"
+  HREF="parameter_examples.html">Parameter Examples</A>
+<B> Previous:</B> <A NAME="tex2html12134"
+  HREF="python_parameter_examples.html">Python Parameter Examples</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

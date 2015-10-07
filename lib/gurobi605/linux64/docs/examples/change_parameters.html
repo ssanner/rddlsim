@@ -1,0 +1,121 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Change parameters</TITLE>
+<META NAME="description" CONTENT="Change parameters">
+<META NAME="keywords" CONTENT="examples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="examples.css">
+
+<LINK REL="next" HREF="automated_parameter_tuning.html">
+<LINK REL="previous" HREF="modify_a_model.html">
+<LINK REL="up" HREF="example_tour.html">
+<LINK REL="next" HREF="automated_parameter_tuning.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html260"
+  HREF="automated_parameter_tuning.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html258"
+  HREF="example_tour.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html252"
+  HREF="modify_a_model.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html261"
+  HREF="automated_parameter_tuning.html">Automated Parameter Tuning</A>
+<B> Up:</B> <A NAME="tex2html259"
+  HREF="example_tour.html">Example tour</A>
+<B> Previous:</B> <A NAME="tex2html253"
+  HREF="modify_a_model.html">Modify a model</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00015000000000000000"></A>
+<A NAME="subsection:Parameters"></A>
+<BR>
+Change parameters
+</H2>
+<B>Examples:</B> callback, fixanddive, lp, lpmethod, mip2, params, sensitivity
+
+<P>
+This section illustrates the use of Gurobi parameters.  Example
+<code>params</code> reads a MIP model from a file, then solves the model using
+four different values of the <code>MIPFocus</code> parameter, running for
+five seconds per value (<code>MIPFocus</code> chooses the high-level
+strategy that the MIP solver uses to solve the problem).  It then
+chooses the parameter value that produced the smallest MIP gap, and
+continues solving the model until it achieves optimality.
+
+<P>
+The mechanics of setting a parameter are quite simple.  To set
+the <code>MIPFocus</code> parameter in C, do the following:
+<PRE>
+  GRBsetintparam(GRBgetenv(model), GRB_INT_PAR_MIPFOCUS, i);
+</PRE>
+In C++:
+<PRE>
+  model.getEnv().set(GRB_IntParam_MIPFocus, i);
+</PRE>
+In Java:
+<PRE>
+  model.getEnv().set(GRB.IntParam.MIPFocus, i);
+</PRE>
+In C#:
+<PRE>
+  model.GetEnv().Set(GRB.IntParam.MIPFocus, i);
+</PRE>
+In Python:
+<PRE>
+  model.params.MIPFocus = i
+</PRE>
+
+<P>
+Note how parameter settings affect
+the behavior of the different models.  When we set the
+<code>TimeLimit</code> parameter on the base model, then make a copy of
+that model, the parameter setting is carried over to the copy.  The
+copy gets its own environment that is a copy of the original.  When we
+set the <code>MIPFocus</code> parameter on the copy, that parameter change
+has no effect on the other copies, nor on the original model.
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html260"
+  HREF="automated_parameter_tuning.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html258"
+  HREF="example_tour.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html252"
+  HREF="modify_a_model.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html261"
+  HREF="automated_parameter_tuning.html">Automated Parameter Tuning</A>
+<B> Up:</B> <A NAME="tex2html259"
+  HREF="example_tour.html">Example tour</A>
+<B> Previous:</B> <A NAME="tex2html253"
+  HREF="modify_a_model.html">Modify a model</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

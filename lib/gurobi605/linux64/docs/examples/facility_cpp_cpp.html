@@ -1,0 +1,278 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>facility_c++.cpp</TITLE>
+<META NAME="description" CONTENT="facility_c++.cpp">
+<META NAME="keywords" CONTENT="examples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="examples.css">
+
+<LINK REL="next" HREF="feasopt_cpp_cpp.html">
+<LINK REL="previous" HREF="diet_cpp_cpp.html">
+<LINK REL="up" HREF="cpp_examples.html">
+<LINK REL="next" HREF="feasopt_cpp_cpp.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html835"
+  HREF="feasopt_cpp_cpp.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html833"
+  HREF="cpp_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html827"
+  HREF="diet_cpp_cpp.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html836"
+  HREF="feasopt_cpp_cpp.html">feasopt_c++.cpp</A>
+<B> Up:</B> <A NAME="tex2html834"
+  HREF="cpp_examples.html">C++ Examples</A>
+<B> Previous:</B> <A NAME="tex2html828"
+  HREF="diet_cpp_cpp.html">diet_c++.cpp</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00022400000000000000"></A>
+<A NAME="subsubsection:facility_c++.cpp"></A>
+<BR>
+facility_c++.cpp
+</H3>
+
+<P>
+<BR>
+<PRE  CLASS="verbatim">/* Copyright 2014, Gurobi Optimization, Inc. */
+
+/* Facility location: a company currently ships its product from 5 plants
+   to 4 warehouses. It is considering closing some plants to reduce
+   costs. What plant(s) should the company close, in order to minimize
+   transportation and fixed costs?
+
+   Based on an example from Frontline Systems:
+   http://www.solver.com/disfacility.htm
+   Used with permission.
+ */
+
+#include "gurobi_c++.h"
+#include &lt;sstream&gt;
+using namespace std;
+
+int
+main(int argc,
+     char *argv[])
+{
+  GRBEnv* env = 0;
+  GRBVar* open = 0;
+  GRBVar** transport = 0;
+  int transportCt = 0;
+  try
+  {
+
+    // Number of plants and warehouses
+    const int nPlants = 5;
+    const int nWarehouses = 4;
+
+    // Warehouse demand in thousands of units
+    double Demand[] = { 15, 18, 14, 20 };
+
+    // Plant capacity in thousands of units
+    double Capacity[] = { 20, 22, 17, 19, 18 };
+
+    // Fixed costs for each plant
+    double FixedCosts[] =
+      { 12000, 15000, 17000, 13000, 16000 };
+
+    // Transportation costs per thousand units
+    double TransCosts[][nPlants] = {
+                                     { 4000, 2000, 3000, 2500, 4500 },
+                                     { 2500, 2600, 3400, 3000, 4000 },
+                                     { 1200, 1800, 2600, 4100, 3000 },
+                                     { 2200, 2600, 3100, 3700, 3200 }
+                                   };
+
+    // Model
+    env = new GRBEnv();
+    GRBModel model = GRBModel(*env);
+    model.set(GRB_StringAttr_ModelName, "facility");
+
+    // Plant open decision variables: open[p] == 1 if plant p is open.
+    open = model.addVars(nPlants, GRB_BINARY);
+    model.update();
+    int p;
+    for (p = 0; p &lt; nPlants; ++p)
+    {
+      ostringstream vname;
+      vname &lt;&lt; "Open" &lt;&lt; p;
+      open[p].set(GRB_DoubleAttr_Obj, FixedCosts[p]);
+      open[p].set(GRB_StringAttr_VarName, vname.str());
+    }
+
+    // Transportation decision variables: how much to transport from
+    // a plant p to a warehouse w
+    transport = new GRBVar* [nWarehouses];
+    int w;
+    for (w = 0; w &lt; nWarehouses; ++w)
+    {
+      transport[w] = model.addVars(nPlants);
+      transportCt++;
+      model.update();
+      for (p = 0; p &lt; nPlants; ++p)
+      {
+        ostringstream vname;
+        vname &lt;&lt; "Trans" &lt;&lt; p &lt;&lt; "." &lt;&lt; w;
+        transport[w][p].set(GRB_DoubleAttr_Obj, TransCosts[w][p]);
+        transport[w][p].set(GRB_StringAttr_VarName, vname.str());
+      }
+    }
+
+    // The objective is to minimize the total fixed and variable costs
+    model.set(GRB_IntAttr_ModelSense, 1);
+
+    // Update model to integrate new variables
+    model.update();
+
+    // Production constraints
+    // Note that the right-hand limit sets the production to zero if
+    // the plant is closed
+    for (p = 0; p &lt; nPlants; ++p)
+    {
+      GRBLinExpr ptot = 0;
+      for (w = 0; w &lt; nWarehouses; ++w)
+      {
+        ptot += transport[w][p];
+      }
+      ostringstream cname;
+      cname &lt;&lt; "Capacity" &lt;&lt; p;
+      model.addConstr(ptot &lt;= Capacity[p] * open[p], cname.str());
+    }
+
+    // Demand constraints
+    for (w = 0; w &lt; nWarehouses; ++w)
+    {
+      GRBLinExpr dtot = 0;
+      for (p = 0; p &lt; nPlants; ++p)
+      {
+        dtot += transport[w][p];
+      }
+      ostringstream cname;
+      cname &lt;&lt; "Demand" &lt;&lt; w;
+      model.addConstr(dtot == Demand[w], cname.str());
+    }
+
+    // Guess at the starting point: close the plant with the highest
+    // fixed costs; open all others
+
+    // First, open all plants
+    for (p = 0; p &lt; nPlants; ++p)
+    {
+      open[p].set(GRB_DoubleAttr_Start, 1.0);
+    }
+
+    // Now close the plant with the highest fixed cost
+    cout &lt;&lt; "Initial guess:" &lt;&lt; endl;
+    double maxFixed = -GRB_INFINITY;
+    for (p = 0; p &lt; nPlants; ++p)
+    {
+      if (FixedCosts[p] &gt; maxFixed)
+      {
+        maxFixed = FixedCosts[p];
+      }
+    }
+    for (p = 0; p &lt; nPlants; ++p)
+    {
+      if (FixedCosts[p] == maxFixed)
+      {
+        open[p].set(GRB_DoubleAttr_Start, 0.0);
+        cout &lt;&lt; "Closing plant " &lt;&lt; p &lt;&lt; endl &lt;&lt; endl;
+        break;
+      }
+    }
+
+    // Use barrier to solve root relaxation
+    model.getEnv().set(GRB_IntParam_Method, GRB_METHOD_BARRIER);
+
+    // Solve
+    model.optimize();
+
+    // Print solution
+    cout &lt;&lt; "\nTOTAL COSTS: " &lt;&lt; model.get(GRB_DoubleAttr_ObjVal) &lt;&lt; endl;
+    cout &lt;&lt; "SOLUTION:" &lt;&lt; endl;
+    for (p = 0; p &lt; nPlants; ++p)
+    {
+      if (open[p].get(GRB_DoubleAttr_X) == 1.0)
+      {
+        cout &lt;&lt; "Plant " &lt;&lt; p &lt;&lt; " open:" &lt;&lt; endl;
+        for (w = 0; w &lt; nWarehouses; ++w)
+        {
+          if (transport[w][p].get(GRB_DoubleAttr_X) &gt; 0.0001)
+          {
+            cout &lt;&lt; "  Transport " &lt;&lt;
+            transport[w][p].get(GRB_DoubleAttr_X) &lt;&lt;
+            " units to warehouse " &lt;&lt; w &lt;&lt; endl;
+          }
+        }
+      }
+      else
+      {
+        cout &lt;&lt; "Plant " &lt;&lt; p &lt;&lt; " closed!" &lt;&lt; endl;
+      }
+    }
+
+  }
+  catch (GRBException e)
+  {
+    cout &lt;&lt; "Error code = " &lt;&lt; e.getErrorCode() &lt;&lt; endl;
+    cout &lt;&lt; e.getMessage() &lt;&lt; endl;
+  }
+  catch (...)
+  {
+    cout &lt;&lt; "Exception during optimization" &lt;&lt; endl;
+  }
+
+  delete[] open;
+  for (int i = 0; i &lt; transportCt; ++i) {
+    delete[] transport[i];
+  }
+  delete[] transport;
+  delete env;
+  return 0;
+}
+</PRE>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html835"
+  HREF="feasopt_cpp_cpp.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html833"
+  HREF="cpp_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html827"
+  HREF="diet_cpp_cpp.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html836"
+  HREF="feasopt_cpp_cpp.html">feasopt_c++.cpp</A>
+<B> Up:</B> <A NAME="tex2html834"
+  HREF="cpp_examples.html">C++ Examples</A>
+<B> Previous:</B> <A NAME="tex2html828"
+  HREF="diet_cpp_cpp.html">diet_c++.cpp</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

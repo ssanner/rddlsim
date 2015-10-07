@@ -1,0 +1,129 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>ConcurrentJobs</TITLE>
+<META NAME="description" CONTENT="ConcurrentJobs">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="concurrentmip.html">
+<LINK REL="previous" HREF="cliquecuts.html">
+<LINK REL="up" HREF="parameter_descriptions.html">
+<LINK REL="next" HREF="concurrentmip.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html11157"
+  HREF="concurrentmip.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html11155"
+  HREF="parameter_descriptions.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html11149"
+  HREF="cliquecuts.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html11158"
+  HREF="concurrentmip.html">ConcurrentMIP</A>
+<B> Up:</B> <A NAME="tex2html11156"
+  HREF="parameter_descriptions.html">Parameter Descriptions</A>
+<B> Previous:</B> <A NAME="tex2html11150"
+  HREF="cliquecuts.html">CliqueCuts</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION0001421100000000000000"></A>
+<A NAME="parameter:ConcurrentJobs"></A>
+<BR>
+ConcurrentJobs
+</H3>
+Distributed concurrent optimizer job count
+
+<TABLE CELLPADDING=3>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf">Type:</SPAN></TH>
+<TD ALIGN="LEFT">int</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf">Default value:</SPAN></TH>
+<TD ALIGN="LEFT">0</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf">Minimum value:</SPAN></TH>
+<TD ALIGN="LEFT">0</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf">Maximum value:</SPAN></TH>
+<TD ALIGN="LEFT">MAXINT</TD>
+</TR>
+</TABLE>
+
+<P>
+Enables distributed concurrent optimization, which can be used
+to solve LP or MIP models on multiple machines.
+A value of <code>n</code> causes the
+solver to create <code>n</code> independent models, using different
+parameter settings for each.  Each of these models is sent to a
+distributed worker for processing.  Optimization terminates when the first
+solve completes.  Use the
+<A HREF="workerpool.html#parameter:WorkerPool">WorkerPool</A> parameter to
+provide a list of available distributed workers.
+
+<P>
+By default, Gurobi chooses the parameter settings used for each
+independent solve automatically.  You can create concurrent
+environments to choose your own parameter settings (refer to
+the <A HREF="concurrent_optimizer.html#sec:ConcurrentControl">concurrent optimization</A>
+section for details).  The intent of concurrent MIP solving is to
+introduce additional diversity into the MIP search.  By bringing the
+resources of multiple machines to bear on a single model, this
+approach can sometimes solve models much faster than a single machine.
+
+<P>
+The distributed concurrent solver produces a slightly different
+log from the standard solver, and provides different callbacks as
+well.  Please refer to the
+<A HREF="distributed_parallel_algor.html#sec:DistributedAlgorithms">Distributed Algorithm</A>
+discussion for additional details.
+
+<P>
+
+<P>
+For examples of how to query or modify parameter values from
+our different APIs, refer to our
+<A HREF="parameter_examples.html#sec:ParameterExamples">Parameter Examples</A>.
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html11157"
+  HREF="concurrentmip.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html11155"
+  HREF="parameter_descriptions.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html11149"
+  HREF="cliquecuts.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html11158"
+  HREF="concurrentmip.html">ConcurrentMIP</A>
+<B> Up:</B> <A NAME="tex2html11156"
+  HREF="parameter_descriptions.html">Parameter Descriptions</A>
+<B> Previous:</B> <A NAME="tex2html11150"
+  HREF="cliquecuts.html">CliqueCuts</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

@@ -1,0 +1,128 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Attributes</TITLE>
+<META NAME="description" CONTENT="Attributes">
+<META NAME="keywords" CONTENT="quickstart_mac">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="quickstart_mac.css">
+
+<LINK REL="next" HREF="c_interface.html">
+<LINK REL="previous" HREF="interactive_shell.html">
+<LINK REL="up" HREF="quickstart_mac.html">
+<LINK REL="next" HREF="c_interface.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html594"
+  HREF="c_interface.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html592"
+  HREF="quickstart_mac.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html586"
+  HREF="the_gurobi_python_interfac.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html595"
+  HREF="c_interface.html">C Interface</A>
+<B> Up:</B> <A NAME="tex2html593"
+  HREF="quickstart_mac.html">Gurobi Optimizer Quick Start</A>
+<B> Previous:</B> <A NAME="tex2html587"
+  HREF="the_gurobi_python_interfac.html">The Gurobi Python Interface</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00060000000000000000"></A>
+<A NAME="section:Attributes"></A>
+<BR>
+Attributes
+</H1>
+<P>
+<EM>As mentioned in the previous section, most of the information
+associated with a Gurobi model is stored in a set of
+<EM>attributes</EM>.  Some attributes are associated with the variables of
+the model, some with the constraints of the model, and some with the
+model itself.  After you optimize a model, for example, the solution
+is stored in the <code>X</code> variable attribute.  Attributes that are
+computed by the Gurobi optimizer (such as the solution attribute)
+cannot be modified directly by the user, while those that
+represent input data (such as the <code>LB</code> attribute which stores
+variable lower bounds) can.
+</EM>
+<P>
+<EM>Each of the Gurobi language interfaces contains routines for querying
+or modifying attribute values.  To retrieve or modify the value of a
+particular attribute, you simply pass the name of the attribute to the
+appropriate query or modification routine.  In the C interface, for
+example, you'd make the following call to query the current solution
+value on variable 1:
+</EM><PRE>
+  double x1;
+  error = GRBgetdblattrelement(model, GRB_DBL_ATTR_X, 1, &amp;x1);
+</PRE><EM>
+This routine returns a single element from an array-valued attribute
+containing double-precision data.  Routines are provided to query and
+modify scalar-valued and array-valued attributes of type <code>int</code>,
+<code>double</code>, <code>char</code>, or <code>char *</code>.
+</EM>
+<P>
+<EM>In the object oriented interfaces, you query or modify attribute
+values through the appropriate objects.  For example, if variable
+<code>v</code> is a Gurobi variable object (a <code>GRBVar</code>), then the
+following calls would be used to modify the lower bound on <code>v</code>:
+</EM><PRE>
+  C++:    v.set(GRB_DoubleAttr_LB, 0.0);
+  Java:   v.set(GRB.DoubleAttr.LB, 0.0);
+  C#:     v.Set(GRB.DoubleAttr.LB, 0.0);
+  Python: v.lb = 0.0
+</PRE><EM>
+The exact syntax for querying or modifying an attribute varies
+slightly from one language to another, but the basic approach remains
+consistent: you call the appropriate query or modification method
+using the name of the desired attribute as an argument.
+</EM>
+<P>
+<EM>The full list of Gurobi attributes can be found in the
+<EM>Attributes</EM> section of the <A NAME="tex2html27"
+  HREF="../refman/refman.html">Gurobi Reference
+  Manual</A>.
+</EM>
+<P>
+<EM></EM>
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html594"
+  HREF="c_interface.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html592"
+  HREF="quickstart_mac.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html586"
+  HREF="the_gurobi_python_interfac.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html595"
+  HREF="c_interface.html">C Interface</A>
+<B> Up:</B> <A NAME="tex2html593"
+  HREF="quickstart_mac.html">Gurobi Optimizer Quick Start</A>
+<B> Previous:</B> <A NAME="tex2html587"
+  HREF="the_gurobi_python_interfac.html">The Gurobi Python Interface</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

@@ -1,0 +1,120 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>sos.m</TITLE>
+<META NAME="description" CONTENT="sos.m">
+<META NAME="keywords" CONTENT="examples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="examples.css">
+
+<LINK REL="previous" HREF="qp_m.html">
+<LINK REL="up" HREF="matlab_examples.html">
+<LINK REL="next" HREF="r_examples.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html2305"
+  HREF="r_examples.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html2303"
+  HREF="matlab_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html2299"
+  HREF="qp_m.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html2306"
+  HREF="r_examples.html">R Examples</A>
+<B> Up:</B> <A NAME="tex2html2304"
+  HREF="matlab_examples.html">MATLAB Examples</A>
+<B> Previous:</B> <A NAME="tex2html2300"
+  HREF="qp_m.html">qp.m</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000271000000000000000"></A>
+<A NAME="subsubsection:sos.m"></A>
+<BR>
+sos.m
+</H3>
+
+<P>
+<BR>
+<PRE  CLASS="verbatim">% Copyright 2014, Gurobi Optimization, Inc.
+
+% This example creates a very simple Special Ordered Set (SOS)
+% model. The model consists of 3 continuous variables, no linear
+% constraints, and a pair of SOS constraints of type 1.
+
+try
+    clear model;
+    model.ub = [1 1 2];
+    model.obj = [2 1 1];
+    model.modelsense = 'Max';
+    model.A = sparse(1,3);
+    model.rhs = 0;
+    model.sense = '=';
+
+    % Add first SOS: x1 = 0 or x2 = 0
+    model.sos(1).type   = 1;
+    model.sos(1).index  = [1 2];
+    model.sos(1).weight = [1 2];
+
+    % Add second SOS: x1 = 0 or x3 = 0
+    model.sos(2).type   = 1;
+    model.sos(2).index  = [1 3];
+    model.sos(2).weight = [1 2];
+
+    % Write model to file
+    gurobi_write(model, 'sos.lp');
+
+    result = gurobi(model);
+
+    for i=1:3
+        fprintf('x%d %e\n', i, result.x(i))
+    end
+
+    fprintf('Obj: %e\n', result.objval);
+
+catch gurobiError
+    fprintf('Encountered an error\n')
+end
+</PRE>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html2305"
+  HREF="r_examples.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html2303"
+  HREF="matlab_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html2299"
+  HREF="qp_m.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html2306"
+  HREF="r_examples.html">R Examples</A>
+<B> Up:</B> <A NAME="tex2html2304"
+  HREF="matlab_examples.html">MATLAB Examples</A>
+<B> Previous:</B> <A NAME="tex2html2300"
+  HREF="qp_m.html">qp.m</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

@@ -1,0 +1,124 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Column</TITLE>
+<META NAME="description" CONTENT="Column">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="py_callbacks.html">
+<LINK REL="previous" HREF="py_tempconstr.html">
+<LINK REL="up" HREF="py_python_api_details.html">
+<LINK REL="next" HREF="py_column2.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html8926"
+  HREF="py_column2.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html8924"
+  HREF="py_python_api_details.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html8918"
+  HREF="py_tempconstr.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html8927"
+  HREF="py_column2.html">Column()</A>
+<B> Up:</B> <A NAME="tex2html8925"
+  HREF="py_python_api_details.html">Python API Details</A>
+<B> Previous:</B> <A NAME="tex2html8919"
+  HREF="py_tempconstr.html">TempConstr</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION0001010000000000000000"></A>
+<A NAME="pythonclass:Column"></A>
+<BR>
+Column
+</H2>
+
+<P>
+Gurobi column object.  A column consists of a list of coefficient,
+constraint pairs.  Columns are used to represent the set of
+constraints in which a variable participates, and the associated
+coefficients.  They are temporary objects that typically have short
+lifespans.
+
+<P>
+You generally build columns using the
+<A HREF="py_column2.html#pythonmethod:Column">Column</A> constructor.  Terms can be
+added to an existing column using
+<A HREF="py_column_addterms.html#pythonmethod:Column.addTerms">addTerms</A>. Terms can also
+be removed from a column using
+<A HREF="py_column_remove.html#pythonmethod:Column.remove">remove</A>.
+
+<P>
+Individual terms in a column can be queried using the
+<A HREF="py_column_getconstr.html#pythonmethod:Column.getConstr">getConstr</A>, and
+<A HREF="py_column_getcoeff.html#pythonmethod:Column.getCoeff">getCoeff</A> methods.  You
+can query the number of terms in the column using the
+<A HREF="py_column_size.html#pythonmethod:Column.size">size</A> method.
+
+<P>
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html8928"
+  HREF="py_column2.html">Column()</A>
+<LI><A NAME="tex2html8929"
+  HREF="py_column_addterms.html">Column.addTerms()</A>
+<LI><A NAME="tex2html8930"
+  HREF="py_column_clear.html">Column.clear()</A>
+<LI><A NAME="tex2html8931"
+  HREF="py_column_copy.html">Column.copy()</A>
+<LI><A NAME="tex2html8932"
+  HREF="py_column_getcoeff.html">Column.getCoeff()</A>
+<LI><A NAME="tex2html8933"
+  HREF="py_column_getconstr.html">Column.getConstr()</A>
+<LI><A NAME="tex2html8934"
+  HREF="py_column_remove.html">Column.remove()</A>
+<LI><A NAME="tex2html8935"
+  HREF="py_column_size.html">Column.size()</A>
+</UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html8926"
+  HREF="py_column2.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html8924"
+  HREF="py_python_api_details.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html8918"
+  HREF="py_tempconstr.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html8927"
+  HREF="py_column2.html">Column()</A>
+<B> Up:</B> <A NAME="tex2html8925"
+  HREF="py_python_api_details.html">Python API Details</A>
+<B> Previous:</B> <A NAME="tex2html8919"
+  HREF="py_tempconstr.html">TempConstr</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

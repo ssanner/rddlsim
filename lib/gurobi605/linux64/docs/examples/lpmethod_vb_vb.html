@@ -1,0 +1,138 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>lpmethod_vb.vb</TITLE>
+<META NAME="description" CONTENT="lpmethod_vb.vb">
+<META NAME="keywords" CONTENT="examples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="examples.css">
+
+<LINK REL="next" HREF="lpmod_vb_vb.html">
+<LINK REL="previous" HREF="lp_vb_vb.html">
+<LINK REL="up" HREF="visual_basic_examples.html">
+<LINK REL="next" HREF="lpmod_vb_vb.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html1691"
+  HREF="lpmod_vb_vb.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1689"
+  HREF="visual_basic_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1683"
+  HREF="lp_vb_vb.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1692"
+  HREF="lpmod_vb_vb.html">lpmod_vb.vb</A>
+<B> Up:</B> <A NAME="tex2html1690"
+  HREF="visual_basic_examples.html">Visual Basic Examples</A>
+<B> Previous:</B> <A NAME="tex2html1684"
+  HREF="lp_vb_vb.html">lp_vb.vb</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00025800000000000000"></A>
+<A NAME="subsubsection:lpmethod_vb.vb"></A>
+<BR>
+lpmethod_vb.vb
+</H3>
+
+<P>
+<BR>
+<PRE  CLASS="verbatim">' Copyright 2014, Gurobi Optimization, Inc.
+'
+' Solve a model with different values of the Method parameter;
+' show which value gives the shortest solve time.
+
+Imports System
+Imports Gurobi
+
+Class lpmethod_vb
+
+    Shared Sub Main(ByVal args As String())
+
+        If args.Length &lt; 1 Then
+            Console.WriteLine("Usage: lpmethod_vb filename")
+            Return
+        End If
+
+        Try
+            ' Read model and verify that it is a MIP
+            Dim env As New GRBEnv()
+            Dim model As New GRBModel(env, args(0))
+            Dim menv As GRBEnv = model.GetEnv()
+
+            ' Solve the model with different values of Method
+            Dim bestMethod As Integer = -1
+            Dim bestTime As Double = menv.get(GRB.DoubleParam.TimeLimit)
+            For i As Integer = 0 To 2
+                model.Reset()
+                menv.Set(GRB.IntParam.Method, i)
+                model.Optimize()
+                If model.Get(GRB.IntAttr.Status) = GRB.Status.OPTIMAL Then
+                    bestTime = model.Get(GRB.DoubleAttr.Runtime)
+                    bestMethod = i
+                    ' Reduce the TimeLimit parameter to save time
+                    ' with other methods
+                    menv.Set(GRB.DoubleParam.TimeLimit, bestTime)
+                End If
+            Next
+
+            ' Report which method was fastest
+            If bestMethod = -1 Then
+                Console.WriteLine("Unable to solve this model")
+            Else
+                Console.WriteLine("Solved in " &amp; bestTime &amp; _
+                                  " seconds with Method: " &amp; bestMethod)
+            End If
+
+            ' Dispose of model and env
+            model.Dispose()
+            env.Dispose()
+
+        Catch e As GRBException
+            Console.WriteLine("Error code: " &amp; e.ErrorCode &amp; ". " &amp; e.Message)
+        End Try
+    End Sub
+End Class
+</PRE>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1691"
+  HREF="lpmod_vb_vb.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1689"
+  HREF="visual_basic_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1683"
+  HREF="lp_vb_vb.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1692"
+  HREF="lpmod_vb_vb.html">lpmod_vb.vb</A>
+<B> Up:</B> <A NAME="tex2html1690"
+  HREF="visual_basic_examples.html">Visual Basic Examples</A>
+<B> Previous:</B> <A NAME="tex2html1684"
+  HREF="lp_vb_vb.html">lp_vb.vb</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

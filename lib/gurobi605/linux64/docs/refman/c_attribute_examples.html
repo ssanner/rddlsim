@@ -1,0 +1,158 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>C Attribute Examples</TITLE>
+<META NAME="description" CONTENT="C Attribute Examples">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="cpp_attribute_examples.html">
+<LINK REL="previous" HREF="attribute_examples.html">
+<LINK REL="up" HREF="attribute_examples.html">
+<LINK REL="next" HREF="cpp_attribute_examples.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html10734"
+  HREF="cpp_attribute_examples.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html10732"
+  HREF="attribute_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html10726"
+  HREF="attribute_examples.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html10735"
+  HREF="cpp_attribute_examples.html">C++ Attribute Examples</A>
+<B> Up:</B> <A NAME="tex2html10733"
+  HREF="attribute_examples.html">Attribute Examples</A>
+<B> Previous:</B> <A NAME="tex2html10727"
+  HREF="attribute_examples.html">Attribute Examples</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000137100000000000000"></A>
+<A NAME="CAttributeExamples"></A>
+<BR>
+C Attribute Examples
+</H3>
+
+<P>
+Consider the case where you have a Gurobi model <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img57.png"
+ ALT="$m$"></SPAN>.  You can
+retrieve the number of variables in the model by querying the
+<A HREF="numvars.html#attr:NumVars">NumVars</A> model attribute.
+This is an integer-valued, scalar attribute, so you use
+<A HREF="c_grbgetintattr.html#routine:GRBgetintattr">GRBgetintattr</A>:
+<PRE>
+  int cols;
+  error = GRBgetintattr(m, GRB_INT_ATTR_NUMVARS, &amp;cols);
+</PRE>
+You can also use the name of the attribute directly:
+<PRE>
+  int cols;
+  error = GRBgetintattr(m, "NumVars", &amp;cols);
+</PRE>
+(Note that attribute capitalization doesn't matter in the C
+interface, so you could also use <code>"numVars"</code> or
+<code>"numvars"</code>).
+
+<P>
+If you've performed optimization on the model, the optimal objective
+value can be obtained by querying the
+<A HREF="objval.html#attr:ObjVal">ObjVal</A> model attribute.
+This is a double-valued, scalar attribute, so you use
+<A HREF="c_grbgetdblattr.html#routine:GRBgetdblattr">GRBgetdblattr</A>:
+<PRE>
+  double objval;
+  error = GRBgetdblattr(m, GRB_DBL_ATTR_OBJVAL, &amp;objval);
+</PRE>
+
+<P>
+If you'd like to query the value that a variable takes in the computed
+solution, you can query the <A HREF="x.html#attr:X">X</A> variable attribute.
+This is a double-valued, vector attribute, so you have a few
+options for querying the associated values.
+You can retrieve the value for a single variable using
+<A HREF="c_grbgetdblattrelement.html#routine:GRBgetdblattrelement">GRBgetdblattrelement</A>:
+<PRE>
+  double x0;
+  error = GRBgetdblattrelement(m, GRB_DBL_ATTR_X, 0, &amp;x0);
+</PRE>
+(we query the solution value for variable 0 in this example).
+You can also query attribute values for multiple variables using
+<A HREF="c_grbgetdblattrarray.html#routine:GRBgetdblattrarray">GRBgetdblattrarray</A> or
+<A HREF="c_grbgetdblattrlist.html#routine:GRBgetdblattrlist">GRBgetdblattrlist</A>:
+<PRE>
+  double x[];
+  error = GRBgetdblattrarray(m, GRB_DBL_ATTR_X, 0, cols, x);
+</PRE>
+The former routine retrieves a contiguous set of values (<SPAN CLASS="MATH"><IMG
+ WIDTH="31" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img58.png"
+ ALT="$cols$"></SPAN>
+values, starting from index <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img59.png"
+ ALT="$0$"></SPAN> in our example).  The latter allows
+you to provide a list of indices, and it returns the values for the
+corresponding entries.
+
+<P>
+For each attribute query routine, there's an analogous <SPAN CLASS="MATH"><IMG
+ WIDTH="25" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img60.png"
+ ALT="$set$"></SPAN> routine.
+To set the upper bound of a variable, for example, you would use
+<A HREF="c_grbsetdblattrelement.html#routine:GRBsetdblattrelement">GRBsetdblattrelement</A>:
+<PRE>
+  error = GRBsetdblattrelement(m, GRB_DBL_ATTR_UB, 0, 0.0);
+</PRE>
+(In this example, we've set the upper bound for variable 0 to
+0).  You can set attribute values for multiple variables
+in a single call using
+<A HREF="c_grbsetdblattrarray.html#routine:GRBsetdblattrarray">GRBsetdblattrarray</A> or
+<A HREF="c_grbsetdblattrlist.html#routine:GRBsetdblattrlist">GRBsetdblattrlist</A>.
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html10734"
+  HREF="cpp_attribute_examples.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html10732"
+  HREF="attribute_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html10726"
+  HREF="attribute_examples.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html10735"
+  HREF="cpp_attribute_examples.html">C++ Attribute Examples</A>
+<B> Up:</B> <A NAME="tex2html10733"
+  HREF="attribute_examples.html">Attribute Examples</A>
+<B> Previous:</B> <A NAME="tex2html10727"
+  HREF="attribute_examples.html">Attribute Examples</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

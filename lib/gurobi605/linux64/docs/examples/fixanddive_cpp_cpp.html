@@ -1,0 +1,216 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>fixanddive_c++.cpp</TITLE>
+<META NAME="description" CONTENT="fixanddive_c++.cpp">
+<META NAME="keywords" CONTENT="examples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="examples.css">
+
+<LINK REL="next" HREF="lp_cpp_cpp.html">
+<LINK REL="previous" HREF="feasopt_cpp_cpp.html">
+<LINK REL="up" HREF="cpp_examples.html">
+<LINK REL="next" HREF="lp_cpp_cpp.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html855"
+  HREF="lp_cpp_cpp.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html853"
+  HREF="cpp_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html847"
+  HREF="feasopt_cpp_cpp.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html856"
+  HREF="lp_cpp_cpp.html">lp_c++.cpp</A>
+<B> Up:</B> <A NAME="tex2html854"
+  HREF="cpp_examples.html">C++ Examples</A>
+<B> Previous:</B> <A NAME="tex2html848"
+  HREF="feasopt_cpp_cpp.html">feasopt_c++.cpp</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00022600000000000000"></A>
+<A NAME="subsubsection:fixanddive_c++.cpp"></A>
+<BR>
+fixanddive_c++.cpp
+</H3>
+
+<P>
+<BR>
+<PRE  CLASS="verbatim">/* Copyright 2014, Gurobi Optimization, Inc. */
+
+/* Implement a simple MIP heuristic.  Relax the model,
+   sort variables based on fractionality, and fix the 25% of
+   the fractional variables that are closest to integer variables.
+   Repeat until either the relaxation is integer feasible or
+   linearly infeasible. */
+
+#include "gurobi_c++.h"
+#include &lt;algorithm&gt;
+#include &lt;cmath&gt;
+#include &lt;deque&gt;
+using namespace std;
+
+bool vcomp(GRBVar*, GRBVar*) throw(GRBException);
+
+int
+main(int argc,
+     char *argv[])
+{
+  if (argc &lt; 2)
+  {
+    cout &lt;&lt; "Usage: fixanddive_c++ filename" &lt;&lt; endl;
+    return 1;
+  }
+
+  GRBEnv* env = 0;
+  GRBVar* x = 0;
+  try
+  {
+    // Read model
+    env = new GRBEnv();
+    GRBModel model = GRBModel(*env, argv[1]);
+
+    // Collect integer variables and relax them
+    // Note that we use GRBVar* to copy variables
+    deque&lt;GRBVar*&gt; intvars;
+    x = model.getVars();
+    for (int j = 0; j &lt; model.get(GRB_IntAttr_NumVars); ++j)
+    {
+      if (x[j].get(GRB_CharAttr_VType) != GRB_CONTINUOUS)
+      {
+        intvars.push_back(&amp;x[j]);
+        x[j].set(GRB_CharAttr_VType, GRB_CONTINUOUS);
+      }
+    }
+
+    model.getEnv().set(GRB_IntParam_OutputFlag, 0);
+    model.optimize();
+
+    // Perform multiple iterations. In each iteration, identify the first
+    // quartile of integer variables that are closest to an integer value
+    // in the relaxation, fix them to the nearest integer, and repeat.
+
+    for (int iter = 0; iter &lt; 1000; ++iter)
+    {
+
+      // create a list of fractional variables, sorted in order of
+      // increasing distance from the relaxation solution to the nearest
+      // integer value
+
+      deque&lt;GRBVar*&gt; fractional;
+      for (size_t j = 0; j &lt; intvars.size(); ++j)
+      {
+        double sol = fabs(intvars[j]-&gt;get(GRB_DoubleAttr_X));
+        if (fabs(sol - floor(sol + 0.5)) &gt; 1e-5)
+        {
+          fractional.push_back(intvars[j]);
+        }
+      }
+
+      cout &lt;&lt; "Iteration " &lt;&lt; iter &lt;&lt; ", obj " &lt;&lt;
+      model.get(GRB_DoubleAttr_ObjVal) &lt;&lt; ", fractional " &lt;&lt;
+      fractional.size() &lt;&lt; endl;
+
+      if (fractional.size() == 0)
+      {
+        cout &lt;&lt; "Found feasible solution - objective " &lt;&lt;
+        model.get(GRB_DoubleAttr_ObjVal) &lt;&lt; endl;
+        break;
+      }
+
+      // Fix the first quartile to the nearest integer value
+      sort(fractional.begin(), fractional.end(), vcomp);
+      int nfix = fractional.size() / 4;
+      nfix = (nfix &gt; 1) ? nfix : 1;
+      for (int i = 0; i &lt; nfix; ++i)
+      {
+        GRBVar* v = fractional[i];
+        double fixval = floor(v-&gt;get(GRB_DoubleAttr_X) + 0.5);
+        v-&gt;set(GRB_DoubleAttr_LB, fixval);
+        v-&gt;set(GRB_DoubleAttr_UB, fixval);
+        cout &lt;&lt; "  Fix " &lt;&lt; v-&gt;get(GRB_StringAttr_VarName) &lt;&lt; " to " &lt;&lt;
+        fixval &lt;&lt; " ( rel " &lt;&lt; v-&gt;get(GRB_DoubleAttr_X) &lt;&lt; " )" &lt;&lt;
+        endl;
+      }
+
+      model.optimize();
+
+      // Check optimization result
+
+      if (model.get(GRB_IntAttr_Status) != GRB_OPTIMAL)
+      {
+        cout &lt;&lt; "Relaxation is infeasible" &lt;&lt; endl;
+        break;
+      }
+    }
+
+  }
+  catch (GRBException e)
+  {
+    cout &lt;&lt; "Error code = " &lt;&lt; e.getErrorCode() &lt;&lt; endl;
+    cout &lt;&lt; e.getMessage() &lt;&lt; endl;
+  }
+  catch (...)
+  {
+    cout &lt;&lt; "Error during optimization" &lt;&lt; endl;
+  }
+
+  delete[] x;
+  delete env;
+  return 0;
+}
+
+
+bool vcomp(GRBVar* v1,
+           GRBVar* v2) throw(GRBException)
+{
+  double sol1 = fabs(v1-&gt;get(GRB_DoubleAttr_X));
+  double sol2 = fabs(v2-&gt;get(GRB_DoubleAttr_X));
+  double frac1 = fabs(sol1 - floor(sol1 + 0.5));
+  double frac2 = fabs(sol2 - floor(sol2 + 0.5));
+  return (frac1 &lt; frac2);
+}
+</PRE>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html855"
+  HREF="lp_cpp_cpp.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html853"
+  HREF="cpp_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html847"
+  HREF="feasopt_cpp_cpp.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html856"
+  HREF="lp_cpp_cpp.html">lp_c++.cpp</A>
+<B> Up:</B> <A NAME="tex2html854"
+  HREF="cpp_examples.html">C++ Examples</A>
+<B> Previous:</B> <A NAME="tex2html848"
+  HREF="feasopt_cpp_cpp.html">feasopt_c++.cpp</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

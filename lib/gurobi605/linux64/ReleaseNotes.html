@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<title>Gurobi Optimization</title>
+	<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+	<style type="text/css">
+	body {
+		background-color: #E7E9EB;
+		padding: 20px 40px;
+		font-family: Helvetica, Arial, sans-serif;
+		font-size:11pt;
+		line-height:20px;
+		margin:0px;
+	}
+	img {
+		border: none;
+	}
+	h2 {
+		margin: 36px 0 8px;
+	}
+	.menu {
+		padding-bottom: 40px;
+	}
+	.menu td {
+		padding-right: 30px;
+		font-size: 14pt;
+		font-weight: bold;
+	}
+	.menu a {
+		text-decoration: none;
+		color: #292929;
+	}
+	.menu a:hover {
+		color: #909090;
+	}
+	.platforms {
+		border-collapse: collapse;
+	}
+	.platforms td, .platforms th {
+		font-size: 10pt;
+		border: solid 1px black;
+		padding: 4px 8px;
+		text-align: left;
+	}
+	</style>
+</head>
+<body>
+<table class='menu'>
+	<tr>
+		<td><a href="http://www.gurobi.com"><img style='width:211px' src="docs/logo.png" alt="Gurobi Optimization" title="Gurobi Optimization" /></a></td>
+		<td><a href="http://www.gurobi.com">gurobi.com</a></td>
+		<td><a href="docs/refman/refman.html">Reference Manual</a></td>
+		<td><a href="mailto:support@gurobi.com">Customer Support</a></td>
+	</tr>
+</table>
+<h1>
+	WELCOME
+</h1>
+<p>
+	You have successfully installed version 6.0 of the Gurobi Optimizer.
+</p>
+<p>
+	You'll find instructions for setting up your Gurobi license in this document, as well as a list of supported platforms, and Release Notes and guidelines for converting existing Gurobi code to run with this new version. Once you have finished browsing this document, you should refer to the <a href="docs/quickstart/quickstart.html">Quick Start Guide</a>, the <a href="docs/examples/examples.html">Example Tour</a>, or the <a href="docs/refman/refman.html">Reference Manual</a> to get started using the Gurobi Optimizer.
+</p>
+<h2>
+	Obtaining Your License
+</h2>
+<p>
+	To obtain a Gurobi 6.0 license, you will need to visit the <a href="http://gurobi.com/downloads/licenses/license-center" target="_blank"> Gurobi License Center</a>. If you are a commercial user under maintenance, you should see your Gurobi 6.0 license under <a href="http://gurobi.com/download/licenses/current">Current Gurobi Licenses</a>.  If you would like to request a free academic license, you should request a new license from the <a href="http://www.gurobi.com/download/licenses/free-academic">Free Academic License</a> page. Once you have a license on the Gurobi web site, you will need to follow the instructions for retrieving and settting up your license in the <a href="docs/quickstart/quickstart.html">Quick Start Guide</a>.
+</p>
+<h2>
+	Supported Platforms for Version 6.0
+</h2>
+<p>
+	The following table lists the supported platforms for version 6.0:
+</p>
+<table class='platforms'>
+	<tr>
+		<th>Platform</th>
+		<th>Operating System</th>
+		<th>Compiler</th>
+		<th>Notes</th>
+	</tr>
+	<tr>
+		<td rowspan="3">Windows&reg; 32-bit (win32)</td>
+		<td>Windows Vista&reg, Windows 7, Windows 8.1</td>
+		<td>Visual Studio&reg 2010</td>
+		<td>Use gurobi_c++md2010.lib (e.g.) for C++</td>
+	</tr>
+	<tr>
+		<td>Windows 7, Windows 8.1</td>
+		<td>Visual Studio 2012</td>
+		<td>Use gurobi_c++md2012.lib (e.g.) for C++</td>
+	</tr>
+	<tr>
+		<td>Windows 7, Windows 8.1</td>
+		<td>Visual Studio 2013</td>
+		<td>Use gurobi_c++md2013.lib (e.g.) for C++</td>
+	</tr>
+	<tr>
+		<td rowspan="3">Windows 64-bit (win64)</td>
+		<td>Windows Vista, Windows 7, Windows 8.1, Windows Server 2008 R2, Windows Server 2012 R2</td>
+		<td>Visual Studio 2010</td>
+		<td>Use gurobi_c++md2010.lib (e.g.) for C++</td>
+	</tr>
+	<tr>
+		<td>Windows 7, Windows 8.1, Windows Server 2008 R2, Windows Server 2012 R2</td>
+		<td>Visual Studio 2012</td>
+		<td>Use gurobi_c++md2012.lib (e.g.) for C++</td>
+	</tr>
+	<tr>
+		<td>Windows 7, Windows 8.1, Windows Server 2008 R2, Windows Server 2012 R2</td>
+		<td>Visual Studio 2013</td>
+		<td>Use gurobi_c++md2013.lib (e.g.) for C++</td>
+	</tr>
+	<tr>
+		<td rowspan="3">Linux&reg; 64-bit (linux64)</td>
+		<td>Red Hat&reg; Enterprise Linux 5.3-5.11, 6.0-6.6, 7.0-7.1</td>
+		<td>GCC 4.1/4.4</td>
+		<td>Use libgurobi_g++4.1.a for C++ in RHEL 5</td>
+	</tr>
+	<tr>
+		<td>SUSE&reg; Enterprise Linux 11, 12</td>
+		<td>GCC 4.3/4.4</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>Ubuntu&reg; 10.04, 12.04, 13.04, 13.10, 14.04, 14.10</td>
+		<td>GCC 4.2/4.3/4.4/4.6</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>Mac OS 64-bit (mac64)</td>
+		<td>Mac OS X 10.8 (Mountain Lion), 10.9 (Mavericks), 10.10 (Yosemite)</td>
+		<td>Xcode 4/5/6</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>AIX&reg; 64-bit (power64)</td>
+		<td>AIX 6.1, 7.1</td>
+		<td>XL C/C++ 9</td>
+		<td>Due to limited Python support on AIX, this port does not include the Interactive Shell or the Python libraries.</td>
+	</tr>
+</table>
+<p>
+	Our MATLAB&reg; interface supports MATLAB versions 2008b through 2015a. Our R interface supports R version 3.2.
+</p>
+<h2>
+	Release Notes for Version 6.0
+</h2>
+<p>
+	In addition to many performance enhancements, Gurobi 6.0 adds several new features:
+</p>
+<ul>
+        <li><b>Distributed MIP solver:</b> Gurobi users can now harness the power of multiple independent machines to solve a MIP model in parallel.  You simply provide a list of machines that can be used as distributed workers, and Gurobi automatically distributes the work among the available machines.  This new distributed MIP solver complements our existing distributed concurrent solver and our distributed tuning tool.  New parameters have been added to support this new capability:
+        <ul>
+                <li><a href="docs/refman/distributedmipjobs.html"><b>DistributedMIPJobs:</b></a> Indicates how many distributed MIP jobs to start.  These jobs run on distributed worker machines, which you set up before running the distributed MIP solver.</li>
+                <li><a href="docs/refman/workerpool.html"><b>WorkerPool:</b></a> A list of machines that can be used as workers for distributed algorithms.</li>
+                <li><a href="docs/refman/workerpassword.html"><b>WorkerPassword:</b></a> The access password for the distributed worker machines.</li>
+        </ul>
+        We've also extended our existing distributed concurrent solver to support both LP and MIP models (it previously only handled MIP models).  The <b>ConcurrentMIPJobs</b> has been renamed to <a href="docs/refman/concurrentjobs.html"><b>ConcurrentJobs</b></a> to reflect the change.
+        Please refer to the <a href="docs/refman/distributed_parallel_algor.html">distributed parallel algorithm</a> discussion in the <a href="docs/refman/refman.html">Gurobi Reference Manual</a> for additional details on all of our distributed algorithms.</li>
+	<li><b>Piecewise-linear objective support:</b> You can now explicitly model piecewise-linear objective functions.  This is done through the new <b>GRBsetpwlobj</b> function in C, and the new <b>GRBModel.setPWLObj</b> methods in the object-oriented interfaces.  Piecewise-linear objectives are handled directly by the simplex algorithm, so if you have a continuous model with a convex, piecewise-linear objective, you should see a significant performance boost from using this feature.  New attributes have been added to support this feature:
+        <ul>
+                <li><a href="docs/refman/numpwlobjvars.html"><b>NumPWLObjVars:</b></a> Indicates how many variables in the model have piecewise-linear objective functions.</li>
+                <li><a href="docs/refman/pwlobjcvx.html"><b>PWLObjCvx:</b></a> For each variable, indicates whether the corresponding piecewise-linear objective function is convex.</li>
+	</ul>
+	</li>
+	<li><b>Support for models with more than 2 billion non-zeroes in the constraint matrix:</b> You can now build and solve models whose constraint matrices have more than 2 billion non-zero values. This feature is transparent in our object-oriented interfaces, and mostly transparant in our C interface.  We have added enhanced versions of a few existing C routines for cases where the change is visible
+	(<a href="docs/refman/c_grbxaddvars.html"><b>GRBXaddvars</b></a>,
+	<a href="docs/refman/c_grbxaddconstrs.html"><b>GRBXaddconstrs</b></a>,
+	<a href="docs/refman/c_grbxaddrangeconstrs.html"><b>GRBXaddrangeconstrs</b></a>,
+	<a href="docs/refman/c_grbxchgcoeffs.html"><b>GRBXchgcoeffs</b></a>,
+	<a href="docs/refman/c_grbxgetconstrs.html"><b>GRBXgetconstrs</b></a>, and
+	<a href="docs/refman/c_grbxgetvars.html"><b>GRBXgetvars</b></a>)
+        </li>
+	<li><b>New explicit lazy constraint:</b> Users can use the new <b>Lazy</b> constraint attribute to mark constraints as lazy.  Users can also now indicate that constraints should be treated as lazy in LP and MPS files.</li>
+	<li><b>New asynchronous optimization methods:</b> Users of the C and C++ APIs can now start optimization routines asynchronously, thus allowing programs to work on other things while optimization proceeds.  Use the new <b>GRBoptimizeasync</b> and <b>GRBModel::optimizeasync</b> routines.  These routines replace the previous <b>NonBlocking</b> parameter, which allowed asynchronous optimization in a Compute Server environment only.</li>
+	<li><b>New scaling option:</b> Users can now select a new aggressive scaling option (<b>ScaleFlag=2</b>) when solving continuous models that are particularly numerically challenging.</li>
+	<li><b>Additional new attribute:</b>
+	<ul>
+		<li><a href="docs/refman/objboundc.html"><b>ObjBoundC:</b></a> In contrast with <b>ObjBound</b>, this new model attribute gives you the unrounded MIP best bound.</li>
+	</ul>
+        </li>
+</ul>
+<h2>
+	Code Conversion from Version 5.6
+</h2>
+Programs that were originally written for version 5.6 of the Gurobi Optimizer generally won't require any code changes to use version 6.0.  If you'd like to use the new features, some code changes are required.
+<h2>
+	License Agreement
+</h2>
+<p>
+	Note that this software is covered by the <a href="EULA.pdf">Gurobi End User License Agreement</a>. By completing the Gurobi installation process and using the software, you are accepting the terms of this agreement.
+</p>
+<p>
+	Thank you using Gurobi products!
+</p>
+<hr />
+<p>
+	&copy; 2014 Gurobi Optimization. All Rights Reserved.
+</p>
+</body>
+</html>

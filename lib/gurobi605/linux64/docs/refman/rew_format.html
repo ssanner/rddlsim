@@ -1,0 +1,91 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>REW format</TITLE>
+<META NAME="description" CONTENT="REW format">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="lp_format.html">
+<LINK REL="previous" HREF="mps_format.html">
+<LINK REL="up" HREF="model_file_formats.html">
+<LINK REL="next" HREF="lp_format.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html12219"
+  HREF="lp_format.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html12217"
+  HREF="model_file_formats.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html12211"
+  HREF="mps_format.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html12220"
+  HREF="lp_format.html">LP format</A>
+<B> Up:</B> <A NAME="tex2html12218"
+  HREF="model_file_formats.html">Model File Formats</A>
+<B> Previous:</B> <A NAME="tex2html12212"
+  HREF="mps_format.html">MPS format</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION000182000000000000000"></A>
+<A NAME="format:REW"></A>
+<BR>
+REW format
+</H2>
+
+<P>
+The REW format is identical to the <A HREF="mps_format.html#format:MPS">MPS</A>
+format, except in how objects are named when files are written.  When
+writing an MPS format file, the Gurobi optimizer refers to constraints
+and variables using their given names.  When writing an REW format
+file, the Gurobi optimizer ignores the given names and instead refers
+to the variables using a set of default names that are based on row
+and column numbers.  Specifically, column number <code>j</code> gets name
+<code>C000j</code>, where the number of zeros is chosen to make the total
+name length at least 8 characters.  Similarly, row number <code>i</code>
+gets name <code>R000i</code>.
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html12219"
+  HREF="lp_format.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html12217"
+  HREF="model_file_formats.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html12211"
+  HREF="mps_format.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html12220"
+  HREF="lp_format.html">LP format</A>
+<B> Up:</B> <A NAME="tex2html12218"
+  HREF="model_file_formats.html">Model File Formats</A>
+<B> Previous:</B> <A NAME="tex2html12212"
+  HREF="mps_format.html">MPS format</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

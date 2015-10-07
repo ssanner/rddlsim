@@ -1,0 +1,145 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Example Mip1.java</TITLE>
+<META NAME="description" CONTENT="Example Mip1.java">
+<META NAME="keywords" CONTENT="quickstart_linux">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="quickstart_linux.css">
+
+<LINK REL="next" HREF="java_example_details.html">
+<LINK REL="previous" HREF="java_interface.html">
+<LINK REL="up" HREF="java_interface.html">
+<LINK REL="next" HREF="java_example_details.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html892"
+  HREF="java_example_details.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html890"
+  HREF="java_interface.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html884"
+  HREF="java_interface.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html893"
+  HREF="java_example_details.html">Example details</A>
+<B> Up:</B> <A NAME="tex2html891"
+  HREF="java_interface.html">Java Interface</A>
+<B> Previous:</B> <A NAME="tex2html885"
+  HREF="java_interface.html">Java Interface</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00091000000000000000">
+Example Mip1.java</A>
+</H2>
+
+<P>
+This is the complete source code for our example (also available in 
+<code>&lt;installdir&gt;/examples/java/Mip1.java</code>)...
+
+<P>
+<PRE>
+import gurobi.*;
+
+public class Mip1 {
+  public static void main(String[] args) {
+    try {
+      GRBEnv    env   = new GRBEnv("mip1.log");
+      GRBModel  model = new GRBModel(env);
+
+      // Create variables
+
+      GRBVar x = model.addVar(0.0, 1.0, 0.0, GRB.BINARY, "x");
+      GRBVar y = model.addVar(0.0, 1.0, 0.0, GRB.BINARY, "y");
+      GRBVar z = model.addVar(0.0, 1.0, 0.0, GRB.BINARY, "z");
+
+      // Integrate new variables
+
+      model.update();
+
+      // Set objective: maximize x + y + 2 z
+
+      GRBLinExpr expr = new GRBLinExpr();
+      expr.addTerm(1.0, x); expr.addTerm(1.0, y); expr.addTerm(2.0, z);
+      model.setObjective(expr, GRB.MAXIMIZE);
+
+      // Add constraint: x + 2 y + 3 z &lt;= 4
+
+      expr = new GRBLinExpr();
+      expr.addTerm(1.0, x); expr.addTerm(2.0, y); expr.addTerm(3.0, z);
+      model.addConstr(expr, GRB.LESS_EQUAL, 4.0, "c0");
+
+      // Add constraint: x + y &gt;= 1
+
+      expr = new GRBLinExpr();
+      expr.addTerm(1.0, x); expr.addTerm(1.0, y);
+      model.addConstr(expr, GRB.GREATER_EQUAL, 1.0, "c1");
+
+      // Optimize model
+
+      model.optimize();
+
+      System.out.println(x.get(GRB.StringAttr.VarName)
+                         + " " +x.get(GRB.DoubleAttr.X));
+      System.out.println(y.get(GRB.StringAttr.VarName)
+                         + " " +y.get(GRB.DoubleAttr.X));
+      System.out.println(z.get(GRB.StringAttr.VarName)
+                         + " " +z.get(GRB.DoubleAttr.X));
+
+      System.out.println("Obj: " + model.get(GRB.DoubleAttr.ObjVal));
+
+      // Dispose of model and environment
+
+      model.dispose();
+      env.dispose();
+
+    } catch (GRBException e) {
+      System.out.println("Error code: " + e.getErrorCode() + ". " +
+                         e.getMessage());
+    }
+  }
+}
+</PRE>
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html892"
+  HREF="java_example_details.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html890"
+  HREF="java_interface.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html884"
+  HREF="java_interface.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html893"
+  HREF="java_example_details.html">Example details</A>
+<B> Up:</B> <A NAME="tex2html891"
+  HREF="java_interface.html">Java Interface</A>
+<B> Previous:</B> <A NAME="tex2html885"
+  HREF="java_interface.html">Java Interface</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

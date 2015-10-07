@@ -1,0 +1,100 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>GRBTempConstr</TITLE>
+<META NAME="description" CONTENT="GRBTempConstr">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="cpp_grbcolumn.html">
+<LINK REL="previous" HREF="cpp_grbquadexpr.html">
+<LINK REL="up" HREF="cpp_api_details.html">
+<LINK REL="next" HREF="cpp_grbcolumn.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html3808"
+  HREF="cpp_grbcolumn.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html3806"
+  HREF="cpp_api_details.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html3800"
+  HREF="cpp_grbquadexpr_size.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html3809"
+  HREF="cpp_grbcolumn.html">GRBColumn</A>
+<B> Up:</B> <A NAME="tex2html3807"
+  HREF="cpp_api_details.html">C++ API Details</A>
+<B> Previous:</B> <A NAME="tex2html3801"
+  HREF="cpp_grbquadexpr_size.html">GRBQuadExpr::size()</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION000410000000000000000"></A>
+<A NAME="cppclass:GRBTempConstr"></A>
+<BR>
+GRBTempConstr
+</H2>
+
+<P>
+Gurobi temporary constraint object.  Objects of this class are created
+as intermediate results when building constraints using overloaded
+operators.  There are no member functions on this class.  Instead,
+<code>GRBTempConstr</code> objects are created by a set of non-member
+functions: <A HREF="cpp_oper_equal.html#cppfunction:operator__">==</A>,
+<A HREF="cpp_oper_le.html#cppfunction:operator_SPMlt__">&lt;=</A>, and
+<A HREF="cpp_oper_ge.html#cppfunction:operator_SPMgt__">&gt;=</A>.  You will generally never
+store objects of this class in your own variables.
+
+<P>
+Consider the following examples:
+<PRE>
+  model.addConstr(x + y &lt;= 1);
+  model.addQConstr(x*x + y*y &lt;= 1);
+</PRE>
+The overloaded <code>&lt;=</code> operator creates an object of type
+<code>GRBTempContr</code>, which is then immediately passed to method
+<A HREF="cpp_grbmodel_addconstr.html#cppmethod:GRBModel::addConstr">GRBModel::addConstr</A> or
+<A HREF="cpp_grbmodel_addqconstr.html#cppmethod:GRBModel::addQConstr">GRBModel::addQConstr</A>.
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html3808"
+  HREF="cpp_grbcolumn.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html3806"
+  HREF="cpp_api_details.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html3800"
+  HREF="cpp_grbquadexpr_size.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html3809"
+  HREF="cpp_grbcolumn.html">GRBColumn</A>
+<B> Up:</B> <A NAME="tex2html3807"
+  HREF="cpp_api_details.html">C++ API Details</A>
+<B> Previous:</B> <A NAME="tex2html3801"
+  HREF="cpp_grbquadexpr_size.html">GRBQuadExpr::size()</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

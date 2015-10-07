@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Callbacks</TITLE>
+<META NAME="description" CONTENT="Callbacks">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="developing_for_compute_ser.html">
+<LINK REL="previous" HREF="performance_considerations.html">
+<LINK REL="up" HREF="compute_server_usage.html">
+<LINK REL="next" HREF="developing_for_compute_ser.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html12616"
+  HREF="developing_for_compute_ser.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html12614"
+  HREF="compute_server_usage.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html12608"
+  HREF="performance_considerations.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html12617"
+  HREF="developing_for_compute_ser.html">Developing for Compute Server</A>
+<B> Up:</B> <A NAME="tex2html12615"
+  HREF="compute_server_usage.html">Compute Server Usage</A>
+<B> Previous:</B> <A NAME="tex2html12609"
+  HREF="performance_considerations.html">Performance Considerations on a</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000252400000000000000"></A>
+<A NAME="sec:CSCallbacks"></A>
+<BR>
+Callbacks
+</H3>
+
+<P>
+As you might imagine, since the actual optimization task runs on a
+remote system in a Compute Server environment, Gurobi callbacks give
+different behavior than they do when the task runs locally.  In
+particular, callbacks are both less frequent and more restrictive.
+You will only receive <code>MESSAGE</code>, <code>BARRIER</code>,
+<code>SIMPLEX</code>, <code>MIP</code>, and <code>MIPSOL</code> callbacks; you will not
+receive <code>PRESOLVE</code> or <code>MIPNODE</code> callbacks.  As a result,
+you will only have access to a subset of the callback information that
+you would be able to obtain when running locally.  You can still
+request that the optimization be terminated from any of the callbacks
+you receive.  Please refer to the <A HREF="callback_codes.html#sec:CallbackCodes">Callback
+  Code</A> section for more information on the
+various callback codes.
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html12616"
+  HREF="developing_for_compute_ser.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html12614"
+  HREF="compute_server_usage.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html12608"
+  HREF="performance_considerations.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html12617"
+  HREF="developing_for_compute_ser.html">Developing for Compute Server</A>
+<B> Up:</B> <A NAME="tex2html12615"
+  HREF="compute_server_usage.html">Compute Server Usage</A>
+<B> Previous:</B> <A NAME="tex2html12609"
+  HREF="performance_considerations.html">Performance Considerations on a</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

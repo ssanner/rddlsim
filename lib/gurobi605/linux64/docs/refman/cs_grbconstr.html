@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>GRBConstr</TITLE>
+<META NAME="description" CONTENT="GRBConstr">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="cs_grbqconstr.html">
+<LINK REL="previous" HREF="cs_grbvar.html">
+<LINK REL="up" HREF="cs_net_api_details.html">
+<LINK REL="next" HREF="cs_grbconstr_get.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html6697"
+  HREF="cs_grbconstr_get.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html6695"
+  HREF="cs_net_api_details.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html6689"
+  HREF="cs_grbvar_set.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html6698"
+  HREF="cs_grbconstr_get.html">GRBConstr.Get()</A>
+<B> Up:</B> <A NAME="tex2html6696"
+  HREF="cs_net_api_details.html">.NET API Details</A>
+<B> Previous:</B> <A NAME="tex2html6690"
+  HREF="cs_grbvar_set.html">GRBVar.Set()</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00084000000000000000"></A>
+<A NAME="dotnetclass:GRBConstr"></A>
+<BR>
+GRBConstr
+</H2>
+
+<P>
+Gurobi constraint object.  Constraints are always associated with a
+particular model.  You create a constraint object by adding a
+constraint to a model (using
+<A HREF="cs_grbmodel_addconstr.html#dotnetmethod:GRBModel.AddConstr">GRBModel.AddConstr</A>),
+rather than by using a <code>GRBConstr</code> constructor.
+
+<P>
+The methods on constraint objects are used to get and set constraint
+attributes.  For example, constraint right-hand sides can be queried
+by calling
+<A HREF="cs_grbconstr_get.html#dotnetmethod:GRBConstr.Get">Get</A>(<code>GRB.DoubleAttr.RHS</code>).
+Note, however, that it is generally more efficient to query attributes
+for a set of constraints at once.  This is done using the attribute
+query method on the <code>GRBModel</code> object
+(<A HREF="cs_grbmodel_get.html#dotnetmethod:GRBModel.Get">GRBModel.Get</A>).
+
+<P>
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html6699"
+  HREF="cs_grbconstr_get.html">GRBConstr.Get()</A>
+<LI><A NAME="tex2html6700"
+  HREF="cs_grbconstr_sameas.html">GRBConstr.SameAs()</A>
+<LI><A NAME="tex2html6701"
+  HREF="cs_grbconstr_set.html">GRBConstr.Set()</A>
+</UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html6697"
+  HREF="cs_grbconstr_get.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html6695"
+  HREF="cs_net_api_details.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html6689"
+  HREF="cs_grbvar_set.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html6698"
+  HREF="cs_grbconstr_get.html">GRBConstr.Get()</A>
+<B> Up:</B> <A NAME="tex2html6696"
+  HREF="cs_net_api_details.html">.NET API Details</A>
+<B> Previous:</B> <A NAME="tex2html6690"
+  HREF="cs_grbvar_set.html">GRBVar.Set()</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

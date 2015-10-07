@@ -1,0 +1,228 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Continuous Models</TITLE>
+<META NAME="description" CONTENT="Continuous Models">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="mip_models.html">
+<LINK REL="previous" HREF="parameter_guidelines.html">
+<LINK REL="up" HREF="parameter_guidelines.html">
+<LINK REL="next" HREF="mip_models.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html10928"
+  HREF="mip_models.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html10926"
+  HREF="parameter_guidelines.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html10920"
+  HREF="parameter_guidelines.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html10929"
+  HREF="mip_models.html">MIP Models</A>
+<B> Up:</B> <A NAME="tex2html10927"
+  HREF="parameter_guidelines.html">Parameter Guidelines</A>
+<B> Previous:</B> <A NAME="tex2html10921"
+  HREF="parameter_guidelines.html">Parameter Guidelines</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000141100000000000000">
+Continuous Models</A>
+</H3>
+
+<P>
+If you wish to use Gurobi parameters to tune performance on continuous
+models, we offer the following guidelines.
+
+<P>
+<SPAN  CLASS="textbf">Choosing the method for LP or QP</SPAN>
+
+<P>
+The most important parameter when solving an LP or QP is
+<code>Method</code>.  The default setting (-1) uses the
+<A HREF="concurrent_optimizer.html#sec:Concurrent">concurrent optimizer</A>
+for an LP, and the parallel barrier solver for a QP.  While the
+default is usually a good choice, you may want to choose a different
+method in a few situations.
+
+<P>
+If memory is tight, you should consider using the dual simplex method
+(<code>Method=1</code>) instead of the default.  The default will invoke the
+barrier method, which can take a lot more memory than dual.  In
+addition, the default for LP will try multiple algorithms
+simultaneously, and each requires a copy of the original model.  By
+selecting dual simplex, you will only use one copy of the model.
+
+<P>
+Another scenario where you should change the default is when you must
+get the same optimal basis each time you run your program.  For LP
+models, the default concurrent solver invokes multiple algorithms
+simultaneously on multi-core systems, returning the optimal basis from
+the one that finishes first.  In rare cases, one algorithm may
+complete first in one run, while another completes first in another.
+This can potentially lead to different alternate optimal solutions.
+Selecting any other method, including the deterministic concurrent
+solver, will avoid this possibility.  Note, however, that the
+deterministic concurrent solver can be significantly slower than the
+default concurrent solver.
+
+<P>
+Finally, if you are confronted with a difficult LP model, you should
+experiment with the different method options.  While the default is
+rarely significantly slower than the best choice, you may find that
+one option is consistently faster or more robust for your models.
+There are no simple rules for predicting which method will work best
+for a particular family of models.
+
+<P>
+If you are solving QCP or SOCP models, note that the barrier algorithm
+is your only option.
+
+<P>
+<SPAN  CLASS="textbf">Parallel solution</SPAN>
+
+<P>
+Among the remaining parameters that affect continuous models, the only
+one that you would typically want to adjust is <code>Threads</code>, which
+controls the number of threads used for the concurrent and parallel
+barrier algorithms.  By default, concurrent and barrier will use all
+available cores in your machine.  Note that the simplex solvers can
+only use one thread, so this parameter has no effect on them.
+
+<P>
+If you would like to experiment with different strategies than the
+default ones when solving an LP model using the concurrent optimizer,
+we provide methods in
+<A HREF="c_grbgetconcurrentenv.html#routine:GRBgetconcurrentenv">C</A>,
+<A HREF="cpp_grbmodel_getconcurrent.html#cppmethod:GRBModel::getConcurrentEnv">C++</A>,
+<A HREF="java_grbmodel_getconcurren.html#javamethod:GRBModel.getConcurrentEnv">Java</A>,
+<A HREF="cs_grbmodel_getconcurrente.html#dotnetmethod:GRBModel.GetConcurrentEnv">.NET</A>, and
+<A HREF="py_model_getconcurrentenv.html#pythonmethod:Model.getConcurrentEnv">Python</A>
+that allow you to create and configure concurrent environments.
+
+<P>
+<SPAN  CLASS="textbf">Infeasible or unbounded models</SPAN>
+
+<P>
+If you are confronted with an infeasible or unbounded LP, additional
+details can be obtained when you set the <code>InfUnbdInfo</code>
+parameter.  For an unbounded model, setting this parameter allows you
+to retrieve an unbounded ray (using the <code>UnbdRay</code> attribute).
+For an infeasible model, setting this parameter allows you to retrieve
+a Farkas infeasibility proof (using the <code>FarkasDual</code> and
+<code>FarkasProof</code> attributes).
+
+<P>
+For the barrier algorithm, you should set the
+<A HREF="barhomogeneous.html#parameter:BarHomogeneous">BarHomogeneous</A>
+parameter to 1 whenever you have a model that you suspect is
+infeasible or unbounded.  This algorithm is better at diagnosing
+infeasibility or unboundedness.
+
+<P>
+<SPAN  CLASS="textbf">Special structure</SPAN>
+
+<P>
+If you wish to solve an LP model that has many more variables than
+constraints, you may want to try the sifting algorithm.  Sifting is
+actually implemented within our dual simplex solver, so to select
+sifting, set the <code>Method</code> parameter to 1 (to select dual), and
+then set the <code>Sifting</code> parameter to a positive value.  You can
+use the <code>SiftMethod</code> parameter to choose the algorithm that is
+used to solve the sub-problems that arise within the sifting
+algorithm.  In general, sifting is only effective when the ratio
+between variables and constraints is extremely large (100 to 1 or
+more).  Note that the default <code>Sifting</code> setting allows the
+Gurobi Optimizer to select sifting automatically when a problem has
+the appropriate structure, so you won't typically need to select it
+manually.
+
+<P>
+<SPAN  CLASS="textbf">Additional parameters</SPAN>
+
+<P>
+The <code>ScaleFlag</code> parameter can be used to modify the scaling
+performed on the model.  The default scaling value (1) is usually the
+most effective choice, but turning off scaling entirely (0) can
+sometimes reduce constraint violations on the original model, and
+applying more aggressive scaling (2) can sometimes improve the
+numerical properties of the scaled model.  The <code>ObjScale</code>
+parameter allows you to scale just the objective.  Objective scaling
+can be useful when the objective contains extremely large values, but
+it can also lead to large dual violations, so it should be used
+sparingly.
+
+<P>
+The <code>SimplexPricing</code> parameter determines the method used to
+choose a simplex pivot.  The default is usually the best choice.  The
+<code>NormAdjust</code> parameter allows you to choose alternate simplex
+pricing norms.  Again, the default is usually best.  The <code>Quad</code>
+parameter allows you to force the simplex solver to use (or not use)
+quad precision.  While quad precision can help for numerically
+difficult models, the default setting will typically recognize such
+cases automatically.  The <code>PerturbValue</code> parameter allows you to
+adjust the magnitude of the simplex perturbation (used to overcome
+degeneracy).  Again, the default value is typically effective.
+
+<P>
+Other Gurobi parameters control the details of the barrier solver.
+The <code>BarConvTol</code> and <TT>BarQCPConvTol</TT> parameters allow you
+to adjust barrier termination.  While you can ask for more precision
+than the default, you will typically run into the limitations of
+double-precision arithmetic quite quickly.  This parameter is
+typically used to indicate that you are willing to settle for a less
+accurate answer than the defaults would give.  The
+<code>BarCorrectors</code> parameter allows you to adjust the number of
+central corrections applied in each barrier iteration.  More
+corrections generally lead to more forward progress in each iteration,
+but at a cost of more expensive iterations.  The <code>BarOrder</code>
+parameter allows you to choose the barrier ordering method.  The
+default approach typically works well, but you can manually choose the
+less expensive Approximate Minimum Degree ordering option
+(<code>BarOrder=0</code>) if you find that ordering is taking too long.
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html10928"
+  HREF="mip_models.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html10926"
+  HREF="parameter_guidelines.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html10920"
+  HREF="parameter_guidelines.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html10929"
+  HREF="mip_models.html">MIP Models</A>
+<B> Up:</B> <A NAME="tex2html10927"
+  HREF="parameter_guidelines.html">Parameter Guidelines</A>
+<B> Previous:</B> <A NAME="tex2html10921"
+  HREF="parameter_guidelines.html">Parameter Guidelines</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

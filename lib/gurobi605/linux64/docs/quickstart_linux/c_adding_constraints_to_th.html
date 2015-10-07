@@ -1,0 +1,147 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Adding constraints to the model</TITLE>
+<META NAME="description" CONTENT="Adding constraints to the model">
+<META NAME="keywords" CONTENT="quickstart_linux">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="quickstart_linux.css">
+
+<LINK REL="next" HREF="c_optimizing_the_model.html">
+<LINK REL="previous" HREF="c_updating_the_model_lazy_.html">
+<LINK REL="up" HREF="c_interface.html">
+<LINK REL="next" HREF="c_optimizing_the_model.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html691"
+  HREF="c_optimizing_the_model.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html689"
+  HREF="c_interface.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html683"
+  HREF="c_updating_the_model_lazy_.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html692"
+  HREF="c_optimizing_the_model.html">Optimizing the model</A>
+<B> Up:</B> <A NAME="tex2html690"
+  HREF="c_interface.html">C Interface</A>
+<B> Previous:</B> <A NAME="tex2html684"
+  HREF="c_updating_the_model_lazy_.html">Updating the model -</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00078000000000000000">
+Adding constraints to the model</A>
+</H2>
+
+<P>
+Once the new variables are integrated into the model, the next step is
+to add our two constraints.  Constraints are added through the
+<EM>GRBaddconstr()</EM> routine.  To add a constraint, you must specify
+several pieces of information, including the non-zero values
+associated with the constraint, the constraint sense, the right-hand
+side value, and the constraint name.  These are all specified as
+arguments to <EM>GRBaddconstr()</EM>:
+<PRE>
+  /* First constraint: x + 2 y + 3 z &lt;= 4 */
+
+  ind[0] = 0; ind[1] = 1; ind[2] = 2;
+  val[0] = 1; val[1] = 2; val[2] = 3;
+
+  error = GRBaddconstr(model, 3, ind, val, GRB_LESS_EQUAL, 4.0, NULL);
+  if (error) goto QUIT;
+</PRE>
+The first argument of <EM>GRBaddconstr()</EM> is the model to which the
+constraint is being added.  The second is the total number of non-zero
+coefficients associated with the new constraint.  The next two
+arguments describe the non-zeros in the new constraint.  Constraint
+coefficients are specified using a list of index-value pairs, one for
+each non-zero value.  In our example, the first constraint to be added
+is <!-- MATH
+ $x + 2y + 3z \leq 4$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="114" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img5.png"
+ ALT="$x + 2y + 3z \leq 4$"></SPAN>.  We have chosen to make <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img6.png"
+ ALT="$x$"></SPAN> the first
+variable in our constraint matrix, <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img7.png"
+ ALT="$y$"></SPAN> the second, and <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img8.png"
+ ALT="$z$"></SPAN> the third
+(note that this choice is arbitrary). Given our variable ordering
+choice, the index-value pairs that are required for our first
+constraint are (0, 1.0), (1, 2.0), and (2, 3.0).
+These pairs are placed in the <code>ind</code> and
+<code>val</code> arrays.
+
+<P>
+The fifth argument to <EM>GRBaddconstr()</EM> provides the sense of the
+new constraint.  Possible values are <code>GRB_LESS_EQUAL</code>,
+<code>GRB_GREATER_EQUAL</code>, or <code>GRB_EQUAL</code>.  The sixth argument gives
+the right-hand side value.  The final argument gives the name of the
+constraint (we allow the constraint to take its default name here by
+specifying <code>NULL</code> for the argument).
+
+<P>
+The second constraint is added in a similar fashion:
+<PRE>
+  /* Second constraint: x + y &gt;= 1 */
+
+  ind[0] = 0; ind[1] = 1;
+  val[0] = 1; val[1] = 1;
+
+  error = GRBaddconstr(model, 2, ind, val, GRB_GREATER_EQUAL, 1.0, NULL);
+  if (error) goto QUIT;
+</PRE>
+Note that routine <EM>GRBaddconstrs()</EM> would allow you to add both
+constraints in a single call.  The arguments for this routine are much
+more complex, though, without providing any significant advantages, so
+we recommend that you add one constraint at a time.
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html691"
+  HREF="c_optimizing_the_model.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html689"
+  HREF="c_interface.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html683"
+  HREF="c_updating_the_model_lazy_.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html692"
+  HREF="c_optimizing_the_model.html">Optimizing the model</A>
+<B> Up:</B> <A NAME="tex2html690"
+  HREF="c_interface.html">C Interface</A>
+<B> Previous:</B> <A NAME="tex2html684"
+  HREF="c_updating_the_model_lazy_.html">Updating the model -</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

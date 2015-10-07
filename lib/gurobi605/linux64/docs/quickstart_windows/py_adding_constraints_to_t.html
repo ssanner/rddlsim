@@ -1,0 +1,110 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Adding constraints to the model</TITLE>
+<META NAME="description" CONTENT="Adding constraints to the model">
+<META NAME="keywords" CONTENT="quickstart_windows">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="quickstart_windows.css">
+
+<LINK REL="next" HREF="py_optimizing_the_model.html">
+<LINK REL="previous" HREF="py_setting_the_objective.html">
+<LINK REL="up" HREF="py_example_mip1_py.html">
+<LINK REL="next" HREF="py_optimizing_the_model.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html1289"
+  HREF="py_optimizing_the_model.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1287"
+  HREF="py_example_mip1_py.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1281"
+  HREF="py_setting_the_objective.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1290"
+  HREF="py_optimizing_the_model.html">Optimizing the model</A>
+<B> Up:</B> <A NAME="tex2html1288"
+  HREF="py_example_mip1_py.html">Example mip1.py</A>
+<B> Previous:</B> <A NAME="tex2html1282"
+  HREF="py_setting_the_objective.html">Setting the objective</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000112600000000000000">
+Adding constraints to the model</A>
+</H3>
+
+<P>
+The next step in the example is to add the constraints.  The first
+constraint is added here:
+<PRE>
+  # Add constraint: x + 2 y + 3 z &lt;= 4
+  m.addConstr(x + 2 * y + 3 * z &lt;= 4, "c0")
+</PRE>
+As with variables, constraints are always associated with a specific
+model.  They are created using the <EM>addConstr()</EM> method on the
+model object.
+
+<P>
+We again use overloaded arithmetic operators to build linear
+expressions.  The comparison operators are also overloaded to make it
+easy to build constraints.
+
+<P>
+The second argument to <code>addConstr</code> gives the (optional)
+constraint name.
+
+<P>
+Again, this simple example builds the linear expression for the
+constraint in a single statement using an explicit list of terms.
+More complex programs will typically build the expression
+incrementally.
+
+<P>
+The second constraint is created in a similar manner:
+<PRE>
+  # Add constraint: x + y &gt;= 1
+  m.addConstr(x + y &gt;= 1, "c1")
+</PRE>
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1289"
+  HREF="py_optimizing_the_model.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1287"
+  HREF="py_example_mip1_py.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1281"
+  HREF="py_setting_the_objective.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1290"
+  HREF="py_optimizing_the_model.html">Optimizing the model</A>
+<B> Up:</B> <A NAME="tex2html1288"
+  HREF="py_example_mip1_py.html">Example mip1.py</A>
+<B> Previous:</B> <A NAME="tex2html1282"
+  HREF="py_setting_the_objective.html">Setting the objective</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

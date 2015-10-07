@@ -1,0 +1,117 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>diet3.py</TITLE>
+<META NAME="description" CONTENT="diet3.py">
+<META NAME="keywords" CONTENT="examples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="examples.css">
+
+<LINK REL="next" HREF="diet4_py.html">
+<LINK REL="previous" HREF="diet2_py.html">
+<LINK REL="up" HREF="python_examples.html">
+<LINK REL="next" HREF="diet4_py.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html1949"
+  HREF="diet4_py.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1947"
+  HREF="python_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1941"
+  HREF="diet2_py.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1950"
+  HREF="diet4_py.html">diet4.py</A>
+<B> Up:</B> <A NAME="tex2html1948"
+  HREF="python_examples.html">Python Examples</A>
+<B> Previous:</B> <A NAME="tex2html1942"
+  HREF="diet2_py.html">diet2.py</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00026600000000000000"></A>
+<A NAME="subsubsection:diet3.py"></A>
+<BR>
+diet3.py
+</H3>
+
+<P>
+<BR>
+<PRE  CLASS="verbatim">#!/usr/bin/python
+
+# Copyright 2014, Gurobi Optimization, Inc.
+
+# Use a SQLite database with the diet model (dietmodel.py).  The database
+# (diet.db) can be recreated using the included SQL script (diet.sql).
+#
+# Note that this example reads an external data file (..\data\diet.db).
+# As a result, it must be run from the Gurobi examples/python directory.
+
+import os
+import sqlite3
+from gurobipy import *
+
+con = sqlite3.connect(os.path.join('..', 'data', 'diet.db'))
+cur = con.cursor()
+
+cur.execute('select category,minnutrition,maxnutrition from categories')
+result = cur.fetchall()
+categories, minNutrition, maxNutrition = multidict(
+    (cat,[minv,maxv]) for cat,minv,maxv in result)
+
+cur.execute('select food,cost from foods')
+result = cur.fetchall()
+foods, cost = multidict(result)
+
+cur.execute('select food,category,value from nutrition')
+result = cur.fetchall()
+nutritionValues = dict(((f,c),v) for f,c,v in result)
+
+con.close()
+
+import dietmodel
+dietmodel.solve(categories, minNutrition, maxNutrition,
+                foods, cost, nutritionValues)
+</PRE>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1949"
+  HREF="diet4_py.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1947"
+  HREF="python_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1941"
+  HREF="diet2_py.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1950"
+  HREF="diet4_py.html">diet4.py</A>
+<B> Up:</B> <A NAME="tex2html1948"
+  HREF="python_examples.html">Python Examples</A>
+<B> Previous:</B> <A NAME="tex2html1942"
+  HREF="diet2_py.html">diet2.py</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

@@ -1,0 +1,283 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>GRBModel::setPWLObj()</TITLE>
+<META NAME="description" CONTENT="GRBModel::setPWLObj()">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="cpp_grbmodel_sync.html">
+<LINK REL="previous" HREF="cpp_grbmodel_setobjective.html">
+<LINK REL="up" HREF="cpp_grbmodel.html">
+<LINK REL="next" HREF="cpp_grbmodel_sync.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html3232"
+  HREF="cpp_grbmodel_sync.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html3230"
+  HREF="cpp_grbmodel.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html3224"
+  HREF="cpp_grbmodel_setobjective.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html3233"
+  HREF="cpp_grbmodel_sync.html">GRBModel::sync()</A>
+<B> Up:</B> <A NAME="tex2html3231"
+  HREF="cpp_grbmodel.html">GRBModel</A>
+<B> Previous:</B> <A NAME="tex2html3225"
+  HREF="cpp_grbmodel_setobjective.html">GRBModel::setObjective()</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000424200000000000000"></A>
+<A NAME="cppmethod:GRBModel::setPWLObj"></A>
+<BR>
+GRBModel::setPWLObj()
+</H3>
+
+<P>
+Set a piecewise-linear objective function for a variable.
+
+<P>
+The arguments to this method specify a list of points that define a
+piecewise-linear objective function for a single variable.
+Specifically, the <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$x$"></SPAN> and <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img5.png"
+ ALT="$y$"></SPAN> arguments give coordinates for the
+vertices of the function.
+
+<P>
+For example, suppose we want to define the function <SPAN CLASS="MATH"><IMG
+ WIDTH="35" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img9.png"
+ ALT="$f(x)$"></SPAN> shown below:
+<DIV ALIGN="CENTER">
+<IMG
+  WIDTH="498" HEIGHT="332" ALIGN="BOTTOM" BORDER="0"
+ SRC="./pwl.png"
+ ALT="Image pwl">
+</DIV>
+<P>
+<DIV ALIGN="CENTER">
+</DIV>
+The vertices of the function occur at the points <SPAN CLASS="MATH"><IMG
+ WIDTH="39" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img10.png"
+ ALT="$(1, 1)$"></SPAN>, <SPAN CLASS="MATH"><IMG
+ WIDTH="39" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img11.png"
+ ALT="$(3,2)$"></SPAN> and
+<SPAN CLASS="MATH"><IMG
+ WIDTH="39" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img12.png"
+ ALT="$(5,4)$"></SPAN>, so <TT>npoints</TT> is 3, <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$x$"></SPAN> is {1, 3, 5}, and <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img5.png"
+ ALT="$y$"></SPAN> is
+{1, 2, 4}. With these arguments we define <SPAN CLASS="MATH"><IMG
+ WIDTH="63" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img13.png"
+ ALT="$f(1) = 1$"></SPAN>, <SPAN CLASS="MATH"><IMG
+ WIDTH="63" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img14.png"
+ ALT="$f(3) = 2$"></SPAN> and
+<SPAN CLASS="MATH"><IMG
+ WIDTH="63" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img15.png"
+ ALT="$f(5) = 4$"></SPAN>. Other objective values are linearly interpolated between
+neighboring points.  The first pair and last pair of points each
+define a ray, so values outside the specified <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$x$"></SPAN> values are
+extrapolated from these points.  Thus, in our example, <SPAN CLASS="MATH"><IMG
+ WIDTH="76" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img16.png"
+ ALT="$f(-1)=0$"></SPAN> and
+<SPAN CLASS="MATH"><IMG
+ WIDTH="63" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img17.png"
+ ALT="$f(6)=5$"></SPAN>.
+
+<P>
+More formally, a set of <SPAN CLASS="MATH"><IMG
+ WIDTH="14" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img18.png"
+ ALT="$n$"></SPAN> points
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+\mathtt{x} = \{x_1, \ldots, x_n\}, \quad \mathtt{y} = \{y_1, \ldots, y_n\}
+\end{displaymath}
+ -->
+
+<IMG
+ WIDTH="249" HEIGHT="28" BORDER="0"
+ SRC="img19.png"
+ ALT="\begin{displaymath}
+\mathtt{x} = \{x_1, \ldots, x_n\}, \quad \mathtt{y} = \{y_1, \ldots, y_n\}
+\end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+define the following piecewise-linear function:
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+f(v) =
+\left\{
+\begin{array}{ll}
+y_1 + \frac{y_2-y_1}{x_2-x_1} (v - x_1),             & \mathrm{if}\;  v \le x_1,\\[7pt]
+y_i + \frac{y_{i+1}-y_i}{x_{i+1}-x_i} (v - x_i),     & \mathrm{if}\;  v \ge x_i\; \mathrm{and}\; v \le x_{i+1}, \\[7pt]
+y_n + \frac{y_n - y_{n-1}}{x_n - x_{n-1}} (v - x_n), & \mathrm{if}\;  v \ge x_n. \\[7pt]
+\end{array}
+\right.
+\end{displaymath}
+ -->
+
+<IMG
+ WIDTH="402" HEIGHT="102" BORDER="0"
+ SRC="img20.png"
+ ALT="\begin{displaymath}
+f(v) =
+\left\{
+\begin{array}{ll}
+y_1 + \frac{y_2-y_1}{x_2-x_...
+...- x_n), &amp; \mathrm{if}\; v \ge x_n. \ [7pt]
+\end{array}\right.
+\end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+
+<P>
+The <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$x$"></SPAN> entries must appear in non-decreasing order.  Two points can
+have the same <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$x$"></SPAN> coordinate -- this can be useful for specifying a
+discrete jump in the objective function.
+
+<P>
+Note that a piecewise-linear objective can change the type of a model.
+Specifically, including a non-convex piecewise linear objective
+function in a continuous model will transform that model into a MIP.
+This can significantly increase the cost of solving the model.
+
+<P>
+Setting a piecewise-linear objective for a variable will set the
+<A HREF="obj.html#attr:Obj">Obj attribute</A> on that variable to 0.
+Similarly, setting the <code>Obj</code> attribute will delete the
+piecewise-linear objective on that variable.
+
+<P>
+Each variable can have its own piecewise-linear objective function.
+They must be specified individually, even if multiple variables share
+the same function.
+
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">void</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">setPWLObj</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT">GRBvar</TD>
+<TD ALIGN="LEFT">var,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">npoints,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">double[]</TD>
+<TD ALIGN="LEFT">x,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">double[]</TD>
+<TD ALIGN="LEFT">y )</TD>
+</TR>
+</TABLE>
+
+<UL>
+Set the piecewise-linear objective function for a variable.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">var</SPAN>: The variable whose objective function is being set.
+
+<P>
+ <SPAN  CLASS="textbf">npoints</SPAN>: Number of points that define the piecewise-linear function.
+
+<P>
+ <SPAN  CLASS="textbf">x</SPAN>: The <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$x$"></SPAN> values for the points that define the piecewise-linear function.  Must be in non-decreasing order. 
+
+<P>
+ <SPAN  CLASS="textbf">y</SPAN>: The <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img5.png"
+ ALT="$y$"></SPAN> values for the points that define the piecewise-linear function.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html3232"
+  HREF="cpp_grbmodel_sync.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html3230"
+  HREF="cpp_grbmodel.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html3224"
+  HREF="cpp_grbmodel_setobjective.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html3233"
+  HREF="cpp_grbmodel_sync.html">GRBModel::sync()</A>
+<B> Up:</B> <A NAME="tex2html3231"
+  HREF="cpp_grbmodel.html">GRBModel</A>
+<B> Previous:</B> <A NAME="tex2html3225"
+  HREF="cpp_grbmodel_setobjective.html">GRBModel::setObjective()</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

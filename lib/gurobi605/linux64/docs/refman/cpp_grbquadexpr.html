@@ -1,0 +1,199 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>GRBQuadExpr</TITLE>
+<META NAME="description" CONTENT="GRBQuadExpr">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="cpp_grbtempconstr.html">
+<LINK REL="previous" HREF="cpp_grblinexpr.html">
+<LINK REL="up" HREF="cpp_api_details.html">
+<LINK REL="next" HREF="cpp_grbquadexpr2.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html3613"
+  HREF="cpp_grbquadexpr2.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html3611"
+  HREF="cpp_api_details.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html3605"
+  HREF="cpp_grblinexpr_size.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html3614"
+  HREF="cpp_grbquadexpr2.html">GRBQuadExpr()</A>
+<B> Up:</B> <A NAME="tex2html3612"
+  HREF="cpp_api_details.html">C++ API Details</A>
+<B> Previous:</B> <A NAME="tex2html3606"
+  HREF="cpp_grblinexpr_size.html">GRBLinExpr::size()</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00049000000000000000"></A>
+<A NAME="cppclass:GRBQuadExpr"></A>
+<BR>
+GRBQuadExpr
+</H2>
+
+<P>
+Gurobi quadratic expression object.  A quadratic expression consists
+of a linear expression, plus a list of coefficient-variable-variable
+triples that capture the quadratic terms.  Quadratic expressions are
+used to build quadratic objective functions and quadratic constraints.
+They are temporary objects that typically have short lifespans.
+
+<P>
+The <code>GRBQuadExpr</code> class is a sub-class of the abstract base
+class <A HREF="cpp_grbexpr.html#cppclass:GRBExpr">GRBExpr</A>.
+
+<P>
+You generally build quadratic expressions using overloaded operators.
+For example, if <code>x</code> is a <A HREF="cpp_grbvar.html#cppclass:GRBVar">GRBVar</A>
+object, then <code>x * x</code> is a
+<A HREF="#cppclass:GRBQuadExpr">GRBQuadExpr</A> object.  Expressions
+can be built from constants (e.g., <code>expr = 0</code>), variables (e.g.,
+<code>expr = 1 * x *x + 2 * x * y</code>), or from other expressions (e.g.,
+<code>expr2 = 2 * expr1 + x * x</code>, or <code>expr3 = expr1 + 2 * expr2</code>).
+You can also modify existing expressions (e.g.,
+<code>expr += x * x</code>, or <code>expr2 -= expr1</code>).
+
+<P>
+The other option for building expressions is to start with an empty
+expression (using the
+<A HREF="cpp_grbquadexpr2.html#cppmethod:GRBQuadExpr">GRBQuadExpr</A> constructor), and
+then add terms.  Terms can be added individually (using
+<A HREF="cpp_grbquadexpr_addterm.html#cppmethod:GRBQuadExpr::addTerm">addTerm</A>) or in groups
+(using <A HREF="cpp_grbquadexpr_addterms.html#cppmethod:GRBQuadExpr::addTerms">addTerms</A>).
+Terms can also be removed from an expression (using
+<A HREF="cpp_grbquadexpr_remove.html#cppmethod:GRBQuadExpr::remove">remove</A>).
+
+<P>
+Note that the cost of building expressions depends heavily on the
+approach you use.  While you can generally ignore this issue when
+building small expressions, you should be aware of a few efficiency
+issues when building large expressions:
+
+<UL>
+<LI>You should avoid using <code>expr = expr + x*x</code> in a loop.
+  It will lead to runtimes that are quadratic in the number of terms in
+  the expression.
+</LI>
+<LI>Using <code>expr += x*x</code> (or <code>expr -= x*x</code>) is much more
+  efficient than <code>expr = expr + x*x</code>.  Building a large expression
+  by looping over <code>+=</code> statements is reasonably efficient, but it
+  isn't the most efficient approach.
+</LI>
+<LI>The most efficient way to build a large expression is to make a
+  single call
+  <A HREF="cpp_grbquadexpr_addterms.html#cppmethod:GRBQuadExpr::addTerms">addTerms</A>.
+</LI>
+</UL>
+
+<P>
+Individual terms in a quadratic expression can be queried using the
+<A HREF="cpp_grbquadexpr_getvar1.html#cppmethod:GRBQuadExpr::getVar1">getVar1</A>,
+<A HREF="cpp_grbquadexpr_getvar2.html#cppmethod:GRBQuadExpr::getVar2">getVar2</A>, and
+<A HREF="cpp_grbquadexpr_getcoeff.html#cppmethod:GRBQuadExpr::getCoeff">getCoeff</A> methods.  You
+can query the number of quadratic terms in the expression using the
+<A HREF="cpp_grbquadexpr_size.html#cppmethod:GRBQuadExpr::size">size</A> method.
+To
+query the constant and linear terms associated with a quadratic
+expression, first obtain the linear portion of the quadratic
+expression using
+<A HREF="cpp_grbquadexpr_getlinexpr.html#cppmethod:GRBQuadExpr::getLinExpr">getLinExpr</A>, and then use
+the <A HREF="cpp_grblinexpr_getconstant.html#cppmethod:GRBLinExpr::getConstant">getConstant</A>,
+<A HREF="cpp_grblinexpr_getcoeff.html#cppmethod:GRBLinExpr::getCoeff">getCoeff</A>, or
+<A HREF="cpp_grblinexpr_getvar.html#cppmethod:GRBLinExpr::getVar">getVar</A> on the
+resulting <A HREF="cpp_grblinexpr.html#cppclass:GRBLinExpr">GRBLinExpr</A> object.
+
+<P>
+Note that a quadratic expression may contain multiple terms that
+involve the same variable pair.  These duplicate terms are merged when
+creating the model objective from an expression, but they may be
+visible when inspecting individual terms in the expression (e.g., when
+using <A HREF="cpp_grbquadexpr_getvar1.html#cppmethod:GRBQuadExpr::getVar1">getVar1</A> and
+<A HREF="cpp_grbquadexpr_getvar2.html#cppmethod:GRBQuadExpr::getVar2">getVar2</A>).
+
+<P>
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html3615"
+  HREF="cpp_grbquadexpr2.html">GRBQuadExpr()</A>
+<LI><A NAME="tex2html3616"
+  HREF="cpp_grbquadexpr_addterm.html">GRBQuadExpr::addTerm()</A>
+<LI><A NAME="tex2html3617"
+  HREF="cpp_grbquadexpr_addterms.html">GRBQuadExpr::addTerms()</A>
+<LI><A NAME="tex2html3618"
+  HREF="cpp_grbquadexpr_clear.html">GRBQuadExpr::clear()</A>
+<LI><A NAME="tex2html3619"
+  HREF="cpp_grbquadexpr_getcoeff.html">GRBQuadExpr::getCoeff()</A>
+<LI><A NAME="tex2html3620"
+  HREF="cpp_grbquadexpr_getlinexpr.html">GRBQuadExpr::getLinExpr()</A>
+<LI><A NAME="tex2html3621"
+  HREF="cpp_grbquadexpr_getvalue.html">GRBQuadExpr::getValue()</A>
+<LI><A NAME="tex2html3622"
+  HREF="cpp_grbquadexpr_getvar1.html">GRBQuadExpr::getVar1()</A>
+<LI><A NAME="tex2html3623"
+  HREF="cpp_grbquadexpr_getvar2.html">GRBQuadExpr::getVar2()</A>
+<LI><A NAME="tex2html3624"
+  HREF="cpp_grbquadexpr_oper_eq.html">GRBQuadExpr::operator=</A>
+<LI><A NAME="tex2html3625"
+  HREF="cpp_grbquadexpr_oper_plus.html">GRBQuadExpr::operator+</A>
+<LI><A NAME="tex2html3626"
+  HREF="cpp_grbquadexpr_oper_minus.html">GRBQuadExpr::operator-</A>
+<LI><A NAME="tex2html3627"
+  HREF="cpp_grbquadexpr_oper_pe.html">GRBQuadExpr::operator+=</A>
+<LI><A NAME="tex2html3628"
+  HREF="cpp_grbquadexpr_oper_me.html">GRBQuadExpr::operator-=</A>
+<LI><A NAME="tex2html3629"
+  HREF="cpp_grbquadexpr_oper_te.html">GRBQuadExpr::operator*=</A>
+<LI><A NAME="tex2html3630"
+  HREF="cpp_grbquadexpr_remove.html">GRBQuadExpr::remove()</A>
+<LI><A NAME="tex2html3631"
+  HREF="cpp_grbquadexpr_size.html">GRBQuadExpr::size()</A>
+</UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html3613"
+  HREF="cpp_grbquadexpr2.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html3611"
+  HREF="cpp_api_details.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html3605"
+  HREF="cpp_grblinexpr_size.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html3614"
+  HREF="cpp_grbquadexpr2.html">GRBQuadExpr()</A>
+<B> Up:</B> <A NAME="tex2html3612"
+  HREF="cpp_api_details.html">C++ API Details</A>
+<B> Previous:</B> <A NAME="tex2html3606"
+  HREF="cpp_grblinexpr_size.html">GRBLinExpr::size()</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

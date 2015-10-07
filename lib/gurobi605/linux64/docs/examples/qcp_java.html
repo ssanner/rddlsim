@@ -1,0 +1,163 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Qcp.java</TITLE>
+<META NAME="description" CONTENT="Qcp.java">
+<META NAME="keywords" CONTENT="examples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="examples.css">
+
+<LINK REL="next" HREF="qp_java.html">
+<LINK REL="previous" HREF="piecewise_java.html">
+<LINK REL="up" HREF="java_examples.html">
+<LINK REL="next" HREF="qp_java.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html1207"
+  HREF="qp_java.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1205"
+  HREF="java_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1199"
+  HREF="piecewise_java.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1208"
+  HREF="qp_java.html">Qp.java</A>
+<B> Up:</B> <A NAME="tex2html1206"
+  HREF="java_examples.html">Java Examples</A>
+<B> Previous:</B> <A NAME="tex2html1200"
+  HREF="piecewise_java.html">Piecewise.java</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000231400000000000000"></A>
+<A NAME="subsubsection:Qcp.java"></A>
+<BR>
+Qcp.java
+</H3>
+
+<P>
+<BR>
+<PRE  CLASS="verbatim">/* Copyright 2014, Gurobi Optimization, Inc. */
+
+/* This example formulates and solves the following simple QCP model:
+
+     maximize    x
+     subject to  x + y + z = 1
+                 x^2 + y^2 &lt;= z^2 (second-order cone)
+                 x^2 &lt;= yz        (rotated second-order cone)
+*/
+
+import gurobi.*;
+
+public class Qcp {
+  public static void main(String[] args) {
+    try {
+      GRBEnv    env   = new GRBEnv("qcp.log");
+      GRBModel  model = new GRBModel(env);
+
+      // Create variables
+
+      GRBVar x = model.addVar(0.0, GRB.INFINITY, 0.0, GRB.CONTINUOUS, "x");
+      GRBVar y = model.addVar(0.0, GRB.INFINITY, 0.0, GRB.CONTINUOUS, "y");
+      GRBVar z = model.addVar(0.0, GRB.INFINITY, 0.0, GRB.CONTINUOUS, "z");
+
+      // Integrate new variables
+
+      model.update();
+
+      // Set objective
+
+      GRBLinExpr obj = new GRBLinExpr();
+      obj.addTerm(1.0, x);
+      model.setObjective(obj, GRB.MAXIMIZE);
+
+      // Add linear constraint: x + y + z = 1
+
+      GRBLinExpr expr = new GRBLinExpr();
+      expr.addTerm(1.0, x); expr.addTerm(1.0, y); expr.addTerm(1.0, z);
+      model.addConstr(expr, GRB.EQUAL, 1.0, "c0");
+
+      // Add second-order cone: x^2 + y^2 &lt;= z^2
+
+      GRBQuadExpr qexpr = new GRBQuadExpr();
+      qexpr.addTerm(1.0, x, x);
+      qexpr.addTerm(1.0, y, y);
+      qexpr.addTerm(-1.0, z, z);
+      model.addQConstr(qexpr, GRB.LESS_EQUAL, 0.0, "qc0");
+
+      // Add rotated cone: x^2 &lt;= yz
+
+      qexpr = new GRBQuadExpr();
+      qexpr.addTerm(1.0, x, x);
+      qexpr.addTerm(-1.0, y, z);
+      model.addQConstr(qexpr, GRB.LESS_EQUAL, 0.0, "qc1");
+
+      // Optimize model
+
+      model.optimize();
+
+      System.out.println(x.get(GRB.StringAttr.VarName)
+                         + " " +x.get(GRB.DoubleAttr.X));
+      System.out.println(y.get(GRB.StringAttr.VarName)
+                         + " " +y.get(GRB.DoubleAttr.X));
+      System.out.println(z.get(GRB.StringAttr.VarName)
+                         + " " +z.get(GRB.DoubleAttr.X));
+
+      System.out.println("Obj: " + model.get(GRB.DoubleAttr.ObjVal) + " " +
+                         obj.getValue());
+      System.out.println();
+
+      // Dispose of model and environment
+
+      model.dispose();
+      env.dispose();
+
+    } catch (GRBException e) {
+      System.out.println("Error code: " + e.getErrorCode() + ". " +
+          e.getMessage());
+    }
+  }
+}
+</PRE>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1207"
+  HREF="qp_java.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1205"
+  HREF="java_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1199"
+  HREF="piecewise_java.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1208"
+  HREF="qp_java.html">Qp.java</A>
+<B> Up:</B> <A NAME="tex2html1206"
+  HREF="java_examples.html">Java Examples</A>
+<B> Previous:</B> <A NAME="tex2html1200"
+  HREF="piecewise_java.html">Piecewise.java</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

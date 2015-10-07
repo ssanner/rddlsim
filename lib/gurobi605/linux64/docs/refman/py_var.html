@@ -1,0 +1,144 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Var</TITLE>
+<META NAME="description" CONTENT="Var">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="py_constr.html">
+<LINK REL="previous" HREF="py_model.html">
+<LINK REL="up" HREF="py_python_api_details.html">
+<LINK REL="next" HREF="py_var_getattr.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html8428"
+  HREF="py_var_getattr.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html8426"
+  HREF="py_python_api_details.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html8420"
+  HREF="py_model_write.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html8429"
+  HREF="py_var_getattr.html">Var.getAttr()</A>
+<B> Up:</B> <A NAME="tex2html8427"
+  HREF="py_python_api_details.html">Python API Details</A>
+<B> Previous:</B> <A NAME="tex2html8421"
+  HREF="py_model_write.html">Model.write()</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION000103000000000000000"></A>
+<A NAME="pythonclass:Var"></A>
+<BR>
+Var
+</H2>
+
+<P>
+Gurobi variable object.  Variables are always associated with a
+particular model.  You create a variable object by adding a variable
+to a model (using
+<A HREF="py_model_addvar.html#pythonmethod:Model.addVar">Model.addVar</A>), rather than
+by using a <code>Var</code> constructor.
+
+<P>
+Variable objects have a number of attributes.  The full list can be
+found in the <A HREF="attributes.html#sec:Attributes">Attributes</A> section of this
+document.  Some variable attributes can only be queried, while others
+can also be set.  Recall that the Gurobi optimizer employs a lazy
+update approach, so changes to attributes don't take effect until the
+next call to <A HREF="py_model_update.html#pythonmethod:Model.update">Model.update</A> or
+<A HREF="py_model_optimize.html#pythonmethod:Model.optimize">Model.optimize</A> on the
+associated model.
+
+<P>
+We should point out a few things about variable attributes.  Consider
+the <code>lb</code> attribute.  Its value can be queried using
+<code>var.lb</code>.  The Gurobi library ignores letter case in attribute
+names, so it can also be queried as <code>var.lb</code>.  It can be set
+using a standard assignment statement (e.g., <code>var.lb = 0</code>).
+However, as mentioned earlier, attribute modification is done in a
+lazy fashion, so you won't see the effect of the change immediately.
+And some attributes can not be set (e.g., the <code>x</code> attribute), so
+attempts to assign new values to them will raise an exception.
+
+<P>
+You can also use <A HREF="py_var_getattr.html#pythonmethod:Var.getAttr">Var.getAttr</A>/
+<A HREF="py_var_setattr.html#pythonmethod:Var.setAttr">Var.setAttr</A> to access
+attributes.  The attribute name can be passed to these routines as a
+string, or you can use the constants defined in the
+<A HREF="py_grb_attr.html#pythonconstants:GRB.attr">GRB.attr</A> class (e.g.,
+<code>GRB.attr.lb</code>).
+
+<P>
+To build expressions using variable objects, you generally use
+operator overloading.  You
+can build either <A HREF="py_linexpr.html#pythonclass:LinExpr">linear</A> or
+<A HREF="py_quadexpr.html#pythonclass:QuadExpr">quadratic</A> expressions:
+<PRE>
+  expr1 = x + 2 * y + 3 * z + 4.0
+  expr2 = x * x + 2 * x * y + 3 * z + 4.0
+</PRE>
+The first expression is linear, while the second is quadratic.
+An expressions is typically then passed to
+<A HREF="py_model_setobjective.html#pythonmethod:Model.setObjective">setObjective</A>
+(to set the optimiazation objective) or
+<A HREF="py_model_addconstr.html#pythonmethod:Model.addConstr">addConstr</A>
+(to add a constraint).
+
+<P>
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html8430"
+  HREF="py_var_getattr.html">Var.getAttr()</A>
+<LI><A NAME="tex2html8431"
+  HREF="py_var_sameas.html">Var.sameAs()</A>
+<LI><A NAME="tex2html8432"
+  HREF="py_var_setattr.html">Var.setAttr()</A>
+</UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html8428"
+  HREF="py_var_getattr.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html8426"
+  HREF="py_python_api_details.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html8420"
+  HREF="py_model_write.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html8429"
+  HREF="py_var_getattr.html">Var.getAttr()</A>
+<B> Up:</B> <A NAME="tex2html8427"
+  HREF="py_python_api_details.html">Python API Details</A>
+<B> Previous:</B> <A NAME="tex2html8421"
+  HREF="py_model_write.html">Model.write()</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

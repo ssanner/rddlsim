@@ -1,0 +1,143 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>sos_cs.cs</TITLE>
+<META NAME="description" CONTENT="sos_cs.cs">
+<META NAME="keywords" CONTENT="examples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="examples.css">
+
+<LINK REL="next" HREF="sudoku_cs_cs.html">
+<LINK REL="previous" HREF="sensitivity_cs_cs.html">
+<LINK REL="up" HREF="cs_examples.html">
+<LINK REL="next" HREF="sudoku_cs_cs.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html1509"
+  HREF="sudoku_cs_cs.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1507"
+  HREF="cs_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1501"
+  HREF="sensitivity_cs_cs.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1510"
+  HREF="sudoku_cs_cs.html">sudoku_cs.cs</A>
+<B> Up:</B> <A NAME="tex2html1508"
+  HREF="cs_examples.html">C# Examples</A>
+<B> Previous:</B> <A NAME="tex2html1502"
+  HREF="sensitivity_cs_cs.html">sensitivity_cs.cs</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000241700000000000000"></A>
+<A NAME="subsubsection:sos_cs.cs"></A>
+<BR>
+sos_cs.cs
+</H3>
+
+<P>
+<BR>
+<PRE  CLASS="verbatim">/* Copyright 2014, Gurobi Optimization, Inc. */
+
+/* This example creates a very simple Special Ordered Set (SOS) model.
+   The model consists of 3 continuous variables, no linear constraints,
+   and a pair of SOS constraints of type 1. */
+
+using System;
+using Gurobi;
+
+class sos_cs
+{
+  static void Main()
+  {
+    try {
+      GRBEnv env = new GRBEnv();
+
+      GRBModel model = new GRBModel(env);
+
+      // Create variables
+
+      double[] ub    = {1, 1, 2};
+      double[] obj   = {-2, -1, -1};
+      string[] names = {"x0", "x1", "x2"};
+
+      GRBVar[] x = model.AddVars(null, ub, obj, null, names);
+
+      // Integrate new variables
+
+      model.Update();
+
+      // Add first SOS1: x0=0 or x1=0
+
+      GRBVar[] sosv1  = {x[0], x[1]};
+      double[] soswt1 = {1, 2};
+
+      model.AddSOS(sosv1, soswt1, GRB.SOS_TYPE1);
+
+      // Add second SOS1: x0=0 or x2=0
+
+      GRBVar[] sosv2  = {x[0], x[2]};
+      double[] soswt2 = {1, 2};
+
+      model.AddSOS(sosv2, soswt2, GRB.SOS_TYPE1);
+
+      // Optimize model
+
+      model.Optimize();
+
+      for (int i = 0; i &lt; 3; i++)
+        Console.WriteLine(x[i].Get(GRB.StringAttr.VarName) + " "
+                           + x[i].Get(GRB.DoubleAttr.X));
+
+      // Dispose of model and env
+      model.Dispose();
+      env.Dispose();
+
+    } catch (GRBException e) {
+      Console.WriteLine("Error code: " + e.ErrorCode + ". " + e.Message);
+    }
+  }
+}
+</PRE>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1509"
+  HREF="sudoku_cs_cs.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1507"
+  HREF="cs_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1501"
+  HREF="sensitivity_cs_cs.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1510"
+  HREF="sudoku_cs_cs.html">sudoku_cs.cs</A>
+<B> Up:</B> <A NAME="tex2html1508"
+  HREF="cs_examples.html">C# Examples</A>
+<B> Previous:</B> <A NAME="tex2html1502"
+  HREF="sensitivity_cs_cs.html">sensitivity_cs.cs</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

@@ -1,0 +1,190 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Retrieving a Free Academic license</TITLE>
+<META NAME="description" CONTENT="Retrieving a Free Academic license">
+<META NAME="keywords" CONTENT="quickstart_windows">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="quickstart_windows.css">
+
+<LINK REL="next" HREF="retrieving_a_named_user_or.html">
+<LINK REL="previous" HREF="retrieving_and_setting_up_.html">
+<LINK REL="up" HREF="retrieving_and_setting_up_.html">
+<LINK REL="next" HREF="academic_validation.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html263"
+  HREF="academic_validation.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html261"
+  HREF="retrieving_and_setting_up_.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html255"
+  HREF="retrieving_and_setting_up_.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html264"
+  HREF="academic_validation.html">Academic validation</A>
+<B> Up:</B> <A NAME="tex2html262"
+  HREF="retrieving_and_setting_up_.html">Retrieving and Setting Up</A>
+<B> Previous:</B> <A NAME="tex2html256"
+  HREF="retrieving_and_setting_up_.html">Retrieving and Setting Up</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00031000000000000000"></A>
+<A NAME="subsection:academiclicense"></A>
+<BR>
+Retrieving a Free Academic license
+</H2>
+
+<P>
+To obtain a Gurobi license key you'll need to run the <code>grbgetkey</code>
+command on your machine.  Note that the machine must be connected to
+the Internet from a recognized academic domain in order to retrieve a
+free academic license.  An Internet connection is not required after
+you have obtained your license key.
+
+<P>
+The exact command to run for a specific license is indicated at the
+bottom of the License Detail page (e.g., <code>grbgetkey 253e22f3-...</code>).  We
+recommend that you use copy-paste to copy the entire <code>grbgetkey</code>
+command from our website and paste it directly into the Windows
+<EM>Search</EM> box (and then hit <EM>Enter</EM>):
+
+<DIV ALIGN="CENTER">
+<DIV ALIGN="CENTER">
+
+</DIV><IMG
+  WIDTH="409" HEIGHT="183" ALIGN="BOTTOM" BORDER="0"
+ SRC="./startrun.png"
+ ALT="Image startrun">
+
+</DIV>
+If you are unfamiliar with running command-line commands on a Windows
+system, you can learn more
+<A HREF="windows_command_line.html#section:windowscommandline">here</A>.
+
+<P>
+The <code>grbgetkey</code> program passes identifying information about
+your machine back to our website, and the website responds with your
+license key.  Once this exchange has occurred, <code>grbgetkey</code> will
+ask for the name of the directory in which to store your license
+key file (<code>gurobi.lic</code>).  You should see a prompt that looks
+like this:
+
+<P>
+
+<DIV ALIGN="CENTER">
+<DIV ALIGN="CENTER">
+
+</DIV><IMG
+  WIDTH="600" HEIGHT="304" ALIGN="BOTTOM" BORDER="0"
+ SRC="./getkey_windows.png"
+ ALT="Image getkey_windows">
+
+</DIV>
+
+<P>
+You can store the license key file anywhere, but we strongly recommend
+that you accept the default location by hitting <EM>Enter</EM>. Setting
+up a non-default location is error-prone and a frequent source of
+trouble.
+
+<P>
+If you receive an error message at this stage, it typically
+means that we were unable to validate your academic domain.
+Please consult the
+<A HREF="academic_validation.html#subsection:academicvalidation">Academic Validation</A>
+section for more information.
+
+<P>
+<SPAN  CLASS="textbf">Using a non-default license file location</SPAN>
+
+<P>
+When you run the Windows version of the Gurobi Optimizer, it will look
+for the <code>gurobi.lic</code> key file in three different default
+locations.  It will always look in your home directory.  In addition,
+Gurobi Optimizer 6.0.0 will also look in <code>c:\gurobi</code> and
+<code>c:\gurobi600</code>.  Note that these default paths are absolute, so
+for example Gurobi will look for the license key file in
+<code>c:\gurobi</code>, even if the software is installed in
+<code>d:\gurobi</code>.
+
+<P>
+If you would still like to use a non-default license key file
+location, you can do so by setting environment variable
+<code>GRB_LICENSE_FILE</code> to point to the license key file.  <EM>  Important note: the environment variable should point to the license
+  key file itself, not to the directory that contains the file.</EM>
+
+<P>
+On Windows systems, environment variables are created and modified
+through the Control Panel.  Searching for <EM>Environment Variables</EM>
+from the Control Panel search box will lead you to the
+appropriate screen.  You will need to add a new <EM>System variable</EM>
+named <code>GRB_LICENSE_FILE</code>, and set it to the
+location of your license file (e.g., <code>d:\gurobi\gurobi.lic</code>).
+<EM>Important note: your new environment variable must be a System variable, not a User variable.</EM>
+
+<P>
+<SPAN  CLASS="textbf">Next steps</SPAN>
+
+<P>
+If your license includes the Distributed Add-On and you plan to use
+any of the Gurobi distributed algorithms, you'll also need to set up
+<A HREF="starting_gurobi_remote_ser.html#subsection:startremoteservices">Gurobi Remote Services</A>
+on your distributed worker machines.
+
+<P>
+Once you have followed the steps above and have obtained
+a license key file, your next step is to
+<A HREF="testing_your_license.html#subsection:testlicense">test your license</A>.
+
+<P>
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html265"
+  HREF="academic_validation.html">Academic validation</A>
+</UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html263"
+  HREF="academic_validation.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html261"
+  HREF="retrieving_and_setting_up_.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html255"
+  HREF="retrieving_and_setting_up_.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html264"
+  HREF="academic_validation.html">Academic validation</A>
+<B> Up:</B> <A NAME="tex2html262"
+  HREF="retrieving_and_setting_up_.html">Retrieving and Setting Up</A>
+<B> Previous:</B> <A NAME="tex2html256"
+  HREF="retrieving_and_setting_up_.html">Retrieving and Setting Up</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

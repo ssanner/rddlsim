@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Model.write()</TITLE>
+<META NAME="description" CONTENT="Model.write()">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="previous" HREF="py_model_update.html">
+<LINK REL="up" HREF="py_model.html">
+<LINK REL="next" HREF="py_var.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html8418"
+  HREF="py_var.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html8416"
+  HREF="py_model.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html8412"
+  HREF="py_model_update.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html8419"
+  HREF="py_var.html">Var</A>
+<B> Up:</B> <A NAME="tex2html8417"
+  HREF="py_model.html">Model</A>
+<B> Previous:</B> <A NAME="tex2html8413"
+  HREF="py_model_update.html">Model.update()</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION0001025300000000000000"></A>
+<A NAME="pythonmethod:Model.write"></A>
+<BR>
+Model.write()
+</H3>
+<BIG CLASS="LARGE">
+<FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">write</SPAN></FONT></BIG> ( filename )
+
+<P>
+This method is the general entry point for writing model data to a
+file.  It can be used to write optimization models, IIS submodels,
+solutions, basis vectors, MIP start vectors, or parameter settings.
+The type of file is determined by the file suffix.
+File formats are described in the
+<A HREF="model_file_formats.html#sec:FileFormats">File Format</A> section.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">filename</SPAN>: Name of the file to write. The file type is
+  encoded in the file name suffix.  Valid suffixes for writing the
+  model itself are <TT>.mps</TT>, <TT>.rew</TT>, <TT>.lp</TT>, or
+  <TT>.rlp</TT>.  An IIS can be written by using an <TT>.ilp</TT> suffix.
+  Use <TT>.sol</TT> for a solution file, <TT>.mst</TT> for a MIP start,
+  <TT>.bas</TT> for a basis file, or <TT>.prm</TT> for a parameter file.
+  The suffix may optionally be followed by <TT>.gz</TT>,
+  <TT>.bz2</TT>, or <TT>.7z</TT>, which produces a compressed result.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Example usage:</SPAN></BIG><PRE>
+  model.write("out.mst")
+  model.write("out.sol")
+</PRE>
+
+<P>
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html8418"
+  HREF="py_var.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html8416"
+  HREF="py_model.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html8412"
+  HREF="py_model_update.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html8419"
+  HREF="py_var.html">Var</A>
+<B> Up:</B> <A NAME="tex2html8417"
+  HREF="py_model.html">Model</A>
+<B> Previous:</B> <A NAME="tex2html8413"
+  HREF="py_model_update.html">Model.update()</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

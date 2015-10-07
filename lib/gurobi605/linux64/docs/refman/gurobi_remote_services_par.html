@@ -1,0 +1,157 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Gurobi Remote Services Parameters</TITLE>
+<META NAME="description" CONTENT="Gurobi Remote Services Parameters">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="firewalls.html">
+<LINK REL="previous" HREF="setting_up_and_administeri.html">
+<LINK REL="up" HREF="setting_up_and_administeri.html">
+<LINK REL="next" HREF="firewalls.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html12467"
+  HREF="firewalls.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html12465"
+  HREF="setting_up_and_administeri.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html12459"
+  HREF="setting_up_and_administeri.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html12468"
+  HREF="firewalls.html">Firewalls</A>
+<B> Up:</B> <A NAME="tex2html12466"
+  HREF="setting_up_and_administeri.html">Setting Up and Administering</A>
+<B> Previous:</B> <A NAME="tex2html12460"
+  HREF="setting_up_and_administeri.html">Setting Up and Administering</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000231100000000000000"></A>
+<A NAME="sec:ServicesParameters"></A>
+<BR>
+Gurobi Remote Services Parameters
+</H3>
+
+<P>
+As noted in the Quick Start Guide, you start Gurobi Remote Services by
+running the <code>grb_rs</code> program on the server machine.  This starts
+a Windows service on Windows systems, and a daemon on Linux or Mac OS
+systems.  When Gurobi Remote Services starts, it picks up user
+parameter settings from an optional <code>grb_rs.cnf</code> file (the file
+must be in the directory that contains the <code>grb_rs</code> executable).
+
+<P>
+To modify the default settings, you should place a list of
+<code>parameter=value</code> lines in this configuration file.  Lines that
+begin with the # symbol are treated as comments and are ignored.
+Here's an example file:
+<PRE>
+# Configuration file
+PASSWORD=abcd1234
+ADMINPASSWORD=1234abcd
+</PRE>
+You can create this file using your favorite text editor
+(<code>Notepad</code> is a good choice on Windows).
+
+<P>
+Some Gurobi Remote Services parameters are generic, while others are specific
+to a particular service.  The generic parameters are:
+<DL>
+<DT><STRONG>PASSWORD</STRONG></DT>
+<DD>The password that the client program must
+supply in order to submit a job.  Note that all user data
+is passed between the client and server using 256-bit AES
+encryption, whether you supply a password or not.  The
+server password simply prevents unauthorized clients from
+submitting jobs to the server.  The default is no password.
+</DD>
+<DT><STRONG>ADMINPASSWORD</STRONG></DT>
+<DD>The password for performing administrative tasks.
+  This is different from the password that client programs must
+  provide.  Administrative tasks are performed using the
+  <code>gurobi_cl</code> program.  Example tasks include changing the job
+  limit and killing jobs (<A HREF="administrative_commands.html#sec:ServicesRemoteAdmin">details will
+    follow</A>).  Note that the
+  administrator password must be set if you wish to enable remote
+  administration.
+</DD>
+<DT><STRONG>THREADLIMIT</STRONG></DT>
+<DD>A limit on the number of threads a single job can
+  launch on the server.  By default, a job can create as many threads
+  as it likes (although by default the Gurobi algorithms won't create
+  more than one thread per core).
+</DD>
+</DL>
+
+<P>
+A few Gurobi Remote Services parameters are specific to Compute Server.  They
+control the job queuing features...
+<DL>
+<DT><STRONG>JOBLIMIT</STRONG></DT>
+<DD>A limit on the number of client jobs that are allowed
+  to run on the server at a time.  Client requests beyond this
+  limit are queued.  The default limit is 2.
+</DD>
+<DT><STRONG>HARDJOBLIMIT</STRONG></DT>
+<DD>A hard limit on the number of simultaneous client
+  jobs.  Certain jobs (those with priority 100) are allowed to ignore
+  the <code>JOBLIMIT</code>, but they aren't allowed to ignore this limit.
+  Client requests beyond this limit are queued.  The default hard
+  limit is 100.
+</DD>
+<DT><STRONG>IGNOREPRIORITIES</STRONG></DT>
+<DD>When set to 1, the server ignores user job
+  priorities.
+</DD>
+</DL>
+
+<P>
+The configuration file is only read once, when Gurobi Remote Services
+first starts.  Subsequent changes to the file won't affect parameter
+values on a running server.
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html12467"
+  HREF="firewalls.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html12465"
+  HREF="setting_up_and_administeri.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html12459"
+  HREF="setting_up_and_administeri.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html12468"
+  HREF="firewalls.html">Firewalls</A>
+<B> Up:</B> <A NAME="tex2html12466"
+  HREF="setting_up_and_administeri.html">Setting Up and Administering</A>
+<B> Previous:</B> <A NAME="tex2html12460"
+  HREF="setting_up_and_administeri.html">Setting Up and Administering</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

@@ -1,0 +1,117 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>gurobi_write()</TITLE>
+<META NAME="description" CONTENT="gurobi_write()">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="previous" HREF="matlab_gurobi_read.html">
+<LINK REL="up" HREF="matlab_reading_and_writing.html">
+<LINK REL="next" HREF="matlab_setting_up_the_guro.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html9229"
+  HREF="matlab_setting_up_the_guro.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html9227"
+  HREF="matlab_reading_and_writing.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html9223"
+  HREF="matlab_gurobi_read.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html9230"
+  HREF="matlab_setting_up_the_guro.html">Setting up the Gurobi</A>
+<B> Up:</B> <A NAME="tex2html9228"
+  HREF="matlab_reading_and_writing.html">Reading and writing models</A>
+<B> Previous:</B> <A NAME="tex2html9224"
+  HREF="matlab_gurobi_read.html">gurobi_read()</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000112200000000000000"></A>
+<A NAME="matlabfunction:gurobi_write"></A>
+<BR>
+gurobi_write()
+</H3>
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">gurobi_write</SPAN></FONT></BIG></TD>
+<TD ALIGN="LEFT">( model, filename )</TD>
+</TR>
+</TABLE>
+
+<P>
+Writes a model to a file.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">model</SPAN>: The model struct must contain a valid Gurobi
+  model. See the
+  <A HREF="matlab_gurobi.html#matlabfunction:gurobi">gurobi</A> function for a
+  description of model's required fields and values.
+
+<P>
+ <SPAN  CLASS="textbf">filename</SPAN>: Name of the file to write. Note that the type of
+  the file is encoded in the file name suffix. The filename suffix
+  should be one of .mps, .rew, .lp, .rlp, or .ilp, to indicate the
+  desired file format (see the <A HREF="model_file_formats.html#sec:FileFormats">file formats</A>
+  section for details on Gurobi file
+  formats). The files can be compressed, so additional suffixes of
+  .gz, .bz2, .zip, or .7z are accepted.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Example usage:</SPAN></BIG><PRE>
+model.A          = sparse([1 2 3; 1 1 0]);
+model.obj        = [1 1 2];
+model.modelsense = 'max';
+model.rhs        = [4; 1];
+model.sense      = '&lt;&gt;';
+
+gurobi_write(model, 'mymodel.mps');
+gurobi_write(model, 'mymodel.lp');
+gurobi_write(model, 'mymodel.mps.bz2');
+</PRE>
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html9229"
+  HREF="matlab_setting_up_the_guro.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html9227"
+  HREF="matlab_reading_and_writing.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html9223"
+  HREF="matlab_gurobi_read.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html9230"
+  HREF="matlab_setting_up_the_guro.html">Setting up the Gurobi</A>
+<B> Up:</B> <A NAME="tex2html9228"
+  HREF="matlab_reading_and_writing.html">Reading and writing models</A>
+<B> Previous:</B> <A NAME="tex2html9224"
+  HREF="matlab_gurobi_read.html">gurobi_read()</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

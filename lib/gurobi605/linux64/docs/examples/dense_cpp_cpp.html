@@ -1,0 +1,192 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>dense_c++.cpp</TITLE>
+<META NAME="description" CONTENT="dense_c++.cpp">
+<META NAME="keywords" CONTENT="examples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="examples.css">
+
+<LINK REL="next" HREF="diet_cpp_cpp.html">
+<LINK REL="previous" HREF="callback_cpp_cpp.html">
+<LINK REL="up" HREF="cpp_examples.html">
+<LINK REL="next" HREF="diet_cpp_cpp.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html815"
+  HREF="diet_cpp_cpp.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html813"
+  HREF="cpp_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html807"
+  HREF="callback_cpp_cpp.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html816"
+  HREF="diet_cpp_cpp.html">diet_c++.cpp</A>
+<B> Up:</B> <A NAME="tex2html814"
+  HREF="cpp_examples.html">C++ Examples</A>
+<B> Previous:</B> <A NAME="tex2html808"
+  HREF="callback_cpp_cpp.html">callback_c++.cpp</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00022200000000000000"></A>
+<A NAME="subsubsection:dense_c++.cpp"></A>
+<BR>
+dense_c++.cpp
+</H3>
+
+<P>
+<BR>
+<PRE  CLASS="verbatim">/* Copyright 2014, Gurobi Optimization, Inc. */
+
+/* This example formulates and solves the following simple QP model:
+
+     minimize    x + y + x^2 + x*y + y^2 + y*z + z^2
+     subject to  x + 2 y + 3 z &gt;= 4
+                 x +   y       &gt;= 1
+
+   The example illustrates the use of dense matrices to store A and Q
+   (and dense vectors for the other relevant data).  We don't recommend
+   that you use dense matrices, but this example may be helpful if you
+   already have your data in this format.
+*/
+
+#include "gurobi_c++.h"
+using namespace std;
+
+static bool
+dense_optimize(GRBEnv* env,
+               int     rows,
+               int     cols,
+               double* c,     /* linear portion of objective function */
+               double* Q,     /* quadratic portion of objective function */
+               double* A,     /* constraint matrix */
+               char*   sense, /* constraint senses */
+               double* rhs,   /* RHS vector */
+               double* lb,    /* variable lower bounds */
+               double* ub,    /* variable upper bounds */
+               char*   vtype, /* variable types (continuous, binary, etc.) */
+               double* solution,
+               double* objvalP)
+{
+  GRBModel model = GRBModel(*env);
+  int i, j;
+  bool success = false;
+
+  /* Add variables to the model */
+
+  GRBVar* vars = model.addVars(lb, ub, NULL, vtype, NULL, cols);
+  model.update();
+
+  /* Populate A matrix */
+
+  for (i = 0; i &lt; rows; i++) {
+    GRBLinExpr lhs = 0;
+    for (j = 0; j &lt; cols; j++)
+      if (A[i*cols+j] != 0)
+        lhs += A[i*cols+j]*vars[j];
+    model.addConstr(lhs, sense[i], rhs[i]);
+  }
+
+  GRBQuadExpr obj = 0;
+
+  for (j = 0; j &lt; cols; j++)
+    obj += c[j]*vars[j];
+  for (i = 0; i &lt; cols; i++)
+    for (j = 0; j &lt; cols; j++)
+      if (Q[i*cols+j] != 0)
+        obj += Q[i*cols+j]*vars[i]*vars[j];
+
+  model.setObjective(obj);
+
+  model.update();
+  model.write("dense.lp");
+
+  model.optimize();
+
+  if (model.get(GRB_IntAttr_Status) == GRB_OPTIMAL) {
+    *objvalP = model.get(GRB_DoubleAttr_ObjVal);
+    for (i = 0; i &lt; cols; i++)
+      solution[i] = vars[i].get(GRB_DoubleAttr_X);
+    success = true;
+  }
+
+  delete[] vars;
+
+  return success;
+}
+
+int
+main(int   argc,
+     char *argv[])
+{
+  GRBEnv* env = 0;
+  try {
+    env = new GRBEnv();
+    double c[] = {1, 1, 0};
+    double  Q[3][3] = {{1, 1, 0}, {0, 1, 1}, {0, 0, 1}};
+    double  A[2][3] = {{1, 2, 3}, {1, 1, 0}};
+    char    sense[] = {'&gt;', '&gt;'};
+    double  rhs[]   = {4, 1};
+    double  lb[]    = {0, 0, 0};
+    bool    success;
+    double  objval, sol[3];
+
+    success = dense_optimize(env, 2, 3, c, &amp;Q[0][0], &amp;A[0][0], sense, rhs,
+                             lb, NULL, NULL, sol, &amp;objval);
+
+    cout &lt;&lt; "x: " &lt;&lt; sol[0] &lt;&lt; " y: " &lt;&lt; sol[1] &lt;&lt; " z: " &lt;&lt; sol[2] &lt;&lt; endl;
+
+  } catch(GRBException e) {
+    cout &lt;&lt; "Error code = " &lt;&lt; e.getErrorCode() &lt;&lt; endl;
+    cout &lt;&lt; e.getMessage() &lt;&lt; endl;
+  } catch(...) {
+    cout &lt;&lt; "Exception during optimization" &lt;&lt; endl;
+  }
+
+  delete env;
+  return 0;
+}
+</PRE>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html815"
+  HREF="diet_cpp_cpp.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html813"
+  HREF="cpp_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html807"
+  HREF="callback_cpp_cpp.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html816"
+  HREF="diet_cpp_cpp.html">diet_c++.cpp</A>
+<B> Up:</B> <A NAME="tex2html814"
+  HREF="cpp_examples.html">C++ Examples</A>
+<B> Previous:</B> <A NAME="tex2html808"
+  HREF="callback_cpp_cpp.html">callback_c++.cpp</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

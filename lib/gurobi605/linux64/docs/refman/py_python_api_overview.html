@@ -1,0 +1,455 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Python API Overview</TITLE>
+<META NAME="description" CONTENT="Python API Overview">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="py_python_api_details.html">
+<LINK REL="previous" HREF="cs_net_api_details.html">
+<LINK REL="up" HREF="refman.html">
+<LINK REL="next" HREF="py_python_api_details.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html7563"
+  HREF="py_python_api_details.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html7561"
+  HREF="refman.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html7555"
+  HREF="cs_grb_stringparam.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html7564"
+  HREF="py_python_api_details.html">Python API Details</A>
+<B> Up:</B> <A NAME="tex2html7562"
+  HREF="refman.html">Gurobi Optimizer Reference Manual</A>
+<B> Previous:</B> <A NAME="tex2html7556"
+  HREF="cs_grb_stringparam.html">GRB.StringParam</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00090000000000000000"></A>
+<A NAME="sec:Python"></A>
+<BR>
+Python API Overview
+</H1>
+
+<P>
+This section documents the Gurobi Python interface.  It begins with an
+overview of the global functions, which can be called without
+referencing any Python objects.  It then discusses the different types
+of objects that are available in the interface, and the most important
+methods on those objects.  Finally, it gives a
+<A HREF="py_python_api_details.html#sec:Python-details">comprehensive
+presentation of all of the available classes and methods</A>.
+
+<P>
+<B>Important note for AIX users:</B> due to limited Python support on
+AIX, our AIX port does not include the Python interface.
+
+<P>
+<SPAN  CLASS="textbf">Global Functions</SPAN>
+
+<P>
+The Gurobi shell contains a set of <A HREF="py_global_functions.html#pythonclass:Global">Global
+Functions</A> that can be called without
+referring to any Gurobi objects.  The most important of these
+functions is probably the <A HREF="py_read.html#pythonmethod:read">read</A>
+function, which allows you to read a model from a file.  Other useful
+global functions are <A HREF="py_system.html#pythonmethod:system">system</A>, which
+allows you to issue shell commands from within the Gurobi shell, and
+<A HREF="py_models.html#pythonmethod:models">models</A>, which gives you a list
+of the currently loaded models.  Other global functions allow you to
+read, modify, or write Gurobi parameters
+(<A HREF="py_readparams.html#pythonmethod:readParams">readParams</A>,
+<A HREF="py_setparam.html#pythonmethod:setParam">setParam</A>, and
+<A HREF="py_writeparams.html#pythonmethod:writeParams">writeParams</A>).
+
+<P>
+<SPAN  CLASS="textbf">Models</SPAN>
+
+<P>
+Most actions in the Gurobi Python interface are performed by calling
+methods on Gurobi objects.  The most commonly used object is
+the <A HREF="py_model.html#pythonclass:Model">Model</A>.  A model consists of a
+set of decision variables (objects of class
+<A HREF="py_var.html#pythonclass:Var">Var</A>), a linear or quadratic
+objective function on these variables (specified using
+<A HREF="py_model_setobjective.html#pythonmethod:Model.setObjective">Model.setObjective</A>),
+and a set of constraints on these variables (objects of class
+<A HREF="py_constr.html#pythonclass:Constr">Constr</A>,
+<A HREF="py_qconstr.html#pythonclass:QConstr">QConstr</A>,
+or <A HREF="py_sos.html#pythonclass:SOS">SOS</A>).  Each variable has an
+associated lower bound, upper bound, and type
+(continuous, binary, etc.).  Each linear or
+quadratic constraint has an associated
+sense (less-than-or-equal, greater-than-or-equal, or equal), and
+right-hand side value.
+
+<P>
+An optimization model may be specified all at once, by loading the
+model from a file (using the previously mentioned
+<A HREF="py_read.html#pythonmethod:read">read</A> function), or it may be built
+incrementally, by first constructing an empty object of class
+<A HREF="py_model.html#pythonclass:Model">Model</A> and then subsequently
+calling <A HREF="py_model_addvar.html#pythonmethod:Model.addVar">Model.addVar</A> to add
+additional variables,
+and <A HREF="py_model_addconstr.html#pythonmethod:Model.addConstr">Model.addConstr</A> or
+<A HREF="py_model_addqconstr.html#pythonmethod:Model.addQConstr">Model.addQConstr</A> to
+add additional constraints.
+
+<P>
+Linear constraints are specified by building linear expressions
+(objects of class <A HREF="py_linexpr.html#pythonclass:LinExpr">LinExpr</A>), and
+then specifying relationships between these expressions (for example,
+requiring that one expression be equal to another).  Quadratic
+constraints are built in a similar fashion, but using quadratic
+expressions (objects of class
+<A HREF="py_quadexpr.html#pythonclass:QuadExpr">QuadExpr</A>) instead.
+
+<P>
+Models are dynamic entities; you can always add or remove variables or
+constraints.
+
+<P>
+We often refer to the <EM>class</EM> of an optimization model.  A model
+with a linear objective function, linear constraints, and continuous
+variables is a <EM>Linear Program (LP)</EM>.  If the objective is
+quadratic, the model is a <EM>Quadratic Program (QP)</EM>.  If any of the
+constraints are quadratic, the model is a
+<EM>Quadratically-Constrained Program (QCP)</EM>.
+We'll sometimes also discuss a special case of QCP,
+the
+<EM>Second-Order Cone Program (SOCP)</EM>.  If the model contains any
+integer variables, semi-continuous variables, semi-integer variables,
+or Special Ordered Set (SOS) constraints, the model is a
+<EM>Mixed Integer Program (MIP)</EM>.  We'll also sometimes discuss
+special cases of MIP,
+including
+<EM>Mixed Integer Linear Programs (MILP)</EM>,
+<EM>Mixed Integer Quadratic Programs (MIQP)</EM>,
+<EM>Mixed Integer Quadratically-Constrained Programs (MIQCP)</EM>,
+and
+<EM>Mixed Integer Second-Order Cone Programs (MISOCP)</EM>.
+The Gurobi Optimizer handles all of these model classes.
+
+<P>
+<SPAN  CLASS="textbf">Solving a Model</SPAN>
+
+<P>
+Once you have built a model, you can call
+<A HREF="py_model_optimize.html#pythonmethod:Model.optimize">Model.optimize</A> to
+compute a solution.  By default,
+<A HREF="py_model_optimize.html#pythonmethod:Model.optimize">optimize</A>
+will use the
+<A HREF="concurrent_optimizer.html#sec:Concurrent">concurrent optimizer</A>
+to solve LP models,
+the barrier algorithm to solve QP and QCP models, and
+the branch-and-cut algorithm to solve mixed integer models.  The
+solution is stored in a set of <EM>attributes</EM> of the model, which
+can be subsequently queried (we will return to this topic shortly).
+
+<P>
+The Gurobi algorithms keep careful track of the state of the model, so
+calls to
+<A HREF="py_model_optimize.html#pythonmethod:Model.optimize">Model.optimize</A>
+will only perform further optimization if relevant data has changed
+since the model was last optimized.  If you would like to discard
+previously computed solution information and restart the optimization
+from scratch without changing the model, you can call
+<A HREF="py_model_reset.html#pythonmethod:Model.reset">Model.reset</A>.
+
+<P>
+After a MIP model has been solved, you can call
+<A HREF="py_model_fixed.html#pythonmethod:Model.fixed">Model.fixed</A> to
+compute the associated <EM>fixed</EM> model.  This model is identical
+to the input model, except that all integer variables are fixed to
+their values in the MIP solution.  In some applications, it is useful
+to compute information on this continuous version of the MIP model
+(e.g., dual variables, sensitivity information, etc.).
+
+<P>
+<SPAN  CLASS="textbf">Infeasible Models</SPAN>
+
+<P>
+You have a few options if a model is found to be infeasible.  You can
+try to diagnose the cause of the infeasibility, attempt to repair the
+infeasibility, or both.  To obtain information that can be useful for
+diagnosing the cause of an infeasibility, call
+<A HREF="py_model_computeiis.html#pythonmethod:Model.computeIIS">Model.computeIIS</A>
+to compute an
+Irreducible Inconsistent Subsystem (IIS).  This method can be used
+for both continuous and MIP models, but you should be aware that the
+MIP version can be quite expensive.  This method populates a set of
+IIS attributes.
+
+<P>
+To attempt to repair an infeasibility, call
+<A HREF="py_model_feasrelaxs.html#pythonmethod:Model.feasRelaxS">Model.feasRelaxS</A> or
+<A HREF="py_model_feasrelax.html#pythonmethod:Model.feasRelax">Model.feasRelax</A>
+to compute a
+feasibility relaxation for the model.  This relaxation allows you to
+find a solution that minimizes the magnitude of the constraint
+violation.
+
+<P>
+<SPAN  CLASS="textbf">Querying and Modifying Attributes</SPAN>
+
+<P>
+Most of the information associated with a Gurobi model is stored in a
+set of attributes.  Some attributes are associated with the variables
+of the model, some with the constraints of the model, and some with
+the model itself.  To give a simple example, solving an optimization
+model causes the <code>x</code> variable attribute to be populated.
+Attributes such as <code>x</code> that are computed by the Gurobi optimizer
+cannot be modified directly by the user, while others, such as the
+variable lower bound (the <code>lb</code> attribute) can.
+
+<P>
+Attributes can be accessed in two ways in the Python interface.  The
+first is to use the <code>getAttr()</code> and <code>setAttr()</code> methods,
+which are available on variables
+(<A HREF="py_var_getattr.html#pythonmethod:Var.getAttr">Var.getAttr</A>/
+<A HREF="py_var_setattr.html#pythonmethod:Var.setAttr">Var.setAttr</A>),
+linear constraints
+(<A HREF="py_constr_getattr.html#pythonmethod:Constr.getAttr">Constr.getAttr</A>/
+<A HREF="py_constr_setattr.html#pythonmethod:Constr.setAttr">Constr.setAttr</A>),
+quadratic constraints
+(<A HREF="py_qconstr_getattr.html#pythonmethod:QConstr.getAttr">QConstr.getAttr</A>/
+<A HREF="py_qconstr_setattr.html#pythonmethod:QConstr.setAttr">QConstr.setAttr</A>),
+SOSs (<A HREF="py_sos_getattr.html#pythonmethod:SOS.getAttr">SOS.getAttr</A>), and
+models (<A HREF="py_model_getattr.html#pythonmethod:Model.getAttr">Model.getAttr</A>/
+<A HREF="py_model_setattr.html#pythonmethod:Model.setAttr">Model.setAttr</A>).
+These are called with the attribute name as the first argument (e.g.,
+<code>var.getAttr("x")</code> or <code>constr.setAttr("rhs", 0.0)</code>).  The
+full list of available attributes can be found in the
+<A HREF="attributes.html#sec:Attributes">Attributes</A> section of this manual.
+
+<P>
+Attributes can also be accessed more directly: you can follow an
+object name by a period, followed by the name of an attribute of that
+object.  Note that upper/lower case is ignored when referring to
+attributes.  Thus, <code>b = constr.rhs</code> is equivalent to
+<code>b = constr.getAttr("rhs")</code>, and <code>constr.rhs = 0.0</code> is equivalent
+to <code>constr.setAttr("rhs", 0.0)</code>.
+
+<P>
+<SPAN  CLASS="textbf">Additional Model Modification Information</SPAN>
+
+<P>
+Most modifications to an existing model are done through the attribute
+interface (e.g., changes to variable bounds, constraint right-hand
+sides, etc.).  The main exceptions are modifications to the constraint
+matrix and to the objective function.
+
+<P>
+The constraint matrix can be modified in a few ways.  The first is to
+call the
+<A HREF="py_model_chgcoeff.html#pythonmethod:Model.chgCoeff">Model.chgCoeff</A> method.
+This method can be used to modify the value of an existing non-zero,
+to set an existing non-zero to zero, or to create a new non-zero.  The
+constraint matrix is also modified when you remove a variable or
+constraint from the model (through the
+<A HREF="py_model_remove.html#pythonmethod:Model.remove">Model.remove</A> method).
+The non-zero values associated with the deleted constraint or
+variable are removed along with the constraint or variable itself.
+
+<P>
+The model objective function can also be modified in a few ways.  The
+easiest is to build an expression that captures the objective function
+(a <A HREF="py_linexpr.html#pythonclass:LinExpr">LinExpr</A> or
+<A HREF="py_quadexpr.html#pythonclass:QuadExpr">QuadExpr</A> object),
+and then pass that expression to method
+<A HREF="py_model_setobjective.html#pythonmethod:Model.setObjective">Model.setObjective</A>.
+If you wish to modify the objective, you can simply call
+<code>setObjective</code> again with a new <code>LinExpr</code> or
+<code>QuadExpr</code> object.
+
+<P>
+For linear objective functions, an alternative to <code>setObjective</code>
+is to use the <code>Obj</code> variable attribute to modify
+individual linear objective coefficients.
+
+<P>
+If your variables have piecewise-linear objectives, you can specify
+them using the <A HREF="py_model_setpwlobj.html#pythonmethod:Model.setPWLObj">setPWLObj</A>
+method.  Call this method once for each relevant variable.  The Gurobi
+simplex solver includes algorithmic support for convex
+piecewise-linear objective functions, so for continuous models you
+should see a substantial performance benefit from using this feature.
+To clear a previously specified piecewise-linear objective function,
+simply set the <code>Obj</code> attribute on the corresponding variable to
+0.
+
+<P>
+<SPAN  CLASS="textbf">Lazy Updates</SPAN>
+
+<P>
+One very important item to note about attribute and model
+modifications in the Gurobi optimizer is that they are performed in a
+<EM>lazy</EM> fashion, meaning that they don't actually affect the
+model until the next call
+to <A HREF="py_model_optimize.html#pythonmethod:Model.optimize">optimize</A> or
+<A HREF="py_model_update.html#pythonmethod:Model.update">update</A> on that model
+object.  This approach provides the advantage that the model remains
+unchanged while you are in the process of making multiple
+modifications.  The downside, of course, is that you have to remember
+to call <A HREF="py_model_update.html#pythonmethod:Model.update">update</A> in order to
+see the effect of your changes.
+
+<P>
+If you forget to call update, your program won't crash.  The most
+common symptom of a missing update is a <TT>NOT_IN_MODEL</TT>
+exception, which indicates that the object you are trying to reference
+isn't in the model yet.
+
+<P>
+<SPAN  CLASS="textbf">Managing Parameters</SPAN>
+
+<P>
+The Gurobi optimizer provides a set of parameters to allow you to
+control many of the details of the optimization process.  Factors like
+feasibility and optimality tolerances, choices of algorithms,
+strategies for exploring the MIP search tree, etc., can be controlled
+by modifying Gurobi parameters before beginning the optimization.
+Parameters are set using method
+<A HREF="py_model_setparam.html#pythonmethod:Model.setParam">Model.setParam</A>.
+Current values may also be retrieved with
+<A HREF="py_model_getparaminfo.html#pythonmethod:Model.getParamInfo">Model.getParamInfo</A>.
+You can also access parameters more directly through the
+<code>Model.Params</code> class.  To set the
+<A HREF="mipgap2.html#parameter:MIPGap">MIPGap</A>
+ parameter to 0.0 for
+model <code>m</code>, for example, you can do either
+<code>m.setParam('MIPGap', 0)</code> or
+<code>m.Params.MIPGap = 0</code>.
+
+<P>
+You can read a set of parameter settings from a file using
+<A HREF="py_model_read.html#pythonmethod:Model.read">Model.read</A>,
+or write the set of changed parameters using
+<A HREF="py_model_write.html#pythonmethod:Model.write">Model.write</A>.
+
+<P>
+We also include an automated parameter tuning tool that explores many
+different sets of parameter changes in order to find a set that
+improves performance.  You can call
+<A HREF="py_model_tune.html#pythonmethod:Model.tune">Model.tune</A>
+to invoke the tuning tool on a model.
+Refer to the
+<A HREF="parameter_tuning_tool.html#sec:Tuning">parameter tuning tool</A>
+section for more information.
+
+<P>
+One thing we should note is that changing a parameter for one model
+has no effect on the parameter value for other models.  Use the
+global <A HREF="py_setparam.html#pythonmethod:setParam">setParam</A> method to set a
+parameter for all loaded models.
+
+<P>
+The full list of Gurobi parameters can be found in the
+<A HREF="parameters.html#sec:Parameters">Parameters</A> section.
+
+<P>
+<SPAN  CLASS="textbf">Monitoring Progress - Logging and Callbacks</SPAN>
+
+<P>
+Progress of the optimization can be monitored through Gurobi logging.
+By default, Gurobi will send output to the screen.  A few simple
+controls are available for modifying the default logging behavior.
+You can set the
+<A HREF="logfile.html#parameter:LogFile">LogFile</A>
+parameter if you wish to also
+direct the Gurobi log to a file.  The frequency of logging output can
+be controlled with the
+<A HREF="displayinterval.html#parameter:DisplayInterval">DisplayInterval</A>
+parameter, and logging
+can be turned off entirely with the
+<A HREF="outputflag.html#parameter:OutputFlag">OutputFlag</A>
+parameter.
+
+<P>
+More detailed progress monitoring can be done through a callback
+function.  If you pass a function taking two arguments, <code>model</code>
+and <code>where</code>, to
+<A HREF="py_model_optimize.html#pythonmethod:Model.optimize">Model.optimize</A>, your function
+will be called periodically from within the optimization.  Your
+callback can then
+call <A HREF="py_model_cbget.html#pythonmethod:Model.cbGet">Model.cbGet</A> to
+retrieve additional information on the state of the optimization.  You
+can refer to the <A HREF="py_callbacks.html#pythonclass:Callback">Callback</A> class
+for additional information.
+
+<P>
+<SPAN  CLASS="textbf">Modifying Solver Behavior - Callbacks</SPAN>
+
+<P>
+Callbacks can also be used to modify the behavior of the Gurobi
+optimizer.  The simplest control callback is
+<A HREF="py_model_terminate.html#pythonmethod:Model.terminate">Model.terminate</A>,
+which asks the optimizer to terminate at the earliest convenient
+point.  Method
+<A HREF="py_model_cbsetsolution.html#pythonmethod:Model.cbSetSolution">Model.cbSetSolution</A>
+allows you to inject a feasible solution (or partial solution) during
+the solution of a MIP model.  Methods
+<A HREF="py_model_cbcut.html#pythonmethod:Model.cbCut">Model.cbCut</A>
+and
+<A HREF="py_model_cblazy.html#pythonmethod:Model.cbLazy">Model.cbLazy</A>
+allow you to add <EM>cutting planes</EM> and <EM>lazy constraints</EM>
+during a MIP optimization, respectively.
+
+<P>
+<SPAN  CLASS="textbf">Error Handling</SPAN>
+
+<P>
+All of the methods in the Gurobi Python library can throw an exception
+of type <A HREF="py_gurobierror.html#pythonclass:GurobiError">GurobiError</A>.  When an
+exception occurs, additional information on the error can be obtained
+by retrieving the <code>errno</code> or <code>message</code> members of the
+<code>GurobiError</code> object.  A list of possible values for the
+<code>errno</code> field can be found in the <A HREF="error_codes.html#sec:ErrorCodes">Error
+Code</A> section.
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html7563"
+  HREF="py_python_api_details.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html7561"
+  HREF="refman.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html7555"
+  HREF="cs_grb_stringparam.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html7564"
+  HREF="py_python_api_details.html">Python API Details</A>
+<B> Up:</B> <A NAME="tex2html7562"
+  HREF="refman.html">Gurobi Optimizer Reference Manual</A>
+<B> Previous:</B> <A NAME="tex2html7556"
+  HREF="cs_grb_stringparam.html">GRB.StringParam</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

@@ -1,0 +1,185 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>GRBgetvars</TITLE>
+<META NAME="description" CONTENT="GRBgetvars">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="c_grbxgetconstrs.html">
+<LINK REL="previous" HREF="c_grbgetvarbyname.html">
+<LINK REL="up" HREF="c_model_queries.html">
+<LINK REL="next" HREF="c_grbxgetconstrs.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html1725"
+  HREF="c_grbxgetconstrs.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1723"
+  HREF="c_model_queries.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1717"
+  HREF="c_grbgetvarbyname.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1726"
+  HREF="c_grbxgetconstrs.html">GRBXgetconstrs</A>
+<B> Up:</B> <A NAME="tex2html1724"
+  HREF="c_model_queries.html">Model Queries</A>
+<B> Previous:</B> <A NAME="tex2html1718"
+  HREF="c_grbgetvarbyname.html">GRBgetvarbyname</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000241000000000000000"></A>
+<A NAME="routine:GRBgetvars"></A>
+<BR>
+GRBgetvars
+</H3>
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">GRBgetvars</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT">GRBmodel</TD>
+<TD ALIGN="LEFT">*model,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">*numnzP,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">*vbeg,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">*vind,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">double</TD>
+<TD ALIGN="LEFT">*vval,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">start,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">len )</TD>
+</TR>
+</TABLE>
+
+<P>
+Retrieve the non-zeros for a set of variables from the constraint
+matrix.  Typical usage is to call this routine twice.  In the first
+call, you specify the requested set of variables, with <code>NULL</code> values for
+<code>vbeg</code>, <code>vind</code>, and <code>vval</code>.  The routine returns the
+number of non-zero values for the specified variables in
+<code>numnzP</code>.  That allows you to make certain that <code>vind</code> and
+<code>vval</code> are of sufficient size to hold the result of the second
+call.
+
+<P>
+If your constraint matrix may contain more than 2 billion non-zero
+values, you should consider using the
+<A HREF="c_grbxgetvars.html#routine:GRBXgetvars">GRBXgetvars</A> variant of this routine.
+
+<P>
+
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Return value:</SPAN></BIG>
+
+<P>
+A non-zero return value indicates that a problem occurred while retrieving the variable coefficients.
+Refer to the <A HREF="error_codes.html#sec:ErrorCodes">Error Code</A> table for a
+list of possible return values.  Details on the error can be obtained
+by calling <A HREF="c_grbgeterrormsg.html#routine:GRBgeterrormsg">GRBgeterrormsg</A>.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">model</SPAN>: The model from which the variables should be retrieved.
+
+<P>
+ <SPAN  CLASS="textbf">numnzP</SPAN>: The number of non-zero values retrieved.
+
+<P>
+ <SPAN  CLASS="textbf">vbeg</SPAN>: Constraint matrix non-zero values are returned in
+  Compressed Sparse Column (CSC) format by this routine.  Each column
+  in the constraint matrix is represented as a list of index-value
+  pairs, where each index entry provides the constraint index for a
+  non-zero coefficient, and each value entry provides the
+  corresponding non-zero value.  Each variable has an associated
+  <TT>vbeg</TT> value, indicating the start position of the non-zeros for
+  that constraint in the <TT>vind</TT> and <TT>vval</TT> arrays.  The
+  non-zeros for variable <TT>i</TT> immediately follow those for
+  variable <TT>i-1</TT> in <TT>vind</TT> and <TT>vval</TT>.  Thus,
+  <TT>vbeg[i]</TT> indicates both the index of the first non-zero in
+  variable <TT>i</TT> and the end of the non-zeros for variable
+  <TT>i-1</TT>.  For example, consider the case where
+  <TT>vbeg[2] = 10</TT> and <TT>vbeg[3] = 12</TT>.  This would
+  indicate that variable
+  2 has two non-zero values associated with it.  Their constraint
+  indices can be found in <TT>vind[10]</TT> and <TT>vind[11]</TT>, and
+  the numerical values for those non-zeros can be found in
+  <TT>vval[10]</TT> and <TT>vval[11]</TT>.
+
+<P>
+ <SPAN  CLASS="textbf">vind</SPAN>: Constraint indices associated with non-zero values.
+  See the description of the <TT>vbeg</TT> argument for more information.
+
+<P>
+ <SPAN  CLASS="textbf">vval</SPAN>: Numerical values associated with constraint matrix non-zeros.
+  See the description of the <TT>vbeg</TT> argument for more information.
+
+<P>
+ <SPAN  CLASS="textbf">start</SPAN>: The index of the first variable to retrieve.
+
+<P>
+ <SPAN  CLASS="textbf">len</SPAN>: The number of variables to retrieve.
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1725"
+  HREF="c_grbxgetconstrs.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1723"
+  HREF="c_model_queries.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1717"
+  HREF="c_grbgetvarbyname.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1726"
+  HREF="c_grbxgetconstrs.html">GRBXgetconstrs</A>
+<B> Up:</B> <A NAME="tex2html1724"
+  HREF="c_model_queries.html">Model Queries</A>
+<B> Previous:</B> <A NAME="tex2html1718"
+  HREF="c_grbgetvarbyname.html">GRBgetvarbyname</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

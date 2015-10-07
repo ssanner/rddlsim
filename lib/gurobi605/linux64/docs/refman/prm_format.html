@@ -1,0 +1,98 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>PRM format</TITLE>
+<META NAME="description" CONTENT="PRM format">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="previous" HREF="sol_format.html">
+<LINK REL="up" HREF="model_file_formats.html">
+<LINK REL="next" HREF="logging.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html12297"
+  HREF="logging.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html12295"
+  HREF="model_file_formats.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html12291"
+  HREF="sol_format.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html12298"
+  HREF="logging.html">Logging</A>
+<B> Up:</B> <A NAME="tex2html12296"
+  HREF="model_file_formats.html">Model File Formats</A>
+<B> Previous:</B> <A NAME="tex2html12292"
+  HREF="sol_format.html">SOL format</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION0001810000000000000000"></A>
+<A NAME="format:PRM"></A>
+<BR>
+PRM format
+</H2>
+
+<P>
+A Gurobi parameter (PRM) file is used to specify parameter settings.
+Reading a parameter file (using
+<A HREF="c_grbread.html#routine:GRBread">GRBread</A>, for example) causes the
+parameters specified in the file to take the specified values.
+
+<P>
+The file consists of parameter-value pairs, each on its own line.
+Any line that begins with the hash sign (#) is a comment line and
+is ignored.  The following is a simple example:
+<PRE>
+# Parameter settings
+Cuts       2
+Heuristics 0.5
+</PRE>
+
+<P>
+If an unknown parameter name is listed in the file, a warning is
+printed and the associated line is ignored.
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html12297"
+  HREF="logging.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html12295"
+  HREF="model_file_formats.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html12291"
+  HREF="sol_format.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html12298"
+  HREF="logging.html">Logging</A>
+<B> Up:</B> <A NAME="tex2html12296"
+  HREF="model_file_formats.html">Model File Formats</A>
+<B> Previous:</B> <A NAME="tex2html12292"
+  HREF="sol_format.html">SOL format</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

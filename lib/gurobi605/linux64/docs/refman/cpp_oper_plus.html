@@ -1,0 +1,255 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>operator+</TITLE>
+<META NAME="description" CONTENT="operator+">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="cpp_oper_minus.html">
+<LINK REL="previous" HREF="cpp_oper_ge.html">
+<LINK REL="up" HREF="cpp_non_member_functions.html">
+<LINK REL="next" HREF="cpp_oper_minus.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html4120"
+  HREF="cpp_oper_minus.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html4118"
+  HREF="cpp_non_member_functions.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html4112"
+  HREF="cpp_oper_ge.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html4121"
+  HREF="cpp_oper_minus.html">operator-</A>
+<B> Up:</B> <A NAME="tex2html4119"
+  HREF="cpp_non_member_functions.html">Non-Member Functions</A>
+<B> Previous:</B> <A NAME="tex2html4113"
+  HREF="cpp_oper_ge.html">operator&gt;=</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000414400000000000000"></A>
+<A NAME="cppfunction:operator+"></A>
+<BR>
+operator+
+</H3>
+
+<P>
+Overloaded operator on expression objects.
+
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">GRBLinExpr</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">operator+</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT">const GRBLinExpr&amp;</TD>
+<TD ALIGN="LEFT">expr1,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">const GRBLinExpr&amp;</TD>
+<TD ALIGN="LEFT">expr2 )</TD>
+</TR>
+</TABLE>
+
+<UL>
+Add a pair of expressions.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">expr1</SPAN>: First expression to be added.
+
+<P>
+ <SPAN  CLASS="textbf">expr2</SPAN>: Second expression to be added.
+
+<P>
+
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Return value:</SPAN></BIG>
+
+<P>
+Sum expression.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">GRBLinExpr</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">operator+</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT">const GRBLinExpr&amp;</TD>
+<TD ALIGN="LEFT">expr )</TD>
+</TR>
+</TABLE>
+
+<UL>
+
+<P>
+Allow plus sign to be used before an expression.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">expr</SPAN>: Expression.
+
+<P>
+
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Return value:</SPAN></BIG>
+
+<P>
+Result expression.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">GRBLinExpr</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">operator+</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT">GRBVar</TD>
+<TD ALIGN="LEFT">x,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">GRBVar</TD>
+<TD ALIGN="LEFT">y )</TD>
+</TR>
+</TABLE>
+
+<UL>
+Add a pair of variables.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">x</SPAN>: First variable to be added.
+
+<P>
+ <SPAN  CLASS="textbf">y</SPAN>: Second variable to be added.
+
+<P>
+
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Return value:</SPAN></BIG>
+
+<P>
+Sum expression.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">GRBQuadExpr</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">operator+</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT">const GRBQuadExpr&amp;</TD>
+<TD ALIGN="LEFT">expr1,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">const GRBQuadExpr&amp;</TD>
+<TD ALIGN="LEFT">expr2 )</TD>
+</TR>
+</TABLE>
+
+<UL>
+Add a pair of expressions.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">expr1</SPAN>: First expression to be added.
+
+<P>
+ <SPAN  CLASS="textbf">expr2</SPAN>: Second expression to be added.
+
+<P>
+
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Return value:</SPAN></BIG>
+
+<P>
+Sum expression.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">GRBQuadExpr</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">operator+</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT">const GRBQuadExpr&amp;</TD>
+<TD ALIGN="LEFT">expr )</TD>
+</TR>
+</TABLE>
+
+<UL>
+
+<P>
+Allow plus sign to be used before an expression.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">expr</SPAN>: Expression.
+
+<P>
+
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Return value:</SPAN></BIG>
+
+<P>
+Result expression.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html4120"
+  HREF="cpp_oper_minus.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html4118"
+  HREF="cpp_non_member_functions.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html4112"
+  HREF="cpp_oper_ge.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html4121"
+  HREF="cpp_oper_minus.html">operator-</A>
+<B> Up:</B> <A NAME="tex2html4119"
+  HREF="cpp_non_member_functions.html">Non-Member Functions</A>
+<B> Previous:</B> <A NAME="tex2html4113"
+  HREF="cpp_oper_ge.html">operator&gt;=</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

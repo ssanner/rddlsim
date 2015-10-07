@@ -1,0 +1,198 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>GRBModel</TITLE>
+<META NAME="description" CONTENT="GRBModel">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="cs_grbvar.html">
+<LINK REL="previous" HREF="cs_grbenv.html">
+<LINK REL="up" HREF="cs_net_api_details.html">
+<LINK REL="next" HREF="cs_grbmodel2.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html6142"
+  HREF="cs_grbmodel2.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html6140"
+  HREF="cs_net_api_details.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html6134"
+  HREF="cs_grbenv_writeparams.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html6143"
+  HREF="cs_grbmodel2.html">GRBModel()</A>
+<B> Up:</B> <A NAME="tex2html6141"
+  HREF="cs_net_api_details.html">.NET API Details</A>
+<B> Previous:</B> <A NAME="tex2html6135"
+  HREF="cs_grbenv_writeparams.html">GRBEnv.WriteParams()</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00082000000000000000"></A>
+<A NAME="dotnetclass:GRBModel"></A>
+<BR>
+GRBModel
+</H2>
+
+<P>
+Gurobi model object.  Commonly used methods include
+<A HREF="cs_grbmodel_addvar.html#dotnetmethod:GRBModel.AddVar">AddVar</A> (adds a new decision
+variable to the model),
+<A HREF="cs_grbmodel_addconstr.html#dotnetmethod:GRBModel.AddConstr">AddConstr</A> (adds a new
+constraint to the model),
+<A HREF="cs_grbmodel_optimize.html#dotnetmethod:GRBModel.Optimize">Optimize</A> (optimizes the
+current model), and <A HREF="cs_grbmodel_get.html#dotnetmethod:GRBModel.Get">Get</A>
+(retrieves the value of an attribute).
+
+<P>
+While the .NET garbage collector will eventually collect an unused
+<code>GRBModel</code> object, the vast majority of the memory associated
+with a model is stored outside of the .NET heap.  As a result, the
+garbage collector can't see this memory usage, and thus it can't take
+this quantity into account when deciding whether collection is
+necessary.  We recommend that you call
+<A HREF="cs_grbmodel_dispose.html#dotnetmethod:GRBModel.Dispose">GRBModel.Dispose</A> when
+you are done using a model.
+
+<P>
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html6144"
+  HREF="cs_grbmodel2.html">GRBModel()</A>
+<LI><A NAME="tex2html6145"
+  HREF="cs_grbmodel_addconstr.html">GRBModel.AddConstr()</A>
+<LI><A NAME="tex2html6146"
+  HREF="cs_grbmodel_addconstrs.html">GRBModel.AddConstrs()</A>
+<LI><A NAME="tex2html6147"
+  HREF="cs_grbmodel_addqconstr.html">GRBModel.AddQConstr()</A>
+<LI><A NAME="tex2html6148"
+  HREF="cs_grbmodel_addrange.html">GRBModel.AddRange()</A>
+<LI><A NAME="tex2html6149"
+  HREF="cs_grbmodel_addranges.html">GRBModel.AddRanges()</A>
+<LI><A NAME="tex2html6150"
+  HREF="cs_grbmodel_addsos.html">GRBModel.AddSOS()</A>
+<LI><A NAME="tex2html6151"
+  HREF="cs_grbmodel_addvar.html">GRBModel.AddVar()</A>
+<LI><A NAME="tex2html6152"
+  HREF="cs_grbmodel_addvars.html">GRBModel.AddVars()</A>
+<LI><A NAME="tex2html6153"
+  HREF="cs_grbmodel_chgcoeff.html">GRBModel.ChgCoeff()</A>
+<LI><A NAME="tex2html6154"
+  HREF="cs_grbmodel_chgcoeffs.html">GRBModel.ChgCoeffs()</A>
+<LI><A NAME="tex2html6155"
+  HREF="cs_grbmodel_computeiis.html">GRBModel.ComputeIIS()</A>
+<LI><A NAME="tex2html6156"
+  HREF="cs_grbmodel_discardconcurr.html">GRBModel.DiscardConcurrentEnvs()</A>
+<LI><A NAME="tex2html6157"
+  HREF="cs_grbmodel_dispose.html">GRBModel.Dispose()</A>
+<LI><A NAME="tex2html6158"
+  HREF="cs_grbmodel_feasrelax.html">GRBModel.FeasRelax()</A>
+<LI><A NAME="tex2html6159"
+  HREF="cs_grbmodel_fixedmodel.html">GRBModel.FixedModel()</A>
+<LI><A NAME="tex2html6160"
+  HREF="cs_grbmodel_get.html">GRBModel.Get()</A>
+<LI><A NAME="tex2html6161"
+  HREF="cs_grbmodel_getcoeff.html">GRBModel.GetCoeff()</A>
+<LI><A NAME="tex2html6162"
+  HREF="cs_grbmodel_getcol.html">GRBModel.GetCol()</A>
+<LI><A NAME="tex2html6163"
+  HREF="cs_grbmodel_getconcurrente.html">GRBModel.GetConcurrentEnv()</A>
+<LI><A NAME="tex2html6164"
+  HREF="cs_grbmodel_getconstrbynam.html">GRBModel.GetConstrByName()</A>
+<LI><A NAME="tex2html6165"
+  HREF="cs_grbmodel_getconstrs.html">GRBModel.GetConstrs()</A>
+<LI><A NAME="tex2html6166"
+  HREF="cs_grbmodel_getenv.html">GRBModel.GetEnv()</A>
+<LI><A NAME="tex2html6167"
+  HREF="cs_grbmodel_getobjective.html">GRBModel.GetObjective()</A>
+<LI><A NAME="tex2html6168"
+  HREF="cs_grbmodel_getpwlobj.html">GRBModel.GetPWLObj()</A>
+<LI><A NAME="tex2html6169"
+  HREF="cs_grbmodel_getqconstr.html">GRBModel.GetQConstr()</A>
+<LI><A NAME="tex2html6170"
+  HREF="cs_grbmodel_getqconstrs.html">GRBModel.GetQConstrs()</A>
+<LI><A NAME="tex2html6171"
+  HREF="cs_grbmodel_getrow.html">GRBModel.GetRow()</A>
+<LI><A NAME="tex2html6172"
+  HREF="cs_grbmodel_getsos.html">GRBModel.GetSOS()</A>
+<LI><A NAME="tex2html6173"
+  HREF="cs_grbmodel_getsoss.html">GRBModel.GetSOSs()</A>
+<LI><A NAME="tex2html6174"
+  HREF="cs_grbmodel_gettuneresult.html">GRBModel.GetTuneResult()</A>
+<LI><A NAME="tex2html6175"
+  HREF="cs_grbmodel_getvarbyname.html">GRBModel.GetVarByName()</A>
+<LI><A NAME="tex2html6176"
+  HREF="cs_grbmodel_getvars.html">GRBModel.GetVars()</A>
+<LI><A NAME="tex2html6177"
+  HREF="cs_grbmodel_optimize.html">GRBModel.Optimize()</A>
+<LI><A NAME="tex2html6178"
+  HREF="cs_grbmodel_presolve.html">GRBModel.Presolve()</A>
+<LI><A NAME="tex2html6179"
+  HREF="cs_grbmodel_read.html">GRBModel.Read()</A>
+<LI><A NAME="tex2html6180"
+  HREF="cs_grbmodel_remove.html">GRBModel.Remove()</A>
+<LI><A NAME="tex2html6181"
+  HREF="cs_grbmodel_reset.html">GRBModel.Reset()</A>
+<LI><A NAME="tex2html6182"
+  HREF="cs_grbmodel_setcallback.html">GRBModel.SetCallback()</A>
+<LI><A NAME="tex2html6183"
+  HREF="cs_grbmodel_set.html">GRBModel.Set()</A>
+<LI><A NAME="tex2html6184"
+  HREF="cs_grbmodel_setobjective.html">GRBModel.SetObjective()</A>
+<LI><A NAME="tex2html6185"
+  HREF="cs_grbmodel_setpwlobj.html">GRBModel.SetPWLObj()</A>
+<LI><A NAME="tex2html6186"
+  HREF="cs_grbmodel_terminate.html">GRBModel.Terminate()</A>
+<LI><A NAME="tex2html6187"
+  HREF="cs_grbmodel_tune.html">GRBModel.Tune()</A>
+<LI><A NAME="tex2html6188"
+  HREF="cs_grbmodel_update.html">GRBModel.Update()</A>
+<LI><A NAME="tex2html6189"
+  HREF="cs_grbmodel_write.html">GRBModel.Write()</A>
+</UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html6142"
+  HREF="cs_grbmodel2.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html6140"
+  HREF="cs_net_api_details.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html6134"
+  HREF="cs_grbenv_writeparams.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html6143"
+  HREF="cs_grbmodel2.html">GRBModel()</A>
+<B> Up:</B> <A NAME="tex2html6141"
+  HREF="cs_net_api_details.html">.NET API Details</A>
+<B> Previous:</B> <A NAME="tex2html6135"
+  HREF="cs_grbenv_writeparams.html">GRBEnv.WriteParams()</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

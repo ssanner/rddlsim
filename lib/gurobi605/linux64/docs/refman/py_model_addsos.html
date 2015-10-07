@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Model.addSOS()</TITLE>
+<META NAME="description" CONTENT="Model.addSOS()">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="py_model_addvar.html">
+<LINK REL="previous" HREF="py_model_addrange.html">
+<LINK REL="up" HREF="py_model.html">
+<LINK REL="next" HREF="py_model_addvar.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html7940"
+  HREF="py_model_addvar.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html7938"
+  HREF="py_model.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html7932"
+  HREF="py_model_addrange.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html7941"
+  HREF="py_model_addvar.html">Model.addVar()</A>
+<B> Up:</B> <A NAME="tex2html7939"
+  HREF="py_model.html">Model</A>
+<B> Previous:</B> <A NAME="tex2html7933"
+  HREF="py_model_addrange.html">Model.addRange()</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000102500000000000000"></A>
+<A NAME="pythonmethod:Model.addSOS"></A>
+<BR>
+Model.addSOS()
+</H3>
+<BIG CLASS="LARGE">
+<FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">addSOS</SPAN></FONT></BIG> ( type, vars, wts=None )
+
+<P>
+Add an SOS constraint to the model.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">type</SPAN>: SOS type (can be <TT>GRB.SOS_TYPE1</TT> or
+<TT>GRB.SOS_TYPE2</TT>).
+
+<P>
+ <SPAN  CLASS="textbf">vars</SPAN>: List of variables that participate in the SOS constraint.
+
+<P>
+ <SPAN  CLASS="textbf">weights (optional)</SPAN>: Weights for the variables in the SOS
+  constraint.  Default weights are 1, 2, ...
+
+<P>
+
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Return value:</SPAN></BIG>
+
+<P>
+New <A HREF="py_sos.html#pythonclass:SOS">SOS</A> object.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Example usage:</SPAN></BIG><PRE>
+  model.addSOS(GRB.SOS_TYPE1, [x, y, z], [1, 2, 4])
+</PRE>
+
+<P>
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html7940"
+  HREF="py_model_addvar.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html7938"
+  HREF="py_model.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html7932"
+  HREF="py_model_addrange.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html7941"
+  HREF="py_model_addvar.html">Model.addVar()</A>
+<B> Up:</B> <A NAME="tex2html7939"
+  HREF="py_model.html">Model</A>
+<B> Previous:</B> <A NAME="tex2html7933"
+  HREF="py_model_addrange.html">Model.addRange()</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

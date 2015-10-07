@@ -1,0 +1,153 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>netflow.py example details</TITLE>
+<META NAME="description" CONTENT="netflow.py example details">
+<META NAME="keywords" CONTENT="quickstart_windows">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="quickstart_windows.css">
+
+<LINK REL="next" HREF="py_building_a_multi_dimens.html">
+<LINK REL="previous" HREF="py_netflow_py_example.html">
+<LINK REL="up" HREF="py_python_dictionary_examp.html">
+<LINK REL="next" HREF="py_building_a_multi_dimens.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html1418"
+  HREF="py_building_a_multi_dimens.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1416"
+  HREF="py_python_dictionary_examp.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1410"
+  HREF="py_netflow_py_example.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1419"
+  HREF="py_building_a_multi_dimens.html">Building a multi-dimensional array</A>
+<B> Up:</B> <A NAME="tex2html1417"
+  HREF="py_python_dictionary_examp.html">Python Dictionary Example</A>
+<B> Previous:</B> <A NAME="tex2html1411"
+  HREF="py_netflow_py_example.html">netflow.py example</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000113700000000000000">
+netflow.py example details</A>
+</H3>
+
+<P>
+Let us now walk through the example, line by line, to understand how
+it achieves the desired result of computing the optimal network flow.
+As with the simple Python example presented earlier, this example
+begins by importing the Gurobi functions and classes:
+<PRE>
+from gurobipy import *
+</PRE>
+
+<P>
+We then create a few lists that contain model data:
+<PRE>
+commodities = ['Pencils', 'Pens']
+nodes = ['Detroit', 'Denver', 'Boston', 'New York', 'Seattle']
+
+arcs, capacity = multidict({
+  ('Detroit', 'Boston'):   100,
+  ('Detroit', 'New York'):  80,
+  ('Detroit', 'Seattle'):  120,
+  ('Denver',  'Boston'):   120,
+  ('Denver',  'New York'): 120,
+  ('Denver',  'Seattle'):  120 })
+arcs = tuplelist(arcs)
+</PRE>
+The model works with two commodities (Pencils and Pens), and the
+network contains 5 nodes and 6 arcs.  We initialize <code>commodities</code>
+and <code>nodes</code> as simple Python lists.  We use the Gurobi
+<code>multidict</code> function to initialize <code>arcs</code> (the <code>list</code>
+of keys) and <code>capacity</code> (a <code>dictionary</code>).
+
+<P>
+In our example, we plan to use <code>arcs</code> to select subsets of the
+arcs when building constraints later.  We therefore pass the
+<code>list</code> of tuples returned by <code>multidict</code> to the
+<code>tuplelist</code> constructor to create a <code>tuplelist</code> object
+instead.
+
+<P>
+The model also requires cost data for each commodity-arc pair:
+<PRE>
+cost = {
+  ('Pencils', 'Detroit', 'Boston'):   10,
+  ('Pencils', 'Detroit', 'New York'): 20,
+  ('Pencils', 'Detroit', 'Seattle'):  60,
+  ('Pencils', 'Denver',  'Boston'):   40,
+  ('Pencils', 'Denver',  'New York'): 40,
+  ('Pencils', 'Denver',  'Seattle'):  30,
+  ('Pens',    'Detroit', 'Boston'):   20,
+  ('Pens',    'Detroit', 'New York'): 20,
+  ('Pens',    'Detroit', 'Seattle'):  80,
+  ('Pens',    'Denver',  'Boston'):   60,
+  ('Pens',    'Denver',  'New York'): 70,
+  ('Pens',    'Denver',  'Seattle'):  30 }
+</PRE>
+Once this dictionary has been created, the cost of moving commodity
+<code>h</code> from node <code>i</code> to <code>j</code> can be queried as
+<code>cost[(h,i,j)]</code>.  Recall that Python allows you to omit the
+parenthesis when using a tuple to index a dictionary, so this can be
+shortened to just <code>cost[h,i,j]</code>.
+
+<P>
+A similar construct is used to initialize node demand data:
+<PRE>
+inflow = {
+  ('Pencils', 'Detroit'):   50,
+  ('Pencils', 'Denver'):    60,
+  ('Pencils', 'Boston'):   -50,
+  ('Pencils', 'New York'): -50,
+  ('Pencils', 'Seattle'):  -10,
+  ('Pens',    'Detroit'):   60,
+  ('Pens',    'Denver'):    40,
+  ('Pens',    'Boston'):   -40,
+  ('Pens',    'New York'): -30,
+  ('Pens',    'Seattle'):  -30 }
+</PRE>
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1418"
+  HREF="py_building_a_multi_dimens.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1416"
+  HREF="py_python_dictionary_examp.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1410"
+  HREF="py_netflow_py_example.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1419"
+  HREF="py_building_a_multi_dimens.html">Building a multi-dimensional array</A>
+<B> Up:</B> <A NAME="tex2html1417"
+  HREF="py_python_dictionary_examp.html">Python Dictionary Example</A>
+<B> Previous:</B> <A NAME="tex2html1411"
+  HREF="py_netflow_py_example.html">netflow.py example</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

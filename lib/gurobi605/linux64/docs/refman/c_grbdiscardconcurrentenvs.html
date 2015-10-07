@@ -1,0 +1,105 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>GRBdiscardconcurrentenvs</TITLE>
+<META NAME="description" CONTENT="GRBdiscardconcurrentenvs">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="previous" HREF="c_grbgetconcurrentenv.html">
+<LINK REL="up" HREF="c_environment_creation_and.html">
+<LINK REL="next" HREF="c_model_creation_and_modif.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html1224"
+  HREF="c_model_creation_and_modif.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1222"
+  HREF="c_environment_creation_and.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1218"
+  HREF="c_grbgetconcurrentenv.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1225"
+  HREF="c_model_creation_and_modif.html">Model Creation and Modification</A>
+<B> Up:</B> <A NAME="tex2html1223"
+  HREF="c_environment_creation_and.html">Environment Creation and Destruction</A>
+<B> Previous:</B> <A NAME="tex2html1219"
+  HREF="c_grbgetconcurrentenv.html">GRBgetconcurrentenv</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00021500000000000000"></A>
+<A NAME="routine:GRBdiscardconcurrentenvs"></A>
+<BR>
+GRBdiscardconcurrentenvs
+</H3>
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">void</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">GRBdiscardconcurrentenvs</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT">GRBmodel *</TD>
+<TD ALIGN="LEFT">model )</TD>
+</TR>
+</TABLE>
+
+<P>
+Discard concurrent environments for a model.
+
+<P>
+The concurrent environments created by
+<A HREF="c_grbgetconcurrentenv.html#routine:GRBgetconcurrentenv">GRBgetconcurrentenv</A>
+will be used by every subsequent call to the concurrent optimizer
+until the concurrent environments are discarded.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">model</SPAN>: The model for the concurrent environment.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Example usage:</SPAN></BIG><PRE>
+  GRBdiscardconcurrentenvs(model);
+</PRE>
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1224"
+  HREF="c_model_creation_and_modif.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1222"
+  HREF="c_environment_creation_and.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1218"
+  HREF="c_grbgetconcurrentenv.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1225"
+  HREF="c_model_creation_and_modif.html">Model Creation and Modification</A>
+<B> Up:</B> <A NAME="tex2html1223"
+  HREF="c_environment_creation_and.html">Environment Creation and Destruction</A>
+<B> Previous:</B> <A NAME="tex2html1219"
+  HREF="c_grbgetconcurrentenv.html">GRBgetconcurrentenv</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

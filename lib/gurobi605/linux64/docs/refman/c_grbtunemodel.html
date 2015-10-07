@@ -1,0 +1,125 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>GRBtunemodel</TITLE>
+<META NAME="description" CONTENT="GRBtunemodel">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="c_grbgettuneresult.html">
+<LINK REL="previous" HREF="c_parameter_management_and.html">
+<LINK REL="up" HREF="c_parameter_management_and.html">
+<LINK REL="next" HREF="c_grbgettuneresult.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html2166"
+  HREF="c_grbgettuneresult.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html2164"
+  HREF="c_parameter_management_and.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html2158"
+  HREF="c_parameter_management_and.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html2167"
+  HREF="c_grbgettuneresult.html">GRBgettuneresult</A>
+<B> Up:</B> <A NAME="tex2html2165"
+  HREF="c_parameter_management_and.html">Parameter Management and Tuning</A>
+<B> Previous:</B> <A NAME="tex2html2159"
+  HREF="c_parameter_management_and.html">Parameter Management and Tuning</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00027100000000000000"></A>
+<A NAME="routine:GRBtunemodel"></A>
+<BR>
+GRBtunemodel
+</H3>
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">GRBtunemodel</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT">GRBmodel</TD>
+<TD ALIGN="LEFT">*model )</TD>
+</TR>
+</TABLE>
+
+<P>
+Perform an automated search for parameter settings that improve
+performance on a model.  Upon completion, this routine stores the best
+parameter sets it found.  The number of stored parameter sets can be
+determined by querying the value of the
+<A HREF="tuneresultcount.html#attr:TuneResultCount">TuneResultCount</A> attribute.  The
+actual settings can be retrieved using
+<A HREF="c_grbgettuneresult.html#routine:GRBgettuneresult">GRBgettuneresult</A>
+
+<P>
+Please refer to the <A HREF="parameter_tuning_tool.html#sec:Tuning">parameter
+  tuning</A> section for details on the tuning
+tool.
+
+<P>
+
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Return value:</SPAN></BIG>
+
+<P>
+A non-zero return value indicates that a problem occurred while tuning the model.
+Refer to the <A HREF="error_codes.html#sec:ErrorCodes">Error Code</A> table for a
+list of possible return values.  Details on the error can be obtained
+by calling <A HREF="c_grbgeterrormsg.html#routine:GRBgeterrormsg">GRBgeterrormsg</A>.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">model</SPAN>: The model to be tuned.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Example usage:</SPAN></BIG><PRE>
+  error = GRBtunemodel(model);
+  if (error) goto QUIT;
+
+  error = GRBgetintattr(model, "TuneResultCount", &amp;nresults);
+  if (error) goto QUIT;
+</PRE>
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html2166"
+  HREF="c_grbgettuneresult.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html2164"
+  HREF="c_parameter_management_and.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html2158"
+  HREF="c_parameter_management_and.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html2167"
+  HREF="c_grbgettuneresult.html">GRBgettuneresult</A>
+<B> Up:</B> <A NAME="tex2html2165"
+  HREF="c_parameter_management_and.html">Parameter Management and Tuning</A>
+<B> Previous:</B> <A NAME="tex2html2159"
+  HREF="c_parameter_management_and.html">Parameter Management and Tuning</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

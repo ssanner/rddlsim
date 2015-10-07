@@ -1,0 +1,120 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>RINS</TITLE>
+<META NAME="description" CONTENT="RINS">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="scaleflag.html">
+<LINK REL="previous" HREF="resultfile.html">
+<LINK REL="up" HREF="parameter_descriptions.html">
+<LINK REL="next" HREF="scaleflag.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html11837"
+  HREF="scaleflag.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html11835"
+  HREF="parameter_descriptions.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html11829"
+  HREF="resultfile.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html11838"
+  HREF="scaleflag.html">ScaleFlag</A>
+<B> Up:</B> <A NAME="tex2html11836"
+  HREF="parameter_descriptions.html">Parameter Descriptions</A>
+<B> Previous:</B> <A NAME="tex2html11830"
+  HREF="resultfile.html">ResultFile</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION0001427900000000000000"></A>
+<A NAME="parameter:RINS"></A>
+<BR>
+RINS
+</H3>
+Relaxation Induced Neighborhood Search (RINS) heuristic frequency
+
+<TABLE CELLPADDING=3>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf">Type:</SPAN></TH>
+<TD ALIGN="LEFT">int</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf">Default value:</SPAN></TH>
+<TD ALIGN="LEFT">-1</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf">Minimum value:</SPAN></TH>
+<TD ALIGN="LEFT">-1</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf">Maximum value:</SPAN></TH>
+<TD ALIGN="LEFT">MAXINT</TD>
+</TR>
+</TABLE>
+
+<P>
+Frequency of the RINS heuristic.  Default value (-1) chooses
+automatically.  A value of 0 shuts off RINS.  A positive value
+<code>n</code> applies RINS at every <code>n-th</code> node of the MIP search
+tree.
+
+<P>
+Increasing the frequency of the RINS heuristic shifts the focus
+of the MIP search away from proving optimality, and towards
+finding good feasible solutions.  We recommend that you
+try
+<A HREF="mipfocus.html#parameter:MIPFocus">MIPFocus</A>,
+<A HREF="improvestartgap.html#parameter:ImproveStartGap">ImproveStartGap</A>, or
+<A HREF="improvestarttime.html#parameter:ImproveStartTime">ImproveStartTime</A>
+before experimenting with this parameter.
+
+<P>
+
+<SPAN  CLASS="textbf">Note:</SPAN> Only affects mixed integer programming (MIP) models 
+<BR>
+
+<P>
+For examples of how to query or modify parameter values from
+our different APIs, refer to our
+<A HREF="parameter_examples.html#sec:ParameterExamples">Parameter Examples</A>.
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html11837"
+  HREF="scaleflag.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html11835"
+  HREF="parameter_descriptions.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html11829"
+  HREF="resultfile.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html11838"
+  HREF="scaleflag.html">ScaleFlag</A>
+<B> Up:</B> <A NAME="tex2html11836"
+  HREF="parameter_descriptions.html">Parameter Descriptions</A>
+<B> Previous:</B> <A NAME="tex2html11830"
+  HREF="resultfile.html">ResultFile</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

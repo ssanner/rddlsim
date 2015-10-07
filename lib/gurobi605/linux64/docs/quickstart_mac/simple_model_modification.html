@@ -1,0 +1,124 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Simple model modification</TITLE>
+<META NAME="description" CONTENT="Simple model modification">
+<META NAME="keywords" CONTENT="quickstart_mac">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="quickstart_mac.css">
+
+<LINK REL="next" HREF="simple_experimentation_wit.html">
+<LINK REL="previous" HREF="inspecting_the_solution.html">
+<LINK REL="up" HREF="interactive_shell.html">
+<LINK REL="next" HREF="simple_experimentation_wit.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html496"
+  HREF="simple_experimentation_wit.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html494"
+  HREF="interactive_shell.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html488"
+  HREF="inspecting_the_solution.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html497"
+  HREF="simple_experimentation_wit.html">Simple experimentation with a</A>
+<B> Up:</B> <A NAME="tex2html495"
+  HREF="interactive_shell.html">Interactive Shell</A>
+<B> Previous:</B> <A NAME="tex2html489"
+  HREF="inspecting_the_solution.html">Inspecting the solution</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00053000000000000000">
+Simple model modification</A>
+</H2>
+<P>
+<EM>We will now demonstrate a simple model modification.  Imagine that you
+only want to consider solutions where you make at least 10 pennies
+(i.e., where the <EM>Pennies</EM> variable has a lower bound of 10.0).
+This is done by setting the <code>lb</code> attribute on the appropriate
+variable (the first variable in the list <code>v</code> in our example)...
+</EM><PRE>
+gurobi&gt; v = m.getVars()
+gurobi&gt; v[0].lb = 10
+</PRE>
+<P>
+<EM>The Gurobi optimizer keeps track of the state of the model, so it
+knows that the currently loaded solution is not necessarily optimal
+for the modified model.  When you invoke the <EM>optimize()</EM> method
+again, it performs a new optimization on the modified model...
+</EM><PRE>
+gurobi&gt; m.optimize()
+Optimize a model with 4 rows, 9 columns and 16 nonzeros
+Presolve removed 2 rows and 5 columns
+Presolve time: 0.00s
+Presolved: 2 rows, 4 columns, 5 nonzeros
+
+MIP start did not produce a feasible solution
+
+Variable types: 0 continuous, 4 integer (0 binary)
+Found heuristic solution: objective 25.9500000
+
+Root relaxation: objective 7.190000e+01, 2 iterations, 0.00 seconds
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+*    0     0               0      71.9000000   71.90000   0.0%     -    0s
+
+Explored 0 nodes (2 simplex iterations) in 0.00 seconds
+Thread count was 4 (of 4 available processors)
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 7.190000000000e+01, best bound 7.190000000000e+01, gap 0.0%
+</PRE>
+<P>
+<EM>The result shows that, if you force the solution to include at least
+10 pennies, the maximum possible objective value for the model
+decreases from 113.45 to 71.9.  A simple check confirms that the new
+lower bound is respected:
+</EM><PRE>
+gurobi&gt; print v[0].x
+10.0
+</PRE>
+<P>
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html496"
+  HREF="simple_experimentation_wit.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html494"
+  HREF="interactive_shell.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html488"
+  HREF="inspecting_the_solution.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html497"
+  HREF="simple_experimentation_wit.html">Simple experimentation with a</A>
+<B> Up:</B> <A NAME="tex2html495"
+  HREF="interactive_shell.html">Interactive Shell</A>
+<B> Previous:</B> <A NAME="tex2html489"
+  HREF="inspecting_the_solution.html">Inspecting the solution</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

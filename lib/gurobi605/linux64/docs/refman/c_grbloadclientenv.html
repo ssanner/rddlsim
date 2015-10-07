@@ -1,0 +1,199 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>GRBloadclientenv</TITLE>
+<META NAME="description" CONTENT="GRBloadclientenv">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="c_grbfreeenv.html">
+<LINK REL="previous" HREF="c_grbloadenv.html">
+<LINK REL="up" HREF="c_environment_creation_and.html">
+<LINK REL="next" HREF="c_grbfreeenv.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html1196"
+  HREF="c_grbfreeenv.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1194"
+  HREF="c_environment_creation_and.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1188"
+  HREF="c_grbloadenv.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1197"
+  HREF="c_grbfreeenv.html">GRBfreeenv</A>
+<B> Up:</B> <A NAME="tex2html1195"
+  HREF="c_environment_creation_and.html">Environment Creation and Destruction</A>
+<B> Previous:</B> <A NAME="tex2html1189"
+  HREF="c_grbloadenv.html">GRBloadenv</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00021200000000000000"></A>
+<A NAME="routine:GRBloadclientenv"></A>
+<BR>
+GRBloadclientenv
+</H3>
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">GRBloadclientenv</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT">GRBenv</TD>
+<TD ALIGN="LEFT">**envP,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">const char</TD>
+<TD ALIGN="LEFT">*logfilename,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">const char</TD>
+<TD ALIGN="LEFT">*computeserver,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">port,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">const char</TD>
+<TD ALIGN="LEFT">*password,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">priority,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">double</TD>
+<TD ALIGN="LEFT">timeout )</TD>
+</TR>
+</TABLE>
+
+<P>
+Create a client environment on a compute server.  Optimization models
+live within an environment, so this is typically the first Gurobi
+routine called in an application.  This call specifies the compute
+server on which those optimization models will be solved, as well
+as the priority of the associated jobs.
+
+<P>
+In addition to creating a new environment, this routine will also
+check the current working directory for a file named
+<code>gurobi.env</code>, and it will attempt to read parameter settings from
+this file if it exists.  The file should be in
+<A HREF="prm_format.html#format:PRM">PRM</A> format (briefly, each line should
+contain a parameter name, followed by the desired value for that
+parameter).
+
+<P>
+In general, you should aim to create a single Gurobi environment in
+your program, even if you plan to work with multiple models.  Reusing
+one environment is much more efficient than creating and destroying
+multiple environments.
+
+<P>
+
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Return value:</SPAN></BIG>
+
+<P>
+A non-zero return value indicates that there was a problem creating
+the environment.  Refer to the <A HREF="error_codes.html#sec:ErrorCodes">Error
+  Code</A> table for a list of possible return
+values.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">envP</SPAN>: The location in which the pointer to the newly created
+  environment should be placed.
+
+<P>
+ <SPAN  CLASS="textbf">logfilename</SPAN>: The name of the log file for this environment.
+  May be <TT>NULL</TT> (or an empty string), in which case no log file is
+  created.
+
+<P>
+ <SPAN  CLASS="textbf">computeserver</SPAN>: A comma-separated list of Gurobi compute servers.
+  You can refer to compute server machines using their names or their IP
+  addresses.
+
+<P>
+ <SPAN  CLASS="textbf">port</SPAN>: The port number used to connect to the compute server.
+  You should pass a -1 value, which indicates that the default
+  port should be used, unless your server administrator has changed
+  our recommended port settings.
+
+<P>
+ <SPAN  CLASS="textbf">password</SPAN>: The password for gaining access to the specified compute servers.  Pass an empty string if no password is required.
+
+<P>
+ <SPAN  CLASS="textbf">priority</SPAN>: The priority of the job.  Priorities must
+  be between -100 and 100, with a default value of 0
+  (by convention).  Higher priority jobs are
+  chosen from the server job queue before lower priority jobs.  A
+  job with priority 100 runs immediately, bypassing the job queue
+  and ignoring the job limit on the server. You should
+  exercise caution with priority 100 jobs, since they can
+  severely overload a server, which can cause jobs to fail, and in
+  extreme cases can cause the server to crash.
+
+<P>
+ <SPAN  CLASS="textbf">timeout</SPAN>: Job timeout (in seconds).  If the job doesn't reach
+  the front of the queue before the specified timeout, the call will
+  exit with a <TT>JOB_REJECTED</TT> error.  Use a negative value to
+  indicate that the call should never timeout.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Example usage:</SPAN></BIG><PRE>
+  GRBenv *env;
+  error = GRBloadclientenv(&amp;env, "gurobi.log",
+                           "server1.mydomain.com,server2.mydomain.com",
+                           "", 5, -1.0);
+</PRE>
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1196"
+  HREF="c_grbfreeenv.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1194"
+  HREF="c_environment_creation_and.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1188"
+  HREF="c_grbloadenv.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1197"
+  HREF="c_grbfreeenv.html">GRBfreeenv</A>
+<B> Up:</B> <A NAME="tex2html1195"
+  HREF="c_environment_creation_and.html">Environment Creation and Destruction</A>
+<B> Previous:</B> <A NAME="tex2html1189"
+  HREF="c_grbloadenv.html">GRBloadenv</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

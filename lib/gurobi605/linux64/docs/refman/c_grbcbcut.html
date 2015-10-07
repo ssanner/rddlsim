@@ -1,0 +1,191 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>GRBcbcut</TITLE>
+<META NAME="description" CONTENT="GRBcbcut">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="c_grbcblazy.html">
+<LINK REL="previous" HREF="c_modifying_solver_behavio.html">
+<LINK REL="up" HREF="c_modifying_solver_behavio.html">
+<LINK REL="next" HREF="c_grbcblazy.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html2371"
+  HREF="c_grbcblazy.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html2369"
+  HREF="c_modifying_solver_behavio.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html2363"
+  HREF="c_modifying_solver_behavio.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html2372"
+  HREF="c_grbcblazy.html">GRBcblazy</A>
+<B> Up:</B> <A NAME="tex2html2370"
+  HREF="c_modifying_solver_behavio.html">Modifying Solver Behavior -</A>
+<B> Previous:</B> <A NAME="tex2html2364"
+  HREF="c_modifying_solver_behavio.html">Modifying Solver Behavior -</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00029100000000000000"></A>
+<A NAME="routine:GRBcbcut"></A>
+<BR>
+GRBcbcut
+</H3>
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">GRBcbcut</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT">void</TD>
+<TD ALIGN="LEFT">*cbdata,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">cutlen,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">const int</TD>
+<TD ALIGN="LEFT">*cutind,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">const double</TD>
+<TD ALIGN="LEFT">*cutval,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">char</TD>
+<TD ALIGN="LEFT">cutsense,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">double</TD>
+<TD ALIGN="LEFT">cutrhs )</TD>
+</TR>
+</TABLE>
+
+<P>
+Add a new cutting plane to the MIP model from within a user callback
+routine.  Note that this routine can only be called when the
+<code>where</code> value on the callback routine is
+<code>GRB_CB_MIPNODE</code> (see the
+<A HREF="callback_codes.html#sec:CallbackCodes">Callback Codes</A> section for
+more information).
+
+<P>
+Cutting planes can be added at any node of the branch-and-cut tree.
+Note that cuts should be added sparingly, since they increase the size
+of the relaxation model that is solved at each node and can
+significantly degrade node processing speed.
+
+<P>
+Cutting planes are typically used to cut off the current relaxation
+solution.  To retrieve the relaxation solution at the current node,
+call <A HREF="c_grbcbget.html#routine:GRBcbget">GRBcbget</A> with
+<code>what = GRB_CB_MIPNODE_REL</code>.
+
+<P>
+When adding your own cuts, you must set parameter
+<A HREF="precrush.html#parameter:PreCrush">PreCrush</A>
+to value 1.  This setting shuts off a few presolve reductions that
+sometimes prevent cuts on the original model from being applied to the
+presolved model.
+
+<P>
+One very important note: you should only add cuts that are implied by
+the constraints in your model.  If you cut off an integer solution
+that is feasible according to the original model constraints, <EM>you
+  are likely to obtain an incorrect solution to your MIP problem</EM>.
+
+<P>
+
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Return value:</SPAN></BIG>
+
+<P>
+A non-zero return value indicates that a problem occurred while adding the cut.
+Refer to the <A HREF="error_codes.html#sec:ErrorCodes">Error Code</A> table for a
+list of possible return values.  Details on the error can be obtained
+by calling <A HREF="c_grbgeterrormsg.html#routine:GRBgeterrormsg">GRBgeterrormsg</A>.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">cbdata</SPAN>: The <TT>cbdata</TT> argument that was passed into the
+  user callback by the Gurobi optimizer.  This argument must be passed
+  unmodified from the user callback to <TT>GRBcbcut()</TT>.
+
+<P>
+ <SPAN  CLASS="textbf">cutlen</SPAN>: The number of non-zero coefficients in the new cutting plane.
+
+<P>
+ <SPAN  CLASS="textbf">cutind</SPAN>: Variable indices for non-zero values in the new
+  cutting plane.
+
+<P>
+ <SPAN  CLASS="textbf">cutval</SPAN>: Numerical values for non-zero values in the new
+  cutting plane.
+
+<P>
+ <SPAN  CLASS="textbf">cutsense</SPAN>: Sense for the new cutting plane.  Options are
+<TT>GRB_LESS_EQUAL</TT>, <TT>GRB_EQUAL</TT>,
+or <TT>GRB_GREATER_EQUAL</TT>.
+
+<P>
+ <SPAN  CLASS="textbf">cutrhs</SPAN>: Right-hand-side value for the new cutting plane.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Example usage:</SPAN></BIG><PRE>
+  if (where == GRB_CB_MIPNODE) {
+    int cutind[] = {0, 1};
+    double cutval[] = {1.0, 1.0};
+    error = GRBcbcut(cbdata, 2, cutind, cutval, GRB_LESS_EQUAL, 1.0);
+    if (error) return 0;
+  }
+</PRE>
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html2371"
+  HREF="c_grbcblazy.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html2369"
+  HREF="c_modifying_solver_behavio.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html2363"
+  HREF="c_modifying_solver_behavio.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html2372"
+  HREF="c_grbcblazy.html">GRBcblazy</A>
+<B> Up:</B> <A NAME="tex2html2370"
+  HREF="c_modifying_solver_behavio.html">Modifying Solver Behavior -</A>
+<B> Previous:</B> <A NAME="tex2html2364"
+  HREF="c_modifying_solver_behavio.html">Modifying Solver Behavior -</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

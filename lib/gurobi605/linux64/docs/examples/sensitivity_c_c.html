@@ -1,0 +1,252 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>sensitivity_c.c</TITLE>
+<META NAME="description" CONTENT="sensitivity_c.c">
+<META NAME="keywords" CONTENT="examples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="examples.css">
+
+<LINK REL="next" HREF="sos_c_c.html">
+<LINK REL="previous" HREF="qp_c_c.html">
+<LINK REL="up" HREF="c_examples.html">
+<LINK REL="next" HREF="sos_c_c.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html683"
+  HREF="sos_c_c.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html681"
+  HREF="c_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html675"
+  HREF="qp_c_c.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html684"
+  HREF="sos_c_c.html">sos_c.c</A>
+<B> Up:</B> <A NAME="tex2html682"
+  HREF="c_examples.html">C Examples</A>
+<B> Previous:</B> <A NAME="tex2html676"
+  HREF="qp_c_c.html">qp_c.c</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000211600000000000000"></A>
+<A NAME="subsubsection:sensitivity_c.c"></A>
+<BR>
+sensitivity_c.c
+</H3>
+
+<P>
+<BR>
+<PRE  CLASS="verbatim">/* Copyright 2014, Gurobi Optimization, Inc. */
+
+/* A simple sensitivity analysis example which reads a MIP model
+   from a file and solves it. Then each binary variable is set
+   to 1-X, where X is its value in the optimal solution, and
+   the impact on the objective function value is reported.
+*/
+
+#include &lt;stdlib.h&gt;
+#include &lt;stdio.h&gt;
+#include "gurobi_c.h"
+
+int
+main(int   argc,
+     char *argv[])
+{
+  GRBenv   *env = NULL, *modelenv = NULL;
+  GRBmodel *model = NULL;
+  int       error = 0;
+  int       ismip, status, numvars, i, j;
+  double    origobjval, lb, ub, objval;
+  double   *origx = NULL;
+  char      vtype, *vname;
+
+  if (argc &lt; 2)
+  {
+    fprintf(stderr, "Usage: sensitivity_c filename\n");
+    exit(1);
+  }
+
+  /* Create environment */
+
+  error = GRBloadenv(&amp;env, "sensitivity.log");
+  if (error) goto QUIT;
+
+  /* Read and solve model */
+
+  error = GRBreadmodel(env, argv[1], &amp;model);
+  if (error) goto QUIT;
+
+  error = GRBgetintattr(model, "IsMIP", &amp;ismip);
+  if (error) goto QUIT;
+  if (ismip == 0) {
+    printf("Model is not a MIP\n");
+    exit(1);
+  }
+
+  error = GRBoptimize(model);
+  if (error) goto QUIT;
+
+  error = GRBgetintattr(model, "Status", &amp;status);
+  if (error) goto QUIT;
+  if (status != GRB_OPTIMAL) {
+    printf("Optimization ended with status %d\n", status);
+    exit(1);
+  }
+
+  /* Store the optimal solution */
+
+  error = GRBgetdblattr(model, "ObjVal", &amp;origobjval);
+  if (error) goto QUIT;
+  error = GRBgetintattr(model, "NumVars", &amp;numvars);
+  if (error) goto QUIT;
+  origx = (double *) malloc(numvars * sizeof(double));
+  if (origx == NULL) {
+    printf("Out of memory\n");
+    exit(1);
+  }
+  error = GRBgetdblattrarray(model, "X", 0, numvars, origx);
+  if (error) goto QUIT;
+
+  /* Disable solver output for subsequent solves */
+
+  modelenv = GRBgetenv(model);
+  if (!modelenv) {
+    printf("Cannot retrieve model environment\n");
+    exit(1);
+  }
+  error = GRBsetintparam(modelenv, "OutputFlag", 0);
+  if (error) goto QUIT;
+
+  /* Iterate through unfixed, binary variables in model */
+
+  for (i = 0; i &lt; numvars; i++) {
+    error = GRBgetdblattrelement(model, "LB", i, &amp;lb);
+    if (error) goto QUIT;
+    error = GRBgetdblattrelement(model, "UB", i, &amp;ub);
+    if (error) goto QUIT;
+    error = GRBgetcharattrelement(model, "VType", i, &amp;vtype);
+    if (error) goto QUIT;
+
+    if (lb == 0 &amp;&amp; ub == 1
+        &amp;&amp; (vtype == GRB_BINARY || vtype == GRB_INTEGER)) {
+
+      /* Set variable to 1-X, where X is its value in optimal solution */
+
+      if (origx[i] &lt; 0.5) {
+        error = GRBsetdblattrelement(model, "LB", i, 1.0);
+        if (error) goto QUIT;
+        error = GRBsetdblattrelement(model, "Start", i, 1.0);
+        if (error) goto QUIT;
+      } else {
+        error = GRBsetdblattrelement(model, "UB", i, 0.0);
+        if (error) goto QUIT;
+        error = GRBsetdblattrelement(model, "Start", i, 0.0);
+        if (error) goto QUIT;
+      }
+
+      /* Update MIP start for the other variables */
+
+      for (j = 0; j &lt; numvars; j++) {
+        if (j != i) {
+          error = GRBsetdblattrelement(model, "Start", j, origx[j]);
+          if (error) goto QUIT;
+        }
+      }
+
+      /* Solve for new value and capture sensitivity information */
+
+      error = GRBoptimize(model);
+      if (error) goto QUIT;
+
+      error = GRBgetintattr(model, "Status", &amp;status);
+      if (error) goto QUIT;
+      error = GRBgetstrattrelement(model, "VarName", i, &amp;vname);
+      if (error) goto QUIT;
+      if (status == GRB_OPTIMAL) {
+        error = GRBgetdblattr(model, "ObjVal", &amp;objval);
+        if (error) goto QUIT;
+        printf("Objective sensitivity for variable %s is %g\n",
+            vname, objval - origobjval);
+      } else {
+        printf("Objective sensitivity for variable %s is infinite\n",
+            vname);
+      }
+
+      /* Restore the original variable bounds */
+
+      error = GRBsetdblattrelement(model, "LB", i, 0.0);
+      if (error) goto QUIT;
+      error = GRBsetdblattrelement(model, "UB", i, 1.0);
+      if (error) goto QUIT;
+    }
+  }
+
+
+QUIT:
+
+  /* Error reporting */
+
+  if (error)
+  {
+    printf("ERROR: %s\n", GRBgeterrormsg(env));
+    exit(1);
+  }
+
+  /* Free data */
+
+  free(origx);
+
+  /* Free model */
+
+  GRBfreemodel(model);
+
+  /* Free environment */
+
+  GRBfreeenv(env);
+
+  return 0;
+}
+</PRE>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html683"
+  HREF="sos_c_c.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html681"
+  HREF="c_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html675"
+  HREF="qp_c_c.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html684"
+  HREF="sos_c_c.html">sos_c.c</A>
+<B> Up:</B> <A NAME="tex2html682"
+  HREF="c_examples.html">C Examples</A>
+<B> Previous:</B> <A NAME="tex2html676"
+  HREF="qp_c_c.html">qp_c.c</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

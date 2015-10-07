@@ -1,0 +1,125 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Model.addVar()</TITLE>
+<META NAME="description" CONTENT="Model.addVar()">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="py_model_chgcoeff.html">
+<LINK REL="previous" HREF="py_model_addsos.html">
+<LINK REL="up" HREF="py_model.html">
+<LINK REL="next" HREF="py_model_chgcoeff.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html7950"
+  HREF="py_model_chgcoeff.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html7948"
+  HREF="py_model.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html7942"
+  HREF="py_model_addsos.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html7951"
+  HREF="py_model_chgcoeff.html">Model.chgCoeff()</A>
+<B> Up:</B> <A NAME="tex2html7949"
+  HREF="py_model.html">Model</A>
+<B> Previous:</B> <A NAME="tex2html7943"
+  HREF="py_model_addsos.html">Model.addSOS()</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000102600000000000000"></A>
+<A NAME="pythonmethod:Model.addVar"></A>
+<BR>
+Model.addVar()
+</H3>
+<BIG CLASS="LARGE">
+<FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">addVar</SPAN></FONT></BIG> ( lb=0.0, ub=GRB.INFINITY, obj=0.0, vtype=GRB.CONTINUOUS, name='''', column=None )
+
+<P>
+Add a decision variable to a model.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">lb (optional)</SPAN>: Lower bound for new variable.
+
+<P>
+ <SPAN  CLASS="textbf">ub (optional)</SPAN>: Upper bound for new variable.
+
+<P>
+ <SPAN  CLASS="textbf">obj (optional)</SPAN>: Objective coefficient for new variable.
+
+<P>
+ <SPAN  CLASS="textbf">vtype (optional)</SPAN>: Variable type for new variable
+  (<TT>GRB.CONTINUOUS</TT>, <TT>GRB.BINARY</TT>, <TT>GRB.INTEGER</TT>, <TT>GRB.SEMICONT</TT>, or
+  <TT>GRB.SEMIINT</TT>).
+
+<P>
+ <SPAN  CLASS="textbf">name (optional)</SPAN>: Name for new variable.
+
+<P>
+ <SPAN  CLASS="textbf">column (optional)</SPAN>: Column object that indicates the set
+  of constraints in which the new variable participates, and the
+  associated coefficients.
+
+<P>
+
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Return value:</SPAN></BIG>
+
+<P>
+New variable object.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Example usage:</SPAN></BIG><PRE>
+  x = model.addVar()                                     # all default arguments
+  y = model.addVar(vtype=GRB.INTEGER, obj=1.0, name="y") # arguments by name
+  z = model.addVar(0.0, 1.0, 1.0, GRB.BINARY, "z")       # arguments by position
+</PRE>
+
+<P>
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html7950"
+  HREF="py_model_chgcoeff.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html7948"
+  HREF="py_model.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html7942"
+  HREF="py_model_addsos.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html7951"
+  HREF="py_model_chgcoeff.html">Model.chgCoeff()</A>
+<B> Up:</B> <A NAME="tex2html7949"
+  HREF="py_model.html">Model</A>
+<B> Previous:</B> <A NAME="tex2html7943"
+  HREF="py_model_addsos.html">Model.addSOS()</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>GRBQConstr</TITLE>
+<META NAME="description" CONTENT="GRBQConstr">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="cpp_grbsos.html">
+<LINK REL="previous" HREF="cpp_grbconstr.html">
+<LINK REL="up" HREF="cpp_api_details.html">
+<LINK REL="next" HREF="cpp_grbqconstr_get.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html3372"
+  HREF="cpp_grbqconstr_get.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html3370"
+  HREF="cpp_api_details.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html3364"
+  HREF="cpp_grbconstr_set.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html3373"
+  HREF="cpp_grbqconstr_get.html">GRBQConstr::get()</A>
+<B> Up:</B> <A NAME="tex2html3371"
+  HREF="cpp_api_details.html">C++ API Details</A>
+<B> Previous:</B> <A NAME="tex2html3365"
+  HREF="cpp_grbconstr_set.html">GRBConstr::set()</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00045000000000000000"></A>
+<A NAME="cppclass:GRBQConstr"></A>
+<BR>
+GRBQConstr
+</H2>
+
+<P>
+Gurobi quadratic constraint object.  Quadratic constraints are always
+associated with a particular model.  You create a quadratic constraint
+object by adding a constraint to a model (using
+<A HREF="cpp_grbmodel_addqconstr.html#cppmethod:GRBModel::addQConstr">GRBModel::addQConstr</A>),
+rather than by using a <code>GRBQConstr</code> constructor.
+
+<P>
+The methods on quadratic constraint objects are used to get and set
+quadratic constraint attributes.  For example, quadratic constraint right-hand
+sides can be queried by calling 
+<A HREF="cpp_grbqconstr_get.html#cppmethod:GRBQConstr::get">get</A>(<code>GRB_DoubleAttr_QCRHS</code>).
+Note, however, that it is generally more
+efficient to query attributes for a set of constraints at once.  This
+is done using the attribute query method on the <code>GRBModel</code>
+object (<A HREF="cpp_grbmodel_get.html#cppmethod:GRBModel::get">GRBModel::get</A>).
+
+<P>
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html3374"
+  HREF="cpp_grbqconstr_get.html">GRBQConstr::get()</A>
+<LI><A NAME="tex2html3375"
+  HREF="cpp_grbqconstr_set.html">GRBQConstr::set()</A>
+</UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html3372"
+  HREF="cpp_grbqconstr_get.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html3370"
+  HREF="cpp_api_details.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html3364"
+  HREF="cpp_grbconstr_set.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html3373"
+  HREF="cpp_grbqconstr_get.html">GRBQConstr::get()</A>
+<B> Up:</B> <A NAME="tex2html3371"
+  HREF="cpp_api_details.html">C++ API Details</A>
+<B> Previous:</B> <A NAME="tex2html3365"
+  HREF="cpp_grbconstr_set.html">GRBConstr::set()</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

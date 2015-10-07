@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>ObjScale</TITLE>
+<META NAME="description" CONTENT="ObjScale">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="optimalitytol.html">
+<LINK REL="previous" HREF="numericfocus.html">
+<LINK REL="up" HREF="parameter_descriptions.html">
+<LINK REL="next" HREF="optimalitytol.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html11657"
+  HREF="optimalitytol.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html11655"
+  HREF="parameter_descriptions.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html11649"
+  HREF="numericfocus.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html11658"
+  HREF="optimalitytol.html">OptimalityTol</A>
+<B> Up:</B> <A NAME="tex2html11656"
+  HREF="parameter_descriptions.html">Parameter Descriptions</A>
+<B> Previous:</B> <A NAME="tex2html11650"
+  HREF="numericfocus.html">NumericFocus</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION0001426100000000000000"></A>
+<A NAME="parameter:ObjScale"></A>
+<BR>
+ObjScale
+</H3>
+Objective scaling
+
+<TABLE CELLPADDING=3>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf">Type:</SPAN></TH>
+<TD ALIGN="LEFT">double</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf">Default value:</SPAN></TH>
+<TD ALIGN="LEFT">0.0</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf">Minimum value:</SPAN></TH>
+<TD ALIGN="LEFT">-1</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf">Maximum value:</SPAN></TH>
+<TD ALIGN="LEFT">Infinity</TD>
+</TR>
+</TABLE>
+
+<P>
+Divides the model objective by the specified value to avoid numerical
+errors that may result from very large objective coefficients.  The
+default value of 0 decides on the scaling automatically.  A value less
+than zero uses the maximum coefficient to the specified power as the
+scaling (so <code>ObjScale=-0.5</code> would scale by the square root of
+the largest objective coefficient).
+
+<P>
+Objective scaling can be useful when the objective contains extremely
+large values, but it can also lead to large dual violations, so it
+should be used sparingly.
+
+<P>
+For examples of how to query or modify parameter values from
+our different APIs, refer to our
+<A HREF="parameter_examples.html#sec:ParameterExamples">Parameter Examples</A>.
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html11657"
+  HREF="optimalitytol.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html11655"
+  HREF="parameter_descriptions.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html11649"
+  HREF="numericfocus.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html11658"
+  HREF="optimalitytol.html">OptimalityTol</A>
+<B> Up:</B> <A NAME="tex2html11656"
+  HREF="parameter_descriptions.html">Parameter Descriptions</A>
+<B> Previous:</B> <A NAME="tex2html11650"
+  HREF="numericfocus.html">NumericFocus</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

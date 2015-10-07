@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Modifying Gurobi parameters</TITLE>
+<META NAME="description" CONTENT="Modifying Gurobi parameters">
+<META NAME="keywords" CONTENT="quickstart_mac">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="quickstart_mac.css">
+
+<LINK REL="next" HREF="matlab_solving_the_model.html">
+<LINK REL="previous" HREF="matlab_building_the_model.html">
+<LINK REL="up" HREF="matlab_interface.html">
+<LINK REL="next" HREF="matlab_solving_the_model.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html1533"
+  HREF="matlab_solving_the_model.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1531"
+  HREF="matlab_interface.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1525"
+  HREF="matlab_building_the_model.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1534"
+  HREF="matlab_solving_the_model.html">Solving the model</A>
+<B> Up:</B> <A NAME="tex2html1532"
+  HREF="matlab_interface.html">MATLAB Interface</A>
+<B> Previous:</B> <A NAME="tex2html1526"
+  HREF="matlab_building_the_model.html">Building the model</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION000125000000000000000">
+Modifying Gurobi parameters</A>
+</H2>
+<P>
+<EM>The next statements create a <code>struct</code> variable that will
+be used to modify two Gurobi parameters:
+</EM><PRE>
+params.outputflag = 0;
+params.resultfile = 'mip1.lp';
+</PRE><EM>
+In this example, we set the Gurobi <code>OutputFlag</code> parameter to 0
+in order to shut off Gurobi output.  We also set the <EM>  ResultFile</EM> parameter to request that Gurobi produce a file as
+output (in this case, a <code>LP</code> format file that contains the
+optimization model).  The Gurobi MATLAB interface allows you to set as
+many Gurobi parameters as you would like. The field names in the
+parameter structure simply need to match Gurobi parameter names,
+and the values of the fields should be set to the desired parameter value.
+Please consult the <EM>Parameters</EM> section of the
+<A NAME="tex2html47"
+  HREF="../refman/refman.html">Gurobi Reference Manual</A>
+for
+a complete list of all Gurobi parameters.
+</EM>
+<P>
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1533"
+  HREF="matlab_solving_the_model.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1531"
+  HREF="matlab_interface.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1525"
+  HREF="matlab_building_the_model.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1534"
+  HREF="matlab_solving_the_model.html">Solving the model</A>
+<B> Up:</B> <A NAME="tex2html1532"
+  HREF="matlab_interface.html">MATLAB Interface</A>
+<B> Previous:</B> <A NAME="tex2html1526"
+  HREF="matlab_building_the_model.html">Building the model</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

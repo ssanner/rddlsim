@@ -1,0 +1,180 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>GRBLinExpr</TITLE>
+<META NAME="description" CONTENT="GRBLinExpr">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="cpp_grbquadexpr.html">
+<LINK REL="previous" HREF="cpp_grbexpr.html">
+<LINK REL="up" HREF="cpp_api_details.html">
+<LINK REL="next" HREF="cpp_grblinexpr2.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html3440"
+  HREF="cpp_grblinexpr2.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html3438"
+  HREF="cpp_api_details.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html3432"
+  HREF="cpp_grbexpr_getvalue.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html3441"
+  HREF="cpp_grblinexpr2.html">GRBLinExpr()</A>
+<B> Up:</B> <A NAME="tex2html3439"
+  HREF="cpp_api_details.html">C++ API Details</A>
+<B> Previous:</B> <A NAME="tex2html3433"
+  HREF="cpp_grbexpr_getvalue.html">GRBExpr::getValue()</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00048000000000000000"></A>
+<A NAME="cppclass:GRBLinExpr"></A>
+<BR>
+GRBLinExpr
+</H2>
+
+<P>
+Gurobi linear expression object.  A linear expression consists of a
+constant term, plus a list of coefficient-variable pairs that capture
+the linear terms.  Linear expressions are used to build constraints.
+They are temporary objects that typically have short lifespans.
+
+<P>
+The <code>GRBLinExpr</code> class is a sub-class of the abstract base
+class <A HREF="cpp_grbexpr.html#cppclass:GRBExpr">GRBExpr</A>.
+
+<P>
+You generally build linear expressions using overloaded operators.
+For example, if <code>x</code> is a <A HREF="cpp_grbvar.html#cppclass:GRBVar">GRBVar</A>
+object, then <code>x + 1</code> is a
+<A HREF="#cppclass:GRBLinExpr">GRBLinExpr</A> object.  Expressions
+can be built from constants (e.g., <code>expr = 0</code>), variables (e.g.,
+<code>expr = 1 * x + 2 * y</code>), or from other expressions (e.g.,
+<TT>expr2 = 2 * expr1 + x</TT>, or <code>expr3 = expr1 + 2 * expr2</code>).
+You can also modify existing expressions (e.g., <code>expr += x</code>, or
+<code>expr2 -= expr1</code>).
+
+<P>
+Another option for building expressions is to use the
+<A HREF="cpp_grblinexpr_addterms.html#cppmethod:GRBLinExpr::addTerms">addTerms</A> method, which
+adds an array of new terms at once.  Terms can also be removed from an
+expression, using <A HREF="cpp_grblinexpr_remove.html#cppmethod:GRBLinExpr::remove">remove</A>.
+
+<P>
+Note that the cost of building expressions depends heavily on the
+approach you use.  While you can generally ignore this issue when
+building small expressions, you should be aware of a few efficiency
+issues when building large expressions:
+
+<UL>
+<LI>You should avoid using <code>expr = expr + x</code> in a loop.
+  It will lead to runtimes that are quadratic in the number of terms in
+  the expression.
+</LI>
+<LI>Using <code>expr += x</code> (or <code>expr -= x</code>) is much more efficient
+  than <code>expr = expr + x</code>.  Building a large expression by looping
+  over <code>+=</code> statements is reasonably efficient, but it isn't the
+  most efficient approach.
+</LI>
+<LI>The most efficient way to build a large expression is to make a
+  single call to
+  <A HREF="cpp_grblinexpr_addterms.html#cppmethod:GRBLinExpr::addTerms">addTerms</A>.
+</LI>
+</UL>
+
+<P>
+Individual terms in a linear expression can be queried using the
+<A HREF="cpp_grblinexpr_getvar.html#cppmethod:GRBLinExpr::getVar">getVar</A>,
+<A HREF="cpp_grblinexpr_getcoeff.html#cppmethod:GRBLinExpr::getCoeff">getCoeff</A>, and
+<A HREF="cpp_grblinexpr_getconstant.html#cppmethod:GRBLinExpr::getConstant">getConstant</A> methods.
+You can query the number of terms in the expression using the
+<A HREF="cpp_grblinexpr_size.html#cppmethod:GRBLinExpr::size">size</A> method.
+
+<P>
+Note that a linear expression may contain multiple terms that involve
+the same variable.  These duplicate terms are merged when creating a
+constraint from an expression, but they may be visible when inspecting
+individual terms in the expression (e.g., when using
+<A HREF="cpp_grblinexpr_getvar.html#cppmethod:GRBLinExpr::getVar">getVar</A>).
+
+<P>
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html3442"
+  HREF="cpp_grblinexpr2.html">GRBLinExpr()</A>
+<LI><A NAME="tex2html3443"
+  HREF="cpp_grblinexpr_addterms.html">GRBLinExpr::addTerms()</A>
+<LI><A NAME="tex2html3444"
+  HREF="cpp_grblinexpr_clear.html">GRBLinExpr::clear()</A>
+<LI><A NAME="tex2html3445"
+  HREF="cpp_grblinexpr_getconstant.html">GRBLinExpr::getConstant()</A>
+<LI><A NAME="tex2html3446"
+  HREF="cpp_grblinexpr_getcoeff.html">GRBLinExpr::getCoeff()</A>
+<LI><A NAME="tex2html3447"
+  HREF="cpp_grblinexpr_getvalue.html">GRBLinExpr::getValue()</A>
+<LI><A NAME="tex2html3448"
+  HREF="cpp_grblinexpr_getvar.html">GRBLinExpr::getVar()</A>
+<LI><A NAME="tex2html3449"
+  HREF="cpp_grblinexpr_oper_eq.html">GRBLinExpr::operator=</A>
+<LI><A NAME="tex2html3450"
+  HREF="cpp_grblinexpr_oper_plus.html">GRBLinExpr::operator+</A>
+<LI><A NAME="tex2html3451"
+  HREF="cpp_grblinexpr_oper_minus.html">GRBLinExpr::operator-</A>
+<LI><A NAME="tex2html3452"
+  HREF="cpp_grblinexpr_oper_pe.html">GRBLinExpr::operator+=</A>
+<LI><A NAME="tex2html3453"
+  HREF="cpp_grblinexpr_oper_me.html">GRBLinExpr::operator-=</A>
+<LI><A NAME="tex2html3454"
+  HREF="cpp_grblinexpr_oper_te.html">GRBLinExpr::operator*=</A>
+<LI><A NAME="tex2html3455"
+  HREF="cpp_grblinexpr_remove.html">GRBLinExpr::remove()</A>
+<LI><A NAME="tex2html3456"
+  HREF="cpp_grblinexpr_size.html">GRBLinExpr::size()</A>
+</UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html3440"
+  HREF="cpp_grblinexpr2.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html3438"
+  HREF="cpp_api_details.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html3432"
+  HREF="cpp_grbexpr_getvalue.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html3441"
+  HREF="cpp_grblinexpr2.html">GRBLinExpr()</A>
+<B> Up:</B> <A NAME="tex2html3439"
+  HREF="cpp_api_details.html">C++ API Details</A>
+<B> Previous:</B> <A NAME="tex2html3433"
+  HREF="cpp_grbexpr_getvalue.html">GRBExpr::getValue()</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

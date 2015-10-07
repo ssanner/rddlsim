@@ -1,0 +1,113 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Quadratic Constraint Attributes</TITLE>
+<META NAME="description" CONTENT="Quadratic Constraint Attributes">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="quality_attributes.html">
+<LINK REL="previous" HREF="sos_attributes.html">
+<LINK REL="up" HREF="attributes.html">
+<LINK REL="next" HREF="qcsense.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html10242"
+  HREF="qcsense.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html10240"
+  HREF="attributes.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html10234"
+  HREF="iissos.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html10243"
+  HREF="qcsense.html">QCSense</A>
+<B> Up:</B> <A NAME="tex2html10241"
+  HREF="attributes.html">Attributes</A>
+<B> Previous:</B> <A NAME="tex2html10235"
+  HREF="iissos.html">IISSOS</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION000135000000000000000">
+Quadratic Constraint Attributes</A>
+</H2>
+
+<P>
+These are quadratic constraint attributes, meaning that they are
+associated with specific quadratic constraints in the model.  You
+should use one of the various <code>get</code> routines to retrieve the
+value of an attribute.  These are described at the beginning of
+<A HREF="attributes.html#sec:Attributes">this section</A>).
+For the object-oriented interfaces, quadratic constraint attributes
+are retrieved by invoking the <code>get</code> method on a constraint
+object.  For attributes that can be modified directly by the user, you
+can use one of the various <code>set</code> methods.
+
+<P>
+Attempting to query an attribute that is not available will produce an
+error.  In C, the attribute query routine will return a
+<code>GRB_ERROR_DATA_NOT_AVAILABLE</code> error code.  The object-oriented
+interfaces will throw an exception.
+
+<P>
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html10244"
+  HREF="qcsense.html">QCSense</A>
+<LI><A NAME="tex2html10245"
+  HREF="qcrhs.html">QCRHS</A>
+<LI><A NAME="tex2html10246"
+  HREF="qcname.html">QCName</A>
+<LI><A NAME="tex2html10247"
+  HREF="qcpi.html">QCPi</A>
+<LI><A NAME="tex2html10248"
+  HREF="qcslack.html">QCSlack</A>
+<LI><A NAME="tex2html10249"
+  HREF="iisqconstr.html">IISQConstr</A>
+</UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html10242"
+  HREF="qcsense.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html10240"
+  HREF="attributes.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html10234"
+  HREF="iissos.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html10243"
+  HREF="qcsense.html">QCSense</A>
+<B> Up:</B> <A NAME="tex2html10241"
+  HREF="attributes.html">Attributes</A>
+<B> Previous:</B> <A NAME="tex2html10235"
+  HREF="iissos.html">IISSOS</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

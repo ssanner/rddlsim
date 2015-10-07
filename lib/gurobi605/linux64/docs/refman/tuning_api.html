@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Tuning API</TITLE>
+<META NAME="description" CONTENT="Tuning API">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="previous" HREF="command_line_tuning.html">
+<LINK REL="up" HREF="parameter_tuning_tool.html">
+<LINK REL="next" HREF="gurobi_remote_services.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html12430"
+  HREF="gurobi_remote_services.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html12428"
+  HREF="parameter_tuning_tool.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html12424"
+  HREF="command_line_tuning.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html12431"
+  HREF="gurobi_remote_services.html">Gurobi Remote Services</A>
+<B> Up:</B> <A NAME="tex2html12429"
+  HREF="parameter_tuning_tool.html">Parameter Tuning Tool</A>
+<B> Previous:</B> <A NAME="tex2html12425"
+  HREF="command_line_tuning.html">Command-Line Tuning</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION000222000000000000000"></A>
+<A NAME="sec:TuningAPI"></A>
+<BR>
+Tuning API
+</H2>
+
+<P>
+The tuning tool can be invoked from our
+<A HREF="c_grbtunemodel.html#routine:GRBtunemodel">C</A>,
+<A HREF="cpp_grbmodel_tune.html#cppmethod:GRBModel::tune">C++</A>,
+<A HREF="java_grbmodel_tune.html#javamethod:GRBModel.tune">Java</A>,
+<A HREF="cs_grbmodel_tune.html#dotnetmethod:GRBModel.Tune">.NET</A>, and
+<A HREF="py_model_tune.html#pythonmethod:Model.tune">Python</A> interfaces.  The tool
+behaves slightly differently when invoked from these interfaces.
+Rather than writing the results to a set of files, upon completion the
+tool populates a
+<A HREF="tuneresultcount.html#attr:TuneResultCount">TuneResultCount</A> attribute,
+which gives a count of the number of improving parameter sets that
+were found and retained.  The user program can then query the value
+of this attribute, and then use the <code>GetTuneResult</code> method to
+copy any of these parameter sets into a model (using
+<A HREF="c_grbgettuneresult.html#routine:GRBgettuneresult">C</A>,
+<A HREF="cpp_grbmodel_gettuneresult.html#cppmethod:GRBModel::getTuneResult">C++</A>,
+<A HREF="java_grbmodel_gettuneresul.html#javamethod:GRBModel.getTuneResult">Java</A>,
+<A HREF="cs_grbmodel_gettuneresult.html#dotnetmethod:GRBModel.GetTuneResult">.NET</A>, or
+<A HREF="py_model_gettuneresult.html#pythonmethod:Model.getTuneResult">Python</A>).  Once
+loaded into the model, the parameter set can be used to perform a
+subsequent optimization, or the list of changed parameters can be
+written to a <code>.prm</code> file using the appropriate <code>Write</code>
+routine (from <A HREF="c_grbwrite.html#routine:GRBwrite">C</A>,
+<A HREF="cpp_grbmodel_write.html#cppmethod:GRBModel::write">C++</A>,
+<A HREF="java_grbmodel_write.html#javamethod:GRBModel.write">Java</A>,
+<A HREF="cs_grbmodel_write.html#dotnetmethod:GRBModel.Write">.NET</A>, or
+<A HREF="py_model_write.html#pythonmethod:Model.write">Python</A>).
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html12430"
+  HREF="gurobi_remote_services.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html12428"
+  HREF="parameter_tuning_tool.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html12424"
+  HREF="command_line_tuning.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html12431"
+  HREF="gurobi_remote_services.html">Gurobi Remote Services</A>
+<B> Up:</B> <A NAME="tex2html12429"
+  HREF="parameter_tuning_tool.html">Parameter Tuning Tool</A>
+<B> Previous:</B> <A NAME="tex2html12425"
+  HREF="command_line_tuning.html">Command-Line Tuning</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

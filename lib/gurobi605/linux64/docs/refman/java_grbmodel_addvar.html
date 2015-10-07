@@ -1,0 +1,297 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>GRBModel.addVar()</TITLE>
+<META NAME="description" CONTENT="GRBModel.addVar()">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="java_grbmodel_addvars.html">
+<LINK REL="previous" HREF="java_grbmodel_addsos.html">
+<LINK REL="up" HREF="java_grbmodel.html">
+<LINK REL="next" HREF="java_grbmodel_addvars.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html4659"
+  HREF="java_grbmodel_addvars.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html4657"
+  HREF="java_grbmodel.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html4651"
+  HREF="java_grbmodel_addsos.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html4660"
+  HREF="java_grbmodel_addvars.html">GRBModel.addVars()</A>
+<B> Up:</B> <A NAME="tex2html4658"
+  HREF="java_grbmodel.html">GRBModel</A>
+<B> Previous:</B> <A NAME="tex2html4652"
+  HREF="java_grbmodel_addsos.html">GRBModel.addSOS()</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00062800000000000000"></A>
+<A NAME="javamethod:GRBModel.addVar"></A>
+<BR>
+GRBModel.addVar()
+</H3>
+
+<P>
+Add a single decision variable to a model.
+
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">GRBVar</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">addVar</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT">double</TD>
+<TD ALIGN="LEFT">lb,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">double</TD>
+<TD ALIGN="LEFT">ub,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">double</TD>
+<TD ALIGN="LEFT">obj,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">char</TD>
+<TD ALIGN="LEFT">type,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">String</TD>
+<TD ALIGN="LEFT">name )</TD>
+</TR>
+</TABLE>
+
+<UL>
+Add a variable to a model; non-zero entries will be added later.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">lb</SPAN>: Lower bound for new variable.
+
+<P>
+ <SPAN  CLASS="textbf">ub</SPAN>: Upper bound for new variable.
+
+<P>
+ <SPAN  CLASS="textbf">obj</SPAN>: Objective coefficient for new variable.
+
+<P>
+ <SPAN  CLASS="textbf">type</SPAN>: Variable type for new variable (<TT>GRB.CONTINUOUS</TT>,
+  <TT>GRB.BINARY</TT>, <TT>GRB.INTEGER</TT>,  <TT>GRB.SEMICONT</TT>, or <TT>GRB.SEMIINT</TT>).
+
+<P>
+ <SPAN  CLASS="textbf">name</SPAN>: Name for new variable.
+
+<P>
+
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Return value:</SPAN></BIG>
+
+<P>
+New variable object.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">GRBVar</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">addVar</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT">double</TD>
+<TD ALIGN="LEFT">lb,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">double</TD>
+<TD ALIGN="LEFT">ub,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">double</TD>
+<TD ALIGN="LEFT">obj,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">char</TD>
+<TD ALIGN="LEFT">type,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">GRBConstr[]</TD>
+<TD ALIGN="LEFT">constrs,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">double[]</TD>
+<TD ALIGN="LEFT">coeffs,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">String</TD>
+<TD ALIGN="LEFT">name )</TD>
+</TR>
+</TABLE>
+
+<UL>
+Add a variable to a model, and the associated non-zero coefficients.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">lb</SPAN>: Lower bound for new variable.
+
+<P>
+ <SPAN  CLASS="textbf">ub</SPAN>: Upper bound for new variable.
+
+<P>
+ <SPAN  CLASS="textbf">obj</SPAN>: Objective coefficient for new variable.
+
+<P>
+ <SPAN  CLASS="textbf">type</SPAN>: Variable type for new variable (<TT>GRB.CONTINUOUS</TT>,
+  <TT>GRB.BINARY</TT>, <TT>GRB.INTEGER</TT>,  <TT>GRB.SEMICONT</TT>, or <TT>GRB.SEMIINT</TT>).
+
+<P>
+ <SPAN  CLASS="textbf">constrs</SPAN>: Array of constraints in which the variable participates.
+
+<P>
+ <SPAN  CLASS="textbf">coeffs</SPAN>: Array of coefficients for each constraint in which
+  the variable participates.  The lengths of the <TT>constrs</TT> and
+  <TT>coeffs</TT> arrays must be identical.
+
+<P>
+ <SPAN  CLASS="textbf">name</SPAN>: Name for new variable.
+
+<P>
+
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Return value:</SPAN></BIG>
+
+<P>
+New variable object.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">GRBVar</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">addVar</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT">double</TD>
+<TD ALIGN="LEFT">lb,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">double</TD>
+<TD ALIGN="LEFT">ub,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">double</TD>
+<TD ALIGN="LEFT">obj,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">char</TD>
+<TD ALIGN="LEFT">type,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">GRBColumn</TD>
+<TD ALIGN="LEFT">col,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">String</TD>
+<TD ALIGN="LEFT">name )</TD>
+</TR>
+</TABLE>
+
+<UL>
+Add a variable to a model. This signature allows you to specify
+the set of constraints to which the new variable belongs using a
+<A HREF="java_grbcolumn.html#javaclass:GRBColumn">GRBColumn</A> object.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">lb</SPAN>: Lower bound for new variable.
+
+<P>
+ <SPAN  CLASS="textbf">ub</SPAN>: Upper bound for new variable.
+
+<P>
+ <SPAN  CLASS="textbf">obj</SPAN>: Objective coefficient for new variable.
+
+<P>
+ <SPAN  CLASS="textbf">type</SPAN>: Variable type for new variable (<TT>GRB.CONTINUOUS</TT>,
+  <TT>GRB.BINARY</TT>, <TT>GRB.INTEGER</TT>,  <TT>GRB.SEMICONT</TT>, or <TT>GRB.SEMIINT</TT>).
+
+<P>
+ <SPAN  CLASS="textbf">col</SPAN>: GRBColumn object for specifying a set of constraints to
+which new variable belongs.
+
+<P>
+ <SPAN  CLASS="textbf">name</SPAN>: Name for new variable.
+
+<P>
+
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Return value:</SPAN></BIG>
+
+<P>
+New variable object.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html4659"
+  HREF="java_grbmodel_addvars.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html4657"
+  HREF="java_grbmodel.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html4651"
+  HREF="java_grbmodel_addsos.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html4660"
+  HREF="java_grbmodel_addvars.html">GRBModel.addVars()</A>
+<B> Up:</B> <A NAME="tex2html4658"
+  HREF="java_grbmodel.html">GRBModel</A>
+<B> Previous:</B> <A NAME="tex2html4652"
+  HREF="java_grbmodel_addsos.html">GRBModel.addSOS()</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

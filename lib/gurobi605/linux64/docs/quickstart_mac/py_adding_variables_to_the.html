@@ -1,0 +1,93 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Adding variables to the model</TITLE>
+<META NAME="description" CONTENT="Adding variables to the model">
+<META NAME="keywords" CONTENT="quickstart_mac">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="quickstart_mac.css">
+
+<LINK REL="next" HREF="py_updating_the_model_lazy.html">
+<LINK REL="previous" HREF="py_creating_the_model.html">
+<LINK REL="up" HREF="py_example_mip1_py.html">
+<LINK REL="next" HREF="py_updating_the_model_lazy.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html1260"
+  HREF="py_updating_the_model_lazy.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1258"
+  HREF="py_example_mip1_py.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1252"
+  HREF="py_creating_the_model.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1261"
+  HREF="py_updating_the_model_lazy.html">Updating the model -</A>
+<B> Up:</B> <A NAME="tex2html1259"
+  HREF="py_example_mip1_py.html">Example mip1.py</A>
+<B> Previous:</B> <A NAME="tex2html1253"
+  HREF="py_creating_the_model.html">Creating the model</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000112300000000000000">
+Adding variables to the model</A>
+</H3>
+<P>
+<EM>The next step in our example is to add variables to the model.
+</EM><PRE>
+  # Create variables
+  x = m.addVar(vtype=GRB.BINARY, name="x")
+  y = m.addVar(vtype=GRB.BINARY, name="y")
+  z = m.addVar(vtype=GRB.BINARY, name="z")
+</PRE><EM>
+Variables are added through the <code>addVar()</code> method on a model
+object.  A variable is always associated with a particular model.
+</EM>
+<P>
+<EM>Python allows you to pass arguments by position or by name.  We've
+passed them by name here.  Each variable gets a type (binary), and
+a name.  We use the default values for the other arguments.
+Please refer to the online help (<code>help(Model.addVar)</code>
+in the Gurobi Shell) for further details on <code>addVar()</code>.
+</EM>
+<P>
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1260"
+  HREF="py_updating_the_model_lazy.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1258"
+  HREF="py_example_mip1_py.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1252"
+  HREF="py_creating_the_model.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1261"
+  HREF="py_updating_the_model_lazy.html">Updating the model -</A>
+<B> Up:</B> <A NAME="tex2html1259"
+  HREF="py_example_mip1_py.html">Example mip1.py</A>
+<B> Previous:</B> <A NAME="tex2html1253"
+  HREF="py_creating_the_model.html">Creating the model</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

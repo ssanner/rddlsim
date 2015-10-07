@@ -1,0 +1,222 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>lpmod_c.c</TITLE>
+<META NAME="description" CONTENT="lpmod_c.c">
+<META NAME="keywords" CONTENT="examples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="examples.css">
+
+<LINK REL="next" HREF="mip1_c_c.html">
+<LINK REL="previous" HREF="lpmethod_c_c.html">
+<LINK REL="up" HREF="c_examples.html">
+<LINK REL="next" HREF="mip1_c_c.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html613"
+  HREF="mip1_c_c.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html611"
+  HREF="c_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html605"
+  HREF="lpmethod_c_c.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html614"
+  HREF="mip1_c_c.html">mip1_c.c</A>
+<B> Up:</B> <A NAME="tex2html612"
+  HREF="c_examples.html">C Examples</A>
+<B> Previous:</B> <A NAME="tex2html606"
+  HREF="lpmethod_c_c.html">lpmethod_c.c</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00021900000000000000"></A>
+<A NAME="subsubsection:lpmod_c.c"></A>
+<BR>
+lpmod_c.c
+</H3>
+
+<P>
+<BR>
+<PRE  CLASS="verbatim">/* Copyright 2014, Gurobi Optimization, Inc. */
+
+/* This example reads an LP model from a file and solves it.
+   If the model can be solved, then it finds the smallest positive variable,
+   sets its upper bound to zero, and resolves the model two ways:
+   first with an advanced start, then without an advanced start
+   (i.e. 'from scratch'). */
+
+#include &lt;stdlib.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;math.h&gt;
+#include &lt;string.h&gt;
+#include "gurobi_c.h"
+
+int
+main(int   argc,
+     char *argv[])
+{
+  GRBenv   *env   = NULL;
+  GRBmodel *model = NULL;
+  int       error = 0;
+  int       j;
+  int       numvars, isMIP, status, minVar = 0;
+  double    minVal = GRB_INFINITY, sol, lb;
+  char     *varname;
+  double    warmCount, warmTime, coldCount, coldTime;
+
+  if (argc &lt; 2)
+  {
+    fprintf(stderr, "Usage: lpmod_c filename\n");
+    exit(1);
+  }
+
+  error = GRBloadenv(&amp;env, "lpmod.log");
+  if (error) goto QUIT;
+
+  /* Read model and determine whether it is an LP */
+  error = GRBreadmodel(env, argv[1], &amp;model);
+  if (error) goto QUIT;
+  error = GRBgetintattr(model, "IsMIP", &amp;isMIP);
+  if (error) goto QUIT;
+  if (isMIP)
+  {
+    printf("The model is not a linear program\n");
+    goto QUIT;
+  }
+
+  error = GRBoptimize(model);
+  if (error) goto QUIT;
+
+  error = GRBgetintattr(model, "Status", &amp;status);
+  if (error) goto QUIT;
+
+  if ((status == GRB_INF_OR_UNBD) || (status == GRB_INFEASIBLE) ||
+      (status == GRB_UNBOUNDED))
+  {
+    printf("The model cannot be solved because it is ");
+    printf("infeasible or unbounded\n");
+    goto QUIT;
+  }
+
+  if (status != GRB_OPTIMAL)
+  {
+    printf("Optimization was stopped with status %i\n", status);
+    goto QUIT;
+  }
+
+  /* Find the smallest variable value */
+  error = GRBgetintattr(model, "NumVars", &amp;numvars);
+  if (error) goto QUIT;
+  for (j = 0; j &lt; numvars; ++j)
+  {
+    error = GRBgetdblattrelement(model, "X", j, &amp;sol);
+    if (error) goto QUIT;
+    error = GRBgetdblattrelement(model, "LB", j, &amp;lb);
+    if (error) goto QUIT;
+    if ((sol &gt; 0.0001) &amp;&amp; (sol &lt; minVal) &amp;&amp;
+        (lb == 0.0))
+    {
+      minVal = sol;
+      minVar = j;
+    }
+  }
+
+  error = GRBgetstrattrelement(model, "VarName", minVar, &amp;varname);
+  if (error) goto QUIT;
+  printf("\n*** Setting %s from %f to zero ***\n\n", varname, minVal);
+  error = GRBsetdblattrelement(model, "LB", minVar, 0.0);
+  if (error) goto QUIT;
+
+  /* Solve from this starting point */
+  error = GRBoptimize(model);
+  if (error) goto QUIT;
+
+  /* Save iteration &amp; time info */
+  error = GRBgetdblattr(model, "IterCount", &amp;warmCount);
+  if (error) goto QUIT;
+  error = GRBgetdblattr(model, "Runtime", &amp;warmTime);
+  if (error) goto QUIT;
+
+  /* Reset the model and resolve */
+  printf("\n*** Resetting and solving ");
+  printf("without an advanced start ***\n\n");
+  error = GRBresetmodel(model);
+  if (error) goto QUIT;
+  error = GRBoptimize(model);
+  if (error) goto QUIT;
+
+  /* Save iteration &amp; time info */
+  error = GRBgetdblattr(model, "IterCount", &amp;coldCount);
+  if (error) goto QUIT;
+  error = GRBgetdblattr(model, "Runtime", &amp;coldTime);
+  if (error) goto QUIT;
+
+  printf("\n*** Warm start: %f iterations, %f seconds\n",
+         warmCount, warmTime);
+  printf("*** Cold start: %f iterations, %f seconds\n",
+         coldCount, coldTime);
+
+
+QUIT:
+
+  /* Error reporting */
+
+  if (error)
+  {
+    printf("ERROR: %s\n", GRBgeterrormsg(env));
+    exit(1);
+  }
+
+  /* Free model */
+
+  GRBfreemodel(model);
+
+  /* Free environment */
+
+  GRBfreeenv(env);
+
+  return 0;
+}
+</PRE>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html613"
+  HREF="mip1_c_c.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html611"
+  HREF="c_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html605"
+  HREF="lpmethod_c_c.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html614"
+  HREF="mip1_c_c.html">mip1_c.c</A>
+<B> Up:</B> <A NAME="tex2html612"
+  HREF="c_examples.html">C Examples</A>
+<B> Previous:</B> <A NAME="tex2html606"
+  HREF="lpmethod_c_c.html">lpmethod_c.c</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

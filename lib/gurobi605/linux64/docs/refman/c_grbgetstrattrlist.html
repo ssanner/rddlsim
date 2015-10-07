@@ -1,0 +1,167 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>GRBgetstrattrlist</TITLE>
+<META NAME="description" CONTENT="GRBgetstrattrlist">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="c_grbsetstrattrlist.html">
+<LINK REL="previous" HREF="c_grbsetstrattrarray.html">
+<LINK REL="up" HREF="c_attribute_management.html">
+<LINK REL="next" HREF="c_grbsetstrattrlist.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html2125"
+  HREF="c_grbsetstrattrlist.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html2123"
+  HREF="c_attribute_management.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html2117"
+  HREF="c_grbsetstrattrarray.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html2126"
+  HREF="c_grbsetstrattrlist.html">GRBsetstrattrlist</A>
+<B> Up:</B> <A NAME="tex2html2124"
+  HREF="c_attribute_management.html">Attribute Management</A>
+<B> Previous:</B> <A NAME="tex2html2118"
+  HREF="c_grbsetstrattrarray.html">GRBsetstrattrarray</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000263000000000000000"></A>
+<A NAME="routine:GRBgetstrattrlist"></A>
+<BR>
+GRBgetstrattrlist
+</H3>
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">GRBgetstrattrlist</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT">GRBmodel</TD>
+<TD ALIGN="LEFT">*model,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">const char</TD>
+<TD ALIGN="LEFT">*attrname,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">len,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">*ind,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">char</TD>
+<TD ALIGN="LEFT">**values )</TD>
+</TR>
+</TABLE>
+
+<P>
+Query the values of a string-valued array attribute.
+
+<P>
+
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Return value:</SPAN></BIG>
+
+<P>
+A non-zero return value indicates that a problem occurred while querying the attribute.
+Refer to the <A HREF="error_codes.html#sec:ErrorCodes">Error Code</A> table for a
+list of possible return values.  Details on the error can be obtained
+by calling <A HREF="c_grbgeterrormsg.html#routine:GRBgeterrormsg">GRBgeterrormsg</A>.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">model</SPAN>: A loaded optimization model, typically created by routine
+<A HREF="c_grbnewmodel.html#routine:GRBnewmodel">GRBnewmodel</A> or
+<A HREF="c_grbreadmodel.html#routine:GRBreadmodel">GRBreadmodel</A>.
+
+<P>
+ <SPAN  CLASS="textbf">attrname</SPAN>: The name of a string-valued array attribute. Available
+attributes are listed and described in the
+<A HREF="attributes.html#sec:Attributes">Attributes</A> section of this document.
+
+<P>
+ <SPAN  CLASS="textbf">len</SPAN>: The number of attribute elements to retrive.
+
+<P>
+ <SPAN  CLASS="textbf">ind</SPAN>: The indices of the desired attribute elements.
+
+<P>
+ <SPAN  CLASS="textbf">values</SPAN>: A pointer to the location where the requested
+  attribute elements should be returned.  Note that the result array
+  must be as long as the requested index list.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Important notes:</SPAN></BIG>
+
+<P>
+Note that all interface routines that return string-valued attributes
+are returning pointers into internal Gurobi data structures.  The user
+should copy the contents of the pointer to a different data structure
+before the next call to a Gurobi library routine.  The user should
+also be careful to never modify the data pointed to by the returned
+character pointer.
+
+<P>
+Note that this method should be used for array attributes only (i.e.,
+variable or constraint attributes).  To modify a scalar attribute
+(i.e., a model attribute), use
+<A HREF="c_grbsetstrattr.html#routine:GRBsetstrattr">GRBsetstrattr</A> instead.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Example usage:</SPAN></BIG><PRE>
+  int desired[] = {0, 2, 4, 6};
+  char **varnames[4];
+  error = GRBgetstrattrarray(model, "VarName", 4, desired, varnames);
+</PRE>
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html2125"
+  HREF="c_grbsetstrattrlist.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html2123"
+  HREF="c_attribute_management.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html2117"
+  HREF="c_grbsetstrattrarray.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html2126"
+  HREF="c_grbsetstrattrlist.html">GRBsetstrattrlist</A>
+<B> Up:</B> <A NAME="tex2html2124"
+  HREF="c_attribute_management.html">Attribute Management</A>
+<B> Previous:</B> <A NAME="tex2html2118"
+  HREF="c_grbsetstrattrarray.html">GRBsetstrattrarray</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

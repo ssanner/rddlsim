@@ -1,0 +1,154 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>feasopt_vb.vb</TITLE>
+<META NAME="description" CONTENT="feasopt_vb.vb">
+<META NAME="keywords" CONTENT="examples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="examples.css">
+
+<LINK REL="next" HREF="fixanddive_vb_vb.html">
+<LINK REL="previous" HREF="facility_vb_vb.html">
+<LINK REL="up" HREF="visual_basic_examples.html">
+<LINK REL="next" HREF="fixanddive_vb_vb.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html1661"
+  HREF="fixanddive_vb_vb.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1659"
+  HREF="visual_basic_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1653"
+  HREF="facility_vb_vb.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1662"
+  HREF="fixanddive_vb_vb.html">fixanddive_vb.vb</A>
+<B> Up:</B> <A NAME="tex2html1660"
+  HREF="visual_basic_examples.html">Visual Basic Examples</A>
+<B> Previous:</B> <A NAME="tex2html1654"
+  HREF="facility_vb_vb.html">facility_vb.vb</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00025500000000000000"></A>
+<A NAME="subsubsection:feasopt_vb.vb"></A>
+<BR>
+feasopt_vb.vb
+</H3>
+
+<P>
+<BR>
+<PRE  CLASS="verbatim">' Copyright 2014, Gurobi Optimization, Inc.
+'
+' This example reads a MIP model from a file, adds artificial
+' variables to each constraint, and then minimizes the sum of the
+' artificial variables.  A solution with objective zero corresponds
+' to a feasible solution to the input model.
+' We can also use FeasRelax feature to do it. In this example, we
+' use minrelax=1, i.e. optimizing the returned model finds a solution
+' that minimizes the original objective, but only from among those
+' solutions that minimize the sum of the artificial variables.
+
+Imports Gurobi
+Imports System
+
+Class feasopt_vb
+    Shared Sub Main(ByVal args As String())
+
+        If args.Length &lt; 1 Then
+            Console.WriteLine("Usage: feasopt_vb filename")
+            Return
+        End If
+
+        Try
+            Dim env As New GRBEnv()
+            Dim feasmodel As New GRBModel(env, args(0))
+
+            'Create a copy to use FeasRelax feature later
+            Dim feasmodel1 As New GRBModel(feasmodel)
+
+            ' Clear objective
+            feasmodel.SetObjective(New GRBLinExpr())
+
+            ' Add slack variables
+            Dim c As GRBConstr() = feasmodel.GetConstrs()
+            For i As Integer = 0 To c.Length - 1
+                Dim sense As Char = c(i).Get(GRB.CharAttr.Sense)
+                If sense &lt;&gt; "&gt;"c Then
+                    Dim constrs As GRBConstr() = New GRBConstr() {c(i)}
+                    Dim coeffs As Double() = New Double() {-1}
+                    feasmodel.AddVar(0.0, GRB.INFINITY, 1.0, GRB.CONTINUOUS, _
+                                     constrs, coeffs, _
+                                     "ArtN_" &amp; c(i).Get(GRB.StringAttr.ConstrName))
+                End If
+                If sense &lt;&gt; "&lt;"c Then
+                    Dim constrs As GRBConstr() = New GRBConstr() {c(i)}
+                    Dim coeffs As Double() = New Double() {1}
+                    feasmodel.AddVar(0.0, GRB.INFINITY, 1.0, GRB.CONTINUOUS, _
+                                     constrs, coeffs, _
+                                     "ArtP_" &amp; c(i).Get(GRB.StringAttr.ConstrName))
+                End If
+            Next
+            feasmodel.Update()
+
+            ' Optimize modified model
+            feasmodel.Write("feasopt.lp")
+            feasmodel.Optimize()
+
+            ' Use FeasRelax feature */
+            feasmodel1.FeasRelax(GRB.FEASRELAX_LINEAR, true, false, true)
+            feasmodel1.Write("feasopt1.lp")
+            feasmodel1.Optimize()
+
+            ' Dispose of model and env
+            feasmodel1.Dispose()
+            feasmodel.Dispose()
+            env.Dispose()
+
+        Catch e As GRBException
+            Console.WriteLine("Error code: " &amp; e.ErrorCode &amp; ". " &amp; e.Message)
+        End Try
+    End Sub
+End Class
+</PRE>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1661"
+  HREF="fixanddive_vb_vb.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1659"
+  HREF="visual_basic_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1653"
+  HREF="facility_vb_vb.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1662"
+  HREF="fixanddive_vb_vb.html">fixanddive_vb.vb</A>
+<B> Up:</B> <A NAME="tex2html1660"
+  HREF="visual_basic_examples.html">Visual Basic Examples</A>
+<B> Previous:</B> <A NAME="tex2html1654"
+  HREF="facility_vb_vb.html">facility_vb.vb</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

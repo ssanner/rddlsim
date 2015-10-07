@@ -1,0 +1,91 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Flow conservation constraints</TITLE>
+<META NAME="description" CONTENT="Flow conservation constraints">
+<META NAME="keywords" CONTENT="quickstart_windows">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="quickstart_windows.css">
+
+<LINK REL="next" HREF="py_results.html">
+<LINK REL="previous" HREF="py_arc_capacity_constraint.html">
+<LINK REL="up" HREF="py_python_dictionary_examp.html">
+<LINK REL="next" HREF="py_results.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html1448"
+  HREF="py_results.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1446"
+  HREF="py_python_dictionary_examp.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1440"
+  HREF="py_arc_capacity_constraint.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1449"
+  HREF="py_results.html">Results</A>
+<B> Up:</B> <A NAME="tex2html1447"
+  HREF="py_python_dictionary_examp.html">Python Dictionary Example</A>
+<B> Previous:</B> <A NAME="tex2html1441"
+  HREF="py_arc_capacity_constraint.html">Arc capacity constraints</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION0001131000000000000000">
+Flow conservation constraints</A>
+</H3>
+
+<P>
+The next set of constraints are the flow conservation constraints.  They
+require that, for each commodity and node, the sum of the flow into
+the node plus the quantity of external inflow at that node must be equal
+to the sum of the flow out of the node:
+<PRE>
+for h in commodities:
+  for j in nodes:
+    m.addConstr(
+      quicksum(flow[h,i,j] for i,j in arcs.select('*',j)) + inflow[h,j] ==
+      quicksum(flow[h,j,k] for j,k in arcs.select(j,'*')),
+               'node_%s_%s' % (h, j))
+</PRE>
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1448"
+  HREF="py_results.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1446"
+  HREF="py_python_dictionary_examp.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1440"
+  HREF="py_arc_capacity_constraint.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1449"
+  HREF="py_results.html">Results</A>
+<B> Up:</B> <A NAME="tex2html1447"
+  HREF="py_python_dictionary_examp.html">Python Dictionary Example</A>
+<B> Previous:</B> <A NAME="tex2html1441"
+  HREF="py_arc_capacity_constraint.html">Arc capacity constraints</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

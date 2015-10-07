@@ -1,0 +1,165 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Distributed MIP Logging</TITLE>
+<META NAME="description" CONTENT="Distributed MIP Logging">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="previous" HREF="mip_logging.html">
+<LINK REL="up" HREF="logging.html">
+<LINK REL="next" HREF="gurobi_command_line_tool.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html12360"
+  HREF="gurobi_command_line_tool.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html12358"
+  HREF="logging.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html12354"
+  HREF="mip_logging.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html12361"
+  HREF="gurobi_command_line_tool.html">Gurobi Command-Line Tool</A>
+<B> Up:</B> <A NAME="tex2html12359"
+  HREF="logging.html">Logging</A>
+<B> Previous:</B> <A NAME="tex2html12355"
+  HREF="mip_logging.html">MIP Logging</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION000195000000000000000"></A>
+<A NAME="sec:DistributedMIPLogging"></A>
+<BR>
+Distributed MIP Logging
+</H2>
+
+<P>
+Logging for distributed MIP is very similar to the standard MIP logging.  The main
+differences are in the progress section.  The header for the standard MIP logging looks
+like this:
+<PRE>
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+</PRE>
+By contrast, the distributed MIP header looks like this:
+<PRE>
+    Nodes    |    Utilizaiton     |     Objective Bounds      |     Work
+ Expl Unexpl |  Active Sync Comm  | Incumbent    BestBd   Gap | It/Node Time
+</PRE>
+You'll note that columns three through five show different
+information.  In the distributed MIP log, these columns give
+information about the utilization of the distributed workers,
+expressed as percentages.  The first of these columns shows the
+fraction of the preceding time period (the time since the previous
+progress log line) that the workers spent actively processing MIP
+nodes.  The second column shows the time the workers spent waiting for
+other workers to complete tasks assigned to them.  The final column
+shows the time spent communicating data between machines.  The numbers
+sum to 100%.
+
+<P>
+Here is an example of a distributed MIP progress log:
+<PRE>
+    Nodes    |    Utilization     |     Objective Bounds      |     Work
+ Expl Unexpl |  Active Sync Comm  | Incumbent    BestBd   Gap | It/Node Time
+
+*    0     -                    157344.61033          -      -     -    0s
+*    0     -                    41359.940833          -      -     -    0s
+*    0     -                    25050.545455          -      -     -    0s
+*    0     -                    18150.083886          -      -     -    0s
+*    0     -                    14372.871258          -      -     -    0s
+*    0     -                    13725.475382          -      -     -    0s
+*  261     -                    13570.462316          -      -     -    0s
+*    0     -                    13308.140897          -      -     -    0s
+*  747     -                    12821.371258          -      -     -    0s
+   262   149     99%   0%   0%    12821.3713 10617.6273  17.2%   3.4    0s
+* 1060     -                    12356.371258 10617.6273  14.1%     -    0s
+* 2413     -                    12010.589689 10617.6273  11.6%     -    0s
+
+Ramp-up phase complete - continuing with instance 4 (best bd 10669.8)
+
+* 6881     -                    11956.589689 10669.8486  10.8%     -    2s
+* 6951     -                    11945.263051 10669.8486  10.7%     -    2s
+*101868     -                    11891.263051 10943.0036  7.97%     -    2s
+*614787     -                    11857.371258 11136.5161  6.08%     -    4s
+ 1140819 388613     99%   1%   0%    11857.3713 11231.3942  5.28%   4.6    5s
+*1946490      -                    11801.185729 11306.6196  4.19%     -    8s
+ 2683258 497092     86%  14%   1%    11801.1857 11364.3331  3.70%   4.6   10s
+ 4143934 185856     69%   4%  26%    11801.1857 11468.7845  2.82%   4.4   15s
+ 4569003    21     57%   2%  41%    11801.1857 11800.6434  0.00%   4.4   18s
+</PRE>
+
+<P>
+One thing you may find in the progress section is that node counts may
+not increase monotonically.  In this example, a solution found at
+node 261 is reported before a solution found at node 0.
+Distributed MIP tries to create a single, unified view of node
+numbers, but with multiple machines processing nodes independently,
+possibly at different rates, some inconsistencies are inevitable.
+
+<P>
+Another difference is the line that indicates that the distributed
+ramp-up phase is complete.  At this point, the distributed strategy
+transitions from a concurrent approach to a distributed approach.  The
+log line indicates which worker was the <EM>winner</EM> in the
+concurrent approach.  Distributed MIP continues by dividing the
+partially explored MIP search tree from this worker among all of the
+workers.
+
+<P>
+Another difference in the distributed log is in the summary section.
+The distributed MIP log includes a breakdown of how runtime was spent:
+<PRE>
+Runtime breakdown:
+  Active:  13.73s (75%)
+  Sync:     1.16s (6%)
+  Comm:     3.45s (19%)
+</PRE>
+This is an aggregated view of the utilization data that is displayed in the progress
+log lines.  In this example, the workers spent 75% of runtime actively working on
+MIP nodes, 6% waiting to synchronize with other workers, and 19% communicating
+data between machines.
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html12360"
+  HREF="gurobi_command_line_tool.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html12358"
+  HREF="logging.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html12354"
+  HREF="mip_logging.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html12361"
+  HREF="gurobi_command_line_tool.html">Gurobi Command-Line Tool</A>
+<B> Up:</B> <A NAME="tex2html12359"
+  HREF="logging.html">Logging</A>
+<B> Previous:</B> <A NAME="tex2html12355"
+  HREF="mip_logging.html">MIP Logging</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

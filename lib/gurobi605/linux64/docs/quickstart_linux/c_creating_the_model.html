@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Creating the model</TITLE>
+<META NAME="description" CONTENT="Creating the model">
+<META NAME="keywords" CONTENT="quickstart_linux">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="quickstart_linux.css">
+
+<LINK REL="next" HREF="c_adding_variables_to_the_.html">
+<LINK REL="previous" HREF="c_creating_the_environment.html">
+<LINK REL="up" HREF="c_interface.html">
+<LINK REL="next" HREF="c_adding_variables_to_the_.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html651"
+  HREF="c_adding_variables_to_the_.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html649"
+  HREF="c_interface.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html643"
+  HREF="c_creating_the_environment.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html652"
+  HREF="c_adding_variables_to_the_.html">Adding variables to the</A>
+<B> Up:</B> <A NAME="tex2html650"
+  HREF="c_interface.html">C Interface</A>
+<B> Previous:</B> <A NAME="tex2html644"
+  HREF="c_creating_the_environment.html">Creating the environment</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00074000000000000000">
+Creating the model</A>
+</H2>
+
+<P>
+Once an environment has been created, the next step is to create a
+model.  A Gurobi model holds a single optimization problem.  It
+consists of a set of variables, a set of constraints, and the
+associated attributes (variable bounds, objective coefficients,
+variable integrality types, constraint senses, constraint right-hand
+side values, etc.).  The first step towards building a model that
+contains all of this information is to create an empty model object:
+<PRE>
+  /* Create an empty model */
+  error = GRBnewmodel(env, &amp;model, "mip1", 0, NULL, NULL, NULL, NULL, NULL);
+  if (error) goto QUIT;
+</PRE>
+The first argument to <EM>GRBnewmodel()</EM> is the previously created
+environment.  The second is a pointer to the location where the
+pointer to the new model should be stored.  The third is the name of
+the model.  The fourth is the number of variables to initially add to
+the model.  Since we're creating an empty model, the number of initial
+variables is 0.  The remaining arguments would describe the initial
+variables (lower bounds, upper bounds, variable types, etc.), had they
+been present.
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html651"
+  HREF="c_adding_variables_to_the_.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html649"
+  HREF="c_interface.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html643"
+  HREF="c_creating_the_environment.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html652"
+  HREF="c_adding_variables_to_the_.html">Adding variables to the</A>
+<B> Up:</B> <A NAME="tex2html650"
+  HREF="c_interface.html">C Interface</A>
+<B> Previous:</B> <A NAME="tex2html644"
+  HREF="c_creating_the_environment.html">Creating the environment</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

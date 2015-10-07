@@ -1,0 +1,176 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Constants</TITLE>
+<META NAME="description" CONTENT="Constants">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="py_grb_attr.html">
+<LINK REL="previous" HREF="py_grb.html">
+<LINK REL="up" HREF="py_grb.html">
+<LINK REL="next" HREF="py_grb_attr.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html9107"
+  HREF="py_grb_attr.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html9105"
+  HREF="py_grb.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html9099"
+  HREF="py_grb.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html9108"
+  HREF="py_grb_attr.html">GRB.attr</A>
+<B> Up:</B> <A NAME="tex2html9106"
+  HREF="py_grb.html">GRB</A>
+<B> Previous:</B> <A NAME="tex2html9100"
+  HREF="py_grb.html">GRB</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION0001014100000000000000"></A>
+<A NAME="pythonconstants"></A>
+<BR>
+Constants
+</H3>
+
+<P>
+The following list contains a set of constants that are used by the
+Gurobi Python interface.  You would refer to them using a <code>GRB.</code>
+prefix (e.g., <code>GRB.OPTIMAL</code>).
+
+<P>
+<PRE>
+# Model status codes (after call to optimize())
+
+  LOADED          = 1
+  OPTIMAL         = 2
+  INFEASIBLE      = 3
+  INF_OR_UNBD     = 4
+  UNBOUNDED       = 5
+  CUTOFF          = 6
+  ITERATION_LIMIT = 7
+  NODE_LIMIT      = 8
+  TIME_LIMIT      = 9
+  SOLUTION_LIMIT  = 10
+  INTERRUPTED     = 11
+  NUMERIC         = 12
+  SUBOPTIMAL      = 13
+  INPROGRESS      = 14
+
+# Basis status info
+
+  BASIC           = 0
+  NONBASIC_LOWER  = -1
+  NONBASIC_UPPER  = -2
+  SUPERBASIC      = -3
+
+# Constraint senses
+
+  LESS_EQUAL    = '&lt;'
+  GREATER_EQUAL = '&gt;'
+  EQUAL         = '='
+
+# Variable types
+
+  CONTINUOUS   = 'C'
+  BINARY       = 'B'
+  INTEGER      = 'I'
+  SEMICONT     = 'S'
+  SEMIINT      = 'N'
+
+# Objective sense
+
+  MINIMIZE = 1
+  MAXIMIZE = -1
+
+# SOS types
+
+  SOS_TYPE1      = 1
+  SOS_TYPE2      = 2
+
+# Numeric constants
+
+  INFINITY    = 1e100
+  UNDEFINED   = 1e101
+
+# Other constants
+
+  DEFAULT_CS_PORT = 61000
+
+# Errors
+
+  ERROR_OUT_OF_MEMORY            = 10001
+  ERROR_NULL_ARGUMENT            = 10002
+  ERROR_INVALID_ARGUMENT         = 10003
+  ERROR_UNKNOWN_ATTRIBUTE        = 10004
+  ERROR_DATA_NOT_AVAILABLE       = 10005
+  ERROR_INDEX_OUT_OF_RANGE       = 10006
+  ERROR_UNKNOWN_PARAMETER        = 10007
+  ERROR_VALUE_OUT_OF_RANGE       = 10008
+  ERROR_NO_LICENSE               = 10009
+  ERROR_SIZE_LIMIT_EXCEEDED      = 10010
+  ERROR_CALLBACK                 = 10011
+  ERROR_FILE_READ                = 10012
+  ERROR_FILE_WRITE               = 10013
+  ERROR_NUMERIC                  = 10014
+  ERROR_IIS_NOT_INFEASIBLE       = 10015
+  ERROR_NOT_FOR_MIP              = 10016
+  ERROR_OPTIMIZATION_IN_PROGRESS = 10017
+  ERROR_DUPLICATES               = 10018
+  ERROR_NODEFILE                 = 10019
+  ERROR_Q_NOT_PSD                = 10020
+  ERROR_QCP_EQUALITY_CONSTRAINT  = 10021
+  ERROR_NETWORK                  = 10022
+  ERROR_JOB_REJECTED             = 10023
+  ERROR_NOT_SUPPORTED            = 10024
+  ERROR_EXCEED_2B_NONZEROS       = 10025
+  ERROR_INVALID_PIECEWISE_OBJ    = 10026
+  ERROR_NOT_IN_MODEL             = 20001
+  ERROR_FAILED_TO_CREATE_MODEL   = 20002
+  ERROR_INTERNAL                 = 20003
+</PRE>
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html9107"
+  HREF="py_grb_attr.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html9105"
+  HREF="py_grb.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html9099"
+  HREF="py_grb.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html9108"
+  HREF="py_grb_attr.html">GRB.attr</A>
+<B> Up:</B> <A NAME="tex2html9106"
+  HREF="py_grb.html">GRB</A>
+<B> Previous:</B> <A NAME="tex2html9100"
+  HREF="py_grb.html">GRB</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

@@ -1,0 +1,158 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Software Installation Guide</TITLE>
+<META NAME="description" CONTENT="Software Installation Guide">
+<META NAME="keywords" CONTENT="quickstart_windows">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="quickstart_windows.css">
+
+<LINK REL="next" HREF="retrieving_and_setting_up_.html">
+<LINK REL="previous" HREF="obtaining_a_gurobi_license.html">
+<LINK REL="up" HREF="quickstart_windows.html">
+<LINK REL="next" HREF="retrieving_and_setting_up_.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html229"
+  HREF="retrieving_and_setting_up_.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html227"
+  HREF="quickstart_windows.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html221"
+  HREF="creating_a_new_academic_li.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html230"
+  HREF="retrieving_and_setting_up_.html">Retrieving and Setting Up</A>
+<B> Up:</B> <A NAME="tex2html228"
+  HREF="quickstart_windows.html">Gurobi Optimizer Quick Start</A>
+<B> Previous:</B> <A NAME="tex2html222"
+  HREF="creating_a_new_academic_li.html">Creating a new academic</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00020000000000000000"></A>
+<A NAME="section:Installation"></A>
+<BR>
+Software Installation Guide
+</H1>
+
+<P>
+Before using the Gurobi Optimizer, you'll need to install the software on your
+computer.  If you haven't already done so, please go to
+<A NAME="tex2html7"
+  HREF="http://www.gurobi.com/download/gurobi-optimizer">our download page</A>.
+Select your platform (32-bit or 64-bit Windows) and click on the <EM>Download</EM> button.
+
+<DIV ALIGN="CENTER">
+<IMG
+  WIDTH="621" HEIGHT="526" ALIGN="BOTTOM" BORDER="0"
+ SRC="./download_windows.png"
+ ALT="Image download_windows">
+
+</DIV>
+Make a note of the name and location of the downloaded file.
+
+<P>
+Your next step is to double-click on the Gurobi installer that you
+downloaded from our website (e.g., <code>Gurobi-6.0.0-win64.msi</code> for
+the 64-bit version of Gurobi 6.0.0).
+
+<P>
+Note: if you selected <EM>Run</EM> when downloading you've already run the installer and don't need to do it again.
+
+<P>
+By default, the installer will place the Gurobi 6.0.0 files in
+directory <code>c:\gurobi600\win64</code> (or
+<code>c:\gurobi600\win32</code> for 32-bit
+Windows installs).  The installer gives you the option to change the
+installation target.  We'll refer to the installation directory as
+<code>&lt;installdir&gt;</code>.
+
+<P>
+<SPAN  CLASS="textbf">Installation for "All Users"</SPAN>
+
+<P>
+By default, Gurobi is installed for use by the current Windows user
+only.  To install Gurobi for all users, use the command line interface to the Windows Installer. Open a
+<code>cmd</code> prompt, use <code>cd</code> to go to the directory that
+contains the Gurobi installer image, and enter the following command:
+<PRE>
+  msiexec /i Gurobi-6.0.0-win64.msi allusers=1
+</PRE>
+If you are unfamiliar with running command-line commands on a Windows
+system, you can learn more
+<A HREF="windows_command_line.html#section:windowscommandline">here</A>.
+
+<P>
+<SPAN  CLASS="textbf">Installing 32-bit and 64-bit simultaneously</SPAN>
+
+<P>
+You should normally only install the Gurobi version that is targeted
+to your platform (32-bit or 64-bit Windows).  If you want to install both on the same machine, note that the Gurobi installer sets Windows environment variables that will point to
+one particular version.  This can cause confusion, particularly
+when a program asks Windows to load the Gurobi DLL.  If you understand
+the implications, feel free to install both.
+
+<P>
+<SPAN  CLASS="textbf">Helpful tools</SPAN>
+
+<P>
+To work with compressed files within the Gurobi
+Optimizer, we recommend that you install <code>gzip</code> (<A NAME="tex2html8"
+  HREF="http://www.gzip.org">www.gzip.org</A>)
+and/or <code>7zip</code>
+(<A NAME="tex2html9"
+  HREF="http://www.7-zip.org">www.7-zip.org</A>).
+
+<P>
+You are now ready to proceed to the section on
+<A HREF="retrieving_and_setting_up_.html#section:RetrieveLicense">Retrieving Your Gurobi License</A>.
+
+<P>
+If you would like an overview of the files included in the Gurobi
+distribution, you can also view the
+<A HREF="file_overview.html#section:Overview">File Overview</A> section.
+
+<P>
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html229"
+  HREF="retrieving_and_setting_up_.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html227"
+  HREF="quickstart_windows.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html221"
+  HREF="creating_a_new_academic_li.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html230"
+  HREF="retrieving_and_setting_up_.html">Retrieving and Setting Up</A>
+<B> Up:</B> <A NAME="tex2html228"
+  HREF="quickstart_windows.html">Gurobi Optimizer Quick Start</A>
+<B> Previous:</B> <A NAME="tex2html222"
+  HREF="creating_a_new_academic_li.html">Creating a new academic</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

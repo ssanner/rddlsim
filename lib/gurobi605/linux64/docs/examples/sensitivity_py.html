@@ -1,0 +1,156 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>sensitivity.py</TITLE>
+<META NAME="description" CONTENT="sensitivity.py">
+<META NAME="keywords" CONTENT="examples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="examples.css">
+
+<LINK REL="next" HREF="sos_py.html">
+<LINK REL="previous" HREF="qp_py.html">
+<LINK REL="up" HREF="python_examples.html">
+<LINK REL="next" HREF="sos_py.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html2109"
+  HREF="sos_py.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html2107"
+  HREF="python_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html2101"
+  HREF="qp_py.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html2110"
+  HREF="sos_py.html">sos.py</A>
+<B> Up:</B> <A NAME="tex2html2108"
+  HREF="python_examples.html">Python Examples</A>
+<B> Previous:</B> <A NAME="tex2html2102"
+  HREF="qp_py.html">qp.py</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000262200000000000000"></A>
+<A NAME="subsubsection:sensitivity.py"></A>
+<BR>
+sensitivity.py
+</H3>
+
+<P>
+<BR>
+<PRE  CLASS="verbatim">#!/usr/bin/python
+
+# Copyright 2014, Gurobi Optimization, Inc.
+
+# A simple sensitivity analysis example which reads a MIP model
+# from a file and solves it. Then each binary variable is set
+# to 1-X, where X is its value in the optimal solution, and
+# the impact on the objective function value is reported.
+
+import sys
+from gurobipy import *
+
+if len(sys.argv) &lt; 2:
+    print('Usage: sensitivity.py filename')
+    quit()
+
+# Read and solve model
+
+model = read(sys.argv[1])
+
+if model.IsMIP == 0:
+    print('Model is not a MIP')
+    exit(0)
+
+model.optimize()
+
+if model.status != GRB.status.OPTIMAL:
+    print('Optimization ended with status %d' % model.status)
+    exit(0)
+
+# Store the optimal solution
+
+origObjVal = model.ObjVal
+for v in model.getVars():
+    v._origX = v.X
+
+# Disable solver output for subsequent solves
+
+model.params.OutputFlag = 0
+
+# Iterate through unfixed, binary variables in model
+
+for v in model.getVars():
+    if (v.LB == 0 and v.UB == 1 \
+        and (v.VType == GRB.BINARY or v.VType == GRB.INTEGER)):
+
+        # Set variable to 1-X, where X is its value in optimal solution
+
+        if v._origX &lt; 0.5:
+            v.LB = v.Start = 1
+        else:
+            v.UB = v.Start = 0
+
+        # Update MIP start for the other variables
+
+        for vv in model.getVars():
+            if not vv.sameAs(v):
+                vv.Start = vv._origX
+
+        # Solve for new value and capture sensitivity information
+
+        model.optimize()
+
+        if model.status == GRB.OPTIMAL:
+            print('Objective sensitivity for variable %s is %g' % \
+                  (v.VarName, model.ObjVal - origObjVal))
+        else:
+            print('Objective sensitivity for variable %s is infinite' % \
+                  v.VarName)
+
+        # Restore the original variable bounds
+
+        v.LB = 0
+        v.UB = 1
+</PRE>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html2109"
+  HREF="sos_py.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html2107"
+  HREF="python_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html2101"
+  HREF="qp_py.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html2110"
+  HREF="sos_py.html">sos.py</A>
+<B> Up:</B> <A NAME="tex2html2108"
+  HREF="python_examples.html">Python Examples</A>
+<B> Previous:</B> <A NAME="tex2html2102"
+  HREF="qp_py.html">qp.py</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

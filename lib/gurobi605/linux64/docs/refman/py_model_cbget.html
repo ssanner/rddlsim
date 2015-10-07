@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Model.cbGet()</TITLE>
+<META NAME="description" CONTENT="Model.cbGet()">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="py_model_cbgetnoderel.html">
+<LINK REL="previous" HREF="py_model_cbcut.html">
+<LINK REL="up" HREF="py_model.html">
+<LINK REL="next" HREF="py_model_cbgetnoderel.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html8260"
+  HREF="py_model_cbgetnoderel.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html8258"
+  HREF="py_model.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html8252"
+  HREF="py_model_cbcut.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html8261"
+  HREF="py_model_cbgetnoderel.html">Model.cbGetNodeRel()</A>
+<B> Up:</B> <A NAME="tex2html8259"
+  HREF="py_model.html">Model</A>
+<B> Previous:</B> <A NAME="tex2html8253"
+  HREF="py_model_cbcut.html">Model.cbCut()</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION0001023700000000000000"></A>
+<A NAME="pythonmethod:Model.cbGet"></A>
+<BR>
+Model.cbGet()
+</H3>
+<BIG CLASS="LARGE">
+<FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">cbGet</SPAN></FONT></BIG> ( what )
+
+<P>
+Query the optimizer from within the user callback.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">what</SPAN>: Integer code that indicates what type of information
+  is being requested by the callback.  The set of valid codes depends
+  on the <TT>where</TT> value that is passed into the user callback
+  function.  Please refer to the <A HREF="callback_codes.html#sec:CallbackCodes">Callback
+    Codes</A> section for a list of possible
+  <TT>where</TT> and <TT>what</TT> values.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Example usage:</SPAN></BIG><PRE>
+  def mycallback(model, where):
+    if where == GRB.callback.SIMPLEX:
+      print model.cbGet(GRB.callback.SPX_OBJVAL)
+
+  model.optimize(mycallback)
+</PRE>
+
+<P>
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html8260"
+  HREF="py_model_cbgetnoderel.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html8258"
+  HREF="py_model.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html8252"
+  HREF="py_model_cbcut.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html8261"
+  HREF="py_model_cbgetnoderel.html">Model.cbGetNodeRel()</A>
+<B> Up:</B> <A NAME="tex2html8259"
+  HREF="py_model.html">Model</A>
+<B> Previous:</B> <A NAME="tex2html8253"
+  HREF="py_model_cbcut.html">Model.cbCut()</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

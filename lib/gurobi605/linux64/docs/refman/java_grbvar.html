@@ -1,0 +1,108 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>GRBVar</TITLE>
+<META NAME="description" CONTENT="GRBVar">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="java_grbconstr.html">
+<LINK REL="previous" HREF="java_grbmodel.html">
+<LINK REL="up" HREF="java_api_details.html">
+<LINK REL="next" HREF="java_grbvar_get.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html5047"
+  HREF="java_grbvar_get.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html5045"
+  HREF="java_api_details.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html5039"
+  HREF="java_grbmodel_write.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html5048"
+  HREF="java_grbvar_get.html">GRBVar.get()</A>
+<B> Up:</B> <A NAME="tex2html5046"
+  HREF="java_api_details.html">Java API Details</A>
+<B> Previous:</B> <A NAME="tex2html5040"
+  HREF="java_grbmodel_write.html">GRBModel.write()</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00063000000000000000"></A>
+<A NAME="javaclass:GRBVar"></A>
+<BR>
+GRBVar
+</H2>
+
+<P>
+Gurobi variable object.  Variables are always associated with a
+particular model.  You create a variable object by adding a variable
+to a model (using
+<A HREF="java_grbmodel_addvar.html#javamethod:GRBModel.addVar">GRBModel.addVar</A>), rather
+than by using a <code>GRBVar</code> constructor.
+
+<P>
+The methods on variable objects are used to get and set variable
+attributes.  For example, solution information can be queried by
+calling <A HREF="java_grbvar_get.html#javamethod:GRBVar.get">get</A>(<code>GRB.DoubleAttr.X</code>).
+Note, however, that it is generally more efficient to query attributes
+for a set of variables at once.  This is done using the attribute
+query method on the <code>GRBModel</code> object
+(<A HREF="java_grbmodel_get.html#javamethod:GRBModel.get">GRBModel.get</A>).
+
+<P>
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html5049"
+  HREF="java_grbvar_get.html">GRBVar.get()</A>
+<LI><A NAME="tex2html5050"
+  HREF="java_grbvar_sameas.html">GRBVar.sameAs()</A>
+<LI><A NAME="tex2html5051"
+  HREF="java_grbvar_set.html">GRBVar.set()</A>
+</UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html5047"
+  HREF="java_grbvar_get.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html5045"
+  HREF="java_api_details.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html5039"
+  HREF="java_grbmodel_write.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html5048"
+  HREF="java_grbvar_get.html">GRBVar.get()</A>
+<B> Up:</B> <A NAME="tex2html5046"
+  HREF="java_api_details.html">Java API Details</A>
+<B> Previous:</B> <A NAME="tex2html5040"
+  HREF="java_grbmodel_write.html">GRBModel.write()</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

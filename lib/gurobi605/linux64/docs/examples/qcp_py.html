@@ -1,0 +1,124 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>qcp.py</TITLE>
+<META NAME="description" CONTENT="qcp.py">
+<META NAME="keywords" CONTENT="examples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="examples.css">
+
+<LINK REL="next" HREF="qp_py.html">
+<LINK REL="previous" HREF="piecewise_py.html">
+<LINK REL="up" HREF="python_examples.html">
+<LINK REL="next" HREF="qp_py.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html2089"
+  HREF="qp_py.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html2087"
+  HREF="python_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html2081"
+  HREF="piecewise_py.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html2090"
+  HREF="qp_py.html">qp.py</A>
+<B> Up:</B> <A NAME="tex2html2088"
+  HREF="python_examples.html">Python Examples</A>
+<B> Previous:</B> <A NAME="tex2html2082"
+  HREF="piecewise_py.html">piecewise.py</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000262000000000000000"></A>
+<A NAME="subsubsection:qcp.py"></A>
+<BR>
+qcp.py
+</H3>
+
+<P>
+<BR>
+<PRE  CLASS="verbatim">#!/usr/bin/python
+
+# Copyright 2014, Gurobi Optimization, Inc.
+
+# This example formulates and solves the following simple QCP model:
+#     maximize    x
+#     subject to  x + y + z = 1
+#                 x^2 + y^2 &lt;= z^2 (second-order cone)
+#                 x^2 &lt;= yz        (rotated second-order cone)
+
+from gurobipy import *
+
+# Create a new model
+m = Model("qcp")
+
+# Create variables
+x = m.addVar(name="x")
+y = m.addVar(name="y")
+z = m.addVar(name="z")
+
+# Integrate new variables
+m.update()
+
+# Set objective: x
+obj = 1.0*x
+m.setObjective(obj, GRB.MAXIMIZE)
+
+# Add constraint: x + y + z = 1
+m.addConstr(x + y + z == 1, "c0")
+
+# Add second-order cone: x^2 + y^2 &lt;= z^2
+m.addQConstr(x*x + y*y &lt;= z*z, "qc0")
+
+# Add rotated cone: x^2 &lt;= yz
+m.addQConstr(x*x &lt;= y*z, "qc1")
+
+m.optimize()
+
+for v in m.getVars():
+    print('%s %g' % (v.varName, v.x))
+
+print('Obj: %g' % obj.getValue())
+</PRE>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html2089"
+  HREF="qp_py.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html2087"
+  HREF="python_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html2081"
+  HREF="piecewise_py.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html2090"
+  HREF="qp_py.html">qp.py</A>
+<B> Up:</B> <A NAME="tex2html2088"
+  HREF="python_examples.html">Python Examples</A>
+<B> Previous:</B> <A NAME="tex2html2082"
+  HREF="piecewise_py.html">piecewise.py</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

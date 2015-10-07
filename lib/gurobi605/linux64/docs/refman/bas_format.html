@@ -1,0 +1,127 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>BAS format</TITLE>
+<META NAME="description" CONTENT="BAS format">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="sol_format.html">
+<LINK REL="previous" HREF="ord_format.html">
+<LINK REL="up" HREF="model_file_formats.html">
+<LINK REL="next" HREF="sol_format.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html12279"
+  HREF="sol_format.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html12277"
+  HREF="model_file_formats.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html12271"
+  HREF="ord_format.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html12280"
+  HREF="sol_format.html">SOL format</A>
+<B> Up:</B> <A NAME="tex2html12278"
+  HREF="model_file_formats.html">Model File Formats</A>
+<B> Previous:</B> <A NAME="tex2html12272"
+  HREF="ord_format.html">ORD format</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION000188000000000000000"></A>
+<A NAME="format:BAS"></A>
+<BR>
+BAS format
+</H2>
+
+<P>
+An LP basis (BAS) file is used to specify an initial basis for a
+continuous model.  The file provides basis status information for each
+variable and constraint in the model.  If a basis has been imported
+into a continuous model before optimization begins (using
+<A HREF="c_grbread.html#routine:GRBread">GRBread</A>, for example), and if a
+simplex optimizer has been selected (through the
+<A HREF="method.html#parameter:Method">Method</A>
+parameter), the Gurobi simplex optimizer begins from the specified
+basis.
+
+<P>
+A BAS file begins with a <code>NAME</code> line, and ends with an
+<code>ENDDATA</code> statement.  No information is retrieved from these lines,
+but they are required by the format.  Between these two lines are
+basis status lines, each consisting of two or three fields.  If the
+first field is <code>LL</code>, <code>UL</code>, or <code>BS</code>, the variable
+named in the second field is non-basic at its lower bound, non-basic
+at its upper bound, or basic, respectively.  Any additional fields are
+ignored.  If the first field is <code>XL</code> or <code>XU</code>, the variable
+named in the second field is basic, while the variable named in the third
+field is non-basic at its lower or upper bound, respectively.
+
+<P>
+The following is a simple example:
+<PRE>
+NAME  example.bas
+XL x1 c1
+XU x2 c2
+BS c3
+UL x3
+LL x4
+</PRE>
+
+<P>
+Importing a basis into a model is equivalent to setting the
+<A HREF="vbasis.html#attr:VBasis">VBasis</A>
+and
+<A HREF="cbasis.html#attr:CBasis">CBasis</A>
+attributes for each listed variable and
+constraint to the specified basis status.
+
+<P>
+A near-optimal basis can speed the solution of a difficult LP model.
+However, specifying a start basis that is not extremely close to an
+optimal solution will often slow down the solution process.  Exercise
+caution when providing start bases.
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html12279"
+  HREF="sol_format.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html12277"
+  HREF="model_file_formats.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html12271"
+  HREF="ord_format.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html12280"
+  HREF="sol_format.html">SOL format</A>
+<B> Up:</B> <A NAME="tex2html12278"
+  HREF="model_file_formats.html">Model File Formats</A>
+<B> Previous:</B> <A NAME="tex2html12272"
+  HREF="ord_format.html">ORD format</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

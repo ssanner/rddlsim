@@ -1,0 +1,155 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Interactive Shell</TITLE>
+<META NAME="description" CONTENT="Interactive Shell">
+<META NAME="keywords" CONTENT="quickstart_mac">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="quickstart_mac.css">
+
+<LINK REL="next" HREF="attributes.html">
+<LINK REL="previous" HREF="solving_a_simple_model_the.html">
+<LINK REL="up" HREF="quickstart_mac.html">
+<LINK REL="next" HREF="reading_and_optimizing_a_m.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html454"
+  HREF="reading_and_optimizing_a_m.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html452"
+  HREF="quickstart_mac.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html446"
+  HREF="solving_the_model_using_th.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html455"
+  HREF="reading_and_optimizing_a_m.html">Reading and optimizing a</A>
+<B> Up:</B> <A NAME="tex2html453"
+  HREF="quickstart_mac.html">Gurobi Optimizer Quick Start</A>
+<B> Previous:</B> <A NAME="tex2html447"
+  HREF="solving_the_model_using_th.html">Solving the model using</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00050000000000000000"></A>
+<A NAME="section:Shell"></A>
+<BR>
+Interactive Shell
+</H1>
+<P>
+<EM>The Gurobi interactive shell allows you to perform hands-on
+interaction and experimentation with optimization models.  You can
+read models from files, perform complete or partial optimization runs
+on them, change parameters, modify the models, reoptimize, and so on.
+The Gurobi shell is actually a set of extensions to the
+<A NAME="tex2html23"
+  HREF="http://python.org">Python</A>
+shell.  Python is a rich
+and flexible programming language, and any capabilities that are
+available from Python are also available from the Gurobi shell.  We'll
+touch on these capabilities here, but we encourage you to explore the
+help system and experiment with the interface in order to gain a
+better understanding of what is possible.
+</EM>
+<P>
+<EM>One big advantage of working within Python is that the Python language
+is popular and well supported.  One aspect of this support is the
+breadth of powerful Python Integrated Development Environments (IDEs)
+that are available, most of which can be downloaded for free from the
+internet.  This document includes <A HREF="installing_the_anaconda_py.html#section:Anaconda">instructions for setting
+  up Gurobi for use within the Anaconda distribution</A>.  Anaconda includes a powerful IDE (Spyder),
+as well as a notebook-style interface (iPython Notebook).
+</EM>
+<P>
+<EM>Before diving into the details of the Gurobi interactive shell, we
+should remind you that Gurobi also provides a lightweight
+<A HREF="solving_the_model_using_th.html#subsection:SolvingTheModel">command line</A>
+interface.  If you just need to do a quick test on a model stored in a
+file, you will probably find that that interface is better suited to
+simple tasks than the interactive shell.
+</EM>
+<P>
+<EM><B>Important note for AIX users:</B> due to limited Python support on
+AIX, our AIX port does not include the Interactive Shell or the Python
+interface.  You can use the command line, or the C, C++, or Java
+interfaces.
+</EM>
+<P>
+<EM>We will now work through a few simple examples of how the Gurobi shell
+might be used, in order to give you a quick introduction to its
+capabilities.  More thorough documentation on this and other
+interfaces is available in the <A NAME="tex2html24"
+  HREF="../refman/refman.html">Gurobi Reference
+  Manual</A>.
+</EM>
+<P>
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html456"
+  HREF="reading_and_optimizing_a_m.html">Reading and optimizing a model</A>
+<LI><A NAME="tex2html457"
+  HREF="inspecting_the_solution.html">Inspecting the solution</A>
+<LI><A NAME="tex2html458"
+  HREF="simple_model_modification.html">Simple model modification</A>
+<LI><A NAME="tex2html459"
+  HREF="simple_experimentation_wit.html">Simple experimentation with a more difficult model</A>
+<LI><A NAME="tex2html460"
+  HREF="changing_parameters.html">Changing parameters</A>
+<LI><A NAME="tex2html461"
+  HREF="parameter_tuning_tool.html">Parameter tuning tool</A>
+<LI><A NAME="tex2html462"
+  HREF="using_a_gurobi_env_file.html">Using a gurobi.env file</A>
+<LI><A NAME="tex2html463"
+  HREF="working_with_multiple_mode.html">Working with multiple models</A>
+<LI><A NAME="tex2html464"
+  HREF="help.html">Help</A>
+<LI><A NAME="tex2html465"
+  HREF="interface_customization.html">Interface customization</A>
+<LI><A NAME="tex2html466"
+  HREF="customization_through_call.html">Customization through callbacks</A>
+<LI><A NAME="tex2html467"
+  HREF="the_gurobi_python_interfac.html">The Gurobi Python Interface for Python Users</A>
+</UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html454"
+  HREF="reading_and_optimizing_a_m.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html452"
+  HREF="quickstart_mac.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html446"
+  HREF="solving_the_model_using_th.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html455"
+  HREF="reading_and_optimizing_a_m.html">Reading and optimizing a</A>
+<B> Up:</B> <A NAME="tex2html453"
+  HREF="quickstart_mac.html">Gurobi Optimizer Quick Start</A>
+<B> Previous:</B> <A NAME="tex2html447"
+  HREF="solving_the_model_using_th.html">Solving the model using</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

@@ -1,0 +1,133 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>GRBloadenv</TITLE>
+<META NAME="description" CONTENT="GRBloadenv">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="c_grbloadclientenv.html">
+<LINK REL="previous" HREF="c_environment_creation_and.html">
+<LINK REL="up" HREF="c_environment_creation_and.html">
+<LINK REL="next" HREF="c_grbloadclientenv.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html1186"
+  HREF="c_grbloadclientenv.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1184"
+  HREF="c_environment_creation_and.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1178"
+  HREF="c_environment_creation_and.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1187"
+  HREF="c_grbloadclientenv.html">GRBloadclientenv</A>
+<B> Up:</B> <A NAME="tex2html1185"
+  HREF="c_environment_creation_and.html">Environment Creation and Destruction</A>
+<B> Previous:</B> <A NAME="tex2html1179"
+  HREF="c_environment_creation_and.html">Environment Creation and Destruction</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00021100000000000000"></A>
+<A NAME="routine:GRBloadenv"></A>
+<BR>
+GRBloadenv
+</H3>
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">GRBloadenv</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT">GRBenv</TD>
+<TD ALIGN="LEFT">**envP,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">const char</TD>
+<TD ALIGN="LEFT">*logfilename )</TD>
+</TR>
+</TABLE>
+
+<P>
+Create an environment.  Optimization models live within an
+environment, so this is typically the first Gurobi routine called in
+an application.
+
+<P>
+In addition to creating a new environment, this routine will also
+check the current working directory for a file named
+<code>gurobi.env</code>, and it will attempt to read parameter settings from
+this file if it exists.  The file should be in
+<A HREF="prm_format.html#format:PRM">PRM</A> format (briefly, each line should
+contain a parameter name, followed by the desired value for that
+parameter).
+
+<P>
+In general, you should aim to create a single Gurobi environment in
+your program, even if you plan to work with multiple models.  Reusing
+one environment is much more efficient than creating and destroying
+multiple environments.
+
+<P>
+
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Return value:</SPAN></BIG>
+
+<P>
+A non-zero return value indicates that there was a problem creating
+the environment.  Refer to the <A HREF="error_codes.html#sec:ErrorCodes">Error
+  Code</A> table for a list of possible return
+values.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">envP</SPAN>: The location in which the pointer to the newly created
+  environment should be placed.
+
+<P>
+ <SPAN  CLASS="textbf">logfilename</SPAN>: The name of the log file for this environment.
+  May be <TT>NULL</TT> (or an empty string), in which case no log file is
+  created.
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1186"
+  HREF="c_grbloadclientenv.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1184"
+  HREF="c_environment_creation_and.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1178"
+  HREF="c_environment_creation_and.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1187"
+  HREF="c_grbloadclientenv.html">GRBloadclientenv</A>
+<B> Up:</B> <A NAME="tex2html1185"
+  HREF="c_environment_creation_and.html">Environment Creation and Destruction</A>
+<B> Previous:</B> <A NAME="tex2html1179"
+  HREF="c_environment_creation_and.html">Environment Creation and Destruction</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

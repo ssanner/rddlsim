@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>The Gurobi Python Interface for Python Users</TITLE>
+<META NAME="description" CONTENT="The Gurobi Python Interface for Python Users">
+<META NAME="keywords" CONTENT="quickstart_linux">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="quickstart_linux.css">
+
+<LINK REL="previous" HREF="customization_through_call.html">
+<LINK REL="up" HREF="interactive_shell.html">
+<LINK REL="next" HREF="attributes.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html580"
+  HREF="attributes.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html578"
+  HREF="interactive_shell.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html574"
+  HREF="customization_through_call.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html581"
+  HREF="attributes.html">Attributes</A>
+<B> Up:</B> <A NAME="tex2html579"
+  HREF="interactive_shell.html">Interactive Shell</A>
+<B> Previous:</B> <A NAME="tex2html575"
+  HREF="customization_through_call.html">Customization through callbacks</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION000512000000000000000"></A>
+<A NAME="subsection:setup.py"></A>
+<BR>
+The Gurobi Python Interface for Python Users
+</H2>
+
+<P>
+While the Gurobi installation includes everything you need to use
+Gurobi from within Python, we understand that some users would prefer
+to use Gurobi from within their own Python environment.  Doing so
+requires you to install the <code>gurobipy</code> module.  The steps for
+doing this depend on your platform.  On Windows, you can double-click
+on the <code>pysetup</code> program in the Gurobi <code>&lt;installdir&gt;/bin</code>
+directory.  This program will prompt you for the location of your
+Python installation; it handles all of the details of the
+installation.  On Linux or Mac OS, you will need to open a terminal
+window, change your current directory to the Gurobi
+<code>&lt;installdir&gt;</code> (the directory that contains the file
+<code>setup.py</code>), and issue the following command:
+<PRE>
+  python setup.py install
+</PRE>
+Unless you are using your own private Python installation, you will
+need to run this command as super-user.  Once <code>gurobipy</code> is
+successfully installed, you can type <code>import gurobipy</code> or
+<code>from gurobipy import *</code> from your Python shell and access all of
+the Gurobi classes and methods.
+
+<P>
+Note that for this installation to succeed, your Python environment
+must be compatible with the Gurobi Python module.  You should only
+install 32-bit Gurobi libraries into a 32-bit Python shell (similarly
+for 64-bit versions).  In addition, your Python version must be
+compatible.  With this release, <code>gurobipy</code> can be used with
+Python 2.7, 3.2, or 3.4 on Windows and Linux, and with Python 2.7 on
+Mac OS.
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html580"
+  HREF="attributes.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html578"
+  HREF="interactive_shell.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html574"
+  HREF="customization_through_call.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html581"
+  HREF="attributes.html">Attributes</A>
+<B> Up:</B> <A NAME="tex2html579"
+  HREF="interactive_shell.html">Interactive Shell</A>
+<B> Previous:</B> <A NAME="tex2html575"
+  HREF="customization_through_call.html">Customization through callbacks</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

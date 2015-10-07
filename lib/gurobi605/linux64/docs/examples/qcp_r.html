@@ -1,0 +1,108 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>qcp.R</TITLE>
+<META NAME="description" CONTENT="qcp.R">
+<META NAME="keywords" CONTENT="examples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="examples.css">
+
+<LINK REL="next" HREF="qp_r.html">
+<LINK REL="previous" HREF="mip_r.html">
+<LINK REL="up" HREF="r_examples.html">
+<LINK REL="next" HREF="qp_r.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html2358"
+  HREF="qp_r.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html2356"
+  HREF="r_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html2350"
+  HREF="mip_r.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html2359"
+  HREF="qp_r.html">qp.R</A>
+<B> Up:</B> <A NAME="tex2html2357"
+  HREF="r_examples.html">R Examples</A>
+<B> Previous:</B> <A NAME="tex2html2351"
+  HREF="mip_r.html">mip.R</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00028400000000000000"></A>
+<A NAME="subsubsection:qcp.R"></A>
+<BR>
+qcp.R
+</H3>
+
+<P>
+<BR>
+<PRE  CLASS="verbatim"># Copyright 2014, Gurobi Optimization, Inc.
+#
+# This example formulates and solves the following simple QCP model:
+#  minimize
+#        x^2 + x*y + y^2 + y*z + z^2 + x + 2 y + 3 z
+#  subject to
+#        x + 2 y + 3z    &gt;= 4
+#        x +   y         &gt;= 1
+#                      t  = sqrt(2)/2
+#        [ x ^ 2 + y ^ 2 - t ^ 2 ] &lt; = 0  (a second-order cone constraint)
+
+library("gurobi")
+
+model &lt;- list()
+
+model$A      &lt;- matrix(c(1,2,3,0,1,1,0,0,0,0,0,1), nrow=3, byrow=T)
+model$Q      &lt;- matrix(c(2,1,0,0,1,2,1,0,0,1,2,0,0,0,0,0), nrow=4, byrow=T)
+model$cones  &lt;- list(list(4,1,2))
+model$obj    &lt;- c(1,2,3,0)
+model$rhs    &lt;- c(4,1,sqrt(2)/2)
+model$sense  &lt;- c('&gt;=', '&gt;=', '=')
+
+result &lt;- gurobi(model)
+
+print(result$objval)
+print(result$x)
+</PRE>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html2358"
+  HREF="qp_r.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html2356"
+  HREF="r_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html2350"
+  HREF="mip_r.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html2359"
+  HREF="qp_r.html">qp.R</A>
+<B> Up:</B> <A NAME="tex2html2357"
+  HREF="r_examples.html">R Examples</A>
+<B> Previous:</B> <A NAME="tex2html2351"
+  HREF="mip_r.html">mip.R</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

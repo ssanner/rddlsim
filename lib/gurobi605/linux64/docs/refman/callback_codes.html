@@ -1,0 +1,384 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Callback Codes</TITLE>
+<META NAME="description" CONTENT="Callback Codes">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="error_codes.html">
+<LINK REL="previous" HREF="optimization_status_codes.html">
+<LINK REL="up" HREF="refman.html">
+<LINK REL="next" HREF="error_codes.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html12169"
+  HREF="error_codes.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html12167"
+  HREF="refman.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html12161"
+  HREF="optimization_status_codes.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html12170"
+  HREF="error_codes.html">Error Codes</A>
+<B> Up:</B> <A NAME="tex2html12168"
+  HREF="refman.html">Gurobi Optimizer Reference Manual</A>
+<B> Previous:</B> <A NAME="tex2html12162"
+  HREF="optimization_status_codes.html">Optimization Status Codes</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION000160000000000000000"></A>
+<A NAME="sec:CallbackCodes"></A>
+<BR>
+Callback Codes
+</H1>
+
+<P>
+The Gurobi callback routines make use of a pair of arguments:
+<code>where</code> and <code>what</code>.  When a user callback function is called,
+the <code>where</code> argument indicates from where in the Gurobi
+optimizer it is being called (presolve, simplex, barrier, MIP, etc.).
+When the user callback wishes to obtain more detailed information
+about the state of the optimization, the <code>what</code> argument can be
+passed to an appropriate <code>get</code> method for your language
+to obtain additional information
+(e.g., <A HREF="c_grbcbget.html#routine:GRBcbget">GRBcbget</A> in C,
+<A HREF="cpp_grbcallback_getintinfo.html#cppmethod:GRBCallback::getIntInfo">GRBCallback::getIntInfo</A> in C++,
+<A HREF="java_grbcallback_getintinf.html#javamethod:GRBCallback.getIntInfo">GRBCallback.getIntInfo</A> in Java,
+<A HREF="cs_grbcallback_getintinfo.html#dotnetmethod:GRBCallback.GetIntInfo">GRBCallback.GetIntInfo</A> in .NET, and
+<A HREF="py_model_cbget.html#pythonmethod:Model.cbGet">Model.cbGet</A> in Python).
+
+<P>
+More detailed information on how to use callbacks in your application
+can be found in the reference manuals for the different Gurobi
+language interfaces (<A HREF="c_grbsetcallbackfunc.html#routine:GRBsetcallbackfunc">C</A>,
+<A HREF="cpp_grbcallback.html#cppclass:GRBCallback">C++</A>,
+<A HREF="java_grbcallback.html#javaclass:GRBCallback">Java</A>,
+<A HREF="cs_grbcallback.html#dotnetclass:GRBCallback">.NET</A>, and
+<A HREF="py_callbacks.html#pythonclass:Callback">Python</A>).
+
+<P>
+Possible values for the <code>where</code> and <code>what</code> arguments are
+listed in the following tables.  Note that these values are referred
+to in slightly different ways from the different Gurobi interfaces.
+Consider the <code>SIMPLEX</code> value as an example.  You would
+refer to this constant as follows from the different Gurobi APIs:
+<BR><TABLE CELLPADDING=3 BORDER="1">
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf">Language</SPAN></TH>
+<TH ALIGN="LEFT"><SPAN  CLASS="textbf">Callback constant</SPAN></TH>
+</TR>
+<TR><TD ALIGN="LEFT">C</TD>
+<TD ALIGN="LEFT"><TT>GRB_CB_SIMPLEX</TT></TD>
+</TR>
+<TR><TD ALIGN="LEFT">C++</TD>
+<TD ALIGN="LEFT"><TT>GRB_CB_SIMPLEX</TT></TD>
+</TR>
+<TR><TD ALIGN="LEFT">Java</TD>
+<TD ALIGN="LEFT"><TT>GRB.Callback.SIMPLEX</TT></TD>
+</TR>
+<TR><TD ALIGN="LEFT">.NET</TD>
+<TD ALIGN="LEFT"><TT>GRB.Callback.SIMPLEX</TT></TD>
+</TR>
+<TR><TD ALIGN="LEFT">Python</TD>
+<TD ALIGN="LEFT"><TT>GRB.Callback.SIMPLEX</TT></TD>
+</TR>
+</TABLE>
+
+<P>
+Possible <code>where</code> values are:
+<BR><TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="LEFT"><code>where</code></TD>
+<TH ALIGN="LEFT"><SPAN  CLASS="textbf">Numeric value</SPAN></TH>
+<TH ALIGN="LEFT"><SPAN  CLASS="textbf">Optimizer status</SPAN></TH>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>POLLING</TT></SPAN></TH>
+<TD ALIGN="LEFT">0</TD>
+<TD ALIGN="LEFT">Periodic polling callback</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>PRESOLVE</TT></SPAN></TH>
+<TD ALIGN="LEFT">1</TD>
+<TD ALIGN="LEFT">Currently performing presolve</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>SIMPLEX</TT></SPAN></TH>
+<TD ALIGN="LEFT">2</TD>
+<TD ALIGN="LEFT">Currently in simplex</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>MIP</TT></SPAN></TH>
+<TD ALIGN="LEFT">3</TD>
+<TD ALIGN="LEFT">Currently in MIP</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>MIPSOL</TT></SPAN></TH>
+<TD ALIGN="LEFT">4</TD>
+<TD ALIGN="LEFT">Found a new MIP incumbent</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>MIPNODE</TT></SPAN></TH>
+<TD ALIGN="LEFT">5</TD>
+<TD ALIGN="LEFT">Currently exploring a MIP node</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>MESSAGE</TT></SPAN></TH>
+<TD ALIGN="LEFT">6</TD>
+<TD ALIGN="LEFT">Printing a log message</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>BARRIER</TT></SPAN></TH>
+<TD ALIGN="LEFT">7</TD>
+<TD ALIGN="LEFT">Currently in barrier</TD>
+</TR>
+</TABLE>
+
+<P>
+Allowable <code>what</code> values depend on the value of the <code>where</code>
+argument.  Valid combinations are:
+<BR>
+<P>
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="LEFT"><code>what</code></TD>
+<TD ALIGN="LEFT"><code>where</code></TD>
+<TH ALIGN="LEFT"><SPAN  CLASS="textbf">Result type</SPAN></TH>
+<TH ALIGN="LEFT"><SPAN  CLASS="textbf">Description</SPAN></TH>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>RUNTIME</TT></SPAN></TH>
+<TD ALIGN="LEFT">Any except <SPAN  CLASS="textbf"><TT>POLLING</TT></SPAN></TD>
+<TD ALIGN="LEFT">double</TD>
+<TD ALIGN="LEFT">Elapsed solver runtime (seconds).</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>PRE_COLDEL</TT></SPAN></TH>
+<TD ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>PRESOLVE</TT></SPAN></TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">The number of columns removed by presolve to this point.</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>PRE_ROWDEL</TT></SPAN></TH>
+<TD ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>PRESOLVE</TT></SPAN></TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">The number of rows removed by presolve to this point.</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>PRE_SENCHG</TT></SPAN></TH>
+<TD ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>PRESOLVE</TT></SPAN></TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">The number of constraint senses changed by presolve to this point.</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>PRE_BNDCHG</TT></SPAN></TH>
+<TD ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>PRESOLVE</TT></SPAN></TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">The number of variable bounds changed by presolve to this point.</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>PRE_COECHG</TT></SPAN></TH>
+<TD ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>PRESOLVE</TT></SPAN></TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">The number of coefficients changed by presolve to this point.</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>SPX_ITRCNT</TT></SPAN></TH>
+<TD ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>SIMPLEX</TT></SPAN></TD>
+<TD ALIGN="LEFT">double</TD>
+<TD ALIGN="LEFT">Current simplex iteration count.</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>SPX_OBJVAL</TT></SPAN></TH>
+<TD ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>SIMPLEX</TT></SPAN></TD>
+<TD ALIGN="LEFT">double</TD>
+<TD ALIGN="LEFT">Current simplex objective value.</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>SPX_PRIMINF</TT></SPAN></TH>
+<TD ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>SIMPLEX</TT></SPAN></TD>
+<TD ALIGN="LEFT">double</TD>
+<TD ALIGN="LEFT">Current primal infeasibility.</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>SPX_DUALINF</TT></SPAN></TH>
+<TD ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>SIMPLEX</TT></SPAN></TD>
+<TD ALIGN="LEFT">double</TD>
+<TD ALIGN="LEFT">Current dual infeasibility.</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>SPX_ISPERT</TT></SPAN></TH>
+<TD ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>SIMPLEX</TT></SPAN></TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">Is problem current perturbed?</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>MIP_OBJBST</TT></SPAN></TH>
+<TD ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>MIP</TT></SPAN></TD>
+<TD ALIGN="LEFT">double</TD>
+<TD ALIGN="LEFT">Current best objective.</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>MIP_OBJBND</TT></SPAN></TH>
+<TD ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>MIP</TT></SPAN></TD>
+<TD ALIGN="LEFT">double</TD>
+<TD ALIGN="LEFT">Current best objective bound.</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>MIP_NODCNT</TT></SPAN></TH>
+<TD ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>MIP</TT></SPAN></TD>
+<TD ALIGN="LEFT">double</TD>
+<TD ALIGN="LEFT">Current explored node count.</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>MIP_SOLCNT</TT></SPAN></TH>
+<TD ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>MIP</TT></SPAN></TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">Current count of feasible solutions found.</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>MIP_CUTCNT</TT></SPAN></TH>
+<TD ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>MIP</TT></SPAN></TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">Current count of cutting planes applied.</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>MIP_NODLFT</TT></SPAN></TH>
+<TD ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>MIP</TT></SPAN></TD>
+<TD ALIGN="LEFT">double</TD>
+<TD ALIGN="LEFT">Current unexplored node count.</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>MIP_ITRCNT</TT></SPAN></TH>
+<TD ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>MIP</TT></SPAN></TD>
+<TD ALIGN="LEFT">double</TD>
+<TD ALIGN="LEFT">Current simplex iteration count.</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>MIPSOL_SOL</TT></SPAN></TH>
+<TD ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>MIPSOL</TT></SPAN></TD>
+<TD ALIGN="LEFT">double *</TD>
+<TD ALIGN="LEFT">Solution vector for new solution (C only).  The resultP argument to C routine
+<A HREF="c_grbcbget.html#routine:GRBcbget">GRBcbget</A>
+should point to an array of doubles that is at least as long as the number of variables in the user model.</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>MIPSOL_OBJ</TT></SPAN></TH>
+<TD ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>MIPSOL</TT></SPAN></TD>
+<TD ALIGN="LEFT">double</TD>
+<TD ALIGN="LEFT">Objective value for new solution.</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>MIPSOL_OBJBST</TT></SPAN></TH>
+<TD ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>MIPSOL</TT></SPAN></TD>
+<TD ALIGN="LEFT">double</TD>
+<TD ALIGN="LEFT">Current best objective.</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>MIPSOL_OBJBND</TT></SPAN></TH>
+<TD ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>MIPSOL</TT></SPAN></TD>
+<TD ALIGN="LEFT">double</TD>
+<TD ALIGN="LEFT">Current best objective bound.</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>MIPSOL_NODCNT</TT></SPAN></TH>
+<TD ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>MIPSOL</TT></SPAN></TD>
+<TD ALIGN="LEFT">double</TD>
+<TD ALIGN="LEFT">Current explored node count.</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>MIPSOL_SOLCNT</TT></SPAN></TH>
+<TD ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>MIPSOL</TT></SPAN></TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">Current count of feasible solutions found.</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>MIPNODE_STATUS</TT></SPAN></TH>
+<TD ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>MIPNODE</TT></SPAN></TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">Optimization status of current MIP node (see the <A HREF="optimization_status_codes.html#sec:StatusCodes">Status Code</A> section for further information).</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>MIPNODE_OBJBST</TT></SPAN></TH>
+<TD ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>MIPNODE</TT></SPAN></TD>
+<TD ALIGN="LEFT">double</TD>
+<TD ALIGN="LEFT">Current best objective.</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>MIPNODE_OBJBND</TT></SPAN></TH>
+<TD ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>MIPNODE</TT></SPAN></TD>
+<TD ALIGN="LEFT">double</TD>
+<TD ALIGN="LEFT">Current best objective bound.</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>MIPNODE_NODCNT</TT></SPAN></TH>
+<TD ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>MIPNODE</TT></SPAN></TD>
+<TD ALIGN="LEFT">double</TD>
+<TD ALIGN="LEFT">Current explored node count.</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>MIPNODE_SOLCNT</TT></SPAN></TH>
+<TD ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>MIPNODE</TT></SPAN></TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">Current count of feasible solutions found.</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>MIPNODE_REL</TT></SPAN></TH>
+<TD ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>MIPNODE</TT></SPAN></TD>
+<TD ALIGN="LEFT">double *</TD>
+<TD ALIGN="LEFT">Relaxation solution for the current node, when its optimization status is GRB_OPTIMAL (C only). The resultP argument to C routine
+<A HREF="c_grbcbget.html#routine:GRBcbget">GRBcbget</A>
+should point to an array of doubles that is at least as long as the number of variables in the user model.</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>BARRIER_ITRCNT</TT></SPAN></TH>
+<TD ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>BARRIER</TT></SPAN></TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">Current barrier iteration count.</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>BARRIER_PRIMOBJ</TT></SPAN></TH>
+<TD ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>BARRIER</TT></SPAN></TD>
+<TD ALIGN="LEFT">double</TD>
+<TD ALIGN="LEFT">Primal objective value for current barrier iterate.</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>BARRIER_DUALOBJ</TT></SPAN></TH>
+<TD ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>BARRIER</TT></SPAN></TD>
+<TD ALIGN="LEFT">double</TD>
+<TD ALIGN="LEFT">Dual objective value for current barrier iterate.</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>BARRIER_PRIMINF</TT></SPAN></TH>
+<TD ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>BARRIER</TT></SPAN></TD>
+<TD ALIGN="LEFT">double</TD>
+<TD ALIGN="LEFT">Primal infeasibility for current barrier iterate.</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>BARRIER_DUALINF</TT></SPAN></TH>
+<TD ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>BARRIER</TT></SPAN></TD>
+<TD ALIGN="LEFT">double</TD>
+<TD ALIGN="LEFT">Dual infeasibility for current barrier iterate.</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>BARRIER_COMPL</TT></SPAN></TH>
+<TD ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>BARRIER</TT></SPAN></TD>
+<TD ALIGN="LEFT">double</TD>
+<TD ALIGN="LEFT">Complementarity violation for current barrier iterate.</TD>
+</TR>
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>MSG_STRING</TT></SPAN></TH>
+<TD ALIGN="LEFT"><SPAN  CLASS="textbf"><TT>MESSAGE</TT></SPAN></TD>
+<TD ALIGN="LEFT">char *</TD>
+<TD ALIGN="LEFT">The message that is being printed.</TD>
+</TR>
+</TABLE>
+
+<P>
+Remember that the appropriate prefix must be added to the <code>what</code>
+or <code>where</code> name listed above, depending on the language you are
+using.
+
+<P>
+Note that the <code>POLLING</code> callback does not allow any
+additional information to be retreived.  It is provided in order to
+allow interactive applications to regain control frequently, so that
+they can maintain application responsiveness.
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html12169"
+  HREF="error_codes.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html12167"
+  HREF="refman.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html12161"
+  HREF="optimization_status_codes.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html12170"
+  HREF="error_codes.html">Error Codes</A>
+<B> Up:</B> <A NAME="tex2html12168"
+  HREF="refman.html">Gurobi Optimizer Reference Manual</A>
+<B> Previous:</B> <A NAME="tex2html12162"
+  HREF="optimization_status_codes.html">Optimization Status Codes</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

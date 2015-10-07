@@ -1,0 +1,170 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>qp_vb.vb</TITLE>
+<META NAME="description" CONTENT="qp_vb.vb">
+<META NAME="keywords" CONTENT="examples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="examples.css">
+
+<LINK REL="next" HREF="sensitivity_vb_vb.html">
+<LINK REL="previous" HREF="qcp_vb_vb.html">
+<LINK REL="up" HREF="visual_basic_examples.html">
+<LINK REL="next" HREF="sensitivity_vb_vb.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html1761"
+  HREF="sensitivity_vb_vb.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1759"
+  HREF="visual_basic_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1753"
+  HREF="qcp_vb_vb.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1762"
+  HREF="sensitivity_vb_vb.html">sensitivity_vb.vb</A>
+<B> Up:</B> <A NAME="tex2html1760"
+  HREF="visual_basic_examples.html">Visual Basic Examples</A>
+<B> Previous:</B> <A NAME="tex2html1754"
+  HREF="qcp_vb_vb.html">qcp_vb.vb</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000251500000000000000"></A>
+<A NAME="subsubsection:qp_vb.vb"></A>
+<BR>
+qp_vb.vb
+</H3>
+
+<P>
+<BR>
+<PRE  CLASS="verbatim">' Copyright 2014, Gurobi Optimization, Inc.
+
+' This example formulates and solves the following simple QP model:
+'
+'     minimize    x^2 + x*y + y^2 + y*z + z^2 + 2 x
+'     subject to  x + 2 y + 3 z &gt;= 4
+'                 x +   y       &gt;= 1
+'
+'   It solves it once as a continuous model, and once as an integer model.
+'
+
+Imports Gurobi
+
+Class qp_vb
+    Shared Sub Main()
+        Try
+            Dim env As New GRBEnv("qp.log")
+            Dim model As New GRBModel(env)
+
+            ' Create variables
+
+            Dim x As GRBVar = model.AddVar(0.0, 1.0, 0.0, GRB.CONTINUOUS, "x")
+            Dim y As GRBVar = model.AddVar(0.0, 1.0, 0.0, GRB.CONTINUOUS, "y")
+            Dim z As GRBVar = model.AddVar(0.0, 1.0, 0.0, GRB.CONTINUOUS, "z")
+
+            ' Integrate new variables
+
+            model.Update()
+
+            ' Set objective
+
+            Dim obj As New GRBQuadExpr()
+            obj = x*x + x*y + y*y + y*z + z*z + 2*x
+            model.SetObjective(obj)
+
+            ' Add constraint: x + 2 y + 3 z &gt;= 4
+
+            model.AddConstr(x + 2 * y + 3 * z &gt;= 4.0, "c0")
+
+            ' Add constraint: x + y &gt;= 1
+
+            model.AddConstr(x + y &gt;= 1.0, "c1")
+
+            ' Optimize model
+
+            model.Optimize()
+
+            Console.WriteLine(x.Get(GRB.StringAttr.VarName) &amp; " " &amp; _
+                              x.Get(GRB.DoubleAttr.X))
+            Console.WriteLine(y.Get(GRB.StringAttr.VarName) &amp; " " &amp; _
+                              y.Get(GRB.DoubleAttr.X))
+            Console.WriteLine(z.Get(GRB.StringAttr.VarName) &amp; " " &amp; _
+                              z.Get(GRB.DoubleAttr.X))
+
+            Console.WriteLine("Obj: " &amp; model.Get(GRB.DoubleAttr.ObjVal) &amp; _
+                              " " &amp; obj.Value)
+
+
+            ' Change variable types to integer
+
+            x.Set(GRB.CharAttr.VType, GRB.INTEGER)
+            y.Set(GRB.CharAttr.VType, GRB.INTEGER)
+            z.Set(GRB.CharAttr.VType, GRB.INTEGER)
+
+            ' Optimize model
+
+            model.Optimize()
+
+            Console.WriteLine(x.Get(GRB.StringAttr.VarName) &amp; " " &amp; _
+                              x.Get(GRB.DoubleAttr.X))
+            Console.WriteLine(y.Get(GRB.StringAttr.VarName) &amp; " " &amp; _
+                              y.Get(GRB.DoubleAttr.X))
+            Console.WriteLine(z.Get(GRB.StringAttr.VarName) &amp; " " &amp; _
+                              z.Get(GRB.DoubleAttr.X))
+
+            Console.WriteLine("Obj: " &amp; model.Get(GRB.DoubleAttr.ObjVal) &amp; _
+                               " " &amp; obj.Value)
+
+            ' Dispose of model and env
+
+            model.Dispose()
+            env.Dispose()
+
+        Catch e As GRBException
+            Console.WriteLine("Error code: " &amp; e.ErrorCode &amp; ". " &amp; e.Message)
+        End Try
+    End Sub
+End Class
+</PRE>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1761"
+  HREF="sensitivity_vb_vb.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1759"
+  HREF="visual_basic_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1753"
+  HREF="qcp_vb_vb.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1762"
+  HREF="sensitivity_vb_vb.html">sensitivity_vb.vb</A>
+<B> Up:</B> <A NAME="tex2html1760"
+  HREF="visual_basic_examples.html">Visual Basic Examples</A>
+<B> Previous:</B> <A NAME="tex2html1754"
+  HREF="qcp_vb_vb.html">qcp_vb.vb</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

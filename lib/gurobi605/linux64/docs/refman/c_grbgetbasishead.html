@@ -1,0 +1,134 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>GRBgetBasisHead</TITLE>
+<META NAME="description" CONTENT="GRBgetBasisHead">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="previous" HREF="c_grbbinvrowi.html">
+<LINK REL="up" HREF="c_advanced_simplex_routine.html">
+<LINK REL="next" HREF="cpp_api_overview.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html2479"
+  HREF="cpp_api_overview.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html2477"
+  HREF="c_advanced_simplex_routine.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html2473"
+  HREF="c_grbbinvrowi.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html2480"
+  HREF="cpp_api_overview.html">C++ API Overview</A>
+<B> Up:</B> <A NAME="tex2html2478"
+  HREF="c_advanced_simplex_routine.html">Advanced simplex routines</A>
+<B> Previous:</B> <A NAME="tex2html2474"
+  HREF="c_grbbinvrowi.html">GRBBinvRowi</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000211500000000000000"></A>
+<A NAME="routine:GRBgetBasisHead"></A>
+<BR>
+GRBgetBasisHead
+</H3>
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">GRBgetBasisHead</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT">GRBmodel</TD>
+<TD ALIGN="LEFT">*model,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">*bhead )</TD>
+</TR>
+</TABLE>
+
+<P>
+Returns the indices of the variables that make up the current
+basis matrix.
+
+<P>
+
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Return value:</SPAN></BIG>
+
+<P>
+A non-zero return value indicates that a problem occurred while extracting the basis.
+Refer to the <A HREF="error_codes.html#sec:ErrorCodes">Error Code</A> table for a
+list of possible return values.  Details on the error can be obtained
+by calling <A HREF="c_grbgeterrormsg.html#routine:GRBgeterrormsg">GRBgeterrormsg</A>.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">model</SPAN>: The model.  Note that the model must have a current
+optimal basis, as computed by
+<A HREF="c_grboptimize.html#routine:GRBoptimize">GRBoptimize</A>.
+
+<P>
+ <SPAN  CLASS="textbf">bhead</SPAN>: The constraint matrix columns that make up the
+  current basis.  The result contains one entry per constraint in <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img28.png"
+ ALT="$A$"></SPAN>.
+  If <TT>bhead[i]=j</TT>, then column <TT>i</TT> in the basis matrix <SPAN CLASS="MATH"><IMG
+ WIDTH="17" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img22.png"
+ ALT="$B$"></SPAN> is
+  column <TT>j</TT> from the constraint matrix <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img28.png"
+ ALT="$A$"></SPAN>.  Note that the basis may
+  contain slack or articifial variables.  If <TT>bhead[i]</TT> is
+  greater than or equal to <TT>cols</TT> (the number of columns in <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img28.png"
+ ALT="$A$"></SPAN>),
+  then the corresponding basis column is the articial or slack
+  variable from row <TT>bhead[i]-cols</TT>.
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html2479"
+  HREF="cpp_api_overview.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html2477"
+  HREF="c_advanced_simplex_routine.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html2473"
+  HREF="c_grbbinvrowi.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html2480"
+  HREF="cpp_api_overview.html">C++ API Overview</A>
+<B> Up:</B> <A NAME="tex2html2478"
+  HREF="c_advanced_simplex_routine.html">Advanced simplex routines</A>
+<B> Previous:</B> <A NAME="tex2html2474"
+  HREF="c_grbbinvrowi.html">GRBBinvRowi</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

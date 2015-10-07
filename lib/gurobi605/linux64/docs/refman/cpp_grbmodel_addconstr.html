@@ -1,0 +1,393 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>GRBModel::addConstr()</TITLE>
+<META NAME="description" CONTENT="GRBModel::addConstr()">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="cpp_grbmodel_addconstrs.html">
+<LINK REL="previous" HREF="cpp_grbmodel2.html">
+<LINK REL="up" HREF="cpp_grbmodel.html">
+<LINK REL="next" HREF="cpp_grbmodel_addconstrs.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html2832"
+  HREF="cpp_grbmodel_addconstrs.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html2830"
+  HREF="cpp_grbmodel.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html2824"
+  HREF="cpp_grbmodel2.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html2833"
+  HREF="cpp_grbmodel_addconstrs.html">GRBModel::addConstrs()</A>
+<B> Up:</B> <A NAME="tex2html2831"
+  HREF="cpp_grbmodel.html">GRBModel</A>
+<B> Previous:</B> <A NAME="tex2html2825"
+  HREF="cpp_grbmodel2.html">GRBModel()</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00042200000000000000"></A>
+<A NAME="cppmethod:GRBModel::addConstr"></A>
+<BR>
+GRBModel::addConstr()
+</H3>
+
+<P>
+Add a single linear constraint to a model.  Multiple signatures
+are available.
+
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">GRBConstr</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">addConstr</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT">const GRBLinExpr&amp;</TD>
+<TD ALIGN="LEFT">lhsExpr,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">char</TD>
+<TD ALIGN="LEFT">sense,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">const GRBLinExpr&amp;</TD>
+<TD ALIGN="LEFT">rhsExpr,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">string</TD>
+<TD ALIGN="LEFT">name="" )</TD>
+</TR>
+</TABLE>
+
+<UL>
+Add a single linear constraint to a model.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">lhsExpr</SPAN>: Left-hand side expression for new linear constraint.
+
+<P>
+ <SPAN  CLASS="textbf">sense</SPAN>: Sense for new linear constraint (<TT>GRB_LESS_EQUAL</TT>,
+  <TT>GRB_EQUAL</TT>, or <TT>GRB_GREATER_EQUAL</TT>).
+
+<P>
+ <SPAN  CLASS="textbf">rhsExpr</SPAN>: Right-hand side expression for new linear constraint.
+
+<P>
+ <SPAN  CLASS="textbf">name (optional)</SPAN>: Name for new constraint.
+
+<P>
+
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Return value:</SPAN></BIG>
+
+<P>
+New constraint object.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">GRBConstr</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">addConstr</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT">const GRBLinExpr&amp;</TD>
+<TD ALIGN="LEFT">lhsExpr,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">char</TD>
+<TD ALIGN="LEFT">sense,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">GRBVar</TD>
+<TD ALIGN="LEFT">rhsVar,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">string</TD>
+<TD ALIGN="LEFT">name="" )</TD>
+</TR>
+</TABLE>
+
+<UL>
+Add a single linear constraint to a model.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">lhsExpr</SPAN>: Left-hand side expression for new linear constraint.
+
+<P>
+ <SPAN  CLASS="textbf">sense</SPAN>: Sense for new linear constraint (<TT>GRB_LESS_EQUAL</TT>,
+  <TT>GRB_EQUAL</TT>, or <TT>GRB_GREATER_EQUAL</TT>).
+
+<P>
+ <SPAN  CLASS="textbf">rhsVar</SPAN>: Right-hand side variable for new linear constraint.
+
+<P>
+ <SPAN  CLASS="textbf">name (optional)</SPAN>: Name for new constraint.
+
+<P>
+
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Return value:</SPAN></BIG>
+
+<P>
+New constraint object.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">GRBConstr</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">addConstr</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT">const GRBLinExpr&amp;</TD>
+<TD ALIGN="LEFT">lhsExpr,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">char</TD>
+<TD ALIGN="LEFT">sense,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">double</TD>
+<TD ALIGN="LEFT">rhsVal,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">string</TD>
+<TD ALIGN="LEFT">name="" )</TD>
+</TR>
+</TABLE>
+
+<UL>
+Add a single linear constraint to a model.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">lhsExpr</SPAN>: Left-hand side expression for new linear constraint.
+
+<P>
+ <SPAN  CLASS="textbf">sense</SPAN>: Sense for new linear constraint (<TT>GRB_LESS_EQUAL</TT>,
+  <TT>GRB_EQUAL</TT>, or <TT>GRB_GREATER_EQUAL</TT>).
+
+<P>
+ <SPAN  CLASS="textbf">rhsVal</SPAN>: Right-hand side value for new linear constraint.
+
+<P>
+ <SPAN  CLASS="textbf">name (optional)</SPAN>: Name for new constraint.
+
+<P>
+
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Return value:</SPAN></BIG>
+
+<P>
+New constraint object.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">GRBConstr</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">addConstr</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT">GRBVar</TD>
+<TD ALIGN="LEFT">lhsVar,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">char</TD>
+<TD ALIGN="LEFT">sense,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">GRBVar</TD>
+<TD ALIGN="LEFT">rhsVar,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">string</TD>
+<TD ALIGN="LEFT">name="" )</TD>
+</TR>
+</TABLE>
+
+<UL>
+Add a single linear constraint to a model.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">lhsVar</SPAN>: Left-hand side variable for new linear constraint.
+
+<P>
+ <SPAN  CLASS="textbf">sense</SPAN>: Sense for new linear constraint (<TT>GRB_LESS_EQUAL</TT>,
+  <TT>GRB_EQUAL</TT>, or <TT>GRB_GREATER_EQUAL</TT>).
+
+<P>
+ <SPAN  CLASS="textbf">rhsVar</SPAN>: Right-hand side variable for new linear constraint.
+
+<P>
+ <SPAN  CLASS="textbf">name (optional)</SPAN>: Name for new constraint.
+
+<P>
+
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Return value:</SPAN></BIG>
+
+<P>
+New constraint object.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">GRBConstr</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">addConstr</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT">GRBVar</TD>
+<TD ALIGN="LEFT">lhsVar,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">char</TD>
+<TD ALIGN="LEFT">sense,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">double</TD>
+<TD ALIGN="LEFT">rhsVal,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">string</TD>
+<TD ALIGN="LEFT">name="" )</TD>
+</TR>
+</TABLE>
+
+<UL>
+Add a single linear constraint to a model.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">lhsVar</SPAN>: Left-hand side variable for new linear constraint.
+
+<P>
+ <SPAN  CLASS="textbf">sense</SPAN>: Sense for new linear constraint (<TT>GRB_LESS_EQUAL</TT>,
+  <TT>GRB_EQUAL</TT>, or <TT>GRB_GREATER_EQUAL</TT>).
+
+<P>
+ <SPAN  CLASS="textbf">rhsVal</SPAN>: Right-hand side value for new linear constraint.
+
+<P>
+ <SPAN  CLASS="textbf">name (optional)</SPAN>: Name for new constraint.
+
+<P>
+
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Return value:</SPAN></BIG>
+
+<P>
+New constraint object.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">GRBConstr</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">addConstr</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT">GRBTempConstr&amp;</TD>
+<TD ALIGN="LEFT">tc,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">string</TD>
+<TD ALIGN="LEFT">name="" )</TD>
+</TR>
+</TABLE>
+
+<UL>
+Add a single linear constraint to a model.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">tc</SPAN>: Temporary constraint object, created using an overloaded
+  comparison operator.  See
+  <A HREF="cpp_grbtempconstr.html#cppclass:GRBTempConstr">GRBTempConstr</A> for more
+  information.
+
+<P>
+ <SPAN  CLASS="textbf">name (optional)</SPAN>: Name for new constraint.
+
+<P>
+
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Return value:</SPAN></BIG>
+
+<P>
+New constraint object.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html2832"
+  HREF="cpp_grbmodel_addconstrs.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html2830"
+  HREF="cpp_grbmodel.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html2824"
+  HREF="cpp_grbmodel2.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html2833"
+  HREF="cpp_grbmodel_addconstrs.html">GRBModel::addConstrs()</A>
+<B> Up:</B> <A NAME="tex2html2831"
+  HREF="cpp_grbmodel.html">GRBModel</A>
+<B> Previous:</B> <A NAME="tex2html2825"
+  HREF="cpp_grbmodel2.html">GRBModel()</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

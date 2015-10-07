@@ -1,0 +1,166 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Software Installation Guide</TITLE>
+<META NAME="description" CONTENT="Software Installation Guide">
+<META NAME="keywords" CONTENT="quickstart_linux">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="quickstart_linux.css">
+
+<LINK REL="next" HREF="retrieving_and_setting_up_.html">
+<LINK REL="previous" HREF="obtaining_a_gurobi_license.html">
+<LINK REL="up" HREF="quickstart_linux.html">
+<LINK REL="next" HREF="retrieving_and_setting_up_.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html226"
+  HREF="retrieving_and_setting_up_.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html224"
+  HREF="quickstart_linux.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html218"
+  HREF="creating_a_new_academic_li.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html227"
+  HREF="retrieving_and_setting_up_.html">Retrieving and Setting Up</A>
+<B> Up:</B> <A NAME="tex2html225"
+  HREF="quickstart_linux.html">Gurobi Optimizer Quick Start</A>
+<B> Previous:</B> <A NAME="tex2html219"
+  HREF="creating_a_new_academic_li.html">Creating a new academic</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00020000000000000000"></A>
+<A NAME="section:Installation"></A>
+<BR>
+Software Installation Guide
+</H1>
+
+<P>
+Before using the Gurobi Optimizer, you'll need to install the software on your
+computer.  If you haven't already done so, please go to
+<A NAME="tex2html7"
+  HREF="http://www.gurobi.com/download/gurobi-optimizer">our download page</A>,
+select your platform (we'll assume Linux in this document), and
+click on the <EM>Download</EM> button.
+
+<DIV ALIGN="CENTER">
+<IMG
+  WIDTH="631" HEIGHT="532" ALIGN="BOTTOM" BORDER="0"
+ SRC="./download_linux.png"
+ ALT="Image download_linux">
+
+</DIV>
+Make a note of the name and location of the downloaded file.
+
+<P>
+Your next step is to choose a destination directory.  We recommend
+<code>/opt</code> for a shared installation, but other directories will work
+as well.  Copy the Gurobi distribution to the destination directory
+and extract the contents.  Extraction is done with the following
+command:
+<PRE>
+  tar xvfz gurobi6.0.0_linux64.tar.gz
+</PRE>
+This command will create a sub-directory <code>gurobi600/linux64</code> that
+contains the complete Gurobi distribution. Your
+<code>&lt;installdir&gt;</code> (which we'll refer to throughout this document)
+will be <code>/opt/gurobi600/linux64</code>.
+
+<P>
+The Gurobi Optimizer makes use of several executable files.  In order
+to allow these files to be found when needed, you will have to modify
+a few environment variables:
+
+<UL>
+<LI><code>GUROBI_HOME</code> should point to your <code>&lt;installdir&gt;</code>.
+</LI>
+<LI><code>PATH</code> should be extended to include <code>&lt;installdir&gt;/bin</code>.
+</LI>
+<LI><code>LD_LIBRARY_PATH</code> should be extended to include
+    <code>&lt;installdir&gt;/lib</code>.
+</LI>
+</UL>
+Users of the <code>bash</code> shell should add the following lines to their
+<code>.bashrc</code> files:
+<PRE>
+  export GUROBI_HOME="/opt/gurobi600/linux64"
+  export PATH="${PATH}:${GUROBI_HOME}/bin"
+  export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${GUROBI_HOME}/lib"
+</PRE>
+Users of the <code>csh</code> shell should add the following lines to their
+<code>.cshrc</code> files:
+<PRE>
+  setenv GUROBI_HOME /opt/gurobi600/linux64
+  setenv PATH ${PATH}:${GUROBI_HOME}/bin
+  setenv LD_LIBRARY_PATH ${LD_LIBRARY_PATH}:${GUROBI_HOME}/lib
+</PRE>
+If <code>LD_LIBRARY_PATH</code> is not already set, use
+the following instead:
+<PRE>
+  export LD_LIBRARY_PATH="${GUROBI_HOME}/lib"
+</PRE>
+or
+<PRE>
+  setenv LD_LIBRARY_PATH ${GUROBI_HOME}/lib
+</PRE>
+These paths should be adjusted to reflect your chosen
+<code>&lt;installdir&gt;</code>.
+
+<P>
+You'll need to close your current terminal window and open a new one
+after you have made these changes in order to pick up the new
+settings.
+
+<P>
+You are now ready to proceed to the section on
+<A HREF="retrieving_and_setting_up_.html#section:RetrieveLicense">Retrieving Your Gurobi License</A>.
+
+<P>
+If you would like an overview of the files included in the Gurobi
+distribution, you can also view the
+<A HREF="file_overview.html#section:Overview">File Overview</A> section.
+
+<P>
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html226"
+  HREF="retrieving_and_setting_up_.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html224"
+  HREF="quickstart_linux.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html218"
+  HREF="creating_a_new_academic_li.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html227"
+  HREF="retrieving_and_setting_up_.html">Retrieving and Setting Up</A>
+<B> Up:</B> <A NAME="tex2html225"
+  HREF="quickstart_linux.html">Gurobi Optimizer Quick Start</A>
+<B> Previous:</B> <A NAME="tex2html219"
+  HREF="creating_a_new_academic_li.html">Creating a new academic</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

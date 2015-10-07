@@ -1,0 +1,291 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>GRBaddqconstr</TITLE>
+<META NAME="description" CONTENT="GRBaddqconstr">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="c_grbaddqpterms.html">
+<LINK REL="previous" HREF="c_grbaddconstrs.html">
+<LINK REL="up" HREF="c_model_creation_and_modif.html">
+<LINK REL="next" HREF="c_grbaddqpterms.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html1320"
+  HREF="c_grbaddqpterms.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1318"
+  HREF="c_model_creation_and_modif.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1312"
+  HREF="c_grbaddconstrs.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1321"
+  HREF="c_grbaddqpterms.html">GRBaddqpterms</A>
+<B> Up:</B> <A NAME="tex2html1319"
+  HREF="c_model_creation_and_modif.html">Model Creation and Modification</A>
+<B> Previous:</B> <A NAME="tex2html1313"
+  HREF="c_grbaddconstrs.html">GRBaddconstrs</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00022600000000000000"></A>
+<A NAME="routine:GRBaddqconstr"></A>
+<BR>
+GRBaddqconstr
+</H3>
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">GRBaddqconstr</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT">GRBmodel</TD>
+<TD ALIGN="LEFT">*model,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">numlnz,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">*lind,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">double</TD>
+<TD ALIGN="LEFT">*lval,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">numqnz,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">*qrow,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">*qcol,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">double</TD>
+<TD ALIGN="LEFT">*qval,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">char</TD>
+<TD ALIGN="LEFT">sense,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">double</TD>
+<TD ALIGN="LEFT">rhs,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">const char</TD>
+<TD ALIGN="LEFT">*constrname )</TD>
+</TR>
+</TABLE>
+
+<P>
+Add a new quadratic constraint to an existing model.  Note that the new
+constraint won't actually be added until the next call to
+<A HREF="c_grboptimize.html#routine:GRBoptimize">GRBoptimize</A> or
+<A HREF="c_grbupdatemodel.html#routine:GRBupdatemodel">GRBupdatemodel</A>.
+
+<P>
+A quadratic constraint consists of a set of quadratic terms, a set of
+linear terms, a sense, and a right-hand side value:
+<!-- MATH
+ $x^TQx + q^Tx \le b$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="119" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$x^TQx + q^Tx \le b$"></SPAN>.
+The quadratic terms are input through the
+<code>numqnz</code>, <code>qrow</code>, <code>qcol</code>, and <code>qval</code> arguments,
+and the linear terms are input through the
+<code>numlnz</code>, <code>lind</code>, and <code>lval</code> arguments.
+
+<P>
+Important note: the algorithms Gurobi uses to solve
+quadratically constrained problems can only handle certain
+types of quadratic constraints.  Constraints of the following
+forms are always accepted:
+
+<UL>
+<LI><!-- MATH
+ $x^TQx + q^Tx \le b$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="119" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$x^TQx + q^Tx \le b$"></SPAN>, where <SPAN CLASS="MATH"><IMG
+ WIDTH="17" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$Q$"></SPAN> is Positive Semi-Definite (PSD)
+</LI>
+<LI><!-- MATH
+ $x^Tx \le y^{2}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="69" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img3.png"
+ ALT="$x^Tx \le y^{2}$"></SPAN>, where <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$x$"></SPAN> is a vector of variables, and
+    <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img5.png"
+ ALT="$y$"></SPAN> is a non-negative variable (a Second-Order Cone)
+</LI>
+<LI><SPAN CLASS="MATH"><IMG
+ WIDTH="70" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img6.png"
+ ALT="$x^Tx \le y z$"></SPAN>, where <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$x$"></SPAN> is a vector of variables,
+    and <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img5.png"
+ ALT="$y$"></SPAN> and <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img7.png"
+ ALT="$z$"></SPAN> are non-negative variables
+    (a rotated Second-Order Cone)
+</LI>
+</UL>
+If you add a constraint that isn't in one of these forms (and Gurobi
+presolve is unable to transform the constraint into one of these
+forms), you'll get an error when you try to solve the model.
+Constraints where the quadratic terms only involve binary variables
+will always be transformed into one of these forms.
+
+<P>
+
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Return value:</SPAN></BIG>
+
+<P>
+A non-zero return value indicates that a problem occurred while adding the quadratic constraint.
+Refer to the <A HREF="error_codes.html#sec:ErrorCodes">Error Code</A> table for a
+list of possible return values.  Details on the error can be obtained
+by calling <A HREF="c_grbgeterrormsg.html#routine:GRBgeterrormsg">GRBgeterrormsg</A>.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">model</SPAN>: The model to which the new constraint should be added.
+
+<P>
+ <SPAN  CLASS="textbf">numlnz</SPAN>: The number of linear terms in the new quadratic constraint.
+
+<P>
+ <SPAN  CLASS="textbf">lind</SPAN>: Variable indices associated with linear terms.
+
+<P>
+ <SPAN  CLASS="textbf">lval</SPAN>: Numerical values associated with linear terms.
+
+<P>
+ <SPAN  CLASS="textbf">numqlnz</SPAN>: The number of quadratic terms in the new quadratic constraint.
+
+<P>
+ <SPAN  CLASS="textbf">qrow</SPAN>: Row indices associated with quadratic terms.  A
+  quadratic term is represented using three values: a pair of indices
+  (stored in <TT>qrow</TT> and <TT>qcol</TT>), and a coefficient (stored
+  in <TT>qval</TT>).  The associated arguments arrays provide the
+  corresponding values for each quadratic term.  To give an example,
+  if you wish to input quadratic terms <!-- MATH
+ $2 x0^2 + x0 * x1 +
+  x1^2$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="149" HEIGHT="33" ALIGN="MIDDLE" BORDER="0"
+ SRC="img8.png"
+ ALT="$2 x0^2 + x0 * x1 +
+x1^2$"></SPAN>, you would call this routine with <TT>numqnz=3</TT>,
+  <TT>qrow[] = {0, 0, 1}</TT>, <TT>qcol[] = {0, 1, 1}</TT>, and
+  <TT>qval[] = {2.0, 1.0, 1.0}</TT>.
+
+<P>
+ <SPAN  CLASS="textbf">qcol</SPAN>: Column indices associated with quadratic terms.
+  See the description of the <TT>qrow</TT> argument for more information.
+
+<P>
+ <SPAN  CLASS="textbf">qval</SPAN>: Numerical values associated with quadratic terms.
+  See the description of the <TT>qrow</TT> argument for more information.
+
+<P>
+ <SPAN  CLASS="textbf">sense</SPAN>: Sense for the new quadratic constraint.  Options are
+<TT>GRB_LESS_EQUAL</TT> or <TT>GRB_GREATER_EQUAL</TT>.
+
+<P>
+ <SPAN  CLASS="textbf">rhs</SPAN>: Right-hand-side value for the new quadratic constraint.
+
+<P>
+ <SPAN  CLASS="textbf">constrname</SPAN>: Name for the new quadratic constraint.  This
+  argument can be <TT>NULL</TT>, in which case the constraint is
+  given a default name.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Example usage:</SPAN></BIG><PRE>
+  int    lind[] = {1, 2};
+  double lval[] = {2.0, 1.0};
+  int    qrow[] = {0, 0, 1};
+  int    qcol[] = {0, 1, 1};
+  double qval[] = {2.0, 1.0, 1.0};
+  /* 2 x0^2 + x0 x1 + x1^2 + 2 x1 + x2 &lt;= 1 */
+  error = GRBaddqconstr(model, 2, lind, lval, 3, qrow, qcol, qval,
+                        GRB_LESS_EQUAL, 1.0, "New");
+</PRE>
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1320"
+  HREF="c_grbaddqpterms.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1318"
+  HREF="c_model_creation_and_modif.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1312"
+  HREF="c_grbaddconstrs.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1321"
+  HREF="c_grbaddqpterms.html">GRBaddqpterms</A>
+<B> Up:</B> <A NAME="tex2html1319"
+  HREF="c_model_creation_and_modif.html">Model Creation and Modification</A>
+<B> Previous:</B> <A NAME="tex2html1313"
+  HREF="c_grbaddconstrs.html">GRBaddconstrs</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

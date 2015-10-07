@@ -1,0 +1,121 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Model.setParam()</TITLE>
+<META NAME="description" CONTENT="Model.setParam()">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="py_model_terminate.html">
+<LINK REL="previous" HREF="py_model_setpwlobj.html">
+<LINK REL="up" HREF="py_model.html">
+<LINK REL="next" HREF="py_model_terminate.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html8380"
+  HREF="py_model_terminate.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html8378"
+  HREF="py_model.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html8372"
+  HREF="py_model_setpwlobj.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html8381"
+  HREF="py_model_terminate.html">Model.terminate()</A>
+<B> Up:</B> <A NAME="tex2html8379"
+  HREF="py_model.html">Model</A>
+<B> Previous:</B> <A NAME="tex2html8373"
+  HREF="py_model_setpwlobj.html">Model.setPWLObj()</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION0001024900000000000000"></A>
+<A NAME="pythonmethod:Model.setParam"></A>
+<BR>
+Model.setParam()
+</H3>
+<BIG CLASS="LARGE">
+<FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">setParam</SPAN></FONT></BIG> ( paramname, newvalue )
+
+<P>
+Set the value of a parameter to a new value.  Note that this method
+only affects the parameter setting for this model.  Use global
+function <A HREF="py_setparam.html#pythonmethod:setParam">setParam</A> to change
+the parameter for all models.
+
+<P>
+You can also set parameters using the <code>Model.params</code> class.  For
+example, to set parameter <code>MIPGap</code> to value 0 for model
+<code>m</code>, you can do either <code>m.setParam('MIPGap', 0)</code> or
+<code>m.params.MIPGap=0</code>.
+
+<P>
+Please consult the <A HREF="parameters.html#sec:Parameters">parameter section</A>
+for a complete list of Gurobi parameters, including descriptions of
+their purposes and their minimum, maximum, and default values.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">paramname</SPAN>: String containing the name of parameter that you
+  would like to modify.  The name can include '*' and '?' wildcards.
+  If more than one parameter matches, the matching names are listed
+  and none are modified.  Note that case is ignored.
+
+<P>
+ <SPAN  CLASS="textbf">newvalue</SPAN>: Desired new value for parameter.  Can be
+  'default', which indicates that the parameter should be reset to its
+  default value.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Example usage:</SPAN></BIG><PRE>
+  model.setParam("heu*", 0.5)
+  model.setParam(GRB.param.heuristics, 0.5)
+  model.setParam("heu*", "default")
+</PRE>
+
+<P>
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html8380"
+  HREF="py_model_terminate.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html8378"
+  HREF="py_model.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html8372"
+  HREF="py_model_setpwlobj.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html8381"
+  HREF="py_model_terminate.html">Model.terminate()</A>
+<B> Up:</B> <A NAME="tex2html8379"
+  HREF="py_model.html">Model</A>
+<B> Previous:</B> <A NAME="tex2html8373"
+  HREF="py_model_setpwlobj.html">Model.setPWLObj()</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

@@ -1,0 +1,103 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Reporting results - attributes</TITLE>
+<META NAME="description" CONTENT="Reporting results - attributes">
+<META NAME="keywords" CONTENT="quickstart_linux">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="quickstart_linux.css">
+
+<LINK REL="next" HREF="java_cleaning_up.html">
+<LINK REL="previous" HREF="java_optimizing_the_model.html">
+<LINK REL="up" HREF="java_interface.html">
+<LINK REL="next" HREF="java_cleaning_up.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html982"
+  HREF="java_cleaning_up.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html980"
+  HREF="java_interface.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html974"
+  HREF="java_optimizing_the_model.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html983"
+  HREF="java_cleaning_up.html">Cleaning up</A>
+<B> Up:</B> <A NAME="tex2html981"
+  HREF="java_interface.html">Java Interface</A>
+<B> Previous:</B> <A NAME="tex2html975"
+  HREF="java_optimizing_the_model.html">Optimizing the model</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION000910000000000000000">
+Reporting results - attributes</A>
+</H2>
+
+<P>
+Once the optimization is complete, we can query the values of the
+attributes.  In particular, we can query the <code>VarName</code> and <code>X</code>
+attributes to obtain the name and solution value for each variable:
+<PRE>
+  System.out.println(x.get(GRB.StringAttr.VarName)
+                     + " " +x.get(GRB.DoubleAttr.X));
+  System.out.println(y.get(GRB.StringAttr.VarName)
+                     + " " +y.get(GRB.DoubleAttr.X));
+  System.out.println(z.get(GRB.StringAttr.VarName)
+                     + " " +z.get(GRB.DoubleAttr.X));
+</PRE>
+
+<P>
+We can also query the <code>ObjVal</code> attribute on the model
+to obtain the objective value for the current solution:
+<PRE>
+  System.out.println("Obj: " + model.get(GRB.DoubleAttr.ObjVal));
+</PRE>
+
+<P>
+The names and types of all model, variable, and constraint attributes
+can be found in the <code>Attributes</code> section of the
+<A NAME="tex2html32"
+  HREF="../refman/refman.html">Gurobi Reference Manual</A>.
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html982"
+  HREF="java_cleaning_up.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html980"
+  HREF="java_interface.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html974"
+  HREF="java_optimizing_the_model.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html983"
+  HREF="java_cleaning_up.html">Cleaning up</A>
+<B> Up:</B> <A NAME="tex2html981"
+  HREF="java_interface.html">Java Interface</A>
+<B> Previous:</B> <A NAME="tex2html975"
+  HREF="java_optimizing_the_model.html">Optimizing the model</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

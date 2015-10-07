@@ -1,0 +1,191 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Mip2.java</TITLE>
+<META NAME="description" CONTENT="Mip2.java">
+<META NAME="keywords" CONTENT="examples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="examples.css">
+
+<LINK REL="next" HREF="params_java.html">
+<LINK REL="previous" HREF="mip1_java.html">
+<LINK REL="up" HREF="java_examples.html">
+<LINK REL="next" HREF="params_java.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html1177"
+  HREF="params_java.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1175"
+  HREF="java_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1169"
+  HREF="mip1_java.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1178"
+  HREF="params_java.html">Params.java</A>
+<B> Up:</B> <A NAME="tex2html1176"
+  HREF="java_examples.html">Java Examples</A>
+<B> Previous:</B> <A NAME="tex2html1170"
+  HREF="mip1_java.html">Mip1.java</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000231100000000000000"></A>
+<A NAME="subsubsection:Mip2.java"></A>
+<BR>
+Mip2.java
+</H3>
+
+<P>
+<BR>
+<PRE  CLASS="verbatim">/* Copyright 2014, Gurobi Optimization, Inc. */
+
+/* This example reads a MIP model from a file, solves it and
+   prints the objective values from all feasible solutions
+   generated while solving the MIP. Then it creates the fixed
+   model and solves that model. */
+
+import gurobi.*;
+
+public class Mip2 {
+  public static void main(String[] args) {
+
+    if (args.length &lt; 1) {
+      System.out.println("Usage: java Mip2 filename");
+      System.exit(1);
+    }
+
+    try {
+      GRBEnv env = new GRBEnv();
+      GRBModel model = new GRBModel(env, args[0]);
+      if (model.get(GRB.IntAttr.IsMIP) == 0) {
+        System.out.println("Model is not a MIP");
+        System.exit(1);
+      }
+
+      model.optimize();
+
+      int optimstatus = model.get(GRB.IntAttr.Status);
+      double objval = 0;
+      if (optimstatus == GRB.Status.OPTIMAL) {
+        objval = model.get(GRB.DoubleAttr.ObjVal);
+        System.out.println("Optimal objective: " + objval);
+      } else if (optimstatus == GRB.Status.INF_OR_UNBD) {
+        System.out.println("Model is infeasible or unbounded");
+        return;
+      } else if (optimstatus == GRB.Status.INFEASIBLE) {
+        System.out.println("Model is infeasible");
+        return;
+      } else if (optimstatus == GRB.Status.UNBOUNDED) {
+        System.out.println("Model is unbounded");
+        return;
+      } else {
+        System.out.println("Optimization was stopped with status = "
+            + optimstatus);
+        return;
+      }
+
+      /* Iterate over the solutions and compute the objectives */
+      GRBVar[] vars = model.getVars();
+      model.getEnv().set(GRB.IntParam.OutputFlag, 0);
+
+      System.out.println();
+      for (int k = 0; k &lt; model.get(GRB.IntAttr.SolCount); ++k) {
+        model.getEnv().set(GRB.IntParam.SolutionNumber, k);
+        double objn = 0.0;
+
+        for (int j = 0; j &lt; vars.length; j++) {
+          objn += vars[j].get(GRB.DoubleAttr.Obj)
+              * vars[j].get(GRB.DoubleAttr.Xn);
+        }
+
+        System.out.println("Solution " + k + " has objective: " + objn);
+      }
+      System.out.println();
+      model.getEnv().set(GRB.IntParam.OutputFlag, 1);
+
+      /* Create a fixed model, turn off presolve and solve */
+
+      GRBModel fixed = model.fixedModel();
+
+      fixed.getEnv().set(GRB.IntParam.Presolve, 0);
+
+      fixed.optimize();
+
+      int foptimstatus = fixed.get(GRB.IntAttr.Status);
+
+      if (foptimstatus != GRB.Status.OPTIMAL) {
+        System.err.println("Error: fixed model isn't optimal");
+        return;
+      }
+
+      double fobjval = fixed.get(GRB.DoubleAttr.ObjVal);
+
+      if (Math.abs(fobjval - objval) &gt; 1.0e-6 * (1.0 + Math.abs(objval))) {
+        System.err.println("Error: objective values are different");
+        return;
+      }
+
+      GRBVar[] fvars  = fixed.getVars();
+      double[] x      = fixed.get(GRB.DoubleAttr.X, fvars);
+      String[] vnames = fixed.get(GRB.StringAttr.VarName, fvars);
+
+      for (int j = 0; j &lt; fvars.length; j++) {
+        if (x[j] != 0.0) {
+          System.out.println(vnames[j] + " " + x[j]);
+        }
+      }
+
+      // Dispose of models and environment
+      fixed.dispose();
+      model.dispose();
+      env.dispose();
+
+    } catch (GRBException e) {
+      System.out.println("Error code: " + e.getErrorCode() + ". "
+          + e.getMessage());
+    }
+  }
+}
+</PRE>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1177"
+  HREF="params_java.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1175"
+  HREF="java_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1169"
+  HREF="mip1_java.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1178"
+  HREF="params_java.html">Params.java</A>
+<B> Up:</B> <A NAME="tex2html1176"
+  HREF="java_examples.html">Java Examples</A>
+<B> Previous:</B> <A NAME="tex2html1170"
+  HREF="mip1_java.html">Mip1.java</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

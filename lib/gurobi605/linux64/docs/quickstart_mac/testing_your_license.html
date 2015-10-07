@@ -1,0 +1,156 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Testing your license</TITLE>
+<META NAME="description" CONTENT="Testing your license">
+<META NAME="keywords" CONTENT="quickstart_mac">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="quickstart_mac.css">
+
+<LINK REL="previous" HREF="starting_gurobi_remote_ser.html">
+<LINK REL="up" HREF="retrieving_and_setting_up_.html">
+<LINK REL="next" HREF="solving_a_simple_model_the.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html392"
+  HREF="solving_a_simple_model_the.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html390"
+  HREF="retrieving_and_setting_up_.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html386"
+  HREF="upgrading_gurobi_remote_se.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html393"
+  HREF="solving_a_simple_model_the.html">Solving a Simple Model</A>
+<B> Up:</B> <A NAME="tex2html391"
+  HREF="retrieving_and_setting_up_.html">Retrieving and Setting Up</A>
+<B> Previous:</B> <A NAME="tex2html387"
+  HREF="upgrading_gurobi_remote_se.html">Upgrading Gurobi Remote Services</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00036000000000000000"></A>
+<A NAME="subsection:testlicense"></A>
+<BR>
+Testing your license
+</H2>
+<P>
+<EM>Once you have obtained a license key for your machine, you are ready
+to test your license using the Gurobi Interactive Shell.  To do this,
+type <code>gurobi.sh</code> in a <EM>Terminal</EM> window.  The shell should
+produce the following output:
+</EM><PRE>
+Gurobi Interactive Shell, Version 6.0.0
+Copyright (c) 2014, Gurobi Optimization, Inc.
+Type "help()" for help
+
+gurobi&gt;
+</PRE>
+<P>
+<EM>If you are running as a client of a Gurobi Compute Server, the message
+above will be preceded by a message like this:
+</EM><PRE>
+Server capacity available on myserver - running now
+</PRE>
+<P>
+<EM>Congratulations, your license is functioning correctly!  You
+are now ready to use the Gurobi Optimizer.  The
+<A HREF="solving_a_simple_model_the.html#section:CommandLine">next section</A> will
+show you how to solve a simple optimization model.
+</EM>
+<P>
+<EM><SPAN  CLASS="textbf">Possible errors</SPAN>
+</EM>
+<P>
+<EM>If the Gurobi shell didn't produce the desired output, there's a problem
+with your license.  We'll list a few common errors here.
+</EM>
+<P><PRE>
+ERROR: No Gurobi license found (user smith, host mymachine, hostid 9d3128ce)
+</PRE><EM>
+indicates that your <code>gurobi.lic</code> file couldn't be found.
+</EM>
+<P>
+<EM>Did you use a non-default license file location?
+</EM>
+<P>
+<EM>When you run the Mac version of the Gurobi Optimizer, it will look for
+the <code>gurobi.lic</code> key file in three different default locations.
+It will always look in your home directory.  In addition, Gurobi
+Optimizer 6.0.0 will also look in <code>/Library/gurobi</code> and
+<code>/Library/gurobi600</code>.
+</EM>
+<P>
+<EM>If you used a non-default license key file
+location, you should set environment variable
+<code>GRB_LICENSE_FILE</code> to point to the license key file.  <EM>  Important note: the environment variable points to the license
+  key file itself, not to the directory that contains the file.</EM>
+</EM>
+<P>
+<EM>The following message:
+</EM><PRE>
+ERROR: HostID mismatch (licensed to 9d3128ce, hostid is 7de025e9)
+</PRE><EM>
+indicates that your <code>gurobi.lic</code> isn't valid for this machine.
+You should make sure that you are using the right <code>gurobi.lic</code>
+file.
+</EM>
+<P>
+<EM>If you are running as a client of a Gurobi token server and receive this message:
+</EM><PRE>
+ERROR: Failed to connect to token server 'myserver' (port 41954)
+</PRE><EM>
+the Compute Server isn't currently running.
+Please consult the section on
+<A HREF="setting_up_and_using_a_sin.html#subsection:tokenserver">setting up a token server</A>.
+</EM>
+<P>
+<EM>If you are running as a client of a Gurobi Compute Server and receive this message:
+</EM><PRE>
+ERROR: No server available
+</PRE><EM>
+the Compute Server isn't currently running.
+Please consult the section on
+<A HREF="setting_up_and_using_a_com.html#subsection:computeserver">setting up a Compute Server</A>.
+</EM>
+<P>
+<EM></EM>
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html392"
+  HREF="solving_a_simple_model_the.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html390"
+  HREF="retrieving_and_setting_up_.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html386"
+  HREF="upgrading_gurobi_remote_se.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html393"
+  HREF="solving_a_simple_model_the.html">Solving a Simple Model</A>
+<B> Up:</B> <A NAME="tex2html391"
+  HREF="retrieving_and_setting_up_.html">Retrieving and Setting Up</A>
+<B> Previous:</B> <A NAME="tex2html387"
+  HREF="upgrading_gurobi_remote_se.html">Upgrading Gurobi Remote Services</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

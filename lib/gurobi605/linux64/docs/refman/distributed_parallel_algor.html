@@ -1,0 +1,129 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Distributed Parallel Algorithms</TITLE>
+<META NAME="description" CONTENT="Distributed Parallel Algorithms">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="gurobi_compute_server.html">
+<LINK REL="previous" HREF="gurobi_remote_services.html">
+<LINK REL="up" HREF="refman.html">
+<LINK REL="next" HREF="configuring_a_distributed_.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html12505"
+  HREF="configuring_a_distributed_.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html12503"
+  HREF="refman.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html12497"
+  HREF="copyright_notice_for_3rd_p.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html12506"
+  HREF="configuring_a_distributed_.html">Configuring a Distributed Worker</A>
+<B> Up:</B> <A NAME="tex2html12504"
+  HREF="refman.html">Gurobi Optimizer Reference Manual</A>
+<B> Previous:</B> <A NAME="tex2html12498"
+  HREF="copyright_notice_for_3rd_p.html">Copyright Notice for 3rd</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION000240000000000000000"></A>
+<A NAME="sec:DistributedAlgorithms"></A>
+<BR>
+Distributed Parallel Algorithms
+</H1>
+
+<P>
+Gurobi Optimizer implements a number of distributed algorithms that
+allow you to use multiple machines to solve a problem faster.
+Available distributed algorithms are:
+
+<UL>
+<LI><B>A distributed MIP solver</B>, which allows you to
+  divide the work of solving a single MIP model among multiple
+  machines.  A manager machine passes problem data to a
+  set of worker machines in order to coordinate the overall solution
+  process.
+</LI>
+<LI><B>A distributed concurrent solver</B>, which allows you to use
+  multiple machines to solve an LP or MIP model.  Unlike the
+  distributed MIP solver, the concurrent solver doesn't divide the
+  work associated with solving the problem among the machines.
+  Instead, each machine uses a different strategy to solve the whole
+  problem, with the hope that one strategy will be particularly
+  effective and will finish much earlier than the others.  For some
+  problems, this concurrent approach can be more effective than
+  attempting to divide up the work.
+</LI>
+<LI><B>Distributed parameter tuning</B>, which automatically
+  searches for parameter settings that improve performance on your
+  optimization model.  Tuning solves your model
+  with a variety of parameter settings, measuring the performance
+  obtained by each set, and then uses the results to identify the settings
+  that produce the best overall performance.  The distributed version of
+  tuning performs these trials on multiple machines, which makes the overall
+  tuning process run much faster.
+</LI>
+</UL>
+These distributed algorithms are designed to be nearly transparent to
+the user.  The user simply modifies a few parameters, and the work of
+distributing the computation among multiple machines is handled behind
+the scenes by the Gurobi library.
+
+<P>
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html12507"
+  HREF="configuring_a_distributed_.html">Configuring a Distributed Worker Pool</A>
+<LI><A NAME="tex2html12508"
+  HREF="writing_your_own_distribut.html">Writing Your Own Distributed Algorithms</A>
+<LI><A NAME="tex2html12509"
+  HREF="distributed_algorithm_cons.html">Distributed Algorithm Considerations</A>
+</UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html12505"
+  HREF="configuring_a_distributed_.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html12503"
+  HREF="refman.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html12497"
+  HREF="copyright_notice_for_3rd_p.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html12506"
+  HREF="configuring_a_distributed_.html">Configuring a Distributed Worker</A>
+<B> Up:</B> <A NAME="tex2html12504"
+  HREF="refman.html">Gurobi Optimizer Reference Manual</A>
+<B> Previous:</B> <A NAME="tex2html12498"
+  HREF="copyright_notice_for_3rd_p.html">Copyright Notice for 3rd</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

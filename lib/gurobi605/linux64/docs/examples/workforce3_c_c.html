@@ -1,0 +1,307 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>workforce3_c.c</TITLE>
+<META NAME="description" CONTENT="workforce3_c.c">
+<META NAME="keywords" CONTENT="examples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="examples.css">
+
+<LINK REL="next" HREF="workforce4_c_c.html">
+<LINK REL="previous" HREF="workforce2_c_c.html">
+<LINK REL="up" HREF="c_examples.html">
+<LINK REL="next" HREF="workforce4_c_c.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html753"
+  HREF="workforce4_c_c.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html751"
+  HREF="c_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html745"
+  HREF="workforce2_c_c.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html754"
+  HREF="workforce4_c_c.html">workforce4_c.c</A>
+<B> Up:</B> <A NAME="tex2html752"
+  HREF="c_examples.html">C Examples</A>
+<B> Previous:</B> <A NAME="tex2html746"
+  HREF="workforce2_c_c.html">workforce2_c.c</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000212300000000000000"></A>
+<A NAME="subsubsection:workforce3_c.c"></A>
+<BR>
+workforce3_c.c
+</H3>
+
+<P>
+<BR>
+<PRE  CLASS="verbatim">/* Copyright 2014, Gurobi Optimization, Inc. */
+
+/* Assign workers to shifts; each worker may or may not be available on a
+   particular day. If the problem cannot be solved, relax the model
+   to determine which constraints cannot be satisfied, and how much
+   they need to be relaxed. */
+
+#include &lt;stdlib.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;math.h&gt;
+#include &lt;string.h&gt;
+#include "gurobi_c.h"
+
+
+#define xcol(w,s)  nShifts*w+s
+#define MAXSTR     128
+
+
+int
+main(int   argc,
+     char *argv[])
+{
+  GRBenv   *env = NULL;
+  GRBmodel *model = NULL;
+  int       error = 0, status;
+  int       s, w, col;
+  int      *cbeg = NULL;
+  int      *cind = NULL;
+  int       idx;
+  double   *cval = NULL;
+  char     *sense = NULL;
+  char      vname[MAXSTR];
+  double    obj;
+  int       i, j, orignumvars, numvars, numconstrs;
+  double   *rhspen = NULL;
+  double    sol;
+  char     *sname;
+
+  /* Sample data */
+  const int nShifts = 14;
+  const int nWorkers = 7;
+
+  /* Sets of days and workers */
+  char* Shifts[] =
+    { "Mon1", "Tue2", "Wed3", "Thu4", "Fri5", "Sat6",
+      "Sun7", "Mon8", "Tue9", "Wed10", "Thu11", "Fri12", "Sat13",
+      "Sun14" };
+  char* Workers[] =
+    { "Amy", "Bob", "Cathy", "Dan", "Ed", "Fred", "Gu" };
+
+  /* Number of workers required for each shift */
+  double shiftRequirements[] =
+    { 3, 2, 4, 4, 5, 6, 5, 2, 2, 3, 4, 6, 7, 5 };
+
+  /* Amount each worker is paid to work one shift */
+  double pay[] = { 10, 12, 10, 8, 8, 9, 11 };
+
+  /* Worker availability: 0 if the worker is unavailable for a shift */
+  double availability[][14] =
+    { { 0, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1 },
+      { 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 0 },
+      { 0, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1 },
+      { 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1 },
+      { 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1 },
+      { 1, 1, 1, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 1 },
+      { 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 } };
+
+  /* Create environment */
+  error = GRBloadenv(&amp;env, "workforce3.log");
+  if (error) goto QUIT;
+
+  /* Create initial model */
+  error = GRBnewmodel(env, &amp;model, "workforce3", nWorkers * nShifts,
+                      NULL, NULL, NULL, NULL, NULL);
+  if (error) goto QUIT;
+
+  /* Initialize assignment decision variables:
+     x[w][s] == 1 if worker w is assigned
+     to shift s. Since an assignment model always produces integer
+     solutions, we use continuous variables and solve as an LP. */
+  for (w = 0; w &lt; nWorkers; ++w)
+  {
+    for (s = 0; s &lt; nShifts; ++s)
+    {
+      col = xcol(w, s);
+      sprintf(vname, "%s.%s", Workers[w], Shifts[s]);
+      error = GRBsetdblattrelement(model, "UB", col, availability[w][s]);
+      if (error) goto QUIT;
+      error = GRBsetdblattrelement(model, "Obj", col, pay[w]);
+      if (error) goto QUIT;
+      error = GRBsetstrattrelement(model, "VarName", col, vname);
+      if (error) goto QUIT;
+    }
+  }
+
+  /* The objective is to minimize the total pay costs */
+  error = GRBsetintattr(model, "ModelSense", 1);
+  if (error) goto QUIT;
+
+  /* Make space for constraint data */
+  cbeg = malloc(sizeof(int) * nShifts);
+  if (!cbeg) goto QUIT;
+  cind = malloc(sizeof(int) * nShifts * nWorkers);
+  if (!cind) goto QUIT;
+  cval = malloc(sizeof(double) * nShifts * nWorkers);
+  if (!cval) goto QUIT;
+  sense = malloc(sizeof(char) * nShifts);
+  if (!sense) goto QUIT;
+
+  /* Constraint: assign exactly shiftRequirements[s] workers
+     to each shift s */
+  idx = 0;
+  for (s = 0; s &lt; nShifts; ++s)
+  {
+    cbeg[s] = idx;
+    sense[s] = GRB_EQUAL;
+    for (w = 0; w &lt; nWorkers; ++w)
+    {
+      cind[idx] = xcol(w, s);
+      cval[idx++] = 1.0;
+    }
+  }
+  error = GRBaddconstrs(model, nShifts, idx, cbeg, cind, cval, sense,
+                        shiftRequirements, Shifts);
+  if (error) goto QUIT;
+
+  /* Optimize */
+  error = GRBoptimize(model);
+  if (error) goto QUIT;
+  error = GRBgetintattr(model, "Status", &amp;status);
+  if (error) goto QUIT;
+  if (status == GRB_UNBOUNDED)
+  {
+    printf("The model cannot be solved because it is unbounded\n");
+    goto QUIT;
+  }
+  if (status == GRB_OPTIMAL)
+  {
+    error = GRBgetdblattr(model, "ObjVal", &amp;obj);
+    if (error) goto QUIT;
+    printf("The optimal objective is %f\n", obj);
+    goto QUIT;
+  }
+  if ((status != GRB_INF_OR_UNBD) &amp;&amp; (status != GRB_INFEASIBLE))
+  {
+    printf("Optimization was stopped with status %i\n", status);
+    goto QUIT;
+  }
+
+  /* Relax the constraints to make the model feasible */
+  printf("The model is infeasible; relaxing the constraints\n");
+
+  /* Determine the matrix size before relaxing the constraints */
+  error = GRBgetintattr(model, "NumVars", &amp;orignumvars);
+  if (error) goto QUIT;
+  error = GRBgetintattr(model, "NumConstrs", &amp;numconstrs);
+  if (error) goto QUIT;
+
+  /* Use FeasRelax feature with penalties for constraint violations */
+  rhspen = malloc(sizeof(double) * numconstrs);
+  if (!rhspen) goto QUIT;
+  for (i = 0; i &lt; numconstrs; i++) rhspen[i] = 1;
+  error = GRBfeasrelax(model, GRB_FEASRELAX_LINEAR, 0,
+                       NULL, NULL, rhspen, NULL);
+  if (error) goto QUIT;
+  error = GRBoptimize(model);
+  if (error) goto QUIT;
+  error = GRBgetintattr(model, "Status", &amp;status);
+  if (error) goto QUIT;
+  if ((status == GRB_INF_OR_UNBD) || (status == GRB_INFEASIBLE) ||
+      (status == GRB_UNBOUNDED))
+  {
+    printf("The relaxed model cannot be solved "
+           "because it is infeasible or unbounded\n");
+    goto QUIT;
+  }
+  if (status != GRB_OPTIMAL)
+  {
+    printf("Optimization was stopped with status %i\n", status);
+    goto QUIT;
+  }
+
+  printf("\nSlack values:\n");
+  error = GRBgetintattr(model, "NumVars", &amp;numvars);
+  if (error) goto QUIT;
+  for (j = orignumvars; j &lt; numvars; ++j)
+  {
+    error = GRBgetdblattrelement(model, "X", j, &amp;sol);
+    if (error) goto QUIT;
+    if (sol &gt; 1e-6)
+    {
+      error = GRBgetstrattrelement(model, "VarName", j, &amp;sname);
+      if (error) goto QUIT;
+      printf("%s = %f\n", sname, sol);
+    }
+  }
+
+QUIT:
+
+  /* Error reporting */
+
+  if (error)
+  {
+    printf("ERROR: %s\n", GRBgeterrormsg(env));
+    exit(1);
+  }
+
+  /* Free data */
+
+  free(cbeg);
+  free(cind);
+  free(cval);
+  free(sense);
+  free(rhspen);
+
+  /* Free model */
+
+  GRBfreemodel(model);
+
+  /* Free environment */
+
+  GRBfreeenv(env);
+
+  return 0;
+}
+</PRE>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html753"
+  HREF="workforce4_c_c.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html751"
+  HREF="c_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html745"
+  HREF="workforce2_c_c.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html754"
+  HREF="workforce4_c_c.html">workforce4_c.c</A>
+<B> Up:</B> <A NAME="tex2html752"
+  HREF="c_examples.html">C Examples</A>
+<B> Previous:</B> <A NAME="tex2html746"
+  HREF="workforce2_c_c.html">workforce2_c.c</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

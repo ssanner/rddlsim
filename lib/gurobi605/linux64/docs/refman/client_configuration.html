@@ -1,0 +1,138 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Client Configuration</TITLE>
+<META NAME="description" CONTENT="Client Configuration">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="job_priorities.html">
+<LINK REL="previous" HREF="compute_server_usage.html">
+<LINK REL="up" HREF="compute_server_usage.html">
+<LINK REL="next" HREF="job_priorities.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html12586"
+  HREF="job_priorities.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html12584"
+  HREF="compute_server_usage.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html12578"
+  HREF="compute_server_usage.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html12587"
+  HREF="job_priorities.html">Job Priorities</A>
+<B> Up:</B> <A NAME="tex2html12585"
+  HREF="compute_server_usage.html">Compute Server Usage</A>
+<B> Previous:</B> <A NAME="tex2html12579"
+  HREF="compute_server_usage.html">Compute Server Usage</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000252100000000000000"></A>
+<A NAME="sec:CSClientConfig"></A>
+<BR>
+Client Configuration
+</H3>
+
+<P>
+Compute Server clients must know how to reach the desired
+servers.  You have a few options for providing this information.
+Your first is through the
+client <code>gurobi.lic</code> file.  That file should contain a line like
+the following:
+<PRE>
+COMPUTESERVER=server1.mydomain.com,server2.mydomain.com
+</PRE>
+You can create this license file yourself, using your favorite text
+editor (<code>Notepad</code> is a good choice on Windows).
+You simply need to provide
+a list of the names of the machines that are acting as Compute
+Servers.  You can refer to the Compute Server machines using their
+names (e.g., server.mydomain.com) or their IP addresses (e.g.,
+192.168.1.100).
+
+<P>
+Your client license file may optionally specify a few additional pieces
+of information.  The first is the Compute Server password:
+<PRE>
+PASSWORD=abcd
+</PRE>
+This should match the password that you chose when you started the
+Compute Server.  The second is the job priority:
+<PRE>
+PRIORITY=10
+</PRE>
+As you might expect, higher priority jobs take
+precedence over lower priority jobs.  Priorities will be discussed
+in more detail shortly.
+The third is the queuing timeout:
+<PRE>
+TIMEOUT=60
+</PRE>
+A job that has been sitting in queue for longer than the specified
+<code>TIMEOUT</code> value (in seconds) will return with a <code>JOB_REJECTED</code>
+error.
+
+<P>
+Your second option for specifying the desired Compute Servers is
+through API calls.  The appropriate call depends on your programming
+language.  From C, you would call
+<A HREF="c_grbloadclientenv.html#routine:GRBloadclientenv">GRBloadclientenv</A>.  From our
+object-oriented interfaces, the <code>GRBEnv</code> constructors each
+provide a signature that allows you to specify the compute server(s),
+the compute server password, the job priority, and a timeout for
+jobs submitted by that program.
+
+<P>
+Your final option for specifying the desired Computes Servers is
+specific to the Gurobi command-line tool.  The <code>--server=</code> or
+<code>--servers=</code> argument allows you to provide a comma-separated
+list of Compute Servers (and the optional <code>--password</code> argument
+allows you to specify the user password):
+<PRE>
+&gt; gurobi_cl --servers=server1,server2 --password=password1 misc07.mps
+</PRE>
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html12586"
+  HREF="job_priorities.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html12584"
+  HREF="compute_server_usage.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html12578"
+  HREF="compute_server_usage.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html12587"
+  HREF="job_priorities.html">Job Priorities</A>
+<B> Up:</B> <A NAME="tex2html12585"
+  HREF="compute_server_usage.html">Compute Server Usage</A>
+<B> Previous:</B> <A NAME="tex2html12579"
+  HREF="compute_server_usage.html">Compute Server Usage</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

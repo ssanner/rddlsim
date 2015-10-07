@@ -1,0 +1,100 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Arc capacity constraints</TITLE>
+<META NAME="description" CONTENT="Arc capacity constraints">
+<META NAME="keywords" CONTENT="quickstart_linux">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="quickstart_linux.css">
+
+<LINK REL="next" HREF="py_flow_conservation_const.html">
+<LINK REL="previous" HREF="py_building_a_multi_dimens.html">
+<LINK REL="up" HREF="py_python_dictionary_examp.html">
+<LINK REL="next" HREF="py_flow_conservation_const.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html1435"
+  HREF="py_flow_conservation_const.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1433"
+  HREF="py_python_dictionary_examp.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1427"
+  HREF="py_building_a_multi_dimens.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1436"
+  HREF="py_flow_conservation_const.html">Flow conservation constraints</A>
+<B> Up:</B> <A NAME="tex2html1434"
+  HREF="py_python_dictionary_examp.html">Python Dictionary Example</A>
+<B> Previous:</B> <A NAME="tex2html1428"
+  HREF="py_building_a_multi_dimens.html">Building a multi-dimensional array</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000113900000000000000">
+Arc capacity constraints</A>
+</H3>
+
+<P>
+We begin with a straightforward set of constraints.  The sum of the
+flow variables on an arc must be less than or equal to the capacity of
+that arc:
+<PRE>
+for i,j in arcs:
+  m.addConstr(quicksum(flow[h,i,j] for h in commodities) &lt;= capacity[i,j],
+              'cap_%s_%s' % (i, j))
+</PRE>
+Note that we use list comprehension to build a list of all variables
+associated with an arc <code>(i,j)</code>:
+<PRE>
+flow[h,i,j] for h in commodities
+</PRE>
+(To be precise, as we've used it here, this is actually called a <EM>generator expression</EM> in Python, but it is similar enough
+to list comprehension that you can safely ignore the difference
+for the purpose of understanding this example).
+The result is passed into the <code>quicksum</code> function to create a
+Gurobi linear expression that captures the sum of all of these
+variables.  The Gurobi <code>quicksum</code> function is an alternative to the
+Python <code>sum</code> function that is much faster for building large
+expressions.
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1435"
+  HREF="py_flow_conservation_const.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1433"
+  HREF="py_python_dictionary_examp.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1427"
+  HREF="py_building_a_multi_dimens.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1436"
+  HREF="py_flow_conservation_const.html">Flow conservation constraints</A>
+<B> Up:</B> <A NAME="tex2html1434"
+  HREF="py_python_dictionary_examp.html">Python Dictionary Example</A>
+<B> Previous:</B> <A NAME="tex2html1428"
+  HREF="py_building_a_multi_dimens.html">Building a multi-dimensional array</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

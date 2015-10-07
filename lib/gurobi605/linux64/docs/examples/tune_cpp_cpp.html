@@ -1,0 +1,147 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>tune_c++.cpp</TITLE>
+<META NAME="description" CONTENT="tune_c++.cpp">
+<META NAME="keywords" CONTENT="examples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="examples.css">
+
+<LINK REL="next" HREF="workforce1_cpp_cpp.html">
+<LINK REL="previous" HREF="tsp_cpp_cpp.html">
+<LINK REL="up" HREF="cpp_examples.html">
+<LINK REL="next" HREF="workforce1_cpp_cpp.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html995"
+  HREF="workforce1_cpp_cpp.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html993"
+  HREF="cpp_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html987"
+  HREF="tsp_cpp_cpp.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html996"
+  HREF="workforce1_cpp_cpp.html">workforce1_c++.cpp</A>
+<B> Up:</B> <A NAME="tex2html994"
+  HREF="cpp_examples.html">C++ Examples</A>
+<B> Previous:</B> <A NAME="tex2html988"
+  HREF="tsp_cpp_cpp.html">tsp_c++.cpp</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000222000000000000000"></A>
+<A NAME="subsubsection:tune_c++.cpp"></A>
+<BR>
+tune_c++.cpp
+</H3>
+
+<P>
+<BR>
+<PRE  CLASS="verbatim">/* Copyright 2014, Gurobi Optimization, Inc. */
+
+/* This example reads a model from a file and tunes it.
+   It then writes the best parameter settings to a file
+   and solves the model using these parameters. */
+
+#include "gurobi_c++.h"
+#include &lt;cmath&gt;
+using namespace std;
+
+int
+main(int   argc,
+     char *argv[])
+{
+  if (argc &lt; 2) {
+    cout &lt;&lt; "Usage: tune_c++ filename" &lt;&lt; endl;
+    return 1;
+  }
+
+  GRBEnv *env = 0;
+  try {
+    env = new GRBEnv();
+
+    // Read model from file
+
+    GRBModel model = GRBModel(*env, argv[1]);
+
+    GRBEnv menv = model.getEnv();
+
+    // Set the TuneResults parameter to 1
+
+    menv.set(GRB_IntParam_TuneResults, 1);
+
+    // Tune the model
+
+    model.tune();
+
+    // Get the number of tuning results
+
+    int resultcount = model.get(GRB_IntAttr_TuneResultCount);
+
+    if (resultcount &gt; 0) {
+
+      // Load the tuned parameters into the model's environment
+
+      model.getTuneResult(0);
+
+      // Write tuned parameters to a file
+
+      model.write("tune.prm");
+
+      // Solve the model using the tuned parameters
+
+      model.optimize();
+    }
+  } catch(GRBException e) {
+    cout &lt;&lt; "Error code = " &lt;&lt; e.getErrorCode() &lt;&lt; endl;
+    cout &lt;&lt; e.getMessage() &lt;&lt; endl;
+  } catch (...) {
+    cout &lt;&lt; "Error during tuning" &lt;&lt; endl;
+  }
+
+  delete env;
+  return 0;
+}
+</PRE>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html995"
+  HREF="workforce1_cpp_cpp.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html993"
+  HREF="cpp_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html987"
+  HREF="tsp_cpp_cpp.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html996"
+  HREF="workforce1_cpp_cpp.html">workforce1_c++.cpp</A>
+<B> Up:</B> <A NAME="tex2html994"
+  HREF="cpp_examples.html">C++ Examples</A>
+<B> Previous:</B> <A NAME="tex2html988"
+  HREF="tsp_cpp_cpp.html">tsp_c++.cpp</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

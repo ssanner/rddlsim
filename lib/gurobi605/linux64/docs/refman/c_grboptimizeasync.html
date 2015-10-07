@@ -1,0 +1,158 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>GRBoptimizeasync</TITLE>
+<META NAME="description" CONTENT="GRBoptimizeasync">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="c_grbcomputeiis.html">
+<LINK REL="previous" HREF="c_grboptimize.html">
+<LINK REL="up" HREF="c_model_solution.html">
+<LINK REL="next" HREF="c_grbcomputeiis.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html1555"
+  HREF="c_grbcomputeiis.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1553"
+  HREF="c_model_solution.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1547"
+  HREF="c_grboptimize.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1556"
+  HREF="c_grbcomputeiis.html">GRBcomputeIIS</A>
+<B> Up:</B> <A NAME="tex2html1554"
+  HREF="c_model_solution.html">Model Solution</A>
+<B> Previous:</B> <A NAME="tex2html1548"
+  HREF="c_grboptimize.html">GRBoptimize</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00023200000000000000"></A>
+<A NAME="routine:GRBoptimizeasync"></A>
+<BR>
+GRBoptimizeasync
+</H3>
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">GRBoptimizeasync</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT">GRBmodel</TD>
+<TD ALIGN="LEFT">*model )</TD>
+</TR>
+</TABLE>
+
+<P>
+Optimize a model asynchronously.  This routine returns immediately.
+Your program can perform other computations while optimization
+proceeds in the background.  To check the state of the asynchronous
+optimization, query the <A HREF="status.html#attr:Status">Status</A> attribute
+for the model.  A value of <code>IN_PROGRESS</code> indicates that the
+optimization has not yet completed.  When you are done with your
+foreground tasks, you must call
+<A HREF="c_grbsync.html#routine:GRBsync">GRBsync</A> to sync your foreground
+program with the asynchronous optimization task.
+
+<P>
+Note that the set of Gurobi calls that you are allowed to make while
+optimization is running in the background is severely limited.
+Specifically, you can only perform attribute queries, and only for a
+few attributes (listed below).  Any other calls on the running model,
+<EM>or on any other models that were built within the same Gurobi
+  environment</EM>, will fail with error code
+<code>OPTIMIZATION_IN_PROGRESS</code>.
+
+<P>
+Note that there are no such restrictions on models built in other
+environments.  Thus, for example, you could create multiple
+environments, and then have a single foreground program launch
+multiple simultaneous asynchronous optimizations, each in its own
+environment.
+
+<P>
+As already noted, you are allowed to query the value of the <code>Status</code>
+attribute while an asynchronous optimization is in progress.  The other
+attributes that can be queried are:
+<A HREF="objval.html#attr:ObjVal">ObjVal</A>,
+<A HREF="objbound.html#attr:ObjBound">ObjBound</A>,
+<A HREF="itercount.html#attr:IterCount">IterCount</A>,
+<A HREF="nodecount.html#attr:NodeCount">NodeCount</A>, and
+<A HREF="baritercount.html#attr:BarIterCount">BarIterCount</A>.
+In each case, the returned value reflects progress in the optimization
+to that point.  Any attempt to query the value of
+an attribute not on this list will return an
+<code>OPTIMIZATION_IN_PROGRESS</code> error.
+
+<P>
+
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Return value:</SPAN></BIG>
+
+<P>
+A non-zero return value indicates that a problem occurred while optimizing the model.
+Refer to the <A HREF="error_codes.html#sec:ErrorCodes">Error Code</A> table for a
+list of possible return values.  Details on the error can be obtained
+by calling <A HREF="c_grbgeterrormsg.html#routine:GRBgeterrormsg">GRBgeterrormsg</A>.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">model</SPAN>: The model to optimize.  Note that this routine only
+  reports whether launching the asynchronous job ran into an error.  Query the
+  <TT>Status</TT> attribute to determine the result of the
+  optimization (see the <A HREF="attributes.html#sec:Attributes">Attributes</A>
+  section for more information on querying attributes).  The
+  return value of <A HREF="c_grbsync.html#routine:GRBsync">GRBsync</A> indicates
+  whether the background optimization ran into an error.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Example usage:</SPAN></BIG><PRE>
+  error = GRBoptimizeasync(model);
+
+  /* ... perform other compute-intensive tasks... */
+
+  error = GRBsync(model);
+</PRE>
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1555"
+  HREF="c_grbcomputeiis.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1553"
+  HREF="c_model_solution.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1547"
+  HREF="c_grboptimize.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1556"
+  HREF="c_grbcomputeiis.html">GRBcomputeIIS</A>
+<B> Up:</B> <A NAME="tex2html1554"
+  HREF="c_model_solution.html">Model Solution</A>
+<B> Previous:</B> <A NAME="tex2html1548"
+  HREF="c_grboptimize.html">GRBoptimize</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

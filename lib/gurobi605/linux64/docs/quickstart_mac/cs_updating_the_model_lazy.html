@@ -1,0 +1,87 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Updating the model - lazy modification</TITLE>
+<META NAME="description" CONTENT="Updating the model - lazy modification">
+<META NAME="keywords" CONTENT="quickstart_mac">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="quickstart_mac.css">
+
+<LINK REL="next" HREF="cs_setting_the_objective.html">
+<LINK REL="previous" HREF="cs_adding_variables_to_the.html">
+<LINK REL="up" HREF="cs_net_interface_cs.html">
+<LINK REL="next" HREF="cs_setting_the_objective.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html1097"
+  HREF="cs_setting_the_objective.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1095"
+  HREF="cs_net_interface_cs.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1089"
+  HREF="cs_adding_variables_to_the.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1098"
+  HREF="cs_setting_the_objective.html">Setting the objective</A>
+<B> Up:</B> <A NAME="tex2html1096"
+  HREF="cs_net_interface_cs.html">.NET Interface (C#)</A>
+<B> Previous:</B> <A NAME="tex2html1090"
+  HREF="cs_adding_variables_to_the.html">Adding variables to the</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION000106000000000000000">
+Updating the model - lazy modification</A>
+</H2>
+<P>
+<EM>Model modifications in the Gurobi optimizer are done in a <EM>lazy</EM>
+fashion, meaning that the effects of the modifications are not seen
+immediately.  This approach makes it easier to perform a sequence of
+model modifications, since the model doesn't change while it is being
+modified.  However, lazy modifications do require you to manually
+integrate model changes when needed.  This is done with the
+<EM>Update</EM> method:
+</EM><PRE>
+  // Integrate new variables
+  model.Update();
+</PRE>
+<P>
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1097"
+  HREF="cs_setting_the_objective.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1095"
+  HREF="cs_net_interface_cs.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1089"
+  HREF="cs_adding_variables_to_the.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1098"
+  HREF="cs_setting_the_objective.html">Setting the objective</A>
+<B> Up:</B> <A NAME="tex2html1096"
+  HREF="cs_net_interface_cs.html">.NET Interface (C#)</A>
+<B> Previous:</B> <A NAME="tex2html1090"
+  HREF="cs_adding_variables_to_the.html">Adding variables to the</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

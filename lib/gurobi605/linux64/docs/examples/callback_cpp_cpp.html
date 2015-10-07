@@ -1,0 +1,286 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>callback_c++.cpp</TITLE>
+<META NAME="description" CONTENT="callback_c++.cpp">
+<META NAME="keywords" CONTENT="examples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="examples.css">
+
+<LINK REL="next" HREF="dense_cpp_cpp.html">
+<LINK REL="previous" HREF="cpp_examples.html">
+<LINK REL="up" HREF="cpp_examples.html">
+<LINK REL="next" HREF="dense_cpp_cpp.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html805"
+  HREF="dense_cpp_cpp.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html803"
+  HREF="cpp_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html797"
+  HREF="cpp_examples.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html806"
+  HREF="dense_cpp_cpp.html">dense_c++.cpp</A>
+<B> Up:</B> <A NAME="tex2html804"
+  HREF="cpp_examples.html">C++ Examples</A>
+<B> Previous:</B> <A NAME="tex2html798"
+  HREF="cpp_examples.html">C++ Examples</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00022100000000000000"></A>
+<A NAME="subsubsection:callback_c++.cpp"></A>
+<BR>
+callback_c++.cpp
+</H3>
+
+<P>
+<BR>
+<PRE  CLASS="verbatim">/* Copyright 2014, Gurobi Optimization, Inc. */
+
+/*
+   This example reads a model from a file, sets up a callback that
+   monitors optimization progress and implements a custom
+   termination strategy, and outputs progress information to the
+   screen and to a log file.
+
+   The termination strategy implemented in this callback stops the
+   optimization of a MIP model once at least one of the following two
+   conditions have been satisfied:
+     1) The optimality gap is less than 10%
+     2) At least 10000 nodes have been explored, and an integer feasible
+        solution has been found.
+   Note that termination is normally handled through Gurobi parameters
+   (MIPGap, NodeLimit, etc.).  You should only use a callback for
+   termination if the available parameters don't capture your desired
+   termination criterion.
+*/
+
+#include "gurobi_c++.h"
+#include &lt;fstream&gt;
+#include &lt;cmath&gt;
+using namespace std;
+
+class mycallback: public GRBCallback
+{
+  public:
+    double lastiter;
+    double lastnode;
+    int numvars;
+    GRBVar* vars;
+    ofstream* logfile;
+    mycallback(int xnumvars, GRBVar* xvars, ofstream* xlogfile) {
+      lastiter = lastnode = -GRB_INFINITY;
+      numvars = xnumvars;
+      vars = xvars;
+      logfile = xlogfile;
+    }
+  protected:
+    void callback () {
+      try {
+        if (where == GRB_CB_POLLING) {
+          // Ignore polling callback
+        } else if (where == GRB_CB_PRESOLVE) {
+          // Presolve callback
+          int cdels = getIntInfo(GRB_CB_PRE_COLDEL);
+          int rdels = getIntInfo(GRB_CB_PRE_ROWDEL);
+          if (cdels || rdels) {
+            cout &lt;&lt; cdels &lt;&lt; " columns and " &lt;&lt; rdels
+                 &lt;&lt; " rows are removed" &lt;&lt; endl;
+          }
+        } else if (where == GRB_CB_SIMPLEX) {
+          // Simplex callback
+          double itcnt = getDoubleInfo(GRB_CB_SPX_ITRCNT);
+          if (itcnt - lastiter &gt;= 100) {
+            lastiter = itcnt;
+            double obj = getDoubleInfo(GRB_CB_SPX_OBJVAL);
+            int ispert = getIntInfo(GRB_CB_SPX_ISPERT);
+            double pinf = getDoubleInfo(GRB_CB_SPX_PRIMINF);
+            double dinf = getDoubleInfo(GRB_CB_SPX_DUALINF);
+            char ch;
+            if (ispert == 0)      ch = ' ';
+            else if (ispert == 1) ch = 'S';
+            else                  ch = 'P';
+            cout &lt;&lt; itcnt &lt;&lt; " " &lt;&lt; obj &lt;&lt; ch &lt;&lt; " "
+                 &lt;&lt; pinf &lt;&lt; " " &lt;&lt; dinf &lt;&lt; endl;
+          }
+        } else if (where == GRB_CB_MIP) {
+          // General MIP callback
+          double nodecnt = getDoubleInfo(GRB_CB_MIP_NODCNT);
+          double objbst = getDoubleInfo(GRB_CB_MIP_OBJBST);
+          double objbnd = getDoubleInfo(GRB_CB_MIP_OBJBND);
+          int solcnt = getIntInfo(GRB_CB_MIP_SOLCNT);
+          if (nodecnt - lastnode &gt;= 100) {
+            lastnode = nodecnt;
+            int actnodes = (int) getDoubleInfo(GRB_CB_MIP_NODLFT);
+            int itcnt = (int) getDoubleInfo(GRB_CB_MIP_ITRCNT);
+            int cutcnt = getIntInfo(GRB_CB_MIP_CUTCNT);
+            cout &lt;&lt; nodecnt &lt;&lt; " " &lt;&lt; actnodes &lt;&lt; " " &lt;&lt; itcnt
+                 &lt;&lt; " " &lt;&lt; objbst &lt;&lt; " " &lt;&lt; objbnd &lt;&lt; " "
+                 &lt;&lt; solcnt &lt;&lt; " " &lt;&lt; cutcnt &lt;&lt; endl;
+          }
+          if (fabs(objbst - objbnd) &lt; 0.1 * (1.0 + fabs(objbst))) {
+            cout &lt;&lt; "Stop early - 10% gap achieved" &lt;&lt; endl;
+            abort();
+          }
+          if (nodecnt &gt;= 10000 &amp;&amp; solcnt) {
+            cout &lt;&lt; "Stop early - 10000 nodes explored" &lt;&lt; endl;
+            abort();
+          }
+        } else if (where == GRB_CB_MIPSOL) {
+          // MIP solution callback
+          int nodecnt = (int) getDoubleInfo(GRB_CB_MIPSOL_NODCNT);
+          double obj = getDoubleInfo(GRB_CB_MIPSOL_OBJ);
+          int solcnt = getIntInfo(GRB_CB_MIPSOL_SOLCNT);
+          double* x = getSolution(vars, numvars);
+          cout &lt;&lt; "**** New solution at node " &lt;&lt; nodecnt
+               &lt;&lt; ", obj " &lt;&lt; obj &lt;&lt; ", sol " &lt;&lt; solcnt
+               &lt;&lt; ", x[0] = " &lt;&lt; x[0] &lt;&lt; " ****" &lt;&lt; endl;
+          delete[] x;
+        } else if (where == GRB_CB_MIPNODE) {
+          // MIP node callback
+          cout &lt;&lt; "**** New node ****" &lt;&lt; endl;
+          if (getIntInfo(GRB_CB_MIPNODE_STATUS) == GRB_OPTIMAL) {
+            double* x = getNodeRel(vars, numvars);
+            setSolution(vars, x, numvars);
+            delete[] x;
+          }
+        } else if (where == GRB_CB_BARRIER) {
+          // Barrier callback
+          int itcnt = getIntInfo(GRB_CB_BARRIER_ITRCNT);
+          double primobj = getDoubleInfo(GRB_CB_BARRIER_PRIMOBJ);
+          double dualobj = getDoubleInfo(GRB_CB_BARRIER_DUALOBJ);
+          double priminf = getDoubleInfo(GRB_CB_BARRIER_PRIMINF);
+          double dualinf = getDoubleInfo(GRB_CB_BARRIER_DUALINF);
+          double cmpl = getDoubleInfo(GRB_CB_BARRIER_COMPL);
+          cout &lt;&lt; itcnt &lt;&lt; " " &lt;&lt; primobj &lt;&lt; " " &lt;&lt; dualobj &lt;&lt; " "
+               &lt;&lt; priminf &lt;&lt; " " &lt;&lt; dualinf &lt;&lt; " " &lt;&lt; cmpl &lt;&lt; endl;
+        } else if (where == GRB_CB_MESSAGE) {
+          // Message callback
+          string msg = getStringInfo(GRB_CB_MSG_STRING);
+          *logfile &lt;&lt; msg;
+        }
+      } catch (GRBException e) {
+        cout &lt;&lt; "Error number: " &lt;&lt; e.getErrorCode() &lt;&lt; endl;
+        cout &lt;&lt; e.getMessage() &lt;&lt; endl;
+      } catch (...) {
+        cout &lt;&lt; "Error during callback" &lt;&lt; endl;
+      }
+    }
+};
+
+int
+main(int   argc,
+     char *argv[])
+{
+  if (argc &lt; 2) {
+    cout &lt;&lt; "Usage: callback_c++ filename" &lt;&lt; endl;
+    return 1;
+  }
+
+  // Open log file
+  ofstream logfile("cb.log");
+  if (!logfile.is_open()) {
+    cout &lt;&lt; "Cannot open cb.log for callback message" &lt;&lt; endl;
+    return 1;
+  }
+
+  GRBEnv *env = 0;
+  GRBVar *vars = 0;
+
+  try {
+    // Create environment
+    env = new GRBEnv();
+
+    // Turn off display and heuristics
+    env-&gt;set(GRB_IntParam_OutputFlag, 0);
+    env-&gt;set(GRB_DoubleParam_Heuristics, 0.0);
+
+    // Read model from file
+    GRBModel model = GRBModel(*env, argv[1]);
+
+    // Create a callback object and associate it with the model
+    int numvars = model.get(GRB_IntAttr_NumVars);
+    vars = model.getVars();
+    mycallback cb = mycallback(numvars, vars, &amp;logfile);
+
+    model.setCallback(&amp;cb);
+
+    // Solve model and capture solution information
+    model.optimize();
+
+    cout &lt;&lt; endl &lt;&lt; "Optimization complete" &lt;&lt; endl;
+    if (model.get(GRB_IntAttr_SolCount) == 0) {
+      cout &lt;&lt; "No solution found, optimization status = "
+           &lt;&lt; model.get(GRB_IntAttr_Status) &lt;&lt; endl;
+    } else {
+      cout &lt;&lt; "Solution found, objective = "
+           &lt;&lt; model.get(GRB_DoubleAttr_ObjVal) &lt;&lt; endl;
+      for (int j = 0; j &lt; numvars; j++) {
+        GRBVar v = vars[j];
+        double x = v.get(GRB_DoubleAttr_X);
+        if (x != 0.0) {
+          cout &lt;&lt; v.get(GRB_StringAttr_VarName) &lt;&lt; " " &lt;&lt; x &lt;&lt; endl;
+        }
+      }
+    }
+
+  } catch (GRBException e) {
+    cout &lt;&lt; "Error number: " &lt;&lt; e.getErrorCode() &lt;&lt; endl;
+    cout &lt;&lt; e.getMessage() &lt;&lt; endl;
+  } catch (...) {
+    cout &lt;&lt; "Error during optimization" &lt;&lt; endl;
+  }
+
+  // Close log file
+  logfile.close();
+
+  delete[] vars;
+  delete env;
+
+  return 0;
+}
+</PRE>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html805"
+  HREF="dense_cpp_cpp.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html803"
+  HREF="cpp_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html797"
+  HREF="cpp_examples.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html806"
+  HREF="dense_cpp_cpp.html">dense_c++.cpp</A>
+<B> Up:</B> <A NAME="tex2html804"
+  HREF="cpp_examples.html">C++ Examples</A>
+<B> Previous:</B> <A NAME="tex2html798"
+  HREF="cpp_examples.html">C++ Examples</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

@@ -1,0 +1,194 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>mip2_vb.vb</TITLE>
+<META NAME="description" CONTENT="mip2_vb.vb">
+<META NAME="keywords" CONTENT="examples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="examples.css">
+
+<LINK REL="next" HREF="params_vb_vb.html">
+<LINK REL="previous" HREF="mip1_vb_vb.html">
+<LINK REL="up" HREF="visual_basic_examples.html">
+<LINK REL="next" HREF="params_vb_vb.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html1721"
+  HREF="params_vb_vb.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1719"
+  HREF="visual_basic_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1713"
+  HREF="mip1_vb_vb.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1722"
+  HREF="params_vb_vb.html">params_vb.vb</A>
+<B> Up:</B> <A NAME="tex2html1720"
+  HREF="visual_basic_examples.html">Visual Basic Examples</A>
+<B> Previous:</B> <A NAME="tex2html1714"
+  HREF="mip1_vb_vb.html">mip1_vb.vb</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000251100000000000000"></A>
+<A NAME="subsubsection:mip2_vb.vb"></A>
+<BR>
+mip2_vb.vb
+</H3>
+
+<P>
+<BR>
+<PRE  CLASS="verbatim">' Copyright 2014, Gurobi Optimization, Inc.
+'
+' This example reads a MIP model from a file, solves it and
+' prints the objective values from all feasible solutions
+' generated while solving the MIP. Then it creates the fixed
+' model and solves that model.
+
+
+Imports System
+Imports Gurobi
+
+Class mip2_vb
+    Shared Sub Main(ByVal args As String())
+
+        If args.Length &lt; 1 Then
+            Console.WriteLine("Usage: mip2_vb filename")
+            Return
+        End If
+
+        Try
+            Dim env As GRBEnv = New GRBEnv("lp1.log")
+            Dim model As GRBModel = New GRBModel(env, args(0))
+
+            If model.Get(GRB.IntAttr.IsMIP) = 0 Then
+                Console.WriteLine("Model is not a MIP")
+                Return
+            End If
+
+            model.Optimize()
+
+            Dim optimstatus As Integer = model.Get(GRB.IntAttr.Status)
+
+            If optimstatus = GRB.Status.INF_OR_UNBD Then
+                model.GetEnv().Set(GRB.IntParam.Presolve, 0)
+                model.Optimize()
+                optimstatus = model.Get(GRB.IntAttr.Status)
+            End If
+
+            Dim objval As Double
+
+            If optimstatus = GRB.Status.OPTIMAL Then
+                objval = model.Get(GRB.DoubleAttr.ObjVal)
+                Console.WriteLine("Optimal objective: " &amp; objval)
+            ElseIf optimstatus = GRB.Status.INFEASIBLE Then
+                Console.WriteLine("Model is infeasible")
+                model.ComputeIIS()
+                model.Write("model.ilp")
+                Return
+            ElseIf optimstatus = GRB.Status.UNBOUNDED Then
+                Console.WriteLine("Model is unbounded")
+                Return
+            Else
+                Console.WriteLine("Optimization was stopped with status = " &amp; _
+                                  optimstatus)
+                Return
+            End If
+
+            ' Iterate over the solutions and compute the objectives
+            Dim vars() As GRBVar = model.GetVars()
+            model.GetEnv().Set(GRB.IntParam.OutputFlag, 0)
+
+            Console.WriteLine()
+            For k As Integer = 0 To model.Get(GRB.IntAttr.SolCount) - 1
+                model.GetEnv().Set(GRB.IntParam.SolutionNumber, k)
+                Dim objn As Double = 0.0
+
+                For j As Integer = 0 To vars.Length - 1
+                    objn += vars(j).Get(GRB.DoubleAttr.Obj) * _
+                        vars(j).Get(GRB.DoubleAttr.Xn)
+                Next
+
+                Console.WriteLine("Solution " &amp; k &amp; " has objective: " &amp; objn)
+            Next
+            Console.WriteLine()
+            model.GetEnv().Set(GRB.IntParam.OutputFlag, 1)
+
+            ' Solve fixed model
+            Dim fixedmodel As GRBModel = model.FixedModel()
+            fixedmodel.GetEnv().Set(GRB.IntParam.Presolve, 0)
+            fixedmodel.Optimize()
+
+            Dim foptimstatus As Integer = fixedmodel.Get(GRB.IntAttr.Status)
+            If foptimstatus &lt;&gt; GRB.Status.OPTIMAL Then
+                Console.WriteLine("Error: fixed model isn't optimal")
+                Return
+            End If
+
+            Dim fobjval As Double = fixedmodel.Get(GRB.DoubleAttr.ObjVal)
+
+            If Math.Abs(fobjval - objval) &gt; 0.000001 * (1.0 + Math.Abs(objval)) Then
+            End If
+
+            Dim fvars() As GRBVar = fixedmodel.GetVars()
+            Dim x() As Double = fixedmodel.Get(GRB.DoubleAttr.X, fvars)
+            Dim vnames() As String = fixedmodel.Get(GRB.StringAttr.VarName, fvars)
+
+            For j As Integer = 0 To fvars.Length - 1
+                If x(j) &lt;&gt; 0 Then
+                    Console.WriteLine(vnames(j) &amp; " " &amp; x(j))
+                End If
+            Next
+
+            ' Dispose of models and env
+            fixedmodel.Dispose()
+            model.Dispose()
+            env.Dispose()
+
+        Catch e As GRBException
+            Console.WriteLine("Error code: " &amp; e.ErrorCode &amp; ". " &amp; e.Message)
+        End Try
+    End Sub
+End Class
+</PRE>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1721"
+  HREF="params_vb_vb.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1719"
+  HREF="visual_basic_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1713"
+  HREF="mip1_vb_vb.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1722"
+  HREF="params_vb_vb.html">params_vb.vb</A>
+<B> Up:</B> <A NAME="tex2html1720"
+  HREF="visual_basic_examples.html">Visual Basic Examples</A>
+<B> Previous:</B> <A NAME="tex2html1714"
+  HREF="mip1_vb_vb.html">mip1_vb.vb</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

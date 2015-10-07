@@ -1,0 +1,132 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>GRBModel::optimizeasync()</TITLE>
+<META NAME="description" CONTENT="GRBModel::optimizeasync()">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="cpp_grbmodel_presolve.html">
+<LINK REL="previous" HREF="cpp_grbmodel_optimize.html">
+<LINK REL="up" HREF="cpp_grbmodel.html">
+<LINK REL="next" HREF="cpp_grbmodel_presolve.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html3152"
+  HREF="cpp_grbmodel_presolve.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html3150"
+  HREF="cpp_grbmodel.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html3144"
+  HREF="cpp_grbmodel_optimize.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html3153"
+  HREF="cpp_grbmodel_presolve.html">GRBModel::presolve()</A>
+<B> Up:</B> <A NAME="tex2html3151"
+  HREF="cpp_grbmodel.html">GRBModel</A>
+<B> Previous:</B> <A NAME="tex2html3145"
+  HREF="cpp_grbmodel_optimize.html">GRBModel::optimize()</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000423400000000000000"></A>
+<A NAME="cppmethod:GRBModel::optimizeasync"></A>
+<BR>
+GRBModel::optimizeasync()
+</H3>
+
+<P>
+Optimize a model asynchronously.  This routine returns immediately.
+Your program can perform other computations while optimization
+proceeds in the background.  To check the state of the asynchronous
+optimization, query the <A HREF="status.html#attr:Status">Status</A> attribute
+for the model.  A value of <code>IN_PROGRESS</code> indicates that the
+optimization has not yet completed.  When you are done with your
+foreground tasks, you must call
+<A HREF="cpp_grbmodel_sync.html#cppmethod:GRBModel::sync">sync</A> to sync your foreground
+program with the asynchronous optimization task.
+
+<P>
+Note that the set of Gurobi calls that you are allowed to make while
+optimization is running in the background is severely limited.
+Specifically, you can only perform attribute queries, and only for a
+few attributes (listed below).  Any other calls on the running model,
+<EM>or on any other models that were built within the same Gurobi
+  environment</EM>, will fail with error code
+<code>OPTIMIZATION_IN_PROGRESS</code>.
+
+<P>
+Note that there are no such restrictions on models built in other
+environments.  Thus, for example, you could create multiple
+environments, and then have a single foreground program launch
+multiple simultaneous asynchronous optimizations, each in its own
+environment.
+
+<P>
+As already noted, you are allowed to query the value of the <code>Status</code>
+attribute while an asynchronous optimization is in progress.  The other
+attributes that can be queried are:
+<A HREF="objval.html#attr:ObjVal">ObjVal</A>,
+<A HREF="objbound.html#attr:ObjBound">ObjBound</A>,
+<A HREF="itercount.html#attr:IterCount">IterCount</A>,
+<A HREF="nodecount.html#attr:NodeCount">NodeCount</A>, and
+<A HREF="baritercount.html#attr:BarIterCount">BarIterCount</A>.
+In each case, the returned value reflects progress in the optimization
+to that point.  Any attempt to query the value of
+an attribute not on this list will return an
+<code>OPTIMIZATION_IN_PROGRESS</code> error.
+
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">void</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">optimizeasync</SPAN></FONT></BIG> ( )</TD>
+</TR>
+</TABLE>
+
+<UL>
+
+</LI>
+</UL>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html3152"
+  HREF="cpp_grbmodel_presolve.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html3150"
+  HREF="cpp_grbmodel.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html3144"
+  HREF="cpp_grbmodel_optimize.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html3153"
+  HREF="cpp_grbmodel_presolve.html">GRBModel::presolve()</A>
+<B> Up:</B> <A NAME="tex2html3151"
+  HREF="cpp_grbmodel.html">GRBModel</A>
+<B> Previous:</B> <A NAME="tex2html3145"
+  HREF="cpp_grbmodel_optimize.html">GRBModel::optimize()</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

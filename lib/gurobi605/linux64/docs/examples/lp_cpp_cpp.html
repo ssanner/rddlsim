@@ -1,0 +1,142 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>lp_c++.cpp</TITLE>
+<META NAME="description" CONTENT="lp_c++.cpp">
+<META NAME="keywords" CONTENT="examples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="examples.css">
+
+<LINK REL="next" HREF="lpmethod_cpp_cpp.html">
+<LINK REL="previous" HREF="fixanddive_cpp_cpp.html">
+<LINK REL="up" HREF="cpp_examples.html">
+<LINK REL="next" HREF="lpmethod_cpp_cpp.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html865"
+  HREF="lpmethod_cpp_cpp.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html863"
+  HREF="cpp_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html857"
+  HREF="fixanddive_cpp_cpp.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html866"
+  HREF="lpmethod_cpp_cpp.html">lpmethod_c++.cpp</A>
+<B> Up:</B> <A NAME="tex2html864"
+  HREF="cpp_examples.html">C++ Examples</A>
+<B> Previous:</B> <A NAME="tex2html858"
+  HREF="fixanddive_cpp_cpp.html">fixanddive_c++.cpp</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00022700000000000000"></A>
+<A NAME="subsubsection:lp_c++.cpp"></A>
+<BR>
+lp_c++.cpp
+</H3>
+
+<P>
+<BR>
+<PRE  CLASS="verbatim">/* Copyright 2014, Gurobi Optimization, Inc. */
+
+/* This example reads an LP model from a file and solves it.
+   If the model is infeasible or unbounded, the example turns off
+   presolve and solves the model again. If the model is infeasible,
+   the example computes an Irreducible Inconsistent Subsystem (IIS),
+   and writes it to a file */
+
+#include "gurobi_c++.h"
+using namespace std;
+
+int
+main(int   argc,
+     char *argv[])
+{
+  if (argc &lt; 2) {
+    cout &lt;&lt; "Usage: lp_c++ filename" &lt;&lt; endl;
+    return 1;
+  }
+
+  try {
+    GRBEnv env = GRBEnv();
+    GRBModel model = GRBModel(env, argv[1]);
+
+    model.optimize();
+
+    int optimstatus = model.get(GRB_IntAttr_Status);
+
+    if (optimstatus == GRB_INF_OR_UNBD) {
+      model.getEnv().set(GRB_IntParam_Presolve, 0);
+      model.optimize();
+      optimstatus = model.get(GRB_IntAttr_Status);
+    }
+
+    if (optimstatus == GRB_OPTIMAL) {
+      double objval = model.get(GRB_DoubleAttr_ObjVal);
+      cout &lt;&lt; "Optimal objective: " &lt;&lt; objval &lt;&lt; endl;
+    } else if (optimstatus == GRB_INFEASIBLE) {
+      cout &lt;&lt; "Model is infeasible" &lt;&lt; endl;
+
+      // compute and write out IIS
+
+      model.computeIIS();
+      model.write("model.ilp");
+    } else if (optimstatus == GRB_UNBOUNDED) {
+      cout &lt;&lt; "Model is unbounded" &lt;&lt; endl;
+    } else {
+      cout &lt;&lt; "Optimization was stopped with status = "
+           &lt;&lt; optimstatus &lt;&lt; endl;
+    }
+
+  } catch(GRBException e) {
+    cout &lt;&lt; "Error code = " &lt;&lt; e.getErrorCode() &lt;&lt; endl;
+    cout &lt;&lt; e.getMessage() &lt;&lt; endl;
+  } catch (...) {
+    cout &lt;&lt; "Error during optimization" &lt;&lt; endl;
+  }
+
+  return 0;
+}
+</PRE>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html865"
+  HREF="lpmethod_cpp_cpp.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html863"
+  HREF="cpp_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html857"
+  HREF="fixanddive_cpp_cpp.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html866"
+  HREF="lpmethod_cpp_cpp.html">lpmethod_c++.cpp</A>
+<B> Up:</B> <A NAME="tex2html864"
+  HREF="cpp_examples.html">C++ Examples</A>
+<B> Previous:</B> <A NAME="tex2html858"
+  HREF="fixanddive_cpp_cpp.html">fixanddive_c++.cpp</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

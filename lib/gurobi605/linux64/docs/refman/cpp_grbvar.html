@@ -1,0 +1,108 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>GRBVar</TITLE>
+<META NAME="description" CONTENT="GRBVar">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="cpp_grbconstr.html">
+<LINK REL="previous" HREF="cpp_grbmodel.html">
+<LINK REL="up" HREF="cpp_api_details.html">
+<LINK REL="next" HREF="cpp_grbvar_get.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html3290"
+  HREF="cpp_grbvar_get.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html3288"
+  HREF="cpp_api_details.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html3282"
+  HREF="cpp_grbmodel_write.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html3291"
+  HREF="cpp_grbvar_get.html">GRBVar::get()</A>
+<B> Up:</B> <A NAME="tex2html3289"
+  HREF="cpp_api_details.html">C++ API Details</A>
+<B> Previous:</B> <A NAME="tex2html3283"
+  HREF="cpp_grbmodel_write.html">GRBModel::write()</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00043000000000000000"></A>
+<A NAME="cppclass:GRBVar"></A>
+<BR>
+GRBVar
+</H2>
+
+<P>
+Gurobi variable object.  Variables are always associated with a
+particular model.  You create a variable object by adding a variable
+to a model (using
+<A HREF="cpp_grbmodel_addvar.html#cppmethod:GRBModel::addVar">GRBModel::addVar</A>), rather
+than by using a <code>GRBVar</code> constructor.
+
+<P>
+The methods on variable objects are used to get and set variable
+attributes.  For example, solution information can be queried by
+calling <A HREF="cpp_grbvar_get.html#cppmethod:GRBVar::get">get</A>(
+<code>GRB_DoubleAttr_X</code>).  Note that you can also query attributes for
+a set of variables at once.  This is done using the attribute query
+method on the <code>GRBModel</code> object
+(<A HREF="cpp_grbmodel_get.html#cppmethod:GRBModel::get">GRBModel::get</A>).
+
+<P>
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html3292"
+  HREF="cpp_grbvar_get.html">GRBVar::get()</A>
+<LI><A NAME="tex2html3293"
+  HREF="cpp_grbvar_sameas.html">GRBVar::sameAs()</A>
+<LI><A NAME="tex2html3294"
+  HREF="cpp_grbvar_set.html">GRBVar::set()</A>
+</UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html3290"
+  HREF="cpp_grbvar_get.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html3288"
+  HREF="cpp_api_details.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html3282"
+  HREF="cpp_grbmodel_write.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html3291"
+  HREF="cpp_grbvar_get.html">GRBVar::get()</A>
+<B> Up:</B> <A NAME="tex2html3289"
+  HREF="cpp_api_details.html">C++ API Details</A>
+<B> Previous:</B> <A NAME="tex2html3283"
+  HREF="cpp_grbmodel_write.html">GRBModel::write()</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

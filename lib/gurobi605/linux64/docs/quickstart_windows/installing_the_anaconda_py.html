@@ -1,0 +1,184 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Installing the Anaconda Python distribution</TITLE>
+<META NAME="description" CONTENT="Installing the Anaconda Python distribution">
+<META NAME="keywords" CONTENT="quickstart_windows">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="quickstart_windows.css">
+
+<LINK REL="next" HREF="windows_command_line.html">
+<LINK REL="previous" HREF="recommended_reading.html">
+<LINK REL="up" HREF="quickstart_windows.html">
+<LINK REL="next" HREF="using_the_spyder_ide.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html1676"
+  HREF="using_the_spyder_ide.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1674"
+  HREF="quickstart_windows.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1668"
+  HREF="recommended_reading.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1677"
+  HREF="using_the_spyder_ide.html">Using the Spyder IDE</A>
+<B> Up:</B> <A NAME="tex2html1675"
+  HREF="quickstart_windows.html">Gurobi Optimizer Quick Start</A>
+<B> Previous:</B> <A NAME="tex2html1669"
+  HREF="recommended_reading.html">Recommended Reading</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION000150000000000000000"></A>
+<A NAME="section:Anaconda"></A>
+<BR>
+Installing the Anaconda Python distribution
+</H1>
+
+<P>
+The Gurobi distribution includes a Python interpreter and a basic set
+of Python modules.  While these are sufficient for building and
+running simple optimization models, they provide just a glimpse of the
+wealth of tools and modules that are available for Python.  This
+section guides you through the steps involved in installing Anaconda,
+a free and widely-used Python distribution that includes an Integrated
+Development Environment (Spyder), a notebook-style interface (iPython
+Notebook), and a broad set of Python modules.  These tools can
+significantly increase the interactivity and productivitiy of your
+Python model building experience.
+
+<P>
+Before we begin, we should note that Anaconda isn't your only choice
+in Python distributions and/or IDEs.  Popular alternatives include
+<A NAME="tex2html54"
+  HREF="http://www.enthought.com/products/canopy">Canopy</A>,
+<A NAME="tex2html55"
+  HREF="http://eric-ide.python-projects.org">Eric</A>,
+<A NAME="tex2html56"
+  HREF="http://code.google.com/p/iep">iep</A>, and
+<A NAME="tex2html57"
+  HREF="http://pydev.org">PyDev</A>.  We won't be covering the
+details of installing these other options for use with Gurobi, but the
+Anaconda instructions that follow should provide a good outline for
+the steps involved.  We've found that Anaconda provides a nice balance
+between power and complexity, but we realize that people may look for
+different things in their Python environments.
+
+<P>
+<SPAN  CLASS="textbf">Step 1: Install Gurobi</SPAN>
+
+<P>
+The first step in using Gurobi from Anaconda is to
+<A HREF="software_installation_guid.html#section:Installation">install Gurobi on your machine</A>
+and
+<A HREF="retrieving_and_setting_up_.html#section:RetrieveLicense">install a Gurobi license</A>
+ (if you haven't already done so).
+
+<P>
+<SPAN  CLASS="textbf">Step 2: Download and Install Anaconda</SPAN>
+
+<P>
+The next step is to download Anaconda.  You can find it
+<A NAME="tex2html58"
+  HREF="http://continuum.io/downloads">here</A>.
+
+<P>
+<DIV ALIGN="CENTER">
+<IMG
+  WIDTH="751" HEIGHT="625" ALIGN="BOTTOM" BORDER="0"
+ SRC="./anaconda_windows.png"
+ ALT="Image anaconda_windows">
+</DIV>
+<P>
+<DIV ALIGN="CENTER">
+</DIV>
+
+<P>
+Gurobi supports Python 2.7 and Python 3.4, in both 32-bit and
+64-bit versions.  Click on the download button
+(<code>Windows 64-Bit Python 2.7</code> in this case), and then
+download and run the Anaconda installer.  Make a note of your
+installation directory.
+
+<P>
+<SPAN  CLASS="textbf">Step 3: Install Gurobi into Anaconda Python</SPAN>
+
+<P>
+The third step is to install the Gurobi module into Anaconda Python.
+You can do this by double-clicking on <code>anaconda_setup</code> in the
+<code>bin</code> folder of your Gurobi installation
+(<code>c:\gurobi600\win64\bin</code> for a default installation of the
+64-bit Windows version of Gurobi 6.0.0 - adjust the path for your
+version).  The program will prompt you for the location of your
+Anaconda Python installation.  When the program is finished, you
+should see output that looks like the following:
+<DIV ALIGN="CENTER">
+<IMG
+  WIDTH="508" HEIGHT="255" ALIGN="BOTTOM" BORDER="0"
+ SRC="./anaconda_setup_windows.png"
+ ALT="Image anaconda_setup_windows">
+</DIV>
+<P>
+<DIV ALIGN="CENTER">
+</DIV>
+
+<P>
+You are now ready to use Gurobi from Anaconda Python.  Your
+next step is to launch either the
+<A HREF="using_the_spyder_ide.html#subsection:Spyder">Spyder IDE</A>
+or
+<A HREF="using_the_ipython_notebook.html#subsection:iPythonNotebook">iPython Notebook</A>.
+
+<P>
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html1678"
+  HREF="using_the_spyder_ide.html">Using the Spyder IDE</A>
+<LI><A NAME="tex2html1679"
+  HREF="using_the_ipython_notebook.html">Using the iPython Notebook</A>
+</UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1676"
+  HREF="using_the_spyder_ide.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1674"
+  HREF="quickstart_windows.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1668"
+  HREF="recommended_reading.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1677"
+  HREF="using_the_spyder_ide.html">Using the Spyder IDE</A>
+<B> Up:</B> <A NAME="tex2html1675"
+  HREF="quickstart_windows.html">Gurobi Optimizer Quick Start</A>
+<B> Previous:</B> <A NAME="tex2html1669"
+  HREF="recommended_reading.html">Recommended Reading</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

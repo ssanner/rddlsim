@@ -1,0 +1,143 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Params.java</TITLE>
+<META NAME="description" CONTENT="Params.java">
+<META NAME="keywords" CONTENT="examples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="examples.css">
+
+<LINK REL="next" HREF="piecewise_java.html">
+<LINK REL="previous" HREF="mip2_java.html">
+<LINK REL="up" HREF="java_examples.html">
+<LINK REL="next" HREF="piecewise_java.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html1187"
+  HREF="piecewise_java.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1185"
+  HREF="java_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1179"
+  HREF="mip2_java.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1188"
+  HREF="piecewise_java.html">Piecewise.java</A>
+<B> Up:</B> <A NAME="tex2html1186"
+  HREF="java_examples.html">Java Examples</A>
+<B> Previous:</B> <A NAME="tex2html1180"
+  HREF="mip2_java.html">Mip2.java</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000231200000000000000"></A>
+<A NAME="subsubsection:Params.java"></A>
+<BR>
+Params.java
+</H3>
+
+<P>
+<BR>
+<PRE  CLASS="verbatim">/* Copyright 2014, Gurobi Optimization, Inc. */
+
+/* Use parameters that are associated with a model.
+
+   A MIP is solved for 5 seconds with different sets of parameters.
+   The one with the smallest MIP gap is selected, and the optimization
+   is resumed until the optimal solution is found.
+*/
+
+import gurobi.*;
+
+public class Params {
+
+  public static void main(String[] args) {
+
+    if (args.length &lt; 1) {
+      System.out.println("Usage: java Params filename");
+      System.exit(1);
+    }
+
+    try {
+      // Read model and verify that it is a MIP
+      GRBEnv env = new GRBEnv();
+      GRBModel m = new GRBModel(env, args[0]);
+      if (m.get(GRB.IntAttr.IsMIP) == 0) {
+        System.out.println("The model is not an integer program");
+        System.exit(1);
+      }
+
+      // Set a 5 second time limit
+      m.getEnv().set(GRB.DoubleParam.TimeLimit, 5);
+
+      // Now solve the model with different values of MIPFocus
+      GRBModel bestModel = new GRBModel(m);
+      bestModel.optimize();
+      for (int i = 1; i &lt;= 3; ++i) {
+        m.reset();
+        m.getEnv().set(GRB.IntParam.MIPFocus, i);
+        m.optimize();
+        if (bestModel.get(GRB.DoubleAttr.MIPGap) &gt;
+                    m.get(GRB.DoubleAttr.MIPGap)) {
+          GRBModel swap = bestModel;
+          bestModel = m;
+          m = swap;
+        }
+      }
+
+      // Finally, delete the extra model, reset the time limit and
+      // continue to solve the best model to optimality
+      m.dispose();
+      bestModel.getEnv().set(GRB.DoubleParam.TimeLimit, GRB.INFINITY);
+      bestModel.optimize();
+      System.out.println("Solved with MIPFocus: " +
+          bestModel.getEnv().get(GRB.IntParam.MIPFocus));
+
+    } catch (GRBException e) {
+      System.out.println("Error code: " + e.getErrorCode() + ". " +
+          e.getMessage());
+    }
+  }
+}
+</PRE>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1187"
+  HREF="piecewise_java.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1185"
+  HREF="java_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1179"
+  HREF="mip2_java.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1188"
+  HREF="piecewise_java.html">Piecewise.java</A>
+<B> Up:</B> <A NAME="tex2html1186"
+  HREF="java_examples.html">Java Examples</A>
+<B> Previous:</B> <A NAME="tex2html1180"
+  HREF="mip2_java.html">Mip2.java</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

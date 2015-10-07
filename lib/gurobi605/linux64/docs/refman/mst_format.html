@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>MST format</TITLE>
+<META NAME="description" CONTENT="MST format">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="ord_format.html">
+<LINK REL="previous" HREF="ilp_format.html">
+<LINK REL="up" HREF="model_file_formats.html">
+<LINK REL="next" HREF="ord_format.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html12259"
+  HREF="ord_format.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html12257"
+  HREF="model_file_formats.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html12251"
+  HREF="ilp_format.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html12260"
+  HREF="ord_format.html">ORD format</A>
+<B> Up:</B> <A NAME="tex2html12258"
+  HREF="model_file_formats.html">Model File Formats</A>
+<B> Previous:</B> <A NAME="tex2html12252"
+  HREF="ilp_format.html">ILP format</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION000186000000000000000"></A>
+<A NAME="format:MST"></A>
+<BR>
+MST format
+</H2>
+
+<P>
+A MIP start (MST) file is used to specify an initial solution for a
+mixed integer programming model.  The file lists values to assign to
+the variables in the model.  If a MIP start has been imported into a
+MIP model before optimization begins (using
+<A HREF="c_grbread.html#routine:GRBread">GRBread</A>, for example), the Gurobi
+optimizer will attempt to build a feasible solution from the specified
+start values.  A good initial solution often speeds the solution of
+the MIP model, since it provides an early bound on the optimal value,
+and also since the specified solution can be used to seed the local
+search heuristics employed by the MIP solver.
+
+<P>
+A MIP start file consists of variable-value pairs, each on its own
+line.  Any line that begins with the hash sign (#) is a comment line and
+is ignored.  The following is a simple example:
+<PRE>
+# MIP start
+x1  1
+x2  0
+x3  1
+</PRE>
+
+<P>
+Importing a MIP start into a model is equivalent to setting the
+<code>Start</code> attribute for each listed variable to the associated value.
+If the same variable appears more than once in a start file, the last
+assignment is used.  Importing multiple start files is equivalent to
+reading the concatenation of the imported files.
+
+<P>
+Note that start files don't need to specify values for all variables.
+When variable values are left unspecified, the Gurobi solver will try
+to extend the specified values into a feasible solution for the full
+model.
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html12259"
+  HREF="ord_format.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html12257"
+  HREF="model_file_formats.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html12251"
+  HREF="ilp_format.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html12260"
+  HREF="ord_format.html">ORD format</A>
+<B> Up:</B> <A NAME="tex2html12258"
+  HREF="model_file_formats.html">Model File Formats</A>
+<B> Previous:</B> <A NAME="tex2html12252"
+  HREF="ilp_format.html">ILP format</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

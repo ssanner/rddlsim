@@ -1,0 +1,103 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Error reporting</TITLE>
+<META NAME="description" CONTENT="Error reporting">
+<META NAME="keywords" CONTENT="quickstart_linux">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="quickstart_linux.css">
+
+<LINK REL="next" HREF="c_building_and_running_the.html">
+<LINK REL="previous" HREF="c_optimizing_the_model.html">
+<LINK REL="up" HREF="c_interface.html">
+<LINK REL="next" HREF="c_building_and_running_the.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html711"
+  HREF="c_building_and_running_the.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html709"
+  HREF="c_interface.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html703"
+  HREF="c_optimizing_the_model.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html712"
+  HREF="c_building_and_running_the.html">Building and running the</A>
+<B> Up:</B> <A NAME="tex2html710"
+  HREF="c_interface.html">C Interface</A>
+<B> Previous:</B> <A NAME="tex2html704"
+  HREF="c_optimizing_the_model.html">Optimizing the model</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION000710000000000000000">
+Error reporting</A>
+</H2>
+
+<P>
+We would like to point out one additional aspect of the example.
+Almost all of the Gurobi methods return an error code.  The code will
+typically be zero, indicating that no error was encountered, but it is
+important to check the value of the code in case an error arises.
+
+<P>
+While you may want to print a specialized error code at each point
+where an error may occur, the Gurobi interface provides a more
+flexible facility for reporting errors.  The
+<EM>GRBgeterrormsg()</EM> routine returns a textual description of
+the most recent error associated with an environment:
+<PRE>
+  if (error) {
+    printf("ERROR: %s\n", GRBgeterrormsg(env));
+    exit(1);
+  }
+</PRE>
+
+<P>
+Once the error reporting is done, the only remaining task in our
+example is to release the resources associated with our optimization
+task.  In this case, we populated one model and created one
+environment.  We call <code>GRBfreemodel(model)</code> to free the model,
+and <code>GRBfreeenv(env)</code> to free the environment.
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html711"
+  HREF="c_building_and_running_the.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html709"
+  HREF="c_interface.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html703"
+  HREF="c_optimizing_the_model.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html712"
+  HREF="c_building_and_running_the.html">Building and running the</A>
+<B> Up:</B> <A NAME="tex2html710"
+  HREF="c_interface.html">C Interface</A>
+<B> Previous:</B> <A NAME="tex2html704"
+  HREF="c_optimizing_the_model.html">Optimizing the model</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

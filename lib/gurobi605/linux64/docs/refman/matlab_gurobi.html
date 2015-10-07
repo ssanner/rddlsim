@@ -1,0 +1,532 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>gurobi()</TITLE>
+<META NAME="description" CONTENT="gurobi()">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="previous" HREF="matlab_solving_models_with.html">
+<LINK REL="up" HREF="matlab_solving_models_with.html">
+<LINK REL="next" HREF="matlab_reading_and_writing.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html9199"
+  HREF="matlab_reading_and_writing.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html9197"
+  HREF="matlab_solving_models_with.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html9193"
+  HREF="matlab_solving_models_with.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html9200"
+  HREF="matlab_reading_and_writing.html">Reading and writing models</A>
+<B> Up:</B> <A NAME="tex2html9198"
+  HREF="matlab_solving_models_with.html">Solving models with the</A>
+<B> Previous:</B> <A NAME="tex2html9194"
+  HREF="matlab_solving_models_with.html">Solving models with the</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000111100000000000000"></A>
+<A NAME="matlabfunction:gurobi"></A>
+<BR>
+gurobi()
+</H3>
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">gurobi</SPAN></FONT></BIG></TD>
+<TD ALIGN="LEFT">( model, params )</TD>
+</TR>
+</TABLE>
+
+<P>
+The two arguments are MATLAB <code>struct</code> variables, each consisting
+of multiple fields.  The first argument contains the
+optimization model to be solved.  The second contains an optional set
+of Gurobi parameters to be modified during the solution process.  The
+return value of this function is a <code>struct</code>, also consisting of
+multiple fields.  It contains the result of performing the
+optimization on the specified model.  We'll now discuss the details of
+each of these data structures.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">The optimization model</SPAN></BIG>
+
+<P>
+As we've mentioned, the <code>model</code> argument to the <code>gurobi</code>
+function is a <code>struct</code> variable, containing multiple <code>fields</code> that
+represent the various parts of the optimization model.  Several of
+these fields are optional.  Note that you refer to a field of a MATLAB
+struct variable by adding a period to the end of the variable name,
+followed by the name of the field.  For example, <code>model.A</code> refers
+to field <code>A</code> of variable <code>model</code>.
+
+<P>
+The following is an enumeration of all of the fields of the
+<code>model</code> argument that Gurobi will take into account when
+optimizing the model:
+<DL>
+<DT><STRONG>A</STRONG></DT>
+<DD>The linear constraint matrix.  This must be a sparse matrix.
+
+<P>
+</DD>
+<DT><STRONG>obj</STRONG></DT>
+<DD>The linear objective vector (<code>c</code> in the
+  <A HREF="matlab_solving_models_with.html#matlab:solving">problem statement</A>). You must
+  specify one value for each column of <code>A</code>.  This must be a dense
+  vector.
+
+<P>
+</DD>
+<DT><STRONG>sense</STRONG></DT>
+<DD>The senses of the linear constraints.  Allowed values are
+  <code>'='</code>, <code>'&lt;'</code>, or <code>'&gt;'</code>.  You must specify one value for each row of
+  <code>A</code>, or a single value to specify that all constraints have the
+  same sense.  This must be a char array.
+
+<P>
+</DD>
+<DT><STRONG>rhs</STRONG></DT>
+<DD>The right-hand side vector for the linear constraints (<SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img23.png"
+ ALT="$b$"></SPAN>
+  in the <A HREF="matlab_solving_models_with.html#matlab:solving">problem statement</A>).  You must
+  specify one value for each row of <code>A</code>.  This must be a dense
+  vector.
+
+<P>
+</DD>
+<DT><STRONG>lb (optional)</STRONG></DT>
+<DD>The lower bound vector. When present, you must
+  specify one value for each column of <code>A</code>.  This must be a
+  dense vector.  When absent, each variable has a lower bound of 0.
+
+<P>
+</DD>
+<DT><STRONG>ub (optional)</STRONG></DT>
+<DD>The upper bound vector. When present, you must
+  specify one value for each column of <code>A</code>.  This must be a
+  dense vector.  When absent, the variables have infinite upper
+  bounds.
+
+<P>
+</DD>
+<DT><STRONG>vtype (optional)</STRONG></DT>
+<DD>The variable types. This char array is used to
+  capture variable integrality constraints. Allowed values are
+  <code>'C'</code> (continuous), <code>'B'</code> (binary), <code>'I'</code> (integer),
+  <code>'S'</code> (semi-continuous), or <code>'N'</code> (semi-integer).  Binary
+  variables must be either 0 or 1.  Integer variables can take any
+  integer value between the specified lower and upper bounds.
+  Semi-continuous variables can take any value between the specified
+  lower and upper bounds, or a value of zero.  Semi-integer variables
+  can take any integer value between the specified lower and upper
+  bounds, or a value of zero.  When present, you must specify one
+  value for each column of <code>A</code>, or a single value to specify that
+  all variables have the same type.  When absent, each variable is
+  treated as being continuous.
+
+<P>
+</DD>
+<DT><STRONG>modelsense (optional)</STRONG></DT>
+<DD>The optimization sense. Allowed values
+  are <code>'min'</code> (minimize) or <code>'max'</code> (maximize).  When
+  absent, the default optimization sense is minimization.
+
+<P>
+</DD>
+<DT><STRONG>modelname (optional)</STRONG></DT>
+<DD>The name of the model.  The name appears
+  in the Gurobi log, and when writing a model to a file.
+
+<P>
+</DD>
+<DT><STRONG>objcon (optional)</STRONG></DT>
+<DD>The constant offset in the objective function
+  (<!-- MATH
+ $\mathrm{alpha}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="42" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img41.png"
+ ALT="$\mathrm{alpha}$"></SPAN> in the <A HREF="matlab_solving_models_with.html#matlab:solving">problem statement</A>).
+
+<P>
+</DD>
+<DT><STRONG>vbasis (optional)</STRONG></DT>
+<DD>The variable basis status vector. Used to
+  provide an advanced starting point for the simplex algorithm.  You
+  would generally never concern yourself with the contents of this
+  array, but would instead simply pass it from the result of a
+  previous optimization run to the input of a subsequent run. When
+  present, you must specify one value for each column of <code>A</code>.
+  This must be a dense vector.
+
+<P>
+</DD>
+<DT><STRONG>cbasis (optional)</STRONG></DT>
+<DD>The constraint basis status vector. Used to
+  provide an advanced starting point for the simplex algorithm.
+  Consult the <code>vbasis</code> description for details.  When present,
+  you must specify one value for each row of <code>A</code>.  This must be
+  a dense vector.
+
+<P>
+</DD>
+<DT><STRONG>Q (optional)</STRONG></DT>
+<DD>The quadratic objective matrix. When present,
+  <code>Q</code> must be a square matrix whose row and column counts are equal
+  to the number of columns in <code>A</code>.  <code>Q</code> must be a sparse
+  matrix.
+
+<P>
+</DD>
+<DT><STRONG>cones (optional)</STRONG></DT>
+<DD>Second-order cone constraints.  A struct
+  array.  Each element in the array defines a single cone constraint:
+  <code>x(k)^2 &gt;= sum(x(idx).^2)</code>, <code>x(k) &gt;= 0</code>.  The constraint
+  is defined via <code>model.cones.index = [k idx]</code>, with the first
+  entry in <code>index</code> corresponding to the index of the variable on
+  the left-hand side of the constraint, and the remaining entries
+  corresponding to the indices of the variables on the right-hand side
+  of the constraint.  <code>model.cones.index</code> must be a dense
+  vector.
+
+<P>
+</DD>
+<DT><STRONG>quadcon (optional)</STRONG></DT>
+<DD>The quadratic constraints. A struct
+  array. When present, each element in the array defines a single
+  quadratic constraint: <!-- MATH
+ $x^TQc\, x + q^Tx \le \mathrm{beta}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="152" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img39.png"
+ ALT="$x^TQc  x + q^Tx \le \mathrm{beta}$"></SPAN>.  The
+  <code>Qc</code> matrix must be a square matrix whose row and column counts
+  are equal to the number of columns of <code>A</code>.  <code>Qc</code> must be
+  a sparse matrix. It is stored in <code>model.quadcon.Qc</code>. The
+  <code>q</code> vector defines the linear terms in the constraint. You must
+  specify a value for <code>q</code> for each column of <code>A</code>. This
+  must be a dense vector. It is stored in <code>model.quadcon.q</code>.
+  The scalar beta defines the right-hand side of the constraint. It is
+  stored in <code>model.quadcon.rhs</code>.
+
+<P>
+</DD>
+<DT><STRONG>sos (optional)</STRONG></DT>
+<DD>The Special Ordered Set (SOS) constraints. A
+  struct array.  When present, each element in the array defines a
+  single SOS constraint.  A SOS constraint can be of type 1 or 2. This
+  is specified via <code>model.sos.type</code>. A type 1 SOS constraint is
+  a set of variables for which at most one variable in the set may
+  take a value other than zero. A type 2 SOS constraint is an ordered
+  set of variables where at most two variables in the set may take
+  non-zero values. If two take non-zeros values, they must be
+  contiguous in the ordered set.  The members of an SOS constraint are
+  specified by placing their indices in
+  <code>model.sos.index</code>. Optional weights associated with SOS members
+  may be defined in <code>model.sos.weight</code>.
+
+<P>
+</DD>
+<DT><STRONG>pwlobj (optional)</STRONG></DT>
+<DD>The piecewise-linear objective functions. A
+  struct array. When present, each element in the array defines a
+  piecewise-linear objective function of a single variable. The
+  index of the variable whose objective function is being defined
+  is stored in <code>model.pwlobj.var</code>. The <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$x$"></SPAN> values for the
+  points that define the piecewise-linear function are stored in
+<BR>  <code>model.pwlobj.x</code>. The values in the <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$x$"></SPAN> vector
+  must be in non-decreasing order. The <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img5.png"
+ ALT="$y$"></SPAN> values for the points that
+  define the piecewise-linear function are stored in
+  <code>model.pwlobj.y</code>.
+
+<P>
+</DD>
+<DT><STRONG>start (optional)</STRONG></DT>
+<DD>The MIP start vector. The MIP solver will
+  attempt to build an initial solution from this vector. When present,
+  you must specify a start value for each variable. This must be a
+  dense vector. Note that you can leave the start value for a variable
+  undefined--the MIP solver will attempt to fill in values for the
+  undefined start values. This may be done by setting the start value
+  for that variable to <code>nan</code>.
+
+<P>
+</DD>
+<DT><STRONG>varnames (optional)</STRONG></DT>
+<DD>The variable names. A cell array of
+  strings. When present, each element of the array defines the name of
+  a variable. You must specify a name for each column of <code>A</code>.
+
+<P>
+</DD>
+<DT><STRONG>constrnames (optional)</STRONG></DT>
+<DD>The constraint names. A cell array of
+  strings. When present, each element of the array defines the name of
+  a constraint. You must specify a name for each row of <code>A</code>.
+
+<P>
+</DD>
+</DL>
+If any of the mandatory fields listed above are missing, the
+<code>gurobi</code> function will return an error.
+
+<P>
+Below is an example that demonstrates the construction of a simple
+optimization model:
+<PRE>
+model.A          = sparse([1 2 3; 1 1 0]);
+model.obj        = [1 1 2];
+model.modelsense = 'max';
+model.rhs        = [4; 1];
+model.sense      = '&lt;&gt;'
+</PRE>
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Parameters</SPAN></BIG>
+
+<P>
+The optional <code>params</code> argument to the <code>gurobi</code> function is
+also a <code>struct</code>, potentially containing multiple fields.  The name of
+each field must be the name of a Gurobi parameter, and the
+associated value should be the desired value of that parameter.
+Gurobi parameters allow users to modify the default behavior of the
+Gurobi optimization algorithms.  You can find a complete list of the
+available Gurobi parameters <A HREF="parameters.html#sec:Parameters">here</A>.
+
+<P>
+To create a struct that would set the Gurobi
+<A HREF="method.html#parameter:Method">method</A>
+parameter to 2
+you would do the following:
+<PRE>
+params.method = 2;
+</PRE>
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">The optimization result</SPAN></BIG>
+
+<P>
+The <code>gurobi</code> function returns a <code>struct</code>, with the various results
+of the optimization stored in its fields.  The specific
+results that are available depend on the type of model that was
+solved, and the status of the optimization.
+The following is a list of fields that might be available
+in the returned result.  We'll discuss the circumstances under which
+each will be available after presenting the list.
+<DL>
+<DT><STRONG>status</STRONG></DT>
+<DD>The status of the optimization, returned as a string.
+  The desired result is <code>'OPTIMAL'</code>, which indicates that an
+  optimal solution to the model was found.  Other status are possible,
+  for example if the model has no feasible solution or if you set a
+  Gurobi parameter that leads to early solver termination.  See the
+  <A HREF="optimization_status_codes.html#sec:StatusCodes">Status Code</A> section for further
+  information on the Gurobi status codes.
+
+<P>
+</DD>
+<DT><STRONG>objval</STRONG></DT>
+<DD>The objective value of the computed solution.
+
+<P>
+</DD>
+<DT><STRONG>runtime</STRONG></DT>
+<DD>The elapsed wall-clock time (in seconds) for the
+  optimization.
+
+<P>
+</DD>
+<DT><STRONG>x</STRONG></DT>
+<DD>The computed solution.  This array contains one entry for
+  each column of <code>A</code>.
+
+<P>
+</DD>
+<DT><STRONG>slack</STRONG></DT>
+<DD>The constraint slack for the computed solution.  This
+  array contains one entry for each row of <code>A</code>.
+
+<P>
+</DD>
+<DT><STRONG>qcslack</STRONG></DT>
+<DD>The quadratic constraint slack in the current
+  solution. This array contains one entry for second-order cone
+  constraint and one entry for each quadratic constraint. The slacks
+  for the second-order cone constraints appear before the slacks for
+  the quadratic constraints.
+
+<P>
+</DD>
+<DT><STRONG>pi</STRONG></DT>
+<DD>Dual values for the computed solution (also known as <EM>  shadow prices</EM>).  This array contains one entry for each row of
+  <code>A</code>.
+
+<P>
+</DD>
+<DT><STRONG>qcpi</STRONG></DT>
+<DD>The dual values associated with the quadratic
+  constraints. This array contains one entry for each second-order
+  cone constraint and one entry for each quadratic constraint. The
+  dual values for the second-order cone constraints appear before the
+  dual values for the quadratic constraints.
+
+<P>
+</DD>
+<DT><STRONG>rc</STRONG></DT>
+<DD>Variable reduced costs for the computed solution.  This
+  array contains one entry for each column of <code>A</code>.
+
+<P>
+</DD>
+<DT><STRONG>vbasis</STRONG></DT>
+<DD>Variable basis status values for the computed optimal
+  basis.  You generally should not concern yourself with the contents
+  of this array.  If you wish to use an advanced start later, you
+  would simply copy the <code>vbasis</code> and <code>cbasis</code> arrays into
+  the corresponding fields for the next model.  This array contains
+  one entry for each column of <code>A</code>.
+
+<P>
+</DD>
+<DT><STRONG>cbasis</STRONG></DT>
+<DD>Constraint basis status values for the computed optimal
+  basis.  This array contains one entry for each row of <code>A</code>.
+
+<P>
+</DD>
+<DT><STRONG>unbdray</STRONG></DT>
+<DD>Unbounded ray.  Provides a vector that, when added to
+  any feasible solution, yields a new solution that is also feasible
+  but improves the objective.
+
+<P>
+</DD>
+<DT><STRONG>farkasdual</STRONG></DT>
+<DD>Farkas infeasibility proof. This is a dual unbounded
+  vector.  Adding this vector to any feasible solution of the dual
+  model yields a new solution that is also feasible but improves the
+  dual objective.
+
+<P>
+</DD>
+<DT><STRONG>farkasproof</STRONG></DT>
+<DD>Magnitude of infeasibility violation in Farkas
+  infeasibility proof. A Farkas infeasibility proof identifies a new
+  constraint, obtained by taking a linear combination of the
+  constraints in the model, that can never be satisfied. (the linear
+  combination is available in the
+  <code>farkasdual</code> field). This
+  attribute indicates the magnitude of the violation of this
+  aggregated constraint.
+
+<P>
+</DD>
+<DT><STRONG>objbound</STRONG></DT>
+<DD>Best available bound on solution (lower bound for
+  minimization, upper bound for maximization).
+
+<P>
+</DD>
+<DT><STRONG>itercount</STRONG></DT>
+<DD>Number of simplex iterations performed.
+
+<P>
+</DD>
+<DT><STRONG>baritercount</STRONG></DT>
+<DD>Number of barrier iterations performed.
+
+<P>
+</DD>
+<DT><STRONG>nodecount</STRONG></DT>
+<DD>Number of branch-and-cut nodes explored.
+
+<P>
+</DD>
+</DL>
+The <code>Status</code> field will be present in all cases.  It indicates
+whether Gurobi was able to find a proven optimal solution to the
+model.  In cases where a solution to the model was found, optimal or
+otherwise, the <code>objval</code> and <code>x</code> fields will be present.
+For linear and quadratic programs, if a solution is available, then
+the <code>pi</code> and <code>rc</code> fields will also be present.  For models
+with quadratic constraints, if the parameter <code>qcpdual</code> is set to
+1, the field <code>qcpi</code> will be present. If the final solution is a
+<EM>basic</EM> solution (computed by simplex), then <code>vbasis</code> and
+<code>cbasis</code> will be present. If the model is an unbounded linear
+program and the
+<A HREF="infunbdinfo.html#parameter:InfUnbdInfo">infunbdinfo</A>
+parameter is set to 1, the field
+<code>unbdray</code> will be present. Finally, if the model is an infeasible
+linear program and the <A HREF="infunbdinfo.html#parameter:InfUnbdInfo">infunbdinfo</A> parameter is set to 1, the
+fields <code>farkasdual</code> and <code>farkasproof</code> will be set.
+
+<P>
+The following is an example of how the results of the <code>gurobi</code>
+call might be extracted and output:
+<PRE>
+result = gurobi(model, params)
+if strcmp(result.status, 'OPTIMAL')
+  fprintf('Optimal objective: %e\n', result.objval);
+  disp(result.x)
+else
+  fprintf('Optimization returned status: %s\n', result.status);
+end
+</PRE>
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html9199"
+  HREF="matlab_reading_and_writing.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html9197"
+  HREF="matlab_solving_models_with.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html9193"
+  HREF="matlab_solving_models_with.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html9200"
+  HREF="matlab_reading_and_writing.html">Reading and writing models</A>
+<B> Up:</B> <A NAME="tex2html9198"
+  HREF="matlab_solving_models_with.html">Solving models with the</A>
+<B> Previous:</B> <A NAME="tex2html9194"
+  HREF="matlab_solving_models_with.html">Solving models with the</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

@@ -1,0 +1,174 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Lpmod.java</TITLE>
+<META NAME="description" CONTENT="Lpmod.java">
+<META NAME="keywords" CONTENT="examples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="examples.css">
+
+<LINK REL="next" HREF="mip1_java.html">
+<LINK REL="previous" HREF="lpmethod_java.html">
+<LINK REL="up" HREF="java_examples.html">
+<LINK REL="next" HREF="mip1_java.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html1157"
+  HREF="mip1_java.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1155"
+  HREF="java_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1149"
+  HREF="lpmethod_java.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1158"
+  HREF="mip1_java.html">Mip1.java</A>
+<B> Up:</B> <A NAME="tex2html1156"
+  HREF="java_examples.html">Java Examples</A>
+<B> Previous:</B> <A NAME="tex2html1150"
+  HREF="lpmethod_java.html">Lpmethod.java</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00023900000000000000"></A>
+<A NAME="subsubsection:Lpmod.java"></A>
+<BR>
+Lpmod.java
+</H3>
+
+<P>
+<BR>
+<PRE  CLASS="verbatim">/* Copyright 2014, Gurobi Optimization, Inc. */
+
+/* This example reads an LP model from a file and solves it.
+   If the model can be solved, then it finds the smallest positive variable,
+   sets its upper bound to zero, and resolves the model two ways:
+   first with an advanced start, then without an advanced start
+   (i.e. 'from scratch'). */
+
+import gurobi.*;
+
+public class Lpmod {
+  public static void main(String[] args) {
+
+    if (args.length &lt; 1) {
+      System.out.println("Usage: java Lpmod filename");
+      System.exit(1);
+    }
+
+    try {
+      // Read model and determine whether it is an LP
+      GRBEnv env = new GRBEnv();
+      GRBModel model = new GRBModel(env, args[0]);
+      if (model.get(GRB.IntAttr.IsMIP) != 0) {
+        System.out.println("The model is not a linear program");
+        System.exit(1);
+      }
+
+      model.optimize();
+
+      int status = model.get(GRB.IntAttr.Status);
+
+      if (status == GRB.Status.INF_OR_UNBD ||
+          status == GRB.Status.INFEASIBLE  ||
+          status == GRB.Status.UNBOUNDED     ) {
+        System.out.println("The model cannot be solved because it is "
+            + "infeasible or unbounded");
+        System.exit(1);
+      }
+
+      if (status != GRB.Status.OPTIMAL) {
+        System.out.println("Optimization was stopped with status " + status);
+        System.exit(0);
+      }
+
+      // Find the smallest variable value
+      double minVal = GRB.INFINITY;
+      GRBVar minVar = null;
+      for (GRBVar v : model.getVars()) {
+        double sol = v.get(GRB.DoubleAttr.X);
+        if ((sol &gt; 0.0001) &amp;&amp; (sol &lt; minVal) &amp;&amp;
+            (v.get(GRB.DoubleAttr.LB) == 0.0)) {
+          minVal = sol;
+          minVar = v;
+        }
+      }
+
+      System.out.println("\n*** Setting " +
+          minVar.get(GRB.StringAttr.VarName) + " from " + minVal +
+          " to zero ***\n");
+      minVar.set(GRB.DoubleAttr.UB, 0.0);
+
+      // Solve from this starting point
+      model.optimize();
+
+      // Save iteration &amp; time info
+      double warmCount = model.get(GRB.DoubleAttr.IterCount);
+      double warmTime = model.get(GRB.DoubleAttr.Runtime);
+
+      // Reset the model and resolve
+      System.out.println("\n*** Resetting and solving "
+          + "without an advanced start ***\n");
+      model.reset();
+      model.optimize();
+
+      double coldCount = model.get(GRB.DoubleAttr.IterCount);
+      double coldTime = model.get(GRB.DoubleAttr.Runtime);
+
+      System.out.println("\n*** Warm start: " + warmCount + " iterations, " +
+          warmTime + " seconds");
+      System.out.println("*** Cold start: " + coldCount + " iterations, " +
+          coldTime + " seconds");
+
+      // Dispose of model and environment
+      model.dispose();
+      env.dispose();
+
+    } catch (GRBException e) {
+      System.out.println("Error code: " + e.getErrorCode() + ". " +
+          e.getMessage());
+    }
+  }
+}
+</PRE>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1157"
+  HREF="mip1_java.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1155"
+  HREF="java_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1149"
+  HREF="lpmethod_java.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1158"
+  HREF="mip1_java.html">Mip1.java</A>
+<B> Up:</B> <A NAME="tex2html1156"
+  HREF="java_examples.html">Java Examples</A>
+<B> Previous:</B> <A NAME="tex2html1150"
+  HREF="lpmethod_java.html">Lpmethod.java</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

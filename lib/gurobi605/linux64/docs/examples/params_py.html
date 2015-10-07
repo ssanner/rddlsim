@@ -1,0 +1,125 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>params.py</TITLE>
+<META NAME="description" CONTENT="params.py">
+<META NAME="keywords" CONTENT="examples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="examples.css">
+
+<LINK REL="next" HREF="piecewise_py.html">
+<LINK REL="previous" HREF="netflow_py.html">
+<LINK REL="up" HREF="python_examples.html">
+<LINK REL="next" HREF="piecewise_py.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html2069"
+  HREF="piecewise_py.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html2067"
+  HREF="python_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html2061"
+  HREF="netflow_py.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html2070"
+  HREF="piecewise_py.html">piecewise.py</A>
+<B> Up:</B> <A NAME="tex2html2068"
+  HREF="python_examples.html">Python Examples</A>
+<B> Previous:</B> <A NAME="tex2html2062"
+  HREF="netflow_py.html">netflow.py</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000261800000000000000"></A>
+<A NAME="subsubsection:params.py"></A>
+<BR>
+params.py
+</H3>
+
+<P>
+<BR>
+<PRE  CLASS="verbatim">#!/usr/bin/python
+
+# Copyright 2014, Gurobi Optimization, Inc.
+
+# Use parameters that are associated with a model.
+#
+# A MIP is solved for 5 seconds with different sets of parameters.
+# The one with the smallest MIP gap is selected, and the optimization
+# is resumed until the optimal solution is found.
+
+import sys
+from gurobipy import *
+
+if len(sys.argv) &lt; 2:
+    print('Usage: params.py filename')
+    quit()
+
+
+# Read model and verify that it is a MIP
+m = read(sys.argv[1])
+if m.isMIP == 0:
+    print('The model is not an integer program')
+    exit(1)
+
+# Set a 5 second time limit
+m.params.timeLimit = 5
+
+# Now solve the model with different values of MIPFocus
+bestModel = m.copy()
+bestModel.optimize()
+for i in range(1, 4):
+    m.reset()
+    m.params.MIPFocus = i
+    m.optimize()
+    if bestModel.MIPGap &gt; m.MIPGap:
+        bestModel, m = m, bestModel # swap models
+
+# Finally, delete the extra model, reset the time limit and
+# continue to solve the best model to optimality
+del m
+bestModel.params.timeLimit = "default"
+bestModel.optimize()
+print('Solved with MIPFocus: %d' % bestModel.params.MIPFocus)
+</PRE>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html2069"
+  HREF="piecewise_py.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html2067"
+  HREF="python_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html2061"
+  HREF="netflow_py.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html2070"
+  HREF="piecewise_py.html">piecewise.py</A>
+<B> Up:</B> <A NAME="tex2html2068"
+  HREF="python_examples.html">Python Examples</A>
+<B> Previous:</B> <A NAME="tex2html2062"
+  HREF="netflow_py.html">netflow.py</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

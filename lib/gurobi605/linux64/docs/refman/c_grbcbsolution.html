@@ -1,0 +1,144 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>GRBcbsolution</TITLE>
+<META NAME="description" CONTENT="GRBcbsolution">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="c_grbterminate.html">
+<LINK REL="previous" HREF="c_grbcblazy.html">
+<LINK REL="up" HREF="c_modifying_solver_behavio.html">
+<LINK REL="next" HREF="c_grbterminate.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html2391"
+  HREF="c_grbterminate.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html2389"
+  HREF="c_modifying_solver_behavio.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html2383"
+  HREF="c_grbcblazy.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html2392"
+  HREF="c_grbterminate.html">GRBterminate</A>
+<B> Up:</B> <A NAME="tex2html2390"
+  HREF="c_modifying_solver_behavio.html">Modifying Solver Behavior -</A>
+<B> Previous:</B> <A NAME="tex2html2384"
+  HREF="c_grbcblazy.html">GRBcblazy</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00029300000000000000"></A>
+<A NAME="routine:GRBcbsolution"></A>
+<BR>
+GRBcbsolution
+</H3>
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">GRBcbsolution</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT">void</TD>
+<TD ALIGN="LEFT">*cbdata,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">const double</TD>
+<TD ALIGN="LEFT">*solution )</TD>
+</TR>
+</TABLE>
+
+<P>
+Provide a new feasible solution for a MIP model from within a user
+callback routine.  Note that this routine can only be called when the
+<code>where</code> value on the callback routine is <code>GRB_CB_MIPNODE</code>
+(see the <A HREF="callback_codes.html#sec:CallbackCodes">Callback Codes</A> section for
+more information).
+
+<P>
+Heuristics solutions are typically built from the current relaxation
+solution.  To retrieve the relaxation solution at the current node,
+call <A HREF="c_grbcbget.html#routine:GRBcbget">GRBcbget</A> with
+<code>what = GRB_CB_MIPNODE_REL</code>.
+
+<P>
+When providing a solution, you can specify values for any subset of
+the variables in the model.  To leave a variable value unspecified,
+set the variable to <code>GRB_UNDEFINED</code> in the <code>solution</code>
+vector.  The Gurobi MIP solver will attempt to extend the specified
+partial solution to a complete solution.
+
+<P>
+
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Return value:</SPAN></BIG>
+
+<P>
+A non-zero return value indicates that a problem occurred while adding the new solution.
+Refer to the <A HREF="error_codes.html#sec:ErrorCodes">Error Code</A> table for a
+list of possible return values.  Details on the error can be obtained
+by calling <A HREF="c_grbgeterrormsg.html#routine:GRBgeterrormsg">GRBgeterrormsg</A>.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">cbdata</SPAN>: The <TT>cbdata</TT> argument that was passed into the
+  user callback by the Gurobi optimizer.  This argument must be passed
+  unmodified from the user callback to <TT>GRBcbsolution()</TT>.
+
+<P>
+ <SPAN  CLASS="textbf">solution</SPAN>: The solution vector.  You must provide one entry
+for each variable in the model.  Note that you can leave an entry
+unspecified by setting it to <TT>GRB_UNDEFINED</TT>.  The Gurobi
+optimizer will attempt to find appropriate values for the unspecified
+variables.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Example usage:</SPAN></BIG><PRE>
+  if (where == GRB_CB_MIPNODE) {
+    error = GRBcbsolution(cbdata, solution);
+    if (error) return 0;
+  }
+</PRE>
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html2391"
+  HREF="c_grbterminate.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html2389"
+  HREF="c_modifying_solver_behavio.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html2383"
+  HREF="c_grbcblazy.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html2392"
+  HREF="c_grbterminate.html">GRBterminate</A>
+<B> Up:</B> <A NAME="tex2html2390"
+  HREF="c_modifying_solver_behavio.html">Modifying Solver Behavior -</A>
+<B> Previous:</B> <A NAME="tex2html2384"
+  HREF="c_grbcblazy.html">GRBcblazy</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

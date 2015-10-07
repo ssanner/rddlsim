@@ -1,0 +1,122 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Inspecting the solution</TITLE>
+<META NAME="description" CONTENT="Inspecting the solution">
+<META NAME="keywords" CONTENT="quickstart_linux">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="quickstart_linux.css">
+
+<LINK REL="next" HREF="simple_model_modification.html">
+<LINK REL="previous" HREF="reading_and_optimizing_a_m.html">
+<LINK REL="up" HREF="interactive_shell.html">
+<LINK REL="next" HREF="simple_model_modification.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html482"
+  HREF="simple_model_modification.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html480"
+  HREF="interactive_shell.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html474"
+  HREF="reading_and_optimizing_a_m.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html483"
+  HREF="simple_model_modification.html">Simple model modification</A>
+<B> Up:</B> <A NAME="tex2html481"
+  HREF="interactive_shell.html">Interactive Shell</A>
+<B> Previous:</B> <A NAME="tex2html475"
+  HREF="reading_and_optimizing_a_m.html">Reading and optimizing a</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00052000000000000000">
+Inspecting the solution</A>
+</H2>
+
+<P>
+Once a model has been solved, you can inspect the values of the
+model variables in the optimal solution with the <EM>printAttr()</EM>
+method on the <code>Model</code> object:
+<PRE>
+gurobi&gt; m.printAttr('X')
+    Variable            X
+-------------------------
+       Dimes            2
+    Quarters           53
+     Dollars          100
+          Cu        999.8
+          Ni         46.9
+          Zi           50
+          Mn           30
+</PRE>
+This routine prints all non-zero values of the specified attribute
+<code>X</code>.  Attributes play a major role in the Gurobi optimizer.
+We'll discuss them in more detail shortly.
+
+<P>
+You can also inspect the results of the optimization at a finer grain
+by retrieving a list of all the variables in the model using the
+<EM>getVars()</EM> method on the <code>Model</code> object
+(<EM>m.getVars()</EM> in our example):
+<PRE>
+gurobi&gt; v = m.getVars()
+gurobi&gt; print len(v)
+9
+</PRE>
+The first command assigns the list of all <code>Var</code> objects in model
+<code>m</code> to variable <code>v</code>.  The Python <code>len()</code> command
+gives the length of the array (our example model <code>coins</code> has 9
+variables).  You can then query various attributes of the individual
+variables in the list.  For example, to obtain the variable name and
+solution value for the first variable in list <code>v</code>, you would
+issue the following command:
+<PRE>
+gurobi&gt; print v[0].varName, v[0].x
+Pennies 0.0
+</PRE>
+You can type <code>help(Var)</code> or <code>help(v[0])</code> to get a list of
+all methods on a <code>Var</code> object.  You can type <code>help(GRB.Attr)</code>
+to get a list of all attributes.
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html482"
+  HREF="simple_model_modification.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html480"
+  HREF="interactive_shell.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html474"
+  HREF="reading_and_optimizing_a_m.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html483"
+  HREF="simple_model_modification.html">Simple model modification</A>
+<B> Up:</B> <A NAME="tex2html481"
+  HREF="interactive_shell.html">Interactive Shell</A>
+<B> Previous:</B> <A NAME="tex2html475"
+  HREF="reading_and_optimizing_a_m.html">Reading and optimizing a</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

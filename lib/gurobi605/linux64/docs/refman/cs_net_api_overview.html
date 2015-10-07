@@ -1,0 +1,530 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>.NET API Overview</TITLE>
+<META NAME="description" CONTENT=".NET API Overview">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="cs_net_api_details.html">
+<LINK REL="previous" HREF="java_api_details.html">
+<LINK REL="up" HREF="refman.html">
+<LINK REL="next" HREF="cs_net_api_details.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html5848"
+  HREF="cs_net_api_details.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html5846"
+  HREF="refman.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html5840"
+  HREF="java_grb_stringparam.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html5849"
+  HREF="cs_net_api_details.html">.NET API Details</A>
+<B> Up:</B> <A NAME="tex2html5847"
+  HREF="refman.html">Gurobi Optimizer Reference Manual</A>
+<B> Previous:</B> <A NAME="tex2html5841"
+  HREF="java_grb_stringparam.html">GRB.StringParam</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00070000000000000000"></A>
+<A NAME="sec:DotNet"></A>
+<BR>
+.NET API Overview
+</H1>
+
+<P>
+This section documents the Gurobi .NET interface.  This manual begins
+with a quick overview of the classes exposed in the interface and the
+most important methods on those classes.  It then continues with a
+<A HREF="cs_net_api_details.html#sec:.NET-details">comprehensive presentation of all of the available classes and
+methods</A>.
+
+<P>
+If you are new to the Gurobi Optimizer, we suggest that you start with
+the
+<A NAME="tex2html11"
+  HREF="../quickstart/quickstart.html">Quick Start Guide</A>
+or the
+<A NAME="tex2html12"
+  HREF="../examples/examples.html">Example Tour</A>.
+These
+documents provide concrete examples of how to use the classes and
+methods described here.
+
+<P>
+<SPAN  CLASS="textbf">Environments</SPAN>
+
+<P>
+The first step in using the Gurobi .NET interface is to create an
+environment object.  Environments are represented using the
+<A HREF="cs_grbenv.html#dotnetclass:GRBEnv">GRBEnv</A> class.  An environment acts as
+the container for all data associated with a set of optimization runs.
+You will generally only need one environment object in your program.
+
+<P>
+<SPAN  CLASS="textbf">Models</SPAN>
+
+<P>
+You can create one or more optimization models within an environment.
+Each model is represented as an object of class
+<A HREF="cs_grbmodel.html#dotnetclass:GRBModel">GRBModel</A>.  A model consists
+of a set of decision variables (objects of class
+<A HREF="cs_grbvar.html#dotnetclass:GRBVar">GRBVar</A>),
+a linear or quadratic objective function on those variables (specified
+using
+<A HREF="cs_grbmodel_setobjective.html#dotnetmethod:GRBModel.SetObjective">GRBModel.SetObjective</A>),
+and a set of constraints on these variables (objects of class
+<A HREF="cs_grbconstr.html#dotnetclass:GRBConstr">GRBConstr</A>,
+<A HREF="cs_grbqconstr.html#dotnetclass:GRBQConstr">GRBQConstr</A>,
+or <A HREF="cs_grbsos.html#dotnetclass:GRBSOS">GRBSOS</A>).
+Each variable has an associated lower bound, upper bound,
+and type (continuous, binary, etc.).  Each linear or
+quadratic
+constraint has an associated sense (less-than-or-equal,
+greater-than-or-equal, or equal), and right-hand side value.
+
+<P>
+Linear constraints are specified by building linear expressions
+(objects of class <A HREF="cs_grblinexpr.html#dotnetclass:GRBLinExpr">GRBLinExpr</A>),
+and then specifying relationships between these expressions (for
+example, requiring that one expression be equal to another).
+Quadratic constraints are built in a similar fashion, but using
+quadratic expressions (objects of class
+<A HREF="cs_grbquadexpr.html#dotnetclass:GRBQuadExpr">GRBQuadExpr</A>) instead.
+
+<P>
+An optimization model may be specified all at once, by loading the
+model from a file (using the appropriate
+<A HREF="cs_grbmodel2.html#dotnetmethod:GRBModel">GRBModel</A> constructor), or built
+incrementally, by first constructing an empty object of class
+<A HREF="cs_grbmodel.html#dotnetclass:GRBModel">GRBModel</A> and then subsequently
+calling <A HREF="cs_grbmodel_addvar.html#dotnetmethod:GRBModel.AddVar">GRBModel.AddVar</A>
+or <A HREF="cs_grbmodel_addvars.html#dotnetmethod:GRBModel.AddVars">GRBModel.AddVars</A> to
+add additional variables, and
+<A HREF="cs_grbmodel_addconstr.html#dotnetmethod:GRBModel.AddConstr">GRBModel.AddConstr</A> or
+<A HREF="cs_grbmodel_addqconstr.html#dotnetmethod:GRBModel.AddQConstr">GRBModel.AddQConstr</A>
+to add additional constraints.  Models are dynamic entities; you can
+always add or remove variables or constraints.
+
+<P>
+We often refer to the <EM>class</EM> of an optimization model.  A model
+with a linear objective function, linear constraints, and continuous
+variables is a <EM>Linear Program (LP)</EM>.  If the objective is
+quadratic, the model is a <EM>Quadratic Program (QP)</EM>.  If any of the
+constraints are quadratic, the model is a
+<EM>Quadratically-Constrained Program (QCP)</EM>.
+We'll sometimes also discuss a special case of QCP,
+the
+<EM>Second-Order Cone Program (SOCP)</EM>.  If the model contains any
+integer variables, semi-continuous variables, semi-integer variables,
+or Special Ordered Set (SOS) constraints, the model is a
+<EM>Mixed Integer Program (MIP)</EM>.  We'll also sometimes discuss
+special cases of MIP,
+including
+<EM>Mixed Integer Linear Programs (MILP)</EM>,
+<EM>Mixed Integer Quadratic Programs (MIQP)</EM>,
+<EM>Mixed Integer Quadratically-Constrained Programs (MIQCP)</EM>,
+and
+<EM>Mixed Integer Second-Order Cone Programs (MISOCP)</EM>.
+The Gurobi Optimizer handles all of these model classes.
+
+<P>
+<SPAN  CLASS="textbf">Solving a Model</SPAN>
+
+<P>
+Once you have built a model, you can call
+<A HREF="cs_grbmodel_optimize.html#dotnetmethod:GRBModel.Optimize">GRBModel.Optimize</A> to
+compute a solution.  By default,
+<A HREF="cs_grbmodel_optimize.html#dotnetmethod:GRBModel.Optimize">Optimize</A>
+will use the
+<A HREF="concurrent_optimizer.html#sec:Concurrent">concurrent optimizer</A> to solve LP models, the
+barrier algorithm to solve QP and QCP models, and
+the branch-and-cut algorithm to solve mixed integer models.
+The solution is stored in a set of <EM>  attributes</EM> of the model.  These attributes can be queried using a
+set of attribute query methods on the
+<A HREF="cs_grbmodel.html#dotnetclass:GRBModel">GRBModel</A>,
+<A HREF="cs_grbvar.html#dotnetclass:GRBVar">GRBVar</A>,
+<A HREF="cs_grbconstr.html#dotnetclass:GRBConstr">GRBConstr</A>, and
+<A HREF="cs_grbqconstr.html#dotnetclass:GRBQConstr">GRBQConstr</A> classes.
+
+<P>
+The Gurobi algorithms keep careful track of the state of the model, so
+calls to
+<A HREF="cs_grbmodel_optimize.html#dotnetmethod:GRBModel.Optimize">GRBModel.Optimize</A>
+will only perform further optimization if relevant data has changed
+since the model was last optimized.  If you would like to discard
+previously computed solution information and restart the optimization
+from scratch without changing the model, you can call
+<A HREF="cs_grbmodel_reset.html#dotnetmethod:GRBModel.Reset">GRBModel.Reset</A>.
+
+<P>
+After a MIP model has been solved, you can call
+<A HREF="cs_grbmodel_fixedmodel.html#dotnetmethod:GRBModel.FixedModel">GRBModel.FixedModel</A> to
+compute the associated <EM>fixed</EM> model.  This model is identical
+to the input model, except that all integer variables are fixed to
+their values in the MIP solution.  In some applications, it is useful
+to compute information on this continuous version of the MIP model
+(e.g., dual variables, sensitivity information, etc.).
+
+<P>
+<SPAN  CLASS="textbf">Infeasible Models</SPAN>
+
+<P>
+You have a few options if a model is found to be infeasible.  You can
+try to diagnose the cause of the infeasibility, attempt to repair the
+infeasibility, or both.  To obtain information that can be useful for
+diagnosing the cause of an infeasibility, call
+<A HREF="cs_grbmodel_computeiis.html#dotnetmethod:GRBModel.ComputeIIS">GRBModel.ComputeIIS</A>
+to compute an
+Irreducible Inconsistent Subsystem (IIS).  This method can be used
+for both continuous and MIP models, but you should be aware that the
+MIP version can be quite expensive.  This method populates a set of
+IIS attributes.
+
+<P>
+To attempt to repair an infeasibility, call
+<A HREF="cs_grbmodel_feasrelax.html#dotnetmethod:GRBModel.FeasRelax">GRBModel.FeasRelax</A>
+to compute a
+feasibility relaxation for the model.  This relaxation allows you to
+find a solution that minimizes the magnitude of the constraint
+violation.
+
+<P>
+<SPAN  CLASS="textbf">Querying and Modifying Attributes</SPAN>
+
+<P>
+Most of the information associated with a Gurobi model is stored in a
+set of attributes.  Some attributes are associated with the variables
+of the model, some with the constraints of the model, and some with
+the model itself.  To give a simple example, solving an optimization
+model causes the <code>X</code> variable attribute to be populated.
+Attributes such as <code>X</code> that are computed by the Gurobi optimizer
+cannot be modified directly by the user, while others, such as the
+variable lower bound (the <code>LB</code> attribute) can.
+
+<P>
+Attributes are queried using
+<A HREF="cs_grbvar_get.html#dotnetmethod:GRBVar.Get">GRBVar.Get</A>,
+<A HREF="cs_grbconstr_get.html#dotnetmethod:GRBConstr.Get">GRBConstr.Get</A>,
+<A HREF="cs_grbqconstr_get.html#dotnetmethod:GRBQConstr.Get">GRBQConstr.Get</A>, or
+<A HREF="cs_grbmodel_get.html#dotnetmethod:GRBModel.Get">GRBModel.Get</A>,
+and modified using
+<A HREF="cs_grbvar_set.html#dotnetmethod:GRBVar.Set">GRBVar.Set</A>,
+<A HREF="cs_grbconstr_set.html#dotnetmethod:GRBConstr.Set">GRBConstr.Set</A>,
+<A HREF="cs_grbqconstr_set.html#dotnetmethod:GRBQConstr.Set">GRBQConstr.Set</A>, or
+<A HREF="cs_grbmodel_set.html#dotnetmethod:GRBModel.Set">GRBModel.Set</A>.
+Attributes are grouped into a set of enums by type
+(<A HREF="cs_grb_charattr.html#dotnetenum:GRB.CharAttr">GRB.CharAttr</A>,
+<A HREF="cs_grb_doubleattr.html#dotnetenum:GRB.DoubleAttr">GRB.DoubleAttr</A>,
+<A HREF="cs_grb_intattr.html#dotnetenum:GRB.IntAttr">GRB.IntAttr</A>, 
+<A HREF="cs_grb_stringattr.html#dotnetenum:GRB.StringAttr">GRB.StringAttr</A>).
+The <code>Get()</code> and <code>Set()</code> methods are overloaded, so the
+type of the attribute determines the type of the returned value.
+Thus, <code>constr.Get(GRB_DoubleAttr_RHS)</code> returns a double,
+while <code>constr.Get(GRB_CharAttr_Sense)</code> returns a char.
+
+<P>
+If you wish to retrieve attribute values for a set of variables or
+constraints, it is usually more efficient to use the array methods on
+the associated <A HREF="cs_grbmodel.html#dotnetclass:GRBModel">GRBModel</A> object.
+Method
+<A HREF="cs_grbmodel_get.html#dotnetmethod:GRBModel.Get">GRBModel.Get</A>
+includes signatures that allow you to query or modify attribute values
+for one-, two-, and three-dimensional arrays of variables or
+constraints.
+
+<P>
+The full list of attributes can be found in the
+<A HREF="attributes.html#sec:Attributes">Attributes</A> section.
+
+<P>
+<SPAN  CLASS="textbf">Additional Model Modification Information</SPAN>
+
+<P>
+Most modifications to an existing model are done through the attribute
+interface (e.g., changes to variable bounds, constraint right-hand
+sides, etc.).  The main exceptions are modifications to the constraint
+matrix and to the objective function.
+
+<P>
+The constraint matrix can be modified in a few ways.  The first is to
+call the
+<A HREF="cs_grbmodel_chgcoeff.html#dotnetmethod:GRBModel.ChgCoeff">ChgCoeff</A> method on a
+<A HREF="cs_grbmodel.html#dotnetclass:GRBModel">GRBModel</A> object to change individual
+matrix coefficients.  This method can be used to modify the value of an
+existing non-zero, to set an existing non-zero to zero, or to create a
+new non-zero.  The constraint matrix is also modified when you remove
+a variable or constraint from the model (through the
+<A HREF="cs_grbmodel_remove.html#dotnetmethod:GRBModel.Remove">GRBModel.Remove</A> method).
+The non-zero values associated with the deleted constraint or
+variable are removed along with the constraint or variable itself.
+
+<P>
+The model objective function can also be modified in a few ways.  The
+easiest is to build an expression that captures the objective function
+(a <A HREF="cs_grblinexpr.html#dotnetclass:GRBLinExpr">GRBLinExpr</A> or
+<A HREF="cs_grbquadexpr.html#dotnetclass:GRBQuadExpr">GRBQuadExpr</A> object),
+and then pass that expression to method
+<A HREF="cs_grbmodel_setobjective.html#dotnetmethod:GRBModel.SetObjective">GRBModel.SetObjective</A>.
+If you wish to modify the objective, you can simply call
+<code>setObjective</code> again with a new <code>GRBLinExpr</code> or
+<code>GRBQuadExpr</code> object.
+
+<P>
+For linear objective functions, an alternative to <code>SetObjective</code>
+is to use the <code>Obj</code> variable attribute to modify individual
+linear objective coefficients.
+
+<P>
+If your variables have piecewise-linear objectives, you can specify
+them using the <A HREF="cs_grbmodel_setpwlobj.html#dotnetmethod:GRBModel.SetPWLObj">SetPWLObj</A>
+method.  Call this method once for each relevant variable.  The Gurobi
+simplex solver includes algorithmic support for convex
+piecewise-linear objective functions, so for continuous models you
+should see a substantial performance benefit from using this feature.
+To clear a previously specified piecewise-linear objective function,
+simply set the <code>Obj</code> attribute on the corresponding variable to
+0.
+
+<P>
+<SPAN  CLASS="textbf">Lazy Updates</SPAN>
+
+<P>
+One very important item to note about attribute and model
+modifications in the Gurobi optimizer is that they are performed in a
+<EM>lazy</EM> fashion, meaning that they don't actually affect the
+model until the next call
+to <A HREF="cs_grbmodel_optimize.html#dotnetmethod:GRBModel.Optimize">Optimize</A> or
+<A HREF="cs_grbmodel_update.html#dotnetmethod:GRBModel.Update">Update</A> on that model
+object.  This approach provides the advantage that the model remains
+unchanged while you are in the process of making multiple
+modifications.  The downside, of course, is that you have to remember
+to call <A HREF="cs_grbmodel_update.html#dotnetmethod:GRBModel.Update">Update</A> in order to
+see the effect of your changes.
+
+<P>
+If you forget to call update, your program won't crash.  The most
+common symptom of a missing update is a <TT>NOT_IN_MODEL</TT>
+exception, which indicates that the object you are trying to reference
+isn't in the model yet.
+
+<P>
+<SPAN  CLASS="textbf">Managing Parameters</SPAN>
+
+<P>
+The Gurobi optimizer provides a set of parameters to allow you to
+control many of the details of the optimization process.  Factors like
+feasibility and optimality tolerances, choices of algorithms,
+strategies for exploring the MIP search tree, etc., can be controlled
+by modifying Gurobi parameters before beginning the optimization.
+Parameters are set using method
+<A HREF="cs_grbenv_set.html#dotnetmethod:GRBEnv.Set">GRBEnv.Set</A>.
+Current values may also be retrieved with
+<A HREF="cs_grbenv_get.html#dotnetmethod:GRBEnv.Get">GRBEnv.Get</A>.
+Parameters can be of type <EM>int</EM>, <EM>double</EM>, or <EM>string</EM>.  You can also read a set of parameter settings from a file
+using
+<A HREF="cs_grbenv_readparams.html#dotnetmethod:GRBEnv.ReadParams">GRBEnv.ReadParams</A>,
+or write the set of changed parameters using
+<A HREF="cs_grbenv_writeparams.html#dotnetmethod:GRBEnv.WriteParams">GRBEnv.WriteParams</A>.
+
+<P>
+We also include an automated parameter tuning tool that explores many
+different sets of parameter changes in order to find a set that
+improves performance.  You can call
+<A HREF="cs_grbmodel_tune.html#dotnetmethod:GRBModel.Tune">GRBModel.Tune</A>
+to invoke the tuning tool on a model.
+Refer to the
+<A HREF="parameter_tuning_tool.html#sec:Tuning">parameter tuning tool</A>
+section for more information.
+
+<P>
+One thing we should note is that each model gets its own copy
+of the environment when it is created.  Parameter changes to the
+original environment therefore have no effect on existing models.  Use
+<A HREF="cs_grbmodel_getenv.html#dotnetmethod:GRBModel.GetEnv">GRBModel.GetEnv</A> to retrieve the
+environment associated with a particular model if you want to change a
+parameter for that model.
+
+<P>
+The full list of Gurobi parameters can be found in the
+<A HREF="parameters.html#sec:Parameters">Parameters</A> section.
+
+<P>
+<SPAN  CLASS="textbf">Memory Management</SPAN>
+
+<P>
+Users typically do not need to concern themselves with memory
+management in .NET, since it is handled automatically by the garbage
+collector.  The Gurobi .NET interface utilizes the same garbage
+collection mechanism as other .NET programs, but there are a few
+specifics of our memory management that users should be aware of.
+
+<P>
+In general, Gurobi objects live in the same .NET heap as other .NET
+objects.  When they are no longer referenced, they become candidates
+for garbage collection, and are returned to the pool of free space at
+the next invocation of the garbage collector.  Two important exceptions
+are the
+<A HREF="cs_grbenv.html#dotnetclass:GRBEnv">GRBEnv</A> and
+<A HREF="cs_grbmodel.html#dotnetclass:GRBModel">GRBModel</A> objects.
+A <code>GRBModel</code> object has a small amount of memory associated with
+it in the .NET heap, but the majority of the space associated with a
+model lives in the heap of the Gurobi native code DLL.  The
+.NET heap manager is unaware of the memory associated with the model
+in the native code library, so it does not consider this memory usage
+when deciding whether to invoke the garbage collector.  When the
+garbage collector eventually collects the .NET <code>GRBModel</code>
+object, the memory associated with the model in the Gurobi native
+code library will be freed, but this collection may come later than
+you might want.  Similar considerations apply to the <code>GRBEnv</code>
+object.
+
+<P>
+If you are writing a .NET program that makes use of multiple Gurobi
+models or environments, we recommend that you call
+<A HREF="cs_grbmodel_dispose.html#dotnetmethod:GRBModel.Dispose">GRBModel.Dispose</A>
+when you are done using the associated <code>GRBModel</code> object,
+and
+<A HREF="cs_grbenv_dispose.html#dotnetmethod:GRBEnv.Dispose">GRBEnv.Dispose</A>
+when you are done using the associated
+<code>GRBEnv</code> object and after you have called
+<A HREF="cs_grbmodel_dispose.html#dotnetmethod:GRBModel.Dispose">GRBModel.Dispose</A> on
+all of the models created using that <code>GRBEnv</code> object.
+
+<P>
+<SPAN  CLASS="textbf">Native Code</SPAN>
+
+<P>
+As noted earlier, the Gurobi .NET interface is a thin layer that sits
+on top of our native code DLL.  Thus, an application that uses the
+Gurobi .NET library will load the Gurobi DLL at runtime.  In order for
+this happen, you need to make sure that two things are true.  First,
+you need to make sure that the native code library is available in the
+Windows <code>PATH</code>.  This environment variable is set up as part of
+the installation of the Gurobi Optimizer, but it may not be configured
+appropriately on a machine where the full Gurobi Optimizer has not
+been installed.  Second, you need to be sure that the selected .NET
+Platform Target (as selected in Visual Studio) is compatible with the
+Gurobi DLL that is available through your <code>PATH</code>.  In
+particular, you need to use the 32-bit Gurobi native library when
+you've selected the <code>x86</code> Platform Target, and similarly you
+need to use the 64-bit Gurobi native library when you've selected the
+<code>x64</code> Platform Target.  If you use the default <code>Any CPU</code>
+target, then your .NET application will look for the 64-bit Gurobi DLL
+on a 64-bit Windows machine, and the 32-bit DLL on a 32-bit Windows
+machine.
+
+<P>
+<SPAN  CLASS="textbf">Monitoring Progress - Logging and Callbacks</SPAN>
+
+<P>
+Progress of the optimization can be monitored through Gurobi logging.
+By default, Gurobi will send output to the screen.  A few simple
+controls are available for modifying the default logging behavior.  If
+you would like to direct output to a file as well as to the screen,
+specify the log file name in the <A HREF="cs_grbenv2.html#dotnetmethod:GRBEnv">GRBEnv</A> constructor.  You can modify the
+<A HREF="logfile.html#parameter:LogFile">LogFile</A>
+parameter if you wish to redirect the log to a
+different file after creating the environment object.  The frequency
+of logging output can be controlled with the
+<A HREF="displayinterval.html#parameter:DisplayInterval">DisplayInterval</A>
+parameter, and logging can be turned off entirely with the
+<A HREF="outputflag.html#parameter:OutputFlag">OutputFlag</A>
+parameter.  A detailed description of the Gurobi log
+file can be found in the <A HREF="logging.html#sec:Logging">Logging</A> section.
+
+<P>
+More detailed progress monitoring can be done through the
+<A HREF="cs_grbcallback.html#dotnetclass:GRBCallback">GRBCallback</A> class.
+The
+<A HREF="cs_grbmodel_setcallback.html#dotnetmethod:GRBModel.SetCallback">GRBModel.SetCallback</A> method
+allows you to receive a periodic callback from the Gurobi optimizer.
+You do this by sub-classing
+the <A HREF="cs_grbcallback.html#dotnetclass:GRBCallback">GRBCallback</A> abstract class,
+and writing your own <code>Callback()</code> method on this class.  You can
+call
+<A HREF="cs_grbcallback_getdoublein.html#dotnetmethod:GRBCallback.GetDoubleInfo">GRBCallback.GetDoubleInfo</A>,
+<A HREF="cs_grbcallback_getintinfo.html#dotnetmethod:GRBCallback.GetIntInfo">GRBCallback.GetIntInfo</A>,
+<A HREF="cs_grbcallback_getstringin.html#dotnetmethod:GRBCallback.GetStringInfo">GRBCallback.GetStringInfo</A>,
+or
+<A HREF="cs_grbcallback_getsolution.html#dotnetmethod:GRBCallback.GetSolution">GRBCallback.GetSolution</A>
+from within the callback to obtain additional information about the
+state of the optimization.
+
+<P>
+<SPAN  CLASS="textbf">Modifying Solver Behavior - Callbacks</SPAN>
+
+<P>
+Callbacks can also be used to modify the behavior of the Gurobi
+optimizer.  The simplest control callback is
+<A HREF="cs_grbcallback_abort.html#dotnetmethod:GRBCallback.Abort">GRBCallback.Abort</A>,
+which asks the optimizer to terminate at the earliest convenient
+point.  Method
+<A HREF="cs_grbcallback_setsolution.html#dotnetmethod:GRBCallback.SetSolution">GRBCallback.SetSolution</A>
+allows you to inject a feasible solution (or partial solution) during
+the solution of a MIP model.  Methods
+<A HREF="cs_grbcallback_addcut.html#dotnetmethod:GRBCallback.AddCut">GRBCallback.AddCut</A>
+and
+<A HREF="cs_grbcallback_addlazy.html#dotnetmethod:GRBCallback.AddLazy">GRBCallback.AddLazy</A>
+allow you to add <EM>cutting planes</EM> and <EM>lazy constraints</EM>
+during a MIP optimization, respectively.
+
+<P>
+<SPAN  CLASS="textbf">Error Handling</SPAN>
+
+<P>
+All of the methods in the Gurobi .NET library can throw an exception
+of type <A HREF="cs_grbexception.html#dotnetclass:GRBException">GRBException</A>.  When an
+exception occurs, additional information on the error can be obtained
+by retrieving the error code (using property
+<A HREF="cs_grbexception_errorcode.html#dotnetmethod:GRBException.ErrorCode">GRBException.ErrorCode</A>),
+or by retrieving the exception message (using property
+<code>GRBException.Message</code> from the parent class).  The list of possible
+error return codes can be found in the <A HREF="error_codes.html#sec:ErrorCodes">Error
+Codes</A> section.
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html5848"
+  HREF="cs_net_api_details.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html5846"
+  HREF="refman.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html5840"
+  HREF="java_grb_stringparam.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html5849"
+  HREF="cs_net_api_details.html">.NET API Details</A>
+<B> Up:</B> <A NAME="tex2html5847"
+  HREF="refman.html">Gurobi Optimizer Reference Manual</A>
+<B> Previous:</B> <A NAME="tex2html5841"
+  HREF="java_grb_stringparam.html">GRB.StringParam</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

@@ -1,0 +1,140 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>GRBFSolve</TITLE>
+<META NAME="description" CONTENT="GRBFSolve">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="c_grbbsolve.html">
+<LINK REL="previous" HREF="c_advanced_simplex_routine.html">
+<LINK REL="up" HREF="c_advanced_simplex_routine.html">
+<LINK REL="next" HREF="c_grbbsolve.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html2441"
+  HREF="c_grbbsolve.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html2439"
+  HREF="c_advanced_simplex_routine.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html2433"
+  HREF="c_advanced_simplex_routine.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html2442"
+  HREF="c_grbbsolve.html">GRBBSolve</A>
+<B> Up:</B> <A NAME="tex2html2440"
+  HREF="c_advanced_simplex_routine.html">Advanced simplex routines</A>
+<B> Previous:</B> <A NAME="tex2html2434"
+  HREF="c_advanced_simplex_routine.html">Advanced simplex routines</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000211100000000000000"></A>
+<A NAME="routine:GRBFSolve"></A>
+<BR>
+GRBFSolve
+</H3>
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">GRBFSolve</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT">GRBmodel</TD>
+<TD ALIGN="LEFT">*model,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">GRBsvec</TD>
+<TD ALIGN="LEFT">*b,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">GRBsvec</TD>
+<TD ALIGN="LEFT">*x )</TD>
+</TR>
+</TABLE>
+
+<P>
+Computes the solution to the linear system <SPAN CLASS="MATH"><IMG
+ WIDTH="54" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img21.png"
+ ALT="$Bx=b$"></SPAN>, where <SPAN CLASS="MATH"><IMG
+ WIDTH="17" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img22.png"
+ ALT="$B$"></SPAN> is
+the current simplex basis matrix, <SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img23.png"
+ ALT="$b$"></SPAN> is an input vector,
+and <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$x$"></SPAN> is the result vector.
+
+<P>
+
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Return value:</SPAN></BIG>
+
+<P>
+A non-zero return value indicates that a problem occurred while computing the desired vector.
+Refer to the <A HREF="error_codes.html#sec:ErrorCodes">Error Code</A> table for a
+list of possible return values.  Details on the error can be obtained
+by calling <A HREF="c_grbgeterrormsg.html#routine:GRBgeterrormsg">GRBgeterrormsg</A>.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">model</SPAN>: The model.  Note that the model must have a current
+optimal basis, as computed by
+<A HREF="c_grboptimize.html#routine:GRBoptimize">GRBoptimize</A>.
+
+<P>
+ <SPAN  CLASS="textbf">b</SPAN>: The sparse right-hand side vector.  It should contain one entry
+for each non-zero value in the input.
+
+<P>
+ <SPAN  CLASS="textbf">x</SPAN>: The sparse result vector. The user is responsible for
+  allocating the <TT>ind</TT> and <TT>val</TT> fields to be large enough
+  to hold as many as one non-zero entry per constraint in the model.
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html2441"
+  HREF="c_grbbsolve.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html2439"
+  HREF="c_advanced_simplex_routine.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html2433"
+  HREF="c_advanced_simplex_routine.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html2442"
+  HREF="c_grbbsolve.html">GRBBSolve</A>
+<B> Up:</B> <A NAME="tex2html2440"
+  HREF="c_advanced_simplex_routine.html">Advanced simplex routines</A>
+<B> Previous:</B> <A NAME="tex2html2434"
+  HREF="c_advanced_simplex_routine.html">Advanced simplex routines</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

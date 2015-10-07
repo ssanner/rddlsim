@@ -1,0 +1,288 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>GRBModel.feasRelax()</TITLE>
+<META NAME="description" CONTENT="GRBModel.feasRelax()">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="java_grbmodel_fixedmodel.html">
+<LINK REL="previous" HREF="java_grbmodel_dispose.html">
+<LINK REL="up" HREF="java_grbmodel.html">
+<LINK REL="next" HREF="java_grbmodel_fixedmodel.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html4729"
+  HREF="java_grbmodel_fixedmodel.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html4727"
+  HREF="java_grbmodel.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html4721"
+  HREF="java_grbmodel_dispose.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html4730"
+  HREF="java_grbmodel_fixedmodel.html">GRBModel.fixedModel()</A>
+<B> Up:</B> <A NAME="tex2html4728"
+  HREF="java_grbmodel.html">GRBModel</A>
+<B> Previous:</B> <A NAME="tex2html4722"
+  HREF="java_grbmodel_dispose.html">GRBModel.dispose()</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000621500000000000000"></A>
+<A NAME="javamethod:GRBModel.feasRelax"></A>
+<BR>
+GRBModel.feasRelax()
+</H3>
+
+<P>
+Modifies the <code>GRBModel</code> object to create a feasibility relaxation.
+Note that you need to call
+<A HREF="java_grbmodel_optimize.html#javamethod:GRBModel.optimize">optimize</A>
+on the result to compute the actual relaxed solution.
+
+<P>
+The feasibility relaxation is a model that, when solved, minimizes the
+amount by which the solution violates the bounds and linear
+constraints of the original model.  This method provides a number of
+options for specifying the relaxation.
+
+<P>
+If you specify <code>relaxobjtype=0</code>, the objective of the
+feasibility relaxation is to minimize the sum of the weighted
+magnitudes of the bound and constraint violations.  The <code>lbpen</code>,
+<code>ubpen</code>, and <code>rhspen</code> arguments specify the cost per unit
+violation in the lower bounds, upper bounds, and linear constraints,
+respectively.
+
+<P>
+If you specify <code>relaxobjtype=1</code>, the objective of the
+feasibility relaxation is to minimize the
+weighted sum of the squares of the bound and constraint violations.
+The <code>lbpen</code>, <code>ubpen</code>, and <code>rhspen</code> arguments specify
+the coefficients on the squares of the lower bound, upper bound, and
+linear constraint violations, respectively.
+
+<P>
+If you specify <code>relaxobjtype=2</code>, the objective of the
+feasibility relaxation is to minimize the
+weighted count of bound and constraint violations.  The <code>lbpen</code>,
+<code>ubpen</code>, and <code>rhspen</code> arguments specify the cost of
+violating a lower bound, upper bound, and linear constraint, respectively.
+
+<P>
+To give an example, if a constraint with <code>rhspen</code> value
+<code>p</code> is violated by 2.0, it would contribute <code>2*p</code> to the
+feasibility relaxation objective for <code>relaxobjtype=0</code>,
+it would contribute <code>2*2*p</code> for <code>relaxobjtype=1</code>, and
+it would contribute <code>p</code> for <code>relaxobjtype=2</code>.
+
+<P>
+The <code>minrelax</code> argument is a boolean that controls the type of
+feasibility relaxation that is created.  If <code>minrelax=false</code>, optimizing
+the returned model gives a solution that minimizes the cost of the
+violation.  If <code>minrelax=true</code>, optimizing the returned model finds
+a solution that minimizes the original objective, but only from among
+those solutions that minimize the cost of the violation.
+Note that <code>feasRelax</code> must solve an optimization problem to
+find the minimum possible relaxation when <code>minrelax=true</code>, which can
+be quite expensive.
+
+<P>
+There are two signatures for this method.  The more complex one takes
+a list of variables and constraints, as well as penalties associated
+with relaxing the corresponding lower bounds, upper bounds, and
+constraints.  If a variable or constraint is not included in one of
+these lists, the associated bounds or constraints may not be violated.
+The simpler signature takes a pair of boolean arguments,
+<code>vrelax</code> and <code>crelax</code>, that indicate whether variable bounds
+and/or constraints can be violated.  If <code>vrelax</code>/<code>crelax</code>
+is <code>true</code>, then every bound/constraint is allowed to be violated,
+respectively, and the associated cost is 1.0.
+
+<P>
+Note that this is a destructive method: it modifies the model
+on which it is invoked.  If you don't want to modify your original model,
+use the <A HREF="java_grbmodel2.html#javamethod:GRBModel">GRBModel constructor</A>
+to create a copy before invoking this method.
+
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">double</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">feasRelax</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">relaxobjtype,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">boolean</TD>
+<TD ALIGN="LEFT">minrelax,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">GRBVar[]</TD>
+<TD ALIGN="LEFT">vars,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">double[]</TD>
+<TD ALIGN="LEFT">lbpen,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">double[]</TD>
+<TD ALIGN="LEFT">ubpen,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">GRBConstr[]</TD>
+<TD ALIGN="LEFT">constr,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">double[]</TD>
+<TD ALIGN="LEFT">rhspen )</TD>
+</TR>
+</TABLE>
+
+<UL>
+Create a feasibility relaxation model.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">relaxobjtype</SPAN>: The cost function used when finding the minimum cost
+relaxation.
+
+<P>
+ <SPAN  CLASS="textbf">minrelax</SPAN>: The type of feasibility relaxation to perform.
+
+<P>
+ <SPAN  CLASS="textbf">vars</SPAN>: Variables whose bounds are allowed to be violated.
+
+<P>
+ <SPAN  CLASS="textbf">lbpen</SPAN>: Penalty for violating a variable lower bound.  One entry for
+each variable in argument <TT>vars</TT>.
+
+<P>
+ <SPAN  CLASS="textbf">ubpen</SPAN>: Penalty for violating a variable upper bound.  One entry for
+each variable in argument <TT>vars</TT>.
+
+<P>
+ <SPAN  CLASS="textbf">constr</SPAN>: Linear constraints that are allowed to be violated.
+
+<P>
+ <SPAN  CLASS="textbf">rhspen</SPAN>: Penalty for violating a linear constraint.  One entry for
+each variable in argument <TT>constr</TT>.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Return value:</SPAN></BIG>
+
+<P>
+Zero if <TT>minrelax</TT> is false.  If <TT>minrelax</TT> is true, the return value is the objective value for the relaxation performed.  If the value is less than 0, it indicates that the method failed to create the feasibility relaxation.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">double</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">feasRelax</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">relaxobjtype,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">boolean</TD>
+<TD ALIGN="LEFT">minrelax,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">boolean</TD>
+<TD ALIGN="LEFT">vrelax,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">boolean</TD>
+<TD ALIGN="LEFT">crelax )</TD>
+</TR>
+</TABLE>
+
+<UL>
+Simplified method for creating a feasibility relaxation model.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">relaxobjtype</SPAN>: The cost function used when finding the minimum cost
+relaxation.
+
+<P>
+ <SPAN  CLASS="textbf">minrelax</SPAN>: The type of feasibility relaxation to perform.
+
+<P>
+ <SPAN  CLASS="textbf">vrelax</SPAN>: Indicates whether variable bounds can be relaxed (with a cost of 1.0 for any violations.
+
+<P>
+ <SPAN  CLASS="textbf">crelax</SPAN>: Indicates whether linear constraints can be relaxed (with a cost of 1.0 for any violations.
+
+<P>
+
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Return value:</SPAN></BIG>
+
+<P>
+Zero if <TT>minrelax</TT> is false.  If <TT>minrelax</TT> is true, the return value is the objective value for the relaxation performed.  If the value is less than 0, it indicates that the method failed to create the feasibility relaxation.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html4729"
+  HREF="java_grbmodel_fixedmodel.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html4727"
+  HREF="java_grbmodel.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html4721"
+  HREF="java_grbmodel_dispose.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html4730"
+  HREF="java_grbmodel_fixedmodel.html">GRBModel.fixedModel()</A>
+<B> Up:</B> <A NAME="tex2html4728"
+  HREF="java_grbmodel.html">GRBModel</A>
+<B> Previous:</B> <A NAME="tex2html4722"
+  HREF="java_grbmodel_dispose.html">GRBModel.dispose()</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

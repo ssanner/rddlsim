@@ -1,0 +1,335 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>GRBXloadmodel</TITLE>
+<META NAME="description" CONTENT="GRBXloadmodel">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="previous" HREF="c_grbxchgcoeffs.html">
+<LINK REL="up" HREF="c_model_creation_and_modif.html">
+<LINK REL="next" HREF="c_model_solution.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html1518"
+  HREF="c_model_solution.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1516"
+  HREF="c_model_creation_and_modif.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1512"
+  HREF="c_grbxchgcoeffs.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1519"
+  HREF="c_model_solution.html">Model Solution</A>
+<B> Up:</B> <A NAME="tex2html1517"
+  HREF="c_model_creation_and_modif.html">Model Creation and Modification</A>
+<B> Previous:</B> <A NAME="tex2html1513"
+  HREF="c_grbxchgcoeffs.html">GRBXchgcoeffs</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000222600000000000000"></A>
+<A NAME="routine:GRBXloadmodel"></A>
+<BR>
+GRBXloadmodel
+</H3>
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">GRBXloadmodel</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT">GRBenv</TD>
+<TD ALIGN="LEFT">*env,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">GRBmodel</TD>
+<TD ALIGN="LEFT">**modelP,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">const char</TD>
+<TD ALIGN="LEFT">*Pname,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">numvars,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">numconstrs,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">objsense,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">double</TD>
+<TD ALIGN="LEFT">objcon,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">double</TD>
+<TD ALIGN="LEFT">*obj,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">char</TD>
+<TD ALIGN="LEFT">*sense,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">double</TD>
+<TD ALIGN="LEFT">*rhs,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">size_t</TD>
+<TD ALIGN="LEFT">*vbeg,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">*vlen,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">*vind,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">double</TD>
+<TD ALIGN="LEFT">*vval,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">double</TD>
+<TD ALIGN="LEFT">*lb,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">double</TD>
+<TD ALIGN="LEFT">*ub,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">char</TD>
+<TD ALIGN="LEFT">*vtype,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">const char</TD>
+<TD ALIGN="LEFT">**varnames,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">const char</TD>
+<TD ALIGN="LEFT">**constrnames )</TD>
+</TR>
+</TABLE>
+
+<P>
+The <code>size_t</code> version of
+<A HREF="c_grbloadmodel.html#routine:GRBloadmodel">GRBloadmodel</A>.  The
+argument that counts non-zero values is of type <code>size_t</code> in this
+version to support models with more than 2 billion non-zero values.
+
+<P>
+Create a new optimization model, using the provided arguments to
+initialize the model data (objective function, variable bounds,
+constraint matrix, etc.).  The model is then ready for optimization,
+or for modification (e.g., addition of variables or constraints,
+changes to variable types or bounds, etc.).
+
+<P>
+
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Return value:</SPAN></BIG>
+
+<P>
+A non-zero return value indicates that a problem occurred while creating the model.
+Refer to the <A HREF="error_codes.html#sec:ErrorCodes">Error Code</A> table for a
+list of possible return values.  Details on the error can be obtained
+by calling <A HREF="c_grbgeterrormsg.html#routine:GRBgeterrormsg">GRBgeterrormsg</A>.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">env</SPAN>: The environment in which the new model should be
+  created.  Note that the new model gets a copy of this
+  environment, so subsequent modifications to the original environment
+  (e.g., parameter changes) won't affect the new model.  Use
+  <A HREF="c_grbgetenv.html#routine:GRBgetenv">GRBgetenv</A> to modify the
+  environment associated with a model.
+
+<P>
+ <SPAN  CLASS="textbf">modelP</SPAN>: The location in which the pointer to the newly
+  created model should be placed.
+
+<P>
+ <SPAN  CLASS="textbf">Pname</SPAN>: The name of the model.
+
+<P>
+ <SPAN  CLASS="textbf">numvars</SPAN>: The number of variables in the model.
+
+<P>
+ <SPAN  CLASS="textbf">numconstrs</SPAN>: The number of constraints in the model.
+
+<P>
+ <SPAN  CLASS="textbf">objsense</SPAN>: The sense of the objective function.  Allowed values
+  are 1 (minimization) or -1 (maximization).
+
+<P>
+ <SPAN  CLASS="textbf">objcon</SPAN>: Constant objective offset.
+
+<P>
+ <SPAN  CLASS="textbf">obj</SPAN>: Objective coefficients for the new variables.  This argument can be <TT>NULL</TT>, in which case the objective coefficients are set to
+<TT>0.0</TT>.
+
+<P>
+ <SPAN  CLASS="textbf">sense</SPAN>: The senses of the new constraints.  Options are
+   <TT>'='</TT> (equal), <TT>'&lt;'</TT> (less-than-or-equal), or <TT>'&gt;'</TT>
+  (greater-than-or-equal).  You can also use constants
+  <TT>GRB_EQUAL</TT>, <TT>GRB_LESS_EQUAL</TT>, or <TT>GRB_GREATER_EQUAL</TT>.
+
+<P>
+ <SPAN  CLASS="textbf">rhs</SPAN>: Right-hand-side values for the new constraints.  This
+  argument can be <TT>NULL</TT>, in which case the right-hand-side
+  values are set to <TT>0.0</TT>.
+
+<P>
+ <SPAN  CLASS="textbf">vbeg</SPAN>: Constraint matrix non-zero values are passed into this
+  routine in Compressed Sparse Column (CSC) format.  Each column in
+  the constraint matrix is represented as a list of index-value pairs,
+  where each index entry provides the constraint index for a non-zero
+  coefficient, and each value entry provides the corresponding
+  non-zero value.  Each variable in the model has a <TT>vbeg</TT> and
+  <TT>vlen</TT> value, indicating the start position of the non-zeros
+  for that variable in the <TT>vind</TT> and <TT>vval</TT> arrays, and
+  the number of non-zero values for that variable, respectively.
+  Thus, for example, if <TT>vbeg[2] = 10</TT> and <TT>vlen[2] = 2</TT>,
+  that would indicate that variable 2 has two non-zero values
+  associated with it.  Their constraint indices can be found in
+  <TT>vind[10]</TT> and <TT>vind[11]</TT>, and the numerical values for
+  those non-zeros can be found in <TT>vval[10]</TT> and
+  <TT>vval[11]</TT>.
+
+<P>
+ <SPAN  CLASS="textbf">vlen</SPAN>: Number of constraint matrix non-zero values associated
+  with each variable.  See the description of the <TT>vbeg</TT>
+  argument for more information.
+
+<P>
+ <SPAN  CLASS="textbf">vind</SPAN>: Constraint indices associated with non-zero values.
+  See the description of the <TT>vbeg</TT> argument for more information.
+
+<P>
+ <SPAN  CLASS="textbf">vval</SPAN>: Numerical values associated with constraint matrix non-zeros.
+  See the description of the <TT>vbeg</TT> argument for more information.
+
+<P>
+ <SPAN  CLASS="textbf">lb</SPAN>: Lower bounds for the new variables.  This argument can
+  be <TT>NULL</TT>, in which case all variables get lower bounds of
+  <TT>0.0</TT>.
+
+<P>
+ <SPAN  CLASS="textbf">ub</SPAN>: Upper bounds for the new variables.  This argument can
+  be <TT>NULL</TT>, in which case all variables get infinite upper bounds.
+
+<P>
+ <SPAN  CLASS="textbf">vtype</SPAN>: Types for the variables. Options are
+  <TT>GRB_CONTINUOUS</TT>, <TT>GRB_BINARY</TT>, <TT>GRB_INTEGER</TT>,
+  <TT>GRB_SEMICONT</TT>, or <TT>GRB_SEMIINT</TT>.  This argument can
+  be <TT>NULL</TT>, in which case all variables are assumed to be
+  continuous.
+
+<P>
+ <SPAN  CLASS="textbf">varnames</SPAN>: Names for the new variables.  This argument can be
+  <TT>NULL</TT>, in which case all variables are given default
+  names.
+
+<P>
+ <SPAN  CLASS="textbf">constrnames</SPAN>: Names for the new constraints.  This argument can be
+  <TT>NULL</TT>, in which case all constraints are given default
+  names.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Important notes:</SPAN></BIG>
+
+<P>
+We recommend that you build a model one constraint or one variable at
+a time, using <A HREF="c_grbaddconstr.html#routine:GRBaddconstr">GRBaddconstr</A> or
+<A HREF="c_grbaddvar.html#routine:GRBaddvar">GRBaddvar</A>, rather than using this
+routine to load the entire constraint matrix at once.  It is much
+simpler, less error prone, and it introduces no significant overhead.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Example usage:</SPAN></BIG>
+<P>
+<PRE>
+  /* maximize    x +   y + 2 z
+     subject to  x + 2 y + 3 z &lt;= 4
+                 x +   y       &gt;= 1
+     x, y, z binary */
+
+  int    vars    = 3;
+  int    constrs = 2;
+  size_t vbeg[]  = {0, 2, 4};
+  int    vlen[]  = {2, 2, 1};
+  int    vind[]  = {0, 1, 0, 1, 0};
+  double vval[]  = {1.0, 1.0, 2.0, 1.0, 3.0};
+  double obj[]   = {1.0, 1.0, 2.0};
+  char   sense[] = {GRB_LESS_EQUAL, GRB_GREATER_EQUAL};
+  double rhs[]   = {4.0, 1.0};
+  char   vtype[] = {GRB_BINARY, GRB_BINARY, GRB_BINARY};
+
+  error = GRBXloadmodel(env, &amp;model, "example", vars, constrs, -1, 0.0,
+                        obj, sense, rhs, vbeg, vlen, vind, vval,
+                        NULL, NULL, vtype, NULL, NULL);
+</PRE>
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1518"
+  HREF="c_model_solution.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1516"
+  HREF="c_model_creation_and_modif.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1512"
+  HREF="c_grbxchgcoeffs.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1519"
+  HREF="c_model_solution.html">Model Solution</A>
+<B> Up:</B> <A NAME="tex2html1517"
+  HREF="c_model_creation_and_modif.html">Model Creation and Modification</A>
+<B> Previous:</B> <A NAME="tex2html1513"
+  HREF="c_grbxchgcoeffs.html">GRBXchgcoeffs</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

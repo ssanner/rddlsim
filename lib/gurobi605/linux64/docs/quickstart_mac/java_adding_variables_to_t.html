@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Adding variables to the model</TITLE>
+<META NAME="description" CONTENT="Adding variables to the model">
+<META NAME="keywords" CONTENT="quickstart_mac">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="quickstart_mac.css">
+
+<LINK REL="next" HREF="java_updating_the_model_la.html">
+<LINK REL="previous" HREF="java_creating_the_model.html">
+<LINK REL="up" HREF="java_interface.html">
+<LINK REL="next" HREF="java_updating_the_model_la.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html936"
+  HREF="java_updating_the_model_la.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html934"
+  HREF="java_interface.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html928"
+  HREF="java_creating_the_model.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html937"
+  HREF="java_updating_the_model_la.html">Updating the model -</A>
+<B> Up:</B> <A NAME="tex2html935"
+  HREF="java_interface.html">Java Interface</A>
+<B> Previous:</B> <A NAME="tex2html929"
+  HREF="java_creating_the_model.html">Creating the model</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00095000000000000000">
+Adding variables to the model</A>
+</H2>
+<P>
+<EM>The next step in our example is to add variables to the model.
+</EM><PRE>
+  // Create variables
+  GRBVar x = model.addVar(0.0, 1.0, 0.0, GRB.BINARY, "x");
+  GRBVar y = model.addVar(0.0, 1.0, 0.0, GRB.BINARY, "y");
+  GRBVar z = model.addVar(0.0, 1.0, 0.0, GRB.BINARY, "z");
+</PRE><EM>
+Variables are added through the <code>addVar()</code> method on a model
+object.  A variable is always associated with a particular model.
+</EM>
+<P>
+<EM>The first and second arguments to the <code>addVar()</code> call are the
+variable lower and upper bounds, respectively.  The third argument is
+the linear objective coefficient (zero here - we'll set the objective
+later).  The fourth argument is the variable type.  Our variables are
+all binary in this example.  The final argument is the name of the
+variable.
+</EM>
+<P>
+<EM>The <code>addVar()</code> method has been overloaded to accept several
+different argument lists.  Please refer to the
+<A NAME="tex2html34"
+  HREF="../refman/refman.html">Gurobi Reference Manual</A>
+for further details.
+</EM>
+<P>
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html936"
+  HREF="java_updating_the_model_la.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html934"
+  HREF="java_interface.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html928"
+  HREF="java_creating_the_model.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html937"
+  HREF="java_updating_the_model_la.html">Updating the model -</A>
+<B> Up:</B> <A NAME="tex2html935"
+  HREF="java_interface.html">Java Interface</A>
+<B> Previous:</B> <A NAME="tex2html929"
+  HREF="java_creating_the_model.html">Creating the model</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

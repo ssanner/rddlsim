@@ -1,0 +1,208 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>linprog.m</TITLE>
+<META NAME="description" CONTENT="linprog.m">
+<META NAME="keywords" CONTENT="examples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="examples.css">
+
+<LINK REL="next" HREF="lp_m.html">
+<LINK REL="previous" HREF="intlinprog_m.html">
+<LINK REL="up" HREF="matlab_examples.html">
+<LINK REL="next" HREF="lp_m.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html2237"
+  HREF="lp_m.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html2235"
+  HREF="matlab_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html2229"
+  HREF="intlinprog_m.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html2238"
+  HREF="lp_m.html">lp.m</A>
+<B> Up:</B> <A NAME="tex2html2236"
+  HREF="matlab_examples.html">MATLAB Examples</A>
+<B> Previous:</B> <A NAME="tex2html2230"
+  HREF="intlinprog_m.html">intlinprog.m</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00027300000000000000"></A>
+<A NAME="subsubsection:linprog.m"></A>
+<BR>
+linprog.m
+</H3>
+
+<P>
+<BR>
+<PRE  CLASS="verbatim">function [x, fval, exitflag] = linprog(f, A, b, Aeq, beq, lb, ub)
+%LINPROG A linear programming example using the Gurobi MATLAB interface
+%
+%   This example is based on the linprog interface defined in the
+%   MATLAB Optimization Toolbox. The Optimization Toolbox
+%   is a registered trademark of The MathWorks, Inc.
+%
+%   x = LINPROG(f,A,b) solves the linear programming problem:
+%
+%   minimize     f'*x
+%   subject to   A*x &lt;= b
+%
+%
+%   x = LINPROG(f,A,b,Aeq,beq) solves the problem:
+%
+%   minimize     f'*x
+%   subject to     A*x &lt;= b,
+%                Aeq*x == beq.
+%
+%   x = LINPROG(f,A,b,Aeq,beq,lb,ub) solves the problem:
+%
+%   minimize     f'*x
+%   subject to     A*x &lt;= b,
+%                Aeq*x == beq,
+%          lb &lt;=     x &lt;= ub.
+%
+%   You can set lb(j) = -inf, if x(j) has no lower bound,
+%   and ub(j) = inf, if x(j) has no upper bound.
+%
+%   [x, fval] = LINPROG(f, A, b) returns the objective value
+%   at the solution. That is, fval = f'*x.
+%
+%   [x, fval, exitflag] = LINPROG(f, A, b) returns an exitflag
+%   containing the status of the optimization. The values for
+%   exitflag and corresponding status codes are:
+%      1 - OPTIMAL,
+%      0 - ITERATION_LIMIT,
+%     -2 - INFEASIBLE,
+%     -3 - UNBOUNDED.
+%
+
+if nargin &lt; 3
+    error('linprog(f, A, b)')
+end
+
+if nargin &gt; 7
+    error('linprog(f, A, b, Aeq, beq, lb, ub)');
+end
+
+if ~isempty(A)
+    n = size(A, 2);
+elseif nargin &gt; 4 &amp;&amp; ~isempty(Aeq)
+    n = size(Aeq, 2);
+else
+    error('No linear constraints specified')
+end
+
+if ~issparse(A)
+    A = sparse(A);
+end
+
+if nargin &gt; 3 &amp;&amp; ~issparse(Aeq)
+    Aeq = sparse(Aeq);
+end
+
+
+model.obj = f;
+
+if nargin &lt; 4
+    model.A = A;
+    model.rhs = b;
+    model.sense = '&lt;';
+else
+    model.A = [A; Aeq];
+    model.rhs = [b; beq];
+    model.sense = [repmat('&lt;', size(A,1), 1); repmat('=', size(Aeq,1), 1)];
+end
+
+if nargin &lt; 6
+    model.lb = -inf(n,1);
+else
+    model.lb = lb;
+end
+
+if nargin == 7
+   model.ub = ub;
+end
+
+params.outputflag = 0;
+result = gurobi(model, params);
+
+
+if strcmp(result.status, 'OPTIMAL')
+    exitflag = 1;
+elseif strcmp(result.status, 'ITERATION_LIMIT')
+    exitflag = 0;
+elseif strcmp(result.status, 'INF_OR_UNBD')
+    params.dualreductions = 0;
+    result = gurobi(model, params);
+    if strcmp(result.status, 'INFEASIBLE')
+        exitflag = -2;
+    elseif strcmp(result.status, 'UNBOUNDED')
+        exitflag = -3;
+    else
+        exitflag = nan;
+    end
+elseif strcmp(result.status, 'INFEASIBLE')
+    exitflag = -2;
+elseif strcmp(result.status, 'UNBOUNDED')
+    exitflag = -3;
+else
+    exitflag = nan;
+end
+
+
+if isfield(result, 'x')
+    x = result.x;
+else
+    x = nan(n,1);
+end
+
+if isfield(result, 'objval')
+    fval = result.objval;
+else
+    fval = nan;
+end
+</PRE>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html2237"
+  HREF="lp_m.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html2235"
+  HREF="matlab_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html2229"
+  HREF="intlinprog_m.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html2238"
+  HREF="lp_m.html">lp.m</A>
+<B> Up:</B> <A NAME="tex2html2236"
+  HREF="matlab_examples.html">MATLAB Examples</A>
+<B> Previous:</B> <A NAME="tex2html2230"
+  HREF="intlinprog_m.html">intlinprog.m</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

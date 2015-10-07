@@ -1,0 +1,186 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>GRBEnv.GetParamInfo()</TITLE>
+<META NAME="description" CONTENT="GRBEnv.GetParamInfo()">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="cs_grbenv_message.html">
+<LINK REL="previous" HREF="cs_grbenv_get.html">
+<LINK REL="up" HREF="cs_grbenv.html">
+<LINK REL="next" HREF="cs_grbenv_message.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html6074"
+  HREF="cs_grbenv_message.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html6072"
+  HREF="cs_grbenv.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html6066"
+  HREF="cs_grbenv_get.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html6075"
+  HREF="cs_grbenv_message.html">GRBEnv.Message()</A>
+<B> Up:</B> <A NAME="tex2html6073"
+  HREF="cs_grbenv.html">GRBEnv</A>
+<B> Previous:</B> <A NAME="tex2html6067"
+  HREF="cs_grbenv_get.html">GRBEnv.Get()</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00081500000000000000"></A>
+<A NAME="dotnetmethod:GRBEnv.GetParamInfo"></A>
+<BR>
+GRBEnv.GetParamInfo()
+</H3>
+
+<P>
+Obtain information about a parameter.
+
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">void</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">GetParamInfo</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT"><A HREF="cs_grb_doubleparam.html#dotnetenum:GRB.DoubleParam">GRB.DoubleParam</A></TD>
+<TD ALIGN="LEFT">param,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">double[]</TD>
+<TD ALIGN="LEFT">info )</TD>
+</TR>
+</TABLE>
+
+<UL>
+Obtain detailed information about a double parameter.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">param</SPAN>: The parameter of interest. 
+Please consult the <A HREF="parameters.html#sec:Parameters">parameter section</A>
+for a complete list of Gurobi parameters, including descriptions of
+their purposes and their minimum, maximum, and default values.
+
+<P>
+ <SPAN  CLASS="textbf">info</SPAN>: The returned information.  The result will contain four
+entries: the current value of the parameter, the minimum allowed value,
+the maximum allowed value, and the default value.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">void</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">GetParamInfo</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT"><A HREF="cs_grb_intparam.html#dotnetenum:GRB.IntParam">GRB.IntParam</A></TD>
+<TD ALIGN="LEFT">param,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">int[]</TD>
+<TD ALIGN="LEFT">info )</TD>
+</TR>
+</TABLE>
+
+<UL>
+Obtain detailed information about an integer parameter.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">param</SPAN>: The parameter of interest. 
+Please consult the <A HREF="parameters.html#sec:Parameters">parameter section</A>
+for a complete list of Gurobi parameters, including descriptions of
+their purposes and their minimum, maximum, and default values.
+
+<P>
+ <SPAN  CLASS="textbf">info</SPAN>: The returned information.  The result will contain four
+entries: the current value of the parameter, the minimum allowed value,
+the maximum allowed value, and the default value.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">void</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">GetParamInfo</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT"><A HREF="cs_grb_stringparam.html#dotnetenum:GRB.StringParam">GRB.StringParam</A></TD>
+<TD ALIGN="LEFT">param,</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">string[]</TD>
+<TD ALIGN="LEFT">info )</TD>
+</TR>
+</TABLE>
+
+<UL>
+Obtain detailed information about a string parameter.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">param</SPAN>: The parameter of interest. 
+Please consult the <A HREF="parameters.html#sec:Parameters">parameter section</A>
+for a complete list of Gurobi parameters, including descriptions of
+their purposes and their minimum, maximum, and default values.
+
+<P>
+ <SPAN  CLASS="textbf">info</SPAN>: The returned information.  The result will contain two
+  entries: the current value of the parameter and the default value.
+
+<P>
+</LI>
+</UL>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html6074"
+  HREF="cs_grbenv_message.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html6072"
+  HREF="cs_grbenv.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html6066"
+  HREF="cs_grbenv_get.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html6075"
+  HREF="cs_grbenv_message.html">GRBEnv.Message()</A>
+<B> Up:</B> <A NAME="tex2html6073"
+  HREF="cs_grbenv.html">GRBEnv</A>
+<B> Previous:</B> <A NAME="tex2html6067"
+  HREF="cs_grbenv_get.html">GRBEnv.Get()</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>GRBModel.SetCallback()</TITLE>
+<META NAME="description" CONTENT="GRBModel.SetCallback()">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="cs_grbmodel_set.html">
+<LINK REL="previous" HREF="cs_grbmodel_reset.html">
+<LINK REL="up" HREF="cs_grbmodel.html">
+<LINK REL="next" HREF="cs_grbmodel_set.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html6578"
+  HREF="cs_grbmodel_set.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html6576"
+  HREF="cs_grbmodel.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html6570"
+  HREF="cs_grbmodel_reset.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html6579"
+  HREF="cs_grbmodel_set.html">GRBModel.Set()</A>
+<B> Up:</B> <A NAME="tex2html6577"
+  HREF="cs_grbmodel.html">GRBModel</A>
+<B> Previous:</B> <A NAME="tex2html6571"
+  HREF="cs_grbmodel_reset.html">GRBModel.Reset()</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000823900000000000000"></A>
+<A NAME="dotnetmethod:GRBModel.SetCallback"></A>
+<BR>
+GRBModel.SetCallback()
+</H3>
+
+<P>
+Set the callback object for a model.  The <code>Callback()</code> method on
+this object will be called periodically from the Gurobi solver.  You
+will have the opportunity to obtain more detailed information about
+the state of the optimization from this callback.  See the
+documentation for <A HREF="cs_grbcallback.html#dotnetclass:GRBCallback">GRBCallback</A>
+for additional information.
+
+<P>
+Note that a model can only have a single callback method, so this call
+will replace an existing callback.  To disable a previously set
+callback, call this method with a <code>null</code> argument.
+
+<P>
+
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">void</TD>
+<TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">SetCallback</SPAN></FONT></BIG> (</TD>
+<TD ALIGN="LEFT">GRBCallback</TD>
+<TD ALIGN="LEFT">cb )</TD>
+</TR>
+</TABLE>
+
+<UL>
+
+<P>
+</LI>
+</UL>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html6578"
+  HREF="cs_grbmodel_set.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html6576"
+  HREF="cs_grbmodel.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html6570"
+  HREF="cs_grbmodel_reset.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html6579"
+  HREF="cs_grbmodel_set.html">GRBModel.Set()</A>
+<B> Up:</B> <A NAME="tex2html6577"
+  HREF="cs_grbmodel.html">GRBModel</A>
+<B> Previous:</B> <A NAME="tex2html6571"
+  HREF="cs_grbmodel_reset.html">GRBModel.Reset()</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

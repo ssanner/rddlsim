@@ -1,0 +1,208 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>piecewise_vb.vb</TITLE>
+<META NAME="description" CONTENT="piecewise_vb.vb">
+<META NAME="keywords" CONTENT="examples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="examples.css">
+
+<LINK REL="next" HREF="qcp_vb_vb.html">
+<LINK REL="previous" HREF="params_vb_vb.html">
+<LINK REL="up" HREF="visual_basic_examples.html">
+<LINK REL="next" HREF="qcp_vb_vb.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html1741"
+  HREF="qcp_vb_vb.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1739"
+  HREF="visual_basic_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1733"
+  HREF="params_vb_vb.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1742"
+  HREF="qcp_vb_vb.html">qcp_vb.vb</A>
+<B> Up:</B> <A NAME="tex2html1740"
+  HREF="visual_basic_examples.html">Visual Basic Examples</A>
+<B> Previous:</B> <A NAME="tex2html1734"
+  HREF="params_vb_vb.html">params_vb.vb</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000251300000000000000"></A>
+<A NAME="subsubsection:piecewise_vb.vb"></A>
+<BR>
+piecewise_vb.vb
+</H3>
+
+<P>
+<BR>
+<PRE  CLASS="verbatim">' Copyright 2014, Gurobi Optimization, Inc.
+
+' This example considers the following separable, convex problem:
+'
+'    minimize    f(x) - y + g(z)
+'    subject to  x + 2 y + 3 z &lt;= 4
+'                x +   y       &gt;= 1
+'                x,    y,    z &lt;= 1
+'
+' where f(u) = exp(-u) and g(u) = 2 u^2 - 4 u, for all real u. It
+' formulates and solves a simpler LP model by approximating f and
+' g with piecewise-linear functions. Then it transforms the model
+' into a MIP by negating the approximation for f, which corresponds
+' to a non-convex piecewise-linear function, and solves it again.
+
+Imports System
+Imports Gurobi
+
+Class piecewise_vb
+    Shared Function f(u As Double) As Double
+        Return Math.Exp(-u)
+    End Function
+    Shared Function g(u As Double) As Double
+        Return 2 * u * u - 4 * u
+    End Function
+
+    Shared Sub Main()
+        Try
+            ' Create environment
+
+            Dim env As New GRBEnv()
+
+            ' Create a new model
+
+            Dim model As New GRBModel(env)
+
+            ' Create variables
+
+            Dim lb As Double = 0.0, ub As Double = 1.0
+
+            Dim x As GRBVar = model.AddVar(lb, ub, 0.0, GRB.CONTINUOUS, "x")
+            Dim y As GRBVar = model.AddVar(lb, ub, 0.0, GRB.CONTINUOUS, "y")
+            Dim z As GRBVar = model.AddVar(lb, ub, 0.0, GRB.CONTINUOUS, "z")
+
+            ' Integrate new variables
+
+            model.Update()
+
+            ' Set objective for y
+
+            model.SetObjective(-y)
+
+            ' Add piecewise-linear objective functions for x and z
+
+            Dim npts As Integer = 101
+            Dim ptu As Double() = New Double(npts - 1) {}
+            Dim ptf As Double() = New Double(npts - 1) {}
+            Dim ptg As Double() = New Double(npts - 1) {}
+
+            For i As Integer = 0 To npts - 1
+                ptu(i) = lb + (ub - lb) * i / (npts - 1)
+                ptf(i) = f(ptu(i))
+                ptg(i) = g(ptu(i))
+            Next
+
+            model.SetPWLObj(x, ptu, ptf)
+            model.SetPWLObj(z, ptu, ptg)
+
+            ' Add constraint: x + 2 y + 3 z &lt;= 4
+
+            model.AddConstr(x + 2 * y + 3 * z &lt;= 4.0, "c0")
+
+            ' Add constraint: x + y &gt;= 1
+
+            model.AddConstr(x + y &gt;= 1.0, "c1")
+
+            ' Optimize model as an LP
+
+            model.Optimize()
+
+            Console.WriteLine("IsMIP: " &amp; model.Get(GRB.IntAttr.IsMIP))
+
+            Console.WriteLine(x.Get(GRB.StringAttr.VarName) &amp; " " &amp; _
+                              x.Get(GRB.DoubleAttr.X))
+            Console.WriteLine(y.Get(GRB.StringAttr.VarName) &amp; " " &amp; _
+                              y.Get(GRB.DoubleAttr.X))
+            Console.WriteLine(z.Get(GRB.StringAttr.VarName) &amp; " " &amp; _
+                              z.Get(GRB.DoubleAttr.X))
+
+            Console.WriteLine("Obj: " &amp; model.Get(GRB.DoubleAttr.ObjVal))
+
+            Console.WriteLine()
+
+            ' Negate piecewise-linear objective function for x
+
+            For i As Integer = 0 To npts - 1
+                ptf(i) = -ptf(i)
+            Next
+
+            model.SetPWLObj(x, ptu, ptf)
+
+            ' Optimize model as a MIP
+
+            model.Optimize()
+
+            Console.WriteLine("IsMIP: " &amp; model.Get(GRB.IntAttr.IsMIP))
+
+            Console.WriteLine(x.Get(GRB.StringAttr.VarName) &amp; " " &amp; _
+                              x.Get(GRB.DoubleAttr.X))
+            Console.WriteLine(y.Get(GRB.StringAttr.VarName) &amp; " " &amp; _
+                              y.Get(GRB.DoubleAttr.X))
+            Console.WriteLine(z.Get(GRB.StringAttr.VarName) &amp; " " &amp; _
+                              z.Get(GRB.DoubleAttr.X))
+
+            Console.WriteLine("Obj: " &amp; model.Get(GRB.DoubleAttr.ObjVal))
+
+            ' Dispose of model and environment
+
+            model.Dispose()
+
+            env.Dispose()
+        Catch e As GRBException
+            Console.WriteLine("Error code: " + e.ErrorCode &amp; ". " + e.Message)
+        End Try
+    End Sub
+End Class
+</PRE>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1741"
+  HREF="qcp_vb_vb.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1739"
+  HREF="visual_basic_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1733"
+  HREF="params_vb_vb.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1742"
+  HREF="qcp_vb_vb.html">qcp_vb.vb</A>
+<B> Up:</B> <A NAME="tex2html1740"
+  HREF="visual_basic_examples.html">Visual Basic Examples</A>
+<B> Previous:</B> <A NAME="tex2html1734"
+  HREF="params_vb_vb.html">params_vb.vb</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Cleaning up</TITLE>
+<META NAME="description" CONTENT="Cleaning up">
+<META NAME="keywords" CONTENT="quickstart_linux">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="quickstart_linux.css">
+
+<LINK REL="next" HREF="java_error_handling.html">
+<LINK REL="previous" HREF="java_reporting_results_att.html">
+<LINK REL="up" HREF="java_interface.html">
+<LINK REL="next" HREF="java_error_handling.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html992"
+  HREF="java_error_handling.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html990"
+  HREF="java_interface.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html984"
+  HREF="java_reporting_results_att.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html993"
+  HREF="java_error_handling.html">Error handling</A>
+<B> Up:</B> <A NAME="tex2html991"
+  HREF="java_interface.html">Java Interface</A>
+<B> Previous:</B> <A NAME="tex2html985"
+  HREF="java_reporting_results_att.html">Reporting results - attributes</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION000911000000000000000">
+Cleaning up</A>
+</H2>
+
+<P>
+The example concludes with <code>dispose</code> calls:
+<PRE>
+  model.dispose();
+  env.dispose();
+</PRE>
+These reclaim the resources associated with the model and environment.
+Garbage collection would reclaim these eventually, but if your program
+doesn't exit immediately after performing the optimization, it is best
+to reclaim them explicitly.
+
+<P>
+Note that all models associated with an environment must be disposed
+before the environment itself is disposed.
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html992"
+  HREF="java_error_handling.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html990"
+  HREF="java_interface.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html984"
+  HREF="java_reporting_results_att.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html993"
+  HREF="java_error_handling.html">Error handling</A>
+<B> Up:</B> <A NAME="tex2html991"
+  HREF="java_interface.html">Java Interface</A>
+<B> Previous:</B> <A NAME="tex2html985"
+  HREF="java_reporting_results_att.html">Reporting results - attributes</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

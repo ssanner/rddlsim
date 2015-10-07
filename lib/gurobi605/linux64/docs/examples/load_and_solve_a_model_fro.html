@@ -1,0 +1,156 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Load and solve a model from a file</TITLE>
+<META NAME="description" CONTENT="Load and solve a model from a file">
+<META NAME="keywords" CONTENT="examples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="examples.css">
+
+<LINK REL="next" HREF="build_a_model.html">
+<LINK REL="previous" HREF="a_list_of_the_gurobi_examp.html">
+<LINK REL="up" HREF="example_tour.html">
+<LINK REL="next" HREF="build_a_model.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html230"
+  HREF="build_a_model.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html228"
+  HREF="example_tour.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html222"
+  HREF="a_list_of_the_gurobi_examp.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html231"
+  HREF="build_a_model.html">Build a model</A>
+<B> Up:</B> <A NAME="tex2html229"
+  HREF="example_tour.html">Example tour</A>
+<B> Previous:</B> <A NAME="tex2html223"
+  HREF="a_list_of_the_gurobi_examp.html">A list of the</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00012000000000000000"></A>
+<A NAME="subsection:Loading"></A>
+<BR>
+Load and solve a model from a file
+</H2>
+
+<P>
+<B>Examples:</B> callback, feasopt, fixanddive, lp, lpmethod, lpmod, mip2, params, sensitivity
+
+<P>
+One of the most basic tasks you can perform with the Gurobi libraries
+is to read a model from a file, optimize it, and report the result.
+The <code>lp</code> (<A HREF="lp_c_c.html#subsubsection:lp_c.c">lp_c.c</A>,
+<A HREF="lp_cpp_cpp.html#subsubsection:lp_c++.cpp">lp_c++.cpp</A>,
+<A HREF="lp_cs_cs.html#subsubsection:lp_cs.cs">lp_cs.cs</A>,
+<A HREF="lp_java.html#subsubsection:Lp.java">Lp.java</A>,
+<A HREF="lp_py.html#subsubsection:lp.py">lp.py</A>,
+<A HREF="lp_vb_vb.html#subsubsection:lp_vb.vb">lp_vb.vb</A>) and <code>mip2</code>
+(<A HREF="mip2_c_c.html#subsubsection:mip2_c.c">mip2_c.c</A>,
+<A HREF="mip2_cpp_cpp.html#subsubsection:mip2_c++.cpp">mip2_c++.cpp</A>,
+<A HREF="mip2_cs_cs.html#subsubsection:mip2_cs.cs">mip2_cs.cs</A>,
+<A HREF="mip2_java.html#subsubsection:Mip2.java">Mip2.java</A>,
+<A HREF="mip2_py.html#subsubsection:mip2.py">mip2.py</A>,
+<A HREF="mip2_vb_vb.html#subsubsection:mip2_vb.vb">mip2_vb.vb</A>) examples are
+simple illustratations of how this is done in the various supported
+Gurobi languages.  While the specifics vary from one language to
+another, the basic structure remains the same for all languages.
+
+<P>
+After initializing the Gurobi environment, the examples begin by reading the
+model from the specified file.  In C, you call the <code>GRBreadmodel()</code>
+function:
+<PRE>
+  error = GRBreadmodel(masterenv, argv[1], &amp;model);
+</PRE>
+In C++, this is done by constructing a <code>GRBModel</code> object:
+<PRE>
+  GRBModel model = GRBModel(env, argv[1]);
+</PRE>
+In C# and Java, this is also done by constructing a <code>GRBModel</code> object:
+<PRE>
+  GRBModel model = new GRBModel(env, args[0]);
+</PRE>
+In Python, this is done via the <code>read</code> global function:
+<PRE>
+  model = read(sys.argv[1])
+</PRE>
+
+<P>
+The next step is to invoke the Gurobi optimizer on the model.
+In C, you call <code>GRBoptimize()</code> on the <code>model</code>
+variable:
+<PRE>
+  error = GRBoptimize(model);
+</PRE>
+In C++, Java, and Python, this is accomplished by calling the
+<code>optimize</code> method on the <code>model</code> object:
+<PRE>
+  model.optimize();
+</PRE>
+In C#, the first letter of the method name is capitalized:
+<PRE>
+  model.Optimize();
+</PRE>
+A successful <code>optimize</code> call populates a set of solution
+attributes in the model.  For example, once the call completes, the
+<code>X</code> variable attribute contains the solution value for each
+variable.  Similarly, for continuous models, the <code>Pi</code> constraint
+attribute contains the dual value for each constraint.
+
+<P>
+The examples then retrieve the value of the model <code>Status</code>
+attribute to determine the result of the optimization.  In the
+<code>lp</code> example, an optimal solution is written to a solution file
+(<code>model.sol</code>).
+
+<P>
+There are many other things you can do once you have read and solved
+the model.  For example, <code>lp</code> checks the solution status --
+which is highly recommended.  If the model is found to be infeasible,
+this example computes an Irreducible Inconsistent Subsystem (IIS) to
+isolate the source of the infeasibility.
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html230"
+  HREF="build_a_model.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html228"
+  HREF="example_tour.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html222"
+  HREF="a_list_of_the_gurobi_examp.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html231"
+  HREF="build_a_model.html">Build a model</A>
+<B> Up:</B> <A NAME="tex2html229"
+  HREF="example_tour.html">Example tour</A>
+<B> Previous:</B> <A NAME="tex2html223"
+  HREF="a_list_of_the_gurobi_examp.html">A list of the</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

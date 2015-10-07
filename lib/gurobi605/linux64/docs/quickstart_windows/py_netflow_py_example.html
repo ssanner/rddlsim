@@ -1,0 +1,170 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>netflow.py example</TITLE>
+<META NAME="description" CONTENT="netflow.py example">
+<META NAME="keywords" CONTENT="quickstart_windows">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="quickstart_windows.css">
+
+<LINK REL="next" HREF="py_netflow_py_example_deta.html">
+<LINK REL="previous" HREF="py_the_tuplelist_class.html">
+<LINK REL="up" HREF="py_python_dictionary_examp.html">
+<LINK REL="next" HREF="py_netflow_py_example_deta.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html1408"
+  HREF="py_netflow_py_example_deta.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1406"
+  HREF="py_python_dictionary_examp.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1400"
+  HREF="py_the_tuplelist_class.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1409"
+  HREF="py_netflow_py_example_deta.html">netflow.py example details</A>
+<B> Up:</B> <A NAME="tex2html1407"
+  HREF="py_python_dictionary_examp.html">Python Dictionary Example</A>
+<B> Previous:</B> <A NAME="tex2html1401"
+  HREF="py_the_tuplelist_class.html">The tuplelist class</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000113600000000000000">
+netflow.py example</A>
+</H3>
+
+<P>
+Our example solves a multi-commodity flow model on a small network.
+In the example, two commodities (Pencils and Pens) are produced in two
+cities (Detroit and Denver), and must be shipped to warehouses in
+three cities (Boston, New York, and Seattle) to satisfy given demand.
+Each arc in the transportation network has a cost associated with it,
+and a total capacity.
+
+<P>
+This is the complete source code for our example (also available in 
+<code>&lt;installdir&gt;/examples/python/netflow.py</code>)...
+
+<P>
+<PRE>
+from gurobipy import *
+
+# Model data
+
+commodities = ['Pencils', 'Pens']
+nodes = ['Detroit', 'Denver', 'Boston', 'New York', 'Seattle']
+
+arcs, capacity = multidict({
+  ('Detroit', 'Boston'):   100,
+  ('Detroit', 'New York'):  80,
+  ('Detroit', 'Seattle'):  120,
+  ('Denver',  'Boston'):   120,
+  ('Denver',  'New York'): 120,
+  ('Denver',  'Seattle'):  120 })
+arcs = tuplelist(arcs)
+
+cost = {
+  ('Pencils', 'Detroit', 'Boston'):   10,
+  ('Pencils', 'Detroit', 'New York'): 20,
+  ('Pencils', 'Detroit', 'Seattle'):  60,
+  ('Pencils', 'Denver',  'Boston'):   40,
+  ('Pencils', 'Denver',  'New York'): 40,
+  ('Pencils', 'Denver',  'Seattle'):  30,
+  ('Pens',    'Detroit', 'Boston'):   20,
+  ('Pens',    'Detroit', 'New York'): 20,
+  ('Pens',    'Detroit', 'Seattle'):  80,
+  ('Pens',    'Denver',  'Boston'):   60,
+  ('Pens',    'Denver',  'New York'): 70,
+  ('Pens',    'Denver',  'Seattle'):  30 }
+
+inflow = {
+  ('Pencils', 'Detroit'):   50,
+  ('Pencils', 'Denver'):    60,
+  ('Pencils', 'Boston'):   -50,
+  ('Pencils', 'New York'): -50,
+  ('Pencils', 'Seattle'):  -10,
+  ('Pens',    'Detroit'):   60,
+  ('Pens',    'Denver'):    40,
+  ('Pens',    'Boston'):   -40,
+  ('Pens',    'New York'): -30,
+  ('Pens',    'Seattle'):  -30 }
+
+# Create optimization model
+m = Model('netflow')
+
+# Create variables
+flow = {}
+for h in commodities:
+    for i,j in arcs:
+        flow[h,i,j] = m.addVar(ub=capacity[i,j], obj=cost[h,i,j],
+                               name='flow_%s_%s_%s' % (h, i, j))
+m.update()
+
+# Arc capacity constraints
+for i,j in arcs:
+    m.addConstr(quicksum(flow[h,i,j] for h in commodities) &lt;= capacity[i,j],
+                'cap_%s_%s' % (i, j))
+
+# Flow conservation constraints
+for h in commodities:
+    for j in nodes:
+        m.addConstr(
+          quicksum(flow[h,i,j] for i,j in arcs.select('*',j)) +
+              inflow[h,j] ==
+          quicksum(flow[h,j,k] for j,k in arcs.select(j,'*')),
+                   'node_%s_%s' % (h, j))
+
+# Compute optimal solution
+m.optimize()
+
+# Print solution
+if m.status == GRB.status.OPTIMAL:
+    for h in commodities:
+        print '\nOptimal flows for', h, ':'
+        for i,j in arcs:
+            if flow[h,i,j].x &gt; 0:
+                print i, '-&gt;', j, ':', flow[h,i,j].x
+</PRE>
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html1408"
+  HREF="py_netflow_py_example_deta.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html1406"
+  HREF="py_python_dictionary_examp.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html1400"
+  HREF="py_the_tuplelist_class.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html1409"
+  HREF="py_netflow_py_example_deta.html">netflow.py example details</A>
+<B> Up:</B> <A NAME="tex2html1407"
+  HREF="py_python_dictionary_examp.html">Python Dictionary Example</A>
+<B> Previous:</B> <A NAME="tex2html1401"
+  HREF="py_the_tuplelist_class.html">The tuplelist class</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

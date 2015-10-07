@@ -1,0 +1,218 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>qcp_c.c</TITLE>
+<META NAME="description" CONTENT="qcp_c.c">
+<META NAME="keywords" CONTENT="examples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="examples.css">
+
+<LINK REL="next" HREF="qp_c_c.html">
+<LINK REL="previous" HREF="piecewise_c_c.html">
+<LINK REL="up" HREF="c_examples.html">
+<LINK REL="next" HREF="qp_c_c.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html663"
+  HREF="qp_c_c.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html661"
+  HREF="c_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html655"
+  HREF="piecewise_c_c.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html664"
+  HREF="qp_c_c.html">qp_c.c</A>
+<B> Up:</B> <A NAME="tex2html662"
+  HREF="c_examples.html">C Examples</A>
+<B> Previous:</B> <A NAME="tex2html656"
+  HREF="piecewise_c_c.html">piecewise_c.c</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000211400000000000000"></A>
+<A NAME="subsubsection:qcp_c.c"></A>
+<BR>
+qcp_c.c
+</H3>
+
+<P>
+<BR>
+<PRE  CLASS="verbatim">/* Copyright 2014, Gurobi Optimization, Inc. */
+
+/* This example formulates and solves the following simple QCP model:
+
+     maximize    x
+     subject to  x + y + z = 1
+                 x^2 + y^2 &lt;= z^2 (second-order cone)
+                 x^2 &lt;= yz        (rotated second-order cone)
+*/
+
+#include &lt;stdlib.h&gt;
+#include &lt;stdio.h&gt;
+#include "gurobi_c.h"
+
+int
+main(int   argc,
+     char *argv[])
+{
+  GRBenv   *env   = NULL;
+  GRBmodel *model = NULL;
+  int       error = 0;
+  double    sol[3];
+  int       ind[3];
+  double    val[3];
+  double    obj[] = {1, 0, 0};
+  int       qrow[3];
+  int       qcol[3];
+  double    qval[3];
+  int       optimstatus;
+  double    objval;
+
+  /* Create environment */
+
+  error = GRBloadenv(&amp;env, "qcp.log");
+  if (error) goto QUIT;
+
+  /* Create an empty model */
+
+  error = GRBnewmodel(env, &amp;model, "qcp", 0, NULL, NULL, NULL, NULL, NULL);
+  if (error) goto QUIT;
+
+
+  /* Add variables */
+
+  error = GRBaddvars(model, 3, 0, NULL, NULL, NULL, obj, NULL, NULL, NULL,
+                     NULL);
+  if (error) goto QUIT;
+
+  /* Change sense to maximization */
+
+  error = GRBsetintattr(model, GRB_INT_ATTR_MODELSENSE, GRB_MAXIMIZE);
+  if (error) goto QUIT;
+
+  /* Integrate new variables */
+
+  error = GRBupdatemodel(model);
+  if (error) goto QUIT;
+
+  /* Linear constraint: x + y + z = 1 */
+
+  ind[0] = 0; ind[1] = 1; ind[2] = 2;
+  val[0] = 1; val[1] = 1; val[2] = 1;
+
+  error = GRBaddconstr(model, 3, ind, val, GRB_EQUAL, 1.0, "c0");
+  if (error) goto QUIT;
+
+  /* Cone: x^2 + y^2 &lt;= z^2 */
+
+  qrow[0] = 0; qcol[0] = 0; qval[0] = 1.0;
+  qrow[1] = 1; qcol[1] = 1; qval[1] = 1.0;
+  qrow[2] = 2; qcol[2] = 2; qval[2] = -1.0;
+
+  error = GRBaddqconstr(model, 0, NULL, NULL, 3, qrow, qcol, qval,
+                        GRB_LESS_EQUAL, 0.0, "qc0");
+  if (error) goto QUIT;
+
+  /* Rotated cone: x^2 &lt;= yz */
+
+  qrow[0] = 0; qcol[0] = 0; qval[0] = 1.0;
+  qrow[1] = 1; qcol[1] = 2; qval[1] = -1.0;
+
+  error = GRBaddqconstr(model, 0, NULL, NULL, 2, qrow, qcol, qval,
+                        GRB_LESS_EQUAL, 0.0, "qc1");
+  if (error) goto QUIT;
+
+  /* Optimize model */
+
+  error = GRBoptimize(model);
+  if (error) goto QUIT;
+
+  /* Write model to 'qcp.lp' */
+
+  error = GRBwrite(model, "qcp.lp");
+  if (error) goto QUIT;
+
+  /* Capture solution information */
+
+  error = GRBgetintattr(model, GRB_INT_ATTR_STATUS, &amp;optimstatus);
+  if (error) goto QUIT;
+
+  error = GRBgetdblattr(model, GRB_DBL_ATTR_OBJVAL, &amp;objval);
+  if (error) goto QUIT;
+
+  error = GRBgetdblattrarray(model, GRB_DBL_ATTR_X, 0, 3, sol);
+  if (error) goto QUIT;
+
+  printf("\nOptimization complete\n");
+  if (optimstatus == GRB_OPTIMAL) {
+    printf("Optimal objective: %.4e\n", objval);
+
+    printf("  x=%.2f, y=%.2f, z=%.2f\n", sol[0], sol[1], sol[2]);
+  } else if (optimstatus == GRB_INF_OR_UNBD) {
+    printf("Model is infeasible or unbounded\n");
+  } else {
+    printf("Optimization was stopped early\n");
+  }
+
+QUIT:
+
+  /* Error reporting */
+
+  if (error) {
+    printf("ERROR: %s\n", GRBgeterrormsg(env));
+    exit(1);
+  }
+
+  /* Free model */
+
+  GRBfreemodel(model);
+
+  /* Free environment */
+
+  GRBfreeenv(env);
+
+  return 0;
+}
+</PRE>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html663"
+  HREF="qp_c_c.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html661"
+  HREF="c_examples.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html655"
+  HREF="piecewise_c_c.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html664"
+  HREF="qp_c_c.html">qp_c.c</A>
+<B> Up:</B> <A NAME="tex2html662"
+  HREF="c_examples.html">C Examples</A>
+<B> Previous:</B> <A NAME="tex2html656"
+  HREF="piecewise_c_c.html">piecewise_c.c</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

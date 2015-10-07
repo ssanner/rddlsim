@@ -1,0 +1,512 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Gurobi Optimizer Quick Start Guide - Linux</TITLE>
+<META NAME="description" CONTENT="Gurobi Optimizer Quick Start Guide - Linux">
+<META NAME="keywords" CONTENT="quickstart_linux">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="quickstart_linux.css">
+
+<LINK REL="next" HREF="obtaining_a_gurobi_license.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html58"
+  HREF="obtaining_a_gurobi_license.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up_g.png"> 
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev_g.png">   
+<BR>
+<B> Next:</B> <A NAME="tex2html59"
+  HREF="obtaining_a_gurobi_license.html">Obtaining a Gurobi License</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<DIV ALIGN="CENTER">
+
+<P>
+<IMG
+  WIDTH="237" HEIGHT="70" ALIGN="BOTTOM" BORDER="0"
+ SRC="./logo.png"
+ ALT="Image logo">
+
+</DIV>
+
+<P>
+<H1 ALIGN="CENTER">Gurobi Optimizer Quick Start Guide - Linux</H1>
+<DIV CLASS="author_info">
+
+<P ALIGN="CENTER"><STRONG>Version 6.0, Copyright &#169; 2014, Gurobi Optimization, Inc.</STRONG></P>
+</DIV>
+
+<P>
+<A NAME="section:Contents"></A>
+<P>
+Welcome to the Gurobi<SUP><SMALL>TM</SMALL></SUP> Optimizer Quick Start Guide for
+Linux users!  This document provides a basic introduction to the
+Gurobi Optimizer, including:
+
+<UL>
+<LI>Information on <A HREF="obtaining_a_gurobi_license.html#section:ObtainLicense">Obtaining a Gurobi License</A>.
+</LI>
+<LI>A <A HREF="software_installation_guid.html#section:Installation">Software Installation Guide</A>, which includes information on
+<A HREF="retrieving_and_setting_up_.html#section:RetrieveLicense">Retrieving and Setting Up your License</A>.
+</LI>
+<LI>An example of how to create a simple optimization
+model and solve it with the Gurobi
+<A HREF="solving_a_simple_model_the.html#section:CommandLine">Command Line</A>, and
+</LI>
+<LI>A discussion of the Gurobi
+<A HREF="interactive_shell.html#section:Shell">Interactive Shell</A>.
+</LI>
+</UL>
+
+<P>
+We suggest that all users read these first five sections.
+
+<P>
+Once you have done this, you will probably want to choose a
+programming environment from which to use Gurobi.  If you don't have a
+strong preference, we recommend that you use our
+<A HREF="py_python_interface.html#section:Python">Python&#174; interface</A>, which
+provides a number of benefits.  First, Python is a very nice
+programming language that can be used for anything from
+experimentation to prototyping to deployment.  Beyond this, though,
+our Python interface includes a set of higher-level modeling
+constructs that make it much easier to build optimization models.  We
+also include instructions for installing the <A HREF="installing_the_anaconda_py.html#section:Anaconda">Anaconda Python
+  distribution</A>, which includes both a graphical
+development environment (Spyder) and a notebook-style interface
+(iPython Notebook).
+
+<P>
+If you already have a preferred programming language, you can select
+from among our available interfaces:
+
+<UL>
+<LI><A HREF="c_interface.html#section:C">C interface</A>,
+</LI>
+<LI><A HREF="cpp_interface.html#section:C++">C++ interface</A>,
+</LI>
+<LI><A HREF="java_interface.html#section:Java">Java&#174; interface</A>,
+</LI>
+<LI><A HREF="cs_net_interface_cs.html#section:.NET">Microsoft&#174; .NET interface</A>,
+</LI>
+<LI><A HREF="py_python_interface.html#section:Python">Python interface</A>,
+</LI>
+<LI><A HREF="matlab_interface.html#section:MATLAB">MATLAB&#174; interface</A>,
+or
+</LI>
+<LI><A HREF="r_interface.html#section:R">R interface</A>.
+</LI>
+</UL>
+
+<P>
+At the end of the Quick Start Guide, you'll find a <A HREF="file_overview.html#section:Overview">File
+  Overview</A> that lists the files included in the
+Gurobi distribution.
+
+<P>
+<SPAN  CLASS="textbf">Additional resources</SPAN>
+
+<P>
+Once you are done with the Quick Start Guide, the next step is to explore these additional resources:
+
+<UL>
+<LI>If you are familiar with mathematical modeling and are ready to
+use Gurobi from one of our programming
+language APIs, consult the <A NAME="tex2html1"
+  HREF="../refman/refman.html">Gurobi
+  Reference Manual</A>.
+</LI>
+<LI>If you would like to see examples of ways to use Gurobi, consult the <A NAME="tex2html2"
+  HREF="../examples/examples.html">Gurobi Example
+
+Tour</A>.
+</LI>
+<LI>If you would like to learn more about mathematical programming
+or modeling, we've collected a set of references
+in our
+<A HREF="recommended_reading.html#section:RecommendedReading">recommended reading</A>
+section.
+</LI>
+</UL>
+
+<P>
+<SPAN  CLASS="textbf">Getting help</SPAN>
+
+<P>
+Have a question that isn't answered in this guide? Post it to the <A NAME="tex2html3"
+  HREF="http://groups.google.com/group/gurobi">Gurobi Google
+  Group</A>.  Clients with
+current maintenance contracts can send questions to
+<code>support@gurobi.com</code>.
+
+<P>
+Ready to get started? Your first step is to <A HREF="obtaining_a_gurobi_license.html#section:ObtainLicense">Obtain a License</A>.
+
+<P>
+
+<P>
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html60"
+  HREF="obtaining_a_gurobi_license.html">Obtaining a Gurobi License</A>
+<UL>
+<LI><A NAME="tex2html61"
+  HREF="creating_a_new_academic_li.html">Creating a new academic license</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html62"
+  HREF="software_installation_guid.html">Software Installation Guide</A>
+<LI><A NAME="tex2html63"
+  HREF="retrieving_and_setting_up_.html">Retrieving and Setting Up a Gurobi License</A>
+<UL>
+<LI><A NAME="tex2html64"
+  HREF="retrieving_a_free_academic.html">Retrieving a Free Academic license</A>
+<UL>
+<LI><A NAME="tex2html65"
+  HREF="academic_validation.html">Academic validation</A>
+</UL>
+<LI><A NAME="tex2html66"
+  HREF="retrieving_a_named_user_or.html">Retrieving a Named-User or Single-Machine license</A>
+<LI><A NAME="tex2html67"
+  HREF="setting_up_and_using_a_sin.html">Setting up and using a Single-Use or Floating license</A>
+<UL>
+<LI><A NAME="tex2html68"
+  HREF="retrieving_a_single_use_or.html">Retrieving a Single-Use or Floating license</A>
+<LI><A NAME="tex2html69"
+  HREF="starting_a_token_server.html">Starting a token server</A>
+<LI><A NAME="tex2html70"
+  HREF="upgrading_a_token_server.html">Upgrading a token server</A>
+<LI><A NAME="tex2html71"
+  HREF="creating_a_token_server_cl.html">Creating a token server client license</A>
+</UL>
+<LI><A NAME="tex2html72"
+  HREF="setting_up_and_using_a_com.html">Setting up and using a Compute Server license</A>
+<UL>
+<LI><A NAME="tex2html73"
+  HREF="retrieving_a_compute_serve.html">Retrieving a Compute Server license</A>
+<LI><A NAME="tex2html74"
+  HREF="creating_a_compute_server_.html">Creating a Compute Server client license</A>
+</UL>
+<LI><A NAME="tex2html75"
+  HREF="starting_gurobi_remote_ser.html">Starting Gurobi Remote Services</A>
+<UL>
+<LI><A NAME="tex2html76"
+  HREF="upgrading_gurobi_remote_se.html">Upgrading Gurobi Remote Services</A>
+</UL>
+<LI><A NAME="tex2html77"
+  HREF="testing_your_license.html">Testing your license</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html78"
+  HREF="solving_a_simple_model_the.html">Solving a Simple Model - The Gurobi Command Line</A>
+<UL>
+<LI><A NAME="tex2html79"
+  HREF="the_problem_statement_prod.html">The problem statement - producing coins</A>
+<LI><A NAME="tex2html80"
+  HREF="the_optimization_model.html">The optimization model</A>
+<LI><A NAME="tex2html81"
+  HREF="the_model_file.html">The model file</A>
+<LI><A NAME="tex2html82"
+  HREF="solving_the_model_using_th.html">Solving the model using the Gurobi command-line interface</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html83"
+  HREF="interactive_shell.html">Interactive Shell</A>
+<UL>
+<LI><A NAME="tex2html84"
+  HREF="reading_and_optimizing_a_m.html">Reading and optimizing a model</A>
+<LI><A NAME="tex2html85"
+  HREF="inspecting_the_solution.html">Inspecting the solution</A>
+<LI><A NAME="tex2html86"
+  HREF="simple_model_modification.html">Simple model modification</A>
+<LI><A NAME="tex2html87"
+  HREF="simple_experimentation_wit.html">Simple experimentation with a more difficult model</A>
+<LI><A NAME="tex2html88"
+  HREF="changing_parameters.html">Changing parameters</A>
+<LI><A NAME="tex2html89"
+  HREF="parameter_tuning_tool.html">Parameter tuning tool</A>
+<LI><A NAME="tex2html90"
+  HREF="using_a_gurobi_env_file.html">Using a gurobi.env file</A>
+<LI><A NAME="tex2html91"
+  HREF="working_with_multiple_mode.html">Working with multiple models</A>
+<LI><A NAME="tex2html92"
+  HREF="help.html">Help</A>
+<LI><A NAME="tex2html93"
+  HREF="interface_customization.html">Interface customization</A>
+<LI><A NAME="tex2html94"
+  HREF="customization_through_call.html">Customization through callbacks</A>
+<LI><A NAME="tex2html95"
+  HREF="the_gurobi_python_interfac.html">The Gurobi Python Interface for Python Users</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html96"
+  HREF="attributes.html">Attributes</A>
+<LI><A NAME="tex2html97"
+  HREF="c_interface.html">C Interface</A>
+<UL>
+<LI><A NAME="tex2html98"
+  HREF="c_example_mip1_c_c.html">Example mip1_c.c</A>
+<LI><A NAME="tex2html99"
+  HREF="c_example_details.html">Example details</A>
+<LI><A NAME="tex2html100"
+  HREF="c_creating_the_environment.html">Creating the environment</A>
+<LI><A NAME="tex2html101"
+  HREF="c_creating_the_model.html">Creating the model</A>
+<LI><A NAME="tex2html102"
+  HREF="c_adding_variables_to_the_.html">Adding variables to the model</A>
+<LI><A NAME="tex2html103"
+  HREF="c_changing_the_objective_s.html">Changing the objective sense</A>
+<LI><A NAME="tex2html104"
+  HREF="c_updating_the_model_lazy_.html">Updating the model - lazy modification</A>
+<LI><A NAME="tex2html105"
+  HREF="c_adding_constraints_to_th.html">Adding constraints to the model</A>
+<LI><A NAME="tex2html106"
+  HREF="c_optimizing_the_model.html">Optimizing the model</A>
+<LI><A NAME="tex2html107"
+  HREF="c_error_reporting.html">Error reporting</A>
+<LI><A NAME="tex2html108"
+  HREF="c_building_and_running_the.html">Building and running the example</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html109"
+  HREF="cpp_interface.html">C++ Interface</A>
+<UL>
+<LI><A NAME="tex2html110"
+  HREF="cpp_example_mip1_cpp_cpp.html">Example mip1_c++.cpp</A>
+<LI><A NAME="tex2html111"
+  HREF="cpp_example_details.html">Example details</A>
+<LI><A NAME="tex2html112"
+  HREF="cpp_creating_the_environme.html">Creating the environment</A>
+<LI><A NAME="tex2html113"
+  HREF="cpp_creating_the_model.html">Creating the model</A>
+<LI><A NAME="tex2html114"
+  HREF="cpp_adding_variables_to_th.html">Adding variables to the model</A>
+<LI><A NAME="tex2html115"
+  HREF="cpp_updating_the_model_laz.html">Updating the model - lazy modification</A>
+<LI><A NAME="tex2html116"
+  HREF="cpp_setting_the_objective.html">Setting the objective</A>
+<LI><A NAME="tex2html117"
+  HREF="cpp_adding_constraints_to_.html">Adding constraints to the model</A>
+<LI><A NAME="tex2html118"
+  HREF="cpp_optimizing_the_model.html">Optimizing the model</A>
+<LI><A NAME="tex2html119"
+  HREF="cpp_reporting_results_attr.html">Reporting results - attributes</A>
+<LI><A NAME="tex2html120"
+  HREF="cpp_error_handling.html">Error handling</A>
+<LI><A NAME="tex2html121"
+  HREF="cpp_building_and_running_t.html">Building and running the example</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html122"
+  HREF="java_interface.html">Java Interface</A>
+<UL>
+<LI><A NAME="tex2html123"
+  HREF="java_example_mip1_java.html">Example Mip1.java</A>
+<LI><A NAME="tex2html124"
+  HREF="java_example_details.html">Example details</A>
+<LI><A NAME="tex2html125"
+  HREF="java_creating_the_environm.html">Creating the environment</A>
+<LI><A NAME="tex2html126"
+  HREF="java_creating_the_model.html">Creating the model</A>
+<LI><A NAME="tex2html127"
+  HREF="java_adding_variables_to_t.html">Adding variables to the model</A>
+<LI><A NAME="tex2html128"
+  HREF="java_updating_the_model_la.html">Updating the model - lazy modification</A>
+<LI><A NAME="tex2html129"
+  HREF="java_setting_the_objective.html">Setting the objective</A>
+<LI><A NAME="tex2html130"
+  HREF="java_adding_constraints_to.html">Adding constraints to the model</A>
+<LI><A NAME="tex2html131"
+  HREF="java_optimizing_the_model.html">Optimizing the model</A>
+<LI><A NAME="tex2html132"
+  HREF="java_reporting_results_att.html">Reporting results - attributes</A>
+<LI><A NAME="tex2html133"
+  HREF="java_cleaning_up.html">Cleaning up</A>
+<LI><A NAME="tex2html134"
+  HREF="java_error_handling.html">Error handling</A>
+<LI><A NAME="tex2html135"
+  HREF="java_building_and_running_.html">Building and running the example</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html136"
+  HREF="cs_net_interface_cs.html">.NET Interface (C#)</A>
+<UL>
+<LI><A NAME="tex2html137"
+  HREF="cs_example_mip1_cs_cs.html">Example mip1_cs.cs</A>
+<LI><A NAME="tex2html138"
+  HREF="cs_example_details.html">Example details</A>
+<LI><A NAME="tex2html139"
+  HREF="cs_creating_the_environmen.html">Creating the environment</A>
+<LI><A NAME="tex2html140"
+  HREF="cs_creating_the_model.html">Creating the model</A>
+<LI><A NAME="tex2html141"
+  HREF="cs_adding_variables_to_the.html">Adding variables to the model</A>
+<LI><A NAME="tex2html142"
+  HREF="cs_updating_the_model_lazy.html">Updating the model - lazy modification</A>
+<LI><A NAME="tex2html143"
+  HREF="cs_setting_the_objective.html">Setting the objective</A>
+<LI><A NAME="tex2html144"
+  HREF="cs_adding_constraints_to_t.html">Adding constraints to the model</A>
+<LI><A NAME="tex2html145"
+  HREF="cs_optimizing_the_model.html">Optimizing the model</A>
+<LI><A NAME="tex2html146"
+  HREF="cs_reporting_results_attri.html">Reporting results - attributes</A>
+<LI><A NAME="tex2html147"
+  HREF="cs_cleaning_up.html">Cleaning up</A>
+<LI><A NAME="tex2html148"
+  HREF="cs_error_handling.html">Error handling</A>
+<LI><A NAME="tex2html149"
+  HREF="cs_building_and_running_th.html">Building and running the example</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html150"
+  HREF="py_python_interface.html">Python Interface</A>
+<UL>
+<LI><A NAME="tex2html151"
+  HREF="py_simple_python_example.html">Simple Python Example</A>
+<LI><A NAME="tex2html152"
+  HREF="py_example_mip1_py.html">Example mip1.py</A>
+<UL>
+<LI><A NAME="tex2html153"
+  HREF="py_example_details.html">Example details</A>
+<LI><A NAME="tex2html154"
+  HREF="py_creating_the_model.html">Creating the model</A>
+<LI><A NAME="tex2html155"
+  HREF="py_adding_variables_to_the.html">Adding variables to the model</A>
+<LI><A NAME="tex2html156"
+  HREF="py_updating_the_model_lazy.html">Updating the model - lazy modification</A>
+<LI><A NAME="tex2html157"
+  HREF="py_setting_the_objective.html">Setting the objective</A>
+<LI><A NAME="tex2html158"
+  HREF="py_adding_constraints_to_t.html">Adding constraints to the model</A>
+<LI><A NAME="tex2html159"
+  HREF="py_optimizing_the_model.html">Optimizing the model</A>
+<LI><A NAME="tex2html160"
+  HREF="py_reporting_results_attri.html">Reporting results - attributes</A>
+<LI><A NAME="tex2html161"
+  HREF="py_error_handling.html">Error handling</A>
+<LI><A NAME="tex2html162"
+  HREF="py_running_the_example.html">Running the example</A>
+</UL>
+<LI><A NAME="tex2html163"
+  HREF="py_python_dictionary_examp.html">Python Dictionary Example</A>
+<UL>
+<LI><A NAME="tex2html164"
+  HREF="py_motivation.html">Motivation</A>
+<LI><A NAME="tex2html165"
+  HREF="py_lists_and_tuples.html">Lists and Tuples</A>
+<LI><A NAME="tex2html166"
+  HREF="py_dictionaries.html">Dictionaries</A>
+<LI><A NAME="tex2html167"
+  HREF="py_list_comprehension.html">List comprehension</A>
+<LI><A NAME="tex2html168"
+  HREF="py_the_tuplelist_class.html">The tuplelist class</A>
+<LI><A NAME="tex2html169"
+  HREF="py_netflow_py_example.html">netflow.py example</A>
+<LI><A NAME="tex2html170"
+  HREF="py_netflow_py_example_deta.html">netflow.py example details</A>
+<LI><A NAME="tex2html171"
+  HREF="py_building_a_multi_dimens.html">Building a multi-dimensional array of variables</A>
+<LI><A NAME="tex2html172"
+  HREF="py_arc_capacity_constraint.html">Arc capacity constraints</A>
+<LI><A NAME="tex2html173"
+  HREF="py_flow_conservation_const.html">Flow conservation constraints</A>
+<LI><A NAME="tex2html174"
+  HREF="py_results.html">Results</A>
+</UL>
+<LI><A NAME="tex2html175"
+  HREF="py_building_and_running_th.html">Building and running the examples</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html176"
+  HREF="matlab_interface.html">MATLAB Interface</A>
+<UL>
+<LI><A NAME="tex2html177"
+  HREF="matlab_setting_up_gurobi_f.html">Setting up Gurobi for MATLAB</A>
+<LI><A NAME="tex2html178"
+  HREF="matlab_example.html">Example</A>
+<LI><A NAME="tex2html179"
+  HREF="matlab_example_details.html">Example details</A>
+<LI><A NAME="tex2html180"
+  HREF="matlab_building_the_model.html">Building the model</A>
+<LI><A NAME="tex2html181"
+  HREF="matlab_modifying_gurobi_pa.html">Modifying Gurobi parameters</A>
+<LI><A NAME="tex2html182"
+  HREF="matlab_solving_the_model.html">Solving the model</A>
+<LI><A NAME="tex2html183"
+  HREF="matlab_printing_the_soluti.html">Printing the solution</A>
+<LI><A NAME="tex2html184"
+  HREF="matlab_running_the_example.html">Running the example</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html185"
+  HREF="r_interface.html">R Interface</A>
+<UL>
+<LI><A NAME="tex2html186"
+  HREF="r_installing_the_r_package.html">Installing the R Package</A>
+<LI><A NAME="tex2html187"
+  HREF="r_example.html">Example</A>
+<LI><A NAME="tex2html188"
+  HREF="r_example_details.html">Example details</A>
+<LI><A NAME="tex2html189"
+  HREF="r_building_the_model.html">Building the model</A>
+<LI><A NAME="tex2html190"
+  HREF="r_modifying_gurobi_paramet.html">Modifying Gurobi parameters</A>
+<LI><A NAME="tex2html191"
+  HREF="r_solving_the_model.html">Solving the model</A>
+<LI><A NAME="tex2html192"
+  HREF="r_printing_the_solution.html">Printing the solution</A>
+<LI><A NAME="tex2html193"
+  HREF="r_running_the_example.html">Running the example</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html194"
+  HREF="recommended_reading.html">Recommended Reading</A>
+<LI><A NAME="tex2html195"
+  HREF="installing_the_anaconda_py.html">Installing the Anaconda Python distribution</A>
+<UL>
+<LI><A NAME="tex2html196"
+  HREF="using_the_spyder_ide.html">Using the Spyder IDE</A>
+<LI><A NAME="tex2html197"
+  HREF="using_the_ipython_notebook.html">Using the iPython Notebook</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html198"
+  HREF="file_overview.html">File Overview</A>
+</UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html58"
+  HREF="obtaining_a_gurobi_license.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up_g.png"> 
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev_g.png">   
+<BR>
+<B> Next:</B> <A NAME="tex2html59"
+  HREF="obtaining_a_gurobi_license.html">Obtaining a Gurobi License</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>
