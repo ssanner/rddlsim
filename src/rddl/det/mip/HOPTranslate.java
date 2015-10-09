@@ -1,5 +1,8 @@
 package rddl.det.mip;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -416,7 +419,6 @@ public class HOPTranslate extends Translate implements Policy {
 		ArrayList<BOOL_EXPR> constraints = new ArrayList<BOOL_EXPR>();
 		//domain constraints 
 		constraints.addAll( rddl_state._alActionPreconditions ); constraints.addAll( rddl_state._alStateInvariants );
-		constraints.addAll( getHindSightConstraintExpr(hindsight_method) );
 		
 		constraints.parallelStream().forEach( new Consumer< BOOL_EXPR >() {
 			@Override
@@ -488,19 +490,21 @@ public class HOPTranslate extends Translate implements Policy {
 //		}
 		
 		//hindishgt constraint
-//		getHindSightConstraintExpr(hindsight_method).forEach( new Consumer<EXPR>() {
-//			@Override
-//			public void accept(EXPR t) {
-//				GRBVar gvar = t.getGRBConstr( GRB.EQUAL, grb_model, constants, objects, type_map);
-//				try {
-//					grb_model.addConstr( gvar, GRB.EQUAL, 1, "hindsight_constraint_"+t.toString() );
-//					saved_expr.add( t ); saved_vars.add( gvar );
-//				} catch (GRBException e) {
-//					e.printStackTrace();
-//					System.exit(1);
-//				}
-//			}
-//		});
+		getHindSightConstraintExpr(hindsight_method).parallelStream().forEach( new Consumer< BOOL_EXPR >() {
+			@Override
+			public void accept( BOOL_EXPR t) {
+				synchronized( grb_model ){
+					GRBVar gvar = t.getGRBConstr( GRB.EQUAL, grb_model, constants, objects, type_map);
+					try {
+						grb_model.addConstr( gvar, GRB.EQUAL, 1, "hindsight_constraint_"+t.toString() );
+						saved_expr.add( t ); saved_vars.add( gvar );
+					} catch (GRBException e) {
+						e.printStackTrace();
+						System.exit(1);
+					}					
+				}
+			}
+		});
 		
 		grb_model.setObjective(old_obj);
 		grb_model.update();
@@ -555,9 +559,16 @@ public class HOPTranslate extends Translate implements Policy {
 	
 	@Override
 	protected Map< EXPR, Double > outputResults(){
+		
+		DecimalFormat df = new DecimalFormat("#.#####"); df.setRoundingMode( RoundingMode.DOWN );
 		Map< EXPR, Double > ret = new HashMap< EXPR, Double >();
 		
-		rddl_action_vars.forEach( new BiConsumer<PVAR_NAME, ArrayList<ArrayList<LCONST> > >( ) {
+		HashMap<PVAR_NAME, ArrayList<ArrayList<LCONST>>> src = new HashMap<>();
+		src.putAll( rddl_action_vars );
+		src.putAll( rddl_interm_vars );
+		src.putAll( rddl_state_vars );
+		
+		src.forEach( new BiConsumer<PVAR_NAME, ArrayList<ArrayList<LCONST> > >( ) {
 
 			@Override
 			public void accept(PVAR_NAME pvar,
@@ -574,7 +585,8 @@ public class HOPTranslate extends Translate implements Policy {
 					  try {
 						   GRBVar grb_var = EXPR.grb_cache.get( action_var );
 						   assert( grb_var != null );
-						   ret.put( action_var, grb_var.get( DoubleAttr.X ) );
+						   ret.put( action_var, 
+								   Double.valueOf( df.format( grb_var.get( DoubleAttr.X ) ) ) );
 					   } catch (GRBException e) {
 							e.printStackTrace();
 					   }
@@ -590,7 +602,7 @@ public class HOPTranslate extends Translate implements Policy {
 	
 	@Override
 	protected ArrayList<PVAR_INST_DEF> getRootActions(Map<EXPR, Double> ret_expr) {
-		final ArrayList<PVAR_INST_DEF> ret = new ArrayList<>();
+		final ArrayList<PVAR_INST_DEF> ret = new ArrayList<PVAR_INST_DEF>();
 		
 		rddl_action_vars.entrySet().parallelStream().forEach( new Consumer< Map.Entry< PVAR_NAME, ArrayList<ArrayList<LCONST>> > >() {
 			@Override
@@ -605,7 +617,10 @@ public class HOPTranslate extends Translate implements Policy {
 							.substitute( Collections.singletonMap( TIME_PREDICATE, TIME_TERMS.get(0) ), constants, objects)
 							.substitute( Collections.singletonMap( future_PREDICATE, future_TERMS.get(0) ) , constants, objects);
 						assert( ret_expr.containsKey( lookup ) );
-						ret.add( new PVAR_INST_DEF( pvar._sPVarName, ret_expr.get( lookup ), terms ) );
+						synchronized( ret ){
+							ret.add( new PVAR_INST_DEF( pvar._sPVarName, ret_expr.get( lookup ), terms ) );	
+						}
+						
 					}
 				});
 			}

@@ -4319,9 +4319,15 @@ public class RDDL {
 				return this;
 			}
 			
-			ArrayList<LTERM> new_terms = new ArrayList<LTERM>( _alTerms );
-			new_terms.add(new_term);
-			return new PVAR_EXPR( _pName._sPVarName, new_terms );
+			
+			if( !_alTerms.contains( new_term ) ){
+				ArrayList<LTERM> new_terms = new ArrayList<LTERM>( _alTerms );
+				new_terms.add(new_term);	
+				return new PVAR_EXPR( _pName._sPVarName, new_terms );
+			}else{
+				return this;
+			}
+
 		}
 		
 		@Override

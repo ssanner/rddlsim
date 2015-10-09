@@ -305,14 +305,8 @@ public class Server implements Runnable {
 						RDDL.SUPPRESS_OBJECT_CAST = suppress_object_cast_temp;
 					}
 					
-					// Check state-action constraints (also checks maxNonDefActions)
-					try {
-						state.checkStateActionConstraints(ds);
-					} catch (Exception e) {
-						System.out.println("TRIAL ERROR -- STATE-ACTION CONSTRAINT VIOLATION:\n" + e);
-						break;
-					}
-					
+					//modified by ashwinnr
+					//first update so that constraints can have interm fluents in them
 					try {
 						state.computeNextState(ds, rand);
 					} catch (Exception ee) {
@@ -321,6 +315,15 @@ public class Server implements Runnable {
 						throw ee;
 						//System.exit(1);
 					}
+					
+					// Check state-action constraints (also checks maxNonDefActions)
+					try {
+						state.checkStateActionConstraints(ds);
+					} catch (Exception e) {
+						System.out.println("TRIAL ERROR -- STATE-ACTION CONSTRAINT VIOLATION:\n" + e);
+						break;
+					}
+					
 					//for ( PVAR_NAME pn : state._observ.keySet() ) {
 					//	System.out.println("check1 " + pn);
 					//	for( ArrayList<LCONST> aa : state._observ.get(pn).keySet()) {
