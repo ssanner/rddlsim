@@ -23,6 +23,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -46,7 +47,6 @@ import rddl.policy.RandomBoolPolicy;
 import rddl.viz.GenericScreenDisplay;
 import rddl.viz.NullScreenDisplay;
 import rddl.viz.StateViz;
-
 import util.Timer;
 
 public class Server implements Runnable {
@@ -117,7 +117,7 @@ public class Server implements Runnable {
 	private RDDL rddl = null;
 	private static int ID = 0;
 	private static int DEFAULT_NUM_ROUNDS = 30;
-    private static long DEFAULT_TIME_ALLOWED = 1080000; // milliseconds = 18 minutes
+    private static long DEFAULT_TIME_ALLOWED = Long.MAX_VALUE; // milliseconds = 18 minutes
 	public int port;
 	public int id;
 	public String clientName = null;
