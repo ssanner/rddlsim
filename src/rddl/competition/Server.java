@@ -139,6 +139,8 @@ public class Server implements Runnable {
 	 */
 	public static void main(String[] args) {
 		
+		System.out.println("Args : " + Arrays.toString( args ) );
+		
 		// StateViz state_viz = new GenericScreenDisplay(true); 
 		StateViz state_viz = new NullScreenDisplay(false);
 
