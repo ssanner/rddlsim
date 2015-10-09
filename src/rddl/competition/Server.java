@@ -136,8 +136,9 @@ public class Server implements Runnable {
 	 * 1. rddl description file name (can be directory), in RDDL format, with complete path
 	 * 2. (optional) port number
 	 * 3. (optional) random seed
+	 * @throws IOException 
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		
 		System.out.println("Args : " + Arrays.toString( args ) );
 		
@@ -154,14 +155,16 @@ public class Server implements Runnable {
 			System.exit(1);
 		}
 				
+		if ( args.length > 1) {
+			port = Integer.valueOf(args[1]);
+		}
+		ServerSocket socket1 = new ServerSocket(port);
+		
 		try {
 			// Load RDDL files
 			RDDL rddl = new RDDL(args[0]);
 
-			if ( args.length > 1) {
-				port = Integer.valueOf(args[1]);
-			}
-			ServerSocket socket1 = new ServerSocket(port);
+			
 			if (args.length > 2) {
 				DEFAULT_NUM_ROUNDS = Integer.valueOf(args[2]);
 			}
@@ -187,6 +190,13 @@ public class Server implements Runnable {
 			// TODO Auto-generated catch block
 			System.out.println(e);
 			e.printStackTrace();
+		} finally {
+			try {
+				System.out.println("Closing port " + PORT_NUMBER );
+				socket1.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	Server (Socket s, int i, RDDL rddl, StateViz state_viz, int port, RandomDataGenerator rgen) {
