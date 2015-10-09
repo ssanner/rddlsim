@@ -1,0 +1,28 @@
+domain inventory_control_continuous {
+
+	types { 
+		item : object;
+	};
+	
+	pvariables {
+		stock(item) : { state-fluent, real, default = 0 };
+		order(item) : { action-fluent, real, default = 0 };
+		demand(item) : { non-fluent, real, default = 5 };
+		capacity : { non-fluent, real, default = 500 };
+		payoff(item) : { non-fluent, real, default = 1 };
+		cost(item) : { non-fluent, real, default = 0.75 };
+	};
+	
+	cpfs {
+		stock'(?t) = if( stock(?t) < demand(?t) ) then order(?t) else stock(?t)-demand(?t)+order(?t);
+						
+	};
+	
+	reward = sum_{?t : item}[ payoff(?t) * min[ stock(?t), demand(?t) ] - cost(?t)*order(?t) ];
+	
+	state-invariants {
+		forall_{?t : item}[ stock(?t) >= 0 ];
+		forall_{?t : item}[ order(?t) >= 0 ];
+		[ sum_{?t : item} stock(?t) ] <= capacity;
+	};
+}

@@ -1,0 +1,26 @@
+non-fluents nf_spacecraft_test {
+	domain = spacecraft_control;
+	objects {
+		ship : {s1,s2};
+	};
+	
+	non-fluents {		
+		GOAL-X(s1)=10; GOAL-Y(s1)=10; GOAL-Z(s1)=10;
+		GOAL-X(s2)=0; GOAL-Y(s2)=-2; GOAL-Z(s2)=0;
+		SAFETY=0.0;
+	};
+}
+
+instance ic_spacecraft_test {
+	domain = spacecraft_control;
+	non-fluents = nf_spacecraft_test;
+	
+	init-state {
+		x(s1)=0;y(s1)=0;z(s1)=0;
+		x(s2)=10;y(s2)=10;z(s2)=10;
+	};
+	
+	//max-nondef-actions = 10;
+	horizon  = 100;
+	discount = 1.0;
+}
