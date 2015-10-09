@@ -608,6 +608,8 @@ public class HOPTranslate extends Translate implements Policy {
 			@Override
 			public void accept( Map.Entry< PVAR_NAME , ArrayList<ArrayList<LCONST>> > entry ) {
 				final PVAR_NAME pvar = entry.getKey();
+				//assuming number here
+				final double def_val = ( (Number) rddl_state.getDefaultValue( pvar ) ).doubleValue();
 				entry.getValue().parallelStream().forEach( new Consumer< ArrayList<LCONST> >() {
 					@Override
 					public void accept(ArrayList<LCONST> terms ) {
@@ -617,8 +619,11 @@ public class HOPTranslate extends Translate implements Policy {
 							.substitute( Collections.singletonMap( TIME_PREDICATE, TIME_TERMS.get(0) ), constants, objects)
 							.substitute( Collections.singletonMap( future_PREDICATE, future_TERMS.get(0) ) , constants, objects);
 						assert( ret_expr.containsKey( lookup ) );
-						synchronized( ret ){
-							ret.add( new PVAR_INST_DEF( pvar._sPVarName, ret_expr.get( lookup ), terms ) );	
+						double value = ret_expr.get( lookup );
+						if( value != def_val ){
+							synchronized( ret ){
+								ret.add( new PVAR_INST_DEF( pvar._sPVarName, ret_expr.get( lookup ), terms ) );	
+							}	
 						}
 						
 					}
