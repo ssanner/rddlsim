@@ -842,6 +842,7 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 		try {
 			Map<EXPR, Double> ret_expr = doPlan( s._state );
 			ArrayList<PVAR_INST_DEF> ret = getRootActions(ret_expr);
+			System.out.println("State : " + s );
 			System.out.println( "Action : " + ret );
 			return ret;
 		} catch (Exception e) {
