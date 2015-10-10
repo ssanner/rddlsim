@@ -363,7 +363,7 @@ public class Server implements Runnable {
 
 					stateViz.display(state, h);			
 					state.advanceNextState();
-					
+										
 					if (SHOW_TIMING)
 						System.out.println("**TIME to advance state: " + timer.GetTimeSoFarAndReset());
 										
