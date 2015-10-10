@@ -550,11 +550,11 @@ public class HOPTranslate extends Translate implements Policy {
 	
 	public HOPTranslate( List<String> args ) throws Exception{
 //		super.TranslateInit( domain_file, inst_file, lookahead, timeout );
-		super( args.subList(0, 4) );
+		super( args.subList(0, 5) );
 		System.out.println( args );
 		HOPTranslateInit( args.get( 0 ), args.get( 1 ), Integer.parseInt( args.get( 2 ) ), Double.parseDouble( args.get( 3 ) ), 
-				Integer.parseInt( args.get( 4 ) ), FUTURE_SAMPLING.valueOf( args.get( 5 ) ), 
-				HINDSIGHT_STRATEGY.valueOf( args.get( 6 ) ) );
+				Integer.parseInt( args.get( 5 ) ), FUTURE_SAMPLING.valueOf( args.get( 6 ) ), 
+				HINDSIGHT_STRATEGY.valueOf( args.get( 7 ) ) );
 	}
 	
 	@Override

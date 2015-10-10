@@ -13,6 +13,8 @@ import gurobi.GRBLinExpr;
 import gurobi.GRBModel;
 import gurobi.GRBVar;
 
+import java.io.BufferedOutputStream;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -32,6 +34,7 @@ import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.ToDoubleFunction;
 import java.util.stream.Collectors;
 
 import rddl.EvalException;
@@ -116,11 +119,12 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 	protected List<EXPR> saved_expr = new ArrayList<RDDL.EXPR>();
 	protected List<GRBVar> saved_vars = new ArrayList<GRBVar>();
 	protected Timer translate_time;
+	private StateViz viz;
 	
 	//pseudoconstructor - only one constructor allowed for rddl client
 	protected void TranslateInit( final String domain_file, final String inst_file, 
-			final int lookahead , final double timeout ) throws Exception, GRBException {
-		
+			final int lookahead , final double timeout, final StateViz viz ) throws Exception, GRBException {
+		this.viz = viz;
 		TIME_LIMIT_MINS = timeout;
 		
 		initializeRDDL(domain_file, inst_file);
@@ -833,7 +837,73 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 	
 	public Translate( List<String> args) throws Exception {
 		System.out.println( args );
-		TranslateInit( args.get(0), args.get(1), Integer.parseInt( args.get(2) ), Double.parseDouble( args.get(3) ) );
+		StateViz viz = null;
+		if( args.get(4).equals("reservoir") ){
+			viz = new StateViz() {
+				private final static String OUTPUT_FILE_LEVEL = "reservoir_levels_last.viz";
+				private final static String OUTPUT_FILE_RAIN = "reservoir_rain_last.viz";
+				
+				private BufferedWriter outfile_level = null;;
+				private BufferedWriter outfile_rain = null;;
+				
+				@Override
+				protected void finalize() throws Throwable {
+					outfile_level.close(); outfile_rain.close();
+				}
+				
+				@Override
+				public void display(State s, int time) {
+					if( outfile_level == null ){
+						try {
+							outfile_level = new BufferedWriter( new FileWriter( new File( OUTPUT_FILE_LEVEL ) ) );
+							outfile_rain = new BufferedWriter( new FileWriter( new File( OUTPUT_FILE_RAIN ) ) );
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+					}
+					
+					try {
+						PVAR_NAME pvar = new PVAR_NAME("rlevel");						
+						double[] levels = s.generateAtoms( pvar ).stream()
+								.mapToDouble( new ToDoubleFunction< ArrayList<LCONST> > () {
+									public double applyAsDouble( ArrayList<LCONST> value) {
+										try {
+											return (Double)s.getPVariableAssign(pvar, value);
+										} catch (EvalException e) {
+											e.printStackTrace();
+										}
+										return Double.NaN;
+									}
+								} ).toArray();
+						outfile_level.write( Arrays.toString( levels ) );
+						outfile_level.write( "\n" );
+						outfile_level.flush();
+						
+						PVAR_NAME rainvar = new PVAR_NAME("rain");
+						double[] rain = s.generateAtoms( rainvar ).stream()
+								.mapToDouble( new ToDoubleFunction< ArrayList<LCONST> > () {
+									public double applyAsDouble( ArrayList<LCONST> value) {
+										try {
+											return (Double)s.getPVariableAssign( rainvar, value);
+										} catch (EvalException e) {
+											e.printStackTrace();
+										}
+										return Double.NaN;
+									}
+								} ).toArray();
+						outfile_rain.write( Arrays.toString( rain ) );
+						outfile_rain.write( "\n" );
+						outfile_rain.flush();
+						
+					} catch (EvalException | IOException e) {
+						e.printStackTrace();
+					}
+				}
+			};
+		}
+		
+		TranslateInit( args.get(0), args.get(1), Integer.parseInt( args.get(2) ), Double.parseDouble( args.get(3) ),
+				viz );
 //		doPlanInitState();
 	}
 
@@ -844,6 +914,7 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 			ArrayList<PVAR_INST_DEF> ret = getRootActions(ret_expr);
 			System.out.println("State : " + s );
 			System.out.println( "Action : " + ret );
+			viz.display(s, 0);
 			return ret;
 		} catch (Exception e) {
 			e.printStackTrace();
