@@ -589,6 +589,7 @@ public class HOPTranslate extends Translate implements Policy {
 								   Double.valueOf( df.format( grb_var.get( DoubleAttr.X ) ) ) );
 					   } catch (GRBException e) {
 							e.printStackTrace();
+							System.exit(1);
 					   }
 						  
 					}

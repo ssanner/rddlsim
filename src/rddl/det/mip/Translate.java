@@ -909,10 +909,10 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 
 	@Override
 	public ArrayList<PVAR_INST_DEF> getActions(State s) throws EvalException {
+		System.out.println("State : " + s );
 		try {
 			Map<EXPR, Double> ret_expr = doPlan( s._state );
 			ArrayList<PVAR_INST_DEF> ret = getRootActions(ret_expr);
-			System.out.println("State : " + s );
 			System.out.println( "Action : " + ret );
 			viz.display(s, 0);
 			return ret;

@@ -25,7 +25,7 @@ domain reservoir_control_mdp {
 		total-inflow(reservoir) : { interm-fluent, real, level=2 };
 		total-outflow(reservoir) : { interm-fluent, real, level=2 };
 		
-		RAIN-VARIANCE : { non-fluent, real, default=0.5 };
+		RAIN-VARIANCE : { non-fluent, real, default=0.05 };
 		
 	};
 	
