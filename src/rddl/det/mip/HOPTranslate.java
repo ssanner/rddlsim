@@ -610,7 +610,7 @@ public class HOPTranslate extends Translate implements Policy {
 	@Override
 	protected Map< EXPR, Double > outputResults(){
 		
-		DecimalFormat df = new DecimalFormat("#.#####"); df.setRoundingMode( RoundingMode.DOWN );
+		DecimalFormat df = new DecimalFormat("#.################"); df.setRoundingMode( RoundingMode.DOWN );
 		Map< EXPR, Double > ret = new HashMap< EXPR, Double >();
 		
 		HashMap<PVAR_NAME, ArrayList<ArrayList<LCONST>>> src = new HashMap<>();
