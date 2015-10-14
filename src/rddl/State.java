@@ -11,6 +11,7 @@
 package rddl;
 
 import java.io.File;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -107,7 +108,7 @@ public class State {
 	// Temporarily holds next state while it is being computed
 	public HashMap<PVAR_NAME,HashMap<ArrayList<LCONST>,Object>> _nextState;
 
-//	public static final DecimalFormat _df = new DecimalFormat("#.##########");
+	public static final DecimalFormat _df = new DecimalFormat("#.####################");
 
 	public void init(HashMap<TYPE_NAME,OBJECTS_DEF> domain_objects,
 					 HashMap<TYPE_NAME,OBJECTS_DEF> nonfluent_objects,
@@ -122,7 +123,7 @@ public class State {
 					 ArrayList<BOOL_EXPR> state_invariants,
 					 EXPR reward, 
 					 int max_nondef_actions) {
-		
+		_df.setRoundingMode( RoundingMode.DOWN );
 		_hmPVariables = pvariables;
 		_hmTypes = typedefs;
 		_hmCPFs = cpfs;
@@ -460,7 +461,7 @@ public class State {
 			
 			Object value = cpf._exprEquals.sample(subs, this, _rand);
 			if( value instanceof Number ){
-				String interm_value = NumberFormat.getInstance().format( (Number) value );
+				String interm_value = _df.format( (Number) value );
 				if( value instanceof Double ){
 					value = Double.valueOf( interm_value );
 				}else if( value instanceof Integer ){

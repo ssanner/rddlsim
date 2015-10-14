@@ -637,7 +637,7 @@ public class HOPTranslate extends Translate implements Policy {
 					  try {
 						   GRBVar grb_var = EXPR.grb_cache.get( action_var );
 						   assert( grb_var != null );
-						   String interm_val = NumberFormat.getInstance().format( grb_var.get( DoubleAttr.X ) );
+						   String interm_val = State._df.format( grb_var.get( DoubleAttr.X ) );
 						   
 						   ret.put( action_var, Double.valueOf(  interm_val ) );
 					   } catch (GRBException e) {
