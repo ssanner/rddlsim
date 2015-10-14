@@ -10,6 +10,7 @@
 package rddl;
 
 import gurobi.GRB;
+
 import gurobi.GRBConstr;
 import gurobi.GRBEnv;
 import gurobi.GRBException;
@@ -28,6 +29,8 @@ import java.util.stream.Stream;
 
 import javax.swing.event.ListSelectionEvent;
 
+import org.apache.commons.collections4.map.AbstractReferenceMap;
+import org.apache.commons.collections4.map.ReferenceMap;
 import org.apache.commons.math3.*;
 import org.apache.commons.math3.random.RandomDataGenerator;
 import org.apache.commons.math3.distribution.MultivariateNormalDistribution;
@@ -1656,11 +1659,14 @@ public class RDDL {
 		 * override hashCode() and equals(Object). 
 		 */
 //		protected static HashMap< Class<? extends EXPR> , WeakHashMap< EXPR, GRBVar > > grb_cache = new HashMap< >();
-		public static Map< String, String > name_map = new TreeMap<>();
-		public static Map<String, String > reverse_name_map = new TreeMap<>();
+		public static ReferenceMap< String, String > name_map = new ReferenceMap<>( 
+				AbstractReferenceMap.ReferenceStrength.HARD, AbstractReferenceMap.ReferenceStrength.HARD, true );
+		public static ReferenceMap<String, String > reverse_name_map = new ReferenceMap<>( 
+				AbstractReferenceMap.ReferenceStrength.HARD, AbstractReferenceMap.ReferenceStrength.HARD, true );
 		
 		private  static int nameId = 0;
-		public static HashMap< EXPR, GRBVar > grb_cache = new HashMap< >();
+		public static Map< EXPR, GRBVar > grb_cache = Collections.synchronizedMap( new ReferenceMap<  >( 
+				AbstractReferenceMap.ReferenceStrength.HARD, AbstractReferenceMap.ReferenceStrength.HARD, true ) );
 		//0 = E*0
 		
 		protected static List<EXPR> expandQuantifier( 
@@ -1753,10 +1759,14 @@ public class RDDL {
 				reverse_name_map.put( next_name, expr.toString() );
 				
 				double lb = getGRB_LB(type); double ub = getGRB_UB(type);
-				GRBVar new_var = model.addVar( lb, ub, 1.0d, type, next_name  );
-				grb_cache.put( expr, new_var );
+				GRBVar new_var = null;
+				synchronized( model ){
+					new_var = model.addVar( lb, ub, 1.0d, type, next_name  );
+					grb_cache.put( expr, new_var );	
+					model.update();
+				}
 //				System.out.println("Adding var " + expr.toString() + " " + new_var + "[" + lb + "," + ub + "]" + " type : " + type );
-				model.update();
+				
 				return new_var; 
 			} catch (GRBException e) {
 				e.printStackTrace();
@@ -1811,7 +1821,7 @@ public class RDDL {
 			grb_cache.clear();
 			name_map.clear();
 			reverse_name_map.clear();
-			nameId = 0;
+//			nameId = 0;
 		}
 		
 	}

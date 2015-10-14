@@ -14,5 +14,10 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="D:/workspace/RDDLv2/lib/gurobi605/linux64/lib/gurobi.jar"/>
+	<classpathentry kind="lib" path="D:/workspace/RDDLv2/lib/commons-collections4-4.0.jar" sourcepath="D:/workspace/RDDLv2/lib/commons-collections4-4.0-sources.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:file:/D:/workspace/RDDLv2/lib/commons-collections4-4.0-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

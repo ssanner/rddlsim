@@ -83,18 +83,63 @@ public class HOPTranslate extends Translate implements Policy {
 		this.num_futures = n_futures;
 		this.future_gen = sampling;
 		rand = new RandomDataGenerator( );
-		
-		for( int f = 0 ; f < this.num_futures; ++f ){
-			future_TERMS.add( new RDDL.OBJECT_VAL( "future" + f ) );
-			if( future_gen.equals( FUTURE_SAMPLING.MEAN ) ){
-				break;
-			}
-		}
-		objects.put( future_TYPE,  new OBJECTS_DEF(  future_TYPE._STypeName, future_TERMS ) );
+		this.hindsight_method =  hinsight_strat;
+	}
+	
+	@Override
+	protected void addExtraPredicates() {
+		super.addExtraPredicates();
 		if( future_gen.equals( FUTURE_SAMPLING.MEAN ) ){
 			num_futures = 1;
 		}
-		this.hindsight_method =  hinsight_strat;
+		for( int f = 0 ; f < this.num_futures; ++f ){
+			future_TERMS.add( new RDDL.OBJECT_VAL( "future" + f ) );
+		}
+		objects.put( future_TYPE,  new OBJECTS_DEF(  future_TYPE._STypeName, future_TERMS ) );
+	}
+
+	@Override
+	protected void addAllVariables() {
+
+		HashMap<PVAR_NAME, ArrayList<ArrayList<LCONST>>> src = new HashMap<PVAR_NAME, ArrayList<ArrayList<LCONST>>>();
+		src.putAll( rddl_state_vars ); src.putAll( rddl_action_vars ); src.putAll( rddl_interm_vars ); src.putAll( rddl_observ_vars );
+		
+		src.forEach( new BiConsumer<PVAR_NAME, ArrayList<ArrayList<LCONST>> >() {
+			@Override
+			public void accept(PVAR_NAME pvar, ArrayList<ArrayList<LCONST>> u) {
+				u.parallelStream().forEach( new Consumer<ArrayList<LCONST>>() {
+					@Override
+					public void accept(ArrayList<LCONST> terms) {
+						EXPR pvar_expr = new PVAR_EXPR(pvar._sPVarName, terms )
+							.addTerm(TIME_PREDICATE, constants, objects)
+							.addTerm( future_PREDICATE, constants, objects );
+							
+						TIME_TERMS.parallelStream().forEach( new Consumer<LCONST>() {
+							@Override
+							public void accept(LCONST time_term ) {
+								EXPR this_t = pvar_expr.substitute( Collections.singletonMap( TIME_PREDICATE, time_term), 
+										constants, objects);
+								
+								future_TERMS.parallelStream().forEach( new Consumer< LCONST >() {
+									@Override
+									public void accept(LCONST future_term) {
+										EXPR this_tf = 
+												this_t.substitute( Collections.singletonMap( future_PREDICATE, future_term ), constants, objects );
+										synchronized( grb_model ){
+											System.out.println("Adding var " + pvar.toString() + " " + terms + " " + time_term + " " + future_term );
+											GRBVar gvar = this_tf.getGRBConstr( GRB.EQUAL, grb_model, constants, objects, type_map);
+											saved_expr.add( this_tf );
+										}
+									}
+								});
+								
+							}
+						});
+					}
+				});
+			}
+		});
+		
 	}
 	
 	@Override
@@ -191,17 +236,19 @@ public class HOPTranslate extends Translate implements Policy {
 																			GRB.EQUAL, grb_model, constants, objects, type_map);
 																	
 																	try {
-																		grb_model.addConstr( lhs_var, GRB.EQUAL, rhs_var, "CPT_"+p.toString()+"_"+terms+"_"+time_term_index+"_"+future_term_index );
+																		GRBConstr this_constr 
+																			= grb_model.addConstr( lhs_var, GRB.EQUAL, rhs_var, "CPT_"+p.toString()+"_"+terms+"_"+time_term_index+"_"+future_term_index );
+																		to_remove_constr.add( this_constr );
 																	} catch (GRBException e) {
 																		e.printStackTrace();
 																		System.exit(1);
 																	}
 
-																	saved_expr.add( lhs_future );
-																	saved_expr.add( rhs_future );
+//																	saved_expr.add( lhs_future );
+//																	saved_expr.add( rhs_future );
 
-																	saved_vars.add( lhs_var );
-																	saved_vars.add( rhs_var );
+//																	saved_vars.add( lhs_var );
+//																	saved_vars.add( rhs_var );
 																}
 //															}
 //														}
@@ -323,7 +370,7 @@ public class HOPTranslate extends Translate implements Policy {
 							GRBVar this_future_var = subs_tf.getGRBConstr( GRB.EQUAL, grb_model, constants, objects, type_map);
 							
 							saved_expr.add( subs_tf );
-							saved_vars.add( this_future_var );
+//							saved_vars.add( this_future_var );
 							//IDEA : weightby probability of trajecotry of futures
 							//what is the probability of a determinization 
 							all_sum.addTerm( 1.0d/num_futures, this_future_var );
@@ -381,7 +428,6 @@ public class HOPTranslate extends Translate implements Policy {
 					rhs_expr = new INT_CONST_EXPR( (int)rhs );
 				}
 				GRBVar rhs_var = rhs_expr.getGRBConstr( GRB.EQUAL, grb_model, constants, objects, type_map );
-				saved_vars.add( rhs_var ); saved_expr.add( rhs_expr );
 				
 				PVAR_EXPR stationary_pvar_expr = new PVAR_EXPR( p._sPVarName, terms );
 				EXPR non_stationary_pvar_expr = stationary_pvar_expr
@@ -394,9 +440,12 @@ public class HOPTranslate extends Translate implements Policy {
 					.substitute( Collections.singletonMap( future_PREDICATE, future_TERMS.get(future_id) ), constants, objects);
 				
 					GRBVar lhs_var = this_future_init_state.getGRBConstr( GRB.EQUAL, grb_model, constants, objects, type_map);
-					grb_model.addConstr( lhs_var, GRB.EQUAL, rhs_var, "initState_"+p.toString()+terms+"f_"+future_id );
+					GRBConstr this_constr = grb_model.addConstr( lhs_var, GRB.EQUAL, rhs_var, "initState_"+p.toString()+terms+"f_"+future_id );
 					
-					saved_vars.add( lhs_var ); saved_expr.add( this_future_init_state );
+//					saved_vars.add( lhs_var ); saved_expr.add( this_future_init_state );
+//					saved_vars.add( rhs_var ); saved_expr.add( rhs_expr );
+					
+					to_remove_constr.add( this_constr );
 					
 					if( future_gen.equals( FUTURE_SAMPLING.MEAN ) ){
 						break;
@@ -442,7 +491,8 @@ public class HOPTranslate extends Translate implements Policy {
 										GRBVar constrained_var = this_tf.getGRBConstr( GRB.EQUAL, grb_model, constants, objects, type_map);
 										grb_model.addConstr( constrained_var, GRB.EQUAL, 1, "constraint=1_"+e.toString()+"_"+
 												time_term+"_" + future_term );
-										saved_expr.add( this_tf ); saved_vars.add( constrained_var );
+										saved_expr.add( this_tf ); 
+										//saved_vars.add( constrained_var );
 									} catch (GRBException e) {
 										e.printStackTrace();
 										System.exit(1);
@@ -497,7 +547,7 @@ public class HOPTranslate extends Translate implements Policy {
 					GRBVar gvar = t.getGRBConstr( GRB.EQUAL, grb_model, constants, objects, type_map);
 					try {
 						grb_model.addConstr( gvar, GRB.EQUAL, 1, "hindsight_constraint_"+t.toString() );
-						saved_expr.add( t ); saved_vars.add( gvar );
+						saved_expr.add( t ); // saved_vars.add( gvar );
 					} catch (GRBException e) {
 						e.printStackTrace();
 						System.exit(1);
@@ -634,5 +684,61 @@ public class HOPTranslate extends Translate implements Policy {
 		
 		return ret;
 	}
+	
+	@Override
+	protected void prepareModel( ) throws Exception{
+		System.out.println("--------------Translating Constraints-------------");
+		translateConstraints( );
+		System.out.println("--------------Translating Reward-------------");
+		translateReward( );
+	}
+	
+	@Override
+	public Map< EXPR, Double > doPlan(  HashMap<PVAR_NAME, HashMap<ArrayList<LCONST>, Object>> subs ) throws Exception{
+		//deterministic : model is already prepared except for initial state
+
+		translate_time.ResumeTimer();
+		System.out.println("--------------Translating CPTs-------------");
+		translateCPTs( );
+		System.out.println("--------------Initial State-------------");
+		translateInitialState( subs );
+		translate_time.PauseTimer();
+		
+		goOptimize();
+		Map< EXPR, Double > ret = outputResults();
+		if( OUTPUT_LP_FILE ) {
+			outputLPFile( );
+		}
+		modelSummary();		
+		cleanUp();
+		return ret;
+	}
+	
+	@Override
+	public Map< EXPR, Double >  doPlan( final ArrayList<PVAR_INST_DEF> initState ) throws Exception{
+
+//		System.out.println( "Names : " );
+//		RDDL.EXPR.name_map.forEach( (a,b) -> System.out.println( a + " " + b ) );
+//		grb_model.set( GRB.IntParam.SolutionLimit, 1 );
+//		prepareModel( initState ); model already prepared in constructor
+		
+		translate_time.ResumeTimer();
+		System.out.println("--------------Translating CPTs-------------");
+		translateCPTs( );
+		System.out.println("--------------Initial State-------------");
+		translateInitialState( initState );
+		translate_time.PauseTimer();	
+		
+		goOptimize();
+		Map< EXPR, Double > ret = outputResults();
+		if( OUTPUT_LP_FILE ) {
+			outputLPFile( );
+		}
+		
+		modelSummary();		
+		cleanUp();
+		return ret;
+	}
+
 	
 }

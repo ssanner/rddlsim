@@ -10,6 +10,7 @@ non-fluents nf_ic_1 {
 	
 	non-fluents {		
 		capacity = 500;
+		
 	};
 }
 
