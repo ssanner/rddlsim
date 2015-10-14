@@ -333,7 +333,7 @@ public class Server implements Runnable {
 						state.checkStateActionConstraints(ds);
 					} catch (Exception e) {
 						System.out.println("TRIAL ERROR -- STATE-ACTION CONSTRAINT VIOLATION:\n" + e);
-						break;
+						throw e;
 					}
 					
 					//for ( PVAR_NAME pn : state._observ.keySet() ) {
