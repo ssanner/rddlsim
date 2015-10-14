@@ -11,6 +11,8 @@
 package rddl;
 
 import java.io.File;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -104,6 +106,8 @@ public class State {
 	
 	// Temporarily holds next state while it is being computed
 	public HashMap<PVAR_NAME,HashMap<ArrayList<LCONST>,Object>> _nextState;
+
+//	public static final DecimalFormat _df = new DecimalFormat("#.##########");
 
 	public void init(HashMap<TYPE_NAME,OBJECTS_DEF> domain_objects,
 					 HashMap<TYPE_NAME,OBJECTS_DEF> nonfluent_objects,
@@ -370,7 +374,11 @@ public class State {
 		
 		// Check state-action constraints
 		HashMap<LVAR,LCONST> subs = new HashMap<LVAR,LCONST>();
-		for (BOOL_EXPR constraint : _alActionPreconditions) {
+		
+		ArrayList<BOOL_EXPR> all_constraints = new ArrayList<BOOL_EXPR>( _alActionPreconditions );
+		all_constraints.addAll( _alStateInvariants );
+		
+		for (BOOL_EXPR constraint : all_constraints ) {
 			// satisfied must be true if get here
 			try {
 				if (! (Boolean)constraint.sample(subs, this, null) )
@@ -451,6 +459,15 @@ public class State {
 			}
 			
 			Object value = cpf._exprEquals.sample(subs, this, _rand);
+			if( value instanceof Number ){
+				String interm_value = NumberFormat.getInstance().format( (Number) value );
+				if( value instanceof Double ){
+					value = Double.valueOf( interm_value );
+				}else if( value instanceof Integer ){
+					value = Integer.valueOf( interm_value );					
+				}
+			}
+			
 			if (DISPLAY_UPDATES) System.out.println(value);
 			
 			// Update value

@@ -610,7 +610,9 @@ public class HOPTranslate extends Translate implements Policy {
 	@Override
 	protected Map< EXPR, Double > outputResults(){
 		
-		DecimalFormat df = new DecimalFormat("#.############"); df.setRoundingMode( RoundingMode.DOWN );
+//		DecimalFormat df = new DecimalFormat("#.##########");
+//		df.setRoundingMode( RoundingMode.DOWN );
+		
 		Map< EXPR, Double > ret = new HashMap< EXPR, Double >();
 		
 		HashMap<PVAR_NAME, ArrayList<ArrayList<LCONST>>> src = new HashMap<>();
@@ -635,8 +637,9 @@ public class HOPTranslate extends Translate implements Policy {
 					  try {
 						   GRBVar grb_var = EXPR.grb_cache.get( action_var );
 						   assert( grb_var != null );
-						   ret.put( action_var, 
-								   Double.valueOf( df.format( grb_var.get( DoubleAttr.X ) ) ) );
+						   String interm_val = NumberFormat.getInstance().format( grb_var.get( DoubleAttr.X ) );
+						   
+						   ret.put( action_var, Double.valueOf(  interm_val ) );
 					   } catch (GRBException e) {
 							e.printStackTrace();
 							System.exit(1);
