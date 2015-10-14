@@ -174,6 +174,9 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 		objects.put( TIME_TYPE,  new OBJECTS_DEF(  TIME_TYPE._STypeName, TIME_TERMS ) );		
 	}
 
+	//i think this is not necessary
+	//since we are only removing constraints between states
+	//vars are added as needed by EXPR
 	protected void addAllVariables() {
 		//canonical vars for pvar exprs
 		HashMap<PVAR_NAME, ArrayList<ArrayList<LCONST>>> src = new HashMap<PVAR_NAME, ArrayList<ArrayList<LCONST>>>();
@@ -895,10 +898,10 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 		grb_model.set( GRB.IntAttr.ModelSense, -1);
 		
 		//create vars for state, action, interm vars over time
-		translate_time.ResumeTimer();
-		addAllVariables();
+//		translate_time.ResumeTimer();
+//		addAllVariables();
 		grb_model.update();
-		translate_time.PauseTimer();
+//		translate_time.PauseTimer();
 		
 	}
 
