@@ -18,9 +18,11 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.math.RoundingMode;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.Time;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -36,6 +38,8 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.ToDoubleFunction;
 import java.util.stream.Collectors;
+
+import org.apache.commons.math3.random.RandomDataGenerator;
 
 import rddl.EvalException;
 import rddl.RDDL;
@@ -901,9 +905,9 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 		grb_env.set( IntParam.InfUnbdInfo , GRB_INFUNBDINFO );
 		grb_env.set( IntParam.DualReductions, GRB_DUALREDUCTIONS );
 		grb_env.set( IntParam.MIPFocus, 1);
-//		grb_env.set( DoubleParam.FeasibilityTol, Math.pow( 10 , -(1+State._df.getMaximumFractionDigits() ) ) );
-//		grb_env.set( DoubleParam.IntFeasTol, Math.pow( 10 , -(1+State._df.getMaximumFractionDigits() ) ) );
-//		grb_env.set( DoubleParam.FeasRelaxBigM, RDDL.EXPR.M);
+		grb_env.set( DoubleParam.FeasibilityTol, 1e-9 );// Math.pow( 10 , -(1+State._df.getMaximumFractionDigits() ) ) );
+		grb_env.set( DoubleParam.IntFeasTol, 1e-9 ); //Math.pow( 10 , -(1+State._df.getMaximumFractionDigits() ) ) );
+		grb_env.set( DoubleParam.FeasRelaxBigM, RDDL.EXPR.M);
 		
 		this.grb_model = new GRBModel( grb_env );
 		//max
@@ -995,6 +999,36 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 			if( viz != null ){
 				viz.display(s, 0);
 			}
+			//fix to prevent numeric errors of the overflow kind
+			int num_digs = State._df.getMaximumFractionDigits();
+			s.computeIntermFluents( ret, new RandomDataGenerator()  );
+			while( true ){
+				try{
+					s.checkStateActionConstraints(ret);
+					break;
+				}catch( EvalException exc ){
+					//can either return noop 
+					//here i am rounding down one digit at a time
+					num_digs = num_digs-1;
+					System.out.println("Constraint violatation : reducing precision to " + num_digs );
+					ret = reducePrecision( ret , num_digs );
+					System.out.println("Lower precision : " + ret );
+				}
+			}
+			//clear interms
+			s._alIntermNames.forEach( new Consumer< PVAR_NAME >() {
+				@Override
+				public void accept(PVAR_NAME t) {
+					try {
+						ArrayList<ArrayList<LCONST>> possible_terms = s.generateAtoms( t );
+						possible_terms.forEach( m -> s.setPVariableAssign(t, m, null ) );
+					} catch (EvalException e) {
+						e.printStackTrace();
+					}
+					
+				}
+			});
+
 			return ret;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -1003,6 +1037,29 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 		return null;
 	}
 
+	private ArrayList<PVAR_INST_DEF> reducePrecision(
+			ArrayList<PVAR_INST_DEF> ret, int  cur_digs) {
+		DecimalFormat temp_df = new DecimalFormat("#.##"); 
+		temp_df.setMaximumFractionDigits(cur_digs); 
+		temp_df.setRoundingMode( RoundingMode.DOWN );
+		
+		List<PVAR_INST_DEF> ret_lower = ret.stream().map( new Function< PVAR_INST_DEF,  PVAR_INST_DEF >() {
+			public PVAR_INST_DEF apply(PVAR_INST_DEF t) {
+				Object new_val = t._oValue;
+				if( t._oValue instanceof Number ){
+					String new_val_text = temp_df.format( t._oValue );
+					if( t._oValue instanceof Double ){
+						new_val = Double.valueOf( new_val_text );
+					}else if( t._oValue instanceof Integer ){
+						new_val = Integer.valueOf( new_val_text );
+					}
+				}
+				return new PVAR_INST_DEF( t._sPredName._sPVarName, new_val, t._alTerms );
+			}
+		} ).collect( Collectors.toList() );
+		
+		return new ArrayList<PVAR_INST_DEF>( ret_lower );
+	}
 	protected ArrayList<PVAR_INST_DEF> getRootActions(Map<EXPR, Double> ret_expr) {
 		final ArrayList<PVAR_INST_DEF> ret = new ArrayList<>();
 		if( ret_expr == null ){

@@ -431,50 +431,10 @@ public class State {
 	public void computeNextState(ArrayList<PVAR_INST_DEF> actions, RandomDataGenerator _rand) 
 		throws EvalException {
 
-		// Clear then set the actions
-		for (PVAR_NAME p : _actions.keySet())
-			_actions.get(p).clear();
-		setPVariables(_actions, actions);
-		
 		//System.out.println("Starting state: " + _state + "\n");
 		//System.out.println("Starting nonfluents: " + _nonfluents + "\n");
 		
-		// First compute intermediate variables (derived should have already been computed)
-		HashMap<LVAR,LCONST> subs = new HashMap<LVAR,LCONST>();
-		if (DISPLAY_UPDATES) System.out.println("Updating intermediate variables");
-		for (Pair ifluent : _alIntermGfluentOrdering) {
-			
-			PVAR_NAME p = (PVAR_NAME)ifluent._o1;
-			ArrayList<LCONST> gfluent = (ArrayList<LCONST>)ifluent._o2;
-			
-			if (DISPLAY_UPDATES) System.out.print("- " + p + gfluent);
-			CPF_DEF cpf = _hmCPFs.get(p);
-			if (cpf == null) 
-				throw new EvalException("Could not find cpf for: " + p + gfluent);
-			
-			subs.clear();
-			for (int i = 0; i < cpf._exprVarName._alTerms.size(); i++) {
-				LVAR v = (LVAR)cpf._exprVarName._alTerms.get(i);
-				LCONST c = (LCONST)gfluent.get(i);
-				subs.put(v,c);
-			}
-			
-			Object value = cpf._exprEquals.sample(subs, this, _rand);
-			if( value instanceof Number ){
-				String interm_value = _df.format( (Number) value );
-				if( value instanceof Double ){
-					value = Double.valueOf( interm_value );
-				}else if( value instanceof Integer ){
-					value = Integer.valueOf( interm_value );					
-				}
-			}
-			
-			if (DISPLAY_UPDATES) System.out.println(value);
-			
-			// Update value
-			HashMap<ArrayList<LCONST>,Object> pred_assign = _interm.get(p);
-			pred_assign.put(gfluent, value);
-		}
+		computeIntermFluents( actions, _rand );
 		
 		// Do same for next-state (keeping in mind primed variables)
 		if (DISPLAY_UPDATES) System.out.println("Updating next state");
@@ -500,7 +460,7 @@ public class State {
 					throw new EvalException("Could not find cpf for: " + primed + 
 							"... did you forget to prime (') the variable in the cpf definition?");
 				
-				subs.clear();
+				HashMap<LVAR,LCONST> subs = new HashMap< LVAR, LCONST>();
 				for (int i = 0; i < cpf._exprVarName._alTerms.size(); i++) {
 					LVAR v = (LVAR)cpf._exprVarName._alTerms.get(i);
 					LCONST c = (LCONST)gfluent.get(i);
@@ -547,7 +507,7 @@ public class State {
 				if (cpf == null) 
 					throw new EvalException("Could not find cpf for: " + p);
 	
-				subs.clear();
+				HashMap<LVAR, LCONST> subs = new HashMap<LVAR, LCONST>();
 				for (int i = 0; i < cpf._exprVarName._alTerms.size(); i++) {
 					LVAR v = (LVAR)cpf._exprVarName._alTerms.get(i);
 					LCONST c = (LCONST)gfluent.get(i);
@@ -573,6 +533,64 @@ public class State {
 		}
 	}
 	
+	public void computeIntermFluents(ArrayList<PVAR_INST_DEF> actions, RandomDataGenerator _rand) throws EvalException {
+		
+		setActions( actions );
+		
+		// First compute intermediate variables (derived should have already been computed)
+		HashMap<LVAR,LCONST> subs = new HashMap<LVAR,LCONST>();
+		if (DISPLAY_UPDATES) System.out.println("Updating intermediate variables");
+		for (Pair ifluent : _alIntermGfluentOrdering) {
+					
+			PVAR_NAME p = (PVAR_NAME)ifluent._o1;
+			ArrayList<LCONST> gfluent = (ArrayList<LCONST>)ifluent._o2;
+					
+			if (DISPLAY_UPDATES) {
+				System.out.print("- " + p + gfluent);
+			}
+			
+			CPF_DEF cpf = _hmCPFs.get(p);
+			if (cpf == null){
+				throw new EvalException("Could not find cpf for: " + p + gfluent);
+			}
+				
+			subs.clear();
+			for (int i = 0; i < cpf._exprVarName._alTerms.size(); i++) {
+				LVAR v = (LVAR)cpf._exprVarName._alTerms.get(i);
+				LCONST c = (LCONST)gfluent.get(i);
+				subs.put(v,c);
+			}
+					
+			Object value = cpf._exprEquals.sample(subs, this, _rand);
+			if( value instanceof Number ){
+				String interm_value = _df.format( (Number) value );
+				if( value instanceof Double ){
+					value = Double.valueOf( interm_value );
+				}else if( value instanceof Integer ){
+					value = Integer.valueOf( interm_value );					
+				}
+			}
+				
+			if (DISPLAY_UPDATES) System.out.println(value);
+					
+			// Update value
+			HashMap<ArrayList<LCONST>,Object> pred_assign = _interm.get(p);
+			pred_assign.put(gfluent, value);
+		}		
+	}
+
+	public void setActions(ArrayList<PVAR_INST_DEF> actions) throws EvalException {
+		// Clear then set the actions
+		for (PVAR_NAME p : _actions.keySet())
+			_actions.get(p).clear();
+		int non_def = setPVariables(_actions, actions);
+
+		// Check max-nondef actions
+		if (non_def > _nMaxNondefActions)
+			throw new EvalException("Number of non-default actions (" + non_def + ") exceeds limit (" + _nMaxNondefActions + ")");
+						
+	}
+
 	public void computeDerivedFluents() throws EvalException {
 		
 		// Compute derived variables in order

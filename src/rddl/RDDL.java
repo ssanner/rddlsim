@@ -10,7 +10,6 @@
 package rddl;
 
 import gurobi.GRB;
-
 import gurobi.GRBConstr;
 import gurobi.GRBEnv;
 import gurobi.GRBException;
@@ -23,6 +22,7 @@ import java.io.File;
 import java.nio.channels.UnsupportedAddressTypeException;
 import java.util.*;
 import java.util.function.BinaryOperator;
+import java.util.function.Consumer;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -1538,7 +1538,7 @@ public class RDDL {
 		//FIXME : String ? this should be an enumeration.
 		String  _sType = UNKNOWN; // real, int, bool, enum
 		public boolean _bDet  = false;    // deterministic?  (if not, then stochastic)
-		public static final int M = (int)1e9;//Integer.MAX_VALUE;
+		public static final int M = (int)1e6;//Integer.MAX_VALUE;
 		
 		public abstract Object sample(HashMap<LVAR,LCONST> subs, State s, RandomDataGenerator r) throws EvalException;
 		
@@ -4518,9 +4518,10 @@ public class RDDL {
 			sampleLTerms(_subTerms, _alTerms, subs, s, r);
 			
 			Object ret_val = s.getPVariableAssign(_pName, _subTerms);
-			if (ret_val == null)
+			if (ret_val == null){
 				throw new EvalException("RDDL.PVAR_EXPR: No value assigned to pvariable '" + 
-						_pName + _subTerms + "'" + (_subTerms.size() == 0 ? "\n... did you intend an enum value @" + _pName+ " or object value $" + _pName + "?" : "") + "");
+						_pName + _subTerms + "'" + (_subTerms.size() == 0 ? "\n... did you intend an enum value @" + _pName+ " or object value $" + _pName + "?" : "") + "");	
+			}
 			
 			if (_alMembers != null) {
 				

@@ -448,9 +448,6 @@ public class HOPTranslate extends Translate implements Policy {
 					
 					to_remove_constr.add( this_constr );
 					
-					if( future_gen.equals( FUTURE_SAMPLING.MEAN ) ){
-						break;
-					}
 				}
 			}
 		}
