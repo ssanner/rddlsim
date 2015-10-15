@@ -555,6 +555,15 @@ public class State {
 				}
 				
 				Object value = cpf._exprEquals.sample(subs, this, _rand);
+				if( value instanceof Number ){
+					String interm_value = _df.format( (Number) value );
+					if( value instanceof Double ){
+						value = Double.valueOf( interm_value );
+					}else if( value instanceof Integer ){
+						value = Integer.valueOf( interm_value );					
+					}
+				}
+				
 				if (DISPLAY_UPDATES) System.out.println(value);
 				
 				// Update value
