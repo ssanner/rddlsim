@@ -900,6 +900,10 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 		grb_env.set( DoubleParam.Heuristics, GRB_HEURISTIC );
 		grb_env.set( IntParam.InfUnbdInfo , GRB_INFUNBDINFO );
 		grb_env.set( IntParam.DualReductions, GRB_DUALREDUCTIONS );
+		grb_env.set( IntParam.MIPFocus, 1);
+//		grb_env.set( DoubleParam.FeasibilityTol, Math.pow( 10 , -(1+State._df.getMaximumFractionDigits() ) ) );
+//		grb_env.set( DoubleParam.IntFeasTol, Math.pow( 10 , -(1+State._df.getMaximumFractionDigits() ) ) );
+//		grb_env.set( DoubleParam.FeasRelaxBigM, RDDL.EXPR.M);
 		
 		this.grb_model = new GRBModel( grb_env );
 		//max

@@ -1538,7 +1538,7 @@ public class RDDL {
 		//FIXME : String ? this should be an enumeration.
 		String  _sType = UNKNOWN; // real, int, bool, enum
 		public boolean _bDet  = false;    // deterministic?  (if not, then stochastic)
-		protected int M = (int)1e6;//Integer.MAX_VALUE;
+		public static final int M = (int)1e9;//Integer.MAX_VALUE;
 		
 		public abstract Object sample(HashMap<LVAR,LCONST> subs, State s, RandomDataGenerator r) throws EvalException;
 		
