@@ -698,8 +698,6 @@ public class HOPTranslate extends Translate implements Policy {
 	
 	@Override
 	public Map< EXPR, Double > doPlan(  HashMap<PVAR_NAME, HashMap<ArrayList<LCONST>, Object>> subs ) throws Exception{
-		//deterministic : model is already prepared except for initial state
-
 		translate_time.ResumeTimer();
 		System.out.println("--------------Translating CPTs-------------");
 		translateCPTs( );

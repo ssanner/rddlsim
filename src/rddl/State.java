@@ -108,7 +108,7 @@ public class State {
 	// Temporarily holds next state while it is being computed
 	public HashMap<PVAR_NAME,HashMap<ArrayList<LCONST>,Object>> _nextState;
 
-	public static final DecimalFormat _df = new DecimalFormat("#.####################");
+	public static final DecimalFormat _df = new DecimalFormat("#.######");
 
 	public void init(HashMap<TYPE_NAME,OBJECTS_DEF> domain_objects,
 					 HashMap<TYPE_NAME,OBJECTS_DEF> nonfluent_objects,
@@ -508,6 +508,15 @@ public class State {
 				}
 				
 				Object value = cpf._exprEquals.sample(subs, this, _rand);
+				if( value instanceof Number ){
+					String interm_value = _df.format( (Number) value );
+					if( value instanceof Double ){
+						value = Double.valueOf( interm_value );
+					}else if( value instanceof Integer ){
+						value = Integer.valueOf( interm_value );					
+					}
+				}
+				
 				if (DISPLAY_UPDATES) System.out.println(value);
 				
 				// Update value if not default

@@ -82,6 +82,7 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 	protected static final LVAR TIME_PREDICATE = new LVAR( "?time" );
 	private static final TYPE_NAME TIME_TYPE = new TYPE_NAME( "time" );
 	protected static final boolean OUTPUT_LP_FILE = false;
+	private static final boolean GRB_LOGGING_ON = false;
 	private double TIME_LIMIT_MINS = 10; 
 	
 	private RDDL rddl_obj;
@@ -102,7 +103,7 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 	protected List<String> string_action_vars;
 	private List<String> string_observ_vars;
 	private List<String> string_interm_vars;
-	private GRBEnv grb_env;
+	private static GRBEnv grb_env;
 	protected GRBModel grb_model = null;
 	private HashMap<PVAR_NAME, TYPE_NAME> pred_type = new HashMap<>();
 	
@@ -884,7 +885,7 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 	}
 	
 	private void initializeGRB( ) throws GRBException {
-		this.GRB_log = domain_name + "__" + instance_name + ".grb";
+		this.GRB_log = GRB_LOGGING_ON ? domain_name + "__" + instance_name + ".grb" : "";
 		
 		this.grb_env = new GRBEnv(GRB_log);
 		grb_env.set( GRB.DoubleParam.TimeLimit, TIME_LIMIT_MINS*60 );

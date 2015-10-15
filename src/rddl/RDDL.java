@@ -6652,7 +6652,7 @@ public class RDDL {
 		public static final String LESS = "<".intern();
 		public static final String GREATEREQ = ">=".intern(); 
 		public static final String GREATER = ">".intern(); 
-		public static final String EQUAL = "==".intern(); 
+		public static final String EQUAL = "==".intern();
 		
 		@Override
 		public EXPR sampleDeterminization(RandomDataGenerator rand) {
@@ -6782,7 +6782,7 @@ public class RDDL {
 		}
 		
 		public static Object ComputeCompResult(Object o1, Object o2, String comp) throws EvalException {
-			
+			//10/14/2015 : modified by ashwinnr : allowing soft comparisions with constant TOLERANCE 
 			// Recursive case for vectors
 			if (o1 instanceof STRUCT_VAL && o2 instanceof STRUCT_VAL) {
 				
