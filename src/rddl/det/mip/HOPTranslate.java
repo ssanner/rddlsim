@@ -608,10 +608,13 @@ public class HOPTranslate extends Translate implements Policy {
 	}
 	
 	@Override
-	protected Map< EXPR, Double > outputResults(){
+	protected Map< EXPR, Double > outputResults() throws GRBException{
 		
 //		DecimalFormat df = new DecimalFormat("#.##########");
 //		df.setRoundingMode( RoundingMode.DOWN );
+		if( grb_model.get( IntAttr.SolCount ) == 0 ){
+			return null;
+		}
 		
 		Map< EXPR, Double > ret = new HashMap< EXPR, Double >();
 		
@@ -651,12 +654,21 @@ public class HOPTranslate extends Translate implements Policy {
 			
 		});
 		
+		System.out.println( "Maximum (unscaled) bound violation : " +  + grb_model.get( DoubleAttr.BoundVio	) );
+		System.out.println("Sum of (unscaled) constraint violations : " + grb_model.get( DoubleAttr.ConstrVioSum ) );
+		System.out.println("Maximum integrality violation : "+ grb_model.get( DoubleAttr.IntVio ) );
+		System.out.println("Sum of integrality violations : " + grb_model.get( DoubleAttr.IntVioSum ) );
+		System.out.println("Objective value : " + grb_model.get( DoubleAttr.ObjVal ) );
+		
 		return ret;
 	}
 	
 	@Override
 	protected ArrayList<PVAR_INST_DEF> getRootActions(Map<EXPR, Double> ret_expr) {
 		final ArrayList<PVAR_INST_DEF> ret = new ArrayList<PVAR_INST_DEF>();
+		if( ret_expr == null ){
+			return ret;
+		}
 		
 		rddl_action_vars.entrySet().parallelStream().forEach( new Consumer< Map.Entry< PVAR_NAME, ArrayList<ArrayList<LCONST>> > >() {
 			@Override
