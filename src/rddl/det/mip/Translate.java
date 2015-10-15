@@ -360,26 +360,32 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 		HashMap<EXPR, Double> ret = new HashMap< EXPR, Double >();
 
 		try{
-			System.out.println("---------- Interm trajectory ----------");
-			for( int time = 0; time < lookahead; ++time ){
-				ret.putAll( getAssignments( rddl_interm_vars, time ) ); 
-			}
 			
-			System.out.println("---------- Output trajectory ----------");
-			for( int time = 0; time < lookahead; ++time ){
-				ret.putAll( getAssignments( rddl_state_vars, time ) );
-			}
-			
-			System.out.println("---------- Output action assignments  ----------");
-			for( int time = 0; time < lookahead-1; ++time ){
-				ret.putAll( getAssignments( rddl_action_vars, time ) );
-			}
-
 			System.out.println( "Maximum (unscaled) bound violation : " +  + grb_model.get( DoubleAttr.BoundVio	) );
 			System.out.println("Sum of (unscaled) constraint violations : " + grb_model.get( DoubleAttr.ConstrVioSum ) );
 			System.out.println("Maximum integrality violation : "+ grb_model.get( DoubleAttr.IntVio ) );
 			System.out.println("Sum of integrality violations : " + grb_model.get( DoubleAttr.IntVioSum ) );
 			System.out.println("Objective value : " + grb_model.get( DoubleAttr.ObjVal ) );
+			
+			if( grb_model.get( IntAttr.SolCount ) > 0 ){
+				System.out.println("---------- Interm trajectory ----------");
+				for( int time = 0; time < lookahead; ++time ){
+					ret.putAll( getAssignments( rddl_interm_vars, time ) ); 
+				}
+				
+				System.out.println("---------- Output trajectory ----------");
+				for( int time = 0; time < lookahead; ++time ){
+					ret.putAll( getAssignments( rddl_state_vars, time ) );
+				}
+				
+				System.out.println("---------- Output action assignments  ----------");
+				for( int time = 0; time < lookahead-1; ++time ){
+					ret.putAll( getAssignments( rddl_action_vars, time ) );
+				}
+			}else{
+				ret = null;
+			}
+			
 		}catch( Exception exc ){
 			exc.printStackTrace();
 			dumpAllAssignments();
@@ -994,6 +1000,9 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 
 	protected ArrayList<PVAR_INST_DEF> getRootActions(Map<EXPR, Double> ret_expr) {
 		final ArrayList<PVAR_INST_DEF> ret = new ArrayList<>();
+		if( ret_expr == null ){
+			return ret;
+		}
 		
 		rddl_action_vars.entrySet().parallelStream().forEach( new Consumer< Map.Entry< PVAR_NAME, ArrayList<ArrayList<LCONST>> > >() {
 			@Override
