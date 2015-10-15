@@ -908,6 +908,7 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 		grb_env.set( DoubleParam.FeasibilityTol, 1e-9 );// Math.pow( 10 , -(1+State._df.getMaximumFractionDigits() ) ) );
 		grb_env.set( DoubleParam.IntFeasTol, 1e-9 ); //Math.pow( 10 , -(1+State._df.getMaximumFractionDigits() ) ) );
 		grb_env.set( DoubleParam.FeasRelaxBigM, RDDL.EXPR.M);
+		grb_env.set( IntParam.Threads, 4 );
 		
 		this.grb_model = new GRBModel( grb_env );
 		//max
@@ -1002,7 +1003,7 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 			//fix to prevent numeric errors of the overflow kind
 			int num_digs = State._df.getMaximumFractionDigits();
 			s.computeIntermFluents( ret, new RandomDataGenerator()  );
-			while( true ){
+			while( num_digs > 0 ){
 				try{
 					s.checkStateActionConstraints(ret);
 					break;
@@ -1015,6 +1016,12 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 					System.out.println("Lower precision : " + ret );
 				}
 			}
+			
+			if( num_digs == 0 ){
+				System.out.println("Turning into noop");
+				ret = new ArrayList<PVAR_INST_DEF>();
+			}
+			
 			//clear interms
 			s._alIntermNames.forEach( new Consumer< PVAR_NAME >() {
 				@Override

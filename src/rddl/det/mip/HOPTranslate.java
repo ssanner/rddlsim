@@ -442,6 +442,7 @@ public class HOPTranslate extends Translate implements Policy {
 				
 					GRBVar lhs_var = this_future_init_state.getGRBConstr( GRB.EQUAL, grb_model, constants, objects, type_map);
 					GRBConstr this_constr = grb_model.addConstr( lhs_var, GRB.EQUAL, rhs_var, "initState_"+p.toString()+terms+"f_"+future_id );
+					System.out.println( this_future_init_state + " " + rhs_expr );
 					
 //					saved_vars.add( lhs_var ); saved_expr.add( this_future_init_state );
 //					saved_vars.add( rhs_var ); saved_expr.add( rhs_expr );
