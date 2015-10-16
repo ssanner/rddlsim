@@ -325,6 +325,7 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 //		}
 		
 		to_remove_constr.clear();
+		grb_model.update();
 //		to_remove_expr.clear();
 //		to_remove_vars.clear();
 		
