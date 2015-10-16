@@ -140,13 +140,10 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 	
 	protected Timer translate_time;
 	private StateViz viz;
-	private String nodeFileDir;
 	
 	//pseudoconstructor - only one constructor allowed for rddl client
 	protected void TranslateInit( final String domain_file, final String inst_file, 
-			final int lookahead , final double timeout, final StateViz viz,
-			final String nodeFileDir ) throws Exception, GRBException {
-		this.nodeFileDir = nodeFileDir;
+			final int lookahead , final double timeout, final StateViz viz ) throws Exception, GRBException {
 		this.viz = viz;
 		TIME_LIMIT_MINS = timeout;
 
@@ -915,7 +912,6 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 		grb_env.set( IntParam.Threads, 4 );
 		
 		grb_env.set( DoubleParam.NodefileStart, 0.5 );
-		grb_env.set( StringParam.NodefileDir, nodeFileDir );
 		System.out.println("current nodefile directly " + grb_env.get( StringParam.NodefileDir ) );
 		
 		this.grb_model = new GRBModel( grb_env );
@@ -983,7 +979,7 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 		}
 		
 		TranslateInit( args.get(0), args.get(1), Integer.parseInt( args.get(2) ), Double.parseDouble( args.get(3) ),
-				viz, args.get(5) );
+				viz );
 //		doPlanInitState();
 	}
 
