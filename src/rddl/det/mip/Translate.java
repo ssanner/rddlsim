@@ -5,6 +5,7 @@ import gurobi.GRB.DoubleAttr;
 import gurobi.GRB.DoubleParam;
 import gurobi.GRB.IntAttr;
 import gurobi.GRB.IntParam;
+import gurobi.GRB.StringParam;
 import gurobi.GRBConstr;
 import gurobi.GRBEnv;
 import gurobi.GRBException;
@@ -909,6 +910,9 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 		grb_env.set( DoubleParam.IntFeasTol, 1e-9 ); //Math.pow( 10 , -(1+State._df.getMaximumFractionDigits() ) ) );
 		grb_env.set( DoubleParam.FeasRelaxBigM, RDDL.EXPR.M);
 		grb_env.set( IntParam.Threads, 4 );
+		
+		grb_env.set( DoubleParam.NodefileStart, 0.5 );
+		System.out.println("current nodefile directly " + grb_env.get( StringParam.NodefileDir ) );
 		
 		this.grb_model = new GRBModel( grb_env );
 		//max
