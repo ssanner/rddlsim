@@ -10,8 +10,8 @@ domain reservoir_control_mdp {
 		// Constants
 		LEVEL_MIN( reservoir )      : { non-fluent, real,  default = 0   };
 		LEVEL_MAX( reservoir )      : { non-fluent, real,  default = 10  };
+		CAPACITY : { non-fluent, real, default = 6000.0 };
 		LEVEL_PENALTY( reservoir ) : { non-fluent, real, default = -5 };
-		CAPACITY( reservoir ) : { non-fluent, real, default = 1500.0 };
 		
 		CONNECT( pipe, reservoir , reservoir ) : { non-fluent, bool, default = false };
 		rain( reservoir ) : { state-fluent, real, default = 4 };
@@ -25,13 +25,13 @@ domain reservoir_control_mdp {
 		total-inflow(reservoir) : { interm-fluent, real, level=2 };
 		total-outflow(reservoir) : { interm-fluent, real, level=2 };
 		
-		RAIN-VARIANCE : { non-fluent, real, default=0.005 };
+		RAIN-VARIANCE : { non-fluent, real, default=0.5 };
 		
 	};
 	
 	cpfs {
 	
-		rain'(?r) = Normal( rain(?r), RAIN-VARIANCE );
+		rain'(?r) = max[ 0, Normal( rain(?r), RAIN-VARIANCE )];
 		
 		//+ve if r1 -> r2 
 		//netflow is to resolve send u r1->r2 and v r2 -> r1
@@ -65,11 +65,8 @@ domain reservoir_control_mdp {
 	
 	action-preconditions {
 		forall_{?r : reservoir, ?p : pipe}[ send( ?r, ?p ) >= 0 ];
-		//checked by total inflow of r2
-		//forall_{?r : reservoir , ?p : pipe}[ ( send(?r,?p) > 0 ) => exists_{?r2 : reservoir}[ CONNECT(?p,?r,?r2) | CONNECT(?p,?r2,?r) ] ^ ( rlevel(?r2) + send(?r,?p) < CAPACITY(?r2) ) ];
-		//check for total inflow constraint < remaining capacity 
-		forall_{?r:reservoir}[ total-inflow(?r) <= (CAPACITY(?r)-rlevel(?r) ) ]; 
-		//check for total outflow constraint < remaining capacity 
+		forall_{?r:reservoir}[ total-inflow(?r) <= (CAPACITY - rlevel(?r) ) ]; 
+		
 		forall_{?r:reservoir}[ total-outflow(?r) <= rlevel(?r) ]; 
 		
 		forall_{?r:reservoir}[ total-inflow(?r) >= 0 ];
@@ -79,16 +76,21 @@ domain reservoir_control_mdp {
 		
 		//only one source per pipe
 		forall_{?p:pipe}[ ( sum_{?r : reservoir}[ ( send(?r,?p) > 0 ) ] ) <= 1 ];
+		
+		//checked by total inflow of r2
+		//forall_{?r : reservoir , ?p : pipe}[ ( send(?r,?p) > 0 ) => exists_{?r2 : reservoir}[ CONNECT(?p,?r,?r2) | CONNECT(?p,?r2,?r) ] ^ ( rlevel(?r2) + send(?r,?p) < CAPACITY(?r2) ) ];
+		//check for total inflow constraint < remaining capacity 
+		//check for total outflow constraint < remaining capacity 
+		
 	};
 	
 	state-invariants {
 		forall_{?r : reservoir}[ rain(?r) >= 0 ];
 		forall_{?r : reservoir}[ rlevel(?r) >= 0 ];
+		forall_{?p : pipe}[ [sum_{?r : reservoir, ?r2 : reservoir}[ CONNECT(?p,?r,?r2) ]] == 1 ];
+		
 		//forall_{?p : pipe, ?r : reservoir, ?r2 : reservoir}[ CONNECT(?p,?r,?r2) => ~CONNECT(?p,?r2,?r) ];
 		//forall_{?p : pipe}[ exists_{?r : reservoir, ?r2 : reservoir}[ CONNECT(?p,?r,?r2) ^ (?r ~= ?r2) ] ];
-		forall_{?p : pipe}[ [sum_{?r : reservoir, ?r2 : reservoir}[ CONNECT(?p,?r,?r2) ]] == 1 ];
-		//forall_{?r : reservoir}[ rlevel(?r) >= 0 ];
-		//forall_{?r : reservoir}[ [ sum_{?p: pipe}[ send(?r, ?p) ] ] <= rlevel(?r) ];
 	};
 }
  
