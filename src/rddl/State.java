@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.TreeMap;
+import java.util.function.Consumer;
 
 import org.apache.commons.math3.random.RandomDataGenerator;
 
@@ -590,6 +591,12 @@ public class State {
 			throw new EvalException("Number of non-default actions (" + non_def + ") exceeds limit (" + _nMaxNondefActions + ")");
 						
 	}
+	
+	public void clearActions( ) throws EvalException {
+		// Clear then set the actions
+		for (PVAR_NAME p : _actions.keySet())
+			_actions.get(p).clear();
+	}
 
 	public void computeDerivedFluents() throws EvalException {
 		
@@ -925,5 +932,20 @@ public class State {
 		}
 				
 		return sb.toString();
+	}
+
+	public void clearIntermFluents( ) {
+		_alIntermNames.forEach( new Consumer< PVAR_NAME >() {
+			@Override
+			public void accept(PVAR_NAME t) {
+				try {
+					ArrayList<ArrayList<LCONST>> possible_terms = generateAtoms( t );
+					possible_terms.forEach( m -> setPVariableAssign(t, m, null ) );
+				} catch (EvalException e) {
+					e.printStackTrace();
+				}
+				
+			}
+		});		
 	}
 }

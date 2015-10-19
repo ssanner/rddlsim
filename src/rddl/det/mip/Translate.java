@@ -910,9 +910,11 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 		grb_env.set( DoubleParam.FeasibilityTol, 1e-9 );// Math.pow( 10 , -(1+State._df.getMaximumFractionDigits() ) ) );
 		grb_env.set( DoubleParam.IntFeasTol, 1e-9 ); //Math.pow( 10 , -(1+State._df.getMaximumFractionDigits() ) ) );
 		grb_env.set( DoubleParam.FeasRelaxBigM, RDDL.EXPR.M);
-		grb_env.set( IntParam.Threads, 4 );
-		
+		grb_env.set( IntParam.Threads, 1 );
+		grb_env.set( IntParam.Quad, 0 );
+		grb_env.set( IntParam.Method, 1 );
 		grb_env.set( DoubleParam.NodefileStart, 0.5 );
+
 		System.out.println("current nodefile directly " + grb_env.get( StringParam.NodefileDir ) );
 		
 		this.grb_model = new GRBModel( grb_env );
@@ -975,8 +977,10 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 	public Translate( List<String> args) throws Exception {
 		System.out.println( args );
 		StateViz viz = null;
-		if( args.get(4).equals("reservoir") ){
-			viz = new ReservoirStateViz();
+		if( args.get(4).equalsIgnoreCase("reservoir") ){
+			viz = new PVarHeatMap( PVarHeatMap.reservoir_tags );			
+		}else if( args.get(4).equalsIgnoreCase("inventory") ){
+			viz = new PVarHeatMap( PVarHeatMap.inventory_tags );
 		}
 		
 		TranslateInit( args.get(0), args.get(1), Integer.parseInt( args.get(2) ), Double.parseDouble( args.get(3) ),
@@ -1002,9 +1006,7 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 			Map<EXPR, Double> ret_expr = doPlan( s._state );
 			ArrayList<PVAR_INST_DEF> ret = getRootActions(ret_expr);
 			System.out.println( "Action : " + ret );
-			if( viz != null ){
-				viz.display(s, 0);
-			}
+			
 			//fix to prevent numeric errors of the overflow kind
 			int num_digs = State._df.getMaximumFractionDigits();
 			s.computeIntermFluents( ret, new RandomDataGenerator()  );
@@ -1027,20 +1029,11 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 				ret = new ArrayList<PVAR_INST_DEF>();
 			}
 			
+			if( viz != null ){
+				viz.display(s, 0);
+			}
 			//clear interms
-			s._alIntermNames.forEach( new Consumer< PVAR_NAME >() {
-				@Override
-				public void accept(PVAR_NAME t) {
-					try {
-						ArrayList<ArrayList<LCONST>> possible_terms = s.generateAtoms( t );
-						possible_terms.forEach( m -> s.setPVariableAssign(t, m, null ) );
-					} catch (EvalException e) {
-						e.printStackTrace();
-					}
-					
-				}
-			});
-
+			s.clearIntermFluents();
 			return ret;
 		} catch (Exception e) {
 			e.printStackTrace();

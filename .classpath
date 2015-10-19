@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry excluding="rddl/solver/pomdp/pbvi/|rddl/solver/pomdp/pomcp/|rddl/solver/pomdp/vi/" kind="src" path="src"/>
+	<classpathentry excluding="rddl/solver/pomdp/pbvi/|rddl/solver/pomdp/pomcp/|rddl/solver/pomdp/vi/|rddl/det/mip/ReservoirStateViz.java" kind="src" path="src"/>
 	<classpathentry kind="lib" path="lib/grappa1_4.jar"/>
 	<classpathentry kind="lib" path="lib/java_cup.jar"/>
 	<classpathentry kind="lib" path="lib/jlex.jar"/>
