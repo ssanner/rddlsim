@@ -708,7 +708,8 @@ public class HOPTranslate extends Translate implements Policy {
 	}
 	
 	@Override
-	public Map< EXPR, Double > doPlan(  HashMap<PVAR_NAME, HashMap<ArrayList<LCONST>, Object>> subs ) throws Exception{
+	public Map< EXPR, Double > doPlan(  HashMap<PVAR_NAME, HashMap<ArrayList<LCONST>, Object>> subs ,
+			final boolean recover ) throws Exception{
 		translate_time.ResumeTimer();
 		System.out.println("--------------Translating CPTs-------------");
 		translateCPTs( );
@@ -716,7 +717,18 @@ public class HOPTranslate extends Translate implements Policy {
 		translateInitialState( subs );
 		translate_time.PauseTimer();
 		
-		goOptimize();
+		try{
+			goOptimize();
+		}catch( GRBException exc ){
+			int error_code = exc.getErrorCode();
+			if( error_code == GRB.ERROR_OUT_OF_MEMORY && recover ){
+				handleOOM();
+				return doPlan( subs, false );
+			}else{
+				throw exc;
+			}
+		}
+		
 		Map< EXPR, Double > ret = outputResults();
 		if( OUTPUT_LP_FILE ) {
 			outputLPFile( );
@@ -727,7 +739,8 @@ public class HOPTranslate extends Translate implements Policy {
 	}
 	
 	@Override
-	public Map< EXPR, Double >  doPlan( final ArrayList<PVAR_INST_DEF> initState ) throws Exception{
+	public Map< EXPR, Double >  doPlan( final ArrayList<PVAR_INST_DEF> initState,
+			final boolean recover ) throws Exception{
 
 //		System.out.println( "Names : " );
 //		RDDL.EXPR.name_map.forEach( (a,b) -> System.out.println( a + " " + b ) );
@@ -741,7 +754,18 @@ public class HOPTranslate extends Translate implements Policy {
 		translateInitialState( initState );
 		translate_time.PauseTimer();	
 		
-		goOptimize();
+		try{
+			goOptimize();
+		}catch( GRBException exc ){
+			int error_code = exc.getErrorCode();
+			if( error_code == GRB.ERROR_OUT_OF_MEMORY  && recover ){
+				handleOOM();
+				return doPlan( initState, false );
+			}else{
+				throw exc;
+			}
+		}
+		
 		Map< EXPR, Double > ret = outputResults();
 		if( OUTPUT_LP_FILE ) {
 			outputLPFile( );

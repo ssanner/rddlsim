@@ -217,10 +217,11 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 	}
 
 	public Map<EXPR, Double> doPlanInitState( ) throws Exception{
-		return doPlan( rddl_instance._alInitState ); 
+		return doPlan( rddl_instance._alInitState , true ); 
 	}
 
-	public Map< EXPR, Double > doPlan(  HashMap<PVAR_NAME, HashMap<ArrayList<LCONST>, Object>> subs ) throws Exception{
+	public Map< EXPR, Double > doPlan(  HashMap<PVAR_NAME, HashMap<ArrayList<LCONST>, Object>> subs ,
+			final boolean recover ) throws Exception{
 		//deterministic : model is already prepared except for initial state
 
 		translate_time.ResumeTimer();
@@ -228,7 +229,18 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 		translateInitialState( subs );
 		translate_time.PauseTimer();
 		
-		goOptimize();
+		try{
+			goOptimize();
+		}catch( GRBException exc ){
+			int error_code = exc.getErrorCode();
+			if( error_code == GRB.ERROR_OUT_OF_MEMORY && recover ){
+				handleOOM();
+				return doPlan( subs, false );
+			}else{
+				throw exc;
+			}
+		}
+		
 		Map< EXPR, Double > ret = outputResults();
 		if( OUTPUT_LP_FILE ) {
 			outputLPFile( );
@@ -238,7 +250,22 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 		return ret;
 	}
 	
-	public Map< EXPR, Double >  doPlan( final ArrayList<PVAR_INST_DEF> initState ) throws Exception{
+	protected void handleOOM() {
+		System.out.println("out of memory detected; trying cleanup");
+		grb_model.dispose();
+		grb_model = null;
+		System.gc();
+		try {
+			Thread.sleep(8*1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+			System.exit(1);
+		}//8 second stall
+		firstTimeModel();
+	}
+
+	public Map< EXPR, Double >  doPlan( final ArrayList<PVAR_INST_DEF> initState, 
+			final boolean recover ) throws Exception{
 
 //		System.out.println( "Names : " );
 //		RDDL.EXPR.name_map.forEach( (a,b) -> System.out.println( a + " " + b ) );
@@ -250,7 +277,18 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 		translateInitialState( initState );
 		translate_time.PauseTimer();	
 		
-		goOptimize();
+		try{
+			goOptimize();
+		}catch( GRBException exc ){
+			int error_code = exc.getErrorCode();
+			if( error_code == GRB.ERROR_OUT_OF_MEMORY && recover ){
+				handleOOM();
+				return doPlan( initState, false );
+			}else{
+				throw exc;
+			}
+		}
+		
 		Map< EXPR, Double > ret = outputResults();
 		if( OUTPUT_LP_FILE ) {
 			outputLPFile( );
@@ -991,19 +1029,12 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 	@Override
 	public ArrayList<PVAR_INST_DEF> getActions(State s) throws EvalException {
 		if( grb_model == null ){
-			addExtraPredicates();
-			try {
-				initializeGRB( );
-				prepareModel();
-			} catch (Exception e) {
-				e.printStackTrace();
-				System.exit(1);
-			}
+			firstTimeModel();
 		}
 		
 		System.out.println("State : " + s );
 		try {
-			Map<EXPR, Double> ret_expr = doPlan( s._state );
+			Map<EXPR, Double> ret_expr = doPlan( s._state , true );
 			ArrayList<PVAR_INST_DEF> ret = getRootActions(ret_expr);
 			System.out.println( "Action : " + ret );
 			
@@ -1040,6 +1071,17 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 			System.exit(1);
 		}
 		return null;
+	}
+
+	private void firstTimeModel() {
+		addExtraPredicates();
+		try {
+			initializeGRB( );
+			prepareModel();
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(1);
+		}		
 	}
 
 	private ArrayList<PVAR_INST_DEF> reducePrecision(
