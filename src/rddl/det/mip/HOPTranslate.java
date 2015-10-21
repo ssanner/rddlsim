@@ -740,10 +740,12 @@ public class HOPTranslate extends Translate implements Policy {
 	
 	@Override
 	protected void prepareModel( ) throws Exception{
+		translate_time.ResumeTimer();
 		System.out.println("--------------Translating Constraints-------------");
 		translateConstraints( );
 		System.out.println("--------------Translating Reward-------------");
 		translateReward( );
+		translate_time.PauseTimer();
 	}
 	
 	@Override
