@@ -630,23 +630,28 @@ public class HOPTranslate extends Translate implements Policy {
 				u.forEach( new Consumer< ArrayList<LCONST> >( ) {
 					@Override
 					public void accept(ArrayList<LCONST> terms ) {
-						EXPR action_var = new PVAR_EXPR( pvar._sPVarName, terms )
-							.addTerm(TIME_PREDICATE, constants, objects)
-							.addTerm(future_PREDICATE, constants, objects)
-							.substitute( Collections.singletonMap( TIME_PREDICATE, TIME_TERMS.get(0) ), constants, objects)
-							.substitute( Collections.singletonMap( future_PREDICATE, future_TERMS.get(0) ) , constants, objects);
-						
-					  try {
-						   GRBVar grb_var = EXPR.grb_cache.get( action_var );
-						   assert( grb_var != null );
-						   String interm_val = State._df.format( grb_var.get( DoubleAttr.X ) );
-						   
-						   ret.put( action_var, Double.valueOf(  interm_val ) );
-					   } catch (GRBException e) {
-							e.printStackTrace();
-							System.exit(1);
-					   }
-						  
+						future_TERMS.forEach( new Consumer<LCONST>() {
+							@Override
+							public void accept(LCONST future_term) {
+								EXPR action_var = new PVAR_EXPR( pvar._sPVarName, terms )
+								.addTerm(TIME_PREDICATE, constants, objects)
+								.addTerm(future_PREDICATE, constants, objects)
+								.substitute( Collections.singletonMap( TIME_PREDICATE, TIME_TERMS.get(0) ), constants, objects)
+								.substitute( Collections.singletonMap( future_PREDICATE, future_term ) , constants, objects);
+								
+								  try {
+									   GRBVar grb_var = EXPR.grb_cache.get( action_var );
+									   assert( grb_var != null );
+									   String interm_val = State._df.format( grb_var.get( DoubleAttr.X ) );
+									   
+									   ret.put( action_var, Double.valueOf(  interm_val ) );
+								   } catch (GRBException e) {
+										e.printStackTrace();
+										System.exit(1);
+								   }
+
+							}
+						});
 					}
 				});
 			}
@@ -668,6 +673,9 @@ public class HOPTranslate extends Translate implements Policy {
 		if( ret_expr == null ){
 			return ret;
 		}
+
+		HashMap< EXPR, HashMap< Double, Integer > > all_votes = new HashMap<>();
+		ArrayList<Double> violations = new ArrayList<>();
 		
 		rddl_action_vars.entrySet().parallelStream().forEach( new Consumer< Map.Entry< PVAR_NAME, ArrayList<ArrayList<LCONST>> > >() {
 			@Override
@@ -678,23 +686,54 @@ public class HOPTranslate extends Translate implements Policy {
 				entry.getValue().parallelStream().forEach( new Consumer< ArrayList<LCONST> >() {
 					@Override
 					public void accept(ArrayList<LCONST> terms ) {
-						final EXPR lookup = new PVAR_EXPR( pvar._sPVarName, terms )
-							.addTerm(TIME_PREDICATE, constants, objects)
-							.addTerm(future_PREDICATE, constants, objects)
-							.substitute( Collections.singletonMap( TIME_PREDICATE, TIME_TERMS.get(0) ), constants, objects)
-							.substitute( Collections.singletonMap( future_PREDICATE, future_TERMS.get(0) ) , constants, objects);
+						
+						final PVAR_EXPR action_var = new PVAR_EXPR( pvar._sPVarName, terms );
+						
+						final EXPR lookup = action_var  
+								.addTerm(TIME_PREDICATE, constants, objects)
+								.addTerm(future_PREDICATE, constants, objects)
+								.substitute( Collections.singletonMap( TIME_PREDICATE, TIME_TERMS.get(0) ), constants, objects)
+								.substitute( Collections.singletonMap( future_PREDICATE, future_TERMS.get(0) ) , constants, objects);
 						assert( ret_expr.containsKey( lookup ) );
-						double value = ret_expr.get( lookup );
-						if( value != def_val ){
+						final double ret_value = ret_expr.get( lookup );
+						if( ret_value != def_val ){
 							synchronized( ret ){
 								ret.add( new PVAR_INST_DEF( pvar._sPVarName, ret_expr.get( lookup ), terms ) );	
 							}	
 						}
 						
+						HashMap< Double, Integer > votes = new HashMap<>();
+						
+						future_TERMS.stream().forEach( new Consumer<LCONST>() {
+							@Override
+							public void accept(LCONST future_term) {
+								EXPR this_action_var = action_var.addTerm(TIME_PREDICATE, constants, objects)
+								.addTerm(future_PREDICATE, constants, objects)
+								.substitute( Collections.singletonMap( TIME_PREDICATE, TIME_TERMS.get(0) ), constants, objects)
+								.substitute( Collections.singletonMap( future_PREDICATE, future_term ) , constants, objects);
+								
+								assert( ret_expr.containsKey( this_action_var ) );
+								double value = ret_expr.get( this_action_var );
+								violations.add( ( Math.abs( ret_value - value ) ) );
+								if( votes.containsKey( value ) ){
+									votes.put( value, 1+votes.get( value ) );
+								}else{
+									votes.put( value, 1 );
+								}
+								
+							}
+						});
+						
+						all_votes.put( action_var, votes );
+						
 					}
 				});
 			}
 		});
+		
+		System.out.println("Votes  " + all_votes );
+		System.out.println("Total violation of root action " + violations.stream().mapToDouble(m->m).sum() );
+		System.out.println("Average absolute violation of root action " + violations.stream().mapToDouble(m->m).average().getAsDouble() );
 		
 		return ret;
 	}
