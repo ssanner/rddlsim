@@ -251,7 +251,7 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 	}
 	
 	protected void handleOOM() {
-		System.out.println("out of memory detected; trying cleanup");
+		System.out.println("round end / out of memory detected; trying cleanup");
 		grb_model.dispose();
 		grb_model = null;
 		System.gc();
@@ -1131,6 +1131,15 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 		});
 		
 		return ret;
+	}
+	
+	@Override
+	public void roundEnd(double reward) {
+		handleOOM();
+		
+		System.out.println("\n*********************************************************");
+		System.out.println(">>> ROUND END, reward = " + reward);
+		System.out.println("*********************************************************");
 	}
 	
 }
