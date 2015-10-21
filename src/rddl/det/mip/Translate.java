@@ -251,17 +251,31 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 	}
 	
 	protected void handleOOM() {
+		System.out.println("JVM free memory : " + Runtime.getRuntime().freeMemory() + " / " + 
+				Runtime.getRuntime().maxMemory() + " = " + ( ((double)Runtime.getRuntime().freeMemory()) / Runtime.getRuntime().maxMemory()) );
 		System.out.println("round end / out of memory detected; trying cleanup");
-		grb_model.dispose();
-		grb_model = null;
+		resetGRB();
+		firstTimeModel();
+	}
+
+	private void resetGRB() {
+		try{
+			grb_model.dispose();
+			grb_model = null;
+			grb_env.dispose();
+			grb_env = null;
+		}catch( GRBException exc ){
+			exc.printStackTrace();
+			System.exit(1);
+		}
+		
 		System.gc();
 		try {
 			Thread.sleep(8*1000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 			System.exit(1);
-		}//8 second stall
-		firstTimeModel();
+		}//8 second stall		
 	}
 
 	public Map< EXPR, Double >  doPlan( final ArrayList<PVAR_INST_DEF> initState, 
@@ -297,6 +311,12 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 		modelSummary();		
 		cleanUp();
 		return ret;
+	}
+	
+	@Override
+	public void sessionEnd(double total_reward) {
+		resetGRB();
+		Policy.super.sessionEnd(total_reward);
 	}
 
 	protected void modelSummary() throws GRBException {
@@ -1136,10 +1156,7 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 	@Override
 	public void roundEnd(double reward) {
 		handleOOM();
-		
-		System.out.println("\n*********************************************************");
-		System.out.println(">>> ROUND END, reward = " + reward);
-		System.out.println("*********************************************************");
+		Policy.super.roundEnd(reward);
 	}
 	
 }
