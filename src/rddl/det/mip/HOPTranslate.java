@@ -713,8 +713,14 @@ public class HOPTranslate extends Translate implements Policy {
 								.substitute( Collections.singletonMap( future_PREDICATE, future_term ) , constants, objects);
 								
 								assert( ret_expr.containsKey( this_action_var ) );
+								
 								double value = ret_expr.get( this_action_var );
-								violations.add( new Double( Math.abs( ret_value - value ) ) );
+								final double this_vio = Math.abs( ret_value - value );
+								
+								final Double added = new Double( this_vio );
+								assert( added != null );
+								
+								violations.add( added );
 								if( votes.containsKey( value ) ){
 									votes.put( value, 1+votes.get( value ) );
 								}else{
