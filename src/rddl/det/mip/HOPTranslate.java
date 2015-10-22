@@ -714,7 +714,7 @@ public class HOPTranslate extends Translate implements Policy {
 								
 								assert( ret_expr.containsKey( this_action_var ) );
 								double value = ret_expr.get( this_action_var );
-								violations.add( ( Math.abs( ret_value - value ) ) );
+								violations.add( new Double( Math.abs( ret_value - value ) ) );
 								if( votes.containsKey( value ) ){
 									votes.put( value, 1+votes.get( value ) );
 								}else{

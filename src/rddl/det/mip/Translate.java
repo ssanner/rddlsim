@@ -222,6 +222,9 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 
 	public Map< EXPR, Double > doPlan(  HashMap<PVAR_NAME, HashMap<ArrayList<LCONST>, Object>> subs ,
 			final boolean recover ) throws Exception{
+		if( grb_model == null ){
+			firstTimeModel();
+		}
 		//deterministic : model is already prepared except for initial state
 
 		translate_time.ResumeTimer();
@@ -280,6 +283,9 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 
 	public Map< EXPR, Double >  doPlan( final ArrayList<PVAR_INST_DEF> initState, 
 			final boolean recover ) throws Exception{
+		if( grb_model == null ){
+			firstTimeModel();
+		}
 
 //		System.out.println( "Names : " );
 //		RDDL.EXPR.name_map.forEach( (a,b) -> System.out.println( a + " " + b ) );
