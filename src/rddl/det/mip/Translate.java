@@ -258,7 +258,13 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 				Runtime.getRuntime().maxMemory() + " = " + ( ((double)Runtime.getRuntime().freeMemory()) / Runtime.getRuntime().maxMemory()) );
 		System.out.println("round end / out of memory detected; trying cleanup");
 		resetGRB();
+		removeExtraPredicates();
 		firstTimeModel();
+	}
+
+	protected void removeExtraPredicates() {
+		TIME_TERMS.clear();
+		objects.remove( TIME_TYPE );
 	}
 
 	private void resetGRB() {
@@ -267,6 +273,7 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 			grb_model = null;
 			grb_env.dispose();
 			grb_env = null;
+			RDDL.EXPR.cleanUpGRB();
 		}catch( GRBException exc ){
 			exc.printStackTrace();
 			System.exit(1);
@@ -321,8 +328,8 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 	
 	@Override
 	public void sessionEnd(double total_reward) {
-		resetGRB();
 		Policy.super.sessionEnd(total_reward);
+		resetGRB();
 	}
 
 	protected void modelSummary() throws GRBException {
@@ -1161,8 +1168,8 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 	
 	@Override
 	public void roundEnd(double reward) {
-		handleOOM();
 		Policy.super.roundEnd(reward);
+		handleOOM();
 	}
 	
 }

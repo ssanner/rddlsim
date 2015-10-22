@@ -87,6 +87,13 @@ public class HOPTranslate extends Translate implements Policy {
 	}
 	
 	@Override
+	protected void removeExtraPredicates() {
+		super.removeExtraPredicates();
+		future_TERMS.clear();
+		objects.remove( future_TYPE );
+	}
+	
+	@Override
 	protected void addExtraPredicates() {
 		super.addExtraPredicates();
 		if( future_gen.equals( FUTURE_SAMPLING.MEAN ) ){

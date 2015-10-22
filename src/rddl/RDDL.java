@@ -1821,7 +1821,7 @@ public class RDDL {
 			grb_cache.clear();
 			name_map.clear();
 			reverse_name_map.clear();
-//			nameId = 0;
+			nameId = 0;
 		}
 		
 	}
