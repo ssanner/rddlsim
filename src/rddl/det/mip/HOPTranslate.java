@@ -720,7 +720,10 @@ public class HOPTranslate extends Translate implements Policy {
 								final Double added = new Double( this_vio );
 								assert( added != null );
 								
-								violations.add( added );
+								synchronized( violations ){
+									violations.add( added );
+								}
+								
 								if( votes.containsKey( value ) ){
 									votes.put( value, 1+votes.get( value ) );
 								}else{
@@ -740,6 +743,7 @@ public class HOPTranslate extends Translate implements Policy {
 		System.out.println("Votes  " + all_votes );
 		System.out.println("Total violation of root action " + violations.stream().mapToDouble(m->m).sum() );
 		System.out.println("Average absolute violation of root action " + violations.stream().mapToDouble(m->m).average().getAsDouble() );
+		violations.clear(); all_votes.clear();
 		
 		return ret;
 	}
