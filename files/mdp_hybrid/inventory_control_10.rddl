@@ -1,0 +1,20 @@
+non-fluents nf_inventory_control_10 {
+	domain = inventory_control_continuous_mdp;
+	objects {
+		item : {t0,t1,t2,t3,t4,t5,t6,t7,t8,t9};
+	};
+	
+	non-fluents {
+		DEMAND-CENTER = 5.0;
+		DEMAND-WIDTH = 2.0;
+	};
+}
+
+instance ic_inventory_control_10 {
+	domain = inventory_control_continuous_mdp;
+	non-fluents = nf_inventory_control_10;
+	
+	//max-nondef-actions = 10;
+	horizon  = 100;
+	discount = 1.0;
+}

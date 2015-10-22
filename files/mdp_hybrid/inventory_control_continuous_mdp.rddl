@@ -1,0 +1,50 @@
+domain inventory_control_continuous_mdp {
+
+	types { 
+		item : object;
+	};
+	
+	pvariables {
+		stock(item) : { state-fluent, real, default = 0.0 };
+		order(item) : { action-fluent, real, default = 0.0 };
+		demand(item) : { state-fluent, real, default = 5.0 };
+		
+		payoff(item) : { non-fluent, real, default = 1.0 };
+		cost(item) : { non-fluent, real, default = 0.75 };
+		
+		DEMAND-WIDTH : { non-fluent, real, default = 2.0 };
+		DEMAND-CENTER : { non-fluent, real, default = 5.0 };
+		
+		fulfilled-demand(item) : { interm-fluent, real };
+		capacity : { interm-fluent, real };//default set for 10 shops, max-demand=7
+		budget : { interm-fluent, real };
+		profit : { interm-fluent, real };
+		
+		BONUS : { non-fluent, real, default = 0.5 };
+	};
+	
+	cpfs {
+		
+		demand'(?t) = Uniform( DEMAND-CENTER - DEMAND-WIDTH, DEMAND-CENTER + DEMAND-WIDTH );
+		fulfilled-demand(?t) = min[ stock(?t), demand(?t) ];
+		
+		capacity = sum_{?t:item}[ DEMAND-CENTER + DEMAND-WIDTH ];
+				
+		profit = sum_{?t : item}[ payoff(?t) * fulfilled-demand(?t) ];
+		
+		//extra funds available now
+		budget = ( DEMAND-CENTER + DEMAND-WIDTH ) + sum_{?t: item}[ BONUS * fulfilled-demand(?t) ];
+			
+		stock'(?t) = if( stock(?t) < demand(?t) ) then order(?t) else stock(?t)-demand(?t)+order(?t);
+						
+	};
+	
+	reward = profit - sum_{?t : item}[ 0 - cost(?t)*order(?t) ];
+	
+	state-invariants {
+		forall_{?t : item}[ stock(?t) >= 0 ];
+		forall_{?t : item}[ order(?t) >= 0 ];
+		[ sum_{?t : item} stock(?t) ] <= capacity;
+		[ sum_{?t : item} order(?t) ] <= budget;
+	};
+}
