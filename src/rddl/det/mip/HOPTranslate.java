@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 import org.apache.commons.math3.random.RandomDataGenerator;
 
@@ -72,7 +73,7 @@ public class HOPTranslate extends Translate implements Policy {
 	private static final TYPE_NAME future_TYPE = new TYPE_NAME( "future" );
 	protected ArrayList< LCONST > future_TERMS = new ArrayList<>();
 	protected enum HINDSIGHT_STRATEGY { 
-		ROOT, ALL_ACTIONS
+		ROOT, ALL_ACTIONS, CONSENSUS
 	}
 	private HINDSIGHT_STRATEGY hindsight_method;
 	
@@ -570,32 +571,70 @@ public class HOPTranslate extends Translate implements Policy {
 	private ArrayList<BOOL_EXPR> getHindSightConstraintExpr( HINDSIGHT_STRATEGY hindsight_method ) {
 		ArrayList<BOOL_EXPR> ret = new ArrayList<BOOL_EXPR>();
 		
-		rddl_action_vars.forEach( new BiConsumer<PVAR_NAME, ArrayList<ArrayList<LCONST>>> () {
-			public void accept( PVAR_NAME pvar , ArrayList<ArrayList<LCONST>> u) {
-				u.forEach( new Consumer< ArrayList<LCONST>>() {
-					@Override
-					public void accept(ArrayList<LCONST> terms) {
-						PVAR_EXPR pvar_expr = new PVAR_EXPR( pvar._sPVarName, terms );
-						EXPR with_tf = pvar_expr.addTerm(TIME_PREDICATE, constants, objects)
-								.addTerm(future_PREDICATE, constants, objects);
-						
-						for( final LCONST time : TIME_TERMS ){
-							EXPR this_t = with_tf.substitute( Collections.singletonMap(TIME_PREDICATE, time ), constants, objects);
-							EXPR ref_expr = this_t.substitute( Collections.singletonMap( future_PREDICATE, future_TERMS.get(0) ), constants, objects);
+		//the only way to keep this working correctly with expanding enum HINDSIGHT_STRATEGY 
+		switch( hindsight_method ){
+		case ALL_ACTIONS : 
+			rddl_action_vars.forEach( new BiConsumer<PVAR_NAME, ArrayList<ArrayList<LCONST>>> () {
+				public void accept( PVAR_NAME pvar , ArrayList<ArrayList<LCONST>> u) {
+					u.forEach( new Consumer< ArrayList<LCONST>>() {
+						@Override
+						public void accept(ArrayList<LCONST> terms) {
+							PVAR_EXPR pvar_expr = new PVAR_EXPR( pvar._sPVarName, terms );
+							EXPR with_tf = pvar_expr.addTerm(TIME_PREDICATE, constants, objects)
+									.addTerm(future_PREDICATE, constants, objects);
+							
+							for( final LCONST time : TIME_TERMS ){
+								EXPR this_t = with_tf.substitute( Collections.singletonMap(TIME_PREDICATE, time ), constants, objects);
+								EXPR ref_expr = this_t.substitute( Collections.singletonMap( future_PREDICATE, future_TERMS.get(0) ), constants, objects);
+								
+								for( final LCONST future : future_TERMS ){
+									EXPR addedd = this_t.substitute( Collections.singletonMap( future_PREDICATE, future), constants, objects);
+									ret.add( new COMP_EXPR( ref_expr, addedd, COMP_EXPR.EQUAL ) );
+								}
+								
+							}
+						}
+					});
+				};
+			});
+			break;
+		case CONSENSUS :  
+			//nothing to add
+			break;
+		case ROOT : 
+			rddl_action_vars.forEach( new BiConsumer<PVAR_NAME, ArrayList<ArrayList<LCONST>>> () {
+				public void accept( PVAR_NAME pvar , ArrayList<ArrayList<LCONST>> u) {
+					u.forEach( new Consumer< ArrayList<LCONST>>() {
+						@Override
+						public void accept(ArrayList<LCONST> terms) {
+							PVAR_EXPR pvar_expr = new PVAR_EXPR( pvar._sPVarName, terms );
+							EXPR with_tf = pvar_expr.addTerm(TIME_PREDICATE, constants, objects)
+									.addTerm(future_PREDICATE, constants, objects);
+							
+							EXPR this_t = with_tf.substitute( Collections.singletonMap(TIME_PREDICATE, 
+									TIME_TERMS.get(0) ), constants, objects);
+							EXPR ref_expr = this_t.substitute( Collections.singletonMap( future_PREDICATE, 
+									future_TERMS.get(0) ), constants, objects);
 							
 							for( final LCONST future : future_TERMS ){
 								EXPR addedd = this_t.substitute( Collections.singletonMap( future_PREDICATE, future), constants, objects);
 								ret.add( new COMP_EXPR( ref_expr, addedd, COMP_EXPR.EQUAL ) );
 							}
-							
-							if( hindsight_method.equals( HINDSIGHT_STRATEGY.ROOT ) ){
-								break;
-							}
+
 						}
-					}
-				});
-			};
-		});
+					});
+				};
+			});
+			break;
+		default : try{
+				throw new Exception("Unknown hindsight strategy " + hindsight_method );
+			}	catch( Exception exc ){
+				exc.printStackTrace();
+				System.exit(1);
+			}
+		}
+		
+		
 		return ret;
 	}
 	
@@ -681,36 +720,106 @@ public class HOPTranslate extends Translate implements Policy {
 			return ret;
 		}
 
-		HashMap< EXPR, HashMap< Double, Integer > > all_votes = new HashMap<>();
-		ArrayList<Double> violations = new ArrayList<>();
+		//these are computed always
+		HashMap< HashMap<EXPR,Double>, Integer > all_votes = new HashMap<>();
+		future_TERMS.stream().forEach( new Consumer<LCONST>() {
+			@Override
+			public void accept(LCONST future_term) {
+				
+				HashMap<EXPR,Double> this_future_actions = new HashMap<EXPR,Double>();
+				
+				rddl_action_vars.entrySet().stream().forEach( new Consumer< Map.Entry< PVAR_NAME, ArrayList<ArrayList<LCONST>> > >() {
+					@Override
+					public void accept( Map.Entry< PVAR_NAME , ArrayList<ArrayList<LCONST>> > entry ) {
+						final PVAR_NAME pvar = entry.getKey();
+						final double def_val = ( (Number) rddl_state.getDefaultValue( pvar ) ).doubleValue();
+						
+						entry.getValue().stream().forEach( new Consumer< ArrayList<LCONST> >() {
+							@Override
+							public void accept(ArrayList<LCONST> terms ) {
+								final PVAR_EXPR action_var = new PVAR_EXPR( pvar._sPVarName, terms );
+								
+								EXPR this_action_var = action_var.addTerm(TIME_PREDICATE, constants, objects)
+										.addTerm(future_PREDICATE, constants, objects)
+										.substitute( Collections.singletonMap( TIME_PREDICATE, TIME_TERMS.get(0) ), constants, objects)
+										.substitute( Collections.singletonMap( future_PREDICATE, future_term ) , constants, objects);
+								assert( ret_expr.containsKey( this_action_var ) );
+								
+								double value = ret_expr.get( this_action_var );
+								if( value == -0.0d ){
+									value = 0d;
+								}
+								if( value != def_val ){
+									this_future_actions.put( action_var, value );	
+								}
+							}
+						});
+					}
+				} );
+				if( all_votes.containsKey( this_future_actions ) ){
+					all_votes.put( this_future_actions,  all_votes.get( this_future_actions ) + 1 );
+				}else{
+					all_votes.put( this_future_actions,  1 );
+				}
+			}
+		});
 		
-		rddl_action_vars.entrySet().parallelStream().forEach( new Consumer< Map.Entry< PVAR_NAME, ArrayList<ArrayList<LCONST>> > >() {
+		System.out.println("Votes  " + all_votes );
+		HashMap<EXPR, Double> chosen_vote = null;
+		if( hindsight_method.equals( HINDSIGHT_STRATEGY.CONSENSUS ) ){
+			final int max_votes = all_votes.values().stream().mapToInt(m->m).max().getAsInt();
+			List<Entry<HashMap<EXPR, Double>, Integer>> ties  = 
+					all_votes.entrySet().stream().filter( m -> (m.getValue()==max_votes) )
+					.collect( Collectors.toList() );
+			chosen_vote = ties.get( rand.nextInt(0, ties.size()-1) ).getKey();
+		}
+		
+		final HashMap<EXPR, Double> winning_vote = chosen_vote;
+		ArrayList<Double> violations = new ArrayList<>();
+		rddl_action_vars.entrySet().stream().forEach( new Consumer< Map.Entry< PVAR_NAME, ArrayList<ArrayList<LCONST>> > >() {
 			@Override
 			public void accept( Map.Entry< PVAR_NAME , ArrayList<ArrayList<LCONST>> > entry ) {
 				final PVAR_NAME pvar = entry.getKey();
 				//assuming number here
 				final double def_val = ( (Number) rddl_state.getDefaultValue( pvar ) ).doubleValue();
-				entry.getValue().parallelStream().forEach( new Consumer< ArrayList<LCONST> >() {
+				entry.getValue().stream().forEach( new Consumer< ArrayList<LCONST> >() {
 					@Override
 					public void accept(ArrayList<LCONST> terms ) {
 						
 						final PVAR_EXPR action_var = new PVAR_EXPR( pvar._sPVarName, terms );
+						EXPR lookup = null;
+						double ret_value = Double.NaN;
 						
-						final EXPR lookup = action_var  
-								.addTerm(TIME_PREDICATE, constants, objects)
-								.addTerm(future_PREDICATE, constants, objects)
-								.substitute( Collections.singletonMap( TIME_PREDICATE, TIME_TERMS.get(0) ), constants, objects)
-								.substitute( Collections.singletonMap( future_PREDICATE, future_TERMS.get(0) ) , constants, objects);
-						assert( ret_expr.containsKey( lookup ) );
-						final double ret_value = ret_expr.get( lookup );
-						if( ret_value != def_val ){
-							synchronized( ret ){
-								ret.add( new PVAR_INST_DEF( pvar._sPVarName, ret_expr.get( lookup ), terms ) );	
-							}	
+						switch( hindsight_method ){
+						case ALL_ACTIONS :
+						case ROOT : 
+							lookup = action_var  
+							.addTerm(TIME_PREDICATE, constants, objects)
+							.addTerm(future_PREDICATE, constants, objects)
+							.substitute( Collections.singletonMap( TIME_PREDICATE, TIME_TERMS.get(0) ), constants, objects)
+							.substitute( Collections.singletonMap( future_PREDICATE, future_TERMS.get(0) ) , constants, objects);
+							assert( ret_expr.containsKey( lookup ) );
+							ret_value = ret_expr.get( lookup );
+							break;
+						case CONSENSUS : 
+							ret_value = winning_vote.containsKey( action_var ) ? 
+									winning_vote.get( action_var ).doubleValue() : def_val;
+							break;
+						default : try{
+								throw new Exception("unknown hindisght strategy");
+							}catch( Exception exc ){
+								exc.printStackTrace();
+								System.exit(1);
+							}
 						}
 						
-						HashMap< Double, Integer > votes = new HashMap<>();
-						
+						if( ret_value != def_val ){
+							synchronized( ret ){
+								ret.add( new PVAR_INST_DEF( pvar._sPVarName, ret_value, terms ) );	
+							}	
+						}
+
+						final double ref_value = ret_value;
 						future_TERMS.stream().forEach( new Consumer<LCONST>() {
 							@Override
 							public void accept(LCONST future_term) {
@@ -722,7 +831,7 @@ public class HOPTranslate extends Translate implements Policy {
 								assert( ret_expr.containsKey( this_action_var ) );
 								
 								double value = ret_expr.get( this_action_var );
-								final double this_vio = Math.abs( ret_value - value );
+								final double this_vio = Math.abs( ref_value - value );
 								
 								final Double added = new Double( this_vio );
 								assert( added != null );
@@ -730,24 +839,13 @@ public class HOPTranslate extends Translate implements Policy {
 								synchronized( violations ){
 									violations.add( added );
 								}
-								
-								if( votes.containsKey( value ) ){
-									votes.put( value, 1+votes.get( value ) );
-								}else{
-									votes.put( value, 1 );
-								}
-								
 							}
 						});
-						
-						all_votes.put( action_var, votes );
-						
 					}
 				});
 			}
 		});
 		
-		System.out.println("Votes  " + all_votes );
 		System.out.println("Total violation of root action " + violations.stream().mapToDouble(m->m).sum() );
 		System.out.println("Average absolute violation of root action " + violations.stream().mapToDouble(m->m).average().getAsDouble() );
 		violations.clear(); all_votes.clear();
