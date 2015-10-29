@@ -37,6 +37,8 @@ non-fluents nf_reservoir_control_mdp_10 {
 		 CONNECT( p6, t6, t7 ) = true;
 		 CONNECT( p7, t7, t8 ) = true;
 		 CONNECT( p8, t8, t9 ) = true;
+		 
+		 CAPACITY = 500;
 	 };
 }
 instance reservoir_control_mdp_10 { 
