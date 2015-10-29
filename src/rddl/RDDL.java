@@ -5858,15 +5858,20 @@ public class RDDL {
 			HashSet<Pair> local_fluents = new HashSet<Pair>();
 			for (ArrayList<LCONST> sub_inst : possible_subs) {
 				for (int i = 0; i < _alVariables.size(); i++) {
+					System.out.println( _alVariables.get(i)._sVarName + " " + sub_inst.get(i) );
 					subs.put(_alVariables.get(i)._sVarName, sub_inst.get(i));
 				}
 				
+				System.out.println( "Subs in QUANT " + this + " " + subs );
 				local_fluents.clear();
 				_expr.collectGFluents(subs, s, local_fluents);
 				boolean expr_is_indep_of_state = local_fluents.size() == 0;		
 				
 				if (expr_is_indep_of_state && _expr._bDet) { // (s.getPVariableType(p._pName) == State.NONFLUENT) {
+					
+					System.out.println("Sampling " + _expr + " " + subs );
 					boolean eval = (Boolean)_expr.sample(subs, s, null);
+					
 					// If can determine truth value of connective from nonfluents
 					// then any other fluents are irrelevant
 					if ((_sQuantType == FORALL && !eval) || (_sQuantType == EXISTS && eval)) {

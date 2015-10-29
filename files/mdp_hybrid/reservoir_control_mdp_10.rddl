@@ -6,27 +6,28 @@ non-fluents nf_reservoir_control_mdp_10 {
 	 };
 	 non-fluents {
 
-		 LEVEL_MIN(t0) = 0.9913416458750635;
-		 LEVEL_MIN(t1) = 1.0038168213263483;
-		 LEVEL_MIN(t2) = 0.9915695226532327;
-		 LEVEL_MIN(t3) = 0.9957947447616281;
-		 LEVEL_MIN(t4) = 1.004175747895749;
-		 LEVEL_MIN(t5) = 1.0052774128880018;
-		 LEVEL_MIN(t6) = 1.013196237137816;
-		 LEVEL_MIN(t7) = 1.0060571711410318;
-		 LEVEL_MIN(t8) = 0.9961543360159063;
-		 LEVEL_MIN(t9) = 0.9864984329947999;
+		 LEVEL_MIN(t0) = 5;
+		 LEVEL_MIN(t1) = 5;
+		 LEVEL_MIN(t2) = 5;
+		 LEVEL_MIN(t3) = 5;
+		 LEVEL_MIN(t4) = 5;
+		 LEVEL_MIN(t5) = 5;
+		 LEVEL_MIN(t6) = 5;
+		 LEVEL_MIN(t7) = 5;
+		 LEVEL_MIN(t8) = 5;
+		 LEVEL_MIN(t9) = 5;
 
-		 LEVEL_MAX(t0) = 200.991341645875064;
-		 LEVEL_MAX(t1) = 180.003816821326348;
-		 LEVEL_MAX(t2) = 280.991569522653233;
-		 LEVEL_MAX(t3) = 200.995794744761628;
-		 LEVEL_MAX(t4) = 150.004175747895749;
-		 LEVEL_MAX(t5) = 200.005277412888002;
-		 LEVEL_MAX(t6) = 150.013196237137816;
-		 LEVEL_MAX(t7) = 250.006057171141032;
-		 LEVEL_MAX(t8) = 200.996154336015906;
-		 LEVEL_MAX(t9) = 250.9864984329948;
+		 LEVEL_MAX(t0) = 200;
+		 LEVEL_MAX(t1) = 180;
+		 LEVEL_MAX(t2) = 280;
+		 LEVEL_MAX(t3) = 200;
+		 LEVEL_MAX(t4) = 150;
+		 LEVEL_MAX(t5) = 200;
+		 LEVEL_MAX(t6) = 150;
+		 LEVEL_MAX(t7) = 250;
+		 LEVEL_MAX(t8) = 200;
+		 LEVEL_MAX(t9) = 250;
+		 
 		 CONNECT( p0, t0, t1 ) = true;
 		 CONNECT( p1, t1, t2 ) = true;
 		 CONNECT( p2, t2, t3 ) = true;
@@ -41,6 +42,21 @@ non-fluents nf_reservoir_control_mdp_10 {
 instance reservoir_control_mdp_10 { 
 	 domain = reservoir_control_mdp;
 	 non-fluents = nf_reservoir_control_mdp_10;
-	 horizon = 100;
+	 
+	 init-state {
+		
+		rlevel(t0)  = 200;
+		rlevel(t1)  = 180;
+		rlevel(t2)  = 280;
+		rlevel(t3)  = 200;
+		rlevel(t4)  = 150;
+		rlevel(t5)  = 200;
+		rlevel(t6)  = 150;
+		rlevel(t7)  = 250;
+		rlevel(t8)  = 200;
+		rlevel(t9)  = 250;
+	 };
+	 
+	 horizon = 20;
 	 discount = 1.0;
 }

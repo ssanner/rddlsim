@@ -461,6 +461,7 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 				System.out.println("Objective value : " + grb_model.get( DoubleAttr.ObjVal ) );
 				
 			}else{
+				System.out.println("No solution found, returning noop");
 				ret = null;
 			}
 			

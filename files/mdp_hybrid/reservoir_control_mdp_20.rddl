@@ -68,7 +68,7 @@ non-fluents nf_reservoir_control_mdp_20 {
 		 CONNECT( p17, t17, t18 ) = true;
 		 CONNECT( p18, t18, t19 ) = true;
 		 
-		 CAPACITY = 60000;
+		 CAPACITY = 60000.0;
 	 };
 }
 instance reservoir_control_mdp_20 { 
