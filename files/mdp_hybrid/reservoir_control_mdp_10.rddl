@@ -6,16 +6,16 @@ non-fluents nf_reservoir_control_mdp_10 {
 	 };
 	 non-fluents {
 
-		 LEVEL_MIN(t0) = 5;
-		 LEVEL_MIN(t1) = 5;
-		 LEVEL_MIN(t2) = 5;
-		 LEVEL_MIN(t3) = 5;
-		 LEVEL_MIN(t4) = 5;
-		 LEVEL_MIN(t5) = 5;
-		 LEVEL_MIN(t6) = 5;
-		 LEVEL_MIN(t7) = 5;
-		 LEVEL_MIN(t8) = 5;
-		 LEVEL_MIN(t9) = 5;
+		 LEVEL_MIN(t0) = 15;
+		 LEVEL_MIN(t1) = 15;
+		 LEVEL_MIN(t2) = 15;
+		 LEVEL_MIN(t3) = 15;
+		 LEVEL_MIN(t4) = 15;
+		 LEVEL_MIN(t5) = 15;
+		 LEVEL_MIN(t6) = 15;
+		 LEVEL_MIN(t7) = 15;
+		 LEVEL_MIN(t8) = 15;
+		 LEVEL_MIN(t9) = 15;
 
 		 LEVEL_MAX(t0) = 200;
 		 LEVEL_MAX(t1) = 180;
@@ -38,7 +38,7 @@ non-fluents nf_reservoir_control_mdp_10 {
 		 CONNECT( p7, t7, t8 ) = true;
 		 CONNECT( p8, t8, t9 ) = true;
 		 
-		 CAPACITY = 500;
+		 CAPACITY = 600;
 	 };
 }
 instance reservoir_control_mdp_10 { 

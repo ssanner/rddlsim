@@ -11,7 +11,6 @@ domain reservoir_control_mdp {
 		LEVEL_MIN( reservoir )      : { non-fluent, real,  default = 0   };
 		LEVEL_MAX( reservoir )      : { non-fluent, real,  default = 10  };
 		CAPACITY : { non-fluent, real, default = 6000.0 };
-		LEVEL_PENALTY( reservoir ) : { non-fluent, real, default = -1 };
 		
 		CONNECT( pipe, reservoir , reservoir ) : { non-fluent, bool, default = false };
 		rain( reservoir ) : { state-fluent, real, default = 4 };
@@ -52,6 +51,8 @@ domain reservoir_control_mdp {
 								then send(?r,?p) 
 								else 0 )
 							];
+							
+		
 	};
   
   //penalize differently for under and over flow
@@ -66,7 +67,7 @@ domain reservoir_control_mdp {
 	action-preconditions {
 		forall_{?r : reservoir, ?p : pipe}[ send( ?r, ?p ) >= 0 ];
 		forall_{?r:reservoir}[ total-inflow(?r) <= ( CAPACITY - rlevel(?r) ) ]; 
-		forall_{?r:reservoir}[ rlevel(?r) <= CAPACITY ];
+		forall_{?r:reservoir}[ rlevel(?r) <= CAPACITY-1 ];
 		
 		forall_{?r:reservoir}[ total-outflow(?r) <= rlevel(?r) ]; 
 		
