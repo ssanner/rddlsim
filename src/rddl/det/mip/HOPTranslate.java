@@ -174,7 +174,7 @@ public class HOPTranslate extends Translate implements Policy {
 			@Override
 			public void accept(
 					HashMap<PVAR_NAME, ArrayList<ArrayList<LCONST>>> t) {
-				t.entrySet().parallelStream().forEach( new Consumer< Entry<PVAR_NAME, ArrayList< ArrayList<LCONST>> > >() {
+				t.entrySet().stream().forEach( new Consumer< Entry<PVAR_NAME, ArrayList< ArrayList<LCONST>> > >() {
 
 					@Override
 					public void accept(

@@ -38,7 +38,7 @@ non-fluents nf_reservoir_control_mdp_10 {
 		 CONNECT( p7, t7, t8 ) = true;
 		 CONNECT( p8, t8, t9 ) = true;
 		 
-		 CAPACITY = 600;
+		 CAPACITY = 1000;
 	 };
 }
 instance reservoir_control_mdp_10 { 
@@ -46,17 +46,16 @@ instance reservoir_control_mdp_10 {
 	 non-fluents = nf_reservoir_control_mdp_10;
 	 
 	 init-state {
-		
-		rlevel(t0)  = 200;
-		rlevel(t1)  = 180;
-		rlevel(t2)  = 280;
-		rlevel(t3)  = 200;
-		rlevel(t4)  = 150;
-		rlevel(t5)  = 200;
-		rlevel(t6)  = 150;
-		rlevel(t7)  = 250;
-		rlevel(t8)  = 200;
-		rlevel(t9)  = 250;
+		rlevel(t0)  = 180;
+		rlevel(t1)  = 160;
+		rlevel(t2)  = 260;
+		rlevel(t3)  = 180;
+		rlevel(t4)  = 130;
+		rlevel(t5)  = 180;
+		rlevel(t6)  = 130;
+		rlevel(t7)  = 230;
+		rlevel(t8)  = 180;
+		rlevel(t9)  = 230;
 	 };
 	 
 	 horizon = 20;

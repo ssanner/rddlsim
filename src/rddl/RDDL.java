@@ -2017,6 +2017,8 @@ public class RDDL {
 			//P_g(X) = P_X( . ) / | (e2-e1) | = 1 / (e2-e1) (correct)
 			
 			final double sample = rand.nextUniform(0d, 1d);
+			System.out.println("Sampled future for uniform : " + this + " " + sample );
+			
 			EXPR ret = new OPER_EXPR( lower_determ, 
 							new OPER_EXPR( 
 									new OPER_EXPR( upper_determ, lower_determ, OPER_EXPR.MINUS ),
@@ -2134,7 +2136,10 @@ public class RDDL {
 			//substitute() should be called first to simplify variance term
 			assert( _normalVarReal.isConstant( null, null ) );
 			final double var = _normalVarReal.getDoubleValue( null, null );
-			return new OPER_EXPR( _normalMeanReal, new REAL_CONST_EXPR( rand.nextGaussian(0, var) ) , OPER_EXPR.PLUS );
+			
+			final double sample = rand.nextGaussian(0, var);
+			System.out.println("Sampled future for normal : " + this + " " + sample );
+			return new OPER_EXPR( _normalMeanReal, new REAL_CONST_EXPR( sample ) , OPER_EXPR.PLUS );
 		}
 		
 		public EXPR _normalMeanReal;
@@ -2992,7 +2997,9 @@ public class RDDL {
 		public EXPR sampleDeterminization(RandomDataGenerator rand) {
 			//B ~ bern(p); X ~ U(0,1)
 			//B = ( X > 1 - p )
-			return new COMP_EXPR( new REAL_CONST_EXPR( rand.nextUniform(0, 1) ),  
+			final double sample = rand.nextUniform(0, 1);
+			System.out.println("Sampled future for bernoulli " + this + " " + sample );
+			return new COMP_EXPR( new REAL_CONST_EXPR( sample ),  
 					new OPER_EXPR( new REAL_CONST_EXPR(1d), _exprProb , OPER_EXPR.MINUS ), COMP_EXPR.GREATER );
 			
 		}
