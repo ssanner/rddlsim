@@ -411,6 +411,7 @@ public class HOPTranslate extends Translate implements Policy {
 		
 		grb_model.setObjective(all_sum);
 		grb_model.update();
+		
 	}
 	
 	@Override
@@ -560,6 +561,39 @@ public class HOPTranslate extends Translate implements Policy {
 						System.exit(1);
 					}					
 				}
+			}
+		});
+		
+		//startring actionv ars at 0.0
+		rddl_action_vars.forEach( new BiConsumer<PVAR_NAME, ArrayList<ArrayList<LCONST>>>() {
+			@Override
+			public void accept(PVAR_NAME pvar, ArrayList<ArrayList<LCONST>> u) {
+				u.forEach( new Consumer<ArrayList<LCONST>>() {
+					@Override
+					public void accept(ArrayList<LCONST> terms) {
+						TIME_TERMS.forEach( new Consumer<LCONST>() {
+							public void accept(LCONST time_term) {
+								future_TERMS.forEach( new Consumer<LCONST>(){ 
+									@Override
+									public void accept(LCONST future_term) {
+										EXPR this_expr = new PVAR_EXPR( pvar._sPVarName, terms )
+											.addTerm( TIME_PREDICATE, constants, objects )
+											.substitute( Collections.singletonMap( TIME_PREDICATE, time_term), constants, objects)
+											.addTerm( future_PREDICATE, constants, objects )
+											.substitute( Collections.singletonMap( future_PREDICATE, future_term), constants, objects);
+										final GRBVar this_var = EXPR.getGRBVar(this_expr, grb_model, constants, objects, type_map); 
+										try {
+											this_var.set( DoubleAttr.Start, 0.0 );
+										} catch (GRBException e) {
+											e.printStackTrace();
+											System.exit(1);
+										}
+									}
+								});
+							};
+						});
+					}
+				});
 			}
 		});
 		

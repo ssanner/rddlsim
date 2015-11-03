@@ -17,6 +17,7 @@ import gurobi.GRBExpr;
 import gurobi.GRBLinExpr;
 import gurobi.GRBModel;
 import gurobi.GRBVar;
+import gurobi.GRB.DoubleAttr;
 
 import java.io.File;
 import java.nio.channels.UnsupportedAddressTypeException;

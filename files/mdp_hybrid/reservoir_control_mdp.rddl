@@ -11,10 +11,10 @@ domain reservoir_control_mdp {
 		LEVEL_MIN( reservoir )      : { non-fluent, real,  default = 0   };
 		LEVEL_MAX( reservoir )      : { non-fluent, real,  default = 10  };
 		CAPACITY : { non-fluent, real, default = 6000.0 };
-		LEVEL_PENALTY( reservoir ) : { non-fluent, real, default = -1 };
+		LEVEL_PENALTY( reservoir ) : { non-fluent, real, default = -5 };
 		
 		CONNECT( pipe, reservoir , reservoir ) : { non-fluent, bool, default = false };
-		rain( reservoir ) : { state-fluent, real, default = 10 };
+		rain( reservoir ) : { state-fluent, real, default = 500 };
 		
 		//+ve flow(r1,p) : CONNECT( p, r1, r2 ) r1 -> r2
 		send( reservoir, pipe ) : { action-fluent, real, default = 0 };
@@ -25,7 +25,7 @@ domain reservoir_control_mdp {
 		total-inflow(reservoir) : { interm-fluent, real, level=2 };
 		total-outflow(reservoir) : { interm-fluent, real, level=2 };
 		
-		RAIN-VARIANCE : { non-fluent, real, default=0.1 };
+		RAIN-VARIANCE : { non-fluent, real, default=1024 };
 		
 	};
 	
@@ -58,12 +58,13 @@ domain reservoir_control_mdp {
   
   //penalize differently for under and over flow
   //penalize by amount of overflow scale
-	reward = (sum_{?r : reservoir} [ 
+	reward = ( sum_{?r : reservoir} [ 
 				if ( rlevel(?r) < LEVEL_MIN(?r) ) 
 				then LEVEL_PENALTY(?r)*( LEVEL_MIN(?r) - rlevel(?r) ) 
 				else if ( rlevel(?r) > LEVEL_MAX(?r) )
 				then LEVEL_PENALTY(?r)*( rlevel(?r) - LEVEL_MAX(?r) )
-				else 0.0 ]);
+				else 0.0 ] )
+			- ( sum_{?r:reservoir, ?r2:reservoir, ?p:pipe}[ CONNECT(?p,?r,?r2)*send(?r2,?p) ] );
 	
 	action-preconditions {
 		forall_{?r : reservoir, ?p : pipe}[ send( ?r, ?p ) >= 0 ];

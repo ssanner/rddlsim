@@ -6,27 +6,27 @@ non-fluents nf_reservoir_control_mdp_10 {
 	 };
 	 non-fluents {
 
-		 LEVEL_MIN(t0) = 15;
-		 LEVEL_MIN(t1) = 15;
-		 LEVEL_MIN(t2) = 15;
-		 LEVEL_MIN(t3) = 15;
-		 LEVEL_MIN(t4) = 15;
-		 LEVEL_MIN(t5) = 15;
-		 LEVEL_MIN(t6) = 15;
-		 LEVEL_MIN(t7) = 15;
-		 LEVEL_MIN(t8) = 15;
-		 LEVEL_MIN(t9) = 15;
+		 LEVEL_MIN(t0) = 1000;
+		 LEVEL_MIN(t1) = 1000;
+		 LEVEL_MIN(t2) = 1000;
+		 LEVEL_MIN(t3) = 1000;
+		 LEVEL_MIN(t4) = 1000;
+		 LEVEL_MIN(t5) = 1000;
+		 LEVEL_MIN(t6) = 1000;
+		 LEVEL_MIN(t7) = 1000;
+		 LEVEL_MIN(t8) = 1000;
+		 LEVEL_MIN(t9) = 1000;
 
-		 LEVEL_MAX(t0) = 500;
-		 LEVEL_MAX(t1) = 500;
-		 LEVEL_MAX(t2) = 500;
-		 LEVEL_MAX(t3) = 500;
-		 LEVEL_MAX(t4) = 500;
-		 LEVEL_MAX(t5) = 500;
-		 LEVEL_MAX(t6) = 500;
-		 LEVEL_MAX(t7) = 500;
-		 LEVEL_MAX(t8) = 500;
-		 LEVEL_MAX(t9) = 500;
+		 LEVEL_MAX(t0) = 8000;
+		 LEVEL_MAX(t1) = 8000;
+		 LEVEL_MAX(t2) = 8000;
+		 LEVEL_MAX(t3) = 8000;
+		 LEVEL_MAX(t4) = 8000;
+		 LEVEL_MAX(t5) = 8000;
+		 LEVEL_MAX(t6) = 8000;
+		 LEVEL_MAX(t7) = 8000;
+		 LEVEL_MAX(t8) = 8000;
+		 LEVEL_MAX(t9) = 8000;
 		 
 		 CONNECT( p0, t0, t1 ) = true;
 		 CONNECT( p1, t1, t2 ) = true;
@@ -38,7 +38,7 @@ non-fluents nf_reservoir_control_mdp_10 {
 		 CONNECT( p7, t7, t8 ) = true;
 		 CONNECT( p8, t8, t9 ) = true;
 		 
-		 CAPACITY = 2000;
+		 CAPACITY = 20000;
 	 };
 }
 instance reservoir_control_mdp_10 { 
@@ -46,16 +46,16 @@ instance reservoir_control_mdp_10 {
 	 non-fluents = nf_reservoir_control_mdp_10;
 	 
 	 init-state {
-		rlevel(t0)  = 400;
-		rlevel(t1)  = 400;
-		rlevel(t2)  = 400;
-		rlevel(t3)  = 400;
-		rlevel(t4)  = 400;
-		rlevel(t5)  = 400;
-		rlevel(t6)  = 400;
-		rlevel(t7)  = 400;
-		rlevel(t8)  = 400;
-		rlevel(t9)  = 400;
+		rlevel(t0)  = 2000;
+		rlevel(t1)  = 2000;
+		rlevel(t2)  = 2000;
+		rlevel(t3)  = 2000;
+		rlevel(t4)  = 2000;
+		rlevel(t5)  = 2000;
+		rlevel(t6)  = 2000;
+		rlevel(t7)  = 2000;
+		rlevel(t8)  = 2000;
+		rlevel(t9)  = 2000;
 	 };
 	 
 	 horizon = 20;
