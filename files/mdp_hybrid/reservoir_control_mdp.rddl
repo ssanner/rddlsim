@@ -8,8 +8,8 @@ domain reservoir_control_mdp {
 	pvariables { 
     	
 		// Constants
-		LEVEL_MIN( reservoir )      : { non-fluent, real,  default = 0   };
-		LEVEL_MAX( reservoir )      : { non-fluent, real,  default = 10  };
+		LEVEL_MIN( reservoir )      : { non-fluent, real,  default = 100   };
+		LEVEL_MAX( reservoir )      : { non-fluent, real,  default = 800  };
 		CAPACITY : { non-fluent, real, default = 6000.0 };
 		LEVEL_PENALTY( reservoir ) : { non-fluent, real, default = -5 };
 		

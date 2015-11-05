@@ -70,7 +70,7 @@ public class ReservoirHandCodedPolicy implements Policy {
 			
 			double upper = Math.min( rlevelsrc,  remaining_at_dest );
 					
-			final Double send = ( upper <= 0 ) ? 0 : rng.nextUniform( 0d, upper*0.5 );
+			final Double send = ( upper <= 0 ) ? 0 : rng.nextUniform( 0d, upper*0.25 );
 			
 			remaining_level.put( src, rlevelsrc-send );
 			remaining_cap.put( dest, remaining_at_dest-send );
