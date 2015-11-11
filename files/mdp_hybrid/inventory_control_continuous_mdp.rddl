@@ -36,7 +36,7 @@ domain inventory_control_continuous_mdp {
 		profit = sum_{?t : item}[ ( payoff(?t) ) * fulfilled-demand(?t) ];
 		
 		//extra funds available now as a linear fraction of fulfilled-demand
-		budget = if ( year == 0 ) then sum_{?t: item}[(DEMAND-CENTER - DEMAND-WIDTH)] 
+		budget = if ( year == 0 ) then sum_{?t: item}[(DEMAND-CENTER + DEMAND-WIDTH)] 
 					else sum_{?t: item}[ BONUS * fulfilled-demand(?t) ] ;
 					
 		stock'(?t) = if( stock(?t) < demand(?t) ) then order(?t) else stock(?t)-demand(?t)+order(?t);
@@ -49,6 +49,6 @@ domain inventory_control_continuous_mdp {
 		forall_{?t : item}[ stock(?t) >= 0 ];
 		forall_{?t : item}[ order(?t) >= 0 ];
 		[ sum_{?t : item} stock(?t) ] <= capacity - EPSILON;
-		[ sum_{?t : item} order(?t) ] <= budget - EPSILON;
+		[ sum_{?t : item} order(?t) ] <= budget;
 	};
 }
