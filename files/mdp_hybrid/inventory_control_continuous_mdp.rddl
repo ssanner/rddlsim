@@ -48,7 +48,7 @@ domain inventory_control_continuous_mdp {
 	state-invariants {
 		forall_{?t : item}[ stock(?t) >= 0 ];
 		forall_{?t : item}[ order(?t) >= 0 ];
-		[ sum_{?t : item} stock(?t) ] <= capacity - EPSILON;
-		[ sum_{?t : item} order(?t) ] <= budget;
+		[ sum_{?t : item} stock(?t) ] <= max[0, capacity - EPSILON];
+		[ sum_{?t : item} order(?t) ] <= max[0, budget - EPSILON];
 	};
 }
