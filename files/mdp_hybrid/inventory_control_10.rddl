@@ -15,6 +15,6 @@ instance ic_inventory_control_10 {
 	non-fluents = nf_inventory_control_10;
 	
 	//max-nondef-actions = 10;
-	horizon  = 100;
+	horizon  = 20;
 	discount = 1.0;
 }

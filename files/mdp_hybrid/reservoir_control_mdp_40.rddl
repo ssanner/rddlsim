@@ -88,7 +88,7 @@ non-fluents nf_reservoir_control_mdp_40 {
 		 LEVEL_MAX(t38) = 16000;
 		 LEVEL_MAX(t39) = 16000;
 		 
-		 CAPACITY = 40000;
+		 CAPACITY = 40000.0;
 		 
 		 CONNECT( p0, t0, t1 ) = true;
 		 CONNECT( p1, t1, t2 ) = true;
