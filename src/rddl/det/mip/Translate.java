@@ -329,6 +329,7 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 	@Override
 	public void sessionEnd(double total_reward) {
 		Policy.super.sessionEnd(total_reward);
+		viz.close();
 		resetGRB();
 	}
 
@@ -1053,6 +1054,8 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 			viz = new PVarHeatMap( PVarHeatMap.reservoir_tags );			
 		}else if( args.get(4).equalsIgnoreCase("inventory") ){
 			viz = new PVarHeatMap( PVarHeatMap.inventory_tags );
+		}else if( args.get(4).equalsIgnoreCase("racetrack") ){
+			viz = new TwoDimensionalTrajectory();
 		}
 		
 		TranslateInit( args.get(0), args.get(1), Integer.parseInt( args.get(2) ), Double.parseDouble( args.get(3) ),

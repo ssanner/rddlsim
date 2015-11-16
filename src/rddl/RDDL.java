@@ -4295,6 +4295,7 @@ public class RDDL {
 		protected char getGRB_Type( 
 				final Map< PVAR_NAME, Map< ArrayList<LCONST>, Object > > constants ,
 				Map< PVAR_NAME, Character > type_map ) {
+//			System.out.println("type : " + this + " " + type_map );
 			assert( type_map.containsKey( this._pName ) );
 			return type_map.get( this._pName );
 		}

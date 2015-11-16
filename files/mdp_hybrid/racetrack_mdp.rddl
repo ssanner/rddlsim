@@ -1,0 +1,88 @@
+domain racetrack_mdp {
+ 		
+			pvariables {
+ 		
+				x : {state-fluent, real, default = 0.0};
+				y : {state-fluent, real, default = 0.0};
+				
+				v-x : {state-fluent, real, default = 0.0};
+				v-y : {state-fluent, real, default = 0.0};
+				
+				gas-x : {action-fluent, real, default = 0.0};
+				gas-y : {action-fluent, real, default = 0.0};
+				
+				GOAL-X : {non-fluent, real, default = 5.0};
+				GOAL-Y : {non-fluent, real, default = 5.0};
+				
+				ACTION-NOISE : {non-fluent, real, default = 0.1};
+				
+				//				
+				OUTER-MAX-X : {non-fluent, real, default = 5.0};
+				OUTER-MIN-X : {non-fluent, real, default = 0.0};
+				OUTER-MAX-Y : {non-fluent, real, default = 5.0};
+				OUTER-MIN-Y : {non-fluent, real, default = 0.0};
+				
+				INNER-MAX-X : {non-fluent, real, default = 4.0};
+				INNER-MIN-X : {non-fluent, real, default = 1.0};
+				INNER-MAX-Y : {non-fluent, real, default = 4.0};
+				INNER-MIN-Y : {non-fluent, real, default = 1.0};
+				
+				MAX-GAS : {non-fluent, real, default = 0.71 };
+				success : {interm-fluent, bool};
+				collided : {state-fluent, bool, default = false};
+				EPSILON : {non-fluent, real, default = 0.1};				
+				
+				x-crosses-inner-max : {interm-fluent, bool};
+				x-crosses-inner-min : {interm-fluent, bool};
+				x-crosses-inner : {interm-fluent, bool};
+				y-crosses-inner-max : {interm-fluent, bool};
+				y-crosses-inner-min : {interm-fluent, bool};
+				y-crosses-inner : {interm-fluent, bool};
+ 			};
+ 		
+ 			cpfs {
+ 		
+				x' = if ( collided ) then x else x + v-x;
+				y' = if ( collided ) then y else y + v-y;
+				success = Bernoulli( 1 - ACTION-NOISE );
+				v-x' = if ( success ^ ~collided ) then ( v-x + gas-x ) else v-x;
+				v-y' = if ( success ^ ~collided ) then ( v-y + gas-y ) else v-y;
+				collided' = collided | ( x > OUTER-MAX-X + EPSILON ) | ( x < OUTER-MIN-X - EPSILON ) | ( y > OUTER-MAX-Y + EPSILON ) | ( y < OUTER-MIN-Y - EPSILON ) | [( x < INNER-MAX-X - EPSILON ) ^ ( x > INNER-MIN-X + EPSILON ) ^ ( y < INNER-MAX-Y - EPSILON ) ^ ( y > INNER-MIN-Y + EPSILON ) ] | ( x-crosses-inner ^ y-crosses-inner );
+				//collision needs to be better, car may have passed through obstacle 
+				//line through (x,y) to (x+v_x, y+v_y) intersects rectangle?
+				
+				x-crosses-inner-max = ( (x > INNER-MAX-X) ^ (x + v-x < INNER-MAX-X) )
+										| ( (x < INNER-MAX-X) ^ (x + v-x > INNER-MAX-X) );
+				x-crosses-inner-min = ( (x > INNER-MIN-X) ^ (x + v-x < INNER-MIN-X) )
+										| ( (x < INNER-MIN-X) ^ (x + v-x > INNER-MIN-X) );
+				x-crosses-inner = x-crosses-inner-max | x-crosses-inner-min;
+				
+				y-crosses-inner-max = ( (y > INNER-MAX-Y) ^ (y + v-y < INNER-MAX-Y) )
+										| ( (y < INNER-MAX-Y) ^ (y + v-y > INNER-MAX-Y) );
+				y-crosses-inner-min = ( (y > INNER-MIN-Y) ^ (y + v-y < INNER-MIN-Y) )
+										| ( (y < INNER-MIN-Y) ^ (y + v-y > INNER-MIN-Y) );
+				y-crosses-inner = y-crosses-inner-max | y-crosses-inner-min;
+				
+ 			};
+ 		
+ 			// 0 reward for reaching goal, -1 in all other cases
+ 			reward = - abs[ x - GOAL-X ] - abs[ y - GOAL-Y ] -10000*collided;
+			
+ 			//state-invariants{
+			//	//grid 
+			//	MAX-X >= x;
+			//	MIN-X <= x;
+			//	MAX-Y >= y;
+			//	MIN-Y <= y;
+			//	
+ 			//};
+			
+			action-preconditions{
+				//bounded accelaration
+				MAX-GAS >= gas-x;
+				-MAX-GAS <= gas-x;
+				MAX-GAS >= gas-y;
+				-MAX-GAS <= gas-y;
+			};	
+ 		
+ 		}

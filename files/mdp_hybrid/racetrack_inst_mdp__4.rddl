@@ -1,0 +1,14 @@
+non-fluents nf_racetrack_4 {
+	domain = racetrack_mdp;
+		
+	non-fluents {
+		MAX-GAS = 0.175;
+	};
+}
+
+instance racetrack_inst_mdp__4 {
+ 	domain = racetrack_mdp;
+	non-fluents = nf_racetrack_4;
+	horizon = 20;
+ 	discount = 1.0;
+}

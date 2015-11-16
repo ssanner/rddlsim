@@ -169,7 +169,7 @@ public class HOPTranslate extends Translate implements Policy {
 			future_terms_indices.add( i );
 		}
 		
-		src.parallelStream().forEach( new Consumer< HashMap<PVAR_NAME, ArrayList<ArrayList<LCONST> > > >() {
+		src.stream().forEach( new Consumer< HashMap<PVAR_NAME, ArrayList<ArrayList<LCONST> > > >() {
 
 			@Override
 			public void accept(
@@ -179,7 +179,7 @@ public class HOPTranslate extends Translate implements Policy {
 					@Override
 					public void accept(
 							Entry<PVAR_NAME, ArrayList<ArrayList<LCONST>>> entry ) {
-						entry.getValue().parallelStream().forEach( new Consumer< ArrayList<LCONST> >() {
+						entry.getValue().stream().forEach( new Consumer< ArrayList<LCONST> >() {
 							@Override
 							public void accept(ArrayList<LCONST> terms) {
 								
@@ -203,7 +203,7 @@ public class HOPTranslate extends Translate implements Policy {
 								EXPR rhs_with_tf = new_rhs_stationary.addTerm(TIME_PREDICATE, constants, objects)
 										.addTerm(future_PREDICATE, constants, objects);
 								
-								time_terms_indices.parallelStream().forEach( new Consumer< Integer >() {
+								time_terms_indices.stream().forEach( new Consumer< Integer >() {
 									@Override
 									public void accept(Integer time_term_index ) {
 										EXPR lhs_with_f_temp = null;
@@ -223,7 +223,7 @@ public class HOPTranslate extends Translate implements Policy {
 										final EXPR rhs_with_f = rhs_with_tf.substitute( 
 												Collections.singletonMap( TIME_PREDICATE, TIME_TERMS.get( time_term_index ) ), constants, objects);
 										
-										future_terms_indices.parallelStream().forEach( 
+										future_terms_indices.stream().forEach( 
 												new Consumer<Integer>() {
 													public void accept(Integer future_term_index) {
 														EXPR lhs = lhs_with_f.substitute(
