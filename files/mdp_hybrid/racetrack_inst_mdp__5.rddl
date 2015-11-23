@@ -1,14 +1,26 @@
 non-fluents nf_racetrack_5 {
 	domain = racetrack_mdp;
-		
+	objects {
+		poi : {p_center};//, p_left, p_right};
+	};
+	
 	non-fluents {
-		MAX-GAS = 0.0875;
+		MAX-GAS = 0.25;
 	};
 }
 
 instance racetrack_inst_mdp__5 {
  	domain = racetrack_mdp;
 	non-fluents = nf_racetrack_5;
+	
+	init-state {
+		x(p_center) = 5.0; y(p_center) = 1.0;
+		//x(p_left) = 2.2; y(p_left) = 0.8;
+		//x(p_right) = 2.8; y(p_right) = 0.2;
+		//x(p_up) = 2.8; y(p_up) = 0.8;
+		//x(p_down) = 0.5; y(p_down) = 0.3;
+	};
+	
 	horizon = 20;
  	discount = 1.0;
 }

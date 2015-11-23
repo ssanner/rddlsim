@@ -3007,7 +3007,7 @@ public class RDDL {
 		
 		@Override
 		public EXPR getMean(Map<TYPE_NAME, OBJECTS_DEF> objects) {
-			return _exprProb.getMean(objects);
+			return new COMP_EXPR(_exprProb.getMean(objects), new REAL_CONST_EXPR(0.5d), COMP_EXPR.GREATEREQ );
 		}
 		
 		@Override

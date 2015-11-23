@@ -1,12 +1,14 @@
 package rddl.det.mip;
 
 import java.io.BufferedWriter;
+import rddl.RDDL.OBJECT_VAL;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import rddl.EvalException;
+import rddl.RDDL.LCONST;
 import rddl.RDDL.PVAR_NAME;
 import rddl.State;
 import rddl.viz.StateViz;
@@ -18,6 +20,14 @@ public class TwoDimensionalTrajectory implements StateViz {
 	private int blowup = 10;
 	private Double _maxX;
 	private Double _maxY;
+	private ArrayList<LCONST> center_point;
+
+	public TwoDimensionalTrajectory() {
+		center_point = new ArrayList<LCONST>();
+		center_point.add( new OBJECT_VAL("p_center") );
+	}
+
+	
 	
 	@Override
 	public void display(State s, int time) {
@@ -33,13 +43,15 @@ public class TwoDimensionalTrajectory implements StateViz {
 					}
 				}
 				
-				int min_col = (int)(blowup*getInnerMinX( s ));
-				int max_col =  (int)(blowup*getInnerMaxX( s ));
-				int min_row = (int)( blowup*( getMaxY(s)-getInnerMaxY( s ) ));
-				int max_row = (int)(blowup*(getMaxY(s)-getInnerMinY( s )) );
+				int min_col = (int)(blowup*getInnerMinX( s )) + (int)(blowup*0.1);
+				int max_col =  (int)(blowup*getInnerMaxX( s )) - (int)(blowup*0.1);
+				int min_row = (int)( blowup*( getMaxY(s)-getInnerMaxY( s ) )) + (int)(blowup*0.1);;
+				int max_row = (int)(blowup*(getMaxY(s)-getInnerMinY( s )) ) - (int)(blowup*0.1);;
 				for( int row = min_row; row <= max_row; ++row ){
 					for( int col = min_col; col <= max_col; ++col ){
-						bw_image[row][col] = false; //inner black
+						if( row == min_row || row == max_row || col == min_col || col == max_col ){
+							bw_image[row][col] = false; //inner black	
+						}
 					}
 				}
 			}
@@ -76,11 +88,11 @@ public class TwoDimensionalTrajectory implements StateViz {
 	}
 	
 	private double getX(State s) throws EvalException {
-		return (double) s.getPVariableAssign( new PVAR_NAME("x"), new ArrayList<>() );
+		return (double) s.getPVariableAssign( new PVAR_NAME("x"), center_point );
 	}
 
 	private double getY(State s) throws EvalException {
-		return (double) s.getPVariableAssign( new PVAR_NAME("y"), new ArrayList<>() );
+		return (double) s.getPVariableAssign( new PVAR_NAME("y"), center_point );
 	}
 
 	private double getInnerMinY(State s) throws EvalException {
