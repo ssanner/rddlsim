@@ -5,7 +5,7 @@ non-fluents nf_racetrack_5 {
 	};
 	
 	non-fluents {
-		MAX-GAS = 0.25;
+		MAX-GAS = 1.0;
 	};
 }
 
