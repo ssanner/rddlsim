@@ -60,13 +60,17 @@ domain racetrack_mdp {
  			};
  		
  			cpfs {
- 		
-				x'(?p) = if ( collided ) then x(?p) + 0.5* v-x else x(?p) + v-x;
-				y'(?p) = if ( collided ) then y(?p) + 0.5*v-y else y(?p) + v-y;
+				//road is slippery - braking can fail
+				//mud is sticky - no failure, gas has diminished effect of velocity
+				
+				x'(?p) = if (collided) then x(?p) else (x(?p) + v-x);
+				y'(?p) = if (collided) then y(?p) else (y(?p) + v-y);
 				success = Bernoulli( 1 - ACTION-NOISE );
-				v-x' = if ( success == 1 ) then ( v-x + 0.5*gas-x ) else v-x;
-				v-y' = if ( success == 1 ) then ( v-y + 0.5*gas-y ) else v-y;
-				collided' = (exists_{?p:poi}[ in-the-pit(?p) ]) | [ (sum_{?p:poi}[ collided-with-inner-min-x(?p) + 
+				
+				v-x' =  if (collided) then (0) else if ( ~collided ^ success ) then ( v-x + gas-x ) else v-x;
+				v-y' = if (collided) then (0) else if ( ~collided ^ success ) then ( v-y + gas-y ) else v-y;
+				
+				collided' = collided | (exists_{?p:poi}[ in-the-pit(?p) ]) | [ (sum_{?p:poi}[ collided-with-inner-min-x(?p) + 
 								collided-with-inner-max-x(?p) + collided-with-inner-min-y(?p) + collided-with-inner-max-y(?p) + 		
 									collided-with-outer-min-x(?p) + collided-with-outer-min-y(?p) + collided-with-outer-max-x(?p) + 
 										collided-with-outer-max-y(?p) ]) > 0.0 ] | (exists_{?p:poi}[ (crossed-inner-min-x(?p) + crossed-inner-min-y(?p) + crossed-inner-max-x(?p) + crossed-inner-max-y(?p)) > 1.0 ]);
@@ -113,7 +117,8 @@ domain racetrack_mdp {
  			};
  		
  			// 0 reward for reaching goal, -1 in all other cases
- 			reward = - [(sum_{?p:poi}[ ( abs[ x(?p) - GOAL-X ] > ARM-SIZE + 0.1 ) | ( abs[ y(?p) - GOAL-Y ] > ARM-SIZE + 0.1 ) ]) > 0] - 400*collided ; 
+ 			reward = - [(sum_{?p:poi}[ ( abs[ x(?p) - GOAL-X ] > ARM-SIZE + 0.1 ) | ( abs[ y(?p) - GOAL-Y ] > ARM-SIZE + 0.1 ) ]) > 0];
+			//- 400*collided ; 
 			// + abs[ gas-x ] + abs[ gas-x ] ]) ;
 			
 			//if ( forall_{?p:poi}[ ( abs[ x(?p) - GOAL-X ] <= ARM-SIZE + 0.1 ) ^ ( abs[ y(?p) - GOAL-Y ] <= ARM-SIZE + 0.1 ) ] )  
