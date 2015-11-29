@@ -21,7 +21,7 @@ domain racetrack_mdp {
 				GOAL-Y : {non-fluent, real, default = 9.0};
 				
 				ACTION-NOISE : {non-fluent, real, default = 0.2};
-				ARM-SIZE : {non-fluent, real, default = 0.0};
+				ARM-SIZE : {non-fluent, real, default = 0.2};
 				
 				//				
 				OUTER-MAX-X : {non-fluent, real, default = 10.0};
@@ -117,7 +117,7 @@ domain racetrack_mdp {
  			};
  		
  			// 0 reward for reaching goal, -1 in all other cases
- 			reward = - [(sum_{?p:poi}[ ( abs[ x(?p) - GOAL-X ] > ARM-SIZE + 0.1 ) | ( abs[ y(?p) - GOAL-Y ] > ARM-SIZE + 0.1 ) ]) > 0];
+ 			reward = - ([(sum_{?p:poi}[ ( abs[ x(?p) - GOAL-X ] > ARM-SIZE + 0.1 ) | ( abs[ y(?p) - GOAL-Y ] > ARM-SIZE + 0.1 ) ]) > 0] | collided);
 			//- 400*collided ; 
 			// + abs[ gas-x ] + abs[ gas-x ] ]) ;
 			
