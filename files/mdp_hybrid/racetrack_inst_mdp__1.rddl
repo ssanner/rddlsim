@@ -15,10 +15,10 @@ instance racetrack_inst_mdp__1 {
 	
 	init-state {
 		//x(p_center) = 5.0; y(p_center) = 1.0;
-		x(p_left) = 4.7; y(p_left) = 1.0;
-		x(p_right) = 5.3; y(p_right) = 1.0;
-		x(p_up) = 5.0; y(p_up) = 1.3;
-		x(p_down) = 5.0; y(p_down) = 0.7;
+		x(p_left) = 4.8; y(p_left) = 1.0;
+		x(p_right) = 5.2; y(p_right) = 1.0;
+		x(p_up) = 5.0; y(p_up) = 1.2;
+		x(p_down) = 5.0; y(p_down) = 0.8;
 	};
 	
 	horizon = 20;
