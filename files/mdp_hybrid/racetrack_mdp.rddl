@@ -29,7 +29,7 @@ domain racetrack_mdp {
 				OUTER-MAX-Y : {non-fluent, real, default = 10.0};
 				OUTER-MIN-Y : {non-fluent, real, default = 0.0};
 				
-				INNER-MAX-X : {non-fluent, real, default = 9.0};
+				INNER-MAX-X : {non-fluent, real, default = 8.0};
 				INNER-MIN-X : {non-fluent, real, default = 0.0};
 				INNER-MAX-Y : {non-fluent, real, default = 8.0};
 				INNER-MIN-Y : {non-fluent, real, default = 2.0};
