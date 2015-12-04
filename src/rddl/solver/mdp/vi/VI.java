@@ -116,6 +116,10 @@ public class VI extends Policy {
 
 			// Find best action by evaluating each Q-function
 			for (Map.Entry<CString, Integer> me : _hmAct2Regr.entrySet()) {
+				
+				if (!action_map.keySet().contains(me.getKey()._string))
+					continue; // Action is not legal in this state
+				
 				Integer q_function = me.getValue();
 				//System.out.println("Qfun:\n" + _context.printNode(q_function) + "\n" + add_state_assign);
 				double action_value = _context.evaluate(q_function, add_state_assign);
