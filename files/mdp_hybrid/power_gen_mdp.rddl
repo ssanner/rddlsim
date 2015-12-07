@@ -35,7 +35,7 @@ domain power_gen_mdp {
     	
 		// Constants
 		PROD_UNITS_MIN(plant)      : { non-fluent, int,  default = 0   };
-		PROD_UNITS_MAX(plant)      : { non-fluent, int,  default = 10  };
+		PROD_UNITS_MAX(plant)      : { non-fluent, int,  default = 100  };
 		PROD_CHANGE_PENALTY(plant) : { non-fluent, real, default = 1.0 };
 		COST_PER_UNIT(plant)       : { non-fluent, real, default = 5.0 };
 		INCOME_PER_UNIT            : { non-fluent, real, default = 8.0 };
@@ -51,7 +51,7 @@ domain power_gen_mdp {
 		temperature    : { state-fluent, real, default = 10 };
 		
 		// Derived and intermediate
-		demand          : { derived-fluent, real };
+		demand          : { interm-fluent, real };
 		fulfilledDemand : { interm-fluent,  real };
 		
 		// Observations - real

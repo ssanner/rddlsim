@@ -1,20 +1,20 @@
-non-fluents nf_power_mdp_10 {
+non-fluents nf_power_mdp_15 {
 	domain = power_gen_mdp; 
 	
 	objects { 
-		plant : {p1, p2, p3,p4,p5, p6, p7, p8, p9 , p10};
+		plant : {p1, p2, p3,p4,p5, p6, p7, p8, p9 , p10, p11, p12, p13, p14, p15};
 	};
 
 	non-fluents {		
-		MIN_CONSUMPTION = 10;
+		MIN_CONSUMPTION = 15;
 	};
 }
 
 
-instance inst_power_gen_mdp_10 {
+instance inst_power_gen_mdp_15 {
 
 	domain = power_gen_mdp;
-	non-fluents = nf_power_mdp_10;
+	non-fluents = nf_power_mdp_15;
   
   	// State-action constraints above are sufficient
 	//max-nondef-actions = pos-inf;
