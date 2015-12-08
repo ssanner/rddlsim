@@ -24,6 +24,7 @@ import java.nio.channels.UnsupportedAddressTypeException;
 import java.util.*;
 import java.util.function.BinaryOperator;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -5664,11 +5665,21 @@ public class RDDL {
 		public EXPR expandBooleanQuantifier( Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants,
 				Map<TYPE_NAME, OBJECTS_DEF> objects ){
 			List<BOOL_EXPR> terms = expandQuantifier( _expr, _alVariables, objects, constants )
-					.stream().map( m -> m instanceof BOOL_EXPR ? ((BOOL_EXPR)m) : (
-							m.isConstant(constants, objects) ? ( m.getDoubleValue(constants, objects) == 1d ? 
-									new BOOL_CONST_EXPR(true) : new BOOL_CONST_EXPR(false)  ) : null ) )
-					.collect( Collectors.toList() );
-			
+					.stream().map( new Function<EXPR, BOOL_EXPR>() {
+						@Override
+						public BOOL_EXPR apply(EXPR t) {
+							if( t instanceof BOOL_EXPR ){
+								return (BOOL_EXPR) t;
+							}
+							if( t.isConstant(constants, objects) ){
+								return t.getDoubleValue(constants, objects) == 1d ? 
+										new BOOL_CONST_EXPR(true) : new BOOL_CONST_EXPR(false);
+							}
+							return null;
+						}
+					}).collect( Collectors.toList() );
+					
+					
 			final String type = _sQuantType.equals( EXISTS ) ? CONN_EXPR.OR : 
 				( _sQuantType.equals( FORALL ) ? CONN_EXPR.AND : null );
 			CONN_EXPR result;

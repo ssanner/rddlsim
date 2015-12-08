@@ -1,9 +1,14 @@
 package rddl.det.mip;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -77,6 +82,24 @@ public class PVarHeatMap implements StateViz {
 		protected void close_bw() throws IOException{
 			bw.flush(); bw.close();
 		}
+
+		ArrayList<String> lines = null;
+		
+		public void processLine(String line) throws IOException {
+			
+			if( line.contains( "- states: " + varName ) ){
+				if( lines == null ){
+					lines = new ArrayList<String>();
+				}
+				lines.add( line.substring( line.indexOf('=') + 1 ) );
+			}else{
+				if( lines != null ){
+					bw.write( Arrays.toString( lines.toArray() ) + "\n" );
+					lines.clear();
+					lines = null;
+				}
+			}
+		}
 		
 	}
 	
@@ -96,6 +119,37 @@ public class PVarHeatMap implements StateViz {
 		for( final PVarElement p : maps ){
 			p.doState(s);
 		}
+	}
+	
+	public void vizFromFile( final String filename ){
+		try{
+			BufferedReader bw = new BufferedReader( new FileReader( filename ) );
+			String line;
+			while( (line = bw.readLine() ) != null ){
+				for( final PVarElement m : maps ){
+					m.processLine( line );
+				}
+			}
+			
+			for( final PVarElement m : maps ){
+				m.close_bw();
+			}
+			
+			bw.close();
+			
+			for( final PVarElement m : maps ){
+				Files.move( FileSystems.getDefault().getPath( m.varName + ".viz" ), 
+						FileSystems.getDefault().getPath( filename + "." + m.varName + ".viz" ),
+						StandardCopyOption.REPLACE_EXISTING );
+			}
+					
+		}catch( IOException exc ){
+			exc.printStackTrace();
+		}
+	}
+	
+	public static void main(String[] args) {
+		new PVarHeatMap( Arrays.copyOfRange( args, 1, args.length ) ).vizFromFile( args[0] );
 	}
 
 }

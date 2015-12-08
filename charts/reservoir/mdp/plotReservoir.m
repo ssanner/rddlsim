@@ -2,15 +2,15 @@ function plotReservoir
 
 %% Create output variable
 %reservoir_levels_10_noop
-reservoirlevels10random = importfile( 'D:\workspace\RDDLv2\charts\reservoir\mdp\rlevel.viz',1,100);
+hop_20_rlevel = importfile( 'hop_20_rlevel.viz',1, 20);
 %reservoirrain10random = importfile( 'D:\workspace\RDDLv2\charts\inventory\mdp\order_mean_lookahead4_1min.viz',1,100);
-reservoirrain10random = importfile( 'D:\workspace\RDDLv2\charts\reservoir\mdp\rain.viz',1,100);
+hop_20_rain = importfile( 'hop_20_rain.viz',1, 20);
 
 fig = figure;
-subplot(1,2,1); imagesc( reservoirlevels10random ); xlabel({'reservoir'}); ylabel({'time'}); title({'level'}); colorbar();
-subplot(1,2,2); imagesc( reservoirrain10random ); xlabel({'reservoir'}); ylabel({'time'}); title({'rain'}); colorbar();
+subplot(1,2,1); imagesc( hop_20_rlevel ); xlabel({'reservoir'}); ylabel({'time'}); title({'level'}); colorbar();
+subplot(1,2,2); imagesc( hop_20_rain ); xlabel({'reservoir'}); ylabel({'time'}); title({'rain'}); colorbar();
 ha = axes('Position',[0 0 1 1],'Xlim',[0 1],'Ylim',[0 1],'Box','off','Visible','off','Units','normalized', 'clipping' , 'off');
-text(0.5, 1,'MEAN DETERMINIZATION [-3.66, 0.55]*1e5','HorizontalAlignment','center','VerticalAlignment', 'top');
+text(0.5, 1,'HOP','HorizontalAlignment','center','VerticalAlignment', 'top');
 print('last', fig, '-dpdf' );
 
 end
@@ -27,7 +27,7 @@ end
 
 %% Read columns of data as strings:
 % For more information, see the TEXTSCAN documentation.
-formatSpec = '%s%s%s%s%s%s%s%s%s%s%[^\n\r]';
+formatSpec = '%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%[^\n\r]';
 
 %% Open the text file.
 fileID = fopen(filename,'r');
@@ -53,7 +53,7 @@ fclose(fileID);
 raw = [dataArray{:,1:end-1}];
 numericData = NaN(size(dataArray{1},1),size(dataArray,2));
 
-for col=[1,2,3,4,5,6,7,8,9,10]
+for col=1:20
     % Converts strings in the input cell array to numbers. Replaced non-numeric
     % strings with NaN.
     rawData = dataArray{col};

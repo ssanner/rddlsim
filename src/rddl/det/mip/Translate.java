@@ -329,7 +329,9 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 	@Override
 	public void sessionEnd(double total_reward) {
 		Policy.super.sessionEnd(total_reward);
-		viz.close();
+		if( viz != null ){
+			viz.close();
+		}
 		resetGRB();
 	}
 
@@ -1144,6 +1146,32 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 		
 		return new ArrayList<PVAR_INST_DEF>( ret_lower );
 	}
+	
+	protected Object sanitize(PVAR_NAME pName, double value) {
+		if( value == -1*value ){
+			value = Math.abs( value );
+		}
+		
+		Object ret = null;
+		if( type_map.get( pName ).equals( GRB.BINARY ) ){
+			if( value > 1.0 ){
+				value = 1;
+			}else if( value < 0.0 ){
+				value = 0;
+			}else{
+				value = Math.rint( value );
+			}
+			assert( value == 0d || value == 1d );
+			ret = new Boolean( value == 0d ? false : true );
+		}else if( type_map.get( pName ).equals( GRB.INTEGER ) ){
+			value = Math.rint( value );
+			ret = new Integer( (int)value );
+		}else{
+			ret = new Double( value );
+		}
+		return ret;							
+	}
+	
 	protected ArrayList<PVAR_INST_DEF> getRootActions(Map<EXPR, Double> ret_expr) {
 		final ArrayList<PVAR_INST_DEF> ret = new ArrayList<>();
 		if( ret_expr == null ){
@@ -1161,7 +1189,10 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 							.addTerm(TIME_PREDICATE, constants, objects)
 							.substitute( Collections.singletonMap( TIME_PREDICATE, TIME_TERMS.get(0) ), constants, objects);
 						assert( ret_expr.containsKey( lookup ) );
-						ret.add( new PVAR_INST_DEF( pvar._sPVarName, ret_expr.get( lookup ), terms ) );
+						
+						Object value = sanitize( pvar, ret_expr.get( lookup ) );
+						
+						ret.add( new PVAR_INST_DEF( pvar._sPVarName, value , terms ) );
 					}
 				});
 			}

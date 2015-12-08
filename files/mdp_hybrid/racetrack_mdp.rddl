@@ -20,7 +20,7 @@ domain racetrack_mdp {
 				GOAL-X : {non-fluent, real, default = 5.0};
 				GOAL-Y : {non-fluent, real, default = 9.0};
 				
-				ACTION-NOISE : {non-fluent, real, default = 0.0};
+				ACTION-NOISE : {non-fluent, real, default = 0.2};
 				ARM-SIZE : {non-fluent, real, default = 0.2};
 				
 				//				
