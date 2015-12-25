@@ -124,7 +124,7 @@ public class State {
 					 ArrayList<BOOL_EXPR> state_invariants,
 					 EXPR reward, 
 					 int max_nondef_actions) {
-		_df.setRoundingMode( RoundingMode.DOWN );
+		_df.setRoundingMode( RoundingMode.HALF_DOWN );
 		_hmPVariables = pvariables;
 		_hmTypes = typedefs;
 		_hmCPFs = cpfs;
@@ -472,9 +472,9 @@ public class State {
 				if( value instanceof Number ){
 					String interm_value = _df.format( (Number) value );
 					if( value instanceof Double ){
-						value = Double.valueOf( interm_value );
+						value = Double.valueOf( interm_value );// ((Number) value).doubleValue() );
 					}else if( value instanceof Integer ){
-						value = Integer.valueOf( interm_value );					
+						value = Integer.valueOf( interm_value );//((Number) value).intValue() );					
 					}
 				}
 				
@@ -519,9 +519,9 @@ public class State {
 				if( value instanceof Number ){
 					String interm_value = _df.format( (Number) value );
 					if( value instanceof Double ){
-						value = Double.valueOf( interm_value );
+						value = Double.valueOf( interm_value );//((Number) value).doubleValue() );
 					}else if( value instanceof Integer ){
-						value = Integer.valueOf( interm_value );					
+						value = Integer.valueOf( interm_value );//((Number) value).intValue() );					
 					}
 				}
 				
@@ -566,9 +566,9 @@ public class State {
 			if( value instanceof Number ){
 				String interm_value = _df.format( (Number) value );
 				if( value instanceof Double ){
-					value = Double.valueOf( interm_value );
+					value = Double.valueOf( interm_value );//((Number) value).doubleValue() );
 				}else if( value instanceof Integer ){
-					value = Integer.valueOf( interm_value );					
+					value = Integer.valueOf( interm_value );//((Number) value).intValue() );					
 				}
 			}
 				

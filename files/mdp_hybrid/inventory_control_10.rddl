@@ -5,8 +5,18 @@ non-fluents nf_inventory_control_10 {
 	};
 	
 	non-fluents {
-		DEMAND-CENTER = 5.0;
-		DEMAND-WIDTH = 2.0;
+		DEMAND-WIDTH(t0) = 5.0;
+		DEMAND-WIDTH(t1) = 6.0;
+		DEMAND-WIDTH(t2) = 5.0;
+		DEMAND-WIDTH(t3) = 7.0;
+		DEMAND-WIDTH(t4) = 8.0;
+		DEMAND-WIDTH(t5) = 4.0;
+		DEMAND-WIDTH(t6) = 3.0;
+		DEMAND-WIDTH(t7) = 6.0;
+		DEMAND-WIDTH(t8) = 8.0;
+		DEMAND-WIDTH(t9) = 5.0;
+		
+		budget = 5000.0;
 	};
 }
 

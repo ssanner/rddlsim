@@ -31,9 +31,9 @@ public class TwoDimensionalTrajectory implements StateViz {
 
 	public TwoDimensionalTrajectory() {
 		center_point = new ArrayList<LCONST>();
-		center_point.add( new OBJECT_VAL("p_center") );
+//		center_point.add( new OBJECT_VAL("p_center") );
 	}
-
+	
 	@Override
 	public void display(State s, int time) {
 		try{

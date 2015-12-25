@@ -477,7 +477,7 @@ public class HOPTranslate extends Translate implements Policy {
 		//domain constraints 
 		constraints.addAll( rddl_state._alActionPreconditions ); constraints.addAll( rddl_state._alStateInvariants );
 		
-		constraints.parallelStream().forEach( new Consumer< BOOL_EXPR >() {
+		constraints.stream().forEach( new Consumer< BOOL_EXPR >() {
 			@Override
 			public void accept(BOOL_EXPR e) {
 				System.out.println( "Translating Constraint " + e );	
@@ -485,7 +485,7 @@ public class HOPTranslate extends Translate implements Policy {
 						.addTerm(TIME_PREDICATE, constants, objects )
 						.addTerm(future_PREDICATE, constants, objects);
 				
-				TIME_TERMS.parallelStream().forEach( new Consumer< LCONST >() {
+				TIME_TERMS.stream().forEach( new Consumer< LCONST >() {
 					@Override
 					public void accept(LCONST time_term ) {
 						future_TERMS.parallelStream().forEach( new Consumer<LCONST>() { 
@@ -722,7 +722,13 @@ public class HOPTranslate extends Translate implements Policy {
 								  try {
 									   GRBVar grb_var = EXPR.grb_cache.get( action_var );
 									   assert( grb_var != null );
-									   String interm_val = State._df.format( grb_var.get( DoubleAttr.X ) );
+									   double actual = grb_var.get( DoubleAttr.X );
+									   
+									   //NOTE : uncomment this part if having issues with constrained actions
+									   //such as if you get -1E-11 instead of 0,
+									   //and you are expecting a positive action >= 0 
+									   String interm_val = State._df.format( actual );
+//									   System.out.println( actual + " rounded to " + interm_val );
 									   
 									   ret.put( action_var, Double.valueOf(  interm_val ) );
 								   } catch (GRBException e) {

@@ -1071,15 +1071,17 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 			firstTimeModel();
 		}
 		
-		System.out.println("State : " + s );
+		
 		try {
 			Map<EXPR, Double> ret_expr = doPlan( s._state , true );
 			ArrayList<PVAR_INST_DEF> ret = getRootActions(ret_expr);
-			System.out.println( "Action : " + ret );
 			
+			s.computeIntermFluents( ret, new RandomDataGenerator()  );
+			System.out.println("State : " + s );
+			System.out.println( "Action : " + ret );
+						
 			//fix to prevent numeric errors of the overflow kind
 			int num_digs = State._df.getMaximumFractionDigits();
-			s.computeIntermFluents( ret, new RandomDataGenerator()  );
 			while( num_digs > 0 ){
 				try{
 					s.checkStateActionConstraints(ret);

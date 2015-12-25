@@ -105,7 +105,7 @@ public class PVarHeatMap implements StateViz {
 	
 	protected PVarElement[] maps;
 	public final static String[] reservoir_tags = { "rlevel", "rain"};
-	public final static String[] inventory_tags = { "stock", "order", "demand","fulfilled-demand", "budget" };
+	public final static String[] inventory_tags = { "stock", "order" };
 	
 	public PVarHeatMap( String[] tags ) {
 		maps = new PVarElement[ tags.length ];

@@ -6,49 +6,52 @@ domain inventory_control_continuous_mdp {
 	
 	pvariables {
 		stock(item) : { state-fluent, real, default = 0.0 };
+		budget : { non-fluent, real, default=100.0 };//per state budget
 		order(item) : { action-fluent, real, default = 0.0 };
-		demand(item) : { state-fluent, real, default = 5.0 };
 		
+		//correct if demand' not a function of demand , unlike reservoir 
 		payoff(item) : { non-fluent, real, default = 1.0 };
-		cost(item) : { non-fluent, real, default = 0.9 };
+		cost(item) : { non-fluent, real, default = 0.5 };
+		PERISH(item) : { non-fluent, real, default = 1.0 };
 		
-		DEMAND-WIDTH : { non-fluent, real, default = 2.0 };
-		DEMAND-CENTER : { non-fluent, real, default = 5.0 };// Uniform [DEMAND-CENTER - DEMAND-WIDTH, DEMAND-CENTER + DEMAND-WIDTH]
+		DEMAND-WIDTH(item) : { non-fluent, real, default = 5.0 };
+		DEMAND-CENTER(item) : { non-fluent, real, default = 10.0 };// Uniform [DEMAND-CENTER - DEMAND-WIDTH, DEMAND-CENTER + DEMAND-WIDTH]
+		DEMAND-SLOPE(item) : { non-fluent, real, default = 2.0 };
+		
+		temperature(item) : { interm-fluent, real};//in [ DEMAND-CENTER - DEMAND-WIDTH, DEMAND-CENTER + DEMAND-WIDTH]
+		demand(item) : { interm-fluent, real };// in [ DEMAND-CENTER, DEMAND-CENTER + DEMAND-SLOPE*DEMAND-WIDTH]
 		
 		fulfilled-demand(item) : { interm-fluent, real };
-		capacity : { interm-fluent, real };
-		budget : { interm-fluent, real };
 		profit : { interm-fluent, real };
 		
-		year : { state-fluent, int, default = 0 };
-		EPSILON : { non-fluent, real, default = 0.1 };
-		BONUS : { non-fluent, real, default = 0.9};
 	};
 	
 	cpfs {
-		year' = year + 1;
 		
-		demand'(?t) = Uniform(DEMAND-CENTER - DEMAND-WIDTH, DEMAND-CENTER + DEMAND-WIDTH);
+		temperature(?t) = Uniform(DEMAND-CENTER(?t) - DEMAND-WIDTH(?t), DEMAND-CENTER(?t) + DEMAND-WIDTH(?t));
+		demand(?t) = [ DEMAND-CENTER(?t) ] + DEMAND-SLOPE(?t) * abs[ temperature(?t) - DEMAND-CENTER(?t) ];
+		
 		fulfilled-demand(?t) = min[stock(?t), demand(?t)];
-		
-		capacity = sum_{?t:item}[DEMAND-CENTER + DEMAND-WIDTH];
 				
 		profit = sum_{?t : item}[ ( payoff(?t) ) * fulfilled-demand(?t) ];
-		
-		//extra funds available now as a linear fraction of fulfilled-demand
-		budget = if ( year == 0 ) then sum_{?t: item}[(DEMAND-CENTER + DEMAND-WIDTH)] 
-					else sum_{?t: item}[ BONUS * fulfilled-demand(?t) ] ;
 					
-		stock'(?t) = if( stock(?t) < demand(?t) ) then order(?t) else stock(?t)-demand(?t)+order(?t);
+		stock'(?t) = if( stock(?t) < demand(?t) ) then order(?t) else [ PERISH(?t)*(stock(?t) - demand(?t)) + order(?t) ];
 						
 	};
 	 
-	reward = profit - sum_{?t : item}[ 0 - cost(?t)*order(?t) ];
+	reward = profit - sum_{?t : item}[ cost(?t)*order(?t) ];
+	
+	action-preconditions {
+		forall_{?t : item}[ order(?t) >= 0.0 ];
+		[ sum_{?t : item} order(?t) ] <= budget;// (DEMAND-CENTER(?t)) * sum_{?t:item}[1];
+	};
 	
 	state-invariants {
-		forall_{?t : item}[ stock(?t) >= 0 ];
-		forall_{?t : item}[ order(?t) >= 0 ];
-		[ sum_{?t : item} stock(?t) ] <= max[0, capacity - EPSILON];
-		[ sum_{?t : item} order(?t) ] <= max[0, budget - EPSILON];
+		forall_{?t : item}[ stock(?t) >= 0.0 ];
+		forall_{?t : item}[ temperature(?t) <= DEMAND-CENTER(?t) + DEMAND-WIDTH(?t) ];
+		forall_{?t : item}[ temperature(?t) >= DEMAND-CENTER(?t) - DEMAND-WIDTH(?t) ];
+		forall_{?t : item}[ demand(?t) >= DEMAND-CENTER(?t) ];
+		forall_{?t : item}[ demand(?t) <= DEMAND-CENTER(?t) + DEMAND-SLOPE(?t)*DEMAND-WIDTH(?t) ];
+		//[ sum_{?t : item} stock(?t) ] <= capacity;
 	};
 }
