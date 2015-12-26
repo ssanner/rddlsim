@@ -19,7 +19,7 @@ domain inventory_control_continuous_mdp {
 		DEMAND-SLOPE(item) : { non-fluent, real, default = 2.0 };
 		
 		temperature(item) : { interm-fluent, real};//in [ DEMAND-CENTER - DEMAND-WIDTH, DEMAND-CENTER + DEMAND-WIDTH]
-		demand(item) : { interm-fluent, real };// in [ DEMAND-CENTER, DEMAND-CENTER + DEMAND-SLOPE*DEMAND-WIDTH]
+		demand(item) : { interm-fluent, real };// in [ 0, DEMAND-CENTER*DEMAND-WIDTH ]
 		
 		fulfilled-demand(item) : { interm-fluent, real };
 		profit : { interm-fluent, real };
@@ -29,7 +29,7 @@ domain inventory_control_continuous_mdp {
 	cpfs {
 		
 		temperature(?t) = Uniform(DEMAND-CENTER(?t) - DEMAND-WIDTH(?t), DEMAND-CENTER(?t) + DEMAND-WIDTH(?t));
-		demand(?t) = [ DEMAND-CENTER(?t) ] + DEMAND-SLOPE(?t) * abs[ temperature(?t) - DEMAND-CENTER(?t) ];
+		demand(?t) = [ 0 ] + DEMAND-CENTER(?t) * abs[ temperature(?t) - DEMAND-CENTER(?t) ];
 		
 		fulfilled-demand(?t) = min[stock(?t), demand(?t)];
 				
@@ -50,8 +50,8 @@ domain inventory_control_continuous_mdp {
 		forall_{?t : item}[ stock(?t) >= 0.0 ];
 		forall_{?t : item}[ temperature(?t) <= DEMAND-CENTER(?t) + DEMAND-WIDTH(?t) ];
 		forall_{?t : item}[ temperature(?t) >= DEMAND-CENTER(?t) - DEMAND-WIDTH(?t) ];
-		forall_{?t : item}[ demand(?t) >= DEMAND-CENTER(?t) ];
-		forall_{?t : item}[ demand(?t) <= DEMAND-CENTER(?t) + DEMAND-SLOPE(?t)*DEMAND-WIDTH(?t) ];
+		forall_{?t : item}[ demand(?t) >= 0 ];
+		forall_{?t : item}[ demand(?t) <= DEMAND-CENTER(?t)*DEMAND-WIDTH(?t) ];
 		//[ sum_{?t : item} stock(?t) ] <= capacity;
 	};
 }
