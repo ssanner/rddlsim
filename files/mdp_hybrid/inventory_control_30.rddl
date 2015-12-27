@@ -5,8 +5,42 @@ non-fluents nf_inventory_control_30 {
 	};
 	
 	non-fluents {
-		DEMAND-CENTER = 5.0;
-		DEMAND-WIDTH = 2.0;
+		
+		DEMAND-WIDTH(t0) = 5.0;
+		DEMAND-WIDTH(t1) = 6.0;
+		DEMAND-WIDTH(t2) = 5.0;
+		DEMAND-WIDTH(t3) = 7.0;
+		DEMAND-WIDTH(t4) = 8.0;
+		DEMAND-WIDTH(t5) = 4.0;
+		DEMAND-WIDTH(t6) = 3.0;
+		DEMAND-WIDTH(t7) = 6.0;
+		DEMAND-WIDTH(t8) = 8.0;
+		DEMAND-WIDTH(t9) = 5.0;
+		
+		DEMAND-WIDTH(t10) = 5.0;
+		DEMAND-WIDTH(t11) = 6.0;
+		DEMAND-WIDTH(t12) = 5.0;
+		DEMAND-WIDTH(t13) = 7.0;
+		DEMAND-WIDTH(t14) = 8.0;
+		DEMAND-WIDTH(t15) = 4.0;
+		DEMAND-WIDTH(t16) = 3.0;
+		DEMAND-WIDTH(t17) = 6.0;
+		DEMAND-WIDTH(t18) = 8.0;
+		DEMAND-WIDTH(t19) = 5.0;
+		
+		DEMAND-WIDTH(t20) = 5.0;
+		DEMAND-WIDTH(t21) = 6.0;
+		DEMAND-WIDTH(t22) = 5.0;
+		DEMAND-WIDTH(t23) = 7.0;
+		DEMAND-WIDTH(t24) = 8.0;
+		DEMAND-WIDTH(t25) = 4.0;
+		DEMAND-WIDTH(t26) = 3.0;
+		DEMAND-WIDTH(t27) = 6.0;
+		DEMAND-WIDTH(t28) = 8.0;
+		DEMAND-WIDTH(t29) = 5.0;
+		
+		budget = 15000.0;
+		
 	};
 }
 
