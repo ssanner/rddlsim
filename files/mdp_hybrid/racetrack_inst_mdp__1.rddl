@@ -6,6 +6,7 @@ non-fluents nf_racetrack_1 {
 	
 	non-fluents {
 		MAX-GAS = 4.0;
+		ACTION-NOISE = 0.0;
 	};
 }
 

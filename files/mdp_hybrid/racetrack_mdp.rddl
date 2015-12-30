@@ -20,9 +20,10 @@ domain racetrack_mdp {
 				GOAL-X : {non-fluent, real, default = 5.0};
 				GOAL-Y : {non-fluent, real, default = 9.0};
 				
-				ACTION-NOISE : {non-fluent, real, default = 0.1};
-				ARM-SIZE : {non-fluent, real, default = 0.3};
-				
+				ACTION-NOISE : {non-fluent, real, default = 0.0};
+				MAX-GAS : {non-fluent, real, default = 0.71 };
+				EPSILON : {non-fluent, real, default = 0.1};				
+
 				//				
 				OUTER-MAX-X : {non-fluent, real, default = 10.0};
 				OUTER-MIN-X : {non-fluent, real, default = 0.0};
@@ -35,9 +36,7 @@ domain racetrack_mdp {
 				INNER-MIN-Y : {non-fluent, real, default = 2.0};
 				//
 				
-				MAX-GAS : {non-fluent, real, default = 0.71 };
-				EPSILON : {non-fluent, real, default = 0.1};				
-
+				
 				success : {interm-fluent, bool};
 				
 				crossed-inner-min-x : {interm-fluent, bool, level=1};
@@ -91,72 +90,51 @@ domain racetrack_mdp {
 				//bilinear cannot be encoded
 				
 				crossed-inner-min-x = [ ((x < INNER-MIN-X ) ^ (x + v-x > INNER-MIN-X + EPSILON )) 
-										| ((x > INNER-MIN-X ) ^ (x + v-x < INNER-MIN-X - EPSILON)) ]
-									  | [ ((x + ARM-SIZE < INNER-MIN-X ) ^ (x + ARM-SIZE + v-x > INNER-MIN-X + EPSILON )) 
-										 | ((x + ARM-SIZE > INNER-MIN-X ) ^ (x + ARM-SIZE + v-x < INNER-MIN-X - EPSILON)) ] |
-									  [ ((x - ARM-SIZE < INNER-MIN-X ) ^ (x - ARM-SIZE + v-x > INNER-MIN-X + EPSILON )) 
-										 | ((x - ARM-SIZE > INNER-MIN-X ) ^ (x - ARM-SIZE + v-x < INNER-MIN-X - EPSILON)) ] ;
-										 
+										| ((x > INNER-MIN-X ) ^ (x + v-x < INNER-MIN-X - EPSILON)) ];
+									  
+									  
 				crossed-inner-min-y = [ ((y < INNER-MIN-Y) ^ (y + v-y > INNER-MIN-Y + EPSILON))
-														| ((y > INNER-MIN-Y) ^ (y + v-y < INNER-MIN-Y - EPSILON)) ]
-									   | [ ((y + ARM-SIZE < INNER-MIN-Y) ^ (y  + ARM-SIZE + v-y > INNER-MIN-Y + EPSILON))
-														| ((y + ARM-SIZE > INNER-MIN-Y) ^ (y + ARM-SIZE + v-y < INNER-MIN-Y - EPSILON)) ]  
-									   | [ ((y - ARM-SIZE < INNER-MIN-Y) ^ (y - ARM-SIZE + v-y > INNER-MIN-Y + EPSILON))
-														| ((y - ARM-SIZE > INNER-MIN-Y) ^ (y  - ARM-SIZE + v-y < INNER-MIN-Y - EPSILON)) ]; 
-														
+														| ((y > INNER-MIN-Y) ^ (y + v-y < INNER-MIN-Y - EPSILON)) ];
+									   
+									   
 				crossed-inner-max-x = [ ((x > INNER-MAX-X) ^ (x + v-x < INNER-MAX-X - EPSILON)) 
-														| ((x < INNER-MAX-X) ^ (x + v-x > INNER-MAX-X + EPSILON)) ]
-									  | [ ((x + ARM-SIZE > INNER-MAX-X) ^ (x + ARM-SIZE + v-x < INNER-MAX-X - EPSILON)) 
-														| ((x + ARM-SIZE < INNER-MAX-X) ^ (x + ARM-SIZE + v-x > INNER-MAX-X + EPSILON)) ]  
-									  | [ ((x - ARM-SIZE > INNER-MAX-X) ^ (x - ARM-SIZE + v-x < INNER-MAX-X - EPSILON)) 
-														| ((x - ARM-SIZE < INNER-MAX-X) ^ (x - ARM-SIZE + v-x > INNER-MAX-X + EPSILON)) ] ;
-														
+														| ((x < INNER-MAX-X) ^ (x + v-x > INNER-MAX-X + EPSILON)) ];
+									 
 				crossed-inner-max-y = [ ((y > INNER-MAX-Y) ^ (y + v-y < INNER-MAX-Y - EPSILON)) 
-												| ((y < INNER-MAX-Y) ^ (y + v-y > INNER-MAX-Y + EPSILON)) ]
-									  | [ ((y + ARM-SIZE > INNER-MAX-Y) ^ (y + ARM-SIZE + v-y < INNER-MAX-Y - EPSILON)) 
-												| ((y + ARM-SIZE < INNER-MAX-Y) ^ (y + ARM-SIZE + v-y > INNER-MAX-Y + EPSILON)) ]  
-									  | [ ((y - ARM-SIZE > INNER-MAX-Y) ^ (y - ARM-SIZE + v-y < INNER-MAX-Y - EPSILON)) 
-												| ((y - ARM-SIZE < INNER-MAX-Y) ^ (y - ARM-SIZE + v-y > INNER-MAX-Y + EPSILON)) ];
+												| ((y < INNER-MAX-Y) ^ (y + v-y > INNER-MAX-Y + EPSILON)) ];
+									  
 				
-				in-the-pit = [ ( ( (x > INNER-MIN-X + EPSILON) ^ (x < INNER-MAX-X - EPSILON) ) ^ 
-								 ( (y > INNER-MIN-Y + EPSILON) ^ (y < INNER-MAX-Y - EPSILON) ) ) ]; 
-						     // |  [ ( ( (x + ARM-SIZE > INNER-MIN-X + EPSILON) ^ (x + ARM-SIZE < INNER-MAX-X - EPSILON) ) ^ 
-								// ( (y > INNER-MIN-Y + EPSILON) ^ (y < INNER-MAX-Y - EPSILON) ) ) ] | 
-                             //[ ( ( (x - ARM-SIZE > INNER-MIN-X + EPSILON) ^ (x - ARM-SIZE < INNER-MAX-X - EPSILON) ) ^ 
-								// ( (y > INNER-MIN-Y + EPSILON) ^ (y < INNER-MAX-Y - EPSILON) ) ) ] | 
-                             //[ ( ( (x > INNER-MIN-X + EPSILON) ^ (x < INNER-MAX-X - EPSILON) ) ^ 
-								 //( (y + ARM-SIZE > INNER-MIN-Y + EPSILON) ^ (y  + ARM-SIZE < INNER-MAX-Y - EPSILON) ) ) ] | 
-							 //[ ( ( (x > INNER-MIN-X + EPSILON) ^ (x < INNER-MAX-X - EPSILON) ) ^ 
-								 //( (y - ARM-SIZE > INNER-MIN-Y + EPSILON) ^ (y - ARM-SIZE < INNER-MAX-Y - EPSILON) ) ) ];
+				in-the-pit = [ ( ( (x > INNER-MIN-X) ^ (x < INNER-MAX-X) ) ^  ( (y > INNER-MIN-Y) ^ (y < INNER-MAX-Y) ) ) ]
+								| [ ( ( (x + v-x > INNER-MIN-X) ^ (x + v-x < INNER-MAX-X) ) ^  ( (y + v-y > INNER-MIN-Y) ^ (y + v-y < INNER-MAX-Y) ) ) ]
+								| [ ( ( (x > INNER-MIN-X) ^ (x < INNER-MAX-X) ) ^  ( (y + v-y > INNER-MIN-Y) ^ (y + v-y < INNER-MAX-Y) ) ) ]
+								| [ ( ( (x + v-x > INNER-MIN-X) ^ (x + v-x < INNER-MAX-X) ) ^  ( (y > INNER-MIN-Y) ^ (y < INNER-MAX-Y) ) ) ];
+						     
+							 
 				
 				collided-with-inner-min-x = if ( crossed-inner-min-x  )
-											then ~[ [ ((y < OUTER-MAX-Y ) ^ (y > INNER-MAX-Y )) | ((y > OUTER-MIN-Y) ^ (y < INNER-MIN-Y )) ] ]
-												//^ [ ((y + ARM-SIZE < OUTER-MAX-Y ) ^ (y + ARM-SIZE > INNER-MAX-Y )) | ((y + ARM-SIZE > OUTER-MIN-Y) ^ (y + ARM-SIZE < INNER-MIN-Y )) ] ^ 
-												//^ [ ((y - ARM-SIZE < OUTER-MAX-Y ) ^ (y - ARM-SIZE > INNER-MAX-Y )) | ((y - ARM-SIZE > OUTER-MIN-Y) ^ (y - ARM-SIZE < INNER-MIN-Y )) ]
+											then ~[ [ ((y < OUTER-MAX-Y ) ^ (y > INNER-MAX-Y )) | ((y > OUTER-MIN-Y) ^ (y < INNER-MIN-Y )) ] 
+												^ [ ((y + v-y < OUTER-MAX-Y ) ^ (y + v-y > INNER-MAX-Y )) | ((y + v-y > OUTER-MIN-Y) ^ (y + v-y < INNER-MIN-Y )) ]  ]
 											else false;
 											
 				collided-with-inner-max-x = if ( crossed-inner-max-x  )
-											then ~[ [ ((y < OUTER-MAX-Y ) ^ (y > INNER-MAX-Y )) | ((y > OUTER-MIN-Y) ^ (y < INNER-MIN-Y )) ] ] 
-												//^ [ ((y + ARM-SIZE < OUTER-MAX-Y ) ^ (y + ARM-SIZE > INNER-MAX-Y )) | ((y + ARM-SIZE > OUTER-MIN-Y) ^ (y + ARM-SIZE < INNER-MIN-Y )) ] 
-												//^ [ ((y - ARM-SIZE < OUTER-MAX-Y ) ^ (y - ARM-SIZE > INNER-MAX-Y )) | ((y - ARM-SIZE > OUTER-MIN-Y) ^ (y - ARM-SIZE < INNER-MIN-Y )) ]
+											then ~[ [ ((y < OUTER-MAX-Y ) ^ (y > INNER-MAX-Y )) | ((y > OUTER-MIN-Y) ^ (y < INNER-MIN-Y )) ] 
+												^ [ ((y + v-y < OUTER-MAX-Y ) ^ (y + v-y > INNER-MAX-Y )) | ((y + v-y > OUTER-MIN-Y) ^ (y + v-y < INNER-MIN-Y )) ]  ]  
 											else false;
 											
 				collided-with-inner-min-y = if ( crossed-inner-min-y )
-											then ~[ [ ((x < OUTER-MAX-X) ^ (x > INNER-MAX-X)) | ((x > OUTER-MIN-X) ^ (x < INNER-MIN-X)) ] ]
-												//^ [ ((x + ARM-SIZE < OUTER-MAX-X) ^ (x + ARM-SIZE > INNER-MAX-X)) | ((x + ARM-SIZE> OUTER-MIN-X) ^ (x + ARM-SIZE < INNER-MIN-X)) ] 
-												//^ [ ((x - ARM-SIZE < OUTER-MAX-X) ^ (x - ARM-SIZE > INNER-MAX-X)) | ((x - ARM-SIZE > OUTER-MIN-X) ^ (x - ARM-SIZE < INNER-MIN-X)) ] ] 
+											then ~[ [ ((x < OUTER-MAX-X) ^ (x > INNER-MAX-X)) | ((x > OUTER-MIN-X) ^ (x < INNER-MIN-X)) ] 
+												^ [ ((x + v-x < OUTER-MAX-X) ^ (x + v-x > INNER-MAX-X)) | ((x + v-x > OUTER-MIN-X) ^ (x + v-x < INNER-MIN-X)) ] ] 
 											else false;
 			
 				collided-with-inner-max-y = if( crossed-inner-max-y )
-											then ~[ [ ((x < OUTER-MAX-X) ^ (x > INNER-MAX-X)) | ((x > OUTER-MIN-X) ^ (x < INNER-MIN-X)) ] ]
-												//^ [ ((x + ARM-SIZE < OUTER-MAX-X) ^ (x + ARM-SIZE  > INNER-MAX-X)) | ((x + ARM-SIZE > OUTER-MIN-X) ^ (x + ARM-SIZE < INNER-MIN-X)) ]
-												//^ [ ((x - ARM-SIZE < OUTER-MAX-X) ^ (x - ARM-SIZE > INNER-MAX-X)) | ((x - ARM-SIZE > OUTER-MIN-X) ^ (x - ARM-SIZE < INNER-MIN-X)) ] ]
+											then ~[ [ ((x < OUTER-MAX-X) ^ (x > INNER-MAX-X)) | ((x > OUTER-MIN-X) ^ (x < INNER-MIN-X)) ]
+												^ [ ((x + v-x < OUTER-MAX-X) ^ (x + v-x > INNER-MAX-X)) | ((x + v-x > OUTER-MIN-X) ^ (x + v-x < INNER-MIN-X)) ] ]
 											else false;
 											
-				collided-with-outer-min-x = (x < OUTER-MIN-X - EPSILON) | (x - ARM-SIZE < OUTER-MIN-X - EPSILON) | (x + ARM-SIZE < OUTER-MIN-X - EPSILON);
-				collided-with-outer-min-y = (y < OUTER-MIN-Y - EPSILON) | (y + ARM-SIZE < OUTER-MIN-Y - EPSILON) | (y - ARM-SIZE < OUTER-MIN-Y - EPSILON);
-				collided-with-outer-max-x = (x > OUTER-MAX-X + EPSILON) | (x + ARM-SIZE > OUTER-MAX-X + EPSILON) | (x - ARM-SIZE > OUTER-MAX-X + EPSILON);
-				collided-with-outer-max-y = (y > OUTER-MAX-Y + EPSILON) | (y + ARM-SIZE > OUTER-MAX-Y + EPSILON) | (y - ARM-SIZE > OUTER-MAX-Y + EPSILON); 
+				collided-with-outer-min-x = (x < OUTER-MIN-X) | (x + v-x < OUTER-MIN-X);
+				collided-with-outer-min-y = (y < OUTER-MIN-Y) | (y + v-y < OUTER-MIN-Y);
+				collided-with-outer-max-x = (x > OUTER-MAX-X) | (x + v-x > OUTER-MAX-X);
+				collided-with-outer-max-y = (y > OUTER-MAX-Y) | (y + v-y > OUTER-MAX-Y);
 				
  			};
  		
