@@ -8,3 +8,7 @@ RDDL 2.0 (2013) -- A strict superset of RDDL 1.0
 
 Scott Sanner (ssanner@gmail.com)
 Thomas Keller (tkeller@informatik.uni-freiburg.de) -- Language Extensions
+
+Contributions
+
+Google Inc. (tkoeppe@google.com) -- Clean-up
