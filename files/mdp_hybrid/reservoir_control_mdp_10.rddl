@@ -45,19 +45,6 @@ instance reservoir_control_mdp_10 {
 	 domain = reservoir_control_mdp;
 	 non-fluents = nf_reservoir_control_mdp_10;
 	 
-	 init-state {
-		rlevel(t0)  = 2000;
-		rlevel(t1)  = 2000;
-		rlevel(t2)  = 2000;
-		rlevel(t3)  = 2000;
-		rlevel(t4)  = 2000;
-		rlevel(t5)  = 2000;
-		rlevel(t6)  = 2000;
-		rlevel(t7)  = 2000;
-		rlevel(t8)  = 2000;
-		rlevel(t9)  = 2000;
-	 };
-	 
 	 horizon = 20;
 	 discount = 1.0;
 }
