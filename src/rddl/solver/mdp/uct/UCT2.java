@@ -6,7 +6,7 @@
  * @version 2011-11-13
  *
  * The original UCT paper is here:
- *    L. Kocsis and C. Szepesv·ri.
+ *    L. Kocsis and C. Szepesv√°ri.
  *    Bandit based Monte-Carlo Planning.
  *    ECML 2006.
  * 

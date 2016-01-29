@@ -19,7 +19,7 @@
 //
 //   Muneepeerakul, R., Weitz, J. S., Levin, S. a, Rinaldo, A., & Rodriguez-Iturbe, I. (2007). 
 //   A neutral metapopulation model of biodiversity in river networks. 
-//   Journal of theoretical biology, 245(2), 351–63.
+//   Journal of theoretical biology, 245(2), 351â€“63.
 //
 // Quick explanation: a stream system is organized into reaches with
 // slots at each reach.  Each slot may have a native plot or invasive
