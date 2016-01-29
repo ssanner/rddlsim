@@ -47,6 +47,21 @@ A client may optionally use a $ prefix for objects when communicating with the s
 modification with the latest versions of the RDDL2 client/server.    
 
 
+NOTES REGARDING THE INITIAL STATE
+
+(1) When a round starts, the server immediately sends a state message.
+
+(2) In a fully observed domain, the state message contains the values of the
+state-fluents, expressed as observed-fluents. Fluents whose value is the default
+may be omitted from the message.
+
+(3) In a partially observed domain, the state message contains no
+observed-fluents, since observations can only be computed after the first action
+has been taken. That is because observations are functions of both the new and
+the previous state. On partially observed domains, clients should ignore the
+initial state message.
+
+
 CLIENT MESSAGES:
 
 
