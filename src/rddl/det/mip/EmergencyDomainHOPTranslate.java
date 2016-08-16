@@ -1,0 +1,281 @@
+package rddl.det.mip;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.function.Consumer;
+
+import org.apache.commons.math3.random.RandomDataGenerator;
+
+import gurobi.GRB;
+import gurobi.GRBConstr;
+import gurobi.GRBException;
+import gurobi.GRBExpr;
+import gurobi.GRBVar;
+import rddl.EvalException;
+import rddl.RDDL.CPF_DEF;
+import rddl.RDDL.EXPR;
+import rddl.RDDL.LCONST;
+import rddl.RDDL.LVAR;
+import rddl.RDDL.PVAR_INST_DEF;
+import rddl.RDDL.PVAR_NAME;
+import rddl.State;
+import rddl.viz.StateViz;
+import util.Pair;
+import util.Timer;
+
+public class EmergencyDomainHOPTranslate extends HOPTranslate {
+
+	private static final boolean SHOW_TIMING = false;
+	private EmergencyDomainDataReel reel;
+
+	public EmergencyDomainHOPTranslate(List<String> args) throws Exception {
+		super(args.subList(0, args.size()-3));
+		reel = new EmergencyDomainDataReel( args.get( args.size()-4 ), ",", true, 
+				false, Integer.parseInt( args.get( args.size()-3 ) ), //numfolds
+				Integer.parseInt( args.get( args.size()-2 ) ), //training fold
+				Integer.parseInt( args.get( args.size()-1 ) ) ); //testing fold
+	}
+
+	@Override
+	protected void translateCPTs(HashMap<PVAR_NAME,HashMap<ArrayList<LCONST>,Object>> subs) throws GRBException {
+		
+		GRBExpr old_obj = grb_model.getObjective();
+		
+		ArrayList<HashMap<PVAR_NAME, ArrayList<ArrayList<LCONST>>>> src 
+		= new ArrayList< HashMap<PVAR_NAME, ArrayList<ArrayList<LCONST>>> >();
+		src.add( rddl_state_vars ); src.add( rddl_interm_vars ); src.add( rddl_observ_vars );
+		
+		ArrayList<Integer> time_terms_indices = new ArrayList<Integer>( TIME_TERMS.size() );
+		for( int i = 0 ; i < TIME_TERMS.size(); ++i ){
+			time_terms_indices.add( i );
+		}
+		
+		ArrayList<Integer> future_terms_indices = new ArrayList<Integer>( future_TERMS.size() );
+		for( int i = 0 ; i < future_TERMS.size(); ++i ){
+			future_terms_indices.add( i );
+		}
+		
+		final RandomDataGenerator rng = this.rand;
+		final int numFutures = this.num_futures;
+		final int length = this.lookahead;
+		
+		EmergencyDomainDataReelElement currentElem = new EmergencyDomainDataReelElement(subs);
+		ArrayList<EmergencyDomainDataReelElement>[] futures 
+			= reel.getFutures(currentElem, rng, numFutures, length);
+		ArrayList<Pair<EXPR, EXPR>> futuresExpressions 
+			= reel.to_RDDL_EXPR_constraints(futures, future_PREDICATE, 
+				future_TERMS, TIME_PREDICATE, TIME_TERMS, constants, objects);
+		for( Pair<EXPR,EXPR> pairFuture : futuresExpressions ){
+			final EXPR lhs_future = pairFuture._o1;
+			final EXPR rhs_future = pairFuture._o2;
+			synchronized ( grb_model ) {
+				GRBVar lhs_var = lhs_future.getGRBConstr( 
+						GRB.EQUAL, grb_model, constants, objects, type_map);
+				GRBVar rhs_var = rhs_future.getGRBConstr( 
+						GRB.EQUAL, grb_model, constants, objects, type_map);
+				try {
+					System.out.println( "Data_"+lhs_future.toString()+"_"+rhs_future.toString() );
+					GRBConstr this_constr 
+						= grb_model.addConstr( lhs_var, GRB.EQUAL, rhs_var, 
+								"Data_"+lhs_future.toString()+"_"+rhs_future.toString() );
+					to_remove_constr.add( this_constr );
+				} catch (GRBException e) {
+					e.printStackTrace();
+					System.exit(1);
+				}
+			}
+		}
+		
+		src.stream().forEach( new Consumer< HashMap<PVAR_NAME, ArrayList<ArrayList<LCONST> > > >() {
+
+			@Override
+			public void accept(
+					HashMap<PVAR_NAME, ArrayList<ArrayList<LCONST>>> t) {
+				
+				t.entrySet().stream().forEach( new Consumer< Entry<PVAR_NAME, ArrayList< ArrayList<LCONST>> > >() {
+
+					
+					@Override
+					public void accept(
+							Entry<PVAR_NAME, ArrayList<ArrayList<LCONST>>> entry ) {
+
+						if( entry.getKey().equals(new PVAR_NAME("currentCall")) ||
+							entry.getKey().equals(new PVAR_NAME("currentCallTime")) || 
+							entry.getKey().equals(new PVAR_NAME("tempUniformRegion")) || 
+							entry.getKey().equals(new PVAR_NAME("tempUniformCause")) ){
+							return;
+						}
+							
+						entry.getValue().stream().forEach( new Consumer< ArrayList<LCONST> >() {
+							@Override
+							public void accept(ArrayList<LCONST> terms) {
+								System.out.println(  "CPT_"+ entry.getKey().toString()+"_"+terms );
+								PVAR_NAME p = entry.getKey();
+								CPF_DEF cpf = null;
+								if( rddl_state_vars.containsKey(p) ){
+									cpf = rddl_state._hmCPFs.get( new PVAR_NAME( p._sPVarName + "'" ) );
+								}else {
+									cpf = rddl_state._hmCPFs.get( new PVAR_NAME( p._sPVarName ) );
+								}
+											
+								Map<LVAR, LCONST> subs = getSubs( cpf._exprVarName._alTerms, terms );
+								EXPR new_lhs_stationary = cpf._exprVarName.substitute( subs, constants, objects );
+								EXPR new_rhs_stationary = cpf._exprEquals.substitute(subs, constants, objects);
+											
+								EXPR lhs_with_tf = new_lhs_stationary.addTerm(TIME_PREDICATE, constants, objects)
+										.addTerm(future_PREDICATE, constants, objects);
+								EXPR rhs_with_tf = new_rhs_stationary.addTerm(TIME_PREDICATE, constants, objects)
+										.addTerm(future_PREDICATE, constants, objects);
+											
+								time_terms_indices.stream().forEach( new Consumer< Integer >() {
+									@Override
+									public void accept(Integer time_term_index ) {
+										EXPR lhs_with_f_temp = null;
+										if( rddl_state_vars.containsKey(p) ){
+											if( time_term_index == lookahead-1 ){
+												return;
+											}
+											lhs_with_f_temp = lhs_with_tf.substitute(
+													Collections.singletonMap( TIME_PREDICATE, TIME_TERMS.get( time_term_index + 1 ) ), constants, objects);
+										}else{
+											lhs_with_f_temp = lhs_with_tf.substitute(
+													Collections.singletonMap( TIME_PREDICATE, TIME_TERMS.get( time_term_index ) ), constants, objects);
+										}
+										final EXPR lhs_with_f = lhs_with_f_temp;
+										final EXPR rhs_with_f = rhs_with_tf.substitute( 
+										Collections.singletonMap( TIME_PREDICATE, TIME_TERMS.get( time_term_index ) ), constants, objects);
+													
+										future_terms_indices.stream().forEach( new Consumer<Integer>() {
+											public void accept(Integer future_term_index) {
+												EXPR lhs = lhs_with_f.substitute(
+														Collections.singletonMap( future_PREDICATE, future_TERMS.get( future_term_index ) ), constants, objects);
+												EXPR rhs = rhs_with_f.substitute(
+														Collections.singletonMap( future_PREDICATE, future_TERMS.get( future_term_index) ), constants, objects);
+																	
+												EXPR lhs_future = future_gen.getFuture( lhs, rand, objects );
+												EXPR rhs_future = future_gen.getFuture( rhs, rand, objects );
+																	
+												synchronized ( grb_model ) {
+													GRBVar lhs_var = lhs_future.getGRBConstr( 
+															GRB.EQUAL, grb_model, constants, objects, type_map);
+													GRBVar rhs_var = rhs_future.getGRBConstr( 
+															GRB.EQUAL, grb_model, constants, objects, type_map);
+													try {
+														GRBConstr this_constr 
+															= grb_model.addConstr( lhs_var, GRB.EQUAL, rhs_var, "CPT_"+p.toString()+"_"+terms+"_"+time_term_index+"_"+future_term_index );
+														to_remove_constr.add( this_constr );
+													} catch (GRBException e) {
+														e.printStackTrace();
+														System.exit(1);
+													}
+												}
+											}
+										} );
+									} 
+								} );
+							}
+						} );
+					}
+				});
+			}
+		});
+		
+		grb_model.setObjective(old_obj);
+		grb_model.update();
+	}
+	
+	public Pair<Double,Double> evaluatePlanner( final int numRounds,  final StateViz stateViz ) throws EvalException{
+		ArrayList<Double> rewards = new ArrayList<Double>();		
+		for( int round = 0; round < numRounds; ++round ){
+			double cur_discount = 1.0;
+			double accum_reward = 0.0;		
+			
+			
+			rddl_state.init( rddl_domain._hmObjects, rddl_nonfluents != null ? rddl_nonfluents._hmObjects : null, 
+					rddl_instance._hmObjects, rddl_domain._hmTypes, rddl_domain._hmPVariables, rddl_domain._hmCPF,
+					rddl_instance._alInitState, rddl_nonfluents == null ? null : rddl_nonfluents._alNonFluents, 
+					rddl_domain._alStateConstraints, rddl_domain._alActionPreconditions, rddl_domain._alStateInvariants,  
+					rddl_domain._exprReward, rddl_instance._nNonDefActions);
+			final int test_start_idx = rand.nextInt( 0, reel.getNumTestInstances()-1-this.rddl_instance._nHorizon );
+			reel.resetTestIndex( 0 ); //test_start_idx );
+			
+			for( int step = 0; step < this.rddl_instance._nHorizon; ++step ){
+				
+				EmergencyDomainDataReelElement exo_thing = reel.getNextTestingInstance();
+				exo_thing.setInState( rddl_state );
+				
+				Timer timer = new Timer();
+				ArrayList<PVAR_INST_DEF> rddl_action = getActions(rddl_state);
+				
+				try {
+					System.out.println("------------------------------------");
+					System.out.println("State : " + rddl_state);
+					System.out.println("Action : " + rddl_action);
+					System.out.println("------------------------------------");
+					rddl_state.computeNextState(rddl_action, rand);
+				} catch (Exception ee) {
+					System.out.println("FATAL SERVER EXCEPTION:\n" + ee);
+					throw ee;
+				}
+				
+				try {
+					rddl_state.checkStateActionConstraints(rddl_action);
+				} catch (Exception e) {
+					System.out.println("TRIAL ERROR -- STATE-ACTION CONSTRAINT VIOLATION:\n" + e);
+					throw e;
+				}
+				
+				if (SHOW_TIMING){
+					System.out.println("**TIME to compute next state: " + timer.GetTimeSoFarAndReset());
+				}
+					
+				// Calculate reward / objective and store
+				final double immediate_reward = ((Number)rddl_domain._exprReward.sample(
+						new HashMap<LVAR,LCONST>(),rddl_state, rand)).doubleValue();
+
+				
+				accum_reward += cur_discount * immediate_reward;
+				cur_discount *= rddl_instance._dDiscount;
+				
+				if (SHOW_TIMING){
+					System.out.println("**TIME to copy observations & update rewards: " + timer.GetTimeSoFarAndReset());
+				}
+				
+				if(stateViz != null){
+					stateViz.display(rddl_state, step);			
+				}
+				rddl_state.advanceNextState();
+				System.out.println( "Next State : " + rddl_state );
+				//copy back next state of exogenous vars
+				
+									
+				if (SHOW_TIMING){
+					System.out.println("**TIME to advance state: " + timer.GetTimeSoFarAndReset());
+				}
+			}
+			System.out.println("Round reward " + accum_reward);
+			rewards.add( accum_reward );
+			
+		}
+		
+		System.out.println("Round rewards : " + rewards );
+		final double session_mean_reward = rewards.stream().mapToDouble(r->r).average().getAsDouble();
+		final double sample_variance = (1.0/(numRounds-1))*(rewards.stream()
+								.mapToDouble(r->(r-session_mean_reward)*(r-session_mean_reward))
+								.sum());
+		return new Pair<Double,Double>(session_mean_reward, sample_variance);
+	}
+	
+	public static void main(String[] args) throws Exception {
+		System.out.println( Arrays.toString( args ) );
+		EmergencyDomainHOPTranslate planner = new EmergencyDomainHOPTranslate( Arrays.asList( args ) );
+		System.out.println( planner.evaluatePlanner(30, null) );
+	}
+
+
+}
