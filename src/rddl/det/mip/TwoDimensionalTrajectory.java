@@ -28,7 +28,8 @@ public class TwoDimensionalTrajectory implements StateViz {
 	private Double _maxX;
 	private Double _maxY;
 	private ArrayList<LCONST> center_point;
-
+	private int prev_row = -1, prev_col = -1;
+	
 	public TwoDimensionalTrajectory() {
 		center_point = new ArrayList<LCONST>();
 //		center_point.add( new OBJECT_VAL("p_center") );
@@ -63,7 +64,9 @@ public class TwoDimensionalTrajectory implements StateViz {
 			
 			int base_row = Math.min( (int)(blowup*getMaxY(s)), Math.max( 0, (int)(blowup*(getMaxY(s) - getY(s))) ) ); 
 			int base_col = Math.min( (int)( blowup*getMaxX(s) ), Math.max( 0 , (int)(blowup*getX(s)) ) );
-			addPoint( base_row, base_col );
+			addPoint( base_row, base_col, prev_row, prev_col );
+			prev_row = base_row;
+			prev_col = base_col;
 			
 		}catch( Exception exc ){
 			exc.printStackTrace();
@@ -71,7 +74,27 @@ public class TwoDimensionalTrajectory implements StateViz {
 		}
 	}
 	
-	private void addPoint( int base_row, int base_col ){
+	private void addPoint( int base_row, int base_col, int prev_row, int prev_col ){
+		if( prev_col != -1 && prev_row != -1 ){
+			//line
+			int x1 = prev_col, y1 = (int) (blowup*_maxY - prev_row), x2 = base_col, y2 = (int) (blowup*_maxY - base_row);
+//			System.out.println( "(" + x1 + "," + y1 + ") -> " + "(" + x2 + "," + y2 + ")" );
+			
+			if( x1 == x2 ){
+				for( int next_y = y1; (y1 <= y2) ? (next_y <= y2) : (next_y >= y2); next_y = ((y1 <= y2) ? next_y+1 : next_y-1)  ){
+					bw_image[ (int)(blowup*_maxY - next_y) ][ x1 ] = false;
+				}
+			}else{
+				double slope = ((double)(y2 - y1))/(x2 - x1);
+				double intercept = (y1 - slope*x1);
+ 				for( int next_x = x1 ; (x1 <= x2) ? ( next_x <= x2) : (next_x >= x2); 
+						next_x = ((x1 <= x2) ? next_x+1 : next_x-1) ){
+// 					System.out.println(next_x);
+					bw_image[ (int)(blowup*_maxY - (slope*next_x+intercept)) ][ next_x ] = false;
+				}				
+			}
+		}
+		
 		bw_image[ base_row ][ base_col ] = false;
 		//add more points 
 		try{
@@ -93,6 +116,7 @@ public class TwoDimensionalTrajectory implements StateViz {
 			bw_image[ base_row ][ base_col - 1 ] = false;
 		}catch( ArrayIndexOutOfBoundsException exc ){
 		}
+		
 	}
 	
 	private double getX(State s) throws EvalException {
@@ -136,7 +160,7 @@ public class TwoDimensionalTrajectory implements StateViz {
 	@Override
 	public void close() {
 		
-		System.out.println("Writing to file" );
+		System.out.println("Writing to file " + VIZ_FILE );
 		try{
 			BufferedWriter writer = new BufferedWriter( new FileWriter(  VIZ_FILE ) );
 			writer.write("P1\n");
@@ -180,6 +204,7 @@ public class TwoDimensionalTrajectory implements StateViz {
 					}else if( line.startsWith("OUTER-MAX-Y :") ){
 						max_y = Double.parseDouble( line.substring( line.indexOf('=') + 1 , line.length()-1 ) );
 						h = (int)( blowup* max_y ) + 1;
+						_maxY = max_y;
 					}else if( line.startsWith("INNER-MIN-X :") ){
 						min_col = (int)( blowup* Double.parseDouble( line.substring( line.indexOf('=') + 1 , line.length()-1 ) ) ) + (int)(blowup*0.1);
 					}else if( line.startsWith("INNER-MAX-X :") ){
@@ -214,9 +239,9 @@ public class TwoDimensionalTrajectory implements StateViz {
 					}
 				}else {
 				
-					if( line.startsWith("- states: x[$p_center] := " ) ){
+					if( line.startsWith("- states: x := " ) ){
 						x_center = Double.parseDouble( line.substring( 1+line.indexOf("=") ) );
-					}else if( line.startsWith("- states: y[$p_center] := " ) ){
+					}else if( line.startsWith("- states: y := " ) ){
 						y_center = Double.parseDouble( line.substring( 1+line.indexOf("=") ) );
 					}
 					
@@ -224,13 +249,17 @@ public class TwoDimensionalTrajectory implements StateViz {
 						int base_row = Math.min( (int)(blowup*max_y), Math.max( 0, (int)(blowup*(max_y - y_center) ) ) ); 
 						int base_col = Math.min( (int)( blowup*max_x ), Math.max( 0 , (int)(blowup*x_center) ) );
 //						System.out.println( base_col + " , " + base_row );
-						addPoint( base_row, base_col );
+						addPoint( base_row, base_col , prev_row, prev_col );
+						prev_row = base_row;
+						prev_col = base_col;
+						x_center = y_center = -1;
 					}
 				}
 				
 				if( line.startsWith(">>> ROUND END, ") ){
 					System.out.println(line);
 					close();
+					System.out.println("Moving " + VIZ_FILE + " to " + filename + "." + round_num + ".pbm" );
 					Files.move( FileSystems.getDefault().getPath(VIZ_FILE), 
 							FileSystems.getDefault().getPath( filename + "." + round_num + ".pbm" ), StandardCopyOption.REPLACE_EXISTING );
 					++round_num;

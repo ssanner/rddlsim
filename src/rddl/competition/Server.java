@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.math.RoundingMode;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -110,7 +111,7 @@ public class Server implements Runnable {
 	public static boolean NO_XML_HEADING = false;
 	public static final boolean SHOW_MEMORY_USAGE = true;
 	public static final Runtime RUNTIME = Runtime.getRuntime();
-	private static DecimalFormat _df = new DecimalFormat("0.##");
+	private static DecimalFormat _df = new DecimalFormat("###.#########");
 	
 	
 	private Socket connection;
@@ -206,6 +207,7 @@ public class Server implements Runnable {
 		this.stateViz = state_viz;
 		this.port = port;
 		this.rand = rgen;
+		this._df.setRoundingMode(RoundingMode.HALF_EVEN);
 	}
 	public void run() {
 		DOMParser p = new DOMParser();
@@ -321,6 +323,7 @@ public class Server implements Runnable {
 					//first update so that constraints can have interm fluents in them
 					try {
 						state.computeNextState(ds, rand);
+						System.out.println(state);
 					} catch (Exception ee) {
 						System.out.println("FATAL SERVER EXCEPTION:\n" + ee);
 						//ee.printStackTrace();
@@ -364,9 +367,9 @@ public class Server implements Runnable {
 					stateViz.display(state, h);			
 					state.advanceNextState();
 										
-					if (SHOW_TIMING)
+					if (SHOW_TIMING){
 						System.out.println("**TIME to advance state: " + timer.GetTimeSoFarAndReset());
-										
+					}				
 					// Scott: Update 2014 to check for out of time... this can trigger
 					//        an early round end
 					// TODO: check that this works

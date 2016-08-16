@@ -109,7 +109,7 @@ public class State {
 	// Temporarily holds next state while it is being computed
 	public HashMap<PVAR_NAME,HashMap<ArrayList<LCONST>,Object>> _nextState;
 
-	public static final DecimalFormat _df = new DecimalFormat("#.######");
+	public static final DecimalFormat _df = new DecimalFormat("###.#########");
 
 	public void init(HashMap<TYPE_NAME,OBJECTS_DEF> domain_objects,
 					 HashMap<TYPE_NAME,OBJECTS_DEF> nonfluent_objects,
@@ -124,7 +124,7 @@ public class State {
 					 ArrayList<BOOL_EXPR> state_invariants,
 					 EXPR reward, 
 					 int max_nondef_actions) {
-		_df.setRoundingMode( RoundingMode.HALF_DOWN );
+		_df.setRoundingMode( RoundingMode.HALF_EVEN );
 		_hmPVariables = pvariables;
 		_hmTypes = typedefs;
 		_hmCPFs = cpfs;
@@ -434,7 +434,7 @@ public class State {
 
 		//System.out.println("Starting state: " + _state + "\n");
 		//System.out.println("Starting nonfluents: " + _nonfluents + "\n");
-		
+		setActions( actions );
 		computeIntermFluents( actions, _rand );
 		
 		// Do same for next-state (keeping in mind primed variables)
@@ -532,6 +532,9 @@ public class State {
 				pred_assign.put(gfluent, value);
 			}
 		}
+		
+//		clearActions();
+//		clearIntermFluents();
 	}
 	
 	public void computeIntermFluents(ArrayList<PVAR_INST_DEF> actions, RandomDataGenerator _rand) throws EvalException {
@@ -561,7 +564,10 @@ public class State {
 				LCONST c = (LCONST)gfluent.get(i);
 				subs.put(v,c);
 			}
-					
+			
+//			System.out.println( cpf );
+//			System.out.println( subs );;
+			
 			Object value = cpf._exprEquals.sample(subs, this, _rand);
 			if( value instanceof Number ){
 				String interm_value = _df.format( (Number) value );
@@ -578,6 +584,7 @@ public class State {
 			HashMap<ArrayList<LCONST>,Object> pred_assign = _interm.get(p);
 			pred_assign.put(gfluent, value);
 		}		
+		
 	}
 
 	public void setActions(ArrayList<PVAR_INST_DEF> actions) throws EvalException {
@@ -655,6 +662,8 @@ public class State {
 		
 		// Compute derived fluents from new state
 		computeDerivedFluents();
+		clearIntermFluents();
+		clearActions();
 	}
 	
 	public void clearPVariables(HashMap<PVAR_NAME,HashMap<ArrayList<LCONST>,Object>> assign) {

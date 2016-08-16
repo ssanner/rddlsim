@@ -83,20 +83,22 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 	private static final int GRB_INFUNBDINFO = 1;
 	private static final int GRB_DUALREDUCTIONS = 0;
 	private static final double GRB_MIPGAP = 0.01;
-	private static final double GRB_HEURISTIC = 0.2;
+	private static final double GRB_HEURISTIC = 0.05;
+	private static final int GRB_IISMethod = -1;
+	
 	protected static final LVAR TIME_PREDICATE = new LVAR( "?time" );
 	private static final TYPE_NAME TIME_TYPE = new TYPE_NAME( "time" );
 	protected static final boolean OUTPUT_LP_FILE = false;
 	private static final boolean GRB_LOGGING_ON = false;
 	private double TIME_LIMIT_MINS = 10; 
 	
-	private RDDL rddl_obj;
+	protected RDDL rddl_obj;
 	protected int lookahead;
 	protected State rddl_state;
-	private DOMAIN rddl_domain;
-	private INSTANCE rddl_instance;
-	private NONFLUENTS rddl_nonfluents;
-	private String instance_name;
+	protected DOMAIN rddl_domain;
+	protected INSTANCE rddl_instance;
+	protected NONFLUENTS rddl_nonfluents;
+	protected String instance_name;
 	private String domain_name;
 	private String GRB_log;
 	protected HashMap<PVAR_NAME, ArrayList<ArrayList<LCONST>>> rddl_state_vars;
@@ -217,7 +219,10 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 	}
 
 	public Map<EXPR, Double> doPlanInitState( ) throws Exception{
-		return doPlan( rddl_instance._alInitState , true ); 
+		if( grb_model == null ){
+			firstTimeModel();
+		}
+		return doPlan( getSubsWithDefaults(rddl_state), true ); 
 	}
 
 	public Map< EXPR, Double > doPlan(  HashMap<PVAR_NAME, HashMap<ArrayList<LCONST>, Object>> subs ,
@@ -233,10 +238,11 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 		translate_time.PauseTimer();
 		
 		try{
-			goOptimize();
+			int exit_code = goOptimize();
 		}catch( GRBException exc ){
 			int error_code = exc.getErrorCode();
-			if( error_code == GRB.ERROR_OUT_OF_MEMORY && recover ){
+			if( recover ){ //error_code == GRB.ERROR_OUT_OF_MEMORY && recover ){
+				System.out.println("cleaning up and retrying");
 				handleOOM();
 				return doPlan( subs, false );
 			}else{
@@ -288,43 +294,43 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 		}//8 second stall		
 	}
 
-	public Map< EXPR, Double >  doPlan( final ArrayList<PVAR_INST_DEF> initState, 
-			final boolean recover ) throws Exception{
-		if( grb_model == null ){
-			firstTimeModel();
-		}
-
-//		System.out.println( "Names : " );
-//		RDDL.EXPR.name_map.forEach( (a,b) -> System.out.println( a + " " + b ) );
-//		grb_model.set( GRB.IntParam.SolutionLimit, 1 );
-//		prepareModel( initState ); model already prepared in constructor
-		
-		translate_time.ResumeTimer();
-		System.out.println("--------------Initial State-------------");
-		translateInitialState( initState );
-		translate_time.PauseTimer();	
-		
-		try{
-			goOptimize();
-		}catch( GRBException exc ){
-			int error_code = exc.getErrorCode();
-			if( error_code == GRB.ERROR_OUT_OF_MEMORY && recover ){
-				handleOOM();
-				return doPlan( initState, false );
-			}else{
-				throw exc;
-			}
-		}
-		
-		Map< EXPR, Double > ret = outputResults();
-		if( OUTPUT_LP_FILE ) {
-			outputLPFile( );
-		}
-		
-		modelSummary();		
-		cleanUp();
-		return ret;
-	}
+//	public Map< EXPR, Double >  doPlan( final ArrayList<PVAR_INST_DEF> initState, 
+//			final boolean recover ) throws Exception{
+//		if( grb_model == null ){
+//			firstTimeModel();
+//		}
+//
+////		System.out.println( "Names : " );
+////		RDDL.EXPR.name_map.forEach( (a,b) -> System.out.println( a + " " + b ) );
+////		grb_model.set( GRB.IntParam.SolutionLimit, 1 );
+////		prepareModel( initState ); model already prepared in constructor
+//		
+//		translate_time.ResumeTimer();
+//		System.out.println("--------------Initial State-------------");
+//		translateInitialState( initState );
+//		translate_time.PauseTimer();	
+//		
+//		try{
+//			goOptimize();
+//		}catch( GRBException exc ){
+//			int error_code = exc.getErrorCode();
+//			if( error_code == GRB.ERROR_OUT_OF_MEMORY && recover ){
+//				handleOOM();
+//				return doPlan( initState, false );
+//			}else{
+//				throw exc;
+//			}
+//		}
+//		
+//		Map< EXPR, Double > ret = outputResults();
+//		if( OUTPUT_LP_FILE ) {
+//			outputLPFile( );
+//		}
+//		
+//		modelSummary();		
+//		cleanUp();
+//		return ret;
+//	}
 	
 	@Override
 	public void sessionEnd(double total_reward) {
@@ -419,17 +425,9 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 	}
 		
 	
-	private void prepareModel( ArrayList<PVAR_INST_DEF> initState ) throws Exception {
-		translate_time.ResumeTimer();
-		prepareModel();
-		System.out.println("--------------Initial State-------------");
-		translateInitialState( initState );
-		translate_time.PauseTimer();		
-	}
-	
 	protected void prepareModel( ) throws Exception{
 		System.out.println("--------------Translating CPTs-------------");
-		translateCPTs( );
+		translateCPTs( null );
 		System.out.println("--------------Translating Constraints-------------");
 		translateConstraints( );
 		System.out.println("--------------Translating Reward-------------");
@@ -475,32 +473,56 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 		return ret;
 	}
 
-	protected void goOptimize() throws GRBException {
+	protected int goOptimize() throws GRBException {
 
 		grb_model.update();
 		System.out.println("Optimizing.............");
 		grb_model.optimize();
 		
+//		return grb_model.get( IntAttr.Status );
 		if( grb_model.get( IntAttr.Status ) == GRB.INFEASIBLE ){
-//			while (true) {
-				grb_model.computeIIS();
-		        System.out.println("\nThe following constraint cannot be satisfied:");
-		        for (GRBConstr c : grb_model.getConstrs()) {
-		          if (c.get(GRB.IntAttr.IISConstr) == 1) {
-		        	String constr = c.get(GRB.StringAttr.ConstrName);
-		        	
-		        	System.out.println( constr + " " + EXPR.reverse_name_map.get( constr ) );
-			            // Remove a single constraint from the model
-		//	            removed.add(c.get(GRB.StringAttr.ConstrName));
-		//	            grb_model.remove(c);
-		//	            break;
-		          }
-		        }
+			System.out.println("xxxxxxxx-----Solver says infeasible.-------xxxxxxxx");
+			
+			grb_model.computeIIS();
+	        System.out.println("\nThe following constraints cannot be satisfied (first 100 shown):");
+	        
+	        int count = 0;
+	        for (GRBConstr c : grb_model.getConstrs()) {
+	          if (c.get(GRB.IntAttr.IISConstr) == 1) {
+	        	String constr = c.get(GRB.StringAttr.ConstrName);
+	        	
+	        	System.out.println( constr + " " + EXPR.reverse_name_map.get( constr ) );
+	        	
+	        	count++;
+	        	if( count > 100 ){
+	        		break;
+	        	}
+		            // Remove a single constraint from the model
+	//	            removed.add(c.get(GRB.StringAttr.ConstrName));
+	//	            grb_model.remove(c);
+	//	            break;
+	          }
+	        }
+		    
+//	        System.out.println("Retrying optimization");
+//	        this.handleOOM();
+//	        grb_model.update();
+//			System.out.println("Optimizing.............");
+//			
+//			grb_model.optimize();
+			
+//	        GRBModel copy_model = new GRBModel( grb_model );
+//	        double relaxed_objective = copy_model.feasRelax(0, true, false, true );
+//	        System.out.println( "Relaxed objective value : " + relaxed_objective );
+//		        copy_model.optimize();
+//	        copy_model.dispose();
+		    
+	        throw new GRBException("Infeasible model.");
 //			}
 		}else if( grb_model.get( IntAttr.Status ) == GRB.UNBOUNDED ){
 			System.out.println(  "Unbounded Ray : " + grb_model.get( DoubleAttr.UnbdRay ) );
 		}
-		
+		return grb_model.get( IntAttr.Status );
 	}
 
 	protected void dumpAllAssignments() {
@@ -680,12 +702,6 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 //		grb_model.update();		
 //	}
 
-	protected void translateInitialState(ArrayList<PVAR_INST_DEF> initState) throws GRBException {
-		HashMap<PVAR_NAME, HashMap<ArrayList<LCONST>, Object>> subs = getConsts( initState );
-		translateInitialState( subs );
-		
-	}
-
 	protected void translateInitialState( HashMap<PVAR_NAME, HashMap<ArrayList<LCONST>, Object>> subs ) throws GRBException {
 		
 		GRBExpr old_obj = grb_model.getObjective();
@@ -733,7 +749,7 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 		
 	}
 
-	protected void translateCPTs() throws GRBException {
+	protected void translateCPTs(HashMap<PVAR_NAME,HashMap<ArrayList<LCONST>,Object>> initState) throws GRBException { 
 		
 		GRBExpr old_obj = grb_model.getObjective();
 		
@@ -981,14 +997,17 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 		grb_env.set( DoubleParam.Heuristics, GRB_HEURISTIC );
 		grb_env.set( IntParam.InfUnbdInfo , GRB_INFUNBDINFO );
 		grb_env.set( IntParam.DualReductions, GRB_DUALREDUCTIONS );
+		grb_env.set( IntParam.IISMethod, GRB_IISMethod );
+		
 		grb_env.set( IntParam.MIPFocus, 1);
-		grb_env.set( DoubleParam.FeasibilityTol, 1e-9 );// Math.pow( 10 , -(1+State._df.getMaximumFractionDigits() ) ) );
-		grb_env.set( DoubleParam.IntFeasTol, 1e-9 ); //Math.pow( 10 , -(1+State._df.getMaximumFractionDigits() ) ) );
+		grb_env.set( DoubleParam.FeasibilityTol, 1e-6 );// Math.pow(10,  -(State._df.getMaximumFractionDigits() ) ) );
+		grb_env.set( DoubleParam.IntFeasTol,  1e-6 );//Math.pow(10,  -(State._df.getMaximumFractionDigits() ) ) ); //Math.pow( 10 , -(1+State._df.getMaximumFractionDigits() ) ) );
 		grb_env.set( DoubleParam.FeasRelaxBigM, RDDL.EXPR.M);
 		grb_env.set( IntParam.Threads, 1 );
-		grb_env.set( IntParam.Quad, 0 );
+		grb_env.set( IntParam.Quad, 1 );
 		grb_env.set( IntParam.Method, 1 );
 		grb_env.set( DoubleParam.NodefileStart, 0.5 );
+//		grb_env.set( IntParam.SolutionLimit, 5);
 
 		System.out.println("current nodefile directly " + grb_env.get( StringParam.NodefileDir ) );
 		
@@ -1070,48 +1089,82 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 		if( grb_model == null ){
 			firstTimeModel();
 		}
-		
+		HashMap<PVAR_NAME, HashMap<ArrayList<LCONST>, Object>> subs = getSubsWithDefaults( s );
 		
 		try {
-			Map<EXPR, Double> ret_expr = doPlan( s._state , true );
+			Map<EXPR, Double> ret_expr = doPlan( subs, true );
 			ArrayList<PVAR_INST_DEF> ret = getRootActions(ret_expr);
 			
-			s.computeIntermFluents( ret, new RandomDataGenerator()  );
-			System.out.println("State : " + s );
-			System.out.println( "Action : " + ret );
-						
-			//fix to prevent numeric errors of the overflow kind
-			int num_digs = State._df.getMaximumFractionDigits();
-			while( num_digs > 0 ){
-				try{
-					s.checkStateActionConstraints(ret);
-					break;
-				}catch( EvalException exc ){
-					//can either return noop 
-					//here i am rounding down one digit at a time
-					num_digs = num_digs-1;
-					System.out.println("Constraint violatation : reducing precision to " + num_digs );
-					ret = reducePrecision( ret , num_digs );
-					System.out.println("Lower precision : " + ret );
-				}
-			}
+//			try{
+//				s.computeIntermFluents( ret, new RandomDataGenerator()  );
+//				s.checkStateActionConstraints(ret);
+//			}catch( EvalException exc ){
+//				System.out.println("Violates state-action constraints.");
+//				exc.printStackTrace();
+//				System.exit(1);;
+////				ret_expr = doPlan( subs , true );
+////				ret = getRootActions(ret_expr);
+//			}
 			
-			if( num_digs == 0 ){
-				System.out.println("Turning into noop");
-				ret = new ArrayList<PVAR_INST_DEF>();
-			}
+			//fix to prevent numeric errors of the overflow kind
+//			int num_digs = State._df.getMaximumFractionDigits();
+//			while( num_digs > 0 ){
+//				try{
+//					s.checkStateActionConstraints(ret);
+//					break;
+//				}catch( EvalException exc ){
+//					//can either return noop 
+//					//here i am rounding down one digit at a time
+//					num_digs = num_digs-1;
+//					System.out.println("Constraint violatation : reducing precision to " + num_digs );
+//					ret = reducePrecision( ret , num_digs );
+//					System.out.println("Lower precision : " + ret );
+//				}
+//			}
+			
+//			if( num_digs == 0 ){
+//				System.out.println("Turning into noop");
+//				ret = new ArrayList<PVAR_INST_DEF>();
+//			}
 			
 			if( viz != null ){
 				viz.display(s, 0);
 			}
 			//clear interms
-			s.clearIntermFluents();
+//			s.computeIntermFluents( ret, new RandomDataGenerator()  );
+//			System.out.println("State : " + s );
+//			System.out.println( "Action : " + ret );
+//			s.clearIntermFluents();
+//			
 			return ret;
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.exit(1);
 		}
 		return null;
+	}
+
+	private HashMap<PVAR_NAME, HashMap<ArrayList<LCONST>, Object>> getSubsWithDefaults(State state) throws EvalException {
+		HashMap<PVAR_NAME, HashMap<ArrayList<LCONST>, Object>> ret 
+		= new HashMap< PVAR_NAME, HashMap< ArrayList<LCONST>, Object> >();
+		for( PVAR_NAME stateVar : state._alStateNames ){
+			if( !ret.containsKey(stateVar) ){
+				ret.put( stateVar, new HashMap<>() );
+			}
+			ArrayList<ArrayList<LCONST>> possible_terms = state.generateAtoms(stateVar);
+			if( possible_terms.isEmpty() ){
+				ret.get(stateVar).put( new ArrayList<LCONST>(), state.getDefaultValue(stateVar) );
+			}else{
+				for( ArrayList<LCONST> term_assign : possible_terms ){
+					if( state._state.containsKey(stateVar) && state._state.get(stateVar).containsKey(term_assign) ){
+						ret.get( stateVar ).put( term_assign, state._state.get(stateVar).get(term_assign) );
+					}else{
+						ret.get(stateVar).put(term_assign, state.getDefaultValue(stateVar) );
+					}
+				}
+			}
+		}
+		return ret;
 	}
 
 	private void firstTimeModel() {
@@ -1125,29 +1178,29 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 		}		
 	}
 
-	private ArrayList<PVAR_INST_DEF> reducePrecision(
-			ArrayList<PVAR_INST_DEF> ret, int  cur_digs) {
-		DecimalFormat temp_df = new DecimalFormat("#.##"); 
-		temp_df.setMaximumFractionDigits(cur_digs); 
-		temp_df.setRoundingMode( RoundingMode.DOWN );
-		
-		List<PVAR_INST_DEF> ret_lower = ret.stream().map( new Function< PVAR_INST_DEF,  PVAR_INST_DEF >() {
-			public PVAR_INST_DEF apply(PVAR_INST_DEF t) {
-				Object new_val = t._oValue;
-				if( t._oValue instanceof Number ){
-					String new_val_text = temp_df.format( t._oValue );
-					if( t._oValue instanceof Double ){
-						new_val = Double.valueOf( new_val_text );
-					}else if( t._oValue instanceof Integer ){
-						new_val = Integer.valueOf( new_val_text );
-					}
-				}
-				return new PVAR_INST_DEF( t._sPredName._sPVarName, new_val, t._alTerms );
-			}
-		} ).collect( Collectors.toList() );
-		
-		return new ArrayList<PVAR_INST_DEF>( ret_lower );
-	}
+//	private ArrayList<PVAR_INST_DEF> reducePrecision(
+//			ArrayList<PVAR_INST_DEF> ret, int  cur_digs) {
+//		DecimalFormat temp_df = new DecimalFormat("#.##"); 
+//		temp_df.setMaximumFractionDigits(cur_digs); 
+//		temp_df.setRoundingMode( RoundingMode.DOWN );
+//		
+//		List<PVAR_INST_DEF> ret_lower = ret.stream().map( new Function< PVAR_INST_DEF,  PVAR_INST_DEF >() {
+//			public PVAR_INST_DEF apply(PVAR_INST_DEF t) {
+//				Object new_val = t._oValue;
+//				if( t._oValue instanceof Number ){
+//					String new_val_text = temp_df.format( t._oValue );
+//					if( t._oValue instanceof Double ){
+//						new_val = Double.valueOf( new_val_text );
+//					}else if( t._oValue instanceof Integer ){
+//						new_val = Integer.valueOf( new_val_text );
+//					}
+//				}
+//				return new PVAR_INST_DEF( t._sPredName._sPVarName, new_val, t._alTerms );
+//			}
+//		} ).collect( Collectors.toList() );
+//		
+//		return new ArrayList<PVAR_INST_DEF>( ret_lower );
+//	}
 	
 	protected Object sanitize(PVAR_NAME pName, double value) {
 		if( value == -1*value ){

@@ -64,9 +64,9 @@ public class HOPTranslate extends Translate implements Policy {
 		public abstract EXPR getFuture( final EXPR e , final RandomDataGenerator rand, 
 				Map<TYPE_NAME, OBJECTS_DEF> objects );
 	}
-	private int num_futures = 0;
-	private FUTURE_SAMPLING future_gen;
-	private RandomDataGenerator rand;
+	protected int num_futures = 0;
+	protected FUTURE_SAMPLING future_gen;
+	protected RandomDataGenerator rand;
 	
 	
 	protected static final LVAR future_PREDICATE = new LVAR( "?future" );
@@ -151,7 +151,7 @@ public class HOPTranslate extends Translate implements Policy {
 	}
 	
 	@Override
-	protected void translateCPTs() throws GRBException {
+	protected void translateCPTs(HashMap<PVAR_NAME,HashMap<ArrayList<LCONST>,Object>> initState) throws GRBException {
 		
 		GRBExpr old_obj = grb_model.getObjective();
 		
@@ -859,7 +859,8 @@ public class HOPTranslate extends Translate implements Policy {
 							}	
 						}
 
-						final double ref_value = ((Number)ret_value).doubleValue();
+						final double ref_value = (ret_value instanceof Boolean) ?
+								((boolean) ret_value ? 1 : 0) : ((Number)ret_value).doubleValue();
 						
 						future_TERMS.stream().forEach( new Consumer<LCONST>() {
 							@Override
@@ -906,19 +907,19 @@ public class HOPTranslate extends Translate implements Policy {
 	
 	@Override
 	public Map< EXPR, Double > doPlan(  HashMap<PVAR_NAME, HashMap<ArrayList<LCONST>, Object>> subs ,
-			final boolean recover ) throws Exception{
+			final boolean recover ) throws Exception {
 		translate_time.ResumeTimer();
 		System.out.println("--------------Translating CPTs-------------");
-		translateCPTs( );
+		translateCPTs( subs );
 		System.out.println("--------------Initial State-------------");
 		translateInitialState( subs );
 		translate_time.PauseTimer();
 		
 		try{
-			goOptimize();
+			int exit_code = goOptimize();
 		}catch( GRBException exc ){
 			int error_code = exc.getErrorCode();
-			if( error_code == GRB.ERROR_OUT_OF_MEMORY && recover ){
+			if( recover ){//error_code == GRB.ERROR_OUT_OF_MEMORY && recover ){
 				handleOOM();
 				return doPlan( subs, false );
 			}else{
@@ -935,43 +936,44 @@ public class HOPTranslate extends Translate implements Policy {
 		return ret;
 	}
 	
-	@Override
-	public Map< EXPR, Double >  doPlan( final ArrayList<PVAR_INST_DEF> initState,
-			final boolean recover ) throws Exception{
-
-//		System.out.println( "Names : " );
-//		RDDL.EXPR.name_map.forEach( (a,b) -> System.out.println( a + " " + b ) );
-//		grb_model.set( GRB.IntParam.SolutionLimit, 1 );
-//		prepareModel( initState ); model already prepared in constructor
-		
-		translate_time.ResumeTimer();
-		System.out.println("--------------Translating CPTs-------------");
-		translateCPTs( );
-		System.out.println("--------------Initial State-------------");
-		translateInitialState( initState );
-		translate_time.PauseTimer();	
-		
-		try{
-			goOptimize();
-		}catch( GRBException exc ){
-			int error_code = exc.getErrorCode();
-			if( error_code == GRB.ERROR_OUT_OF_MEMORY  && recover ){
-				handleOOM();
-				return doPlan( initState, false );
-			}else{
-				throw exc;
-			}
-		}
-		
-		Map< EXPR, Double > ret = outputResults();
-		if( OUTPUT_LP_FILE ) {
-			outputLPFile( );
-		}
-		
-		modelSummary();		
-		cleanUp();
-		return ret;
-	}
+//	@Override
+//	public Map< EXPR, Double >  doPlan( final ArrayList<PVAR_INST_DEF> initState,
+//			final boolean recover ) throws Exception{
+//
+////		System.out.println( "Names : " );
+////		RDDL.EXPR.name_map.forEach( (a,b) -> System.out.println( a + " " + b ) );
+////		grb_model.set( GRB.IntParam.SolutionLimit, 1 );
+////		prepareModel( initState ); model already prepared in constructor
+//		HashMap<PVAR_NAME, HashMap<ArrayList<LCONST>, Object>> subs = getConsts(initState);
+//		
+//		translate_time.ResumeTimer();
+//		System.out.println("--------------Translating CPTs-------------");
+//		translateCPTs( subs );
+//		System.out.println("--------------Initial State-------------");
+//		translateInitialState( subs );
+//		translate_time.PauseTimer();	
+//		
+//		try{
+//			goOptimize();
+//		}catch( GRBException exc ){
+//			int error_code = exc.getErrorCode();
+//			if( error_code == GRB.ERROR_OUT_OF_MEMORY  && recover ){
+//				handleOOM();
+//				return doPlan( initState, false );
+//			}else{
+//				throw exc;
+//			}
+//		}
+//		
+//		Map< EXPR, Double > ret = outputResults();
+//		if( OUTPUT_LP_FILE ) {
+//			outputLPFile( );
+//		}
+//		
+//		modelSummary();		
+//		cleanUp();
+//		return ret;
+//	}
 
 	
 }

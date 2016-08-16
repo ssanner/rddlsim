@@ -2136,6 +2136,7 @@ public class RDDL {
 		public EXPR sampleDeterminization(RandomDataGenerator rand) {
 			//N(e1,e2^2) = e1 + e2 N(0,1)
 			//substitute() should be called first to simplify variance term
+			//also works when e2 is PWL, have not tested this.
 			assert( _normalVarReal.isConstant( null, null ) );
 			final double var = _normalVarReal.getDoubleValue( null, null );
 			
@@ -4036,28 +4037,83 @@ public class RDDL {
 		public GRBVar getGRBConstr( char sense, GRBModel model,
 				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants,
 				Map<TYPE_NAME, OBJECTS_DEF> objects, Map<PVAR_NAME, Character> type_map) {
-			if( grb_cache.containsKey( this ) ){
-				return grb_cache.get( this );
-			}
-			
-			if( isConstant(constants, objects) ){
-				return new REAL_CONST_EXPR( getDoubleValue(constants, objects) )
-					.getGRBConstr(sense, model, constants, objects, type_map);
-			}
-			
-			GRBVar this_var = getGRBVar(this, model, constants, objects , type_map );
-			GRBLinExpr total = new GRBLinExpr();
-			List<EXPR> assigns = expandQuantifier( _e, _alVariables, objects, constants);
-			for( final EXPR e : assigns ){
-				GRBVar v = e.getGRBConstr( GRB.EQUAL, model, constants, objects, type_map );
-				total.addTerm( 1.0d, v );
-			}
-			try {
-				model.addConstr( this_var , GRB.EQUAL, total, name_map.get(toString()) );
-//				model.update();
-				return this_var;
-			} catch (GRBException e1) {
-				e1.printStackTrace();
+			try{
+				if( grb_cache.containsKey( this ) ){
+					return grb_cache.get( this );
+				}
+				if( isConstant(constants, objects) ){
+					return new REAL_CONST_EXPR( getDoubleValue(constants, objects) )
+						.getGRBConstr(sense, model, constants, objects, type_map);
+				}
+				
+				List<EXPR> terms = expandQuantifier( _e, _alVariables, objects, constants);
+				switch( _op ){
+					case "sum" : 
+						GRBVar this_var = getGRBVar(this, model, constants, objects , type_map );
+						GRBLinExpr total = new GRBLinExpr();
+						for( final EXPR e : terms ){
+							GRBVar v = e.getGRBConstr( GRB.EQUAL, model, constants, objects, type_map );
+							total.addTerm( 1.0d, v );
+						}
+						try {
+							model.addConstr( this_var , GRB.EQUAL, total, name_map.get(toString()) );
+		//					model.update();
+							return this_var;
+						} catch (GRBException e1) {
+							e1.printStackTrace();
+							System.exit(1);
+						}
+						break;
+					case "min" : 
+						
+						EXPR min_expr = null;
+						for( final EXPR e : terms ){
+							if( min_expr == null ){
+								min_expr = e;
+							}else{
+								min_expr = new OPER_EXPR(e, min_expr, MIN);
+							}
+						}
+//						System.out.println("Expanded min expression " + min_expr );
+						
+						try {
+							GRBVar min_var = getGRBVar(this, model, constants, objects , type_map );
+							GRBVar that_var = min_expr.getGRBConstr(GRB.EQUAL, model, constants, objects, type_map);
+							model.addConstr( min_var , GRB.EQUAL, that_var, name_map.get(toString()) );
+		//					model.update();
+							return min_var;
+						} catch (GRBException e1) {
+							e1.printStackTrace();
+							System.exit(1);
+						}
+						break;
+					case "max" :
+						EXPR max_expr = null;
+						for( final EXPR e : terms ){
+							if( max_expr == null ){
+								max_expr = e;
+							}else{
+								max_expr = new OPER_EXPR(e, max_expr, MAX);
+							}
+						}
+//						System.out.println("Expanded min expression " + min_expr );
+						
+						try {
+							GRBVar min_var = getGRBVar(this, model, constants, objects , type_map );
+							GRBVar that_var = max_expr.getGRBConstr(GRB.EQUAL, model, constants, objects, type_map);
+							model.addConstr( min_var , GRB.EQUAL, that_var, name_map.get(toString()) );
+		//					model.update();
+							return min_var;
+						} catch (GRBException e1) {
+							e1.printStackTrace();
+							System.exit(1);
+						}
+						break;
+					default : 
+						throw new Exception( "unknown op for AGG_EXPR.getGRBConstr() " + _op );
+				}
+			}catch( Exception exc ){
+				exc.printStackTrace();
 				System.exit(1);
 			}
 			return null;
@@ -4300,6 +4356,8 @@ public class RDDL {
 			try{
 				assert( type_map.containsKey( this._pName ) );
 			}catch( AssertionError exc ){
+				System.out.println(type_map);
+				System.out.println(this._pName);
 				exc.printStackTrace();
 				System.exit(1);
 			}
@@ -5883,18 +5941,18 @@ public class RDDL {
 			HashSet<Pair> local_fluents = new HashSet<Pair>();
 			for (ArrayList<LCONST> sub_inst : possible_subs) {
 				for (int i = 0; i < _alVariables.size(); i++) {
-					System.out.println( _alVariables.get(i)._sVarName + " " + sub_inst.get(i) );
+//					System.out.println( _alVariables.get(i)._sVarName + " " + sub_inst.get(i) );
 					subs.put(_alVariables.get(i)._sVarName, sub_inst.get(i));
 				}
 				
-				System.out.println( "Subs in QUANT " + this + " " + subs );
+//				System.out.println( "Subs in QUANT " + this + " " + subs );
 				local_fluents.clear();
 				_expr.collectGFluents(subs, s, local_fluents);
 				boolean expr_is_indep_of_state = local_fluents.size() == 0;		
 				
 				if (expr_is_indep_of_state && _expr._bDet) { // (s.getPVariableType(p._pName) == State.NONFLUENT) {
 					
-					System.out.println("Sampling " + _expr + " " + subs );
+//					System.out.println("Sampling " + _expr + " " + subs );
 					boolean eval = (Boolean)_expr.sample(subs, s, null);
 					
 					// If can determine truth value of connective from nonfluents
@@ -6012,6 +6070,8 @@ public class RDDL {
 						model.addConstr( this_var , GRB.LESS_EQUAL, sum, name_map.get(toString()) );
 						model.addConstr( sum, GRB.LESS_EQUAL, nz, name_map.get(toString()) );
 						break;
+					default :
+						throw new Exception("Unknown case in getGRBConstr() " + _sConn );	
 				}
 //				model.update();
 				return this_var;
