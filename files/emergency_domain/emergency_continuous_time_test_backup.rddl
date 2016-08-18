@@ -1,0 +1,175 @@
+//continuous time 
+//S. 1 station 1 team - boolean. various clocks for the team
+//S. no call cause code - only call location
+//A. Dispatch team or do nothing.
+//1. simulate min of time of next call or next available time of team.
+//2. calculate FC and FR correctly - accumulate over time steps
+
+domain emergency_continuous_time_test{
+	
+	types {
+		coordinate : object;
+	};
+	
+	pvariables {
+		//state variables
+		currentCallTime : {state-fluent, real, default=0.0};
+		//nextCallTime : {state-fluent, real, default=0.0};
+		
+		currentCall(coordinate) : {state-fluent, real, default=0};
+		timeServiceDone : {state-fluent, real, default=0.0};
+		timeTarryDone :  {state-fluent, real, default=0.0};
+		timeBackInBase : {state-fluent, real, default=0.0};
+		lastVehicleService(coordinate) : {state-fluent, real, default=0.0};
+		
+		//respondedToCall : {state-fluent, bool, default=false};
+		
+		//derived fluents
+		callMiles : {interm-fluent, real};
+		callTravelTime : {interm-fluent, real};
+		
+		vehicleInService : {interm-fluent, bool};
+		vehicleInBase : {interm-fluent, bool};
+		vehicleOnSite : {interm-fluent, bool};
+		
+		//sampledNextTime : {interm-fluent, real};
+		//newCallNow : {interm-fluent, bool};
+		//vehicleNextAvailable : {interm-fluent,real};
+		
+		//constants
+		MapUpperBound(coordinate) : {non-fluent, real, default=0};
+		MapLowerBound(coordinate) : {non-fluent, real, default=0};
+		vehicleHome(coordinate) : {non-fluent, real, default=0.0};
+		//MAX_RESPONSE_WINDOW : {non-fluent, real, default=0.2};
+		
+		RoleServiceTime : {non-fluent, real, default=0.5};
+		TarryTime : {non-fluent, real, default=0.25};
+		FeetToMiles : {non-fluent, real, default=0.000189394};
+		MAX_INTER_ARRIVAL : {non-fluent, real, default=2.0};
+		
+		//action
+		dispatch : {action-fluent, bool, default=false};
+	};
+	
+	cpfs {
+	
+		//newCallNow = ( currentCallTime == nextCallTime );
+		
+		//sampledNextTime = //if (newCallNow)  then 
+						  //currentCallTime + Uniform(0, MAX_INTER_ARRIVAL );
+						  //else nextCallTime;
+		
+		//nextCallTime' = sampledNextTime;
+						//if (newCallNow)
+						//then sampledNextTime 
+						//else nextCallTime;
+						
+		//vehicleNextAvailable =  if (~vehicleInService) 
+		//					    then [if (timeServiceDone > currentCallTime) 
+		//							  then timeServiceDone 
+		//						      else timeBackInBase]
+		//					    else if (dispatch)
+		//						then currentCallTime + callTravelTime + RoleServiceTime
+		//						else currentCallTime;
+						
+		currentCallTime' = currentCallTime + Uniform(0, MAX_INTER_ARRIVAL );
+							//min[ sampledNextTime, 
+									//if ( vehicleNextAvailable > currentCallTime  ^ 
+									//	 vehicleNextAvailable < currentCallTime + MAX_RESPONSE_WINDOW )
+									//then vehicleNextAvailable 
+									//else sampledNextTime
+							  //];
+							  
+		currentCall'(?c) = Uniform( MapLowerBound(?c), MapUpperBound(?c) );
+							//if (newCallNow) then 
+						   //Uniform( MapLowerBound(?c), MapUpperBound(?c) );
+						   //else currentCall(?c);
+		
+		lastVehicleService'(?c) = if (dispatch) 
+								  then currentCall(?c)
+								  else if (vehicleInBase)
+								  then vehicleHome(?c) 
+								  else lastVehicleService(?c);
+		
+		callMiles = FeetToMiles*(if (vehicleInBase) 
+						      then (sum_{?c:coordinate}[ abs[ vehicleHome(?c)-currentCall(?c) ] ])
+							  else (sum_{?c:coordinate}[ abs[ lastVehicleService(?c)-currentCall(?c) ] ]));
+						//if (dispatch)
+						//then [if (vehicleInBase) 
+						//      then (sum_{?c:coordinate}[ abs[ vehicleHome(?c)-currentCall(?c) ] ])
+						//	  else (sum_{?c:coordinate}[ abs[ lastVehicleService(?c)-currentCall(?c) ] ])]
+						//else 0.0);
+		
+		callTravelTime = if (callMiles <= 5) 
+						 then callMiles/38.0
+						 else if (callMiles > 5 ^ callMiles <= 7)
+						 then callMiles/42.0
+						 else if (callMiles > 7 ^ callMiles <= 12)
+						 then callMiles/40.0
+						 else if (callMiles > 12 ^ callMiles <= 15)
+						 then callMiles/48.0
+						 else if (callMiles > 15 ^ callMiles <= 17.5)
+						 then callMiles/56.0
+						 else if (callMiles > 17.5 ^ callMiles <= 20)
+						 then callMiles/52.0
+						 else if (callMiles > 20 ^ callMiles <= 25)
+						 then callMiles/50.0
+						 else if (callMiles > 25 ^ callMiles <= 28.5)
+						 then callMiles/54.0
+						 else if (callMiles > 28.5 ^ callMiles <= 41)
+						 then callMiles/49.0
+						 else if (callMiles > 41 ^ callMiles <= 70)
+						 then callMiles/70.0
+						 else if (callMiles > 70 ^ callMiles <= 500)
+						 then callMiles/70.0
+						 else callMiles/70.0;
+							  
+		
+		timeServiceDone' = if (dispatch) 
+						   then (currentCallTime + callTravelTime + RoleServiceTime)
+						   else timeServiceDone;
+						
+		timeTarryDone' = if (dispatch)
+					     then (currentCallTime + callTravelTime + RoleServiceTime + TarryTime) 
+					     else timeTarryDone;
+						
+		timeBackInBase' = if (dispatch)
+						  then (currentCallTime + callTravelTime + RoleServiceTime + 
+								TarryTime + callTravelTime)
+						  else timeBackInBase;
+								  
+		vehicleInService = vehicleInBase | vehicleOnSite;
+		
+		vehicleInBase = (currentCallTime >= timeBackInBase);
+		
+		vehicleOnSite = [(currentCallTime >= timeServiceDone) ^ (currentCallTime < timeTarryDone)];		
+
+		//respondedToCall' = if (newCallNow)
+		//				  then dispatch
+		//				  else respondedToCall | dispatch;
+		
+	};
+	
+	reward = if (dispatch) then (-callTravelTime) else (-50);
+	
+	state-invariants {
+		timeTarryDone >= timeServiceDone;
+		timeBackInBase >= timeTarryDone;
+		callMiles >= 0;
+		callTravelTime >= 0;
+		callMiles <= (sum_{?c:coordinate}[ MapUpperBound(?c)-MapLowerBound(?c) ]);
+		currentCallTime >= 0;
+		forall_{?c:coordinate}[ lastVehicleService(?c) <= MapUpperBound(?c) ];
+		forall_{?c:coordinate}[ lastVehicleService(?c) >= MapLowerBound(?c) ];
+		forall_{?c:coordinate}[ currentCall(?c) <= MapUpperBound(?c) ];
+		forall_{?c:coordinate}[ currentCall(?c) >= MapLowerBound(?c) ];
+		//sampledNextTime >= 0;
+		//sampledNextTime >= currentCallTime;
+		
+	};
+	
+	action-preconditions {
+		(~dispatch) | vehicleInService;
+		(~vehicleInService) | dispatch;
+	};
+}

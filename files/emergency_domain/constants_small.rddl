@@ -1,0 +1,80 @@
+non-fluents constants_small {
+	domain = emergency_mdp_role_actions;
+	objects {
+		person : {Harrison};//,Bartley,Belton,Cox,Delameter,Edwards};
+		
+		qualification : {BC};//,CV,Engineer,Firefighter,Lieutenant,Medic,SRT};
+		
+		vehicle : {C-119};//,E-131,L-151,M-123,T-143,W-162};
+		
+		role : {Command};//Engine, QRT, Rescue, , Ladder, Medic-2, Medic-3, Medic-T, Tender, Wildland-Tender, Wildland-Engine};
+		
+		coordinate : {xpos,ypos};
+		
+		location : {Station1};//,Station2,Station3,Station4,Station5,Station6};
+		
+		cause : {AFA};//,Code1Medical,Code3Med,Code3Trauma,EMS,Fire,Rescue,Transport};
+				 
+		region : {Full,GoodSam-T,Stonybrook,Westhills,EMS-City,EMS-County,Fire-City,Fire-Rural};
+	};
+	
+	non-fluents {
+		personHasQualification(Harrison,BC)=true;
+		
+		position(xpos,Station1)=7482825.5;position(ypos,Station1)=340725.7188;
+
+		RoleRequirement(Command,BC)=1;
+		
+		RoleServiceTime(Command)=0.75;
+		
+		HospitalPosition(xpos)=7485076; HospitalPosition(ypos)=353612.2813;
+		TransferPosition(xpos)=7862985; TransferPosition(ypos)=353612;
+		
+		DestinationHospital(Medic-2)=true;
+		DestinationHospital(Medic-3)=true;
+		DestinationTransfer(Medic-T)=true;
+		
+		TarryTime(Command)=0.25;		
+		
+		causeRequirement(AFA,Fire-City,Ladder)=2;
+		causeRequirement(AFA,Fire-City,Engine)=2;
+		causeRequirement(AFA,Fire-City,Command)=1;
+		
+		causeRequirement(AFA,Full,Engine)=1;
+		
+		causeRequirement(AFA,Fire-Rural,Command)=1;
+		causeRequirement(AFA,Fire-Rural,Tender)=1;
+		causeRequirement(AFA,Fire-Rural,Engine)=2;
+		
+		MapUpperBound(xpos)=7507706;MapUpperBound(ypos)=371508;
+		MapLowerBound(xpos)=7450491;MapLowerBound(ypos)=311067;
+		
+		W1 = 0.5;
+		
+		vehicleHasCapability(C-119,Command)=true;
+		
+	};
+}
+
+instance scenario_zero_small {
+	domain = emergency_mdp_role_actions;
+	non-fluents = constants_small;
+	
+	init-state {
+		personHome(Harrison,Station1)=true;
+		
+		vehicleHome(C-119,Station1)=true;
+		
+		currentCallCause(AFA)=true;
+		currentCallRegion(Fire-City)=true;
+		
+		currentCall(xpos)=7503706;
+		currentCall(ypos)=331568;
+		
+	
+	};
+	
+	//max-nondef-actions = 10;
+	horizon  = 20;
+	discount = 1.0;
+}

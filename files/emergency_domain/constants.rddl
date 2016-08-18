@@ -1,0 +1,398 @@
+non-fluents constants {
+	domain = emergency_mdp_role_actions;
+	objects {
+		person : {Anderson,Bartley,Belton,Cox,Delameter,Edwards,Fox,Gurule,
+				  Hanauer,Harrison,Jordan,Loveland,Maldonado,Morgan,Severson,
+				  Still,VanVeldhuizen,White,Yencopal};
+		qualification : {BC,CV,Engineer,Firefighter,Lieutenant,Medic,SRT};
+		vehicle : {C-119,E-131,E-132,E-133,E-134,E-135,E-136,L-151,M-123,
+				   M-124,M-125,T-141,T-143,T-146,W-161,W-162,W-163,W-164,W-165,W-166};
+		role : {Engine, QRT, Rescue, Command, Ladder, Medic-2, Medic-3, Medic-T, Tender, Wildland-Tender, Wildland-Engine};
+		coordinate : {xpos,ypos};
+		
+		location : {Station1,Station2,Station3,Station4,Station5,Station6};
+		//Granger20,Alpine99W,Coffin99W,AlseaN1stEmain,FernAirport,Full,GoodSam,OTTransfer,
+		//,StonybrookAssisted,WestHillsAssisted};
+					
+		//nature :{2ND,AA,ABAN,ABD,ABDOM1,ABDOM3,ACCBIK,ACCFTL,ACCHR,
+		//		 ACCINJ,ACCNON,ACCPED,ACCUNK,AIREM,ALARMB,ALARMO,ALARMR,
+		//		 ALLCO,ALLERG,ANIMAL,AOA,APT,ARSON,ASLT1,ASLT3,ASSPUB,
+		//		 ATL,ATTSUI,BACK1,BACK3,BAF,BARK,BIRTH,BITE,BLEED1,BLEED3,
+		//		 BOAT,BOMB,BREATH,BRUSH,BURG,BURN1,BURN3,BURNCO,BURNIN,CAID,
+		//		 CARFIR,CFA,CFIT,CHILD,CHILL,CHOKE,CHXPAIN,CIVIL,CO1,
+		//		 CO3,CODE,COLD,COMM,CPW,DEATH,DIABET,DISTUR,DOMEST,DROWN,
+		//		 DRUNK,DUII,DUMPS,DWS,ELEC,ELUDE,EXPOSE,EYE,FALL1,FALL3,
+		//		 FBOMB,FIGHT,FIREWK,FLUE,FOLLOW,FOREST,FORREST,GSW,HARASS,
+		//		 HAZMAT,HEART,HOM,HOUSE,JUV,LBFIT,LGGRAS,LIFE1,LIFE3,LIFT,
+		//		 LINES,LIQLAW,MANDWN,MASMED,MED1,MED3,MENACE,MENTAL,MIP,
+		//		 MISPER,MOTOR,MUTUAL,MVA,OD,ODOR,OREO,OTCRIM,OTFIRE,
+		//		 OTORD,OTTRAF,OUTBDG,PARKC,PATROL,POISON,PROWL,PROWLC,
+		//		 PUBLIC,PUBSAF,QRT,RECKDR,RESCUE,RFA,RO,ROB,SEARCH,
+		//		 SEIZE,SEXOFF,SHOOT,SHOPLF,SMGRAS,SMOKE,SPILL,SRN,
+		//		 SRT,STING1,STING3,STOLVR,STROKE,STRUCT,SUICID,
+		//		 SUSACT,SUSPER,SUSVEH,SWARR,TAP9,THEFT,THREAT,TRANS, TRAUM1,
+		//		 TRAUM3,TREE,TRESPA,TRF,UNCON,UNK,UNKMED,VAND,WARR,
+		//		 WELFAR,WILD,WRESCUE,XCALL,XPLODE};
+		
+		cause : {AFA,All,Code1Medical,Code3Med,Code3Trauma,EMS,Fire,Hazmat,MassCasualty,
+				 MVA,NuisanceFire,Other,OtherEMS,OtherFire,
+				 Overpressure,Rescue,StructureFire,Transport,VehicleFire,WildlandFire};
+				 
+		region : {Full,GoodSam-T,Stonybrook,Westhills,EMS-City,EMS-County,Fire-City,Fire-Rural};
+	};
+	
+	non-fluents {
+		personHasQualification(Anderson,Lieutenant)=true;
+		personHasQualification(Anderson,Medic)=true;
+		personHasQualification(Anderson,Firefighter)=true;
+		
+		personHasQualification(Bartley,Engineer)=true;
+		personHasQualification(Bartley,Medic)=true;
+		personHasQualification(Bartley,Firefighter)=true;
+		
+		personHasQualification(Belton,Engineer)=true;
+		personHasQualification(Belton,Medic)=true;
+		personHasQualification(Belton,Firefighter)=true;
+		
+		personHasQualification(Cox,Medic)=true;
+		personHasQualification(Cox,Firefighter)=true;
+		
+		personHasQualification(Delameter,Medic)=true;
+		personHasQualification(Delameter,Firefighter)=true;
+		
+		personHasQualification(Edwards,Medic)=true;
+		personHasQualification(Edwards,Firefighter)=true;
+		
+		personHasQualification(Fox,Medic)=true;
+		personHasQualification(Fox,Firefighter)=true;
+		
+		personHasQualification(Gurule,Medic)=true;
+		personHasQualification(Gurule,Firefighter)=true;
+		
+		personHasQualification(Hanauer,Medic)=true;
+		personHasQualification(Hanauer,Firefighter)=true;
+		personHasQualification(Hanauer,Lieutenant)=true;
+		
+		personHasQualification(Harrison,BC)=true;
+		
+		personHasQualification(Jordan,Firefighter)=true;
+		personHasQualification(Jordan,Engineer)=true;
+		
+		personHasQualification(Loveland,Lieutenant)=true;
+		personHasQualification(Loveland,Firefighter)=true;
+		personHasQualification(Loveland,Medic)=true;
+		
+		personHasQualification(Maldonado,Lieutenant)=true;
+		personHasQualification(Maldonado,Firefighter)=true;
+		personHasQualification(Maldonado,Medic)=true;
+		
+		personHasQualification(Morgan,Lieutenant)=true;
+		personHasQualification(Morgan,Firefighter)=true;
+		personHasQualification(Morgan,Medic)=true;
+		
+		personHasQualification(Severson,Engineer)=true;
+		personHasQualification(Severson,Firefighter)=true;
+		personHasQualification(Severson,Medic)=true;
+		
+		personHasQualification(Still,Lieutenant)=true;
+		personHasQualification(Still,Firefighter)=true;
+		personHasQualification(Still,Medic)=true;
+		
+		personHasQualification(VanVeldhuizen,Engineer)=true;
+		personHasQualification(VanVeldhuizen,Firefighter)=true;
+		personHasQualification(VanVeldhuizen,Medic)=true;
+		
+		personHasQualification(White,Engineer)=true;
+		personHasQualification(White,Firefighter)=true;
+		
+		personHasQualification(Yencopal,Engineer)=true;
+		personHasQualification(Yencopal,Firefighter)=true;
+		personHasQualification(Yencopal,Medic)=true;
+		
+		position(xpos,Granger20)=7500369;position(ypos,Granger20)=362876;
+		position(xpos,Alpine99W)=7470689;position(ypos,Alpine99W)=256906;
+		position(xpos,Coffin99W)=7494761;position(ypos,Coffin99W)=388483;
+		position(xpos,AlseaN1stEmain)=7392192;position(ypos,AlseaN1stEmain)=276286;
+		position(xpos,FernAirport)=7455609;position(ypos,FernAirport)=315475;
+		position(xpos,Full)=7482825.5;position(ypos,FernAirport)=340725.7188;
+		position(xpos,GoodSam)=7485076;position(ypos,GoodSam)=353612.2813;
+		position(xpos,OTTransfer)=7862985;position(ypos,OTTransfer)=353612;
+		position(xpos,Station1)=7482825.5;position(ypos,Station1)=340725.7188;
+		position(xpos,Station2)=7475139;position(ypos,Station2)=338994.2813;
+		position(xpos,Station3)=7481327;position(ypos,Station3)=348472;
+		position(xpos,Station4)=7480265;position(ypos,Station4)=332011.9063;
+		position(xpos,Station5)=7470629;position(ypos,Station5)=348364.2813;
+		position(xpos,Station6)=7485871;position(ypos,Station6)=363030.4688;
+		position(xpos,StonybrookAssisted)=7471252;position(ypos,StonybrookAssisted)=332585;
+		position(xpos,WestHillsAssisted)=7468334;position(ypos,WestHillsAssisted)=337139.5;
+		
+		RoleRequirement(Engine,Lieutenant)=1;
+		RoleRequirement(Engine,Engineer)=1;
+		RoleRequirement(Engine,Firefighter)=1;
+		
+		RoleRequirement(Command,BC)=1;
+		
+		RoleRequirement(Ladder,Lieutenant)=1;
+		RoleRequirement(Ladder,Engineer)=1;
+		RoleRequirement(Ladder,Firefighter)=1;
+		
+		RoleRequirement(Medic-2,Medic)=2;
+		
+		RoleRequirement(Medic-3,Lieutenant)=1;
+		RoleRequirement(Medic-3,Medic)=1;
+		RoleRequirement(Medic-3,Firefighter)=1;
+		
+		RoleRequirement(Medic-T,Medic)=2;
+		
+		RoleRequirement(QRT,Lieutenant)=1;
+		RoleRequirement(QRT,Engineer)=1;
+		RoleRequirement(QRT,Firefighter)=1;
+		
+		RoleRequirement(Rescue,Lieutenant)=1;
+		RoleRequirement(Rescue,Engineer)=1;
+		RoleRequirement(Rescue,Firefighter)=1;
+		
+		RoleRequirement(Tender,Engineer)=1;
+		RoleRequirement(Tender,Firefighter)=1;
+		
+		RoleRequirement(Wildland-Engine,Lieutenant)=1;
+		RoleRequirement(Wildland-Engine,Engineer)=1;
+		RoleRequirement(Wildland-Engine,Firefighter)=1;
+		
+		RoleRequirement(Wildland-Tender,Engineer)=1;
+		RoleRequirement(Wildland-Tender,Firefighter)=1;
+		
+		RoleServiceTime(Engine)=0.917;
+		RoleServiceTime(Command)=0.75;
+		RoleServiceTime(Ladder)=0.583;
+		RoleServiceTime(Medic-2)=0.667;
+		RoleServiceTime(Medic-3)=0.617;
+		RoleServiceTime(Medic-T)=1.25;
+		RoleServiceTime(Tender)=2.5;
+		RoleServiceTime(Wildland-Tender)=1.0;
+		RoleServiceTime(Wildland-Engine)=1.0;
+		RoleServiceTime(Rescue)=0.75;
+		RoleServiceTime(QRT)=0.333;
+		
+		HospitalPosition(xpos)=7485076; HospitalPosition(ypos)=353612.2813;
+		TransferPosition(xpos)=7862985; TransferPosition(ypos)=353612;
+		
+		DestinationHospital(Medic-2)=true;
+		DestinationHospital(Medic-3)=true;
+		DestinationTransfer(Medic-T)=true;
+		
+		TarryTime(Command)=0.25;
+		TarryTime(Tender)=0.5;
+		
+		
+		causeRequirement(AFA,Fire-City,Ladder)=2;
+		causeRequirement(AFA,Fire-City,Engine)=2;
+		causeRequirement(AFA,Fire-City,Command)=1;
+		
+		causeRequirement(AFA,Full,Engine)=1;
+		
+		causeRequirement(AFA,Fire-Rural,Command)=1;
+		causeRequirement(AFA,Fire-Rural,Tender)=1;
+		causeRequirement(AFA,Fire-Rural,Engine)=2;
+		
+		causeRequirement(All,Full,Medic-3)=1;
+		
+		causeRequirement(Code1Medical,Full,Medic-3)=1;
+		
+		causeRequirement(Code3Med,EMS-City,QRT)=1;
+		causeRequirement(Code3Med,EMS-City,Medic-2)=1;
+		
+		causeRequirement(Code3Med,EMS-County,Medic-3)=1;
+		
+		causeRequirement(Code3Med,Stonybrook,QRT)=1;
+		causeRequirement(Code3Med,Stonybrook,Medic-2)=1;
+		
+		causeRequirement(Code3Med,Westhills,QRT)=1;
+		causeRequirement(Code3Med,Westhills,Medic-2)=1;
+		
+		causeRequirement(Code3Trauma,EMS-City,QRT)=1;
+		causeRequirement(Code3Trauma,EMS-City,Medic)=1;
+		
+		causeRequirement(Code3Trauma,Full,Medic-3)=1;
+		
+		causeRequirement(EMS,Full,Medic-3)=1;
+		
+		causeRequirement(Fire,Full,Engine)=1;
+		
+		causeRequirement(Hazmat,Full,Engine)=1;
+		
+		causeRequirement(MassCasualty,Fire-City,Medic-2)=1;
+		causeRequirement(MassCasualty,Fire-City,QRT)=1;
+		
+		causeRequirement(MassCasualty,EMS-County,Medic-3)=1;
+		
+		causeRequirement(MassCasualty,Full,Medic-3)=1;
+		
+		causeRequirement(MVA,EMS-City,QRT)=1;
+		causeRequirement(MVA,EMS-City,Medic-2)=1;
+		
+		causeRequirement(MVA,EMS-County,Medic-3)=1;
+		
+		causeRequirement(MVA,Full,Medic-3)=1;
+		
+		causeRequirement(NuisanceFire,Full,Engine)=1;
+		
+		causeRequirement(Transport,GoodSam-T,Medic-T)=3;
+		
+		causeRequirement(Other,Full,Engine)=1;
+		
+		causeRequirement(OtherEMS,Full,Medic-3)=1;
+	
+		causeRequirement(OtherFire,Full,Engine)=1;
+		
+		causeRequirement(Overpressure,Fire-City,Ladder)=2;
+		causeRequirement(Overpressure,Fire-City,Engine)=2;
+		causeRequirement(Overpressure,Fire-City,Command)=1;
+		
+		causeRequirement(Overpressure,Full,Engine)=1;
+		
+		causeRequirement(Overpressure,Fire-Rural,Tender)=1;
+		causeRequirement(Overpressure,Fire-Rural,Command)=1;
+		causeRequirement(Overpressure,Fire-Rural,Engine)=2;
+
+		causeRequirement(Rescue,EMS-City,QRT)=1;
+		causeRequirement(Rescue,EMS-City,Medic-2)=1;
+	
+		causeRequirement(Rescue,EMS-County,Medic-3)=1;
+	
+		causeRequirement(Rescue,Full,Medic-3)=1;
+	
+		causeRequirement(StructureFire,Fire-City,Ladder)=2;
+		causeRequirement(StructureFire,Fire-City,Command)=1;
+		causeRequirement(StructureFire,Fire-City,Engine)=2;
+	
+		causeRequirement(StructureFire,Full,Engine)=1;
+		
+		causeRequirement(StructureFire,Fire-Rural,Engine)=2;
+		causeRequirement(StructureFire,Fire-Rural,Command)=1;
+		causeRequirement(StructureFire,Fire-Rural,Tender)=1;
+		
+		causeRequirement(Transport,Full,Medic-3)=1;
+		
+		causeRequirement(VehicleFire,Full,Engine)=1;
+		
+		causeRequirement(WildlandFire,Full,Wildland-Engine)=3;
+		causeRequirement(WildlandFire,Full,Command)=1;
+		causeRequirement(WildlandFire,Full,Tender)=1;
+		
+		MapUpperBound(xpos)=7507706;MapUpperBound(ypos)=371508;
+		MapLowerBound(xpos)=7450491;MapLowerBound(ypos)=311067;
+		
+		W1 = 0.5;
+		
+		//isStation(Station1)=true;
+		//isStation(Station2)=true;
+		//isStation(Station3)=true;
+		//isStation(Station4)=true;
+		//isStation(Station5)=true;
+		//isStation(Station6)=true;
+		
+		vehicleHasCapability(C-119,Command)=true;
+		vehicleHasCapability(E-131,Engine)=true;
+		vehicleHasCapability(E-131,QRT)=true;
+		vehicleHasCapability(E-131,Rescue)=true;
+		
+		vehicleHasCapability(E-132,Engine)=true;
+		vehicleHasCapability(E-132,QRT)=true;
+		vehicleHasCapability(E-132,Rescue)=true;
+		
+		vehicleHasCapability(E-133,Engine)=true;
+		vehicleHasCapability(E-133,QRT)=true;
+		vehicleHasCapability(E-133,Ladder)=true;
+		
+		vehicleHasCapability(E-134,Engine)=true;
+		vehicleHasCapability(E-135,Engine)=true;
+		
+		vehicleHasCapability(E-136,Engine)=true;
+		vehicleHasCapability(E-136,QRT)=true;
+		vehicleHasCapability(E-136,Rescue)=true;
+		
+		vehicleHasCapability(L-151,Ladder)=true;
+		
+		vehicleHasCapability(M-123,Medic-2)=true;
+		vehicleHasCapability(M-123,Medic-3)=true;
+		vehicleHasCapability(M-123,Medic-T)=true;
+		
+		vehicleHasCapability(M-124,Medic-2)=true;
+		vehicleHasCapability(M-124,Medic-3)=true;
+		vehicleHasCapability(M-124,Medic-T)=true;
+		
+		vehicleHasCapability(M-125,Medic-2)=true;
+		vehicleHasCapability(M-125,Medic-3)=true;
+		vehicleHasCapability(M-125,Medic-T)=true;
+		
+		vehicleHasCapability(T-141,Tender)=true;
+		vehicleHasCapability(T-141,Wildland-Tender)=true;
+		
+		vehicleHasCapability(T-143,Tender)=true;
+		vehicleHasCapability(T-143,Wildland-Tender)=true;
+		
+		vehicleHasCapability(T-146,Tender)=true;
+		vehicleHasCapability(T-146,Wildland-Tender)=true;
+		
+		vehicleHasCapability(W-161,Wildland-Engine)=true;
+		vehicleHasCapability(W-162,Wildland-Engine)=true;
+		vehicleHasCapability(W-163,Wildland-Engine)=true;
+		vehicleHasCapability(W-165,Wildland-Engine)=true;
+		vehicleHasCapability(W-166,Wildland-Engine)=true;
+		
+		
+	};
+}
+
+instance scenario_zero {
+	domain = emergency_mdp_role_actions;
+	non-fluents = constants;
+	
+	init-state {
+		personHome(Anderson,Station5)=true;
+		personHome(Bartley,Station5)=true;
+		personHome(Belton,Station2)=true;
+		personHome(Cox,Station4)=true;
+		personHome(Delameter,Station2)=true;
+		personHome(Edwards,Station1)=true;
+		personHome(Fox,Station5)=true;
+		personHome(Gurule,Station3)=true;
+		personHome(Hanauer,Station1)=true;
+		personHome(Harrison,Station1)=true;
+		personHome(Jordan,Station6)=true;
+		personHome(Loveland,Station4)=true;
+		personHome(Maldonado,Station2)=true;
+		personHome(Morgan,Station6)=true;
+		personHome(Severson,Station3)=true;
+		personHome(Still,Station3)=true;
+		personHome(VanVeldhuizen,Station4)=true;
+		personHome(White,Station6)=true;
+		personHome(Yencopal,Station1)=true;
+		
+		vehicleHome(C-119,Station1)=true;
+		vehicleHome(E-131,Station1)=true;
+		vehicleHome(E-132,Station2)=true;
+		vehicleHome(E-133,Station3)=true;
+		vehicleHome(E-134,Station4)=true;
+		vehicleHome(E-135,Station5)=true;
+		vehicleHome(E-136,Station6)=true;
+		vehicleHome(L-151,Station1)=true;
+		vehicleHome(M-123,Station3)=true;
+		vehicleHome(M-124,Station4)=true;
+		vehicleHome(M-125,Station5)=true;
+		vehicleHome(T-141,Station1)=true;
+		vehicleHome(T-143,Station3)=true;
+		vehicleHome(T-146,Station6)=true;
+		vehicleHome(W-161,Station1)=true;
+		vehicleHome(W-162,Station2)=true;
+		vehicleHome(W-163,Station3)=true;
+		vehicleHome(W-165,Station5)=true;
+		vehicleHome(W-166,Station6)=true;
+		
+	};
+	
+	//max-nondef-actions = 10;
+	horizon  = 20;
+	discount = 1.0;
+}

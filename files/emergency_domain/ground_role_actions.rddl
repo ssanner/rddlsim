@@ -1,0 +1,367 @@
+domain emergency_mdp_role_actions {
+ 	
+	types { 
+		person : object;
+		qualification : object;
+		vehicle : object;
+		role : object;
+		location : object;
+		coordinate : object;
+		//nature : object;
+		cause : object;
+		region : object;
+	};	
+	
+	pvariables {
+		
+		currentTime : {state-fluent, real, default=0.0};
+		
+		//call info
+		currentCallCause(cause) : {state-fluent, bool, default=false};
+		currentCall(coordinate) : {state-fluent, real, default=0};
+		currentCallRegion(region) : {state-fluent, bool, default=false};
+		
+		//location of the last service point of each vehicle.
+		//This is used for Tarry and endpoints in Hospital and Transfer.
+		//This does NOT always equal the vehicles' current location.
+		lastVehicleService(coordinate,vehicle) : {state-fluent, real, default=0.0};
+		
+		//Distance info : value is zero whenever vehicle is not BEING assigned. 
+		//Value is computed when validAssignment(v,r) for some r.
+		//Distance from current location of vehicle to the location of the emergency.
+		callMiles(vehicle) : {interm-fluent, real};
+		
+		hospitalMiles(vehicle) : {interm-fluent, real};
+		transferMiles(vehicle) : {interm-fluent, real};
+		returnMiles(vehicle) : {interm-fluent, real};
+		
+		timeServiceDone(vehicle) : {state-fluent, real, default=0.0};
+		timeTarryDone(vehicle) :  {state-fluent, real, default=0.0};
+		timeBackInBase(vehicle) : {state-fluent, real, default=0.0};
+		
+		callTravelTime(vehicle) : {interm-fluent, real};
+		returnTravelTime(vehicle) : {interm-fluent, real};
+		hospitalTravelTime(vehicle) : {interm-fluent, real};
+		transferTravelTime(vehicle) : {interm-fluent, real};
+		
+		vehicleInService(vehicle) : {interm-fluent, bool};
+		vehicleInBase(vehicle) : {interm-fluent, bool};
+		vehicleOnSite(vehicle) : {interm-fluent, bool};
+		
+		//volatile, person exits vehicle if vehicle is not assigned a role
+		//multiple quals per person
+		personHasQualification(person, qualification) : {non-fluent, bool, default=false};
+		
+		personInVehicle(person, vehicle) : {state-fluent, bool, default=false };
+		personInService(person) : {interm-fluent, bool};
+		
+		personHome(person,location) : {state-fluent, bool, default=false};
+		vehicleHome(vehicle,location) : {state-fluent, bool, default=false};
+		position(coordinate,location) : {non-fluent, real, default=0.0};
+		
+		//multiple per vehicle
+		vehicleHasCapability(vehicle,role) : {non-fluent, bool, default=false};
+		
+		//multiple assignments per time step		
+		assignPerson(person,vehicle,qualification) : {action-fluent, bool, default=false };
+		
+		//currentRole(vehicle,role) : {state-fluent, bool, default=false };
+		//succeeds if role requirements are satisfied by vehicle including personnel
+		assignRole(vehicle,role) : {action-fluent, bool, default=false };
+	
+		//with every time step we will see a new call
+		relocatePerson(person, location) : {action-fluent, bool, default=false};
+		relocateVehicle(vehicle, location) : {action-fluent, bool, default=false};
+		
+		validAssignment(vehicle,role) : {interm-fluent, bool};
+		validPersonnel(vehicle,role) : {interm-fluent, bool};
+		
+		RoleRequirement(role,qualification) : {non-fluent, int, default=0};
+		
+		DestinationHospital(role) : {non-fluent, bool, default=false};
+		DestinationTransfer(role) : {non-fluent, bool, default=false};
+		
+		FeetToMiles : {non-fluent, real, default=0.000189394};
+		
+		RoleServiceTime(role) : {non-fluent, real, default=0.0};
+		
+		//parentCause(cause,cause) : {non-fluent, bool, default=false};
+		
+		//natureCause(nature,cause) :  {non-fluent, bool, default=false};
+		
+		causeRequirement(cause,region,role) : {non-fluent, int, default=0};
+		
+		MAX_INTER_ARRIVAL : {non-fluent, real, default=5.0};
+		
+		firstResponse : {interm-fluent, real};
+		fullResponseSatisfied : {interm-fluent, bool};
+		fullResponse : {interm-fluent, real};
+		
+		nextTime : {interm-fluent, real};
+		
+		MapUpperBound(coordinate) : {non-fluent, real, default=0};
+		MapLowerBound(coordinate) : {non-fluent, real, default=0};
+		
+		W1 : {non-fluent, real, default=0.5};
+		//isStation(location) : {non-fluent, bool, default=false};
+		
+		HospitalPosition (coordinate) : {non-fluent, real, default=0.0};
+		TransferPosition (coordinate) : {non-fluent, real, default=0.0};
+		
+		TarryTime(role) : {non-fluent, real, default=0.0};
+		
+	};
+ 		
+ 	cpfs {
+ 		
+		nextTime = currentTime + Uniform(0,MAX_INTER_ARRIVAL);
+		currentTime' = min[ nextTime, min_{?v:vehicle}[ if (~vehicleInService(?v))
+														then timeServiceDone(?v) ^  ] ];
+		
+		currentCallCause'(?c) = Bernoulli(0.5); //Uniform(1, sum_{?c2:cause}[1]);
+		currentCallRegion'(?r) = Bernoulli(0.5); 
+		currentCall'(?c) = Uniform( MapLowerBound(?c), MapUpperBound(?c) );
+		
+		lastVehicleService'(?c,?v) = if (exists_{?r:role}[ validAssignment(?v,?r) ^ DestinationHospital(?r)])
+									 then HospitalPosition(?c)
+									 else if (exists_{?r:role}[ validAssignment(?v,?r) ^ DestinationTransfer(?r)])
+									 then TransferPosition(?c)
+									 else if (exists_{?r:role}[ validAssignment(?v,?r)]) then currentCall(?c)
+									 else lastVehicleService(?c,?v);
+		
+		callMiles(?v) = FeetToMiles*(if (exists_{?r:role}[ validAssignment(?v,?r) ])
+						then [if (vehicleInBase(?v)) 
+						      then sum_{?loc:location}[  vehicleHome(?v,?loc)*sum_{?c : coordinate}[abs[currentCall(?c)-position(?c,?loc)] ] ] 
+							  else sum_{?c : coordinate}[  abs[ currentCall(?c)-lastVehicleService(?c,?v) ] ] ]
+						else 0.0);
+							  
+		hospitalMiles(?v) = FeetToMiles*(if (exists_{?r:role}[ validAssignment(?v,?r) ^ DestinationHospital(?r)])
+							then sum_{?c:coordinate}[ abs[ currentCall(?c)-HospitalPosition(?c) ] ]
+							else 0.0);
+							
+		transferMiles(?v) = FeetToMiles*(if (exists_{?r:role}[ validAssignment(?v,?r) ^ DestinationTransfer(?r)])
+							then sum_{?c:coordinate}[ abs[ currentCall(?c)-TransferPosition(?c)] ]
+							else 0.0);
+							
+		returnMiles(?v) = FeetToMiles*(if (exists_{?r:role}[ validAssignment(?v,?r) ^ DestinationHospital(?r) ])
+						  then sum_{?loc:location,?c:coordinate}[ abs[ vehicleHome(?v,?loc)*position(?c,?loc) - HospitalPosition(?c) ] ] 
+						  else if (exists_{?r:role}[ validAssignment(?v,?r) ^ DestinationTransfer(?r) ])
+						  then sum_{?loc:location,?c:coordinate}[ abs[ vehicleHome(?v,?loc)*position(?c,?loc) - TransferPosition(?c) ] ] 
+						  else if (exists_{?r:role}[ validAssignment(?v,?r) ])
+						  then sum_{?loc:location,?c:coordinate}[ abs[ vehicleHome(?v,?loc)*position(?c,?loc) - currentCall(?c) ] ]
+						  else 0.0);
+							
+		callTravelTime(?v) = if (callMiles(?v) <= 5)
+							  then callMiles(?v)/38.0
+							  else if (callMiles(?v) > 5 ^ callMiles(?v) <= 7)
+							  then callMiles(?v)/42.0
+							  else if (callMiles(?v) > 7 ^ callMiles(?v) <= 12)
+							  then callMiles(?v)/40.0
+							  else if (callMiles(?v) > 12 ^ callMiles(?v) <= 15)
+							  then callMiles(?v)/48.0
+							  else if (callMiles(?v) > 15 ^ callMiles(?v) <= 17.5)
+							  then callMiles(?v)/56.0
+							  else if (callMiles(?v) > 17.5 ^ callMiles(?v) <= 20)
+							  then callMiles(?v)/52.0
+							  else if (callMiles(?v) > 20 ^ callMiles(?v) <= 25)
+							  then callMiles(?v)/50.0
+							  else if (callMiles(?v) > 25 ^ callMiles(?v) <= 28.5)
+							  then callMiles(?v)/54.0
+							  else if (callMiles(?v) > 28.5 ^ callMiles(?v) <= 41)
+							  then callMiles(?v)/49.0
+							  else if (callMiles(?v) > 41 ^ callMiles(?v) <= 70)
+							  then callMiles(?v)/70.0
+							  else if (callMiles(?v) > 70 ^ callMiles(?v) <= 500)
+							  then callMiles(?v)/70.0
+							  else 0.0;
+							  
+		hospitalTravelTime(?v) = if (hospitalMiles(?v) <= 5)
+							  then hospitalMiles(?v)/38.0
+							  else if (hospitalMiles(?v) > 5 ^ hospitalMiles(?v) <= 7)
+							  then hospitalMiles(?v)/42.0
+							  else if (hospitalMiles(?v) > 7 ^ hospitalMiles(?v) <= 12)
+							  then hospitalMiles(?v)/40.0
+							  else if (hospitalMiles(?v) > 12 ^ hospitalMiles(?v) <= 15)
+							  then hospitalMiles(?v)/48.0
+							  else if (hospitalMiles(?v) > 15 ^ hospitalMiles(?v) <= 17.5)
+							  then hospitalMiles(?v)/56.0
+							  else if (hospitalMiles(?v) > 17.5 ^ hospitalMiles(?v) <= 20)
+							  then hospitalMiles(?v)/52.0
+							  else if (hospitalMiles(?v) > 20 ^ hospitalMiles(?v) <= 25)
+							  then hospitalMiles(?v)/50.0
+							  else if (hospitalMiles(?v) > 25 ^ hospitalMiles(?v) <= 28.5)
+							  then hospitalMiles(?v)/54.0
+							  else if (hospitalMiles(?v) > 28.5 ^ hospitalMiles(?v) <= 41)
+							  then hospitalMiles(?v)/49.0
+							  else if (hospitalMiles(?v) > 41 ^ hospitalMiles(?v) <= 70)
+							  then hospitalMiles(?v)/70.0
+							  else if (hospitalMiles(?v) > 70 ^ hospitalMiles(?v) <= 500)
+							  then hospitalMiles(?v)/70.0
+							  else 0.0;
+							  
+		returnTravelTime(?v) = if (returnMiles(?v) <= 5)
+							  then returnMiles(?v)/38.0
+							  else if (returnMiles(?v) > 5 ^ returnMiles(?v) <= 7)
+							  then returnMiles(?v)/42.0
+							  else if (returnMiles(?v) > 7 ^ returnMiles(?v) <= 12)
+							  then returnMiles(?v)/40.0
+							  else if (returnMiles(?v) > 12 ^ returnMiles(?v) <= 15)
+							  then returnMiles(?v)/48.0
+							  else if (returnMiles(?v) > 15 ^ returnMiles(?v) <= 17.5)
+							  then returnMiles(?v)/56.0
+							  else if (returnMiles(?v) > 17.5 ^ returnMiles(?v) <= 20)
+							  then returnMiles(?v)/52.0
+							  else if (returnMiles(?v) > 20 ^ returnMiles(?v) <= 25)
+							  then returnMiles(?v)/50.0
+							  else if (returnMiles(?v) > 25 ^ returnMiles(?v) <= 28.5)
+							  then returnMiles(?v)/54.0
+							  else if (returnMiles(?v) > 28.5 ^ returnMiles(?v) <= 41)
+							  then returnMiles(?v)/49.0
+							  else if (returnMiles(?v) > 41 ^ returnMiles(?v) <= 70)
+							  then returnMiles(?v)/70.0
+							  else if (returnMiles(?v) > 70 ^ returnMiles(?v) <= 500)
+							  then returnMiles(?v)/70.0
+							  else 0.0;
+							  
+		transferTravelTime(?v) = if (transferMiles(?v) <= 5)
+							  then transferMiles(?v)/38.0
+							  else if (transferMiles(?v) > 5 ^ transferMiles(?v) <= 7)
+							  then transferMiles(?v)/42.0
+							  else if (transferMiles(?v) > 7 ^ transferMiles(?v) <= 12)
+							  then transferMiles(?v)/40.0
+							  else if (transferMiles(?v) > 12 ^ transferMiles(?v) <= 15)
+							  then transferMiles(?v)/48.0
+							  else if (transferMiles(?v) > 15 ^ transferMiles(?v) <= 17.5)
+							  then transferMiles(?v)/56.0
+							  else if (transferMiles(?v) > 17.5 ^ transferMiles(?v) <= 20)
+							  then transferMiles(?v)/52.0
+							  else if (transferMiles(?v) > 20 ^ transferMiles(?v) <= 25)
+							  then transferMiles(?v)/50.0
+							  else if (transferMiles(?v) > 25 ^ transferMiles(?v) <= 28.5)
+							  then transferMiles(?v)/54.0
+							  else if (transferMiles(?v) > 28.5 ^ transferMiles(?v) <= 41)
+							  then transferMiles(?v)/49.0
+							  else if (transferMiles(?v) > 41 ^ transferMiles(?v) <= 70)
+							  then transferMiles(?v)/70.0
+							  else if (transferMiles(?v) > 70 ^ transferMiles(?v) <= 500)
+							  then transferMiles(?v)/70.0
+							  else 0.0;								
+	
+		timeServiceDone'(?v) = if (exists_{?r:role}[ validAssignment(?v,?r) ]) 
+							   then (currentTime + callTravelTime(?v) + 
+								     sum_{?r : role}[ validAssignment(?v,?r) * RoleServiceTime(?r) ] + 
+									 transferTravelTime(?r) + hospitalTravelTime(?v))
+							   else timeServiceDone(?v);
+						
+		timeTarryDone'(?v) = if (exists_{?r:role}[ validAssignment(?v,?r) ]) 
+							 then (currentTime + callTravelTime(?v) + 
+								     sum_{?r : role}[ validAssignment(?v,?r) * RoleServiceTime(?r) ] + 
+									 transferTravelTime(?r) + hospitalTravelTime(?v) + TarryTime(?r)) 
+							 else timeTarryDone(?v);
+						
+		timeBackInBase'(?v) = if (exists_{?r:role}[ validAssignment(?v,?r) ]) 
+							  then (currentTime + callTravelTime(?v) + 
+								     sum_{?r : role}[ validAssignment(?v,?r) * RoleServiceTime(?r) ] + 
+									 transferTravelTime(?r) + hospitalTravelTime(?v) 
+									 + TarryTime(?r) + returnTravelTime(?v))
+							  else timeBackInBase(?v);
+		
+		vehicleInService(?v) = vehicleInBase(?v) | vehicleOnSite(?v);
+		
+		vehicleInBase(?v) = (currentTime >= timeBackInBase(?v));
+		
+		vehicleOnSite(?v) = [(currentTime >= timeServiceDone(?v)) ^ (currentTime < timeTarryDone(?v))];
+		
+		personHome'(?p,?loc) = relocatePerson(?p,?loc) | [ personHome(?p,?loc) ^ 
+							   ~exists_{?l2:location}[ (?l2 ~= ?loc) ^ relocatePerson(?p,?loc2) ] ];
+		
+		vehicleHome'(?v,?loc) = relocateVehicle(?v,?loc) | [vehicleHome(?v,?loc) ^ ~exists_{?l2:location}[ (?l2 ~= ?loc) ^ relocateVehicle(?v,?loc2) ] ];
+		
+		personInService(?per) = forall_{?v:vehicle}[ ~personInVehicle(?per,?v) | vehicleInService(?v) ];
+		
+		personInVehicle'(?p,?v) = if (exists_{?r:role}[validAssignment(?v,?r)])
+								  then (nextTime < (currentTime + callTravelTime(?v) + 
+								     sum_{?r : role}[ validAssignment(?v,?r) * RoleServiceTime(?r) ] + 
+									 transferTravelTime(?r) + hospitalTravelTime(?v) 
+									 + TarryTime(?r) + returnTravelTime(?v)) )
+								  else [if (nextTime >= timeBackInBase(?v))
+								  then false
+								  else personInVehicle(?p,?v)];
+		
+		validPersonnel(?v,?r) = vehicleInService(?v) ^ forall_{?q:qualification}[  
+									(sum_{?p:person}[ [ personHasQualification(?p,?q) ^ personInService(?p) ^ 
+											(personInVehicle(?p,?v) | 
+											(exists_{?loc:location}[ personHome(?p,?loc) ^ vehicleInBase(?v) 
+																	 ^ vehicleHome(?v,?loc) ] ) ) ] 
+											* assignPerson(?p,?v,?q) ]) == RoleRequirement(?r,?q) ];
+								
+		validAssignment(?v,?r) = vehicleHasCapability(?v,?r) ^ assignRole(?v,?r) 
+								 ^ vehicleInService(?v) ^ validPersonnel(?v,?r) ;
+								 //^ exists_{?c:cause,?re:region}[ (causeRequirement(?c,?re,?r) > 0)
+								 //^ currentCallCause(?c) ^ currentCallRegion(?re) ];
+		
+		firstResponse = min_{?v:vehicle,?r:role}[ 
+							if (validAssignment(?v,?r))
+							then callTravelTime(?v)
+							else 15.0/60 ];
+										  
+		fullResponseSatisfied = exists_{?c:cause,?r:region}[ currentCallCause(?c) ^ currentCallRegion(?r) ^ 
+										(forall_{?ro:role}[ causeRequirement(?c,?r,?ro) 
+											== (sum_{?v:vehicle}[ validAssignment(?v,?ro) ]) ]) ];
+											
+		fullResponse = if (fullResponseSatisfied) 
+					   then max_{?v:vehicle,?r:role}[ validAssignment(?v,?r)*callTravelTime(?v) ]
+					   else 15.0/60;
+										  
+	};
+	
+	reward = - W1*firstResponse - (1-W1)*fullResponse ;
+			
+	state-invariants{
+		currentTime >= 0;
+		//(sum_{?n:nature}[ currentCallCode(?n) ]) == 1;
+		forall_{?c : coordinate}[ (currentCall(?c) >= MapLowerBound(?c)) ^ (currentCall(?c) <= MapUpperBound(?c)) ];
+		
+		//forall_{?v:vehicle,?c:coordinate}[ ( lastVehicleService(?v,?c) >= MapLowerBound(?c) ) ^ 
+		//	( lastVehicleService(?v,?c) <= MapUpperBound(?c) ) ];
+		
+		forall_{?v:vehicle}[ timeBackInBase(?v) >= 0.0 ];
+		forall_{?v:vehicle}[ timeServiceDone(?v) >= 0.0 ];
+		forall_{?v:vehicle}[ timeTarryDone(?v) >= 0.0 ];
+		
+		forall_{?v:vehicle}[ callMiles(?v) >= 0.0 ];
+		forall_{?v:vehicle}[ hospitalMiles(?v) >= 0.0 ];
+		forall_{?v:vehicle}[ transferMiles(?v) >= 0.0 ];
+		forall_{?v:vehicle}[ returnMiles(?v) >= 0.0 ];
+		
+		forall_{?v:vehicle}[ callMiles(?v) <= sum_{?c:coordinate}[ MapUpperBound(?c)-MapLowerBound(?c) ] ];
+		forall_{?v:vehicle}[ transferMiles(?v) <= sum_{?c:coordinate}[ MapUpperBound(?c)-MapLowerBound(?c) ] ];
+		forall_{?v:vehicle}[ returnMiles(?v) <= sum_{?c:coordinate}[ MapUpperBound(?c)-MapLowerBound(?c) ] ];
+		forall_{?v:vehicle}[ hospitalMiles(?v) <= sum_{?c:coordinate}[ MapUpperBound(?c)-MapLowerBound(?c) ] ];
+		
+		forall_{?v:vehicle}[ (sum_{?loc:location}[ vehicleHome(?v,?loc) ]) == 1 ];
+		forall_{?p:person}[ (sum_{?loc:location}[ personHome(?p,?loc) ]) == 1 ];
+		
+		forall_{?v:vehicle}[ (sum_{?r:role}[validAssignment(?v,?r)]) <= 1 ];
+		forall_{?v:vehicle}[ (sum_{?r:role}[validPersonnel(?v,?r)]) <= 1 ];
+		
+		(sum_{?c:cause}[ currentCallCause(?c) ]) == 1;
+		(sum_{?r:region}[ currentCallRegion(?r) ]) == 1;
+	};
+			
+	action-preconditions{
+		forall_{?v:vehicle}[ (sum_{?r:role}[assignRole(?v,?r)])<=1 ];
+		
+		forall_{?p:person}[ (sum_{?v:vehicle,?q:qualification}[assignPerson(?p,?v,?q)]) <=1 ];
+		
+		forall_{?v:vehicle,?r:role}[ ~assignRole(?v,?r) | 
+			(exists_{?c:cause,?re:region}[ (causeRequirement(?c,?re,?r) > 0)
+				^ currentCallCause(?c) ^ currentCallRegion(?re) ]) ];
+		
+		forall_{?v:vehicle}[ (sum_{?loc:location}[ relocateVehicle(?v,?loc) ]) <= 1 ];
+		forall_{?p:person}[ (sum_{?loc:location}[ relocatePerson(?p,?loc) ]) <= 1 ];
+		//forall_{?p:person,?loc:location}[ ~relocatePerson(?p,?loc) | isStation(?loc) ];
+		//forall_{?v:vehicle,?loc:location}[ ~relocateVehicle(?v,?loc) | isStation(?loc) ];
+	};	
+
+}

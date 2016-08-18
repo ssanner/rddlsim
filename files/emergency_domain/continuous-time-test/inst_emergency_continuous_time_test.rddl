@@ -1,0 +1,34 @@
+non-fluents nf_emergency_continuous_time_test {
+	domain = emergency_continuous_time_test;
+	objects {
+		coordinate : {xpos,ypos};
+	};
+	
+	non-fluents {
+		MapUpperBound(xpos)=150000;//MapUpperBound(xpos)=7507706;
+		MapUpperBound(ypos)=150000;//MapUpperBound(ypos)=371508;
+		MapLowerBound(xpos)=0;//MapLowerBound(xpos)=7450491;
+		MapLowerBound(ypos)=0;//MapLowerBound(ypos)=311067;
+		
+		vehicleHome(xpos)=20000; vehicleHome(ypos)=30000;	
+	
+	};
+}
+
+instance inst_emergency_continuous_time_test {
+	domain = emergency_continuous_time_test;
+	non-fluents = nf_emergency_continuous_time_test;
+	
+	init-state {
+		
+		currentCall(xpos)=30000;
+		currentCall(ypos)=30000;
+		lastVehicleService(xpos)=20000;
+		lastVehicleService(ypos)=30000;
+	
+	};
+	
+	//max-nondef-actions = 10;
+	horizon  = 40;
+	discount = 1.0;
+}

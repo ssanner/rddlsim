@@ -1,0 +1,418 @@
+non-fluents nf_emergency_continuous_time_multiple_vehicles_test {
+	domain = emergency_continuous_time_multiple_vehicles_test;
+	objects {
+		coordinate : {xpos,ypos};
+		vehicle : {v1,v2,v3,v4,v5,v6,v7,v8};
+		cause : {AFA,All,Code1Medical,Code3Med,Code3Trauma,EMS,Fire,Hazmat,MassCasualty,
+				 MVA,NuisanceFire,Other,OtherEMS,OtherFire,
+				 Overpressure,Rescue,StructureFire,Transport,VehicleFire,WildlandFire};
+		role : {Engine, Ambulance, Ladder, Command};
+		region : {Full,GoodSam-T,Stonybrook,Westhills,EMS-City,EMS-County,Fire-City,Fire-Rural};
+	};
+	
+	non-fluents {
+		MapUpperBound(xpos)=1500;
+		MapUpperBound(ypos)=80;
+		MapLowerBound(xpos)=1300;
+		MapLowerBound(ypos)=30;
+		
+		vehicleHome(v1,xpos)=1418.0; vehicleHome(v1,ypos)=65.0;	
+		vehicleHome(v2,xpos)=1415.0; vehicleHome(v2,ypos)=64.0;	
+		vehicleHome(v3,xpos)=1416.0; vehicleHome(v3,ypos)=66.0;	
+		vehicleHome(v4,xpos)=1417.0; vehicleHome(v4,ypos)=63.0;	
+		vehicleHome(v5,xpos)=1415.0; vehicleHome(v5,ypos)=66.0;	
+		vehicleHome(v6,xpos)=1418.0; vehicleHome(v6,ypos)=69.0;	
+		vehicleHome(v7,xpos)=1418.0; vehicleHome(v7,ypos)=65.0;	
+		vehicleHome(v8,xpos)=1415.0; vehicleHome(v8,ypos)=64.0;	
+	
+		BEFORE(AFA,All)=true;
+		BEFORE(AFA,Code1Medical)=true;
+		BEFORE(AFA,Code3Med)=true;
+		BEFORE(AFA,Code3Trauma)=true;
+		BEFORE(AFA,EMS)=true;
+		BEFORE(AFA,Fire)=true;
+		BEFORE(AFA,Hazmat)=true;
+		BEFORE(AFA,MassCasualty)=true;
+		BEFORE(AFA,MVA)=true;
+		BEFORE(AFA,NuisanceFire)=true;
+		BEFORE(AFA,Other)=true;
+		BEFORE(AFA,OtherEMS)=true;
+		BEFORE(AFA,OtherFire)=true;
+		BEFORE(AFA,Overpressure)=true;
+		BEFORE(AFA,Rescue)=true;
+		BEFORE(AFA,StructureFire)=true;
+		BEFORE(AFA,Transport)=true;
+		BEFORE(AFA,VehicleFire)=true;
+		BEFORE(AFA,WildlandFire)=true;
+		
+		BEFORE(All,Code1Medical)=true;
+		BEFORE(All,Code3Med)=true;
+		BEFORE(All,Code3Trauma)=true;
+		BEFORE(All,EMS)=true;
+		BEFORE(All,Fire)=true;
+		BEFORE(All,Hazmat)=true;
+		BEFORE(All,MassCasualty)=true;
+		BEFORE(All,MVA)=true;
+		BEFORE(All,NuisanceFire)=true;
+		BEFORE(All,Other)=true;
+		BEFORE(All,OtherEMS)=true;
+		BEFORE(All,OtherFire)=true;
+		BEFORE(All,Overpressure)=true;
+		BEFORE(All,Rescue)=true;
+		BEFORE(All,StructureFire)=true;
+		BEFORE(All,Transport)=true;
+		BEFORE(All,VehicleFire)=true;
+		BEFORE(All,WildlandFire)=true;
+		
+		BEFORE(Code1Medical,Code3Med)=true;
+		BEFORE(Code1Medical,Code3Trauma)=true;
+		BEFORE(Code1Medical,EMS)=true;
+		BEFORE(Code1Medical,Fire)=true;
+		BEFORE(Code1Medical,Hazmat)=true;
+		BEFORE(Code1Medical,MassCasualty)=true;
+		BEFORE(Code1Medical,MVA)=true;
+		BEFORE(Code1Medical,NuisanceFire)=true;
+		BEFORE(Code1Medical,Other)=true;
+		BEFORE(Code1Medical,OtherEMS)=true;
+		BEFORE(Code1Medical,OtherFire)=true;
+		BEFORE(Code1Medical,Overpressure)=true;
+		BEFORE(Code1Medical,Rescue)=true;
+		BEFORE(Code1Medical,StructureFire)=true;
+		BEFORE(Code1Medical,Transport)=true;
+		BEFORE(Code1Medical,VehicleFire)=true;
+		BEFORE(Code1Medical,WildlandFire)=true;
+		
+		BEFORE(Code3Med,Code3Trauma)=true;
+		BEFORE(Code3Med,EMS)=true;
+		BEFORE(Code3Med,Fire)=true;
+		BEFORE(Code3Med,Hazmat)=true;
+		BEFORE(Code3Med,MassCasualty)=true;
+		BEFORE(Code3Med,MVA)=true;
+		BEFORE(Code3Med,NuisanceFire)=true;
+		BEFORE(Code3Med,Other)=true;
+		BEFORE(Code3Med,OtherEMS)=true;
+		BEFORE(Code3Med,OtherFire)=true;
+		BEFORE(Code3Med,Overpressure)=true;
+		BEFORE(Code3Med,Rescue)=true;
+		BEFORE(Code3Med,StructureFire)=true;
+		BEFORE(Code3Med,Transport)=true;
+		BEFORE(Code3Med,VehicleFire)=true;
+		BEFORE(Code3Med,WildlandFire)=true;
+		
+		BEFORE(Code3Trauma,EMS)=true;
+		BEFORE(Code3Trauma,Fire)=true;
+		BEFORE(Code3Trauma,Hazmat)=true;
+		BEFORE(Code3Trauma,MassCasualty)=true;
+		BEFORE(Code3Trauma,MVA)=true;
+		BEFORE(Code3Trauma,NuisanceFire)=true;
+		BEFORE(Code3Trauma,Other)=true;
+		BEFORE(Code3Trauma,OtherEMS)=true;
+		BEFORE(Code3Trauma,OtherFire)=true;
+		BEFORE(Code3Trauma,Overpressure)=true;
+		BEFORE(Code3Trauma,Rescue)=true;
+		BEFORE(Code3Trauma,StructureFire)=true;
+		BEFORE(Code3Trauma,Transport)=true;
+		BEFORE(Code3Trauma,VehicleFire)=true;
+		BEFORE(Code3Trauma,WildlandFire)=true;
+		
+		BEFORE(EMS,Fire)=true;
+		BEFORE(EMS,Hazmat)=true;
+		BEFORE(EMS,MassCasualty)=true;
+		BEFORE(EMS,MVA)=true;
+		BEFORE(EMS,NuisanceFire)=true;
+		BEFORE(EMS,Other)=true;
+		BEFORE(EMS,OtherEMS)=true;
+		BEFORE(EMS,OtherFire)=true;
+		BEFORE(EMS,Overpressure)=true;
+		BEFORE(EMS,Rescue)=true;
+		BEFORE(EMS,StructureFire)=true;
+		BEFORE(EMS,Transport)=true;
+		BEFORE(EMS,VehicleFire)=true;
+		BEFORE(EMS,WildlandFire)=true;
+		
+		BEFORE(Fire,Hazmat)=true;
+		BEFORE(Fire,MassCasualty)=true;
+		BEFORE(Fire,MVA)=true;
+		BEFORE(Fire,NuisanceFire)=true;
+		BEFORE(Fire,Other)=true;
+		BEFORE(Fire,OtherEMS)=true;
+		BEFORE(Fire,OtherFire)=true;
+		BEFORE(Fire,Overpressure)=true;
+		BEFORE(Fire,Rescue)=true;
+		BEFORE(Fire,StructureFire)=true;
+		BEFORE(Fire,Transport)=true;
+		BEFORE(Fire,VehicleFire)=true;
+		BEFORE(Fire,WildlandFire)=true;
+		
+		BEFORE(Hazmat,MassCasualty)=true;
+		BEFORE(Hazmat,MVA)=true;
+		BEFORE(Hazmat,NuisanceFire)=true;
+		BEFORE(Hazmat,Other)=true;
+		BEFORE(Hazmat,OtherEMS)=true;
+		BEFORE(Hazmat,OtherFire)=true;
+		BEFORE(Hazmat,Overpressure)=true;
+		BEFORE(Hazmat,Rescue)=true;
+		BEFORE(Hazmat,StructureFire)=true;
+		BEFORE(Hazmat,Transport)=true;
+		BEFORE(Hazmat,VehicleFire)=true;
+		BEFORE(Hazmat,WildlandFire)=true;
+		
+		BEFORE(MassCasualty,MVA)=true;
+		BEFORE(MassCasualty,NuisanceFire)=true;
+		BEFORE(MassCasualty,Other)=true;
+		BEFORE(MassCasualty,OtherEMS)=true;
+		BEFORE(MassCasualty,OtherFire)=true;
+		BEFORE(MassCasualty,Overpressure)=true;
+		BEFORE(MassCasualty,Rescue)=true;
+		BEFORE(MassCasualty,StructureFire)=true;
+		BEFORE(MassCasualty,Transport)=true;
+		BEFORE(MassCasualty,VehicleFire)=true;
+		BEFORE(MassCasualty,WildlandFire)=true;
+		
+		BEFORE(MVA,NuisanceFire)=true;
+		BEFORE(MVA,Other)=true;
+		BEFORE(MVA,OtherEMS)=true;
+		BEFORE(MVA,OtherFire)=true;
+		BEFORE(MVA,Overpressure)=true;
+		BEFORE(MVA,Rescue)=true;
+		BEFORE(MVA,StructureFire)=true;
+		BEFORE(MVA,Transport)=true;
+		BEFORE(MVA,VehicleFire)=true;
+		BEFORE(MVA,WildlandFire)=true;
+		
+		BEFORE(NuisanceFire,Other)=true;
+		BEFORE(NuisanceFire,OtherEMS)=true;
+		BEFORE(NuisanceFire,OtherFire)=true;
+		BEFORE(NuisanceFire,Overpressure)=true;
+		BEFORE(NuisanceFire,Rescue)=true;
+		BEFORE(NuisanceFire,StructureFire)=true;
+		BEFORE(NuisanceFire,Transport)=true;
+		BEFORE(NuisanceFire,VehicleFire)=true;
+		BEFORE(NuisanceFire,WildlandFire)=true;
+		
+		BEFORE(Other,OtherEMS)=true;
+		BEFORE(Other,OtherFire)=true;
+		BEFORE(Other,Overpressure)=true;
+		BEFORE(Other,Rescue)=true;
+		BEFORE(Other,StructureFire)=true;
+		BEFORE(Other,Transport)=true;
+		BEFORE(Other,VehicleFire)=true;
+		BEFORE(Other,WildlandFire)=true;
+		
+		BEFORE(OtherEMS,OtherFire)=true;
+		BEFORE(OtherEMS,Overpressure)=true;
+		BEFORE(OtherEMS,Rescue)=true;
+		BEFORE(OtherEMS,StructureFire)=true;
+		BEFORE(OtherEMS,Transport)=true;
+		BEFORE(OtherEMS,VehicleFire)=true;
+		BEFORE(OtherEMS,WildlandFire)=true;
+		
+		BEFORE(OtherFire,Overpressure)=true;
+		BEFORE(OtherFire,Rescue)=true;
+		BEFORE(OtherFire,StructureFire)=true;
+		BEFORE(OtherFire,Transport)=true;
+		BEFORE(OtherFire,VehicleFire)=true;
+		BEFORE(OtherFire,WildlandFire)=true;
+		
+		BEFORE(Overpressure,Rescue)=true;
+		BEFORE(Overpressure,StructureFire)=true;
+		BEFORE(Overpressure,Transport)=true;
+		BEFORE(Overpressure,VehicleFire)=true;
+		BEFORE(Overpressure,WildlandFire)=true;
+		
+		BEFORE(Rescue,StructureFire)=true;
+		BEFORE(Rescue,Transport)=true;
+		BEFORE(Rescue,VehicleFire)=true;
+		BEFORE(Rescue,WildlandFire)=true;
+		
+		BEFORE(StructureFire,Transport)=true;
+		BEFORE(StructureFire,VehicleFire)=true;
+		BEFORE(StructureFire,WildlandFire)=true;
+		
+		BEFORE(Transport,VehicleFire)=true;
+		BEFORE(Transport,WildlandFire)=true;
+		BEFORE(VehicleFire,WildlandFire)=true;
+		
+		HasCapability(v1,Command)=true;
+		HasCapability(v2,Engine)=true;
+		HasCapability(v2,Ladder)=true;
+		HasCapability(v3,Engine)=true;
+		HasCapability(v4,Engine)=true;
+		HasCapability(v4,Ladder)=true;
+		HasCapability(v5,Ambulance)=true;
+		HasCapability(v6,Engine)=true;
+		HasCapability(v6,Ambulance)=true;
+		HasCapability(v7,Engine)=true;
+		HasCapability(v7,Ambulance)=true;
+		HasCapability(v8,Engine)=true;
+		
+		BEFORE_REGION(Full,GoodSam-T)=true;
+		BEFORE_REGION(Full,Stonybrook)=true;
+		BEFORE_REGION(Full,Westhills)=true;
+		BEFORE_REGION(Full,EMS-City)=true;
+		BEFORE_REGION(Full,EMS-County)=true;
+		BEFORE_REGION(Full,Fire-City)=true;
+		BEFORE_REGION(Full,Fire-Rural)=true;
+		
+		BEFORE_REGION(GoodSam-T,Stonybrook)=true;
+		BEFORE_REGION(GoodSam-T,Westhills)=true;
+		BEFORE_REGION(GoodSam-T,EMS-City)=true;
+		BEFORE_REGION(GoodSam-T,EMS-County)=true;
+		BEFORE_REGION(GoodSam-T,Fire-City)=true;
+		BEFORE_REGION(GoodSam-T,Fire-Rural)=true;
+		
+		BEFORE_REGION(Stonybrook,Westhills)=true;
+		BEFORE_REGION(Stonybrook,EMS-City)=true;
+		BEFORE_REGION(Stonybrook,EMS-County)=true;
+		BEFORE_REGION(Stonybrook,Fire-City)=true;
+		BEFORE_REGION(Stonybrook,Fire-Rural)=true;
+		
+		BEFORE_REGION(Westhills,EMS-City)=true;
+		BEFORE_REGION(Westhills,EMS-County)=true;
+		BEFORE_REGION(Westhills,Fire-City)=true;
+		BEFORE_REGION(Westhills,Fire-Rural)=true;
+		
+		BEFORE_REGION(EMS-City,EMS-County)=true;
+		BEFORE_REGION(EMS-City,Fire-City)=true;
+		BEFORE_REGION(EMS-City,Fire-Rural)=true;
+		
+		BEFORE_REGION(EMS-County,Fire-City)=true;
+		BEFORE_REGION(EMS-County,Fire-Rural)=true;
+		
+		BEFORE_REGION(Fire-City,Fire-Rural)=true;
+		
+		causeRequirement(AFA,Fire-City,Ladder)=2;
+		causeRequirement(AFA,Fire-City,Engine)=2;
+		causeRequirement(AFA,Fire-City,Command)=1;
+		causeRequirement(AFA,Full,Engine)=1;
+		causeRequirement(AFA,Fire-Rural,Command)=1;
+		causeRequirement(AFA,Fire-Rural,Engine)=3;
+		
+		causeRequirement(All,Full,Ambulance)=1;
+		
+		causeRequirement(Code1Medical,Full,Ambulance)=1;
+		causeRequirement(Code1Medical,EMS-City,Ambulance)=1;
+		causeRequirement(Code1Medical,EMS-County,Ambulance)=1;
+		
+		causeRequirement(Code3Med,EMS-City,Engine)=1;
+		causeRequirement(Code3Med,EMS-City,Ambulance)=1;
+		causeRequirement(Code3Med,EMS-County,Ambulance)=1;
+		causeRequirement(Code3Med,Stonybrook,Engine)=1;
+		causeRequirement(Code3Med,Stonybrook,Ambulance)=1;
+		causeRequirement(Code3Med,Westhills,Engine)=1;
+		causeRequirement(Code3Med,Westhills,Ambulance)=1;
+		
+		causeRequirement(Code3Trauma,EMS-City,Engine)=1;
+		causeRequirement(Code3Trauma,EMS-City,Ambulance)=1;
+		causeRequirement(Code3Trauma,EMS-County,Ambulance)=1;
+		causeRequirement(Code3Trauma,Full,Ambulance)=1;
+		
+		causeRequirement(EMS,Full,Ambulance)=1;
+		
+		causeRequirement(Fire,Full,Engine)=1;
+		
+		causeRequirement(Hazmat,Full,Engine)=1;
+		
+		causeRequirement(MassCasualty,EMS-City,Ambulance)=1;
+		causeRequirement(MassCasualty,EMS-City,Engine)=1;
+		causeRequirement(MassCasualty,EMS-County,Ambulance)=1;
+		causeRequirement(MassCasualty,Full,Ambulance)=1;
+		
+		causeRequirement(MVA,EMS-City,Engine)=1;
+		causeRequirement(MVA,EMS-City,Ambulance)=1;
+		causeRequirement(MVA,EMS-County,Ambulance)=1;
+		causeRequirement(MVA,Full,Ambulance)=1;
+		
+		causeRequirement(NuisanceFire,Full,Engine)=1;
+		
+		causeRequirement(Transport,GoodSam-T,Ambulance)=3;
+		causeRequirement(Transport,EMS-City,Ambulance)=2;
+		causeRequirement(Transport,EMS-County,Ambulance)=1;
+		
+		causeRequirement(Other,Full,Engine)=1;
+		
+		causeRequirement(OtherEMS,Full,Ambulance)=1;
+	
+		causeRequirement(OtherFire,Full,Engine)=1;
+		causeRequirement(OtherFire,Fire-City,Engine)=1;
+		causeRequirement(OtherFire,Fire-Rural,Engine)=1;
+		
+		causeRequirement(Overpressure,Fire-City,Ladder)=2;
+		causeRequirement(Overpressure,Fire-City,Engine)=2;
+		causeRequirement(Overpressure,Fire-City,Command)=1;
+		causeRequirement(Overpressure,Full,Engine)=1;
+		causeRequirement(Overpressure,Fire-Rural,Engine)=3;
+		causeRequirement(Overpressure,Fire-Rural,Command)=1;
+
+		causeRequirement(Rescue,EMS-City,Engine)=1;
+		causeRequirement(Rescue,EMS-City,Ambulance)=1;	
+		causeRequirement(Rescue,EMS-County,Ambulance)=1;
+		causeRequirement(Rescue,Full,Ambulance)=1;
+	
+		causeRequirement(StructureFire,Fire-City,Ladder)=2;
+		causeRequirement(StructureFire,Fire-City,Command)=1;
+		causeRequirement(StructureFire,Fire-City,Engine)=2;
+		causeRequirement(StructureFire,Full,Engine)=1;
+		causeRequirement(StructureFire,Fire-Rural,Engine)=3;
+		causeRequirement(StructureFire,Fire-Rural,Command)=1;
+		
+		causeRequirement(VehicleFire,Full,Engine)=1;
+		causeRequirement(VehicleFire,Fire-City,Engine)=1;
+		causeRequirement(VehicleFire,Fire-Rural,Engine)=1;
+		
+		causeRequirement(WildlandFire,Full,Engine)=4;
+		causeRequirement(WildlandFire,Full,Command)=1;
+		
+		RoleServiceTime(Engine)=0.917;
+		RoleServiceTime(Command)=0.75;
+		RoleServiceTime(Ladder)=0.583;
+		RoleServiceTime(Ambulance)=0.75;
+		
+		HospitalPosition(xpos)=1417.63; HospitalPosition(ypos)=66.97;
+		DestinationHospital(All)=true;
+		DestinationHospital(Code1Medical)=true;
+		DestinationHospital(Code3Med)=true;
+		DestinationHospital(Code3Trauma)=true;
+		DestinationHospital(EMS)=true;
+		DestinationHospital(MassCasualty)=true;
+		DestinationHospital(OtherEMS)=true;
+		DestinationHospital(Rescue)=true;		
+
+		TarryTime(Command)=0.25;
+		TarryTime(Engine)=0.5;
+		
+		TransferPosition(xpos)=1489.20; TransferPosition(ypos)=66.97;
+		DestinationTransfer(Transport)=true;
+		
+	};
+}
+
+instance inst_emergency_continuous_time_multiple_vehicles_test {
+	domain = emergency_continuous_time_multiple_vehicles_test;
+	non-fluents = nf_emergency_continuous_time_multiple_vehicles_test;
+	
+	init-state {
+		
+		currentCall(xpos)=1420;
+		currentCall(ypos)=64;
+		currentCallTime=0.0;
+		
+		
+		lastVehicleService(v1,xpos)=1418.0; lastVehicleService(v1,ypos)=65.0;
+		lastVehicleService(v2,xpos)=1415.0; lastVehicleService(v2,ypos)=64.0;
+		lastVehicleService(v3,xpos)=1416.0; lastVehicleService(v3,ypos)=66.0;
+		lastVehicleService(v4,xpos)=1417.0; lastVehicleService(v4,ypos)=63.0;
+		lastVehicleService(v5,xpos)=1415.0; lastVehicleService(v5,ypos)=66.0;
+		lastVehicleService(v6,xpos)=1418.0; lastVehicleService(v6,ypos)=69.0;
+		lastVehicleService(v7,xpos)=1418.0; lastVehicleService(v7,ypos)=65.0;
+		lastVehicleService(v8,xpos)=1415.0; lastVehicleService(v8,ypos)=64.0;
+		
+		currentCallCode(AFA)=true;
+		currentCallRegion(Fire-City)=true;
+		
+	};
+	
+	//max-nondef-actions = 10;
+	horizon  = 40;
+	discount = 1.0;
+}
