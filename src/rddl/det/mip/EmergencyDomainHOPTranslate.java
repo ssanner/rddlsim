@@ -113,10 +113,10 @@ public class EmergencyDomainHOPTranslate extends HOPTranslate {
 							Entry<PVAR_NAME, ArrayList<ArrayList<LCONST>>> entry ) {
 
 						final String pvarName = entry.getKey()._sPVarName;
-						if( pvarName.equals(EmergencyDomainDataReelElement.currentCallPvarName) ||
-							pvarName.equals(EmergencyDomainDataReelElement.currentCallTimePvarName) || 
-							pvarName.equals(EmergencyDomainDataReelElement.tempUniformRegionPvarName) ||  
-							pvarName.equals(EmergencyDomainDataReelElement.tempUniformCausePvarName) ){
+						if( pvarName.equals(EmergencyDomainDataReelElement.currentCallPvarName._sPVarName) ||
+							pvarName.equals(EmergencyDomainDataReelElement.currentCallTimePvarName._sPVarName) || 
+							pvarName.equals(EmergencyDomainDataReelElement.tempUniformRegionPvarName._sPVarName) ||  
+							pvarName.equals(EmergencyDomainDataReelElement.tempUniformCausePvarName._sPVarName) ){
 							return;
 						}
 							

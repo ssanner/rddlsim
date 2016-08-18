@@ -162,6 +162,9 @@ public class EmergencyDomainDataReel {
 					}else{
 						newCallDate = LocalDate.ofYearDay( current.callDate.getYear(), current.callDate.getDayOfYear()); 
 					}
+					
+					//randomize call x and y in the same region ? 
+					
 					ret[f].add( new EmergencyDomainDataReelElement( thatElem.callId, thatElem.natureCode, 
 							newCallDate, thatElem.callTime, thatElem.callAddress, thatElem.callX, thatElem.callY, false ) ); 
 				}
