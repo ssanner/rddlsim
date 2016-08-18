@@ -110,7 +110,7 @@ public class EmergencyDomainDispatchClosest extends EmergencyDomainHOPTranslate 
 				Arrays.asList( args ).subList(0, args.length-2) );
 		System.out.println( planner.evaluatePlanner(
 				Integer.parseInt( args[args.length-2] ), 
-				new EmergencyDomainStateViz(1300,30,1500,80), 
+				null, //new EmergencyDomainStateViz(1300,30,1500,80), 
 				Boolean.parseBoolean( args[ args.length-1 ] ) ) );
 	}
 	

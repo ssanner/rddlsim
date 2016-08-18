@@ -131,10 +131,10 @@ domain racetrack_mdp {
 												^ [ ((x + v-x < OUTER-MAX-X) ^ (x + v-x > INNER-MAX-X)) | ((x + v-x > OUTER-MIN-X) ^ (x + v-x < INNER-MIN-X)) ] ]
 											else false;
 											
-				collided-with-outer-min-x = (x < OUTER-MIN-X) | (x + v-x < OUTER-MIN-X);
-				collided-with-outer-min-y = (y < OUTER-MIN-Y) | (y + v-y < OUTER-MIN-Y);
-				collided-with-outer-max-x = (x > OUTER-MAX-X) | (x + v-x > OUTER-MAX-X);
-				collided-with-outer-max-y = (y > OUTER-MAX-Y) | (y + v-y > OUTER-MAX-Y);
+				collided-with-outer-min-x = (x <= OUTER-MIN-X) | (x + v-x <= OUTER-MIN-X);
+				collided-with-outer-min-y = (y <= OUTER-MIN-Y) | (y + v-y <= OUTER-MIN-Y);
+				collided-with-outer-max-x = (x >= OUTER-MAX-X) | (x + v-x >= OUTER-MAX-X);
+				collided-with-outer-max-y = (y >= OUTER-MAX-Y) | (y + v-y >= OUTER-MAX-Y);
 				
  			};
  		
