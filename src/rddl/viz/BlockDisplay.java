@@ -28,9 +28,9 @@ public class BlockDisplay extends JPanel implements ActionListener {
 			Color.orange, Color.yellow, Color.magenta, Color.blue, Color.green,
 			Color.black, Color.gray, Color.darkGray, Color.white, Color.red };
 
-	private static final int _nBlockSize = 15;
+	private static final int _nBlockSize = 7;
 	
-	public float FONT_SIZE = 16.0f;
+	public int FONT_SIZE = 12;
 	public int   LINE_THICKNESS = 2;
 
 	private String _title;
@@ -38,8 +38,8 @@ public class BlockDisplay extends JPanel implements ActionListener {
 	private int _nCols;
 	private Font _font;
 	private JFrame _frame;
-	private JLabel _status;
-	private String _msg;
+	protected JLabel _status;
+	protected String _msg;
 	private Cell[][] _grid;
 	private ArrayList _lines;
 	private ArrayList _circles;
@@ -53,7 +53,7 @@ public class BlockDisplay extends JPanel implements ActionListener {
 		_nRows = rows;
 		_nCols = cols;
 		_grid = new Cell[rows][];
-		_font = new Font("System", Font.BOLD, 16);
+		_font = new Font("System", Font.BOLD, FONT_SIZE);
 		_lines = new ArrayList();
 		_circles = new ArrayList();
 		_text    = new ArrayList();

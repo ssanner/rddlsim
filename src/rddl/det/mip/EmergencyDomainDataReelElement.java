@@ -29,12 +29,12 @@ import util.Polygon;
 import util.Polygon.Builder;
 
 public class EmergencyDomainDataReelElement extends DataReelElement {
-	private static final ArrayList<LCONST> emptySubstitution = new ArrayList<LCONST>();
+	public static final ArrayList<LCONST> emptySubstitution = new ArrayList<LCONST>();
 	private static final ArrayList<LCONST> xPosSubstitution = new ArrayList<LCONST>( Collections.singletonList( new OBJECT_VAL("xpos") ) );
 	private static final ArrayList<LCONST> yPosSubstitution = new ArrayList<LCONST>( Collections.singletonList( new OBJECT_VAL("ypos") ) );
 	
-	private static final PVAR_NAME currentCallTimePvarName = new PVAR_NAME("currentCallTime");
-	private static final PVAR_NAME currentCallPvarName = new PVAR_NAME("currentCall");
+	public static final PVAR_NAME currentCallTimePvarName = new PVAR_NAME("currentCallTime");
+	public static final PVAR_NAME currentCallPvarName = new PVAR_NAME("currentCall");
 	private static final PVAR_NAME currentCallCodePvarName = new PVAR_NAME("currentCallCode");
 	private static final PVAR_NAME currentCallRegionPvarName = new PVAR_NAME("currentCallRegion");
 	
@@ -48,7 +48,9 @@ public class EmergencyDomainDataReelElement extends DataReelElement {
 			new ArrayList<LVAR>( Collections.singletonList( new LVAR("?r") ) ) );
 	
 	private static final PVAR_EXPR tempUniformCausePvar = new PVAR_EXPR("tempUniformCause",emptySubstitution);
+	public static final PVAR_NAME tempUniformCausePvarName = new PVAR_NAME("tempUniformCause");
 	private static final PVAR_EXPR tempUniformRegionPvar = new PVAR_EXPR("tempUniformRegion", emptySubstitution);
+	public static final PVAR_NAME tempUniformRegionPvarName = new PVAR_NAME("tempUniformRegion");
 	
 	private static final double FeetToMiles = 0.000189;
 	private static final double GoodSamCenterX = 1417.63;
@@ -316,7 +318,7 @@ public class EmergencyDomainDataReelElement extends DataReelElement {
 //		return LocalDate.ofYearDay(dataYear, rddl_date);
 //	}
 
-	private static String getCurrentCauseCode(State s) throws EvalException {
+	protected static String getCurrentCauseCode(State s) throws EvalException {
 		ArrayList<ArrayList<LCONST>> subs = s.generateAtoms( currentCallCodePvarName );
 		ArrayList<LCONST> ret = null;
 		for( ArrayList<LCONST> assign : subs ){
@@ -485,7 +487,7 @@ public class EmergencyDomainDataReelElement extends DataReelElement {
 		return ret;
 	}
 
-	private static OBJECT_VAL getRegion(double callX, double callY, String natureCode) {
+	protected static OBJECT_VAL getRegion(double callX, double callY, String natureCode) {
 		//region : {Full,GoodSam-T,Stonybrook,Westhills,EMS-City,EMS-County,Fire-City,Fire-Rural};
 		//need centers of circular regions
 		if( (Math.pow( callX - GoodSamCenterX, 2) + Math.pow( callY - GoodSamCenterY, 2) <=  GoodSamRadius*GoodSamRadius)

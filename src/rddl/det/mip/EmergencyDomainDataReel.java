@@ -35,13 +35,14 @@ public class EmergencyDomainDataReel {
 	private int testingInstanceIdx;
 	
 	//alwayts uses training set
-	public ArrayList<Integer> getLeads(final EmergencyDomainDataReelElement someFrame){
+	public ArrayList<Integer> getLeads(final EmergencyDomainDataReelElement someFrame,
+			final int foldIdx){
 		assert( sequential );
 		ArrayList<Integer> ret = new ArrayList<>();
 		
-		for( int i = 1 ; i < frames[trainingFoldIdx].size(); ++i ){
-			final EmergencyDomainDataReelElement prevCall = frames[trainingFoldIdx].get(i-1);
-			final EmergencyDomainDataReelElement curCall = frames[trainingFoldIdx].get(i);
+		for( int i = 1 ; i < frames[foldIdx].size(); ++i ){
+			final EmergencyDomainDataReelElement prevCall = frames[foldIdx].get(i-1);
+			final EmergencyDomainDataReelElement curCall = frames[foldIdx].get(i);
 			assert( ! prevCall.callDate.isAfter( curCall.callDate ) );
 			if( prevCall.callDate.isBefore( curCall.callDate ) ){
 				if( ((prevCall.compareTo(someFrame) <= 0) && (curCall.compareTo(someFrame) < 0))
@@ -56,8 +57,8 @@ public class EmergencyDomainDataReel {
 	}
 	
 	public EmergencyDomainDataReelElement getNextTestingInstance( ){
-		assert( testingInstanceIdx < frames[testingFoldIdx].size() );
-		return frames[testingFoldIdx].get(testingInstanceIdx++);
+		assert( testingInstanceIdx < frames[getTestingFoldIdx()].size() );
+		return frames[getTestingFoldIdx()].get(testingInstanceIdx++);
 	}
 	
 	public EmergencyDomainDataReel(String file_name, String separator, 
@@ -69,7 +70,7 @@ public class EmergencyDomainDataReel {
 		this.sequential = sequential;
 		this.numFolds = numfolds;
 		this.trainingFoldIdx = trainingFoldIdx;
-		this.testingFoldIdx = testingFoldIdx;
+		this.setTestingFoldIdx(testingFoldIdx);
 		
 		all_frames = new ArrayList<EmergencyDomainDataReelElement>();
 
@@ -140,7 +141,7 @@ public class EmergencyDomainDataReel {
 	
 	public ArrayList<EmergencyDomainDataReelElement>[] getFutures(
 			final EmergencyDomainDataReelElement current, final RandomDataGenerator rand, 
-			final int numFutures, final int length){
+			final int numFutures, final int length, final int foldIdx){
 
 		ArrayList<EmergencyDomainDataReelElement>[] ret = new ArrayList[numFutures];
 		System.out.println("Imagining futures ... ");
@@ -150,7 +151,7 @@ public class EmergencyDomainDataReel {
 					ret[f] = new ArrayList<>( );
 					ret[f].add( current );
 				}else{
-					ArrayList<Integer> leads = getLeads(ret[f].get(t-1));	
+					ArrayList<Integer> leads = getLeads(ret[f].get(t-1), foldIdx);	
 					final int idx = rand.nextInt(0, leads.size()-1);
 					final EmergencyDomainDataReelElement thatElem = ( frames[trainingFoldIdx].get( leads.get( idx ) ) );
 					
@@ -179,7 +180,7 @@ public class EmergencyDomainDataReel {
 		EmergencyDomainDataReelElement current = reel.all_frames.get(17);
 		System.out.println( current );
 		
-		ArrayList<Integer> leads = reel.getLeads(current);
+		ArrayList<Integer> leads = reel.getLeads(current, 0);
 		System.out.println("Leads : " + leads);
 		for( final int l : leads ){
 			System.out.println( reel.frames[reel.trainingFoldIdx].get(l) );
@@ -189,7 +190,7 @@ public class EmergencyDomainDataReel {
 		final int numFutures = 10;
 		final int length = 5;
 		
-		ArrayList<EmergencyDomainDataReelElement>[] futures = reel.getFutures(current, rand , numFutures, length);
+		ArrayList<EmergencyDomainDataReelElement>[] futures = reel.getFutures(current, rand , numFutures, length, 0);
 		for( ArrayList<EmergencyDomainDataReelElement> future : futures ){
 			System.out.println(future);
 			System.out.println("==============================================");
@@ -230,6 +231,22 @@ public class EmergencyDomainDataReel {
 	}
 
 	public int getNumTestInstances() {
-		return frames[testingFoldIdx].size();
+		return frames[getTestingFoldIdx()].size();
+	}
+
+	public int getTestingFoldIdx() {
+		return testingFoldIdx;
+	}
+
+	public void setTestingFoldIdx(int testingFoldIdx) {
+		this.testingFoldIdx = testingFoldIdx;
+	}
+
+	public EmergencyDomainDataReelElement getInstance(final int idx, final int foldIdx ){ 
+		return frames[foldIdx].get(idx);
+	}
+
+	public int getTrainingFoldIdx() {
+		return trainingFoldIdx;
 	}
 }

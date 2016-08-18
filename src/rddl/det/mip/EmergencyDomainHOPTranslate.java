@@ -1,5 +1,7 @@
 package rddl.det.mip;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -31,14 +33,20 @@ import util.Timer;
 public class EmergencyDomainHOPTranslate extends HOPTranslate {
 
 	private static final boolean SHOW_TIMING = false;
+	public static final PVAR_NAME firstResponsePvarName = new PVAR_NAME("firstResponse");
+	public static final PVAR_NAME fullResponsePvarName = new PVAR_NAME("fullResponse");
+	public static final PVAR_NAME overwhelmPvarName = new PVAR_NAME("overwhelm");
+	
 	private EmergencyDomainDataReel reel;
+	private FileWriter outFile;
 
 	public EmergencyDomainHOPTranslate(List<String> args) throws Exception {
 		super(args.subList(0, args.size()-3));
-		reel = new EmergencyDomainDataReel( args.get( args.size()-4 ), ",", true, 
-				false, Integer.parseInt( args.get( args.size()-3 ) ), //numfolds
-				Integer.parseInt( args.get( args.size()-2 ) ), //training fold
-				Integer.parseInt( args.get( args.size()-1 ) ) ); //testing fold
+		reel = new EmergencyDomainDataReel( args.get( args.size()-5 ), ",", true, 
+				false, Integer.parseInt( args.get( args.size()- 4 ) ), //numfolds
+				Integer.parseInt( args.get( args.size()- 3 ) ), //training fold
+				Integer.parseInt( args.get( args.size()- 2 ) ) ); //testing fold
+		outFile = new FileWriter(new File( args.get( args.size()-1 ) ) );
 	}
 
 	@Override
@@ -66,7 +74,7 @@ public class EmergencyDomainHOPTranslate extends HOPTranslate {
 		
 		EmergencyDomainDataReelElement currentElem = new EmergencyDomainDataReelElement(subs);
 		ArrayList<EmergencyDomainDataReelElement>[] futures 
-			= reel.getFutures(currentElem, rng, numFutures, length);
+			= reel.getFutures(currentElem, rng, numFutures, length, reel.getTrainingFoldIdx() );
 		ArrayList<Pair<EXPR, EXPR>> futuresExpressions 
 			= reel.to_RDDL_EXPR_constraints(futures, future_PREDICATE, 
 				future_TERMS, TIME_PREDICATE, TIME_TERMS, constants, objects);
@@ -104,10 +112,11 @@ public class EmergencyDomainHOPTranslate extends HOPTranslate {
 					public void accept(
 							Entry<PVAR_NAME, ArrayList<ArrayList<LCONST>>> entry ) {
 
-						if( entry.getKey().equals(new PVAR_NAME("currentCall")) ||
-							entry.getKey().equals(new PVAR_NAME("currentCallTime")) || 
-							entry.getKey().equals(new PVAR_NAME("tempUniformRegion")) || 
-							entry.getKey().equals(new PVAR_NAME("tempUniformCause")) ){
+						final String pvarName = entry.getKey()._sPVarName;
+						if( pvarName.equals(EmergencyDomainDataReelElement.currentCallPvarName) ||
+							pvarName.equals(EmergencyDomainDataReelElement.currentCallTimePvarName) || 
+							pvarName.equals(EmergencyDomainDataReelElement.tempUniformRegionPvarName) ||  
+							pvarName.equals(EmergencyDomainDataReelElement.tempUniformCausePvarName) ){
 							return;
 						}
 							
@@ -189,7 +198,8 @@ public class EmergencyDomainHOPTranslate extends HOPTranslate {
 		grb_model.update();
 	}
 	
-	public Pair<Double,Double> evaluatePlanner( final int numRounds,  final StateViz stateViz ) throws EvalException{
+	public Pair<Double,Double> evaluatePlanner( final int numRounds,  final StateViz stateViz, 
+			final boolean randomize_test ) throws Exception{
 		ArrayList<Double> rewards = new ArrayList<Double>();		
 		for( int round = 0; round < numRounds; ++round ){
 			double cur_discount = 1.0;
@@ -201,23 +211,49 @@ public class EmergencyDomainHOPTranslate extends HOPTranslate {
 					rddl_instance._alInitState, rddl_nonfluents == null ? null : rddl_nonfluents._alNonFluents, 
 					rddl_domain._alStateConstraints, rddl_domain._alActionPreconditions, rddl_domain._alStateInvariants,  
 					rddl_domain._exprReward, rddl_instance._nNonDefActions);
-			final int test_start_idx = rand.nextInt( 0, reel.getNumTestInstances()-1-this.rddl_instance._nHorizon );
-			reel.resetTestIndex( 0 ); //test_start_idx );
+//			final int test_start_idx = rand.nextInt( 0, reel.getNumTestInstances()-1-this.rddl_instance._nHorizon );
+//			final int test_start_idx = (int)(round * (reel.getNumTestInstances()/numRounds));
+//			assert( test_start_idx < reel.getNumTestInstances() && test_start_idx + this.rddl_instance._nHorizon < reel.getNumTestInstances() );
 			
+			reel.resetTestIndex( 0 ); //test_start_idx );
+
+			EmergencyDomainDataReelElement stored_next_thing = null;
 			for( int step = 0; step < this.rddl_instance._nHorizon; ++step ){
 				
-				EmergencyDomainDataReelElement exo_thing = reel.getNextTestingInstance();
-				exo_thing.setInState( rddl_state );
+				if( step == 0 || !randomize_test ){
+					//copy back next state of exogenous vars
+					EmergencyDomainDataReelElement exo_thing = reel.getNextTestingInstance();
+					exo_thing.setInState( rddl_state );
+				}else{
+					stored_next_thing.setInState( rddl_state );
+				}
+				System.out.println( "Next State : " + rddl_state );
 				
 				Timer timer = new Timer();
 				ArrayList<PVAR_INST_DEF> rddl_action = getActions(rddl_state);
 				
 				try {
 					System.out.println("------------------------------------");
-					System.out.println("State : " + rddl_state);
+					System.out.println("State : " + rddl_state );
 					System.out.println("Action : " + rddl_action);
 					System.out.println("------------------------------------");
+					
+					if( randomize_test ){
+						EmergencyDomainDataReelElement cur_thing = new EmergencyDomainDataReelElement(rddl_state);
+						ArrayList<Integer> next_indices = reel.getLeads(cur_thing, reel.getTestingFoldIdx() );
+						stored_next_thing = reel.getInstance( 
+								next_indices.get( rand.nextInt(0, next_indices.size()-1) ), reel.getTestingFoldIdx() );
+					}
+					
 					rddl_state.computeNextState(rddl_action, rand);
+					System.out.println("Interm State : " + rddl_state );
+					System.out.println("------------------------------------");
+					outFile.write( 60*getFirstResponse(rddl_state) + "," + 60*getFullResponse(rddl_state) + "," + getOverwhelm(rddl_state) );
+					outFile.write("\n");
+					outFile.flush();
+					if(stateViz != null){
+						stateViz.display(rddl_state, step);			
+					}
 				} catch (Exception ee) {
 					System.out.println("FATAL SERVER EXCEPTION:\n" + ee);
 					throw ee;
@@ -245,19 +281,14 @@ public class EmergencyDomainHOPTranslate extends HOPTranslate {
 				if (SHOW_TIMING){
 					System.out.println("**TIME to copy observations & update rewards: " + timer.GetTimeSoFarAndReset());
 				}
-				
-				if(stateViz != null){
-					stateViz.display(rddl_state, step);			
-				}
-				rddl_state.advanceNextState();
-				System.out.println( "Next State : " + rddl_state );
-				//copy back next state of exogenous vars
-				
+			
+				rddl_state.advanceNextState();				
 									
 				if (SHOW_TIMING){
 					System.out.println("**TIME to advance state: " + timer.GetTimeSoFarAndReset());
 				}
 			}
+			outFile.flush();
 			System.out.println("Round reward " + accum_reward);
 			rewards.add( accum_reward );
 			
@@ -265,16 +296,32 @@ public class EmergencyDomainHOPTranslate extends HOPTranslate {
 		
 		System.out.println("Round rewards : " + rewards );
 		final double session_mean_reward = rewards.stream().mapToDouble(r->r).average().getAsDouble();
-		final double sample_variance = (1.0/(numRounds-1))*(rewards.stream()
+		final double stdev = Math.sqrt( (1.0/(numRounds-1))*(rewards.stream()
 								.mapToDouble(r->(r-session_mean_reward)*(r-session_mean_reward))
-								.sum());
-		return new Pair<Double,Double>(session_mean_reward, sample_variance);
+								.sum()) );
+		return new Pair<Double,Double>(session_mean_reward, stdev);
 	}
 	
+	public static double getFirstResponse(State s) throws EvalException {
+		return ((Number) s.getPVariableAssign(firstResponsePvarName , EmergencyDomainDataReelElement.emptySubstitution)).doubleValue();
+	}
+
+	public static double getFullResponse(State s) throws EvalException {
+		return ((Number) s.getPVariableAssign(fullResponsePvarName, EmergencyDomainDataReelElement.emptySubstitution)).doubleValue();
+	}
+	
+	public static boolean getOverwhelm(State s) throws EvalException {
+		return (boolean) s.getPVariableAssign(overwhelmPvarName, EmergencyDomainDataReelElement.emptySubstitution);
+	}
+
 	public static void main(String[] args) throws Exception {
 		System.out.println( Arrays.toString( args ) );
-		EmergencyDomainHOPTranslate planner = new EmergencyDomainHOPTranslate( Arrays.asList( args ) );
-		System.out.println( planner.evaluatePlanner(30, null) );
+		EmergencyDomainHOPTranslate planner = new EmergencyDomainHOPTranslate( 
+				Arrays.asList( args ).subList(0, args.length-2) );
+		System.out.println( planner.evaluatePlanner(
+				Integer.parseInt( args[args.length-2] ), 
+				new EmergencyDomainStateViz(1300,30,1500,80), 
+				Boolean.parseBoolean( args[ args.length-1 ] ) ) );
 	}
 
 
