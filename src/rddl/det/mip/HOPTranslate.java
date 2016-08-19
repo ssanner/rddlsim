@@ -497,8 +497,9 @@ public class HOPTranslate extends Translate implements Policy {
 								synchronized( grb_model ){
 									try {
 										GRBVar constrained_var = this_tf.getGRBConstr( GRB.EQUAL, grb_model, constants, objects, type_map);
-										grb_model.addConstr( constrained_var, GRB.EQUAL, 1, "constraint=1_"+e.toString()+"_"+
-												time_term+"_" + future_term );
+										String nam = ("constraint=1_"+e.toString()+"_"+time_term+"_" + future_term);
+										grb_model.addConstr( constrained_var, GRB.EQUAL, 1, 
+												nam.substring(0, Math.min(255, nam.length() ) ) );
 										saved_expr.add( this_tf ); 
 										//saved_vars.add( constrained_var );
 									} catch (GRBException e) {

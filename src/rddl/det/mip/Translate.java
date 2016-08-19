@@ -77,13 +77,12 @@ import rddl.viz.StateViz;
 import util.Pair;
 import util.Timer;
 
-//FIXME : why is Policy an abstract class and not an interface ?
 public class Translate implements Policy { //  extends rddl.policy.Policy {
 
 	private static final int GRB_INFUNBDINFO = 1;
 	private static final int GRB_DUALREDUCTIONS = 0;
 	private static final double GRB_MIPGAP = 0.01;
-	private static final double GRB_HEURISTIC = 0.05;
+	private static final double GRB_HEURISTIC = 0.1;
 	private static final int GRB_IISMethod = -1;
 	
 	protected static final LVAR TIME_PREDICATE = new LVAR( "?time" );

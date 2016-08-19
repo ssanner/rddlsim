@@ -322,6 +322,18 @@ domain emergency_continuous_time_multiple_vehicles_test{
 		forall_{?r:role}[ TarryTime(?r) >= 0 ];
 		forall_{?ca:cause}[ DestinationHospital(?ca) + DestinationTransfer(?ca) <= 1 ];
 		
+		//forall_{?ca:cause, ?re:region, ?ro:role}[ 
+		//	(~[currentCallCode(?ca) ^ currentCallRegion(?re) ^ (causeRequirement(?ca,?re,?ro)>0) 
+		//		^ (exists_{?v:vehicle}[ HasCapability(?v,?ro) ^ vehicleInService(?v) ] ) ] 
+		//	| (firstResponse ~= 1000)
+		//	) 
+		//];
+		
+		//~exists_{?ca:cause,?re:region,?ro:role,?v:vehicle}[
+		//	currentCallCode(?ca) ^ currentCallRegion(?re) ^ 
+		//	(causeRequirement(?ca,?re,?ro) > 0) ^ 
+		//	vehicleInService(?v) ^ HasCapability(?v,?ro) ] | (firstResponse ~= 1000);
+		
 	};
 	
 	action-preconditions {
@@ -330,6 +342,8 @@ domain emergency_continuous_time_multiple_vehicles_test{
 		//(~vehicleInService) | dispatch;
 		forall_{?v:vehicle,?r:role}[ ~dispatch(?v,?r) | HasCapability(?v,?r) ];
 		forall_{?v:vehicle,?r:role}[ ~dispatch(?v,?r) | (exists_{?c:cause,?re:region}[ currentCallCode(?c) ^ currentCallRegion(?re) ^ (CauseRequirement(?c,?re,?r) > 0) ] ) ];
+	    forall_{?ca:cause,?re:region}[ (~(currentCallCode(?ca) ^ currentCallRegion(?re)))  
+			| (forall_{?ro:role}[ (sum_{?v:vehicle}[ dispatch(?v,?ro) ]) <= CauseRequirement(?ca,?re,?ro) ]) ];
 	};
 }
 		//currentCallDay : {state-fluent, int, default=1};

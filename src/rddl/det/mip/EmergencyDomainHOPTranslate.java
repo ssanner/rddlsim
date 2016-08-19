@@ -39,6 +39,8 @@ public class EmergencyDomainHOPTranslate extends HOPTranslate {
 	
 	private EmergencyDomainDataReel reel;
 	private FileWriter outFile;
+	
+	private boolean cleaned_up = true;
 
 	public EmergencyDomainHOPTranslate(List<String> args) throws Exception {
 		super(args.subList(0, args.size()-3));
@@ -47,6 +49,12 @@ public class EmergencyDomainHOPTranslate extends HOPTranslate {
 				Integer.parseInt( args.get( args.size()- 3 ) ), //training fold
 				Integer.parseInt( args.get( args.size()- 2 ) ) ); //testing fold
 		outFile = new FileWriter(new File( args.get( args.size()-1 ) ) );
+	}
+	
+	@Override
+	protected void cleanUp() throws GRBException {
+		super.cleanUp();
+		cleaned_up = true;
 	}
 
 	@Override
@@ -117,6 +125,8 @@ public class EmergencyDomainHOPTranslate extends HOPTranslate {
 							pvarName.equals(EmergencyDomainDataReelElement.currentCallTimePvarName._sPVarName) || 
 							pvarName.equals(EmergencyDomainDataReelElement.tempUniformRegionPvarName._sPVarName) ||  
 							pvarName.equals(EmergencyDomainDataReelElement.tempUniformCausePvarName._sPVarName) ){
+							return;
+						}else if( !cleaned_up  ){
 							return;
 						}
 							
@@ -193,6 +203,8 @@ public class EmergencyDomainHOPTranslate extends HOPTranslate {
 				});
 			}
 		});
+		
+		cleaned_up = false;
 		
 		grb_model.setObjective(old_obj);
 		grb_model.update();
