@@ -33,11 +33,11 @@ domain emergency_continuous_time_multiple_vehicles_test{
 		callMiles(vehicle) : {interm-fluent, real};
 		callTravelTime(vehicle) : {interm-fluent, real};
 		
-		hospitalMiles(vehicle) : {interm-fluent, real};
-		hospitalTravelTime(vehicle) : {interm-fluent, real};
+		hospitalMiles : {interm-fluent, real};
+		hospitalTravelTime : {interm-fluent, real};
 		
-		transferMiles(vehicle) : {interm-fluent, real};
-		transferTravelTime(vehicle) : {interm-fluent, real};
+		transferMiles : {interm-fluent, real};
+		transferTravelTime : {interm-fluent, real};
 		
 		returnMiles(vehicle) : {interm-fluent, real};
 		returnTravelTime(vehicle) : {interm-fluent, real}; 
@@ -78,8 +78,8 @@ domain emergency_continuous_time_multiple_vehicles_test{
 		
 		W1 : {non-fluent, real, default=1};
 		W2 : {non-fluent, real, default=1};
-		W3 : {non-fluent, real, default=5};
-		W4 : {non-fluent, real, default=10};
+		W3 : {non-fluent, real, default=10};
+		W4 : {non-fluent, real, default=100};
 	};
 	
 	cpfs {
@@ -142,62 +142,64 @@ domain emergency_continuous_time_multiple_vehicles_test{
 						 then callMiles(?v)/70.0
 						 else callMiles(?v)/70.0;
 						 
-		hospitalMiles(?v) = if (exists_{?ca:cause}[ currentCallCode(?ca) ^ DestinationHospital(?ca) ] )
+		hospitalMiles = if (exists_{?ca:cause}[ currentCallCode(?ca) ^ DestinationHospital(?ca) ] )
 							then (sum_{?c:coordinate}[ abs[ currentCall(?c) - HospitalPosition(?c) ] ] )
 							else 0.0;
 							
-		hospitalTravelTime(?v) = if (hospitalMiles(?v) <= 5) 
-						 then hospitalMiles(?v)/38.0
-						 else if (hospitalMiles(?v) > 5 ^ hospitalMiles(?v) <= 7)
-						 then hospitalMiles(?v)/42.0
-						 else if (hospitalMiles(?v) > 7 ^ hospitalMiles(?v) <= 12)
-						 then hospitalMiles(?v)/40.0
-						 else if (hospitalMiles(?v) > 12 ^ hospitalMiles(?v) <= 15)
-						 then hospitalMiles(?v)/48.0
-						 else if (hospitalMiles(?v) > 15 ^ hospitalMiles(?v) <= 17.5)
-						 then hospitalMiles(?v)/56.0
-						 else if (hospitalMiles(?v) > 17.5 ^ hospitalMiles(?v) <= 20)
-						 then hospitalMiles(?v)/52.0
-						 else if (hospitalMiles(?v) > 20 ^ hospitalMiles(?v) <= 25)
-						 then hospitalMiles(?v)/50.0
-						 else if (hospitalMiles(?v) > 25 ^ hospitalMiles(?v) <= 28.5)
-						 then hospitalMiles(?v)/54.0
-						 else if (hospitalMiles(?v) > 28.5 ^ hospitalMiles(?v) <= 41)
-						 then hospitalMiles(?v)/49.0
-						 else if (hospitalMiles(?v) > 41 ^ hospitalMiles(?v) <= 70)
-						 then hospitalMiles(?v)/70.0
-						 else if (hospitalMiles(?v) > 70 ^ hospitalMiles(?v) <= 500)
-						 then hospitalMiles(?v)/70.0
-						 else hospitalMiles(?v)/70.0;
+		hospitalTravelTime = if (hospitalMiles <= 5) 
+						 then hospitalMiles/38.0
+						 else if (hospitalMiles > 5 ^ hospitalMiles <= 7)
+						 then hospitalMiles/42.0
+						 else if (hospitalMiles > 7 ^ hospitalMiles <= 12)
+						 then hospitalMiles/40.0
+						 else if (hospitalMiles > 12 ^ hospitalMiles <= 15)
+						 then hospitalMiles/48.0
+						 else if (hospitalMiles > 15 ^ hospitalMiles <= 17.5)
+						 then hospitalMiles/56.0
+						 else if (hospitalMiles > 17.5 ^ hospitalMiles <= 20)
+						 then hospitalMiles/52.0
+						 else if (hospitalMiles > 20 ^ hospitalMiles <= 25)
+						 then hospitalMiles/50.0
+						 else if (hospitalMiles > 25 ^ hospitalMiles <= 28.5)
+						 then hospitalMiles/54.0
+						 else if (hospitalMiles > 28.5 ^ hospitalMiles <= 41)
+						 then hospitalMiles/49.0
+						 else if (hospitalMiles > 41 ^ hospitalMiles <= 70)
+						 then hospitalMiles/70.0
+						 else if (hospitalMiles > 70 ^ hospitalMiles <= 500)
+						 then hospitalMiles/70.0
+						 else hospitalMiles/70.0;
 							
-		transferMiles(?v) = if ( exists_{?ca:cause}[ currentCallCode(?ca) ^ DestinationTransfer(?ca) ] )
+		//not function of vehicle , only call
+		transferMiles = if ( exists_{?ca:cause}[ currentCallCode(?ca) ^ DestinationTransfer(?ca) ] )
 							then (sum_{?c:coordinate}[ abs[ currentCall(?c) - TransferPosition(?c) ] ])
 							else 0.0;
-							
-		transferTravelTime(?v) = if (transferMiles(?v) <= 5) 
-						 then transferMiles(?v)/38.0
-						 else if (transferMiles(?v) > 5 ^ transferMiles(?v) <= 7)
-						 then transferMiles(?v)/42.0
-						 else if (transferMiles(?v) > 7 ^ transferMiles(?v) <= 12)
-						 then transferMiles(?v)/40.0
-						 else if (transferMiles(?v) > 12 ^ transferMiles(?v) <= 15)
-						 then transferMiles(?v)/48.0
-						 else if (transferMiles(?v) > 15 ^ transferMiles(?v) <= 17.5)
-						 then transferMiles(?v)/56.0
-						 else if (transferMiles(?v) > 17.5 ^ transferMiles(?v) <= 20)
-						 then transferMiles(?v)/52.0
-						 else if (transferMiles(?v) > 20 ^ transferMiles(?v) <= 25)
-						 then transferMiles(?v)/50.0
-						 else if (transferMiles(?v) > 25 ^ transferMiles(?v) <= 28.5)
-						 then transferMiles(?v)/54.0
-						 else if (transferMiles(?v) > 28.5 ^ transferMiles(?v) <= 41)
-						 then transferMiles(?v)/49.0
-						 else if (transferMiles(?v) > 41 ^ transferMiles(?v) <= 70)
-						 then transferMiles(?v)/70.0
-						 else if (transferMiles(?v) > 70 ^ transferMiles(?v) <= 500)
-						 then transferMiles(?v)/70.0
-						 else transferMiles(?v)/70.0;
-						 
+		
+		
+		transferTravelTime = if (transferMiles <= 5) 
+						 then transferMiles/38.0
+						 else if (transferMiles > 5 ^ transferMiles <= 7)
+						 then transferMiles/42.0
+						 else if (transferMiles > 7 ^ transferMiles <= 12)
+						 then transferMiles/40.0
+						 else if (transferMiles > 12 ^ transferMiles <= 15)
+						 then transferMiles/48.0
+						 else if (transferMiles > 15 ^ transferMiles <= 17.5)
+						 then transferMiles/56.0
+						 else if (transferMiles > 17.5 ^ transferMiles <= 20)
+						 then transferMiles/52.0
+						 else if (transferMiles > 20 ^ transferMiles <= 25)
+						 then transferMiles/50.0
+						 else if (transferMiles > 25 ^ transferMiles <= 28.5)
+						 then transferMiles/54.0
+						 else if (transferMiles > 28.5 ^ transferMiles <= 41)
+						 then transferMiles/49.0
+						 else if (transferMiles > 41 ^ transferMiles <= 70)
+						 then transferMiles/70.0
+						 else if (transferMiles > 70 ^ transferMiles <= 500)
+						 then transferMiles/70.0
+						 else transferMiles/70.0;
+				
 		returnMiles(?v) = if (exists_{?ca:cause}[ currentCallCode(?ca) ^ DestinationHospital(?ca) ] ) 
 						  then sum_{?c:coordinate}[ abs[ HospitalPosition(?c) - vehicleHome(?v,?c) ] ]
 						  else if (exists_{?ca:cause}[ currentCallCode(?ca) ^ DestinationTransfer(?ca) ] )
@@ -242,17 +244,17 @@ domain emergency_continuous_time_multiple_vehicles_test{
 		
 		timeServiceDone'(?v) = if (exists_{?r:role}[dispatch(?v,?r)]) 
 						   then (currentCallTime + callTravelTime(?v) + (sum_{?r:role}[ if (dispatch(?v,?r)) then RoleServiceTime(?r) else 0.0])
-								 + hospitalTravelTime(?v) + transferTravelTime(?v))
+								 + hospitalTravelTime + transferTravelTime)
 						   else timeServiceDone(?v);
 						
 		timeTarryDone'(?v) = if (exists_{?r:role}[dispatch(?v,?r)])
-					     then (currentCallTime + callTravelTime(?v) + (sum_{?r:role}[ if (dispatch(?v,?r)) then RoleServiceTime(?r) else 0.0]) + hospitalTravelTime(?v)  
-								+ transferTravelTime(?v) + sum_{?r:role}[if (dispatch(?v,?r)) then TarryTime(?r) else 0.0] ) 
+					     then (currentCallTime + callTravelTime(?v) + (sum_{?r:role}[ if (dispatch(?v,?r)) then RoleServiceTime(?r) else 0.0]) + hospitalTravelTime  
+								+ transferTravelTime + sum_{?r:role}[if (dispatch(?v,?r)) then TarryTime(?r) else 0.0] ) 
 					     else timeTarryDone(?v);
 						
 		timeBackInBase'(?v) = if (exists_{?r:role}[dispatch(?v,?r)])
-						  then (currentCallTime + callTravelTime(?v) + (sum_{?r:role}[ if (dispatch(?v,?r)) then RoleServiceTime(?r) else 0.0]) + hospitalTravelTime(?v)  
-								+ transferTravelTime(?v) + sum_{?r:role}[if (dispatch(?v,?r)) then TarryTime(?r) else 0.0] +  returnTravelTime(?v))
+						  then (currentCallTime + callTravelTime(?v) + (sum_{?r:role}[ if (dispatch(?v,?r)) then RoleServiceTime(?r) else 0.0]) + hospitalTravelTime  
+								+ transferTravelTime + sum_{?r:role}[if (dispatch(?v,?r)) then TarryTime(?r) else 0.0] +  returnTravelTime(?v))
 						  else timeBackInBase(?v);
 								  
 		vehicleInService(?v) = vehicleInBase(?v) | vehicleOnSite(?v);
@@ -302,13 +304,13 @@ domain emergency_continuous_time_multiple_vehicles_test{
 		forall_{?v:vehicle}[ callTravelTime(?v) >= 0 ];
 		forall_{?v:vehicle}[ callMiles(?v) <= (sum_{?c:coordinate}[ MapUpperBound(?c)-MapLowerBound(?c) ]) ];
 		
-		forall_{?v:vehicle}[ hospitalMiles(?v) >= 0 ];
-		forall_{?v:vehicle}[ hospitalTravelTime(?v) >= 0 ];
-		forall_{?v:vehicle}[ hospitalMiles(?v) <= (sum_{?c:coordinate}[ MapUpperBound(?c)-MapLowerBound(?c) ]) ];
+		forall_{?v:vehicle}[ hospitalMiles >= 0 ];
+		forall_{?v:vehicle}[ hospitalTravelTime >= 0 ];
+		forall_{?v:vehicle}[ hospitalMiles <= (sum_{?c:coordinate}[ MapUpperBound(?c)-MapLowerBound(?c) ]) ];
 		
-		forall_{?v:vehicle}[ transferMiles(?v) >= 0 ];
-		forall_{?v:vehicle}[ transferTravelTime(?v) >= 0 ];
-		forall_{?v:vehicle}[ transferMiles(?v) <= (sum_{?c:coordinate}[ MapUpperBound(?c)-MapLowerBound(?c) ]) ];
+		forall_{?v:vehicle}[ transferMiles >= 0 ];
+		forall_{?v:vehicle}[ transferTravelTime >= 0 ];
+		forall_{?v:vehicle}[ transferMiles <= (sum_{?c:coordinate}[ MapUpperBound(?c)-MapLowerBound(?c) ]) ];
 		
 		forall_{?v:vehicle}[ returnMiles(?v) >= 0 ];
 		forall_{?v:vehicle}[ returnTravelTime(?v) >= 0 ];
