@@ -78,8 +78,8 @@ domain emergency_continuous_time_multiple_vehicles_test{
 		
 		W1 : {non-fluent, real, default=1};
 		W2 : {non-fluent, real, default=1};
-		W3 : {non-fluent, real, default=10};
-		W4 : {non-fluent, real, default=100};
+		W3 : {non-fluent, real, default=5};
+		W4 : {non-fluent, real, default=10};
 	};
 	
 	cpfs {
@@ -142,7 +142,7 @@ domain emergency_continuous_time_multiple_vehicles_test{
 						 then callMiles(?v)/70.0
 						 else callMiles(?v)/70.0;
 						 
-		hospitalMiles(?v) = if (exists_{?r:role}[ dispatch(?v,?r) ] ^ exists_{?ca:cause}[ currentCallCode(?ca) ^ DestinationHospital(?ca) ] )
+		hospitalMiles(?v) = if (exists_{?ca:cause}[ currentCallCode(?ca) ^ DestinationHospital(?ca) ] )
 							then (sum_{?c:coordinate}[ abs[ currentCall(?c) - HospitalPosition(?c) ] ] )
 							else 0.0;
 							
@@ -170,7 +170,7 @@ domain emergency_continuous_time_multiple_vehicles_test{
 						 then hospitalMiles(?v)/70.0
 						 else hospitalMiles(?v)/70.0;
 							
-		transferMiles(?v) = if ( exists_{?r:role}[ dispatch(?v,?r) ] ^ exists_{?ca:cause}[ currentCallCode(?ca) ^ DestinationTransfer(?ca) ] )
+		transferMiles(?v) = if ( exists_{?ca:cause}[ currentCallCode(?ca) ^ DestinationTransfer(?ca) ] )
 							then (sum_{?c:coordinate}[ abs[ currentCall(?c) - TransferPosition(?c) ] ])
 							else 0.0;
 							
@@ -198,9 +198,9 @@ domain emergency_continuous_time_multiple_vehicles_test{
 						 then transferMiles(?v)/70.0
 						 else transferMiles(?v)/70.0;
 						 
-		returnMiles(?v) = if (exists_{?r:role}[ dispatch(?v,?r) ] ^ exists_{?ca:cause}[ currentCallCode(?ca) ^ DestinationHospital(?ca) ] ) 
+		returnMiles(?v) = if (exists_{?ca:cause}[ currentCallCode(?ca) ^ DestinationHospital(?ca) ] ) 
 						  then sum_{?c:coordinate}[ abs[ HospitalPosition(?c) - vehicleHome(?v,?c) ] ]
-						  else if (exists_{?r:role}[ dispatch(?v,?r) ] ^ exists_{?ca:cause}[ currentCallCode(?ca) ^ DestinationTransfer(?ca) ] )
+						  else if (exists_{?ca:cause}[ currentCallCode(?ca) ^ DestinationTransfer(?ca) ] )
 						  then sum_{?c:coordinate}[ abs[ TransferPosition(?c) - vehicleHome(?v,?c) ] ]
 						  else ( sum_{?c:coordinate}[ abs[ currentCall(?c) - vehicleHome(?v,?c) ] ] );
 		
@@ -230,11 +230,14 @@ domain emergency_continuous_time_multiple_vehicles_test{
 		
 		firstResponse = min_{?v:vehicle}[ if (exists_{?r:role}[dispatch(?v,?r)])
 						   then callTravelTime(?v) 
-						   else 1000 ];//20mins
+						   else (sum_{?c:coordinate}[MapUpperBound(?c)-MapLowerBound(?c)])/70.0 ];
+						   //instead of 20mins
+						   //using maximim dist / maximum speed = maximum possible callTravelTime
 		
 		fullResponse = abs[ max_{?v:vehicle}[ if (exists_{?r:role}[dispatch(?v,?r)])
 							then callTravelTime(?v) 
-							else -1000 ] ];//25 mins
+							else -(sum_{?c:coordinate}[MapUpperBound(?c)-MapLowerBound(?c)])/70.0 ] ];//instead of 25 mins
+							
 		overwhelm = exists_{?r:role,?c:cause,?re:region}[ currentCallCode(?c) ^ currentCallRegion(?re) ^ (CauseRequirement(?c,?re,?r) > (sum_{?v:vehicle}[dispatch(?v,?r)])) ];
 		
 		timeServiceDone'(?v) = if (exists_{?r:role}[dispatch(?v,?r)]) 
@@ -263,9 +266,20 @@ domain emergency_continuous_time_multiple_vehicles_test{
 		
 	};
 	
-	reward = if (overwhelm ^ (firstResponse == 1000)) 
-			 then (-W4)
-			 else [- (W1*firstResponse) - (W2*fullResponse) + W3*(firstResponse <= 0.0833 ) - W4*overwhelm];
+	//when total overwhelm happens, it might be that all vehicles are out.
+	//This should be weighted lesser than total overwhelm when some vehicle is availble.
+	
+	//partial overwhelm = -W1*FR-W2*1+W3*(FR<=0.08)-W4 , FR > 0 ,FR < 1
+	//total overwhelm = -1(W1+w2)-W4 
+	//-W2-W4-W1*FR-W3*(FR<=0.08) < -W1-W2-W4
+	//-W1*FR-(FR<=0.08)< -W1 
+	//W1*(1-FR) < W3*(FR<=0.08)
+	
+	reward = [- (W1*firstResponse) - (W2*fullResponse) + W3*(firstResponse <= 0.0833 ) - W4*overwhelm];
+	
+	// if (overwhelm ^ (firstResponse == 1000)) 
+	//		 then (-W4)
+	//		 else [- (W1*firstResponse) - (W2*fullResponse) + W3*(firstResponse <= 0.0833 ) - W4*overwhelm];
 	//total overwhelm gives 1000 for FR and FC, -1000(W1+W2)-W4 => -2100
 	
 	//reward = if (exists_{?v:vehicle}[dispatch(?v)]) then 1.0 else 0.0; 
@@ -333,6 +347,9 @@ domain emergency_continuous_time_multiple_vehicles_test{
 		//	currentCallCode(?ca) ^ currentCallRegion(?re) ^ 
 		//	(causeRequirement(?ca,?re,?ro) > 0) ^ 
 		//	vehicleInService(?v) ^ HasCapability(?v,?ro) ] | (firstResponse ~= 1000);
+		
+		firstResponse > 0.0; firstResponse <= (sum_{?c:coordinate}[MapUpperBound(?c)-MapLowerBound(?c)])/70.0;
+		fullResponse > 0.0; fullResponse <= (sum_{?c:coordinate}[MapUpperBound(?c)-MapLowerBound(?c)])/70.0;
 		
 	};
 	

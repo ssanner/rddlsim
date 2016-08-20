@@ -19,12 +19,16 @@ import gurobi.GRBException;
 import gurobi.GRBExpr;
 import gurobi.GRBVar;
 import rddl.EvalException;
+import rddl.RDDL.BOOL_CONST_EXPR;
 import rddl.RDDL.CPF_DEF;
 import rddl.RDDL.EXPR;
+import rddl.RDDL.INT_CONST_EXPR;
 import rddl.RDDL.LCONST;
 import rddl.RDDL.LVAR;
+import rddl.RDDL.PVAR_EXPR;
 import rddl.RDDL.PVAR_INST_DEF;
 import rddl.RDDL.PVAR_NAME;
+import rddl.RDDL.REAL_CONST_EXPR;
 import rddl.State;
 import rddl.viz.StateViz;
 import util.Pair;
@@ -40,8 +44,6 @@ public class EmergencyDomainHOPTranslate extends HOPTranslate {
 	private EmergencyDomainDataReel reel;
 	private FileWriter outFile;
 	
-	private boolean cleaned_up = true;
-
 	public EmergencyDomainHOPTranslate(List<String> args) throws Exception {
 		super(args.subList(0, args.size()-3));
 		reel = new EmergencyDomainDataReel( args.get( args.size()-5 ), ",", true, 
@@ -51,12 +53,6 @@ public class EmergencyDomainHOPTranslate extends HOPTranslate {
 		outFile = new FileWriter(new File( args.get( args.size()-1 ) ) );
 	}
 	
-	@Override
-	protected void cleanUp() throws GRBException {
-		super.cleanUp();
-		cleaned_up = true;
-	}
-
 	@Override
 	protected void translateCPTs(HashMap<PVAR_NAME,HashMap<ArrayList<LCONST>,Object>> subs) throws GRBException {
 		
@@ -126,8 +122,6 @@ public class EmergencyDomainHOPTranslate extends HOPTranslate {
 							pvarName.equals(EmergencyDomainDataReelElement.tempUniformRegionPvarName._sPVarName) ||  
 							pvarName.equals(EmergencyDomainDataReelElement.tempUniformCausePvarName._sPVarName) ){
 							return;
-						}else if( !cleaned_up  ){
-							return;
 						}
 							
 						entry.getValue().stream().forEach( new Consumer< ArrayList<LCONST> >() {
@@ -170,6 +164,7 @@ public class EmergencyDomainHOPTranslate extends HOPTranslate {
 										Collections.singletonMap( TIME_PREDICATE, TIME_TERMS.get( time_term_index ) ), constants, objects);
 													
 										future_terms_indices.stream().forEach( new Consumer<Integer>() {
+
 											public void accept(Integer future_term_index) {
 												EXPR lhs = lhs_with_f.substitute(
 														Collections.singletonMap( future_PREDICATE, future_TERMS.get( future_term_index ) ), constants, objects);
@@ -203,8 +198,6 @@ public class EmergencyDomainHOPTranslate extends HOPTranslate {
 				});
 			}
 		});
-		
-		cleaned_up = false;
 		
 		grb_model.setObjective(old_obj);
 		grb_model.update();
