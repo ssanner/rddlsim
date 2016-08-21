@@ -285,7 +285,7 @@ non-fluents nf_emergency_continuous_time_multiple_vehicles_test_4 {
 		
 		BEFORE_REGION(Fire-City,Fire-Rural)=true;
 		
-		causeRequirement(AFA,Fire-City,Ladder)=2;
+		causeRequirement(AFA,Fire-City,Ladder)=1;
 		causeRequirement(AFA,Fire-City,Engine)=2;
 		causeRequirement(AFA,Fire-City,Command)=1;
 		causeRequirement(AFA,Full,Engine)=1;
@@ -327,8 +327,9 @@ non-fluents nf_emergency_continuous_time_multiple_vehicles_test_4 {
 		
 		causeRequirement(NuisanceFire,Full,Engine)=1;
 		
-		causeRequirement(Transport,GoodSam-T,Ambulance)=3;
-		causeRequirement(Transport,EMS-City,Ambulance)=3;
+		causeRequirement(Transport,GoodSam-T,Ambulance)=1;
+		causeRequirement(Transport,EMS-City,Ambulance)=1;
+		causeRequirement(Transport,EMS-County,Ambulance)=1;
 		
 		causeRequirement(Other,Full,Engine)=1;
 		
@@ -336,7 +337,7 @@ non-fluents nf_emergency_continuous_time_multiple_vehicles_test_4 {
 	
 		causeRequirement(OtherFire,Full,Engine)=1;
 		
-		causeRequirement(Overpressure,Fire-City,Ladder)=2;
+		causeRequirement(Overpressure,Fire-City,Ladder)=1;
 		causeRequirement(Overpressure,Fire-City,Engine)=2;
 		causeRequirement(Overpressure,Fire-City,Command)=1;
 		causeRequirement(Overpressure,Full,Engine)=1;
@@ -348,7 +349,7 @@ non-fluents nf_emergency_continuous_time_multiple_vehicles_test_4 {
 		causeRequirement(Rescue,EMS-County,Ambulance)=1;
 		causeRequirement(Rescue,Full,Ambulance)=1;
 	
-		causeRequirement(StructureFire,Fire-City,Ladder)=2;
+		causeRequirement(StructureFire,Fire-City,Ladder)=1;
 		causeRequirement(StructureFire,Fire-City,Command)=1;
 		causeRequirement(StructureFire,Fire-City,Engine)=2;
 		causeRequirement(StructureFire,Full,Engine)=1;
