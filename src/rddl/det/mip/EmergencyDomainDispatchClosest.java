@@ -11,6 +11,7 @@ import java.util.TreeMap;
 
 import javax.management.relation.RoleResult;
 
+import gurobi.GRBException;
 import rddl.EvalException;
 import rddl.State;
 import util.Pair;
@@ -102,6 +103,16 @@ public class EmergencyDomainDispatchClosest extends EmergencyDomainHOPTranslate 
 		
 		s.clearIntermFluents();
 		return ret;
+	}
+	
+	@Override
+	protected void cleanUp() throws GRBException {
+		return;
+	}
+	
+	@Override
+	protected void handleOOM() {
+		return;
 	}
 	
 	public static void main(String[] args) throws Exception {

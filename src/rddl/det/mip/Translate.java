@@ -276,8 +276,10 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 		try{
 			grb_model.dispose();
 			grb_model = null;
+			
 			grb_env.dispose();
 			grb_env = null;
+			
 			RDDL.EXPR.cleanUpGRB();
 		}catch( GRBException exc ){
 			exc.printStackTrace();

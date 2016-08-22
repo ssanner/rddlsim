@@ -355,8 +355,8 @@ domain emergency_continuous_time_multiple_vehicles_test{
 		//	(causeRequirement(?ca,?re,?ro) > 0) ^ 
 		//	vehicleInService(?v) ^ HasCapability(?v,?ro) ] | (firstResponse ~= 1000);
 		
-		firstResponse > 0.0; firstResponse <= (sum_{?c:coordinate}[MapUpperBound(?c)-MapLowerBound(?c)])/70.0;
-		fullResponse > 0.0; fullResponse <= (sum_{?c:coordinate}[MapUpperBound(?c)-MapLowerBound(?c)])/70.0;
+		firstResponse >= 0.0; firstResponse <= (sum_{?c:coordinate}[MapUpperBound(?c)-MapLowerBound(?c)])/70.0;
+		fullResponse >= 0.0; fullResponse <= (sum_{?c:coordinate}[MapUpperBound(?c)-MapLowerBound(?c)])/70.0;
 		
 	};
 	
