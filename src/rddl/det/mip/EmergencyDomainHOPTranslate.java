@@ -312,6 +312,9 @@ public class EmergencyDomainHOPTranslate extends HOPTranslate {
 			System.out.println("Round reward " + accum_reward);
 			rewards.add( accum_reward );
 			
+			cleanUp();
+			handleOOM();
+			
 		}
 		
 		System.out.println("Round rewards : " + rewards );
