@@ -27,6 +27,8 @@ domain emergency_continuous_time_multiple_vehicles_test{
 		timeBackInBase(vehicle) : {state-fluent, real, default=0.0};
 		lastVehicleService(vehicle,coordinate) : {state-fluent, real, default=0.0};
 
+		
+		
 		tempUniformCause : {interm-fluent, real};
 		tempUniformRegion : {interm-fluent, real};
 		
@@ -52,9 +54,10 @@ domain emergency_continuous_time_multiple_vehicles_test{
 		overwhelm : {interm-fluent, bool};
 		
 		//constants
+		vehicleHome(vehicle,coordinate) : {non-fluent, real, default=0.0};
+		
 		MapUpperBound(coordinate) : {non-fluent, real, default=0};
 		MapLowerBound(coordinate) : {non-fluent, real, default=0};
-		vehicleHome(vehicle,coordinate) : {non-fluent, real, default=0.0};
 		
 		BEFORE(cause,cause) : {non-fluent, bool, default=false};
 		BEFORE_REGION(region,region) : {non-fluent, bool, default=false};
@@ -83,6 +86,8 @@ domain emergency_continuous_time_multiple_vehicles_test{
 	};
 	
 	cpfs {
+	
+		//vehicleHome'(?v,?c) = sum_{?s:station}[ if (rebase(?v,?s)) then StationLocation(?s,?c) else 0.0];
 		
 		//uniform distribution over causes
 		tempUniformCause = Uniform(0,sum_{?c:cause}[1]);

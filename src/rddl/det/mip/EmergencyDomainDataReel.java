@@ -153,7 +153,7 @@ public class EmergencyDomainDataReel {
 				}else{
 					ArrayList<Integer> leads = getLeads(ret[f].get(t-1), foldIdx);	
 					final int idx = rand.nextInt(0, leads.size()-1);
-					final EmergencyDomainDataReelElement thatElem = ( frames[trainingFoldIdx].get( leads.get( idx ) ) );
+					final EmergencyDomainDataReelElement thatElem = ( frames[foldIdx].get( leads.get( idx ) ) );
 					
 					//fix date to be not in the past
 					LocalDate newCallDate;
