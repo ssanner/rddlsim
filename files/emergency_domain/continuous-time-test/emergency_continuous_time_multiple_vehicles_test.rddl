@@ -27,6 +27,8 @@ domain emergency_continuous_time_multiple_vehicles_test{
 		timeBackInBase(vehicle) : {state-fluent, real, default=0.0};
 		lastVehicleService(vehicle,coordinate) : {state-fluent, real, default=0.0};
 
+		
+		
 		tempUniformCause : {interm-fluent, real};
 		tempUniformRegion : {interm-fluent, real};
 		
@@ -52,9 +54,10 @@ domain emergency_continuous_time_multiple_vehicles_test{
 		overwhelm : {interm-fluent, bool};
 		
 		//constants
+		vehicleHome(vehicle,coordinate) : {non-fluent, real, default=0.0};
+		
 		MapUpperBound(coordinate) : {non-fluent, real, default=0};
 		MapLowerBound(coordinate) : {non-fluent, real, default=0};
-		vehicleHome(vehicle,coordinate) : {non-fluent, real, default=0.0};
 		
 		BEFORE(cause,cause) : {non-fluent, bool, default=false};
 		BEFORE_REGION(region,region) : {non-fluent, bool, default=false};
@@ -83,6 +86,8 @@ domain emergency_continuous_time_multiple_vehicles_test{
 	};
 	
 	cpfs {
+	
+		//vehicleHome'(?v,?c) = sum_{?s:station}[ if (rebase(?v,?s)) then StationLocation(?s,?c) else 0.0];
 		
 		//uniform distribution over causes
 		tempUniformCause = Uniform(0,sum_{?c:cause}[1]);
@@ -118,7 +123,7 @@ domain emergency_continuous_time_multiple_vehicles_test{
 						      then (sum_{?c:coordinate}[ abs[ vehicleHome(?v,?c)-currentCall(?c) ] ])
 							  else (sum_{?c:coordinate}[ abs[ lastVehicleService(?v,?c)-currentCall(?c) ] ]));
 		
-		callTravelTime(?v) = if (callMiles(?v) <= 5) 
+		callTravelTime(?v) = (if (callMiles(?v) <= 5) 
 						 then callMiles(?v)/38.0
 						 else if (callMiles(?v) > 5 ^ callMiles(?v) <= 7)
 						 then callMiles(?v)/42.0
@@ -140,7 +145,7 @@ domain emergency_continuous_time_multiple_vehicles_test{
 						 then callMiles(?v)/70.0
 						 else if (callMiles(?v) > 70 ^ callMiles(?v) <= 500)
 						 then callMiles(?v)/70.0
-						 else callMiles(?v)/70.0;
+						 else callMiles(?v)/70.0);
 						 
 		hospitalMiles = if (exists_{?ca:cause}[ currentCallCode(?ca) ^ DestinationHospital(?ca) ] )
 							then (sum_{?c:coordinate}[ abs[ currentCall(?c) - HospitalPosition(?c) ] ] )

@@ -2,6 +2,7 @@ package rddl.det.mip;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -246,8 +247,22 @@ public class EmergencyDomainHOPTranslate extends HOPTranslate {
 					if( randomize_test ){
 						EmergencyDomainDataReelElement cur_thing = new EmergencyDomainDataReelElement(rddl_state);
 						ArrayList<Integer> next_indices = reel.getLeads(cur_thing, reel.getTestingFoldIdx() );
-						stored_next_thing = reel.getInstance( 
+						EmergencyDomainDataReelElement thatElem = reel.getInstance( 
 								next_indices.get( rand.nextInt(0, next_indices.size()-1) ), reel.getTestingFoldIdx() );
+						
+						//fix date to be not in the past
+						LocalDate newCallDate;
+						if( thatElem.callTime.isBefore(cur_thing.callTime) ){
+							newCallDate = LocalDate.ofYearDay( cur_thing.callDate.getYear(), cur_thing.callDate.getDayOfYear()+1);
+						}else{
+							newCallDate = LocalDate.ofYearDay( cur_thing.callDate.getYear(), cur_thing.callDate.getDayOfYear()); 
+						}
+						stored_next_thing = new EmergencyDomainDataReelElement( thatElem.callId, thatElem.natureCode, 
+								newCallDate, thatElem.callTime, thatElem.callAddress, thatElem.callX, thatElem.callY, false );
+						
+						System.out.println( "Current : " + cur_thing );
+						System.out.println( "Candidates : " + next_indices );
+						System.out.println( "Selected : " + stored_next_thing );
 					}
 					
 					rddl_state.computeNextState(rddl_action, rand);

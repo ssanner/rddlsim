@@ -194,6 +194,7 @@ public class EmergencyDomainDataReelElement extends DataReelElement {
 	private static final OBJECT_VAL VEHICLE_FIRE_CAUSE_CODE = new OBJECT_VAL("VehicleFire");
 	private static final OBJECT_VAL WILDLAND_FIRE_CAUSE_CODE = new OBJECT_VAL("WildlandFire");
 	private static final OBJECT_VAL NUISANCE_FIRE_CAUSE_CODE = new OBJECT_VAL("NuisanceFire");
+	private static final double CALL_RADIUS = 0.2;
 	
 	private static DecimalFormat _df = new DecimalFormat("##.##");
 	private static HashMap<String,OBJECT_VAL> _natureCodeMap = new HashMap<>();
@@ -294,7 +295,12 @@ public class EmergencyDomainDataReelElement extends DataReelElement {
 	@Override
 	public int compareTo(DataReelElement other) {
 		if( other instanceof EmergencyDomainDataReelElement ){
-			final int timeCompare = this.callTime.compareTo(((EmergencyDomainDataReelElement)other).callTime);
+			EmergencyDomainDataReelElement other_elem = (EmergencyDomainDataReelElement)other;
+			if( Math.abs( other_elem.callX - this.callX ) < CALL_RADIUS && 
+					Math.abs( other_elem.callY - this.callY ) < CALL_RADIUS ){
+				return 0;
+			}
+			final int timeCompare = this.callTime.compareTo(other_elem.callTime);
 			return timeCompare;
 		}
 		return -1;
