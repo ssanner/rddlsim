@@ -249,7 +249,7 @@ public class EmergencyDomainHOPTranslate extends HOPTranslate {
 						ArrayList<Integer> next_indices = reel.getLeads(cur_thing, reel.getTestingFoldIdx() );
 						EmergencyDomainDataReelElement thatElem = reel.getInstance( 
 								next_indices.get( rand.nextInt(0, next_indices.size()-1) ), reel.getTestingFoldIdx() );
-						
+
 						//fix date to be not in the past
 						LocalDate newCallDate;
 						if( thatElem.callTime.isBefore(cur_thing.callTime) ){
