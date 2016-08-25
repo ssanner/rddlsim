@@ -1,11 +1,4 @@
-//continuous time 
-//S. 1 station 1 team - boolean. various clocks for the team
-//S. no call cause code - only call location
-//A. Dispatch team or do nothing.
-//1. simulate min of time of next call or next available time of team.
-//2. calculate FC and FR correctly - accumulate over time steps
-
-domain emergency_continuous_time_multiple_vehicles_test{
+domain emergency_continuous_time_multiple_vehicles_rebase_test{
 	
 	types {
 		coordinate : object;
@@ -13,6 +6,7 @@ domain emergency_continuous_time_multiple_vehicles_test{
 		cause : object;
 		role : object;
 		region : object;
+		station : object;
 	};
 	
 	pvariables {
@@ -27,7 +21,8 @@ domain emergency_continuous_time_multiple_vehicles_test{
 		timeBackInBase(vehicle) : {state-fluent, real, default=0.0};
 		lastVehicleService(vehicle,coordinate) : {state-fluent, real, default=0.0};
 
-		
+		vehicleHome(vehicle,coordinate) : {state-fluent, real, default=0.0};
+		rebaseTimer(vehicle) : {state-fluent, int, default=0};
 		
 		tempUniformCause : {interm-fluent, real};
 		tempUniformRegion : {interm-fluent, real};
@@ -53,8 +48,12 @@ domain emergency_continuous_time_multiple_vehicles_test{
 		fullResponse : {interm-fluent, real};
 		overwhelm : {interm-fluent, bool};
 		
+		canRebase(vehicle) : {interm-fluent, bool};
+		rebaseMiles(vehicle) : {interm-fluent, real};
+		rebaseTravelTime(vehicle) : {interm-fluent, real};
+		
 		//constants
-		vehicleHome(vehicle,coordinate) : {non-fluent, real, default=0.0};
+		StationLocation(station,coordinate) : {non-fluent, real, default=0.0};
 		
 		MapUpperBound(coordinate) : {non-fluent, real, default=0};
 		MapLowerBound(coordinate) : {non-fluent, real, default=0};
@@ -78,16 +77,34 @@ domain emergency_continuous_time_multiple_vehicles_test{
 		
 		//action
 		dispatch(vehicle,role) : {action-fluent, bool, default=false};
+		rebase(vehicle,station) : {action-fluent, bool, default=false};
+		
 		
 		W1 : {non-fluent, real, default=1};
 		W2 : {non-fluent, real, default=1};
 		W3 : {non-fluent, real, default=10};
 		W4 : {non-fluent, real, default=100};
+		
+		MIN_REBASE_INTERVAL : {non-fluent, int, default = 5};
 	};
 	
 	cpfs {
 	
-		//vehicleHome'(?v,?c) = sum_{?s:station}[ if (rebase(?v,?s)) then StationLocation(?s,?c) else 0.0];
+		vehicleHome'(?v,?c) = if (canRebase(?v) ^ vehicleInBase(?v) ^ exists_{?s:station}[rebase(?v,?s)]) 
+							  then sum_{?s:station}[ if (rebase(?v,?s)) then StationLocation(?s,?c) else 0.0]
+							  else vehicleHome(?v,?c);
+		
+		rebaseTimer'(?v) = if (exists_{?s:station}[rebase(?v,?s)])
+						  then MIN_REBASE_INTERVAL 
+						  else max[0, rebaseTimer(?v)-1 ];
+		
+		canRebase(?v) = (rebaseTimer(?v) == 0);
+		
+		rebaseMiles(?v) = sum_{?s:station}[ if(rebase(?v,?s)) 
+											then sum_{?c:coordinate}[ abs[ StationLocation(?v,?c) - vehicleHome(?v,?c) ] ]
+											else 0.0 ];
+		
+		rebaseTravelTime(?v) = rebaseMiles(?v)/40.0;
 		
 		//uniform distribution over causes
 		tempUniformCause = Uniform(0,sum_{?c:cause}[1]);
@@ -250,16 +267,22 @@ domain emergency_continuous_time_multiple_vehicles_test{
 		timeServiceDone'(?v) = if (exists_{?r:role}[dispatch(?v,?r)]) 
 						   then (currentCallTime + callTravelTime(?v) + (sum_{?r:role}[ if (dispatch(?v,?r)) then RoleServiceTime(?r) else 0.0])
 								 + hospitalTravelTime + transferTravelTime)
+						   else if (exists_{?s:station}[rebase(?v,?s)])
+						   then currentCallTime + rebaseTravelTime(?v)
 						   else timeServiceDone(?v);
 						
 		timeTarryDone'(?v) = if (exists_{?r:role}[dispatch(?v,?r)])
 					     then (currentCallTime + callTravelTime(?v) + (sum_{?r:role}[ if (dispatch(?v,?r)) then RoleServiceTime(?r) else 0.0]) + hospitalTravelTime  
 								+ transferTravelTime + sum_{?r:role}[if (dispatch(?v,?r)) then TarryTime(?r) else 0.0] ) 
-					     else timeTarryDone(?v);
+					     else if (exists_{?s:station}[rebase(?v,?s)])
+						 then currentCallTime + rebaseTravelTime(?v)
+						 else timeTarryDone(?v);
 						
 		timeBackInBase'(?v) = if (exists_{?r:role}[dispatch(?v,?r)])
 						  then (currentCallTime + callTravelTime(?v) + (sum_{?r:role}[ if (dispatch(?v,?r)) then RoleServiceTime(?r) else 0.0]) + hospitalTravelTime  
 								+ transferTravelTime + sum_{?r:role}[if (dispatch(?v,?r)) then TarryTime(?r) else 0.0] +  returnTravelTime(?v))
+						  else if (exists_{?s:station}[rebase(?v,?s)])
+						  then currentCallTime + rebaseTravelTime(?v)
 						  else timeBackInBase(?v);
 								  
 		vehicleInService(?v) = vehicleInBase(?v) | vehicleOnSite(?v);
@@ -343,6 +366,7 @@ domain emergency_continuous_time_multiple_vehicles_test{
 		forall_{?r:role}[ TarryTime(?r) >= 0 ];
 		forall_{?ca:cause}[ DestinationHospital(?ca) + DestinationTransfer(?ca) <= 1 ];
 		
+		
 		forall_{?ca:cause, ?re:region,?ro:role}[
 			~(currentCallCode(?ca) ^ currentCallRegion(?re)) | 
 			[ ~(causeRequirement(?ca,?re,?ro)>0) |
@@ -352,16 +376,6 @@ domain emergency_continuous_time_multiple_vehicles_test{
 			] 
 		];
 		
-		//[currentCallCode(?ca) ^ currentCallRegion(?re) ^ (causeRequirement(?ca,?re,?ro)>0) 
-		//		^ (exists_{?v:vehicle}[ HasCapability(?v,?ro) ^ vehicleInService(?v) ] ) ] 
-		//	=> (firstResponse ~= 1000)
-		//  => (sum_{?v:vehicle}[ dispatch(?v,?ro) ] > 0)
-		
-		
-		//~exists_{?ca:cause,?re:region,?ro:role,?v:vehicle}[
-		//	currentCallCode(?ca) ^ currentCallRegion(?re) ^ 
-		//	(causeRequirement(?ca,?re,?ro) > 0) ^ 
-		//	vehicleInService(?v) ^ HasCapability(?v,?ro) ] | (firstResponse ~= 1000);
 		
 		firstResponse >= 0.0; firstResponse <= (sum_{?c:coordinate}[MapUpperBound(?c)-MapLowerBound(?c)])/70.0;
 		fullResponse >= 0.0; fullResponse <= (sum_{?c:coordinate}[MapUpperBound(?c)-MapLowerBound(?c)])/70.0;
@@ -376,6 +390,8 @@ domain emergency_continuous_time_multiple_vehicles_test{
 		forall_{?v:vehicle,?r:role}[ ~dispatch(?v,?r) | (exists_{?c:cause,?re:region}[ currentCallCode(?c) ^ currentCallRegion(?re) ^ (CauseRequirement(?c,?re,?r) > 0) ] ) ];
 	    forall_{?ca:cause,?re:region}[ (~(currentCallCode(?ca) ^ currentCallRegion(?re)))  
 			| (forall_{?ro:role}[ (sum_{?v:vehicle}[ dispatch(?v,?ro) ]) <= CauseRequirement(?ca,?re,?ro) ]) ];
+		forall_{?v:vehicle}[ (sum_{?s:station}[rebase(?v,?s)]) <= 1 ];
+		forall_{?v:vehicle}[ (sum_{?s:station}[rebase(?v,?s)]) + (sum_{?r:role}[dispatch(?v,?r)]) <= 1 ];
 	};
 }
 		//currentCallDay : {state-fluent, int, default=1};
