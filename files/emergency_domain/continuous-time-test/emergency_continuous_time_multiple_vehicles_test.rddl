@@ -343,14 +343,14 @@ domain emergency_continuous_time_multiple_vehicles_test{
 		forall_{?r:role}[ TarryTime(?r) >= 0 ];
 		forall_{?ca:cause}[ DestinationHospital(?ca) + DestinationTransfer(?ca) <= 1 ];
 		
-		forall_{?ca:cause, ?re:region,?ro:role}[
-			~(currentCallCode(?ca) ^ currentCallRegion(?re)) | 
-			[ ~(causeRequirement(?ca,?re,?ro)>0) |
-				[ ~( (sum_{?v:vehicle}[ vehicleInService(?v) ]) > 0 ) | 
-				   ( (sum_{?v:vehicle}[ dispatch(?v,?ro) ]) > 0)
-				]
-			] 
-		];
+		//forall_{?ca:cause, ?re:region,?ro:role}[
+			//~(currentCallCode(?ca) ^ currentCallRegion(?re)) | 
+			//[ ~(causeRequirement(?ca,?re,?ro)>0) |
+			//	[ ~( (sum_{?v:vehicle}[ vehicleInService(?v) ]) > 0 ) | 
+			//	   ( (sum_{?v:vehicle}[ dispatch(?v,?ro) ]) > 0)
+			//	]
+			//] 
+		//];
 		
 		//[currentCallCode(?ca) ^ currentCallRegion(?re) ^ (causeRequirement(?ca,?re,?ro)>0) 
 		//		^ (exists_{?v:vehicle}[ HasCapability(?v,?ro) ^ vehicleInService(?v) ] ) ] 
