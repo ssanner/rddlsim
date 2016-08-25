@@ -24,10 +24,10 @@ non-fluents nf_emergency_continuous_time_multiple_vehicles_test_12 {
 		vehicleHome(v6,xpos)=1418.0; vehicleHome(v6,ypos)=69.0;	
 		vehicleHome(v7,xpos)=1418.0; vehicleHome(v7,ypos)=65.0;	
 		vehicleHome(v8,xpos)=1415.0; vehicleHome(v8,ypos)=64.0;	
-		vehicleHome(v9,xpos)=1415.0; vehicleHome(v8,ypos)=64.0;	
-		vehicleHome(v10,xpos)=1415.0; vehicleHome(v8,ypos)=64.0;	
-		vehicleHome(v11,xpos)=1415.0; vehicleHome(v8,ypos)=64.0;	
-		vehicleHome(v12,xpos)=1415.0; vehicleHome(v8,ypos)=64.0;	
+		vehicleHome(v9,xpos)=1415.0; vehicleHome(v9,ypos)=64.0;	
+		vehicleHome(v10,xpos)=1415.0; vehicleHome(v10,ypos)=64.0;	
+		vehicleHome(v11,xpos)=1415.0; vehicleHome(v11,ypos)=64.0;	
+		vehicleHome(v12,xpos)=1415.0; vehicleHome(v12,ypos)=64.0;	
 	
 		BEFORE(AFA,All)=true;
 		BEFORE(AFA,Code1Medical)=true;
