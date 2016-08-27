@@ -375,6 +375,7 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 //		RDDL.EXPR.cleanUpGRB();
 		for( final GRBConstr constr : to_remove_constr ){
 			if( !saved_constr.contains(constr) ){
+				System.out.println(constr.toString());
 				System.out.println("Removing constraint " + constr.get(StringAttr.ConstrName) );
 				grb_model.remove( constr );				
 			}
@@ -742,7 +743,7 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 					rhs_expr = new INT_CONST_EXPR( (int)rhs );
 				}
 				GRBVar rhs_var = rhs_expr.getGRBConstr( GRB.EQUAL, grb_model, constants, objects, type_map);
-				GRBConstr new_constr = grb_model.addConstr( lhs_var, GRB.EQUAL, rhs_var, "initState_"+p.toString()+terms );
+				GRBConstr new_constr = grb_model.addConstr( lhs_var, GRB.EQUAL, rhs_var, "initState_"+non_stationary_pvar_expr.toString() );
 //				grb_model.update();
 				
 				System.out.println( non_stationary_pvar_expr + " " + rhs_expr );
