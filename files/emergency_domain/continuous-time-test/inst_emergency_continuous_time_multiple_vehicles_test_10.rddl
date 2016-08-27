@@ -1,8 +1,8 @@
-non-fluents nf_emergency_continuous_time_multiple_vehicles_test_8 {
+non-fluents nf_emergency_continuous_time_multiple_vehicles_test_10 {
 	domain = emergency_continuous_time_multiple_vehicles_test;
 	objects {
 		coordinate : {xpos,ypos};
-		vehicle : {v1,v2,v3,v4,v5,v6,v7,v8};
+		vehicle : {v1,v2,v3,v4,v5,v6,v7,v8,v9,v10};
 		cause : {AFA,All,Code1Medical,Code3Med,Code3Trauma,EMS,Fire,Hazmat,MassCasualty,
 				 MVA,NuisanceFire,Other,OtherEMS,OtherFire,
 				 Overpressure,Rescue,StructureFire,Transport,VehicleFire,WildlandFire};
@@ -24,6 +24,9 @@ non-fluents nf_emergency_continuous_time_multiple_vehicles_test_8 {
 		vehicleHome(v6,xpos)=1418.0; vehicleHome(v6,ypos)=69.0;	
 		vehicleHome(v7,xpos)=1418.0; vehicleHome(v7,ypos)=65.0;	
 		vehicleHome(v8,xpos)=1415.0; vehicleHome(v8,ypos)=64.0;	
+		vehicleHome(v9,xpos)=1415.0; vehicleHome(v9,ypos)=64.0;	
+		vehicleHome(v10,xpos)=1415.0; vehicleHome(v10,ypos)=64.0;	
+			
 	
 		BEFORE(AFA,All)=true;
 		BEFORE(AFA,Code1Medical)=true;
@@ -245,6 +248,10 @@ non-fluents nf_emergency_continuous_time_multiple_vehicles_test_8 {
 		HasCapability(v7,Engine)=true;
 		HasCapability(v7,Ambulance)=true;
 		HasCapability(v8,Engine)=true;
+		HasCapability(v9,Engine)=true;
+		HasCapability(v9,Ladder)=true;
+		HasCapability(v10,Ambulance)=true;
+		HasCapability(v10,Engine)=true;
 		
 		BEFORE_REGION(Full,GoodSam-T)=true;
 		BEFORE_REGION(Full,Stonybrook)=true;
@@ -325,6 +332,10 @@ non-fluents nf_emergency_continuous_time_multiple_vehicles_test_8 {
 		
 		causeRequirement(NuisanceFire,Full,Engine)=1;
 		
+		causeRequirement(Transport,GoodSam-T,Ambulance)=1;
+		causeRequirement(Transport,EMS-City,Ambulance)=1;
+		causeRequirement(Transport,EMS-County,Ambulance)=1;
+		
 		causeRequirement(Other,Full,Engine)=1;
 		
 		causeRequirement(OtherEMS,Full,Ambulance)=1;
@@ -351,10 +362,6 @@ non-fluents nf_emergency_continuous_time_multiple_vehicles_test_8 {
 		causeRequirement(StructureFire,Full,Engine)=1;
 		causeRequirement(StructureFire,Fire-Rural,Engine)=3;
 		causeRequirement(StructureFire,Fire-Rural,Command)=1;
-		
-		causeRequirement(Transport,GoodSam-T,Ambulance)=1;
-		causeRequirement(Transport,EMS-City,Ambulance)=1;
-		causeRequirement(Transport,EMS-County,Ambulance)=1;
 		
 		causeRequirement(VehicleFire,Full,Engine)=1;
 		causeRequirement(VehicleFire,Fire-City,Engine)=1;
@@ -387,9 +394,9 @@ non-fluents nf_emergency_continuous_time_multiple_vehicles_test_8 {
 	};
 }
 
-instance inst_emergency_continuous_time_multiple_vehicles_test_8 {
+instance inst_emergency_continuous_time_multiple_vehicles_test_10 {
 	domain = emergency_continuous_time_multiple_vehicles_test;
-	non-fluents = nf_emergency_continuous_time_multiple_vehicles_test_8;
+	non-fluents = nf_emergency_continuous_time_multiple_vehicles_test_10;
 	
 	init-state {
 		
@@ -406,6 +413,8 @@ instance inst_emergency_continuous_time_multiple_vehicles_test_8 {
 		lastVehicleService(v6,xpos)=1418.0; lastVehicleService(v6,ypos)=69.0;
 		lastVehicleService(v7,xpos)=1418.0; lastVehicleService(v7,ypos)=65.0;
 		lastVehicleService(v8,xpos)=1415.0; lastVehicleService(v8,ypos)=64.0;
+		lastVehicleService(v9,xpos)=1415.0; lastVehicleService(v9,ypos)=64.0;
+		lastVehicleService(v10,xpos)=1415.0; lastVehicleService(v10,ypos)=64.0;
 		
 		currentCallCode(AFA)=true;
 		currentCallRegion(Fire-City)=true;

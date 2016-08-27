@@ -411,6 +411,6 @@ instance inst_emergency_continuous_time_multiple_vehicles_test_4 {
 	};
 	
 	//max-nondef-actions = 10;
-	horizon  = 40;
+	horizon  = 240;
 	discount = 1.0;
 }

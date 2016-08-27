@@ -1,8 +1,8 @@
-non-fluents nf_emergency_continuous_time_multiple_vehicles_test_8 {
+non-fluents nf_emergency_continuous_time_multiple_vehicles_test_6 {
 	domain = emergency_continuous_time_multiple_vehicles_test;
 	objects {
 		coordinate : {xpos,ypos};
-		vehicle : {v1,v2,v3,v4,v5,v6,v7,v8};
+		vehicle : {v1,v2,v3,v4,v5,v6};
 		cause : {AFA,All,Code1Medical,Code3Med,Code3Trauma,EMS,Fire,Hazmat,MassCasualty,
 				 MVA,NuisanceFire,Other,OtherEMS,OtherFire,
 				 Overpressure,Rescue,StructureFire,Transport,VehicleFire,WildlandFire};
@@ -22,8 +22,6 @@ non-fluents nf_emergency_continuous_time_multiple_vehicles_test_8 {
 		vehicleHome(v4,xpos)=1417.0; vehicleHome(v4,ypos)=63.0;	
 		vehicleHome(v5,xpos)=1415.0; vehicleHome(v5,ypos)=66.0;	
 		vehicleHome(v6,xpos)=1418.0; vehicleHome(v6,ypos)=69.0;	
-		vehicleHome(v7,xpos)=1418.0; vehicleHome(v7,ypos)=65.0;	
-		vehicleHome(v8,xpos)=1415.0; vehicleHome(v8,ypos)=64.0;	
 	
 		BEFORE(AFA,All)=true;
 		BEFORE(AFA,Code1Medical)=true;
@@ -242,9 +240,6 @@ non-fluents nf_emergency_continuous_time_multiple_vehicles_test_8 {
 		HasCapability(v5,Ambulance)=true;
 		HasCapability(v6,Engine)=true;
 		HasCapability(v6,Ambulance)=true;
-		HasCapability(v7,Engine)=true;
-		HasCapability(v7,Ambulance)=true;
-		HasCapability(v8,Engine)=true;
 		
 		BEFORE_REGION(Full,GoodSam-T)=true;
 		BEFORE_REGION(Full,Stonybrook)=true;
@@ -387,9 +382,9 @@ non-fluents nf_emergency_continuous_time_multiple_vehicles_test_8 {
 	};
 }
 
-instance inst_emergency_continuous_time_multiple_vehicles_test_8 {
+instance inst_emergency_continuous_time_multiple_vehicles_test_6 {
 	domain = emergency_continuous_time_multiple_vehicles_test;
-	non-fluents = nf_emergency_continuous_time_multiple_vehicles_test_8;
+	non-fluents = nf_emergency_continuous_time_multiple_vehicles_test_6;
 	
 	init-state {
 		
@@ -404,8 +399,6 @@ instance inst_emergency_continuous_time_multiple_vehicles_test_8 {
 		lastVehicleService(v4,xpos)=1417.0; lastVehicleService(v4,ypos)=63.0;
 		lastVehicleService(v5,xpos)=1415.0; lastVehicleService(v5,ypos)=66.0;
 		lastVehicleService(v6,xpos)=1418.0; lastVehicleService(v6,ypos)=69.0;
-		lastVehicleService(v7,xpos)=1418.0; lastVehicleService(v7,ypos)=65.0;
-		lastVehicleService(v8,xpos)=1415.0; lastVehicleService(v8,ypos)=64.0;
 		
 		currentCallCode(AFA)=true;
 		currentCallRegion(Fire-City)=true;
