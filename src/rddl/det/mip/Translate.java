@@ -5,6 +5,7 @@ import gurobi.GRB.DoubleAttr;
 import gurobi.GRB.DoubleParam;
 import gurobi.GRB.IntAttr;
 import gurobi.GRB.IntParam;
+import gurobi.GRB.StringAttr;
 import gurobi.GRB.StringParam;
 import gurobi.GRBConstr;
 import gurobi.GRBEnv;
@@ -126,7 +127,8 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 	
 	//these are saved between invocations of getActions()
 	//these are never removed
-	protected List<EXPR> saved_expr = new ArrayList<RDDL.EXPR>();
+	protected List<EXPR> saved_expr = new ArrayList<>();
+	protected List<GRBConstr> saved_constr = new ArrayList<>();
 //	protected List<GRBVar> saved_vars = new ArrayList<GRBVar>();
 	//saved vars removed - any saved expr will save the corresponding grbvar
 	
@@ -138,6 +140,7 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 	//these are removed from the MIP 
 	//recursively defined vars/exprs would not affect opt
 	protected List<GRBConstr> to_remove_constr = new ArrayList<GRBConstr>();
+	protected List<EXPR> to_remove_expr = new ArrayList<>();
 	
 	protected Timer translate_time;
 	private StateViz viz;
@@ -371,8 +374,16 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 		
 //		RDDL.EXPR.cleanUpGRB();
 		for( final GRBConstr constr : to_remove_constr ){
-			grb_model.remove( constr );
+			if( !saved_constr.contains(constr) ){
+				System.out.println("Removing constraint " + constr.get(StringAttr.ConstrName) );
+				grb_model.remove( constr );				
+			}
 		}
+		to_remove_constr.clear();
+		
+		to_remove_expr.clear();
+		grb_model.update();
+	}
 		
 //		ArrayList<EXPR> new_list = new ArrayList<>( to_remove_expr );
 //		new_list.removeAll( saved_expr );
@@ -405,8 +416,7 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 //			}
 //		}
 		
-		to_remove_constr.clear();
-		grb_model.update();
+//		
 //		to_remove_expr.clear();
 //		to_remove_vars.clear();
 		
@@ -415,7 +425,7 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 //		grb_env.dispose();
 //		grb_env = null;
 //		initializeGRB();
-	}
+//	}
 	
 	private void prepareModel(  HashMap<PVAR_NAME, HashMap<ArrayList<LCONST>, Object>> subs ) throws Exception {
 		translate_time.ResumeTimer();
@@ -672,11 +682,12 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 			for( int t = 0 ; t < TIME_TERMS.size(); ++t ){
 				EXPR this_t = non_stationary_e.substitute( 
 						 	Collections.singletonMap( TIME_PREDICATE, TIME_TERMS.get(t) ), constants, objects);
-				GRBVar constrained_var = this_t.getGRBConstr( GRB.EQUAL, grb_model, constants, objects, type_map);
-				grb_model.addConstr( constrained_var, GRB.EQUAL, 1, "constraint=1_"+e.toString()+"time="+t );
+				GRBVar grb_var = this_t.getGRBConstr( GRB.EQUAL, grb_model, constants, objects, type_map);
+				GRBConstr grb_constr = grb_model.addConstr( grb_var, GRB.EQUAL, 1, "constraint=1_"+this_t.toString() );
 //				grb_model.update();
 				
-				saved_expr.add( this_t ); // saved_vars.add( constrained_var );
+				saved_expr.add( this_t ); 
+				saved_constr.add( grb_constr );//saved_vars.add( grb_var );
 			}
 		}
 		
@@ -737,7 +748,8 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 				System.out.println( non_stationary_pvar_expr + " " + rhs_expr );
 				
 //				to_remove_vars.add( lhs_var ); to_remove_vars.add( rhs_var );
-//				to_remove_expr.add( non_stationary_pvar_expr ); to_remove_expr.add( rhs_expr );
+				to_remove_expr.add( non_stationary_pvar_expr ); 
+				to_remove_expr.add( rhs_expr );
 				to_remove_constr.add( new_constr );
 				
 //				saved_vars.add( lhs_var ); saved_vars.add( rhs_var );
@@ -802,7 +814,9 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 						GRBConstr new_constr = grb_model.addConstr( lhs_var, GRB.EQUAL, rhs_var, "CPT_t_"+p.toString()+"_"+terms );
 //						grb_model.update();
 						
-						saved_expr.add( new_lhs_non_stationary ); saved_expr.add( new_rhs_non_stationary );
+						saved_constr.add( new_constr );
+						saved_expr.add( new_lhs_non_stationary ); 
+						saved_expr.add( new_rhs_non_stationary );
 //						saved_vars.add( lhs_var ); saved_vars.add( rhs_var );
 //						to_remove_vars.add( lhs_var ); to_remove_vars.add( rhs_var );
 //						to_remove_expr.add( new_lhs_non_stationary ); to_remove_expr.add( new_rhs_non_stationary );

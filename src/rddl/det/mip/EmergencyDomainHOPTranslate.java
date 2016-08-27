@@ -55,9 +55,10 @@ public class EmergencyDomainHOPTranslate extends HOPTranslate {
 	}
 	
 	@Override
-	protected void translateCPTs(HashMap<PVAR_NAME,HashMap<ArrayList<LCONST>,Object>> subs) throws GRBException {
-		
-		GRBExpr old_obj = grb_model.getObjective();
+	protected void prepareModel( ) throws Exception{
+		translate_time.ResumeTimer();
+		System.out.println("--------------Translating Constraints-------------");
+		translateConstraints( );
 		
 		ArrayList<HashMap<PVAR_NAME, ArrayList<ArrayList<LCONST>>>> src 
 		= new ArrayList< HashMap<PVAR_NAME, ArrayList<ArrayList<LCONST>>> >();
@@ -71,37 +72,6 @@ public class EmergencyDomainHOPTranslate extends HOPTranslate {
 		ArrayList<Integer> future_terms_indices = new ArrayList<Integer>( future_TERMS.size() );
 		for( int i = 0 ; i < future_TERMS.size(); ++i ){
 			future_terms_indices.add( i );
-		}
-		
-		final RandomDataGenerator rng = this.rand;
-		final int numFutures = this.num_futures;
-		final int length = this.lookahead;
-		
-		EmergencyDomainDataReelElement currentElem = new EmergencyDomainDataReelElement(subs);
-		ArrayList<EmergencyDomainDataReelElement>[] futures 
-			= reel.getFutures(currentElem, rng, numFutures, length, reel.getTrainingFoldIdx() );
-		ArrayList<Pair<EXPR, EXPR>> futuresExpressions 
-			= reel.to_RDDL_EXPR_constraints(futures, future_PREDICATE, 
-				future_TERMS, TIME_PREDICATE, TIME_TERMS, constants, objects);
-		for( Pair<EXPR,EXPR> pairFuture : futuresExpressions ){
-			final EXPR lhs_future = pairFuture._o1;
-			final EXPR rhs_future = pairFuture._o2;
-			synchronized ( grb_model ) {
-				GRBVar lhs_var = lhs_future.getGRBConstr( 
-						GRB.EQUAL, grb_model, constants, objects, type_map);
-				GRBVar rhs_var = rhs_future.getGRBConstr( 
-						GRB.EQUAL, grb_model, constants, objects, type_map);
-				try {
-					System.out.println( "Data_"+lhs_future.toString()+"_"+rhs_future.toString() );
-					GRBConstr this_constr 
-						= grb_model.addConstr( lhs_var, GRB.EQUAL, rhs_var, 
-								"Data_"+lhs_future.toString()+"_"+rhs_future.toString() );
-					to_remove_constr.add( this_constr );
-				} catch (GRBException e) {
-					e.printStackTrace();
-					System.exit(1);
-				}
-			}
 		}
 		
 		src.stream().forEach( new Consumer< HashMap<PVAR_NAME, ArrayList<ArrayList<LCONST> > > >() {
@@ -176,14 +146,17 @@ public class EmergencyDomainHOPTranslate extends HOPTranslate {
 												EXPR rhs_future = future_gen.getFuture( rhs, rand, objects );
 																	
 												synchronized ( grb_model ) {
-													GRBVar lhs_var = lhs_future.getGRBConstr( 
-															GRB.EQUAL, grb_model, constants, objects, type_map);
-													GRBVar rhs_var = rhs_future.getGRBConstr( 
-															GRB.EQUAL, grb_model, constants, objects, type_map);
 													try {
+														GRBVar lhs_var = lhs_future.getGRBConstr( 
+															GRB.EQUAL, grb_model, constants, objects, type_map);
+														GRBVar rhs_var = rhs_future.getGRBConstr( 
+															GRB.EQUAL, grb_model, constants, objects, type_map);
+													
 														GRBConstr this_constr 
 															= grb_model.addConstr( lhs_var, GRB.EQUAL, rhs_var, "CPT_"+p.toString()+"_"+terms+"_"+time_term_index+"_"+future_term_index );
-														to_remove_constr.add( this_constr );
+														saved_constr.add( this_constr );
+														saved_expr.add(lhs_future);
+														saved_expr.add(rhs_future);
 													} catch (GRBException e) {
 														e.printStackTrace();
 														System.exit(1);
@@ -199,6 +172,53 @@ public class EmergencyDomainHOPTranslate extends HOPTranslate {
 				});
 			}
 		});
+		
+		System.out.println("--------------Translating Reward-------------");
+		translateReward( );
+		translate_time.PauseTimer();
+	}
+	
+	@Override
+	protected void translateCPTs(HashMap<PVAR_NAME,HashMap<ArrayList<LCONST>,Object>> subs) throws GRBException {
+		
+		GRBExpr old_obj = grb_model.getObjective();
+		
+		ArrayList<HashMap<PVAR_NAME, ArrayList<ArrayList<LCONST>>>> src 
+		= new ArrayList< HashMap<PVAR_NAME, ArrayList<ArrayList<LCONST>>> >();
+		src.add( rddl_state_vars ); src.add( rddl_interm_vars ); src.add( rddl_observ_vars );
+		
+		final RandomDataGenerator rng = this.rand;
+		final int numFutures = this.num_futures;
+		final int length = this.lookahead;
+		
+		EmergencyDomainDataReelElement currentElem = new EmergencyDomainDataReelElement(subs);
+		ArrayList<EmergencyDomainDataReelElement>[] futures 
+			= reel.getFutures(currentElem, rng, numFutures, length, reel.getTrainingFoldIdx() );
+		ArrayList<Pair<EXPR, EXPR>> futuresExpressions 
+			= reel.to_RDDL_EXPR_constraints(futures, future_PREDICATE, 
+				future_TERMS, TIME_PREDICATE, TIME_TERMS, constants, objects);
+		for( Pair<EXPR,EXPR> pairFuture : futuresExpressions ){
+			final EXPR lhs_future = pairFuture._o1;
+			final EXPR rhs_future = pairFuture._o2;
+			synchronized ( grb_model ) {
+				GRBVar lhs_var = lhs_future.getGRBConstr( 
+						GRB.EQUAL, grb_model, constants, objects, type_map);
+				GRBVar rhs_var = rhs_future.getGRBConstr( 
+						GRB.EQUAL, grb_model, constants, objects, type_map);
+				try {
+					System.out.println( "Data_"+lhs_future.toString()+"_"+rhs_future.toString() );
+					GRBConstr this_constr 
+						= grb_model.addConstr( lhs_var, GRB.EQUAL, rhs_var, 
+								"Data_"+lhs_future.toString()+"_"+rhs_future.toString() );
+					to_remove_constr.add( this_constr );
+					to_remove_expr.add(lhs_future);
+					to_remove_expr.add(rhs_future);
+				} catch (GRBException e) {
+					e.printStackTrace();
+					System.exit(1);
+				}
+			}
+		}
 		
 		grb_model.setObjective(old_obj);
 		grb_model.update();

@@ -18,6 +18,7 @@ import gurobi.GRBLinExpr;
 import gurobi.GRBModel;
 import gurobi.GRBVar;
 import gurobi.GRB.DoubleAttr;
+import gurobi.GRB.StringAttr;
 
 import java.io.File;
 import java.nio.channels.UnsupportedAddressTypeException;
@@ -1757,8 +1758,9 @@ public class RDDL {
 				//problem with using toString() for name
 				//max length is 255 chars
 				String next_name = nextName();
-				name_map.put( expr.toString(), next_name );
-				reverse_name_map.put( next_name, expr.toString() );
+				final String exp_string = expr.toString();
+				name_map.put( exp_string, next_name );
+				reverse_name_map.put( next_name, exp_string );
 				
 				double lb = getGRB_LB(type); double ub = getGRB_UB(type);
 				GRBVar new_var = null;
@@ -1781,6 +1783,31 @@ public class RDDL {
 			return ("v"+(++nameId )).toString();
 		}
 		
+//		private static void removeGRBConstr(GRBVar grb_var, GRBModel grb_model) throws GRBException {
+//			if( grb_var != null ){
+//				final String grb_var_str = grb_var.get(StringAttr.VarName);
+//				if( reverse_name_map.containsKey(grb_var_str) ){
+//					final String expr_str = reverse_name_map.get( grb_var_str );
+//					reverse_name_map.remove(grb_var_str);
+//					name_map.remove(expr_str);
+//				}
+//				
+//				grb_model.remove(grb_var);
+//			}
+//		}
+
+//		public static void removeGRBConstr(EXPR exp, GRBModel grb_model) throws GRBException {
+//			if(grb_cache.containsKey(exp)){
+//				final String exp_str = exp.toString();
+//				final String var_str = name_map.get(exp_str);
+//				
+//				name_map.remove(exp_str);
+//				reverse_name_map.remove(var_str);
+//				grb_model.remove(grb_cache.get(exp));
+//				grb_cache.remove(exp);
+//			}
+//		}
+
 		public GRBVar addGRBObjectiveTerm( final GRBModel model , 
 				final Map< PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants,
 				final Map< TYPE_NAME, OBJECTS_DEF > objects , 

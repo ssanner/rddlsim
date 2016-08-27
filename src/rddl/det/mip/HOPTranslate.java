@@ -238,23 +238,24 @@ public class HOPTranslate extends Translate implements Policy {
 //															synchronized ( rhs_future ) {
 																synchronized ( grb_model ) {
 																	
-																	GRBVar lhs_var = lhs_future.getGRBConstr( 
+																	try {
+																		GRBVar lhs_var = lhs_future.getGRBConstr( 
 																			GRB.EQUAL, grb_model, constants, objects, type_map);
 
-																	GRBVar rhs_var = rhs_future.getGRBConstr( 
-																			GRB.EQUAL, grb_model, constants, objects, type_map);
-																	
-																	try {
+																		GRBVar rhs_var = rhs_future.getGRBConstr( 
+																				GRB.EQUAL, grb_model, constants, objects, type_map);
+																		
 																		GRBConstr this_constr 
 																			= grb_model.addConstr( lhs_var, GRB.EQUAL, rhs_var, "CPT_"+p.toString()+"_"+terms+"_"+time_term_index+"_"+future_term_index );
 																		to_remove_constr.add( this_constr );
+																		to_remove_expr.add( lhs_future );
+																		to_remove_expr.add( rhs_future );
 																	} catch (GRBException e) {
 																		e.printStackTrace();
 																		System.exit(1);
 																	}
 
-//																	saved_expr.add( lhs_future );
-//																	saved_expr.add( rhs_future );
+																	
 
 //																	saved_vars.add( lhs_var );
 //																	saved_vars.add( rhs_var );
@@ -456,6 +457,7 @@ public class HOPTranslate extends Translate implements Policy {
 //					saved_vars.add( lhs_var ); saved_expr.add( this_future_init_state );
 //					saved_vars.add( rhs_var ); saved_expr.add( rhs_expr );
 					
+					to_remove_expr.add( this_future_init_state );
 					to_remove_constr.add( this_constr );
 					
 				}
@@ -497,10 +499,11 @@ public class HOPTranslate extends Translate implements Policy {
 								synchronized( grb_model ){
 									try {
 										GRBVar constrained_var = this_tf.getGRBConstr( GRB.EQUAL, grb_model, constants, objects, type_map);
-										String nam = ("constraint=1_"+e.toString()+"_"+time_term+"_" + future_term);
-										grb_model.addConstr( constrained_var, GRB.EQUAL, 1, 
-												nam.substring(0, Math.min(255, nam.length() ) ) );
+										String nam = ("constraint=1_"+this_tf.toString() );
+										GRBConstr this_constr = grb_model.addConstr( constrained_var, GRB.EQUAL, 1,
+												nam.substring(0, Math.min( nam.length(), 255 ) ) );
 										saved_expr.add( this_tf ); 
+										saved_constr.add(this_constr);
 										//saved_vars.add( constrained_var );
 									} catch (GRBException e) {
 										e.printStackTrace();
@@ -555,8 +558,9 @@ public class HOPTranslate extends Translate implements Policy {
 				synchronized( grb_model ){
 					GRBVar gvar = t.getGRBConstr( GRB.EQUAL, grb_model, constants, objects, type_map);
 					try {
-						grb_model.addConstr( gvar, GRB.EQUAL, 1, "hindsight_constraint_"+t.toString() );
+						GRBConstr this_constr = grb_model.addConstr( gvar, GRB.EQUAL, 1, "hindsight_constraint_"+t.toString() );
 						saved_expr.add( t ); // saved_vars.add( gvar );
+						saved_constr.add(this_constr);
 					} catch (GRBException e) {
 						e.printStackTrace();
 						System.exit(1);
@@ -566,37 +570,37 @@ public class HOPTranslate extends Translate implements Policy {
 		});
 		
 		//startring actionv ars at 0.0
-		rddl_action_vars.forEach( new BiConsumer<PVAR_NAME, ArrayList<ArrayList<LCONST>>>() {
-			@Override
-			public void accept(PVAR_NAME pvar, ArrayList<ArrayList<LCONST>> u) {
-				u.forEach( new Consumer<ArrayList<LCONST>>() {
-					@Override
-					public void accept(ArrayList<LCONST> terms) {
-						TIME_TERMS.forEach( new Consumer<LCONST>() {
-							public void accept(LCONST time_term) {
-								future_TERMS.forEach( new Consumer<LCONST>(){ 
-									@Override
-									public void accept(LCONST future_term) {
-										EXPR this_expr = new PVAR_EXPR( pvar._sPVarName, terms )
-											.addTerm( TIME_PREDICATE, constants, objects )
-											.substitute( Collections.singletonMap( TIME_PREDICATE, time_term), constants, objects)
-											.addTerm( future_PREDICATE, constants, objects )
-											.substitute( Collections.singletonMap( future_PREDICATE, future_term), constants, objects);
-										final GRBVar this_var = EXPR.getGRBVar(this_expr, grb_model, constants, objects, type_map); 
-										try {
-											this_var.set( DoubleAttr.Start, 0.0 );
-										} catch (GRBException e) {
-											e.printStackTrace();
-											System.exit(1);
-										}
-									}
-								});
-							};
-						});
-					}
-				});
-			}
-		});
+//		rddl_action_vars.forEach( new BiConsumer<PVAR_NAME, ArrayList<ArrayList<LCONST>>>() {
+//			@Override
+//			public void accept(PVAR_NAME pvar, ArrayList<ArrayList<LCONST>> u) {
+//				u.forEach( new Consumer<ArrayList<LCONST>>() {
+//					@Override
+//					public void accept(ArrayList<LCONST> terms) {
+//						TIME_TERMS.forEach( new Consumer<LCONST>() {
+//							public void accept(LCONST time_term) {
+//								future_TERMS.forEach( new Consumer<LCONST>(){ 
+//									@Override
+//									public void accept(LCONST future_term) {
+//										EXPR this_expr = new PVAR_EXPR( pvar._sPVarName, terms )
+//											.addTerm( TIME_PREDICATE, constants, objects )
+//											.substitute( Collections.singletonMap( TIME_PREDICATE, time_term), constants, objects)
+//											.addTerm( future_PREDICATE, constants, objects )
+//											.substitute( Collections.singletonMap( future_PREDICATE, future_term), constants, objects);
+//										final GRBVar this_var = EXPR.getGRBVar(this_expr, grb_model, constants, objects, type_map); 
+//										try {
+//											this_var.set( DoubleAttr.Start, 0.0 );
+//										} catch (GRBException e) {
+//											e.printStackTrace();
+//											System.exit(1);
+//										}
+//									}
+//								});
+//							};
+//						});
+//					}
+//				});
+//			}
+//		});
 		
 		grb_model.setObjective(old_obj);
 		grb_model.update();
