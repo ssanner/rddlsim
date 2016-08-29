@@ -451,7 +451,8 @@ public class HOPTranslate extends Translate implements Policy {
 					.substitute( Collections.singletonMap( future_PREDICATE, future_TERMS.get(future_id) ), constants, objects);
 				
 					GRBVar lhs_var = this_future_init_state.getGRBConstr( GRB.EQUAL, grb_model, constants, objects, type_map);
-					GRBConstr this_constr = grb_model.addConstr( lhs_var, GRB.EQUAL, rhs_var, "initState_"+this_future_init_state.toString() );
+					GRBConstr this_constr = grb_model.addConstr( lhs_var, GRB.EQUAL, rhs_var, 
+							"initState_"+this_future_init_state.toString()+"_"+rhs_expr.toString() );
 					System.out.println( this_future_init_state + " " + rhs_expr );
 					
 //					saved_vars.add( lhs_var ); saved_expr.add( this_future_init_state );
