@@ -1,5 +1,23 @@
 package rddl.det.mip;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
 import gurobi.GRB;
 import gurobi.GRB.DoubleAttr;
 import gurobi.GRB.DoubleParam;
@@ -14,68 +32,30 @@ import gurobi.GRBExpr;
 import gurobi.GRBLinExpr;
 import gurobi.GRBModel;
 import gurobi.GRBVar;
-
-import java.io.BufferedOutputStream;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.math.RoundingMode;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.sql.Time;
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.ToDoubleFunction;
-import java.util.stream.Collectors;
-
-import org.apache.commons.math3.random.RandomDataGenerator;
-
 import rddl.EvalException;
 import rddl.RDDL;
-import rddl.RDDL.AGG_EXPR;
 import rddl.RDDL.BOOL_CONST_EXPR;
 import rddl.RDDL.BOOL_EXPR;
-import rddl.RDDL.COMP_EXPR;
-import rddl.RDDL.CONN_EXPR;
 import rddl.RDDL.CPF_DEF;
 import rddl.RDDL.DOMAIN;
-import rddl.RDDL.DiracDelta;
 import rddl.RDDL.EXPR;
 import rddl.RDDL.INSTANCE;
 import rddl.RDDL.INT_CONST_EXPR;
-import rddl.RDDL.KronDelta;
 import rddl.RDDL.LCONST;
 import rddl.RDDL.LTERM;
-import rddl.RDDL.LTYPED_VAR;
 import rddl.RDDL.LVAR;
 import rddl.RDDL.NONFLUENTS;
 import rddl.RDDL.OBJECTS_DEF;
-import rddl.RDDL.OPER_EXPR;
 import rddl.RDDL.PVARIABLE_DEF;
 import rddl.RDDL.PVAR_EXPR;
 import rddl.RDDL.PVAR_INST_DEF;
 import rddl.RDDL.PVAR_NAME;
-import rddl.RDDL.QUANT_EXPR;
 import rddl.RDDL.REAL_CONST_EXPR;
 import rddl.RDDL.TYPE_NAME;
 import rddl.State;
 import rddl.parser.ParseException;
 import rddl.policy.Policy;
 import rddl.viz.StateViz;
-import util.Pair;
 import util.Timer;
 
 public class Translate implements Policy { //  extends rddl.policy.Policy {
@@ -83,8 +63,8 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 	private static final int GRB_INFUNBDINFO = 1;
 	private static final int GRB_DUALREDUCTIONS = 0;
 	private static final double GRB_MIPGAP = 0.01;
-	private static final double GRB_HEURISTIC = 0.1;
-	private static final int GRB_IISMethod = -1;
+	private static final double GRB_HEURISTIC = 0.2;
+	private static final int GRB_IISMethod = 1;
 	
 	protected static final LVAR TIME_PREDICATE = new LVAR( "?time" );
 	private static final TYPE_NAME TIME_TYPE = new TYPE_NAME( "time" );
@@ -110,8 +90,10 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 	protected List<String> string_action_vars;
 	private List<String> string_observ_vars;
 	private List<String> string_interm_vars;
-	private static GRBEnv grb_env;
-	protected GRBModel grb_model = null;
+	private GRBEnv grb_env;
+	
+	protected GRBModel static_grb_model = null;
+	
 	private HashMap<PVAR_NAME, TYPE_NAME> pred_type = new HashMap<>();
 	
 //	private HashMap<String, GRBVar> grb_string_map  
@@ -133,14 +115,14 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 	//saved vars removed - any saved expr will save the corresponding grbvar
 	
 	//these are removed between invocations of getActions()
-//	protected List<EXPR> to_remove_expr = new ArrayList<RDDL.EXPR>();
-//	protected List<GRBVar> to_remove_vars = new ArrayList<GRBVar>();
+	protected List<EXPR> to_remove_expr = new ArrayList<RDDL.EXPR>();
+	protected List<GRBConstr> to_remove_constr = new ArrayList<>();
 	
 	//even though extraneous exprs/vars may be in the model
 	//these are removed from the MIP 
 	//recursively defined vars/exprs would not affect opt
-	protected List<GRBConstr> to_remove_constr = new ArrayList<GRBConstr>();
-	protected List<EXPR> to_remove_expr = new ArrayList<>();
+//	protected List<GRBConstr> to_remove_constr = new ArrayList<GRBConstr>();
+//	protected List<EXPR> to_remove_expr = new ArrayList<>();
 	
 	protected Timer translate_time;
 	private StateViz viz;
@@ -178,6 +160,7 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 	}
 	
 	protected void addExtraPredicates() {
+		removeExtraPredicates();
 		for( int t = 0 ; t < lookahead; ++t ){
 			TIME_TERMS.add( new RDDL.OBJECT_VAL( "time" + t ) );
 		}
@@ -187,87 +170,98 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 	//i think this is not necessary
 	//since we are only removing constraints between states
 	//vars are added as needed by EXPR
-	protected void addAllVariables() {
-		//canonical vars for pvar exprs
-		HashMap<PVAR_NAME, ArrayList<ArrayList<LCONST>>> src = new HashMap<PVAR_NAME, ArrayList<ArrayList<LCONST>>>();
-		src.putAll( rddl_state_vars ); src.putAll( rddl_action_vars ); src.putAll( rddl_interm_vars ); src.putAll( rddl_observ_vars );
-		
-		src.forEach( new BiConsumer<PVAR_NAME, ArrayList<ArrayList<LCONST>> >() {
-			@Override
-			public void accept(PVAR_NAME pvar, ArrayList<ArrayList<LCONST>> u) {
-				u.parallelStream().forEach( new Consumer<ArrayList<LCONST>>() {
-					@Override
-					public void accept(ArrayList<LCONST> terms) {
-						EXPR pvar_expr = new PVAR_EXPR(pvar._sPVarName, terms )
-							.addTerm(TIME_PREDICATE, constants, objects);
-
-						TIME_TERMS.parallelStream().forEach( new Consumer<LCONST>() {
-							@Override
-							public void accept(LCONST time_term ) {
-								EXPR this_t = pvar_expr.substitute( Collections.singletonMap( TIME_PREDICATE, time_term), constants, objects);
-								synchronized( grb_model ){
-									System.out.println("Adding var " + pvar.toString() + " " + terms + " " + time_term );
-									GRBVar new_var = this_t.getGRBConstr( GRB.EQUAL, grb_model, constants, objects, type_map);
-//									saved_vars.add( new_var );
-									saved_expr.add( this_t );
-								}
-							}
-						});
-					}
-				});
-			}
-		});
-		
-	}
+//	protected void addAllVariables() {
+//		//canonical vars for pvar exprs
+//		HashMap<PVAR_NAME, ArrayList<ArrayList<LCONST>>> src = new HashMap<PVAR_NAME, ArrayList<ArrayList<LCONST>>>();
+//		src.putAll( rddl_state_vars ); src.putAll( rddl_action_vars ); src.putAll( rddl_interm_vars ); src.putAll( rddl_observ_vars );
+//		
+//		src.forEach( new BiConsumer<PVAR_NAME, ArrayList<ArrayList<LCONST>> >() {
+//			@Override
+//			public void accept(PVAR_NAME pvar, ArrayList<ArrayList<LCONST>> u) {
+//				u.parallelStream().forEach( new Consumer<ArrayList<LCONST>>() {
+//					@Override
+//					public void accept(ArrayList<LCONST> terms) {
+//						EXPR pvar_expr = new PVAR_EXPR(pvar._sPVarName, terms )
+//							.addTerm(TIME_PREDICATE, constants, objects);
+//
+//						TIME_TERMS.parallelStream().forEach( new Consumer<LCONST>() {
+//							@Override
+//							public void accept(LCONST time_term ) {
+//								EXPR this_t = pvar_expr.substitute( Collections.singletonMap( TIME_PREDICATE, time_term), constants, objects);
+//								synchronized( static_grb_model ){
+//									System.out.println("Adding var " + pvar.toString() + " " + terms + " " + time_term );
+//									GRBVar new_var = this_t.getGRBConstr( GRB.EQUAL, static_grb_model, constants, objects, type_map);
+////									saved_vars.add( new_var );
+//									saved_expr.add( this_t );
+//								}
+//							}
+//						});
+//					}
+//				});
+//			}
+//		});
+//		
+//	}
 
 	public Map<EXPR, Double> doPlanInitState( ) throws Exception{
-		if( grb_model == null ){
-			firstTimeModel();
-		}
 		return doPlan( getSubsWithDefaults(rddl_state), true ); 
 	}
 
 	public Map< EXPR, Double > doPlan(  HashMap<PVAR_NAME, HashMap<ArrayList<LCONST>, Object>> subs ,
 			final boolean recover ) throws Exception{
-		if( grb_model == null ){
-			firstTimeModel();
-		}
 		//deterministic : model is already prepared except for initial state
 
+//		final GRBModel dynamic_grb_model = new GRBModel( static_grb_model );
 		translate_time.ResumeTimer();
 		System.out.println("--------------Initial State-------------");
-		translateInitialState( subs );
+		translateInitialState( static_grb_model, subs );
 		translate_time.PauseTimer();
 		
+		int exit_code = -1;
 		try{
-			int exit_code = goOptimize();
+			exit_code = goOptimize( static_grb_model );
 		}catch( GRBException exc ){
 			int error_code = exc.getErrorCode();
+			System.out.println("Error code : " + error_code );
 			if( recover ){ //error_code == GRB.ERROR_OUT_OF_MEMORY && recover ){
 				System.out.println("cleaning up and retrying");
-				handleOOM();
+				handleOOM( static_grb_model );
 				return doPlan( subs, false );
 			}else{
 				throw exc;
 			}
+		}finally {
+			System.out.println("Exit code : " + exit_code );
 		}
 		
-		Map< EXPR, Double > ret = outputResults();
+		Map< EXPR, Double > ret = outputResults( static_grb_model );
 		if( OUTPUT_LP_FILE ) {
-			outputLPFile( );
+			outputLPFile( static_grb_model );
 		}
-		modelSummary();		
-		cleanUp();
+		modelSummary( static_grb_model );		
+		
 		return ret;
 	}
 	
-	protected void handleOOM() {
+	protected void handleOOM(GRBModel grb_model) throws GRBException {
 		System.out.println("JVM free memory : " + Runtime.getRuntime().freeMemory() + " / " + 
 				Runtime.getRuntime().maxMemory() + " = " + ( ((double)Runtime.getRuntime().freeMemory()) / Runtime.getRuntime().maxMemory()) );
 		System.out.println("round end / out of memory detected; trying cleanup");
-		resetGRB();
-		removeExtraPredicates();
-		firstTimeModel();
+		
+		cleanUp(grb_model);
+		grb_model.getEnv().dispose();
+		grb_model.dispose();
+
+		RDDL.EXPR.cleanUpGRB();
+		System.gc();
+		try {
+			Thread.sleep(1*1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+			System.exit(1);
+		}//8 second stall
+		
+		firstTimeModel( );
 	}
 
 	protected void removeExtraPredicates() {
@@ -275,28 +269,10 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 		objects.remove( TIME_TYPE );
 	}
 
-	private void resetGRB() {
-		try{
-			grb_model.dispose();
-			grb_model = null;
-			
-			grb_env.dispose();
-			grb_env = null;
-			
-			RDDL.EXPR.cleanUpGRB();
-		}catch( GRBException exc ){
-			exc.printStackTrace();
-			System.exit(1);
-		}
-		
-		System.gc();
-		try {
-			Thread.sleep(8*1000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-			System.exit(1);
-		}//8 second stall		
-	}
+//	private void resetGRB(GRBModel grb_model) throws GRBException {
+//		grb_model.dispose();
+//				
+//	}
 
 //	public Map< EXPR, Double >  doPlan( final ArrayList<PVAR_INST_DEF> initState, 
 //			final boolean recover ) throws Exception{
@@ -342,10 +318,18 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 		if( viz != null ){
 			viz.close();
 		}
-		resetGRB();
+		
+		try {
+			handleOOM(static_grb_model);
+			static_grb_model = null;
+			grb_env = null;
+		} catch (GRBException e) {
+			e.printStackTrace();
+			System.exit(1);
+		} 
 	}
 
-	protected void modelSummary() throws GRBException {
+	protected void modelSummary(final GRBModel grb_model) throws GRBException {
 		System.out.println( "Status : "+ grb_model.get( IntAttr.Status ) + "(Optimal/Inf/Unb: " + GRB.OPTIMAL + ", " + GRB.INFEASIBLE +", " + GRB.UNBOUNDED + ")" );
 		System.out.println( "Number of solutions found : " + grb_model.get( IntAttr.SolCount ) );
 		System.out.println( "Number of simplex iterations performed in most recent optimization : " + grb_model.get( DoubleAttr.IterCount ) );	
@@ -369,14 +353,20 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 		System.out.println("Translation time(mins) : " + translate_time.GetTimeSoFarInMinutes() );
 	}
 
-	protected void cleanUp() throws GRBException {
+	protected void cleanUp(final GRBModel grb_model) throws GRBException {
 //		saved_expr.clear(); saved_vars.clear();
 		
 //		RDDL.EXPR.cleanUpGRB();
 		for( final GRBConstr constr : to_remove_constr ){
 			if( !saved_constr.contains(constr) ){
 //				System.out.println(constr.toString());
-//				System.out.println("Removing constraint " + constr.get(StringAttr.ConstrName) );
+				try{
+					System.out.println("Removing constraint " + constr.get(StringAttr.ConstrName) );
+				}catch(GRBException exc){
+						System.out.println(exc.getErrorCode());
+						exc.printStackTrace();
+						System.exit(1);
+				}
 				grb_model.remove( constr );				
 			}
 		}
@@ -428,25 +418,26 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 //		initializeGRB();
 //	}
 	
-	private void prepareModel(  HashMap<PVAR_NAME, HashMap<ArrayList<LCONST>, Object>> subs ) throws Exception {
-		translate_time.ResumeTimer();
-		prepareModel();
-		System.out.println("--------------Initial State-------------");
-		translateInitialState( subs );
-		translate_time.PauseTimer();		
-	}
+//	private void prepareModel( final GRBModel grb_model,
+//			HashMap<PVAR_NAME, HashMap<ArrayList<LCONST>, Object>> subs ) throws Exception {
+//		translate_time.ResumeTimer();
+//		prepareModel( grb_model );
+//		System.out.println("--------------Initial State-------------");
+//		translateInitialState( grb_model, subs );
+//		translate_time.PauseTimer();		
+//	}
 		
 	
 	protected void prepareModel( ) throws Exception{
 		System.out.println("--------------Translating CPTs-------------");
-		translateCPTs( null );
+		translateCPTs( null, static_grb_model );
 		System.out.println("--------------Translating Constraints-------------");
-		translateConstraints( );
+		translateConstraints( static_grb_model );
 		System.out.println("--------------Translating Reward-------------");
-		translateReward( );
+		translateReward( static_grb_model );
 	}
 
-	protected Map<EXPR, Double> outputResults() throws GRBException {
+	protected Map<EXPR, Double> outputResults(final GRBModel grb_model) throws GRBException {
 		HashMap<EXPR, Double> ret = new HashMap< EXPR, Double >();
 
 		try{
@@ -474,18 +465,23 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 				System.out.println("Objective value : " + grb_model.get( DoubleAttr.ObjVal ) );
 				
 			}else{
-				System.out.println("No solution found, returning noop");
+				try{
+					throw new Exception("No solution found, returning noop");	
+				}catch( Exception excp){
+					excp.printStackTrace();
+				}
+				
 				ret = null;
 			}
 			
 		}catch( Exception exc ){
 			exc.printStackTrace();
-			dumpAllAssignments();
+			dumpAllAssignments(grb_model);
 		}		
 		return ret;
 	}
 
-	protected int goOptimize() throws GRBException {
+	protected int goOptimize(final GRBModel grb_model) throws GRBException {
 
 		grb_model.update();
 		System.out.println("Optimizing.............");
@@ -495,26 +491,26 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 		if( grb_model.get( IntAttr.Status ) == GRB.INFEASIBLE ){
 			System.out.println("xxxxxxxx-----Solver says infeasible.-------xxxxxxxx");
 			
-			grb_model.computeIIS();
-	        System.out.println("\nThe following constraints cannot be satisfied (first 100 shown):");
+//			grb_model.computeIIS();
+//	        System.out.println("\nThe following constraints cannot be satisfied (first 100 shown):");
 	        
-	        int count = 0;
-	        for (GRBConstr c : grb_model.getConstrs()) {
-	          if (c.get(GRB.IntAttr.IISConstr) == 1) {
-	        	String constr = c.get(GRB.StringAttr.ConstrName);
-	        	
-	        	System.out.println( constr + " " + EXPR.reverse_name_map.get( constr ) );
-	        	
-	        	count++;
-	        	if( count > 100 ){
-	        		break;
-	        	}
-		            // Remove a single constraint from the model
-	//	            removed.add(c.get(GRB.StringAttr.ConstrName));
-	//	            grb_model.remove(c);
-	//	            break;
-	          }
-	        }
+//	        int count = 0;
+//	        for (GRBConstr c : grb_model.getConstrs()) {
+//	          if (c.get(GRB.IntAttr.IISConstr) == 1) {
+//	        	String constr = c.get(GRB.StringAttr.ConstrName);
+//	        	
+//	        	System.out.println( constr + " " + EXPR.reverse_name_map.get( constr ) );
+//	        	
+////	        	count++;
+////	        	if( count > 100 ){
+////	        		break;
+////	        	}
+//		            // Remove a single constraint from the model
+//	//	            removed.add(c.get(GRB.StringAttr.ConstrName));
+//	//	            grb_model.remove(c);
+//	//	            break;
+//	          }
+//	        }
 		    
 //	        System.out.println("Retrying optimization");
 //	        this.handleOOM();
@@ -530,14 +526,13 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 //	        copy_model.dispose();
 		    
 	        throw new GRBException("Infeasible model.");
-//			}
 		}else if( grb_model.get( IntAttr.Status ) == GRB.UNBOUNDED ){
 			System.out.println(  "Unbounded Ray : " + grb_model.get( DoubleAttr.UnbdRay ) );
 		}
 		return grb_model.get( IntAttr.Status );
 	}
 
-	protected void dumpAllAssignments() {
+	protected void dumpAllAssignments(final GRBModel grb_model) {
 		try {
 			FileWriter file_write = new FileWriter( new File( OUTPUT_FILE + ".result" ) );
 			EXPR.grb_cache.forEach( new BiConsumer<EXPR, GRBVar>() {
@@ -560,7 +555,7 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 		}
 	}
 
-	protected void outputLPFile() throws GRBException, IOException {
+	protected void outputLPFile(final GRBModel grb_model) throws GRBException, IOException {
 		grb_model.write( OUTPUT_FILE );
 		
 		List<String> src = new ArrayList<>( EXPR.reverse_name_map.keySet() );
@@ -626,6 +621,7 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 						
 						   EXPR subs_t = expr.substitute( 
 								   Collections.singletonMap( TIME_PREDICATE, TIME_TERMS.get(time) ), constants, objects);
+						   
 						   try {
 							   GRBVar grb_var = EXPR.grb_cache.get( subs_t );
 							   assert( grb_var != null );
@@ -661,7 +657,7 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 		constants.forEach( (a,b) -> System.out.println( a + " : " + b ) );
 	}
 
-	protected void translateConstraints() throws Exception {
+	protected void translateConstraints(final GRBModel grb_model) throws Exception {
 		
 		GRBExpr old_obj = grb_model.getObjective();
 //		translateMaxNonDef( );
@@ -684,7 +680,9 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 				EXPR this_t = non_stationary_e.substitute( 
 						 	Collections.singletonMap( TIME_PREDICATE, TIME_TERMS.get(t) ), constants, objects);
 				GRBVar grb_var = this_t.getGRBConstr( GRB.EQUAL, grb_model, constants, objects, type_map);
-				GRBConstr grb_constr = grb_model.addConstr( grb_var, GRB.EQUAL, 1, "constraint=1_"+this_t.toString() );
+				final String nam = RDDL.EXPR.getGRBName(this_t)+"=1";
+				GRBConstr grb_constr = grb_model.addConstr( grb_var, GRB.EQUAL, 1, nam );
+				System.out.println(this_t+"=1");
 //				grb_model.update();
 				
 				saved_expr.add( this_t ); 
@@ -693,7 +691,7 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 		}
 		
 		grb_model.setObjective(old_obj);
-//		grb_model.update();
+		grb_model.update();
 	}
 
 //	private void translateMaxNonDef() {
@@ -715,7 +713,8 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 //		grb_model.update();		
 //	}
 
-	protected void translateInitialState( HashMap<PVAR_NAME, HashMap<ArrayList<LCONST>, Object>> subs ) throws GRBException {
+	protected void translateInitialState( final GRBModel grb_model,
+			HashMap<PVAR_NAME, HashMap<ArrayList<LCONST>, Object>> subs ) throws GRBException {
 		
 		GRBExpr old_obj = grb_model.getObjective();
 		
@@ -743,11 +742,14 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 					rhs_expr = new INT_CONST_EXPR( (int)rhs );
 				}
 				GRBVar rhs_var = rhs_expr.getGRBConstr( GRB.EQUAL, grb_model, constants, objects, type_map);
-				GRBConstr new_constr = grb_model.addConstr( lhs_var, GRB.EQUAL, rhs_var, 
-						"initState_"+non_stationary_pvar_expr.toString()+"_"+rhs_expr.toString() );
+				
+				final String nam = RDDL.EXPR.getGRBName(non_stationary_pvar_expr)
+						+"="+RDDL.EXPR.getGRBName(rhs_expr);
+				
+				GRBConstr new_constr = grb_model.addConstr( lhs_var, GRB.EQUAL, rhs_var, nam );
 //				grb_model.update();
 				
-				System.out.println( non_stationary_pvar_expr + " " + rhs_expr );
+				System.out.println( non_stationary_pvar_expr + "=" + rhs_expr );
 				
 //				to_remove_vars.add( lhs_var ); to_remove_vars.add( rhs_var );
 				to_remove_expr.add( non_stationary_pvar_expr ); 
@@ -764,7 +766,8 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 		
 	}
 
-	protected void translateCPTs(HashMap<PVAR_NAME,HashMap<ArrayList<LCONST>,Object>> initState) throws GRBException { 
+	protected void translateCPTs(HashMap<PVAR_NAME,HashMap<ArrayList<LCONST>,Object>> initState,
+			final GRBModel grb_model) throws GRBException { 
 		
 		GRBExpr old_obj = grb_model.getObjective();
 		
@@ -812,9 +815,12 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 								.substitute( Collections.singletonMap( TIME_PREDICATE, TIME_TERMS.get(t) ), constants, objects );
 						GRBVar rhs_var = new_rhs_non_stationary.getGRBConstr(GRB.EQUAL,  grb_model, constants, objects, type_map);
 						
-						System.out.println( p + " " + terms + " " + t );
-						GRBConstr new_constr = grb_model.addConstr( lhs_var, GRB.EQUAL, rhs_var, "CPT_t_"+p.toString()+"_"+terms );
-//						grb_model.update();
+						final String nam = RDDL.EXPR.getGRBName(new_lhs_non_stationary) + "=" + 
+												RDDL.EXPR.getGRBName(new_rhs_non_stationary);
+						GRBConstr new_constr = grb_model.addConstr( lhs_var, GRB.EQUAL, rhs_var, nam );
+						System.out.println( new_lhs_non_stationary + "=" + new_rhs_non_stationary);
+//						System.out.println( nam );
+						//						grb_model.update();
 						
 						saved_constr.add( new_constr );
 						saved_expr.add( new_lhs_non_stationary ); 
@@ -832,7 +838,7 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 		}
 		
 		grb_model.setObjective(old_obj);
-//		grb_model.update();
+		grb_model.update();
 		
 	}
 
@@ -905,7 +911,7 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 //		}
 //	}
 
-	protected void translateReward() throws Exception{
+	protected void translateReward(final GRBModel grb_model) throws Exception{
 		EXPR stationary = rddl_state._reward;
 		//expand quantifier
 		//filter constants
@@ -922,10 +928,11 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 		for( int time = 0 ; time < lookahead; ++time ){
 			EXPR subs_t = non_stationary.substitute( Collections.singletonMap( TIME_PREDICATE, TIME_TERMS.get(time)), constants, objects);
 			saved_expr.add( subs_t );
+			System.out.println(subs_t);
 			subs_t.addGRBObjectiveTerm(grb_model, constants, objects, type_map);
 			//saved_vars.add( subs_t.addGRBObjectiveTerm(grb_model, constants, objects, type_map) );
 		}
-//		grb_model.update();
+		grb_model.update();
 	}
 	
 //	private HashMap<LVAR, LCONST> getSubs( final ArrayList<LTERM> param_names,
@@ -1028,14 +1035,14 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 
 		System.out.println("current nodefile directly " + grb_env.get( StringParam.NodefileDir ) );
 		
-		this.grb_model = new GRBModel( grb_env );
+		this.static_grb_model = new GRBModel( grb_env );
 		//max
-		grb_model.set( GRB.IntAttr.ModelSense, -1);
+		static_grb_model.set( GRB.IntAttr.ModelSense, -1);
 		
 		//create vars for state, action, interm vars over time
 //		translate_time.ResumeTimer();
 //		addAllVariables();
-		grb_model.update();
+		static_grb_model.update();
 //		translate_time.PauseTimer();
 		
 	}
@@ -1103,10 +1110,10 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 
 	@Override
 	public ArrayList<PVAR_INST_DEF> getActions(State s) throws EvalException {
-		if( grb_model == null ){
-			firstTimeModel();
-		}
 		HashMap<PVAR_NAME, HashMap<ArrayList<LCONST>, Object>> subs = getSubsWithDefaults( s );
+		if( static_grb_model == null ){
+			firstTimeModel( );
+		}
 		
 		try {
 			Map<EXPR, Double> ret_expr = doPlan( subs, true );
@@ -1153,6 +1160,9 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 //			System.out.println( "Action : " + ret );
 //			s.clearIntermFluents();
 //			
+			cleanUp(static_grb_model);
+//			static_grb_model = null;
+			
 			return ret;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -1184,15 +1194,16 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 		return ret;
 	}
 
-	private void firstTimeModel() {
+	private void firstTimeModel( ) {
 		addExtraPredicates();
 		try {
 			initializeGRB( );
-			prepareModel();
+			prepareModel( );
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.exit(1);
 		}		
+		
 	}
 
 //	private ArrayList<PVAR_INST_DEF> reducePrecision(
@@ -1276,7 +1287,12 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 	@Override
 	public void roundEnd(double reward) {
 		Policy.super.roundEnd(reward);
-		handleOOM();
+		try {
+			handleOOM( static_grb_model );
+		} catch (GRBException e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
 	}
 	
 }

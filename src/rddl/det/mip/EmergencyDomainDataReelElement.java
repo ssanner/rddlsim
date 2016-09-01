@@ -458,12 +458,12 @@ public class EmergencyDomainDataReelElement extends DataReelElement {
 		//cause : {AFA,All,Code1Medical,Code3Med,Code3Trauma,EMS,Fire,Hazmat,MassCasualty,
 //		 MVA,NuisanceFire,Other,OtherEMS,OtherFire,
 //		 Overpressure,Rescue,StructureFire,Transport,VehicleFire,WildlandFire};
-		EXPR lhs_callCode = addStepFuture(currentCallCodePvar, future_PREDICATE, TIME_PREDICATE, constants, objects)
-				.substitute( Collections.singletonMap( TIME_PREDICATE, time_indices.get(time_step) ), constants, objects )
-				.substitute( Collections.singletonMap( future_PREDICATE, future_indices.get(future) ), constants, objects )
-				.substitute( Collections.singletonMap( new LVAR("?c"), closest_cause), constants, objects);
-		
-		ret.add( new Pair<EXPR,EXPR>( lhs_callCode, new BOOL_CONST_EXPR( true ) ) );
+		//EXPR lhs_callCode = addStepFuture(currentCallCodePvar, future_PREDICATE, TIME_PREDICATE, constants, objects)
+		//		.substitute( Collections.singletonMap( TIME_PREDICATE, time_indices.get(time_step) ), constants, objects )
+		//		.substitute( Collections.singletonMap( future_PREDICATE, future_indices.get(future) ), constants, objects )
+		//		.substitute( Collections.singletonMap( new LVAR("?c"), closest_cause), constants, objects);
+		//
+		//ret.add( new Pair<EXPR,EXPR>( lhs_callCode, new BOOL_CONST_EXPR( true ) ) );
 		
 		final OBJECT_VAL matched_region = getRegion( this.callX, this.callY, this.natureCode );
 		final int region_idx = REGIONS.indexOf(matched_region._sConstValue);
@@ -475,12 +475,12 @@ public class EmergencyDomainDataReelElement extends DataReelElement {
 			ret.add( new Pair<EXPR,EXPR>(lhs_tempuniform_region, new REAL_CONST_EXPR(1.0*region_idx) ) );
 		}
 		
-		EXPR lhs_callRegion = addStepFuture(currentCallRegionPvar, future_PREDICATE, TIME_PREDICATE, constants, objects)
-				.substitute( Collections.singletonMap( TIME_PREDICATE, time_indices.get(time_step) ), constants, objects )
-				.substitute( Collections.singletonMap( future_PREDICATE, future_indices.get(future) ), constants, objects )
-				.substitute( Collections.singletonMap( new LVAR("?r"), matched_region ), constants, objects);
+		//EXPR lhs_callRegion = addStepFuture(currentCallRegionPvar, future_PREDICATE, TIME_PREDICATE, constants, objects)
+		//		.substitute( Collections.singletonMap( TIME_PREDICATE, time_indices.get(time_step) ), constants, objects )
+		//		.substitute( Collections.singletonMap( future_PREDICATE, future_indices.get(future) ), constants, objects )
+		//		.substitute( Collections.singletonMap( new LVAR("?r"), matched_region ), constants, objects);
 		
-		ret.add( new Pair<EXPR,EXPR>( lhs_callRegion, new BOOL_CONST_EXPR( true ) ) );
+		//ret.add( new Pair<EXPR,EXPR>( lhs_callRegion, new BOOL_CONST_EXPR( true ) ) );
 		
 		
 //		int rhs_callDay = this.callDate.getDayOfYear();

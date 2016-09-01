@@ -343,6 +343,13 @@ domain emergency_continuous_time_multiple_vehicles_test{
 		forall_{?r:role}[ TarryTime(?r) >= 0 ];
 		forall_{?ca:cause}[ DestinationHospital(?ca) + DestinationTransfer(?ca) <= 1 ];
 		
+		//for the current code and region and non zero requirement if an eligible vehicle exists then some vehicle must be dispatched for any role.
+		//forall_{?ca:cause, ?re:region}[ 
+		//	~currentCallCode(?ca) | ~currentCallRegion(?re)  
+		//	| ~exists_{?v:vehicle,?ro:role}[ (causeRequirement(?ca,?re,?ro) > 0) ^ vehicleInService(?v) ^ HasCapability(?v,?ro) ]
+		//	| ((sum_{?v:vehicle,?q:role}[ dispatch(?v,?q) ]) > 0) 
+		//];
+		
 		//forall_{?ca:cause, ?re:region,?ro:role}[
 			//~(currentCallCode(?ca) ^ currentCallRegion(?re)) | 
 			//[ ~(causeRequirement(?ca,?re,?ro)>0) |

@@ -18,8 +18,11 @@ import gurobi.GRB;
 import gurobi.GRBConstr;
 import gurobi.GRBException;
 import gurobi.GRBExpr;
+import gurobi.GRBModel;
 import gurobi.GRBVar;
+import gurobi.GRB.StringAttr;
 import rddl.EvalException;
+import rddl.RDDL;
 import rddl.RDDL.BOOL_CONST_EXPR;
 import rddl.RDDL.CPF_DEF;
 import rddl.RDDL.EXPR;
@@ -58,7 +61,7 @@ public class EmergencyDomainHOPTranslate extends HOPTranslate {
 	protected void prepareModel( ) throws Exception{
 		translate_time.ResumeTimer();
 		System.out.println("--------------Translating Constraints-------------");
-		translateConstraints( );
+		translateConstraints( static_grb_model );
 		
 		ArrayList<HashMap<PVAR_NAME, ArrayList<ArrayList<LCONST>>>> src 
 		= new ArrayList< HashMap<PVAR_NAME, ArrayList<ArrayList<LCONST>>> >();
@@ -98,8 +101,9 @@ public class EmergencyDomainHOPTranslate extends HOPTranslate {
 						entry.getValue().stream().forEach( new Consumer< ArrayList<LCONST> >() {
 							@Override
 							public void accept(ArrayList<LCONST> terms) {
-								System.out.println(  "CPT_"+ entry.getKey().toString()+"_"+terms );
 								PVAR_NAME p = entry.getKey();
+								System.out.println(p + " " + terms);
+								
 								CPF_DEF cpf = null;
 								if( rddl_state_vars.containsKey(p) ){
 									cpf = rddl_state._hmCPFs.get( new PVAR_NAME( p._sPVarName + "'" ) );
@@ -145,15 +149,19 @@ public class EmergencyDomainHOPTranslate extends HOPTranslate {
 												EXPR lhs_future = future_gen.getFuture( lhs, rand, objects );
 												EXPR rhs_future = future_gen.getFuture( rhs, rand, objects );
 																	
-												synchronized ( grb_model ) {
+												synchronized ( static_grb_model ) {
 													try {
 														GRBVar lhs_var = lhs_future.getGRBConstr( 
-															GRB.EQUAL, grb_model, constants, objects, type_map);
+															GRB.EQUAL, static_grb_model, constants, objects, type_map);
 														GRBVar rhs_var = rhs_future.getGRBConstr( 
-															GRB.EQUAL, grb_model, constants, objects, type_map);
+															GRB.EQUAL, static_grb_model, constants, objects, type_map);
 													
+//														System.out.println( lhs_future.toString()+"="+rhs_future.toString() );
+														final String nam = RDDL.EXPR.getGRBName(lhs_future)+"="+RDDL.EXPR.getGRBName(rhs_future);
+//														System.out.println(nam);;
+														
 														GRBConstr this_constr 
-															= grb_model.addConstr( lhs_var, GRB.EQUAL, rhs_var, "CPT_"+p.toString()+"_"+terms+"_"+time_term_index+"_"+future_term_index );
+															= static_grb_model.addConstr( lhs_var, GRB.EQUAL, rhs_var, nam );
 														saved_constr.add( this_constr );
 														saved_expr.add(lhs_future);
 														saved_expr.add(rhs_future);
@@ -174,12 +182,13 @@ public class EmergencyDomainHOPTranslate extends HOPTranslate {
 		});
 		
 		System.out.println("--------------Translating Reward-------------");
-		translateReward( );
+		translateReward( static_grb_model );
 		translate_time.PauseTimer();
 	}
 	
 	@Override
-	protected void translateCPTs(HashMap<PVAR_NAME,HashMap<ArrayList<LCONST>,Object>> subs) throws GRBException {
+	protected void translateCPTs(HashMap<PVAR_NAME,HashMap<ArrayList<LCONST>,Object>> subs,
+			final GRBModel grb_model) throws GRBException {
 		
 		GRBExpr old_obj = grb_model.getObjective();
 		
@@ -206,14 +215,18 @@ public class EmergencyDomainHOPTranslate extends HOPTranslate {
 				GRBVar rhs_var = rhs_future.getGRBConstr( 
 						GRB.EQUAL, grb_model, constants, objects, type_map);
 				try {
-					System.out.println( "Data_"+lhs_future.toString()+"_"+rhs_future.toString() );
-					GRBConstr this_constr 
-						= grb_model.addConstr( lhs_var, GRB.EQUAL, rhs_var, 
-								"Data_"+lhs_future.toString()+"_"+rhs_future.toString() );
+					
+					System.out.println( lhs_future.toString()+"="+rhs_future.toString() );
+					final String nam = RDDL.EXPR.getGRBName(lhs_future)+"="+RDDL.EXPR.getGRBName(rhs_future);
+					System.out.println(nam);;
+					
+					GRBConstr this_constr = grb_model.addConstr( lhs_var, GRB.EQUAL, rhs_var, nam );
 					to_remove_constr.add( this_constr );
 					to_remove_expr.add(lhs_future);
 					to_remove_expr.add(rhs_future);
+//					System.out.println(this_constr.get(StringAttr.ConstrName));
 				} catch (GRBException e) {
+					System.out.println( e.getErrorCode() + " " +e.getMessage() );
 					e.printStackTrace();
 					System.exit(1);
 				}
@@ -332,8 +345,7 @@ public class EmergencyDomainHOPTranslate extends HOPTranslate {
 			System.out.println("Round reward " + accum_reward);
 			rewards.add( accum_reward );
 			
-			cleanUp();
-			handleOOM();
+			handleOOM(static_grb_model);
 			
 		}
 		

@@ -1662,15 +1662,37 @@ public class RDDL {
 		 * override hashCode() and equals(Object). 
 		 */
 //		protected static HashMap< Class<? extends EXPR> , WeakHashMap< EXPR, GRBVar > > grb_cache = new HashMap< >();
-		public static ReferenceMap< String, String > name_map = new ReferenceMap<>( 
+		protected static ReferenceMap< String, String> name_map = new ReferenceMap<>(  
 				AbstractReferenceMap.ReferenceStrength.HARD, AbstractReferenceMap.ReferenceStrength.HARD, true );
-		public static ReferenceMap<String, String > reverse_name_map = new ReferenceMap<>( 
+		public static ReferenceMap<String, String> reverse_name_map = new ReferenceMap<>( 
 				AbstractReferenceMap.ReferenceStrength.HARD, AbstractReferenceMap.ReferenceStrength.HARD, true );
 		
 		private  static int nameId = 0;
 		public static Map< EXPR, GRBVar > grb_cache = Collections.synchronizedMap( new ReferenceMap<  >( 
 				AbstractReferenceMap.ReferenceStrength.HARD, AbstractReferenceMap.ReferenceStrength.HARD, true ) );
-		//0 = E*0
+
+		public static String getGRBName(final EXPR expr) throws GRBException{
+			final GRBVar cache_var = grb_cache.get(expr);
+			final String cache_var_name = cache_var.get(StringAttr.VarName);
+			
+			final String expr_string = expr.toString();
+			final String name_map_name = name_map.get(expr_string);
+			
+			
+			if( cache_var_name != null && name_map_name != null ){
+				assert( name_map_name.equals(cache_var_name) );
+			}else if( cache_var_name != null ){
+				name_map.put( expr_string, cache_var_name );
+			}else if( name_map_name != null ){
+				try{
+					throw new Exception("Name map has expr name but no GRBVar in cache.");
+				}catch( Exception excp ){
+					excp.printStackTrace();
+					System.exit(1);
+				}
+			}
+			return name_map.get(expr_string);
+		}
 		
 		protected static List<EXPR> expandQuantifier( 
 				final EXPR e, 
@@ -1762,6 +1784,8 @@ public class RDDL {
 				name_map.put( exp_string, next_name );
 				reverse_name_map.put( next_name, exp_string );
 				
+//				System.out.println("Internal name : " + exp_string + " : " + next_name);
+				
 				double lb = getGRB_LB(type); double ub = getGRB_UB(type);
 				GRBVar new_var = null;
 				synchronized( model ){
@@ -1820,7 +1844,7 @@ public class RDDL {
 				GRBLinExpr new_obj = new GRBLinExpr( (GRBLinExpr)old_obj );
 				new_obj.addTerm(1.0d, this_var );
 				model.setObjective( new_obj );
-//				model.update();
+				model.update();
 				return this_var;
 			} catch (GRBException e) {
 				e.printStackTrace();
@@ -3164,7 +3188,8 @@ public class RDDL {
 			
 			GRBVar this_var = getGRBVar( this, model, constants, objects, type_map );
 			try {
-				model.addConstr( this_var, GRB.EQUAL, getDoubleValue(constants, objects), name_map.get(toString()) );
+				final double d = getDoubleValue(constants, objects);
+				model.addConstr( this_var, GRB.EQUAL, d, name_map.get(toString())+"="+d );
 //				model.update();
 				return this_var;
 			} catch (GRBException e) {
@@ -3475,28 +3500,34 @@ public class RDDL {
 			
 //			assert( isPiecewiseLinear(constants, objects) );
 
-			EXPR reducible = reduce( _e1, _e2, _op, constants, objects );
-			if( !( reducible instanceof OPER_EXPR ) ){
-				return reducible.getGRBConstr(sense, model, constants, objects, type_map );
-			}
-			
-
-			GRBVar this_var = getGRBVar(this, model, constants, objects , type_map );
-			GRBVar v1 = _e1.getGRBConstr( GRB.EQUAL, model, constants, objects , type_map );
-			GRBVar v2 = _e2.getGRBConstr( GRB.EQUAL, model, constants, objects , type_map );
-			
 			GRBLinExpr exp = new GRBLinExpr();
 			try{
+				
+				GRBVar this_var = getGRBVar(this, model, constants, objects , type_map );
+				
+				EXPR reducible = reduce( _e1, _e2, _op, constants, objects );
+				if( !( reducible instanceof OPER_EXPR ) ){
+					GRBVar that_var = reducible.getGRBConstr(sense, model, constants, objects, type_map );
+					model.addConstr(this_var, GRB.EQUAL, that_var, name_map.get(toString())+"="+name_map.get(reducible.toString()));
+					return this_var;
+				}
+				
+				GRBVar v1 = _e1.getGRBConstr( GRB.EQUAL, model, constants, objects , type_map );
+				GRBVar v2 = _e2.getGRBConstr( GRB.EQUAL, model, constants, objects , type_map );
+				
+				final String suffix = name_map.get(_e1.toString()) + _op + name_map.get(_e2.toString());
+				final String nam = name_map.get(toString())+"="+suffix;
+				
 				switch( _op ){
 				case "+" :
 					exp.addTerm(1.0d, v1);
 					exp.addTerm(1.0d, v2);
-					model.addConstr( this_var, sense, exp, name_map.get(toString()) );
+					model.addConstr( this_var, sense, exp, nam );
 					break;
 				case "-" :
 					exp.addTerm(1.0d, v1);
 					exp.addTerm(-1d, v2 );
-					model.addConstr( this_var, sense, exp, name_map.get(toString()) );
+					model.addConstr( this_var, sense, exp, nam );
 					break;
 				case "*" : 
 					assert( _e1.isConstant(constants, objects) || _e2.isConstant(constants, objects) );
@@ -3505,12 +3536,12 @@ public class RDDL {
 					}else{
 						exp.addTerm( _e2.getDoubleValue( constants, objects ), v1 );
 					}
-					model.addConstr( this_var, sense, exp, name_map.get(toString()) );
+					model.addConstr( this_var, sense, exp, nam );
 					break;
 				case "/" :
 					assert( _e2.isConstant(constants, objects) );
 					exp.addTerm( 1.0d/_e2.getDoubleValue(constants, objects), v1 );
-					model.addConstr( this_var, sense, exp, name_map.get(toString()) );
+					model.addConstr( this_var, sense, exp, nam );
 					break;
 				
 				case "min" : 
@@ -3518,7 +3549,7 @@ public class RDDL {
 					try {
 						IF_EXPR ife = new IF_EXPR( new COMP_EXPR( _e1, _e2, COMP_EXPR.LESSEQ ) ,_e1, _e2 );
 						GRBVar if_min_var = ife.getGRBConstr( sense, model, constants, objects , type_map);
-						model.addConstr( this_var, GRB.EQUAL, if_min_var,  name_map.get(toString()) );
+						model.addConstr( this_var, GRB.EQUAL, if_min_var,  nam );
 					} catch (Exception e) {
 						e.printStackTrace();
 						System.exit(1);
@@ -3528,7 +3559,7 @@ public class RDDL {
 					try {
 						IF_EXPR ife = new IF_EXPR( new COMP_EXPR( _e1, _e2, COMP_EXPR.GREATEREQ ) ,_e1, _e2 );
 						GRBVar ife_max_var = ife.getGRBConstr( sense, model, constants, objects, type_map );
-						model.addConstr(this_var, GRB.EQUAL, ife_max_var, name_map.get(toString()) );
+						model.addConstr(this_var, GRB.EQUAL, ife_max_var, nam );
 					} catch (Exception e) {
 						e.printStackTrace();
 						System.exit(1);
@@ -4076,14 +4107,16 @@ public class RDDL {
 				List<EXPR> terms = expandQuantifier( _e, _alVariables, objects, constants);
 				switch( _op ){
 					case "sum" : 
+						String sum_str = "";
 						GRBVar this_var = getGRBVar(this, model, constants, objects , type_map );
 						GRBLinExpr total = new GRBLinExpr();
 						for( final EXPR e : terms ){
 							GRBVar v = e.getGRBConstr( GRB.EQUAL, model, constants, objects, type_map );
 							total.addTerm( 1.0d, v );
+							sum_str=sum_str+"+"+name_map.get(e.toString());
 						}
 						try {
-							model.addConstr( this_var , GRB.EQUAL, total, name_map.get(toString()) );
+							model.addConstr( this_var , GRB.EQUAL, total, name_map.get(toString())+"="+sum_str );
 		//					model.update();
 							return this_var;
 						} catch (GRBException e1) {
@@ -4106,7 +4139,7 @@ public class RDDL {
 						try {
 							GRBVar min_var = getGRBVar(this, model, constants, objects , type_map );
 							GRBVar that_var = min_expr.getGRBConstr(GRB.EQUAL, model, constants, objects, type_map);
-							model.addConstr( min_var , GRB.EQUAL, that_var, name_map.get(toString()) );
+							model.addConstr( min_var , GRB.EQUAL, that_var, name_map.get(toString())+"="+name_map.get(min_expr.toString()) );
 		//					model.update();
 							return min_var;
 						} catch (GRBException e1) {
@@ -4126,11 +4159,11 @@ public class RDDL {
 //						System.out.println("Expanded min expression " + min_expr );
 						
 						try {
-							GRBVar min_var = getGRBVar(this, model, constants, objects , type_map );
+							GRBVar max_var = getGRBVar(this, model, constants, objects , type_map );
 							GRBVar that_var = max_expr.getGRBConstr(GRB.EQUAL, model, constants, objects, type_map);
-							model.addConstr( min_var , GRB.EQUAL, that_var, name_map.get(toString()) );
+							model.addConstr( max_var , GRB.EQUAL, that_var, name_map.get(toString())+"="+name_map.get(max_expr.toString()) );
 		//					model.update();
-							return min_var;
+							return max_var;
 						} catch (GRBException e1) {
 							e1.printStackTrace();
 							System.exit(1);
@@ -4446,27 +4479,30 @@ public class RDDL {
 				Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants, 
 				Map<TYPE_NAME, OBJECTS_DEF > objects,  Map<PVAR_NAME, Character> type_map ) {
 			if( grb_cache.containsKey( this ) ){
-				return grb_cache.get( this );
+				final GRBVar lookup = grb_cache.get( this );
+				assert ( lookup != null );
+				return lookup;
 			}
 			
 			assert( isPiecewiseLinear(constants, objects) );
 			GRBVar this_var = getGRBVar(this, model, constants, objects, type_map);
-			GRBLinExpr expression = new GRBLinExpr();
+			
 			if( isConstant(constants, objects) ){
+				GRBLinExpr expression = new GRBLinExpr();
 				final double val = getDoubleValue(constants, objects );
 				expression.addConstant(val);
+				try {
+					model.addConstr(  this_var, sense, expression, name_map.get(toString())+"="+val );
+//					model.update();
+					return this_var;
+				} catch (GRBException e) {
+					e.printStackTrace();
+					System.exit(1);
+				}
 			}else{
-				expression.addTerm(1.0d, this_var);
+				return this_var;
 			}
 			
-			try {
-				model.addConstr(  this_var, sense, expression, name_map.get(toString()) );
-//				model.update();
-				return this_var;
-			} catch (GRBException e) {
-				e.printStackTrace();
-				System.exit(1);
-			}
 			return null;
 		}
 		
@@ -4911,6 +4947,9 @@ public class RDDL {
 					.getGRBConstr(sense, model, constants, objects, type_map);
 			}
 			
+			if( grb_cache.containsKey(this) ){
+				return grb_cache.get(this);
+			}
 //			assert( isPiecewiseLinear(constants, objects) );
 			
 			try{
@@ -4943,7 +4982,11 @@ public class RDDL {
 					COMP_EXPR comp_expr = new COMP_EXPR( _alArgs.get(0), new REAL_CONST_EXPR(0d), COMP_EXPR.GREATEREQ );
 					ret = new IF_EXPR( comp_expr, new INT_CONST_EXPR(1), new INT_CONST_EXPR(-1) );
 				}
-				return ret == null ? null : ret.getGRBConstr(sense, model, constants, objects, type_map);
+				
+				final GRBVar this_var = getGRBVar(this, model, constants, objects, type_map);
+				GRBVar ret_var = ret.getGRBConstr(GRB.EQUAL, model, constants, objects, type_map);
+				model.addConstr( this_var, sense, ret_var, name_map.get(toString())+"="+name_map.get(ret.toString()) );
+				return this_var;
 			}catch( Exception exc ){
 				exc.printStackTrace();
 				System.exit(1);
@@ -5306,8 +5349,8 @@ public class RDDL {
 				foo2.addTerm(1.0d, E);
 				foo2.add( m_one_minus_z );
 				
-				model.addConstr( foo1, GRB.LESS_EQUAL, this_var, name_map.get(toString()) );
-				model.addConstr( this_var, GRB.LESS_EQUAL, foo2 , name_map.get(toString()));
+				model.addConstr( foo1, GRB.LESS_EQUAL, this_var, name_map.get(toString())+"_if_1" );
+				model.addConstr( this_var, GRB.LESS_EQUAL, foo2 , name_map.get(toString())+"_if_2");
 	
 				//F-Mz <= y <= F+Mz
 				GRBLinExpr foo3 = new GRBLinExpr();
@@ -5318,8 +5361,8 @@ public class RDDL {
 				foo4.addTerm(1.0d, F);
 				foo4.add( m_z );
 				
-				model.addConstr( foo3, GRB.LESS_EQUAL, this_var,  name_map.get(toString()) );
-				model.addConstr( this_var, GRB.LESS_EQUAL, foo4, name_map.get(toString()) );
+				model.addConstr( foo3, GRB.LESS_EQUAL, this_var,  name_map.get(toString())+"_if_3" );
+				model.addConstr( this_var, GRB.LESS_EQUAL, foo4, name_map.get(toString())+"_if_4" );
 //				model.update();
 				return this_var;
 			}catch( Exception exc ){
@@ -5812,7 +5855,7 @@ public class RDDL {
 			GRBVar expr_var = expr.getGRBConstr( GRB.EQUAL, model, constants, objects, type_map );
 			try {
 				GRBVar this_var = getGRBVar(this, model, constants, objects , type_map );
-				model.addConstr( this_var, GRB.EQUAL, expr_var, name_map.get(toString()) );
+				model.addConstr( this_var, GRB.EQUAL, expr_var, name_map.get(toString())+"="+name_map.get(expr_var.toString()) );
 //				model.update();
 				return this_var;
 			} catch (GRBException e) {
@@ -6089,13 +6132,13 @@ public class RDDL {
 				switch( _sConn ){
 //					[z = x1 ^ x2 ^... ^ xn] is captured by nz <= (x1+x2+...+xn) <= (n - 1) + z
 					case "^" : 
-						model.addConstr( nz, GRB.LESS_EQUAL, sum ,  name_map.get(toString()) );
-						model.addConstr( sum, GRB.LESS_EQUAL, n_minus_1_plus_z, name_map.get(toString()) );
+						model.addConstr( nz, GRB.LESS_EQUAL, sum ,  name_map.get(toString())+"_AND_1" );
+						model.addConstr( sum, GRB.LESS_EQUAL, n_minus_1_plus_z, name_map.get(toString())+"AND_2" );
 						break;
 //					[z = x1 v x2 v ... v xn] is z <= (x1+x2+...+xn) <= nz
 					case "|" : 
-						model.addConstr( this_var , GRB.LESS_EQUAL, sum, name_map.get(toString()) );
-						model.addConstr( sum, GRB.LESS_EQUAL, nz, name_map.get(toString()) );
+						model.addConstr( this_var , GRB.LESS_EQUAL, sum, name_map.get(toString())+"_OR_1" );
+						model.addConstr( sum, GRB.LESS_EQUAL, nz, name_map.get(toString())+"_OR_2" );
 						break;
 					default :
 						throw new Exception("Unknown case in getGRBConstr() " + _sConn );	
@@ -6632,7 +6675,7 @@ public class RDDL {
 			one_minus_x.addConstant(1);
 			one_minus_x.addTerm(-1.0d, inner_var);
 			try {
-				model.addConstr( this_var, GRB.EQUAL, one_minus_x, name_map.get(toString()) );
+				model.addConstr( this_var, GRB.EQUAL, one_minus_x, "NOT_"+name_map.get(toString()) );
 //				model.update();
 				return this_var;
 			} catch (GRBException e) {
@@ -6686,7 +6729,8 @@ public class RDDL {
 			
 			GRBVar this_var = getGRBVar( this, model, constants, objects , type_map);
 			try{
-				model.addConstr( this_var, GRB.EQUAL, getDoubleValue(constants, objects),  name_map.get(toString()) );
+				final double d = getDoubleValue(constants, objects);
+				model.addConstr( this_var, GRB.EQUAL, d,  name_map.get(toString())+"="+d );
 //				model.update();
 				return this_var;
 			}catch( GRBException exc ){
@@ -7017,8 +7061,8 @@ public class RDDL {
 						//-Mz <= x-y <= M(1-z)
 						// z = 1 : -M <= x-y  <= 0
 						// z = 0 : 0 <= x-y <= M
-						model.addConstr( minus_M_z, GRB.LESS_EQUAL, x_minus_y, name_map.get(toString()) );
-						model.addConstr( x_minus_y, GRB.LESS_EQUAL, M_one_minus_z, name_map.get(toString()) );
+						model.addConstr( minus_M_z, GRB.LESS_EQUAL, x_minus_y, name_map.get(toString())+"_LEQ_1" );
+						model.addConstr( x_minus_y, GRB.LESS_EQUAL, M_one_minus_z, name_map.get(toString())+"_LEQ_2" );
 						break;
 					case ">=" : 
 					case ">" : 
@@ -7026,16 +7070,16 @@ public class RDDL {
 						// -M(1-z) <= x-y <= Mz
 						// z = 1 : 0 <= x-y <= M
 						// z = 0 : -M <= x-y <= 0
-						model.addConstr( minus_M_one_minus_z, GRB.LESS_EQUAL, x_minus_y, name_map.get(toString()) );
-						model.addConstr( x_minus_y, GRB.LESS_EQUAL, M_z, name_map.get(toString()) );
+						model.addConstr( minus_M_one_minus_z, GRB.LESS_EQUAL, x_minus_y, name_map.get(toString())+"_GEQ_1" );
+						model.addConstr( x_minus_y, GRB.LESS_EQUAL, M_z, name_map.get(toString())+"_GEQ_2" );
 						break;
 					case "==" : 
 						//z = [ x == y ]
 						//-M(1-z) <= x-y <= M(1-z), z in 0,1
 						//z=1 : 0 <= x-y <= 0
 						//z=0 : -M <= x-y <= M
-						model.addConstr( minus_M_one_minus_z, GRB.LESS_EQUAL, x_minus_y, name_map.get(toString()) );
-						model.addConstr( x_minus_y, GRB.LESS_EQUAL, M_one_minus_z, name_map.get(toString()) );
+						model.addConstr( minus_M_one_minus_z, GRB.LESS_EQUAL, x_minus_y, name_map.get(toString())+"_EQ_1" );
+						model.addConstr( x_minus_y, GRB.LESS_EQUAL, M_one_minus_z, name_map.get(toString())+"EQ_2" );
 						break;
 					case "~=" : 
 						//z = 1-t, t = [ x == y ]
@@ -7043,8 +7087,8 @@ public class RDDL {
 						//-Mz <= x-y <= Mz, z in 0,1
 						//z = 1 : -M <= x-y <= M
 						//z = 0 : 0 <= x-y <= 0
-						model.addConstr( minus_M_z, GRB.LESS_EQUAL, x_minus_y, name_map.get(toString()) );
-						model.addConstr( x_minus_y, GRB.LESS_EQUAL, M_z , name_map.get(toString()) );
+						model.addConstr( minus_M_z, GRB.LESS_EQUAL, x_minus_y, name_map.get(toString())+"_NEQ_1" );
+						model.addConstr( x_minus_y, GRB.LESS_EQUAL, M_z , name_map.get(toString())+"_NEQ_2" );
 						break;
 					default : 
 						try{

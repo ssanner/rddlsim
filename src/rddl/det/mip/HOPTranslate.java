@@ -42,9 +42,11 @@ import gurobi.GRBConstr;
 import gurobi.GRBException;
 import gurobi.GRBExpr;
 import gurobi.GRBLinExpr;
+import gurobi.GRBModel;
 import gurobi.GRBVar;
 import gurobi.GRB.DoubleAttr;
 import gurobi.GRB.IntAttr;
+import gurobi.GRB.StringAttr;
 
 public class HOPTranslate extends Translate implements Policy {
 
@@ -106,52 +108,53 @@ public class HOPTranslate extends Translate implements Policy {
 		objects.put( future_TYPE,  new OBJECTS_DEF(  future_TYPE._STypeName, future_TERMS ) );
 	}
 
-	@Override
-	protected void addAllVariables() {
-
-		HashMap<PVAR_NAME, ArrayList<ArrayList<LCONST>>> src = new HashMap<PVAR_NAME, ArrayList<ArrayList<LCONST>>>();
-		src.putAll( rddl_state_vars ); src.putAll( rddl_action_vars ); src.putAll( rddl_interm_vars ); src.putAll( rddl_observ_vars );
-		
-		src.forEach( new BiConsumer<PVAR_NAME, ArrayList<ArrayList<LCONST>> >() {
-			@Override
-			public void accept(PVAR_NAME pvar, ArrayList<ArrayList<LCONST>> u) {
-				u.parallelStream().forEach( new Consumer<ArrayList<LCONST>>() {
-					@Override
-					public void accept(ArrayList<LCONST> terms) {
-						EXPR pvar_expr = new PVAR_EXPR(pvar._sPVarName, terms )
-							.addTerm(TIME_PREDICATE, constants, objects)
-							.addTerm( future_PREDICATE, constants, objects );
-							
-						TIME_TERMS.parallelStream().forEach( new Consumer<LCONST>() {
-							@Override
-							public void accept(LCONST time_term ) {
-								EXPR this_t = pvar_expr.substitute( Collections.singletonMap( TIME_PREDICATE, time_term), 
-										constants, objects);
-								
-								future_TERMS.parallelStream().forEach( new Consumer< LCONST >() {
-									@Override
-									public void accept(LCONST future_term) {
-										EXPR this_tf = 
-												this_t.substitute( Collections.singletonMap( future_PREDICATE, future_term ), constants, objects );
-										synchronized( grb_model ){
-											System.out.println("Adding var " + pvar.toString() + " " + terms + " " + time_term + " " + future_term );
-											GRBVar gvar = this_tf.getGRBConstr( GRB.EQUAL, grb_model, constants, objects, type_map);
-											saved_expr.add( this_tf );
-										}
-									}
-								});
-								
-							}
-						});
-					}
-				});
-			}
-		});
-		
-	}
+//	@Override
+//	protected void addAllVariables( final GRBModel grb_model ) {
+//
+//		HashMap<PVAR_NAME, ArrayList<ArrayList<LCONST>>> src = new HashMap<PVAR_NAME, ArrayList<ArrayList<LCONST>>>();
+//		src.putAll( rddl_state_vars ); src.putAll( rddl_action_vars ); src.putAll( rddl_interm_vars ); src.putAll( rddl_observ_vars );
+//		
+//		src.forEach( new BiConsumer<PVAR_NAME, ArrayList<ArrayList<LCONST>> >() {
+//			@Override
+//			public void accept(PVAR_NAME pvar, ArrayList<ArrayList<LCONST>> u) {
+//				u.parallelStream().forEach( new Consumer<ArrayList<LCONST>>() {
+//					@Override
+//					public void accept(ArrayList<LCONST> terms) {
+//						EXPR pvar_expr = new PVAR_EXPR(pvar._sPVarName, terms )
+//							.addTerm(TIME_PREDICATE, constants, objects)
+//							.addTerm( future_PREDICATE, constants, objects );
+//							
+//						TIME_TERMS.parallelStream().forEach( new Consumer<LCONST>() {
+//							@Override
+//							public void accept(LCONST time_term ) {
+//								EXPR this_t = pvar_expr.substitute( Collections.singletonMap( TIME_PREDICATE, time_term), 
+//										constants, objects);
+//								
+//								future_TERMS.parallelStream().forEach( new Consumer< LCONST >() {
+//									@Override
+//									public void accept(LCONST future_term) {
+//										EXPR this_tf = 
+//												this_t.substitute( Collections.singletonMap( future_PREDICATE, future_term ), constants, objects );
+//										synchronized( grb_model ){
+//											System.out.println("Adding var " + pvar.toString() + " " + terms + " " + time_term + " " + future_term );
+//											GRBVar gvar = this_tf.getGRBConstr( GRB.EQUAL, grb_model, constants, objects, type_map);
+//											saved_expr.add( this_tf );
+//										}
+//									}
+//								});
+//								
+//							}
+//						});
+//					}
+//				});
+//			}
+//		});
+//		
+//	}
 	
 	@Override
-	protected void translateCPTs(HashMap<PVAR_NAME,HashMap<ArrayList<LCONST>,Object>> initState) throws GRBException {
+	protected void translateCPTs( HashMap<PVAR_NAME,HashMap<ArrayList<LCONST>,Object>> initState,
+			final GRBModel grb_model ) throws GRBException {
 		
 		GRBExpr old_obj = grb_model.getObjective();
 		
@@ -182,8 +185,6 @@ public class HOPTranslate extends Translate implements Policy {
 						entry.getValue().stream().forEach( new Consumer< ArrayList<LCONST> >() {
 							@Override
 							public void accept(ArrayList<LCONST> terms) {
-								
-								System.out.println(  "CPT_"+ entry.getKey().toString()+"_"+terms );
 								
 								PVAR_NAME p = entry.getKey();
 								
@@ -245,11 +246,16 @@ public class HOPTranslate extends Translate implements Policy {
 																		GRBVar rhs_var = rhs_future.getGRBConstr( 
 																				GRB.EQUAL, grb_model, constants, objects, type_map);
 																		
+																		System.out.println( lhs_future.toString()+"="+rhs_future.toString() );
+																		final String nam = RDDL.EXPR.getGRBName(lhs_future)+"="+RDDL.EXPR.getGRBName(rhs_future);
+																		System.out.println(nam);;
+																		
 																		GRBConstr this_constr 
-																			= grb_model.addConstr( lhs_var, GRB.EQUAL, rhs_var, "CPT_"+p.toString()+"_"+terms+"_"+time_term_index+"_"+future_term_index );
+																			= grb_model.addConstr( lhs_var, GRB.EQUAL, rhs_var, nam );
 																		to_remove_constr.add( this_constr );
 																		to_remove_expr.add( lhs_future );
 																		to_remove_expr.add( rhs_future );
+																		
 																	} catch (GRBException e) {
 																		e.printStackTrace();
 																		System.exit(1);
@@ -273,6 +279,11 @@ public class HOPTranslate extends Translate implements Policy {
 				});
 			}
 		});
+		
+		grb_model.setObjective(old_obj);
+		grb_model.update();
+
+	}
 								
 //		for( final HashMap<PVAR_NAME, ArrayList<ArrayList<LCONST>>> map : src ){
 //		
@@ -348,13 +359,9 @@ public class HOPTranslate extends Translate implements Policy {
 //			
 //		}
 		
-		grb_model.setObjective(old_obj);
-		grb_model.update();
-
-	}
-	
 	@Override
-	protected void translateReward() throws Exception {
+	protected void translateReward( final GRBModel grb_model ) throws Exception {
+		
 		grb_model.setObjective( new GRBLinExpr() );
 		grb_model.update();
 
@@ -374,11 +381,10 @@ public class HOPTranslate extends Translate implements Policy {
 						final EXPR subs_tf = non_stationary.substitute( Collections.singletonMap( TIME_PREDICATE, time_term ), 
 								constants, objects)
 								.substitute( Collections.singletonMap( future_PREDICATE, future_term ),constants, objects);
-						System.out.println( "Reward_" + time_term + "_" + future_term );
+						System.out.println( subs_tf );//"Reward_" + time_term + "_" + future_term );
 						
 						synchronized( grb_model ){
 							GRBVar this_future_var = subs_tf.getGRBConstr( GRB.EQUAL, grb_model, constants, objects, type_map);
-							
 							saved_expr.add( subs_tf );
 //							saved_vars.add( this_future_var );
 							//IDEA : weightby probability of trajecotry of futures
@@ -390,6 +396,10 @@ public class HOPTranslate extends Translate implements Policy {
 			}
 		});
 		
+		grb_model.setObjective(all_sum);
+		grb_model.update();
+		
+	}
 //		for( int future_id = 0 ; future_id < num_futures ; ++future_id ){
 //			for( int time = 0 ; time < lookahead; ++time ){
 //				EXPR subs_tf = non_stationary.substitute( Collections.singletonMap( TIME_PREDICATE, TIME_TERMS.get(time)), 
@@ -410,13 +420,11 @@ public class HOPTranslate extends Translate implements Policy {
 //			}
 //		}
 		
-		grb_model.setObjective(all_sum);
-		grb_model.update();
-		
-	}
+
 	
 	@Override
-	protected void translateInitialState( HashMap<PVAR_NAME, HashMap<ArrayList<LCONST>, Object>> subs )
+	protected void translateInitialState( final GRBModel grb_model, 
+			HashMap<PVAR_NAME, HashMap<ArrayList<LCONST>, Object>> subs )
 			throws GRBException {
 		
 		GRBExpr old_obj = grb_model.getObjective();
@@ -451,10 +459,16 @@ public class HOPTranslate extends Translate implements Policy {
 					.substitute( Collections.singletonMap( future_PREDICATE, future_TERMS.get(future_id) ), constants, objects);
 				
 					GRBVar lhs_var = this_future_init_state.getGRBConstr( GRB.EQUAL, grb_model, constants, objects, type_map);
-					GRBConstr this_constr = grb_model.addConstr( lhs_var, GRB.EQUAL, rhs_var, 
-							"initState_"+this_future_init_state.toString()+"_"+rhs_expr.toString() );
-					System.out.println( this_future_init_state + " " + rhs_expr );
 					
+					final String nam = RDDL.EXPR.getGRBName(this_future_init_state)+
+							"="+RDDL.EXPR.getGRBName(rhs_expr);
+					
+					GRBConstr this_constr = grb_model.addConstr( lhs_var, GRB.EQUAL, rhs_var, nam );
+					
+					System.out.println( this_future_init_state+" "+rhs_expr );
+					System.out.println( nam );
+					
+//					System.out.println( this_constr.get(StringAttr.ConstrName) ); 
 //					saved_vars.add( lhs_var ); saved_expr.add( this_future_init_state );
 //					saved_vars.add( rhs_var ); saved_expr.add( rhs_expr );
 					
@@ -470,7 +484,7 @@ public class HOPTranslate extends Translate implements Policy {
 	}
 	
 	@Override
-	protected void translateConstraints() throws Exception {
+	protected void translateConstraints(final GRBModel grb_model) throws Exception {
 
 		GRBExpr old_obj = grb_model.getObjective();
 //		translateMaxNonDef( );
@@ -500,9 +514,9 @@ public class HOPTranslate extends Translate implements Policy {
 								synchronized( grb_model ){
 									try {
 										GRBVar constrained_var = this_tf.getGRBConstr( GRB.EQUAL, grb_model, constants, objects, type_map);
-										String nam = ("constraint=1_"+this_tf.toString() );
-										GRBConstr this_constr = grb_model.addConstr( constrained_var, GRB.EQUAL, 1,
-												nam.substring(0, Math.min( nam.length(), 255 ) ) );
+//										System.out.println(this_tf);
+										String nam = RDDL.EXPR.getGRBName(this_tf);
+										GRBConstr this_constr = grb_model.addConstr( constrained_var, GRB.EQUAL, 1, nam );
 										saved_expr.add( this_tf ); 
 										saved_constr.add(this_constr);
 										//saved_vars.add( constrained_var );
@@ -559,7 +573,7 @@ public class HOPTranslate extends Translate implements Policy {
 				synchronized( grb_model ){
 					GRBVar gvar = t.getGRBConstr( GRB.EQUAL, grb_model, constants, objects, type_map);
 					try {
-						GRBConstr this_constr = grb_model.addConstr( gvar, GRB.EQUAL, 1, "hindsight_constraint_"+t.toString() );
+						GRBConstr this_constr = grb_model.addConstr( gvar, GRB.EQUAL, 1, RDDL.EXPR.getGRBName(t) );
 						saved_expr.add( t ); // saved_vars.add( gvar );
 						saved_constr.add(this_constr);
 					} catch (GRBException e) {
@@ -693,7 +707,7 @@ public class HOPTranslate extends Translate implements Policy {
 	}
 	
 	@Override
-	protected Map< EXPR, Double > outputResults() throws GRBException{
+	protected Map< EXPR, Double > outputResults( final GRBModel grb_model ) throws GRBException{
 		
 //		DecimalFormat df = new DecimalFormat("#.##########");
 //		df.setRoundingMode( RoundingMode.DOWN );
@@ -905,9 +919,9 @@ public class HOPTranslate extends Translate implements Policy {
 	protected void prepareModel( ) throws Exception{
 		translate_time.ResumeTimer();
 		System.out.println("--------------Translating Constraints-------------");
-		translateConstraints( );
+		translateConstraints( static_grb_model );
 		System.out.println("--------------Translating Reward-------------");
-		translateReward( );
+		translateReward( static_grb_model );
 		translate_time.PauseTimer();
 	}
 	
@@ -916,29 +930,33 @@ public class HOPTranslate extends Translate implements Policy {
 			final boolean recover ) throws Exception {
 		translate_time.ResumeTimer();
 		System.out.println("--------------Translating CPTs-------------");
-		translateCPTs( subs );
+		translateCPTs( subs, static_grb_model );
 		System.out.println("--------------Initial State-------------");
-		translateInitialState( subs );
+		translateInitialState( static_grb_model, subs );
 		translate_time.PauseTimer();
 		
+		int exit_code = -1;
 		try{
-			int exit_code = goOptimize();
+			exit_code = goOptimize( static_grb_model);
 		}catch( GRBException exc ){
 			int error_code = exc.getErrorCode();
+			System.out.println("Error code : " + error_code );
 			if( recover ){//error_code == GRB.ERROR_OUT_OF_MEMORY && recover ){
-				handleOOM();
+				handleOOM( static_grb_model );
 				return doPlan( subs, false );
 			}else{
 				throw exc;
 			}
+		}finally{
+			System.out.println("Exit code " + exit_code );
 		}
 		
-		Map< EXPR, Double > ret = outputResults();
+		Map< EXPR, Double > ret = outputResults( static_grb_model);
 		if( OUTPUT_LP_FILE ) {
-			outputLPFile( );
+			outputLPFile( static_grb_model );
 		}
-		modelSummary();		
-		cleanUp();
+		modelSummary( static_grb_model );		
+		cleanUp( static_grb_model );
 		return ret;
 	}
 	

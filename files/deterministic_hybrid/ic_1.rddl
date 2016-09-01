@@ -23,7 +23,7 @@ instance ic_1 {
 		//stock(t2)=500;
 	//};
 	
-	//max-nondef-actions = 10;
+	//max-nondef-actions = 5;
 	horizon  = 100;
 	discount = 1.0;
 }

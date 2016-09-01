@@ -12,6 +12,7 @@ import java.util.TreeMap;
 import javax.management.relation.RoleResult;
 
 import gurobi.GRBException;
+import gurobi.GRBModel;
 import rddl.EvalException;
 import rddl.State;
 import util.Pair;
@@ -106,12 +107,12 @@ public class EmergencyDomainDispatchClosest extends EmergencyDomainHOPTranslate 
 	}
 	
 	@Override
-	protected void cleanUp() throws GRBException {
+	protected void cleanUp(final GRBModel grb_model) throws GRBException {
 		return;
 	}
 	
 	@Override
-	protected void handleOOM() {
+	protected void handleOOM(final GRBModel grb_model) {
 		return;
 	}
 	
