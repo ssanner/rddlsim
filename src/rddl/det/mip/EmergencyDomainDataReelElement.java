@@ -453,7 +453,7 @@ public class EmergencyDomainDataReelElement extends DataReelElement {
 			EXPR lhs_tempuniform_cause = addStepFuture(tempUniformCausePvar, future_PREDICATE, TIME_PREDICATE, constants, objects)
 				.substitute( Collections.singletonMap( TIME_PREDICATE, time_indices.get(time_step-1) ), constants, objects )
 				.substitute( Collections.singletonMap( future_PREDICATE, future_indices.get(future) ), constants, objects );
-			ret.add( new Pair<EXPR,EXPR>( lhs_tempuniform_cause, new REAL_CONST_EXPR(1.0*cause_idx) ) );
+			ret.add( new Pair<EXPR,EXPR>( lhs_tempuniform_cause, new REAL_CONST_EXPR(1.0*cause_idx+0.1) ) );
 		}
 		//cause : {AFA,All,Code1Medical,Code3Med,Code3Trauma,EMS,Fire,Hazmat,MassCasualty,
 //		 MVA,NuisanceFire,Other,OtherEMS,OtherFire,
@@ -472,7 +472,7 @@ public class EmergencyDomainDataReelElement extends DataReelElement {
 			EXPR lhs_tempuniform_region = addStepFuture(tempUniformRegionPvar, future_PREDICATE, TIME_PREDICATE, constants, objects)
 					.substitute( Collections.singletonMap( TIME_PREDICATE, time_indices.get(time_step-1) ), constants, objects )
 					.substitute( Collections.singletonMap( future_PREDICATE, future_indices.get(future) ), constants, objects );
-			ret.add( new Pair<EXPR,EXPR>(lhs_tempuniform_region, new REAL_CONST_EXPR(1.0*region_idx) ) );
+			ret.add( new Pair<EXPR,EXPR>(lhs_tempuniform_region, new REAL_CONST_EXPR(1.0*region_idx+0.1) ) );
 		}
 		
 		//EXPR lhs_callRegion = addStepFuture(currentCallRegionPvar, future_PREDICATE, TIME_PREDICATE, constants, objects)

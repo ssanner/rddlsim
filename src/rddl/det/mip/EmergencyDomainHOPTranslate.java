@@ -215,7 +215,7 @@ public class EmergencyDomainHOPTranslate extends HOPTranslate {
 				GRBVar rhs_var = rhs_future.getGRBConstr( 
 						GRB.EQUAL, grb_model, constants, objects, type_map);
 				try {
-					
+					 
 					System.out.println( lhs_future.toString()+"="+rhs_future.toString() );
 					final String nam = RDDL.EXPR.getGRBName(lhs_future)+"="+RDDL.EXPR.getGRBName(rhs_future);
 					System.out.println(nam);;
