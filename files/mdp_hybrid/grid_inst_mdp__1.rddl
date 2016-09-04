@@ -1,0 +1,5 @@
+instance grid_inst_mdp__1 {
+ 	domain = grid_mdp;
+	horizon = 10;
+ 	discount = 1.0;
+}

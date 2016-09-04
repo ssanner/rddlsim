@@ -383,6 +383,13 @@ domain emergency_continuous_time_multiple_vehicles_test{
 		forall_{?v:vehicle,?r:role}[ ~dispatch(?v,?r) | (exists_{?c:cause,?re:region}[ currentCallCode(?c) ^ currentCallRegion(?re) ^ (CauseRequirement(?c,?re,?r) > 0) ] ) ];
 	    forall_{?ca:cause,?re:region}[ (~(currentCallCode(?ca) ^ currentCallRegion(?re)))  
 			| (forall_{?ro:role}[ (sum_{?v:vehicle}[ dispatch(?v,?ro) ]) <= CauseRequirement(?ca,?re,?ro) ]) ];
+		//for the current code and region and non zero requirement if an eligible vehicle exists then some vehicle must be dispatched for any role.
+		
+		//forall_{?ca:cause, ?re:region}[ 
+		//	~currentCallCode(?ca) | ~currentCallRegion(?re)  
+		//	| [(exists_{?v:vehicle,?ro:role}[ (causeRequirement(?ca,?re,?ro) > 0) ^ vehicleInService(?v) ^ HasCapability(?v,?ro) ]) 
+		//	   <= (sum_{?v:vehicle,?q:role}[ dispatch(?v,?q) ])]
+		//];
 	};
 }
 		//currentCallDay : {state-fluent, int, default=1};

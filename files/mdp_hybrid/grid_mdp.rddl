@@ -1,0 +1,62 @@
+domain grid_mdp {
+ 		
+			pvariables {
+ 		
+				x : {state-fluent, real, default = 0.0};
+				y : {state-fluent, real, default = 0.0};
+				
+				v-x : {state-fluent, real, default = 0.0};
+				v-y : {state-fluent, real, default = 0.0};
+				
+				gas-x : {action-fluent, real, default = 0.0};
+				gas-y : {action-fluent, real, default = 0.0};
+				
+				GOAL-X : {non-fluent, real, default = 5.0};
+				GOAL-Y : {non-fluent, real, default = 5.0};
+				
+				ACTION-NOISE : {non-fluent, real, default = 0.5};
+				
+				MAX-X : {non-fluent, real, default = 5.0};
+				MIN-X : {non-fluent, real, default = 0.0};
+				MAX-Y : {non-fluent, real, default = 5.0};
+				MIN-Y : {non-fluent, real, default = 0.0};
+				
+				MAX-GAS : {non-fluent, real, default = 0.71 };
+				success : {interm-fluent, real};
+				
+				collided : {state-fluent, bool, default = false};
+				EPSILON : {non-fluent, real, default = 0.1};				
+ 			};
+ 		
+ 			cpfs {
+ 		
+				x' = if ( collided ) then x else x + v-x;
+				y' = if ( collided ) then y else y + v-y;
+				success = Bernoulli( 1 - ACTION-NOISE );
+				v-x' = if ( success ^ ~collided ) then ( v-x + gas-x ) else v-x;
+				v-y' = if ( success ^ ~collided ) then ( v-y + gas-y ) else v-y;
+				collided' = collided | ( x > MAX-X + EPSILON ) | ( x < MIN-X - EPSILON ) | ( y > MAX-Y + EPSILON ) | ( y < MIN-Y - EPSILON );
+		
+ 			};
+ 		
+ 			// 0 reward for reaching goal, -1 in all other cases
+ 			reward = - abs[ x - GOAL-X ] - abs[ y - GOAL-Y ] -10000*collided;
+			
+ 			//state-invariants{
+			//	//grid 
+			//	MAX-X >= x;
+			//	MIN-X <= x;
+			//	MAX-Y >= y;
+			//	MIN-Y <= y;
+			//	
+ 			//};
+			
+			action-preconditions{
+				//bounded accelaration
+				MAX-GAS >= gas-x;
+				-MAX-GAS <= gas-x;
+				MAX-GAS >= gas-y;
+				-MAX-GAS <= gas-y;
+			};	
+ 		
+ 		}
