@@ -26,7 +26,7 @@ public class EmergencyDomainDispatchClosest extends EmergencyDomainHOPTranslate 
 	private static final PVAR_NAME vehicleInServicePvar = new PVAR_NAME("vehicleInService");
 	private static final PVAR_NAME callMilesPvar = new PVAR_NAME("callMiles");
 	private static final ArrayList<ArrayList<LCONST>> vehicleSubs;
-	private static final int NUMVEHICLES=12;
+	private static final int NUMVEHICLES=4;
 	
 	static{
 		vehicleSubs = new ArrayList<ArrayList<LCONST>>();
