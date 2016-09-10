@@ -387,7 +387,7 @@ domain emergency_continuous_time_multiple_vehicles_test{
 		
 		//forall_{?ca:cause, ?re:region}[ 
 		//	~currentCallCode(?ca) | ~currentCallRegion(?re)  
-		/	| [(exists_{?v:vehicle,?ro:role}[ (causeRequirement(?ca,?re,?ro) > 0) ^ vehicleInService(?v) ^ HasCapability(?v,?ro) ]) 
+		//	| [(exists_{?v:vehicle,?ro:role}[ (causeRequirement(?ca,?re,?ro) > 0) ^ vehicleInService(?v) ^ HasCapability(?v,?ro) ]) 
 		//	   <= (sum_{?v:vehicle,?q:role}[ dispatch(?v,?q) ])]
 		//];
 	};
