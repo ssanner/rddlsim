@@ -248,7 +248,7 @@ public class HOPTranslate extends Translate implements Policy {
 																		
 																		System.out.println( lhs_future.toString()+"="+rhs_future.toString() );
 																		final String nam = RDDL.EXPR.getGRBName(lhs_future)+"="+RDDL.EXPR.getGRBName(rhs_future);
-																		System.out.println(nam);;
+//																		System.out.println(nam);;
 																		
 																		GRBConstr this_constr 
 																			= grb_model.addConstr( lhs_var, GRB.EQUAL, rhs_var, nam );
@@ -466,7 +466,7 @@ public class HOPTranslate extends Translate implements Policy {
 					GRBConstr this_constr = grb_model.addConstr( lhs_var, GRB.EQUAL, rhs_var, nam );
 					
 					System.out.println( this_future_init_state+" "+rhs_expr );
-					System.out.println( nam );
+//					System.out.println( nam );
 					
 //					System.out.println( this_constr.get(StringAttr.ConstrName) ); 
 //					saved_vars.add( lhs_var ); saved_expr.add( this_future_init_state );

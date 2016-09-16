@@ -90,7 +90,7 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 	protected List<String> string_action_vars;
 	private List<String> string_observ_vars;
 	private List<String> string_interm_vars;
-	private GRBEnv grb_env;
+	protected GRBEnv grb_env;
 	
 	protected GRBModel static_grb_model = null;
 	
@@ -125,7 +125,7 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 //	protected List<EXPR> to_remove_expr = new ArrayList<>();
 	
 	protected Timer translate_time;
-	private StateViz viz;
+	protected StateViz viz;
 	
 	//pseudoconstructor - only one constructor allowed for rddl client
 	protected void TranslateInit( final String domain_file, final String inst_file, 
@@ -320,7 +320,11 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 		}
 		
 		try {
-			handleOOM(static_grb_model);
+			cleanUp(static_grb_model);
+			static_grb_model.getEnv().dispose();
+			static_grb_model.dispose();
+			RDDL.EXPR.cleanUpGRB();
+			System.gc();
 			static_grb_model = null;
 			grb_env = null;
 		} catch (GRBException e) {
@@ -361,7 +365,8 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 			if( !saved_constr.contains(constr) ){
 //				System.out.println(constr.toString());
 				try{
-					System.out.println("Removing constraint " + constr.get(StringAttr.ConstrName) );
+					//System.out.println("Removing constraint " + 
+					constr.get(StringAttr.ConstrName);
 				}catch(GRBException exc){
 						System.out.println(exc.getErrorCode());
 						exc.printStackTrace();

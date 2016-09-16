@@ -34,7 +34,6 @@ public class EmergencyDomainDataReel {
 	private int testingFoldIdx;
 	private int testingInstanceIdx;
 	
-	//alwayts uses training set
 	public ArrayList<Integer> getLeads(final EmergencyDomainDataReelElement someFrame,
 			final int foldIdx){
 		assert( sequential );
@@ -44,12 +43,20 @@ public class EmergencyDomainDataReel {
 			final EmergencyDomainDataReelElement prevCall = frames[foldIdx].get(i-1);
 			final EmergencyDomainDataReelElement curCall = frames[foldIdx].get(i);
 			assert( ! prevCall.callDate.isAfter( curCall.callDate ) );
+			boolean chosen = false;
 			if( prevCall.callDate.isBefore( curCall.callDate ) ){
 				if( ((prevCall.compareTo(someFrame) <= 0) && (curCall.compareTo(someFrame) < 0))
 					|| ((prevCall.compareTo(someFrame) > 0) && (curCall.compareTo(someFrame) > 0)) ){
-					ret.add(i);
+					chosen = true;
 				}
 			}else if ( (prevCall.compareTo(someFrame) <= 0) && (curCall.compareTo(someFrame) > 0) ){
+				chosen = true;
+			}
+			//must be greater by some minimum. First eliminate same minute calls. Comes down to precision handling by Gurobi. 
+//			if( chosen && prevCall.callTime.getMinute()==curCall.callTime.getMinute() && curCall.callTime.getHour()==prevCall.callTime.getHour() ){
+//				ret.add(i+1);
+//			}else
+			if( chosen ){
 				ret.add(i);
 			}
 		}
@@ -122,7 +129,13 @@ public class EmergencyDomainDataReel {
 				double cur_future_call_time_double = EmergencyDomainDataReelElement.timeToDouble(cur_future.callTime, cur_future.callDate);
 				
 				if( cur_future_call_time_double <= prev_time ){
-					cur_future_call_time_double = prev_time + 0.01;
+//					cur_future_call_time_double = prev_time + 0.01;
+					try{
+						throw new Exception("call too close");
+					}catch( Exception exc ){
+						exc.printStackTrace();
+						System.exit(1);
+					}
 				}
 				
 				assert( prev_time <= cur_future_call_time_double );
@@ -151,16 +164,18 @@ public class EmergencyDomainDataReel {
 					ret[f] = new ArrayList<>( );
 					ret[f].add( current );
 				}else{
-					ArrayList<Integer> leads = getLeads(ret[f].get(t-1), foldIdx);	
+					EmergencyDomainDataReelElement prevCall = ret[f].get(t-1);
+					ArrayList<Integer> leads = getLeads(prevCall, foldIdx);	
+					
 					final int idx = rand.nextInt(0, leads.size()-1);
 					final EmergencyDomainDataReelElement thatElem = ( frames[foldIdx].get( leads.get( idx ) ) );
 					
 					//fix date to be not in the past
 					LocalDate newCallDate;
-					if( thatElem.callTime.isBefore(current.callTime) ){
-						newCallDate = LocalDate.ofYearDay( current.callDate.getYear(), current.callDate.getDayOfYear()+1);
+					if( thatElem.callTime.isBefore(prevCall.callTime) ){
+						newCallDate = LocalDate.ofYearDay( prevCall.callDate.getYear(), prevCall.callDate.getDayOfYear()+1);
 					}else{
-						newCallDate = LocalDate.ofYearDay( current.callDate.getYear(), current.callDate.getDayOfYear()); 
+						newCallDate = LocalDate.ofYearDay( prevCall.callDate.getYear(), prevCall.callDate.getDayOfYear()); 
 					}
 					
 					//randomize call x and y in the same region ? 
@@ -190,8 +205,8 @@ public class EmergencyDomainDataReel {
 		}
 		
 		RandomDataGenerator rand = new RandomDataGenerator();
-		final int numFutures = 10;
-		final int length = 5;
+		final int numFutures = 40;
+		final int length = 10;
 		
 		ArrayList<EmergencyDomainDataReelElement>[] futures = reel.getFutures(current, rand , numFutures, length, 0);
 		for( ArrayList<EmergencyDomainDataReelElement> future : futures ){

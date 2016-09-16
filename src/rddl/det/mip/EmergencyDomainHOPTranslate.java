@@ -34,6 +34,7 @@ import rddl.RDDL.PVAR_INST_DEF;
 import rddl.RDDL.PVAR_NAME;
 import rddl.RDDL.REAL_CONST_EXPR;
 import rddl.State;
+import rddl.policy.Policy;
 import rddl.viz.StateViz;
 import util.Pair;
 import util.Timer;
@@ -218,7 +219,7 @@ public class EmergencyDomainHOPTranslate extends HOPTranslate {
 					 
 					System.out.println( lhs_future.toString()+"="+rhs_future.toString() );
 					final String nam = RDDL.EXPR.getGRBName(lhs_future)+"="+RDDL.EXPR.getGRBName(rhs_future);
-					System.out.println(nam);;
+//					System.out.println(nam);;
 					
 					GRBConstr this_constr = grb_model.addConstr( lhs_var, GRB.EQUAL, rhs_var, nam );
 					to_remove_constr.add( this_constr );
@@ -378,6 +379,5 @@ public class EmergencyDomainHOPTranslate extends HOPTranslate {
 				null, //new EmergencyDomainStateViz(1300,30,1500,80), 
 				Boolean.parseBoolean( args[ args.length-1 ] ) ) );
 	}
-
 
 }

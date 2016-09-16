@@ -196,7 +196,7 @@ public class EmergencyDomainDataReelElement extends DataReelElement {
 	private static final OBJECT_VAL NUISANCE_FIRE_CAUSE_CODE = new OBJECT_VAL("NuisanceFire");
 	private static final double CALL_RADIUS = 0.2;
 	
-	private static DecimalFormat _df = new DecimalFormat("##.##");
+	private static DecimalFormat _df = new DecimalFormat("##.########");
 	private static HashMap<String,OBJECT_VAL> _natureCodeMap = new HashMap<>();
 	
 	static{
