@@ -346,7 +346,9 @@ public class EmergencyDomainHOPTranslate extends HOPTranslate {
 			System.out.println("Round reward " + accum_reward);
 			rewards.add( accum_reward );
 			
-			handleOOM(static_grb_model);
+			if( round != numRounds-1 ){
+				handleOOM(static_grb_model);
+			}
 			
 		}
 		
