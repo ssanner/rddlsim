@@ -128,14 +128,15 @@ public class EmergencyDomainDataReel {
 				EmergencyDomainDataReelElement cur_future = futures[f].get(t);
 				double cur_future_call_time_double = EmergencyDomainDataReelElement.timeToDouble(cur_future.callTime, cur_future.callDate);
 				
-				if( cur_future_call_time_double <= prev_time ){
-//					cur_future_call_time_double = prev_time + 0.01;
+				if( cur_future_call_time_double < prev_time ){
 					try{
 						throw new Exception("call too close");
 					}catch( Exception exc ){
 						exc.printStackTrace();
 						System.exit(1);
 					}
+				}else if( cur_future_call_time_double == prev_time ){
+					cur_future_call_time_double = prev_time + 0.01;
 				}
 				
 				assert( prev_time <= cur_future_call_time_double );
