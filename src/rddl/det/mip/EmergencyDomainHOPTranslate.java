@@ -93,7 +93,7 @@ public class EmergencyDomainHOPTranslate extends HOPTranslate {
 
 						final String pvarName = entry.getKey()._sPVarName;
 						if( pvarName.equals(EmergencyDomainDataReelElement.currentCallPvarName._sPVarName) ||
-							pvarName.equals(EmergencyDomainDataReelElement.currentCallTimePvarName._sPVarName) || 
+							pvarName.equals(EmergencyDomainDataReelElement.gapTimePvarName._sPVarName) || 
 							pvarName.equals(EmergencyDomainDataReelElement.tempUniformRegionPvarName._sPVarName) ||  
 							pvarName.equals(EmergencyDomainDataReelElement.tempUniformCausePvarName._sPVarName) ){
 							return;
@@ -205,7 +205,7 @@ public class EmergencyDomainHOPTranslate extends HOPTranslate {
 		ArrayList<EmergencyDomainDataReelElement>[] futures 
 			= reel.getFutures(currentElem, rng, numFutures, length, reel.getTrainingFoldIdx() );
 		ArrayList<Pair<EXPR, EXPR>> futuresExpressions 
-			= reel.to_RDDL_EXPR_constraints(futures, future_PREDICATE, 
+			= reel.to_RDDL_EXPR_constraints_sans_init(futures, future_PREDICATE, 
 				future_TERMS, TIME_PREDICATE, TIME_TERMS, constants, objects);
 		for( Pair<EXPR,EXPR> pairFuture : futuresExpressions ){
 			final EXPR lhs_future = pairFuture._o1;

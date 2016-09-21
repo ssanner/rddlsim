@@ -2144,7 +2144,6 @@ public class RDDL {
 			}
 		}
 		
-
 		public EXPR getDist(HashMap<LVAR,LCONST> subs, State s) throws EvalException {
 
 			try {

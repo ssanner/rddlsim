@@ -112,7 +112,9 @@ public class EmergencyDomainDataReel {
 	//methods to convert from and back RDDL state
 
 	
-	protected ArrayList<Pair<EXPR,EXPR>> to_RDDL_EXPR_constraints(ArrayList<EmergencyDomainDataReelElement>[] futures,
+	//does not translate initial future futures[f].get(0)
+	//because the translation depends on intermediate variables
+	protected ArrayList<Pair<EXPR,EXPR>> to_RDDL_EXPR_constraints_sans_init(ArrayList<EmergencyDomainDataReelElement>[] futures,
 			final LVAR future_PREDICATE, final ArrayList<LCONST> future_indices,
 			final LVAR TIME_PREDICATE, final ArrayList<LCONST> time_indices, 
 			Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants, 
@@ -120,31 +122,41 @@ public class EmergencyDomainDataReel {
 		assert( futures.length == future_indices.size() );
 		assert( futures[0].size() == time_indices.size() );
 		
+		//sanity
+		EmergencyDomainDataReelElement init_state = null;
+		for( int f = 0; f < futures.length; ++f ){
+			if (init_state == null ){
+				init_state = futures[f].get(0);
+			}else{
+				assert( init_state.equals( futures[f].get(0) ) );
+			}
+		}
+		
 		ArrayList<Pair<EXPR,EXPR>> ret = new ArrayList<>();
 		for( int f = 0; f < futures.length; ++f ){
-//			int offset = 0;
-			double prev_time = 0;
-			for( int t = 0; t < futures[f].size(); ++t ){
+			for( int t = 1; t < futures[f].size(); ++t ){
+				EmergencyDomainDataReelElement prev_future = futures[f].get(t-1);
+				double prev_time = EmergencyDomainDataReelElement.timeToDouble(prev_future.callTime, prev_future.callDate);
+				
 				EmergencyDomainDataReelElement cur_future = futures[f].get(t);
 				double cur_future_call_time_double = EmergencyDomainDataReelElement.timeToDouble(cur_future.callTime, cur_future.callDate);
 				
-				if( cur_future_call_time_double < prev_time ){
-					try{
-						throw new Exception("call too close");
-					}catch( Exception exc ){
-						exc.printStackTrace();
-						System.exit(1);
+				try{
+					if( cur_future_call_time_double < prev_time ){
+							throw new Exception("next call in past");
+					}else if( cur_future_call_time_double == prev_time ){
+						throw new Exception("simultaneous calls");
 					}
-				}else if( cur_future_call_time_double == prev_time ){
-					cur_future_call_time_double = prev_time + 0.01;
+				}catch( Exception exc ){
+					exc.printStackTrace();
+					System.exit(1);
 				}
 				
-				assert( prev_time <= cur_future_call_time_double );
-				prev_time = cur_future_call_time_double;
+				assert( prev_time < cur_future_call_time_double );				
 				
 				ArrayList<Pair<EXPR, EXPR>> expr_constraints = 
 						cur_future.to_RDDL_EXPR_constraints( f, t, future_PREDICATE,
-								future_indices, TIME_PREDICATE, time_indices, constants, objects );
+								future_indices, TIME_PREDICATE, time_indices, constants, objects, prev_time );
 //				System.out.println( expr_constraints );
 				
 				ret.addAll( expr_constraints );
@@ -233,7 +245,7 @@ public class EmergencyDomainDataReel {
 			Map<TYPE_NAME, OBJECTS_DEF> objects) {
 		ArrayList<LCONST> future_indices = makeIndices(numFutures, "future");
 		ArrayList<LCONST> time_indices = makeIndices(length, "time");
-		return to_RDDL_EXPR_constraints(futures, future_PREDICATE, future_indices, time_PREDICATE, time_indices, constants, objects);
+		return to_RDDL_EXPR_constraints_sans_init(futures, future_PREDICATE, future_indices, time_PREDICATE, time_indices, constants, objects);
 	}
 	
 	private static ArrayList<LCONST> makeIndices( final int numIdx, final String prefix ){

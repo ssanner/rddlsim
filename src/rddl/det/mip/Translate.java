@@ -496,41 +496,32 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 		if( grb_model.get( IntAttr.Status ) == GRB.INFEASIBLE ){
 			System.out.println("xxxxxxxx-----Solver says infeasible.-------xxxxxxxx");
 			
-//			grb_model.computeIIS();
-//	        System.out.println("\nThe following constraints cannot be satisfied (first 100 shown):");
+			grb_model.computeIIS();
+	        System.out.println("\nThe following constraints cannot be satisfied (first 100 shown):");
 	        
-//	        int count = 0;
-//	        for (GRBConstr c : grb_model.getConstrs()) {
-//	          if (c.get(GRB.IntAttr.IISConstr) == 1) {
-//	        	String constr = c.get(GRB.StringAttr.ConstrName);
-//	        	
-//	        	System.out.println( constr + " " + EXPR.reverse_name_map.get( constr ) );
-//	        	
-////	        	count++;
-////	        	if( count > 100 ){
-////	        		break;
-////	        	}
-//		            // Remove a single constraint from the model
-//	//	            removed.add(c.get(GRB.StringAttr.ConstrName));
-//	//	            grb_model.remove(c);
-//	//	            break;
-//	          }
-//	        }
-		    
-//	        System.out.println("Retrying optimization");
-//	        this.handleOOM();
-//	        grb_model.update();
-//			System.out.println("Optimizing.............");
-//			
-//			grb_model.optimize();
+	        List<String> src = new ArrayList<>( EXPR.reverse_name_map.keySet() );
+			Collections.sort( src, new Comparator<String>() {
+
+				@Override
+				public int compare(  String o1, String o2) {
+					return (new Integer(o1.length()).compareTo( 
+								new Integer( o2.length()) ) );
+				}
+			});
+			Collections.reverse( src );
 			
-//	        GRBModel copy_model = new GRBModel( grb_model );
-//	        double relaxed_objective = copy_model.feasRelax(0, true, false, true );
-//	        System.out.println( "Relaxed objective value : " + relaxed_objective );
-//		        copy_model.optimize();
-//	        copy_model.dispose();
-		    
-	        throw new GRBException("Infeasible model.");
+	        for (GRBConstr c : grb_model.getConstrs()) {
+	          if (c.get(GRB.IntAttr.IISConstr) == 1) {
+	        	String constr = c.get(GRB.StringAttr.ConstrName);
+	        	
+	        	System.out.println( constr );
+	        	for( final String sub : src ){
+	        		constr.replace(sub, EXPR.reverse_name_map.get(sub) );
+	        	}
+	          }
+	        }
+	        
+	      throw new GRBException("Infeasible model.");
 		}else if( grb_model.get( IntAttr.Status ) == GRB.UNBOUNDED ){
 			System.out.println(  "Unbounded Ray : " + grb_model.get( DoubleAttr.UnbdRay ) );
 		}

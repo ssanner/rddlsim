@@ -52,6 +52,9 @@ public class EmergencyDomainDataReelElement extends DataReelElement {
 	private static final PVAR_EXPR tempUniformRegionPvar = new PVAR_EXPR("tempUniformRegion", emptySubstitution);
 	public static final PVAR_NAME tempUniformRegionPvarName = new PVAR_NAME("tempUniformRegion");
 	
+	public static final PVAR_NAME gapTimePvarName = new PVAR_NAME("gapTime");
+	public static final PVAR_EXPR gapTimePvar = new PVAR_EXPR("gapTime", emptySubstitution);
+	
 	private static final double FeetToMiles = 0.000189;
 	private static final double GoodSamCenterX = 1417.63;
 	private static final double GoodSamCenterY = 66.97;
@@ -194,9 +197,9 @@ public class EmergencyDomainDataReelElement extends DataReelElement {
 	private static final OBJECT_VAL VEHICLE_FIRE_CAUSE_CODE = new OBJECT_VAL("VehicleFire");
 	private static final OBJECT_VAL WILDLAND_FIRE_CAUSE_CODE = new OBJECT_VAL("WildlandFire");
 	private static final OBJECT_VAL NUISANCE_FIRE_CAUSE_CODE = new OBJECT_VAL("NuisanceFire");
-	private static final double CALL_RADIUS = 0.2;
+//	private static final double CALL_RADIUS = 0.2;
 	
-	private static DecimalFormat _df = new DecimalFormat("##.##");
+	private static DecimalFormat _df = new DecimalFormat("##.########");
 	private static HashMap<String,OBJECT_VAL> _natureCodeMap = new HashMap<>();
 	
 	static{
@@ -296,10 +299,10 @@ public class EmergencyDomainDataReelElement extends DataReelElement {
 	public int compareTo(DataReelElement other) {
 		if( other instanceof EmergencyDomainDataReelElement ){
 			EmergencyDomainDataReelElement other_elem = (EmergencyDomainDataReelElement)other;
-			if( Math.abs( other_elem.callX - this.callX ) < CALL_RADIUS && 
-					Math.abs( other_elem.callY - this.callY ) < CALL_RADIUS ){
-				return 0;
-			}
+//			if( Math.abs( other_elem.callX - this.callX ) < CALL_RADIUS && 
+//					Math.abs( other_elem.callY - this.callY ) < CALL_RADIUS ){
+//				return 0;
+//			}
 			final int timeCompare = this.callTime.compareTo(other_elem.callTime);
 			return timeCompare;
 		}
@@ -423,14 +426,17 @@ public class EmergencyDomainDataReelElement extends DataReelElement {
 			final LVAR future_PREDICATE, final ArrayList<LCONST> future_indices,
 			final LVAR TIME_PREDICATE, final ArrayList<LCONST> time_indices, 
 			Map<PVAR_NAME, Map<ArrayList<LCONST>, Object>> constants, 
-			Map<TYPE_NAME, OBJECTS_DEF> objects ){
+			Map<TYPE_NAME, OBJECTS_DEF> objects, double prev_call_time ){
 		ArrayList<Pair<EXPR,EXPR>> ret = new ArrayList<>();
 		
 		double current_call_time_double = timeToDouble( this.callTime, this.callDate );
-		EXPR lhs_time = addStepFuture(currentCallTimePvar, future_PREDICATE, TIME_PREDICATE, constants, objects)
+		final double the_gap = current_call_time_double-prev_call_time;
+		assert( the_gap > 0 );
+		
+		EXPR lhs_time = addStepFuture(gapTimePvar, future_PREDICATE, TIME_PREDICATE, constants, objects)
 					.substitute( Collections.singletonMap( TIME_PREDICATE, time_indices.get(time_step) ), constants, objects )
 					.substitute( Collections.singletonMap( future_PREDICATE, future_indices.get(future) ), constants, objects );
-		ret.add( new Pair<EXPR, EXPR>(lhs_time, new REAL_CONST_EXPR(current_call_time_double) ) );
+		ret.add( new Pair<EXPR, EXPR>(lhs_time, new REAL_CONST_EXPR(the_gap) ) );
 
 		EXPR lhs_callX = addStepFuture(currentCallPvar, future_PREDICATE, TIME_PREDICATE, constants, objects)
 						.substitute( Collections.singletonMap( TIME_PREDICATE, time_indices.get(time_step) ), constants, objects )

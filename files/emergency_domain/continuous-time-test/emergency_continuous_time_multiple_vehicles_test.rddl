@@ -52,6 +52,7 @@ domain emergency_continuous_time_multiple_vehicles_test{
 		firstResponse : {interm-fluent, real};
 		fullResponse : {interm-fluent, real};
 		overwhelm : {interm-fluent, bool};
+		gapTime : {interm-fluent, real};
 		
 		//constants
 		vehicleHome(vehicle,coordinate) : {non-fluent, real, default=0.0};
@@ -102,7 +103,8 @@ domain emergency_continuous_time_multiple_vehicles_test{
 			 
 		//sampledNextTime = currentCallTime + Uniform(0, MAX_INTER_ARRIVAL );
 		
-		currentCallTime' = currentCallTime + Uniform(0, MAX_INTER_ARRIVAL ); 
+		gapTime = Uniform(0, MAX_INTER_ARRIVAL );
+		currentCallTime' = currentCallTime + gapTime; 
 		
 		//if (sampledNextTime >= 24.0) then (sampledNextTime - 24.0) else sampledNextTime;
 		//currentCallDay' = if (sampledNextTime >= 24.0) then (currentCallDay + 1) else currentCallDay;
@@ -372,6 +374,8 @@ domain emergency_continuous_time_multiple_vehicles_test{
 		
 		firstResponse >= 0.0; firstResponse <= (sum_{?c:coordinate}[MapUpperBound(?c)-MapLowerBound(?c)])/70.0;
 		fullResponse >= 0.0; fullResponse <= (sum_{?c:coordinate}[MapUpperBound(?c)-MapLowerBound(?c)])/70.0;
+		
+		gapTime > 0;
 		
 	};
 	
