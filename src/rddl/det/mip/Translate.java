@@ -366,6 +366,7 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 //				System.out.println(constr.toString());
 				try{
 					//System.out.println("Removing constraint " + 
+					//get can throw an exception
 					constr.get(StringAttr.ConstrName);
 				}catch(GRBException exc){
 						System.out.println(exc.getErrorCode());

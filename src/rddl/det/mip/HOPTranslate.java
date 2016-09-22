@@ -942,7 +942,8 @@ public class HOPTranslate extends Translate implements Policy {
 			int error_code = exc.getErrorCode();
 			System.out.println("Error code : " + error_code );
 			if( recover ){//error_code == GRB.ERROR_OUT_OF_MEMORY && recover ){
-				handleOOM( static_grb_model );
+				cleanUp(static_grb_model);
+//				handleOOM( static_grb_model );
 				return doPlan( subs, false );
 			}else{
 				throw exc;
