@@ -92,8 +92,12 @@ public class HOPTranslate extends Translate implements Policy {
 	@Override
 	protected void removeExtraPredicates() {
 		super.removeExtraPredicates();
-		future_TERMS.clear();
-		objects.remove( future_TYPE );
+		if( future_TERMS != null ){
+			future_TERMS.clear();
+		}
+		if( objects != null ){
+			objects.remove( future_TYPE );
+		}
 	}
 	
 	@Override
@@ -108,49 +112,54 @@ public class HOPTranslate extends Translate implements Policy {
 		objects.put( future_TYPE,  new OBJECTS_DEF(  future_TYPE._STypeName, future_TERMS ) );
 	}
 
-//	@Override
-//	protected void addAllVariables( final GRBModel grb_model ) {
-//
-//		HashMap<PVAR_NAME, ArrayList<ArrayList<LCONST>>> src = new HashMap<PVAR_NAME, ArrayList<ArrayList<LCONST>>>();
-//		src.putAll( rddl_state_vars ); src.putAll( rddl_action_vars ); src.putAll( rddl_interm_vars ); src.putAll( rddl_observ_vars );
-//		
-//		src.forEach( new BiConsumer<PVAR_NAME, ArrayList<ArrayList<LCONST>> >() {
-//			@Override
-//			public void accept(PVAR_NAME pvar, ArrayList<ArrayList<LCONST>> u) {
-//				u.parallelStream().forEach( new Consumer<ArrayList<LCONST>>() {
-//					@Override
-//					public void accept(ArrayList<LCONST> terms) {
-//						EXPR pvar_expr = new PVAR_EXPR(pvar._sPVarName, terms )
-//							.addTerm(TIME_PREDICATE, constants, objects)
-//							.addTerm( future_PREDICATE, constants, objects );
-//							
-//						TIME_TERMS.parallelStream().forEach( new Consumer<LCONST>() {
-//							@Override
-//							public void accept(LCONST time_term ) {
-//								EXPR this_t = pvar_expr.substitute( Collections.singletonMap( TIME_PREDICATE, time_term), 
-//										constants, objects);
-//								
-//								future_TERMS.parallelStream().forEach( new Consumer< LCONST >() {
-//									@Override
-//									public void accept(LCONST future_term) {
-//										EXPR this_tf = 
-//												this_t.substitute( Collections.singletonMap( future_PREDICATE, future_term ), constants, objects );
-//										synchronized( grb_model ){
-//											System.out.println("Adding var " + pvar.toString() + " " + terms + " " + time_term + " " + future_term );
-//											GRBVar gvar = this_tf.getGRBConstr( GRB.EQUAL, grb_model, constants, objects, type_map);
-//											saved_expr.add( this_tf );
-//										}
-//									}
-//								});
-//								
-//							}
-//						});
-//					}
-//				});
-//			}
-//		});
-//		
-//	}
+	@Override
+	protected void addAllVariables( ) {
+
+		HashMap<PVAR_NAME, ArrayList<ArrayList<LCONST>>> src = new HashMap<PVAR_NAME, ArrayList<ArrayList<LCONST>>>();
+		src.putAll( rddl_state_vars ); src.putAll( rddl_action_vars ); src.putAll( rddl_interm_vars ); src.putAll( rddl_observ_vars );
+		
+		src.forEach( new BiConsumer<PVAR_NAME, ArrayList<ArrayList<LCONST>> >() {
+			@Override
+			public void accept(PVAR_NAME pvar, ArrayList<ArrayList<LCONST>> u) {
+				u.parallelStream().forEach( new Consumer<ArrayList<LCONST>>() {
+					@Override
+					public void accept(ArrayList<LCONST> terms) {
+						EXPR pvar_expr = new PVAR_EXPR(pvar._sPVarName, terms )
+							.addTerm(TIME_PREDICATE, constants, objects)
+							.addTerm( future_PREDICATE, constants, objects );
+							
+						TIME_TERMS.parallelStream().forEach( new Consumer<LCONST>() {
+							@Override
+							public void accept(LCONST time_term ) {
+								EXPR this_t = pvar_expr.substitute( Collections.singletonMap( TIME_PREDICATE, time_term), 
+										constants, objects);
+								
+								future_TERMS.parallelStream().forEach( new Consumer< LCONST >() {
+									@Override
+									public void accept(LCONST future_term) {
+										EXPR this_tf = 
+												this_t.substitute( Collections.singletonMap( future_PREDICATE, future_term ), constants, objects );
+										synchronized( static_grb_model ){
+											GRBVar gvar = this_tf.getGRBConstr( GRB.EQUAL, static_grb_model, constants, objects, type_map);
+											try {
+												System.out.println("Adding var " + gvar.get(StringAttr.VarName) + " " + this_tf );
+											} catch (GRBException e) {
+												e.printStackTrace();
+												System.exit(1);
+											}
+											saved_expr.add( this_tf );
+										}
+									}
+								});
+								
+							}
+						});
+					}
+				});
+			}
+		});
+		
+	}
 	
 	@Override
 	protected void translateCPTs( HashMap<PVAR_NAME,HashMap<ArrayList<LCONST>,Object>> initState,

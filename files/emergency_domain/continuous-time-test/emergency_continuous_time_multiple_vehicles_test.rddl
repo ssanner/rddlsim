@@ -5,11 +5,11 @@
 //1. simulate min of time of next call or next available time of team.
 //2. calculate FC and FR correctly - accumulate over time steps
 
-domain emergency_continuous_time_multiple_vehicles_test{
+domain emergency_continuous_time_multiple_units_test{
 	
 	types {
 		coordinate : object;
-		vehicle : object; 
+		unit : object; 
 		cause : object;
 		role : object;
 		region : object;
@@ -22,18 +22,18 @@ domain emergency_continuous_time_multiple_vehicles_test{
 		currentCallRegion(region) : {state-fluent, bool, default=false};
 		
 		currentCall(coordinate) : {state-fluent, real, default=0};
-		timeServiceDone(vehicle) : {state-fluent, real, default=0.0};
-		timeTarryDone(vehicle) :  {state-fluent, real, default=0.0};
-		timeBackInBase(vehicle) : {state-fluent, real, default=0.0};
-		lastVehicleService(vehicle,coordinate) : {state-fluent, real, default=0.0};
+		timeServiceDone(unit) : {state-fluent, real, default=0.0};
+		timeTarryDone(unit) :  {state-fluent, real, default=0.0};
+		timeBackInBase(unit) : {state-fluent, real, default=0.0};
+		lastUnitService(unit,coordinate) : {state-fluent, real, default=0.0};
 
 		
 		
 		tempUniformCause : {interm-fluent, real};
 		tempUniformRegion : {interm-fluent, real};
 		
-		callMiles(vehicle) : {interm-fluent, real};
-		callTravelTime(vehicle) : {interm-fluent, real};
+		callMiles(unit) : {interm-fluent, real};
+		callTravelTime(unit) : {interm-fluent, real};
 		
 		hospitalMiles : {interm-fluent, real};
 		hospitalTravelTime : {interm-fluent, real};
@@ -41,21 +41,21 @@ domain emergency_continuous_time_multiple_vehicles_test{
 		transferMiles : {interm-fluent, real};
 		transferTravelTime : {interm-fluent, real};
 		
-		returnMiles(vehicle) : {interm-fluent, real};
-		returnTravelTime(vehicle) : {interm-fluent, real}; 
+		returnMiles(unit) : {interm-fluent, real};
+		returnTravelTime(unit) : {interm-fluent, real}; 
 		
-		vehicleInService(vehicle) : {interm-fluent, bool};
-		vehicleInBase(vehicle) : {interm-fluent, bool};
-		vehicleOnSite(vehicle) : {interm-fluent, bool};
+		unitInService(unit) : {interm-fluent, bool};
+		unitInBase(unit) : {interm-fluent, bool};
+		unitOnSite(unit) : {interm-fluent, bool};
 		
-		//responseTime(vehicle) : {interm-fluent, real};
+		//responseTime(unit) : {interm-fluent, real};
 		firstResponse : {interm-fluent, real};
 		fullResponse : {interm-fluent, real};
 		overwhelm : {interm-fluent, bool};
 		gapTime : {interm-fluent, real};
 		
 		//constants
-		vehicleHome(vehicle,coordinate) : {non-fluent, real, default=0.0};
+		unitHome(unit,coordinate) : {non-fluent, real, default=0.0};
 		
 		MapUpperBound(coordinate) : {non-fluent, real, default=0};
 		MapLowerBound(coordinate) : {non-fluent, real, default=0};
@@ -74,11 +74,11 @@ domain emergency_continuous_time_multiple_vehicles_test{
 		//FeetToMiles : {non-fluent, real, default=0.000189};
 		MAX_INTER_ARRIVAL : {non-fluent, real, default=2.0};
 		
-		HasCapability(vehicle,role) : {non-fluent, bool, default=false};
+		HasCapability(unit,role) : {non-fluent, bool, default=false};
 		CauseRequirement(cause,region,role) : {non-fluent, int, default=0};
 		
 		//action
-		dispatch(vehicle,role) : {action-fluent, bool, default=false};
+		dispatch(unit,role) : {action-fluent, bool, default=false};
 		
 		W1 : {non-fluent, real, default=1};
 		W2 : {non-fluent, real, default=1};
@@ -88,7 +88,7 @@ domain emergency_continuous_time_multiple_vehicles_test{
 	
 	cpfs {
 	
-		//vehicleHome'(?v,?c) = sum_{?s:station}[ if (rebase(?v,?s)) then StationLocation(?s,?c) else 0.0];
+		//unitHome'(?u,?c) = sum_{?s:station}[ if (rebase(?u,?s)) then StationLocation(?s,?c) else 0.0];
 		
 		//uniform distribution over causes
 		tempUniformCause = Uniform(0,sum_{?c:cause}[1]);
@@ -111,43 +111,43 @@ domain emergency_continuous_time_multiple_vehicles_test{
 					  
 		currentCall'(?c) = Uniform( MapLowerBound(?c), MapUpperBound(?c) );//Normal( 0.5*CurrentCallTime )
 		
-		lastVehicleService'(?v,?c) = if (exists_{?r:role}[dispatch(?v,?r)] ^ exists_{?ca:cause}[ currentCallCode(?ca) ^ DestinationHospital(?ca) ] ) 
+		lastUnitService'(?u,?c) = if (exists_{?r:role}[dispatch(?u,?r)] ^ exists_{?ca:cause}[ currentCallCode(?ca) ^ DestinationHospital(?ca) ] ) 
 								  then HospitalPosition(?c) 
-								  else if (exists_{?r:role}[dispatch(?v,?r)] ^ exists_{?ca:cause}[ currentCallCode(?ca) ^ DestinationTransfer(?ca) ] )
+								  else if (exists_{?r:role}[dispatch(?u,?r)] ^ exists_{?ca:cause}[ currentCallCode(?ca) ^ DestinationTransfer(?ca) ] )
 								  then TransferPosition(?c) 
-								  else if (exists_{?r:role}[dispatch(?v,?r)])
+								  else if (exists_{?r:role}[dispatch(?u,?r)])
 								  then currentCall(?c)
-								  else if (vehicleInBase(?v))
-								  then vehicleHome(?v,?c) 
-								  else lastVehicleService(?v,?c);
+								  else if (unitInBase(?u))
+								  then unitHome(?u,?c) 
+								  else lastUnitService(?u,?c);
 		
-		callMiles(?v) = (if (vehicleInBase(?v)) 
-						      then (sum_{?c:coordinate}[ abs[ vehicleHome(?v,?c)-currentCall(?c) ] ])
-							  else (sum_{?c:coordinate}[ abs[ lastVehicleService(?v,?c)-currentCall(?c) ] ]));
+		callMiles(?u) = (if (unitInBase(?u)) 
+						      then (sum_{?c:coordinate}[ abs[ unitHome(?u,?c)-currentCall(?c) ] ])
+							  else (sum_{?c:coordinate}[ abs[ lastUnitService(?u,?c)-currentCall(?c) ] ]));
 		
-		callTravelTime(?v) = (if (callMiles(?v) <= 5) 
-						 then callMiles(?v)/38.0
-						 else if (callMiles(?v) > 5 ^ callMiles(?v) <= 7)
-						 then callMiles(?v)/42.0
-						 else if (callMiles(?v) > 7 ^ callMiles(?v) <= 12)
-						 then callMiles(?v)/40.0
-						 else if (callMiles(?v) > 12 ^ callMiles(?v) <= 15)
-						 then callMiles(?v)/48.0
-						 else if (callMiles(?v) > 15 ^ callMiles(?v) <= 17.5)
-						 then callMiles(?v)/56.0
-						 else if (callMiles(?v) > 17.5 ^ callMiles(?v) <= 20)
-						 then callMiles(?v)/52.0
-						 else if (callMiles(?v) > 20 ^ callMiles(?v) <= 25)
-						 then callMiles(?v)/50.0
-						 else if (callMiles(?v) > 25 ^ callMiles(?v) <= 28.5)
-						 then callMiles(?v)/54.0
-						 else if (callMiles(?v) > 28.5 ^ callMiles(?v) <= 41)
-						 then callMiles(?v)/49.0
-						 else if (callMiles(?v) > 41 ^ callMiles(?v) <= 70)
-						 then callMiles(?v)/70.0
-						 else if (callMiles(?v) > 70 ^ callMiles(?v) <= 500)
-						 then callMiles(?v)/70.0
-						 else callMiles(?v)/70.0);
+		callTravelTime(?u) = (if (callMiles(?u) <= 5) 
+						 then callMiles(?u)/38.0
+						 else if (callMiles(?u) > 5 ^ callMiles(?u) <= 7)
+						 then callMiles(?u)/42.0
+						 else if (callMiles(?u) > 7 ^ callMiles(?u) <= 12)
+						 then callMiles(?u)/40.0
+						 else if (callMiles(?u) > 12 ^ callMiles(?u) <= 15)
+						 then callMiles(?u)/48.0
+						 else if (callMiles(?u) > 15 ^ callMiles(?u) <= 17.5)
+						 then callMiles(?u)/56.0
+						 else if (callMiles(?u) > 17.5 ^ callMiles(?u) <= 20)
+						 then callMiles(?u)/52.0
+						 else if (callMiles(?u) > 20 ^ callMiles(?u) <= 25)
+						 then callMiles(?u)/50.0
+						 else if (callMiles(?u) > 25 ^ callMiles(?u) <= 28.5)
+						 then callMiles(?u)/54.0
+						 else if (callMiles(?u) > 28.5 ^ callMiles(?u) <= 41)
+						 then callMiles(?u)/49.0
+						 else if (callMiles(?u) > 41 ^ callMiles(?u) <= 70)
+						 then callMiles(?u)/70.0
+						 else if (callMiles(?u) > 70 ^ callMiles(?u) <= 500)
+						 then callMiles(?u)/70.0
+						 else callMiles(?u)/70.0);
 						 
 		hospitalMiles = if (exists_{?ca:cause}[ currentCallCode(?ca) ^ DestinationHospital(?ca) ] )
 							then (sum_{?c:coordinate}[ abs[ currentCall(?c) - HospitalPosition(?c) ] ] )
@@ -177,7 +177,7 @@ domain emergency_continuous_time_multiple_vehicles_test{
 						 then hospitalMiles/70.0
 						 else hospitalMiles/70.0;
 							
-		//not function of vehicle , only call
+		//not function of unit , only call
 		transferMiles = if ( exists_{?ca:cause}[ currentCallCode(?ca) ^ DestinationTransfer(?ca) ] )
 							then (sum_{?c:coordinate}[ abs[ currentCall(?c) - TransferPosition(?c) ] ])
 							else 0.0;
@@ -207,76 +207,76 @@ domain emergency_continuous_time_multiple_vehicles_test{
 						 then transferMiles/70.0
 						 else transferMiles/70.0;
 				
-		returnMiles(?v) = if (exists_{?ca:cause}[ currentCallCode(?ca) ^ DestinationHospital(?ca) ] ) 
-						  then sum_{?c:coordinate}[ abs[ HospitalPosition(?c) - vehicleHome(?v,?c) ] ]
+		returnMiles(?u) = if (exists_{?ca:cause}[ currentCallCode(?ca) ^ DestinationHospital(?ca) ] ) 
+						  then sum_{?c:coordinate}[ abs[ HospitalPosition(?c) - unitHome(?u,?c) ] ]
 						  else if (exists_{?ca:cause}[ currentCallCode(?ca) ^ DestinationTransfer(?ca) ] )
-						  then sum_{?c:coordinate}[ abs[ TransferPosition(?c) - vehicleHome(?v,?c) ] ]
-						  else ( sum_{?c:coordinate}[ abs[ currentCall(?c) - vehicleHome(?v,?c) ] ] );
+						  then sum_{?c:coordinate}[ abs[ TransferPosition(?c) - unitHome(?u,?c) ] ]
+						  else ( sum_{?c:coordinate}[ abs[ currentCall(?c) - unitHome(?u,?c) ] ] );
 		
-		returnTravelTime(?v) = if (returnMiles(?v) <= 5) 
-						 then returnMiles(?v)/38.0
-						 else if (returnMiles(?v) > 5 ^ returnMiles(?v) <= 7)
-						 then returnMiles(?v)/42.0
-						 else if (returnMiles(?v) > 7 ^ returnMiles(?v) <= 12)
-						 then returnMiles(?v)/40.0
-						 else if (returnMiles(?v) > 12 ^ returnMiles(?v) <= 15)
-						 then returnMiles(?v)/48.0
-						 else if (returnMiles(?v) > 15 ^ returnMiles(?v) <= 17.5)
-						 then returnMiles(?v)/56.0
-						 else if (returnMiles(?v) > 17.5 ^ returnMiles(?v) <= 20)
-						 then returnMiles(?v)/52.0
-						 else if (returnMiles(?v) > 20 ^ returnMiles(?v) <= 25)
-						 then returnMiles(?v)/50.0
-						 else if (returnMiles(?v) > 25 ^ returnMiles(?v) <= 28.5)
-						 then returnMiles(?v)/54.0
-						 else if (returnMiles(?v) > 28.5 ^ returnMiles(?v) <= 41)
-						 then returnMiles(?v)/49.0
-						 else if (returnMiles(?v) > 41 ^ returnMiles(?v) <= 70)
-						 then returnMiles(?v)/70.0
-						 else if (returnMiles(?v) > 70 ^ returnMiles(?v) <= 500)
-						 then returnMiles(?v)/70.0
-						 else returnMiles(?v)/70.0;
+		returnTravelTime(?u) = if (returnMiles(?u) <= 5) 
+						 then returnMiles(?u)/38.0
+						 else if (returnMiles(?u) > 5 ^ returnMiles(?u) <= 7)
+						 then returnMiles(?u)/42.0
+						 else if (returnMiles(?u) > 7 ^ returnMiles(?u) <= 12)
+						 then returnMiles(?u)/40.0
+						 else if (returnMiles(?u) > 12 ^ returnMiles(?u) <= 15)
+						 then returnMiles(?u)/48.0
+						 else if (returnMiles(?u) > 15 ^ returnMiles(?u) <= 17.5)
+						 then returnMiles(?u)/56.0
+						 else if (returnMiles(?u) > 17.5 ^ returnMiles(?u) <= 20)
+						 then returnMiles(?u)/52.0
+						 else if (returnMiles(?u) > 20 ^ returnMiles(?u) <= 25)
+						 then returnMiles(?u)/50.0
+						 else if (returnMiles(?u) > 25 ^ returnMiles(?u) <= 28.5)
+						 then returnMiles(?u)/54.0
+						 else if (returnMiles(?u) > 28.5 ^ returnMiles(?u) <= 41)
+						 then returnMiles(?u)/49.0
+						 else if (returnMiles(?u) > 41 ^ returnMiles(?u) <= 70)
+						 then returnMiles(?u)/70.0
+						 else if (returnMiles(?u) > 70 ^ returnMiles(?u) <= 500)
+						 then returnMiles(?u)/70.0
+						 else returnMiles(?u)/70.0;
 		
-		firstResponse = min_{?v:vehicle}[ if (exists_{?r:role}[dispatch(?v,?r)])
-						   then callTravelTime(?v) 
+		firstResponse = min_{?u:unit}[ if (exists_{?r:role}[dispatch(?u,?r)])
+						   then callTravelTime(?u) 
 						   else (sum_{?c:coordinate}[MapUpperBound(?c)-MapLowerBound(?c)])/70.0 ];
 						   //instead of 20mins
 						   //using maximim dist / maximum speed = maximum possible callTravelTime
 		
-		fullResponse = abs[ max_{?v:vehicle}[ if (exists_{?r:role}[dispatch(?v,?r)])
-							then callTravelTime(?v) 
+		fullResponse = abs[ max_{?u:unit}[ if (exists_{?r:role}[dispatch(?u,?r)])
+							then callTravelTime(?u) 
 							else -(sum_{?c:coordinate}[MapUpperBound(?c)-MapLowerBound(?c)])/70.0 ] ];//instead of 25 mins
 							
-		overwhelm = exists_{?r:role,?c:cause,?re:region}[ currentCallCode(?c) ^ currentCallRegion(?re) ^ (CauseRequirement(?c,?re,?r) > (sum_{?v:vehicle}[dispatch(?v,?r)])) ];
+		overwhelm = exists_{?r:role,?c:cause,?re:region}[ currentCallCode(?c) ^ currentCallRegion(?re) ^ (CauseRequirement(?c,?re,?r) > (sum_{?u:unit}[dispatch(?u,?r)])) ];
 		
-		timeServiceDone'(?v) = if (exists_{?r:role}[dispatch(?v,?r)]) 
-						   then (currentCallTime + callTravelTime(?v) + (sum_{?r:role}[ if (dispatch(?v,?r)) then RoleServiceTime(?r) else 0.0])
+		timeServiceDone'(?u) = if (exists_{?r:role}[dispatch(?u,?r)]) 
+						   then (currentCallTime + callTravelTime(?u) + (sum_{?r:role}[ if (dispatch(?u,?r)) then RoleServiceTime(?r) else 0.0])
 								 + hospitalTravelTime + transferTravelTime)
-						   else timeServiceDone(?v);
+						   else timeServiceDone(?u);
 						
-		timeTarryDone'(?v) = if (exists_{?r:role}[dispatch(?v,?r)])
-					     then (currentCallTime + callTravelTime(?v) + (sum_{?r:role}[ if (dispatch(?v,?r)) then RoleServiceTime(?r) else 0.0]) + hospitalTravelTime  
-								+ transferTravelTime + sum_{?r:role}[if (dispatch(?v,?r)) then TarryTime(?r) else 0.0] ) 
-					     else timeTarryDone(?v);
+		timeTarryDone'(?u) = if (exists_{?r:role}[dispatch(?u,?r)])
+					     then (currentCallTime + callTravelTime(?u) + (sum_{?r:role}[ if (dispatch(?u,?r)) then RoleServiceTime(?r) else 0.0]) + hospitalTravelTime  
+								+ transferTravelTime + sum_{?r:role}[if (dispatch(?u,?r)) then TarryTime(?r) else 0.0] ) 
+					     else timeTarryDone(?u);
 						
-		timeBackInBase'(?v) = if (exists_{?r:role}[dispatch(?v,?r)])
-						  then (currentCallTime + callTravelTime(?v) + (sum_{?r:role}[ if (dispatch(?v,?r)) then RoleServiceTime(?r) else 0.0]) + hospitalTravelTime  
-								+ transferTravelTime + sum_{?r:role}[if (dispatch(?v,?r)) then TarryTime(?r) else 0.0] +  returnTravelTime(?v))
-						  else timeBackInBase(?v);
+		timeBackInBase'(?u) = if (exists_{?r:role}[dispatch(?u,?r)])
+						  then (currentCallTime + callTravelTime(?u) + (sum_{?r:role}[ if (dispatch(?u,?r)) then RoleServiceTime(?r) else 0.0]) + hospitalTravelTime  
+								+ transferTravelTime + sum_{?r:role}[if (dispatch(?u,?r)) then TarryTime(?r) else 0.0] +  returnTravelTime(?u))
+						  else timeBackInBase(?u);
 								  
-		vehicleInService(?v) = vehicleInBase(?v) | vehicleOnSite(?v);
+		unitInService(?u) = unitInBase(?u) | unitOnSite(?u);
 		
-		vehicleInBase(?v) = (currentCallTime >= timeBackInBase(?v));
-							//[(currentCallDay==dayBackInBase(?v)) ^ (currentCallTime >= timeBackInBase(?v))]
-							//| (currentCallDay > dayBackInBase(?v));
+		unitInBase(?u) = (currentCallTime >= timeBackInBase(?u));
+							//[(currentCallDay==dayBackInBase(?u)) ^ (currentCallTime >= timeBackInBase(?u))]
+							//| (currentCallDay > dayBackInBase(?u));
 		
-		vehicleOnSite(?v) = (currentCallTime >= timeServiceDone(?v)) ^ (currentCallTime <= timeTarryDone(?v));
+		unitOnSite(?u) = (currentCallTime >= timeServiceDone(?u)) ^ (currentCallTime <= timeTarryDone(?u));
 		
 		
 	};
 	
-	//when total overwhelm happens, it might be that all vehicles are out.
-	//This should be weighted lesser than total overwhelm when some vehicle is availble.
+	//when total overwhelm happens, it might be that all units are out.
+	//This should be weighted lesser than total overwhelm when some unit is availble.
 	
 	//partial overwhelm = -W1*FR-W2*1+W3*(FR<=0.08)-W4 , FR > 0 ,FR < 1
 	//total overwhelm = -1(W1+w2)-W4 
@@ -291,47 +291,47 @@ domain emergency_continuous_time_multiple_vehicles_test{
 	//		 else [- (W1*firstResponse) - (W2*fullResponse) + W3*(firstResponse <= 0.0833 ) - W4*overwhelm];
 	//total overwhelm gives 1000 for FR and FC, -1000(W1+W2)-W4 => -2100
 	
-	//reward = if (exists_{?v:vehicle}[dispatch(?v)]) then 1.0 else 0.0; 
+	//reward = if (exists_{?u:unit}[dispatch(?u)]) then 1.0 else 0.0; 
 	//if (exists_{?c:cause,?r:role,?re:region}[ currentCallCode(?c) ^ currentCallRegion(?re) ^ (causeRequirement(?c,?re,?r) > 0)])
 	//		 then [- (W1*firstResponse) - (1 - W1)*fullResponse - W2*overwhelm]
 	//		 else 0;
 	//reward = (-firstResponse);
-			 //if (exists_{?v:vehicle,?r:role}[dispatch(?v,?r)]) 
-			 //then sum_{?v:vehicle}[ if (exists_{?r:role}[dispatch(?v,?r)]) then (-callTravelTime(?v)) else 0 ]
+			 //if (exists_{?u:unit,?r:role}[dispatch(?u,?r)]) 
+			 //then sum_{?u:unit}[ if (exists_{?r:role}[dispatch(?u,?r)]) then (-callTravelTime(?u)) else 0 ]
 			 //else (-1000);
 	
 	state-invariants {
-		forall_{?v:vehicle}[ timeTarryDone(?v) >= timeServiceDone(?v) ];
-		forall_{?v:vehicle}[ timeBackInBase(?v) >= timeTarryDone(?v) ];
-		forall_{?v:vehicle}[ (timeBackInBase(?v) >= 0) ];//^ (timeBackInBase(?v) < 24) ];
-		forall_{?v:vehicle}[ (timeTarryDone(?v) >= 0) ];//^ (timeTarryDone(?v) < 24) ];
-		forall_{?v:vehicle}[ (timeServiceDone(?v) >= 0) ];//^ (timeServiceDone(?v) < 24) ];
+		forall_{?u:unit}[ timeTarryDone(?u) >= timeServiceDone(?u) ];
+		forall_{?u:unit}[ timeBackInBase(?u) >= timeTarryDone(?u) ];
+		forall_{?u:unit}[ (timeBackInBase(?u) >= 0) ];//^ (timeBackInBase(?u) < 24) ];
+		forall_{?u:unit}[ (timeTarryDone(?u) >= 0) ];//^ (timeTarryDone(?u) < 24) ];
+		forall_{?u:unit}[ (timeServiceDone(?u) >= 0) ];//^ (timeServiceDone(?u) < 24) ];
 		
-		forall_{?v:vehicle}[ callMiles(?v) >= 0 ];
-		forall_{?v:vehicle}[ callTravelTime(?v) >= 0 ];
-		forall_{?v:vehicle}[ callMiles(?v) <= (sum_{?c:coordinate}[ MapUpperBound(?c)-MapLowerBound(?c) ]) ];
+		forall_{?u:unit}[ callMiles(?u) >= 0 ];
+		forall_{?u:unit}[ callTravelTime(?u) >= 0 ];
+		forall_{?u:unit}[ callMiles(?u) <= (sum_{?c:coordinate}[ MapUpperBound(?c)-MapLowerBound(?c) ]) ];
 		
-		forall_{?v:vehicle}[ hospitalMiles >= 0 ];
-		forall_{?v:vehicle}[ hospitalTravelTime >= 0 ];
-		forall_{?v:vehicle}[ hospitalMiles <= (sum_{?c:coordinate}[ MapUpperBound(?c)-MapLowerBound(?c) ]) ];
+		forall_{?u:unit}[ hospitalMiles >= 0 ];
+		forall_{?u:unit}[ hospitalTravelTime >= 0 ];
+		forall_{?u:unit}[ hospitalMiles <= (sum_{?c:coordinate}[ MapUpperBound(?c)-MapLowerBound(?c) ]) ];
 		
-		forall_{?v:vehicle}[ transferMiles >= 0 ];
-		forall_{?v:vehicle}[ transferTravelTime >= 0 ];
-		forall_{?v:vehicle}[ transferMiles <= (sum_{?c:coordinate}[ MapUpperBound(?c)-MapLowerBound(?c) ]) ];
+		forall_{?u:unit}[ transferMiles >= 0 ];
+		forall_{?u:unit}[ transferTravelTime >= 0 ];
+		forall_{?u:unit}[ transferMiles <= (sum_{?c:coordinate}[ MapUpperBound(?c)-MapLowerBound(?c) ]) ];
 		
-		forall_{?v:vehicle}[ returnMiles(?v) >= 0 ];
-		forall_{?v:vehicle}[ returnTravelTime(?v) >= 0 ];
-		forall_{?v:vehicle}[ returnMiles(?v) <= (sum_{?c:coordinate}[ MapUpperBound(?c)-MapLowerBound(?c) ]) ];
+		forall_{?u:unit}[ returnMiles(?u) >= 0 ];
+		forall_{?u:unit}[ returnTravelTime(?u) >= 0 ];
+		forall_{?u:unit}[ returnMiles(?u) <= (sum_{?c:coordinate}[ MapUpperBound(?c)-MapLowerBound(?c) ]) ];
 		
-		forall_{?v:vehicle,?c:coordinate}[ lastVehicleService(?v,?c) <= MapUpperBound(?c) ];
-		forall_{?v:vehicle,?c:coordinate}[ lastVehicleService(?v,?c) >= MapLowerBound(?c) ];
+		forall_{?u:unit,?c:coordinate}[ lastUnitService(?u,?c) <= MapUpperBound(?c) ];
+		forall_{?u:unit,?c:coordinate}[ lastUnitService(?u,?c) >= MapLowerBound(?c) ];
 		forall_{?c:coordinate}[ currentCall(?c) <= MapUpperBound(?c) ];
 		forall_{?c:coordinate}[ currentCall(?c) >= MapLowerBound(?c) ];
 		
 		currentCallTime >= 0; 
 		
-		forall_{?v:vehicle, ?c:coordinate}[ vehicleHome(?v,?c) <= MapUpperBound(?c) ];
-		forall_{?v:vehicle, ?c:coordinate}[ vehicleHome(?v,?c) >= MapLowerBound(?c) ];
+		forall_{?u:unit, ?c:coordinate}[ unitHome(?u,?c) <= MapUpperBound(?c) ];
+		forall_{?u:unit, ?c:coordinate}[ unitHome(?u,?c) >= MapLowerBound(?c) ];
 		
 		(sum_{?c:cause}[currentCallCode(?c)]) == 1;
 		tempUniformCause >= 0; tempUniformCause <= (sum_{?c:cause}[1]);
@@ -345,32 +345,32 @@ domain emergency_continuous_time_multiple_vehicles_test{
 		forall_{?r:role}[ TarryTime(?r) >= 0 ];
 		forall_{?ca:cause}[ DestinationHospital(?ca) + DestinationTransfer(?ca) <= 1 ];
 		
-		//for the current code and region and non zero requirement if an eligible vehicle exists then some vehicle must be dispatched for any role.
+		//for the current code and region and non zero requirement if an eligible unit exists then some unit must be dispatched for any role.
 		//forall_{?ca:cause, ?re:region}[ 
 		//	~currentCallCode(?ca) | ~currentCallRegion(?re)  
-		//	| ~exists_{?v:vehicle,?ro:role}[ (causeRequirement(?ca,?re,?ro) > 0) ^ vehicleInService(?v) ^ HasCapability(?v,?ro) ]
-		//	| ((sum_{?v:vehicle,?q:role}[ dispatch(?v,?q) ]) > 0) 
+		//	| ~exists_{?u:unit,?ro:role}[ (causeRequirement(?ca,?re,?ro) > 0) ^ unitInService(?u) ^ HasCapability(?u,?ro) ]
+		//	| ((sum_{?u:unit,?q:role}[ dispatch(?u,?q) ]) > 0) 
 		//];
 		
 		//forall_{?ca:cause, ?re:region,?ro:role}[
 			//~(currentCallCode(?ca) ^ currentCallRegion(?re)) | 
 			//[ ~(causeRequirement(?ca,?re,?ro)>0) |
-			//	[ ~( (sum_{?v:vehicle}[ vehicleInService(?v) ]) > 0 ) | 
-			//	   ( (sum_{?v:vehicle}[ dispatch(?v,?ro) ]) > 0)
+			//	[ ~( (sum_{?u:unit}[ unitInService(?u) ]) > 0 ) | 
+			//	   ( (sum_{?u:unit}[ dispatch(?u,?ro) ]) > 0)
 			//	]
 			//] 
 		//];
 		
 		//[currentCallCode(?ca) ^ currentCallRegion(?re) ^ (causeRequirement(?ca,?re,?ro)>0) 
-		//		^ (exists_{?v:vehicle}[ HasCapability(?v,?ro) ^ vehicleInService(?v) ] ) ] 
+		//		^ (exists_{?u:unit}[ HasCapability(?u,?ro) ^ unitInService(?u) ] ) ] 
 		//	=> (firstResponse ~= 1000)
-		//  => (sum_{?v:vehicle}[ dispatch(?v,?ro) ] > 0)
+		//  => (sum_{?u:unit}[ dispatch(?u,?ro) ] > 0)
 		
 		
-		//~exists_{?ca:cause,?re:region,?ro:role,?v:vehicle}[
+		//~exists_{?ca:cause,?re:region,?ro:role,?u:unit}[
 		//	currentCallCode(?ca) ^ currentCallRegion(?re) ^ 
 		//	(causeRequirement(?ca,?re,?ro) > 0) ^ 
-		//	vehicleInService(?v) ^ HasCapability(?v,?ro) ] | (firstResponse ~= 1000);
+		//	unitInService(?u) ^ HasCapability(?u,?ro) ] | (firstResponse ~= 1000);
 		
 		firstResponse >= 0.0; firstResponse <= (sum_{?c:coordinate}[MapUpperBound(?c)-MapLowerBound(?c)])/70.0;
 		fullResponse >= 0.0; fullResponse <= (sum_{?c:coordinate}[MapUpperBound(?c)-MapLowerBound(?c)])/70.0;
@@ -380,45 +380,45 @@ domain emergency_continuous_time_multiple_vehicles_test{
 	};
 	
 	action-preconditions {
-		forall_{?v:vehicle,?r:role}[ (~dispatch(?v,?r)) | vehicleInService(?v) ];
-		forall_{?v:vehicle}[(sum_{?r:role}[ dispatch(?v,?r) ]) <= 1];
-		//(~vehicleInService) | dispatch;
-		forall_{?v:vehicle,?r:role}[ ~dispatch(?v,?r) | HasCapability(?v,?r) ];
-		forall_{?v:vehicle,?r:role}[ ~dispatch(?v,?r) | (exists_{?c:cause,?re:region}[ currentCallCode(?c) ^ currentCallRegion(?re) ^ (CauseRequirement(?c,?re,?r) > 0) ] ) ];
+		forall_{?u:unit,?r:role}[ (~dispatch(?u,?r)) | unitInService(?u) ];
+		forall_{?u:unit}[(sum_{?r:role}[ dispatch(?u,?r) ]) <= 1];
+		//(~unitInService) | dispatch;
+		forall_{?u:unit,?r:role}[ ~dispatch(?u,?r) | HasCapability(?u,?r) ];
+		forall_{?u:unit,?r:role}[ ~dispatch(?u,?r) | (exists_{?c:cause,?re:region}[ currentCallCode(?c) ^ currentCallRegion(?re) ^ (CauseRequirement(?c,?re,?r) > 0) ] ) ];
 	    forall_{?ca:cause,?re:region}[ (~(currentCallCode(?ca) ^ currentCallRegion(?re)))  
-			| (forall_{?ro:role}[ (sum_{?v:vehicle}[ dispatch(?v,?ro) ]) <= CauseRequirement(?ca,?re,?ro) ]) ];
-		//for the current code and region and non zero requirement if an eligible vehicle exists then some vehicle must be dispatched for any role.
+			| (forall_{?ro:role}[ (sum_{?u:unit}[ dispatch(?u,?ro) ]) <= CauseRequirement(?ca,?re,?ro) ]) ];
+		//for the current code and region and non zero requirement if an eligible unit exists then some unit must be dispatched for any role.
 		
 		//forall_{?ca:cause, ?re:region}[ 
 		//	~currentCallCode(?ca) | ~currentCallRegion(?re)  
-		//	| [(exists_{?v:vehicle,?ro:role}[ (causeRequirement(?ca,?re,?ro) > 0) ^ vehicleInService(?v) ^ HasCapability(?v,?ro) ]) 
-		//	   <= (sum_{?v:vehicle,?q:role}[ dispatch(?v,?q) ])]
+		//	| [(exists_{?u:unit,?ro:role}[ (causeRequirement(?ca,?re,?ro) > 0) ^ unitInService(?u) ^ HasCapability(?u,?ro) ]) 
+		//	   <= (sum_{?u:unit,?q:role}[ dispatch(?u,?q) ])]
 		//];
 	};
 }
 		//currentCallDay : {state-fluent, int, default=1};
-        //dayBackInBase(vehicle): {state-fluent, int, default=1};
-        //dayServiceDone(vehicle) : {state-fluent, int, default=1};
-		//dayTarryDone(vehicle) : {state-fluent, int, default=1};
+        //dayBackInBase(unit): {state-fluent, int, default=1};
+        //dayServiceDone(unit) : {state-fluent, int, default=1};
+		//dayTarryDone(unit) : {state-fluent, int, default=1};
 
 		//derived fluents
 		//sampledNextTime : {interm-fluent, real};
 		
-		//dayServiceDone'(?v) = if (dispatch(?v))
-		//					  then (if (currentCallTime + callTravelTime(?v) + RoleServiceTime >= 24.0) 
+		//dayServiceDone'(?u) = if (dispatch(?u))
+		//					  then (if (currentCallTime + callTravelTime(?u) + RoleServiceTime >= 24.0) 
 		//						 then (currentCallDay+1)
 		//						 else currentCallDay)
-		//					  else dayServiceDone(?v);
-		//dayTarryDone'(?v) = if (dispatch(?v))
-		//					then (if (currentCallTime + callTravelTime(?v) + RoleServiceTime + TarryTime >= 24.0) 
+		//					  else dayServiceDone(?u);
+		//dayTarryDone'(?u) = if (dispatch(?u))
+		//					then (if (currentCallTime + callTravelTime(?u) + RoleServiceTime + TarryTime >= 24.0) 
 		//						 then currentCallDay+1
 		//						 else currentCallDay)
-		//					  else dayTarryDone(?v);
-		//dayBackInBase'(?v) = if (dispatch(?v))
-		//					 then (if (currentCallTime + callTravelTime(?v) + RoleServiceTime + 
-		//						TarryTime +  returnTravelTime(?v) >= 24.0) 
+		//					  else dayTarryDone(?u);
+		//dayBackInBase'(?u) = if (dispatch(?u))
+		//					 then (if (currentCallTime + callTravelTime(?u) + RoleServiceTime + 
+		//						TarryTime +  returnTravelTime(?u) >= 24.0) 
 		//						 then currentCallDay+1
 		//						 else currentCallDay)
-		//					  else dayBackInBase(?v);
-		//[((currentCallDay==dayServiceDone(?v)) ^ (currentCallTime >= timeServiceDone(?v))) | (currentCallDay > dayServiceDone(?v))] ^ 
-		//[((currentCallDay==dayTarryDone(?v)) ^ (currentCallTime <= timeTarryDone(?v))) | (currentCallDay < dayServiceDone(?v))];
+		//					  else dayBackInBase(?u);
+		//[((currentCallDay==dayServiceDone(?u)) ^ (currentCallTime >= timeServiceDone(?u))) | (currentCallDay > dayServiceDone(?u))] ^ 
+		//[((currentCallDay==dayTarryDone(?u)) ^ (currentCallTime <= timeTarryDone(?u))) | (currentCallDay < dayServiceDone(?u))];

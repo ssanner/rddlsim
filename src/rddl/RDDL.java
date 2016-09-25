@@ -1662,10 +1662,23 @@ public class RDDL {
 		 * override hashCode() and equals(Object). 
 		 */
 //		protected static HashMap< Class<? extends EXPR> , WeakHashMap< EXPR, GRBVar > > grb_cache = new HashMap< >();
-		protected static ReferenceMap< String, String> name_map = new ReferenceMap<>(  
-				AbstractReferenceMap.ReferenceStrength.HARD, AbstractReferenceMap.ReferenceStrength.HARD, true );
-		public static ReferenceMap<String, String> reverse_name_map = new ReferenceMap<>( 
-				AbstractReferenceMap.ReferenceStrength.HARD, AbstractReferenceMap.ReferenceStrength.HARD, true );
+		protected static TreeMap< String, String> name_map = new TreeMap<>();
+//		new ReferenceMap<>(  
+//				AbstractReferenceMap.ReferenceStrength.HARD, AbstractReferenceMap.ReferenceStrength.HARD, true );
+		public static TreeMap<String, String> reverse_name_map = new TreeMap<>( 
+				new Comparator<String>() {
+					@Override
+					public int compare(String o1, String o2) {
+						if (o1.length() > o2.length()) {
+			                return -1;
+			            } else if (o1.length() < o2.length()) {
+			                return 1;
+			            } else {
+			                return o1.compareTo(o2);
+			            }
+					}
+				} );
+//				AbstractReferenceMap.ReferenceStrength.HARD, AbstractReferenceMap.ReferenceStrength.HARD, true );
 		
 		private  static int nameId = 0;
 		public static Map< EXPR, GRBVar > grb_cache = Collections.synchronizedMap( new ReferenceMap<  >( 
@@ -1678,8 +1691,11 @@ public class RDDL {
 			final String expr_string = expr.toString();
 			final String name_map_name = name_map.get(expr_string);
 			
-			
 			if( cache_var_name != null && name_map_name != null ){
+				if( !name_map_name.equals(cache_var_name) ){
+					System.out.println("Warning : duplicate MILP variables ");
+					System.out.println(expr_string + " " + cache_var_name + " " + name_map_name );
+				}
 				assert( name_map_name.equals(cache_var_name) );
 			}else if( cache_var_name != null ){
 				name_map.put( expr_string, cache_var_name );
@@ -3155,18 +3171,18 @@ public class RDDL {
 		@Override
 		public boolean equals(Object obj) {
 			if( obj instanceof CONST_EXPR ){
-				return value.equals( ( (CONST_EXPR)obj ).value );
+				return getDoubleValue(null, null) == ( ( (CONST_EXPR)obj ).getDoubleValue(null, null) );
 			}else if( obj instanceof OPER_EXPR ){
 				OPER_EXPR obj_op = ((OPER_EXPR)obj);
 				EXPR obj_cannon = obj_op.reduce( obj_op._e1, obj_op._e2, obj_op._op,  null , null);
 				if( obj_cannon instanceof CONST_EXPR ){
-					return value.equals( ( (CONST_EXPR)obj_cannon ).value );	
+					return getDoubleValue(null, null) == ( (CONST_EXPR)obj_cannon ).getDoubleValue(null, null);
 				}
 				return false;
 			}else if( obj instanceof EXPR ){
 				EXPR expr = ((EXPR)obj);
 				if( expr.isConstant( null , null ) ){
-					return value.equals( expr.getDoubleValue( null, null ) );
+					return getDoubleValue(null, null) == expr.getDoubleValue( null, null );
 				}
 			}
 			return false;
@@ -6746,12 +6762,11 @@ public class RDDL {
 			if( obj instanceof BOOL_CONST_EXPR ){
 				return ((BOOL_CONST_EXPR)obj)._bValue == _bValue;
 			}else if( obj instanceof CONST_EXPR ){
-				return ((CONST_EXPR)obj).value.equals( _bValue ? 1 : 0 );
+				return ((CONST_EXPR)obj).getDoubleValue(null, null) == getDoubleValue(null, null);
 			}else if( obj instanceof EXPR ){
 				EXPR e = (EXPR)obj;
 				if( e.isConstant( null , null ) ){
-					final double d  = e.getDoubleValue( null , null );
-					return ( d == 0 && !_bValue ) || ( d == 1 && _bValue ); 
+					return e.getDoubleValue( null , null ) == getDoubleValue(null, null);
 				}
 			}
 			return false;

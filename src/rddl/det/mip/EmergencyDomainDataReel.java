@@ -52,17 +52,32 @@ public class EmergencyDomainDataReel {
 			}else if ( (prevCall.compareTo(someFrame) <= 0) && (curCall.compareTo(someFrame) > 0) ){
 				chosen = true;
 			}
-			//must be greater by some minimum. First eliminate same minute calls. Comes down to precision handling by Gurobi. 
+			
 //			if( chosen && prevCall.callTime.getMinute()==curCall.callTime.getMinute() && curCall.callTime.getHour()==prevCall.callTime.getHour() ){
 //				ret.add(i+1);
 //			}else
 			if( chosen ){
+				//must be greater by some minimum.
+//				int k = i;
+//				double this_gap = timeDiff(someFrame, frames[foldIdx].get(k) );
+//				while ( this_gap < 0.1d ){
+//					System.out.println("call " + k + " too close");
+//					k=k+1;
+//					this_gap = timeDiff(someFrame, frames[foldIdx].get(k) );
+//				}
 				ret.add(i);
 			}
 		}
 		return ret;
 	}
 	
+
+	private double timeDiff(EmergencyDomainDataReelElement call1, EmergencyDomainDataReelElement call2) {
+		return Math.abs( EmergencyDomainDataReelElement.timeToDouble(call1.callTime, LocalDate.now())
+				- EmergencyDomainDataReelElement.timeToDouble(call2.callTime, LocalDate.now()) );
+	}
+
+
 	public EmergencyDomainDataReelElement getNextTestingInstance( ){
 		assert( testingInstanceIdx < frames[getTestingFoldIdx()].size() );
 		return frames[getTestingFoldIdx()].get(testingInstanceIdx++);

@@ -92,13 +92,18 @@ public class EmergencyDomainHOPTranslate extends HOPTranslate {
 							Entry<PVAR_NAME, ArrayList<ArrayList<LCONST>>> entry ) {
 
 						final String pvarName = entry.getKey()._sPVarName;
+						//these are sampled from data in TranslateCPTs()
 						if( pvarName.equals(EmergencyDomainDataReelElement.currentCallPvarName._sPVarName) ||
-							pvarName.equals(EmergencyDomainDataReelElement.gapTimePvarName._sPVarName) || 
+							pvarName.equals(EmergencyDomainDataReelElement.tempUniformCausePvarName._sPVarName) ||
+							pvarName.equals(EmergencyDomainDataReelElement.currentCallCodePvarName._sPVarName) ||
+							pvarName.equals(EmergencyDomainDataReelElement.gapTimePvarName._sPVarName) ||
+							pvarName.equals(EmergencyDomainDataReelElement.currentCallTimePvarName._sPVarName) ||
 							pvarName.equals(EmergencyDomainDataReelElement.tempUniformRegionPvarName._sPVarName) ||  
-							pvarName.equals(EmergencyDomainDataReelElement.tempUniformCausePvarName._sPVarName) ){
+							pvarName.equals(EmergencyDomainDataReelElement.currentCallRegionPvarName._sPVarName) ){
 							return;
 						}
 							
+						//these are deterministic/known world model
 						entry.getValue().stream().forEach( new Consumer< ArrayList<LCONST> >() {
 							@Override
 							public void accept(ArrayList<LCONST> terms) {
