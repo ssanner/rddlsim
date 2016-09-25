@@ -512,30 +512,20 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 		if( grb_model.get( IntAttr.Status ) == GRB.INFEASIBLE ){
 			System.out.println("xxxxxxxx-----Solver says infeasible.-------xxxxxxxx");
 			
-			grb_model.computeIIS();
-	        System.out.println("\nThe following constraints cannot be satisfied:");
-	        
-	        List<String> src = new ArrayList<>( EXPR.reverse_name_map.keySet() );
-//			Collections.sort( src, new Comparator<String>() {
-//
-//				@Override
-//				public int compare(  String o1, String o2) {
-//					return (new Integer(o1.length()).compareTo( 
-//								new Integer( o2.length()) ) );
-//				}
-//			});
-//			Collections.reverse( src );
-			
-	        for (GRBConstr c : grb_model.getConstrs()) {
-	          if (c.get(GRB.IntAttr.IISConstr) == 1) {
-	        	String constr = new String( c.get(GRB.StringAttr.ConstrName) );
-	        	
-	        	for( final String sub : src ){
-	        		constr = constr.replace(sub, EXPR.reverse_name_map.get(sub) );
-	        	}
-	        	System.out.println(constr);
-	          }
-	        }
+//			grb_model.computeIIS();
+//	        System.out.println("\nThe following constraints cannot be satisfied:");
+//	        
+//	        List<String> src = new ArrayList<>( EXPR.reverse_name_map.keySet() );
+//	        for (GRBConstr c : grb_model.getConstrs()) {
+//	          if (c.get(GRB.IntAttr.IISConstr) == 1) {
+//	        	String constr = new String( c.get(GRB.StringAttr.ConstrName) );
+//	        	
+//	        	for( final String sub : src ){
+//	        		constr = constr.replace(sub, EXPR.reverse_name_map.get(sub) );
+//	        	}
+//	        	System.out.println(constr);
+//	          }
+//	        }
 	        
 	      throw new GRBException("Infeasible model.");
 		}else if( grb_model.get( IntAttr.Status ) == GRB.UNBOUNDED ){
