@@ -23,15 +23,15 @@ import rddl.RDDL.OBJECT_VAL;
 
 public class EmergencyDomainDispatchClosest extends EmergencyDomainHOPTranslate {
 
-	private static final PVAR_NAME vehicleInServicePvar = new PVAR_NAME("vehicleInService");
+	private static final PVAR_NAME vehicleInServicePvar = new PVAR_NAME("unitInService");
 	private static final PVAR_NAME callMilesPvar = new PVAR_NAME("callMiles");
 	private static final ArrayList<ArrayList<LCONST>> vehicleSubs;
-	private static final int NUMVEHICLES=4;
+	private static final int NUMVEHICLES=5;
 	
 	static{
 		vehicleSubs = new ArrayList<ArrayList<LCONST>>();
 		for( int i = 1; i<= NUMVEHICLES; ++i ){
-			vehicleSubs.add( new ArrayList<LCONST>( Arrays.<LCONST>asList( new OBJECT_VAL[]{new OBJECT_VAL("v" + i)} ) ) );
+			vehicleSubs.add( new ArrayList<LCONST>( Arrays.<LCONST>asList( new OBJECT_VAL[]{new OBJECT_VAL("u" + i)} ) ) );
 		}
 	}
 

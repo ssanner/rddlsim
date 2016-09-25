@@ -230,13 +230,13 @@ non-fluents nf_emergency_continuous_time_multiple_units_test_5 {
 		BEFORE(Transport,WildlandFire)=true;
 		BEFORE(VehicleFire,WildlandFire)=true;
 		
-		HasCapability(v1,Command)=true;
-		HasCapability(v2,Engine)=true;
-		HasCapability(v2,Ladder)=true;
-		HasCapability(v3,Engine)=true;
-		HasCapability(v4,Engine)=true;
-		HasCapability(v4,Ladder)=true;
-		HasCapability(v5,Ambulance)=true;
+		HasCapability(u1,Command)=true;
+		HasCapability(u2,Engine)=true;
+		HasCapability(u2,Ladder)=true;
+		HasCapability(u3,Engine)=true;
+		HasCapability(u4,Engine)=true;
+		HasCapability(u4,Ladder)=true;
+		HasCapability(u5,Ambulance)=true;
 		
 		BEFORE_REGION(Full,GoodSam-T)=true;
 		BEFORE_REGION(Full,Stonybrook)=true;
