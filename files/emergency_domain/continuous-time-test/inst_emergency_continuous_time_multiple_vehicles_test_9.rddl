@@ -1,8 +1,8 @@
-non-fluents nf_emergency_continuous_time_multiple_vehicles_test_9 {
-	domain = emergency_continuous_time_multiple_vehicles_test;
+non-fluents nf_emergency_continuous_time_multiple_units_test_9 {
+	domain = emergency_continuous_time_multiple_units_test;
 	objects {
 		coordinate : {xpos,ypos};
-		vehicle : {v1,v2,v3,v4,v5,v6,v7,v8,v9};
+		unit : {u1,u2,u3,u4,u5,u6,u7,u8,u9};
 		cause : {AFA,All,Code1Medical,Code3Med,Code3Trauma,EMS,Fire,Hazmat,MassCasualty,
 				 MVA,NuisanceFire,Other,OtherEMS,OtherFire,
 				 Overpressure,Rescue,StructureFire,Transport,VehicleFire,WildlandFire};
@@ -16,15 +16,15 @@ non-fluents nf_emergency_continuous_time_multiple_vehicles_test_9 {
 		MapLowerBound(xpos)=1300;
 		MapLowerBound(ypos)=30;
 		
-		vehicleHome(v1,xpos)=1418.0; vehicleHome(v1,ypos)=65.0;	
-		vehicleHome(v2,xpos)=1415.0; vehicleHome(v2,ypos)=64.0;	
-		vehicleHome(v3,xpos)=1416.0; vehicleHome(v3,ypos)=66.0;	
-		vehicleHome(v4,xpos)=1417.0; vehicleHome(v4,ypos)=63.0;	
-		vehicleHome(v5,xpos)=1415.0; vehicleHome(v5,ypos)=66.0;	
-		vehicleHome(v6,xpos)=1418.0; vehicleHome(v6,ypos)=69.0;	
-		vehicleHome(v7,xpos)=1418.0; vehicleHome(v7,ypos)=65.0;	
-		vehicleHome(v8,xpos)=1415.0; vehicleHome(v8,ypos)=64.0;	
-		vehicleHome(v9,xpos)=1415.0; vehicleHome(v9,ypos)=64.0;				
+		unitHome(u1,xpos)=1418.0; unitHome(u1,ypos)=65.0;	
+		unitHome(u2,xpos)=1415.0; unitHome(u2,ypos)=64.0;	
+		unitHome(u3,xpos)=1416.0; unitHome(u3,ypos)=66.0;	
+		unitHome(u4,xpos)=1417.0; unitHome(u4,ypos)=63.0;	
+		unitHome(u5,xpos)=1415.0; unitHome(u5,ypos)=66.0;	
+		unitHome(u6,xpos)=1418.0; unitHome(u6,ypos)=69.0;	
+		unitHome(u7,xpos)=1418.0; unitHome(u7,ypos)=65.0;	
+		unitHome(u8,xpos)=1415.0; unitHome(u8,ypos)=64.0;	
+		unitHome(u9,xpos)=1415.0; unitHome(u9,ypos)=64.0;				
 	
 		BEFORE(AFA,All)=true;
 		BEFORE(AFA,Code1Medical)=true;
@@ -234,20 +234,20 @@ non-fluents nf_emergency_continuous_time_multiple_vehicles_test_9 {
 		BEFORE(Transport,WildlandFire)=true;
 		BEFORE(VehicleFire,WildlandFire)=true;
 		
-		HasCapability(v1,Command)=true;
-		HasCapability(v2,Engine)=true;
-		HasCapability(v2,Ladder)=true;
-		HasCapability(v3,Engine)=true;
-		HasCapability(v4,Engine)=true;
-		HasCapability(v4,Ladder)=true;
-		HasCapability(v5,Ambulance)=true;
-		HasCapability(v6,Engine)=true;
-		HasCapability(v6,Ambulance)=true;
-		HasCapability(v7,Engine)=true;
-		HasCapability(v7,Ambulance)=true;
-		HasCapability(v8,Engine)=true;
-		HasCapability(v9,Engine)=true;
-		HasCapability(v9,Ladder)=true;
+		HasCapability(u1,Command)=true;
+		HasCapability(u2,Engine)=true;
+		HasCapability(u2,Ladder)=true;
+		HasCapability(u3,Engine)=true;
+		HasCapability(u4,Engine)=true;
+		HasCapability(u4,Ladder)=true;
+		HasCapability(u5,Ambulance)=true;
+		HasCapability(u6,Engine)=true;
+		HasCapability(u6,Ambulance)=true;
+		HasCapability(u7,Engine)=true;
+		HasCapability(u7,Ambulance)=true;
+		HasCapability(u8,Engine)=true;
+		HasCapability(u9,Engine)=true;
+		HasCapability(u9,Ladder)=true;
 		
 		BEFORE_REGION(Full,GoodSam-T)=true;
 		BEFORE_REGION(Full,Stonybrook)=true;
@@ -390,9 +390,9 @@ non-fluents nf_emergency_continuous_time_multiple_vehicles_test_9 {
 	};
 }
 
-instance inst_emergency_continuous_time_multiple_vehicles_test_9 {
-	domain = emergency_continuous_time_multiple_vehicles_test;
-	non-fluents = nf_emergency_continuous_time_multiple_vehicles_test_9;
+instance inst_emergency_continuous_time_multiple_units_test_9 {
+	domain = emergency_continuous_time_multiple_units_test;
+	non-fluents = nf_emergency_continuous_time_multiple_units_test_9;
 	
 	init-state {
 		
@@ -400,15 +400,15 @@ instance inst_emergency_continuous_time_multiple_vehicles_test_9 {
 		currentCall(ypos)=64;
 		currentCallTime=0.0;
 		
-		lastVehicleService(v1,xpos)=1418.0; lastVehicleService(v1,ypos)=65.0;
-		lastVehicleService(v2,xpos)=1415.0; lastVehicleService(v2,ypos)=64.0;
-		lastVehicleService(v3,xpos)=1416.0; lastVehicleService(v3,ypos)=66.0;
-		lastVehicleService(v4,xpos)=1417.0; lastVehicleService(v4,ypos)=63.0;
-		lastVehicleService(v5,xpos)=1415.0; lastVehicleService(v5,ypos)=66.0;
-		lastVehicleService(v6,xpos)=1418.0; lastVehicleService(v6,ypos)=69.0;
-		lastVehicleService(v7,xpos)=1418.0; lastVehicleService(v7,ypos)=65.0;
-		lastVehicleService(v8,xpos)=1415.0; lastVehicleService(v8,ypos)=64.0;
-		lastVehicleService(v9,xpos)=1415.0; lastVehicleService(v9,ypos)=64.0;
+		lastUnitService(u1,xpos)=1418.0; lastUnitService(u1,ypos)=65.0;
+		lastUnitService(u2,xpos)=1415.0; lastUnitService(u2,ypos)=64.0;
+		lastUnitService(u3,xpos)=1416.0; lastUnitService(u3,ypos)=66.0;
+		lastUnitService(u4,xpos)=1417.0; lastUnitService(u4,ypos)=63.0;
+		lastUnitService(u5,xpos)=1415.0; lastUnitService(u5,ypos)=66.0;
+		lastUnitService(u6,xpos)=1418.0; lastUnitService(u6,ypos)=69.0;
+		lastUnitService(u7,xpos)=1418.0; lastUnitService(u7,ypos)=65.0;
+		lastUnitService(u8,xpos)=1415.0; lastUnitService(u8,ypos)=64.0;
+		lastUnitService(u9,xpos)=1415.0; lastUnitService(u9,ypos)=64.0;
 		
 		currentCallCode(AFA)=true;
 		currentCallRegion(Fire-City)=true;
