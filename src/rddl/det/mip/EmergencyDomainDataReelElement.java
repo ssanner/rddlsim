@@ -570,6 +570,7 @@ public class EmergencyDomainDataReelElement extends DataReelElement {
 	}
 	
 	public void setInState( final State s ) throws EvalException{
+		s.clearIntermFluents();
 		s.setPVariableAssign( currentCallTimePvarName, emptySubstitution, timeToDouble(this.callTime, this.callDate) );
 		s.setPVariableAssign( currentCallPvarName, xPosSubstitution, this.callX );
 		s.setPVariableAssign( currentCallPvarName, yPosSubstitution, this.callY );
