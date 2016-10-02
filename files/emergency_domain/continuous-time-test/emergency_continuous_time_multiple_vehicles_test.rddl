@@ -1,10 +1,3 @@
-//continuous time 
-//S. 1 station 1 team - boolean. various clocks for the team
-//S. no call cause code - only call location
-//A. Dispatch team or do nothing.
-//1. simulate min of time of next call or next available time of team.
-//2. calculate FC and FR correctly - accumulate over time steps
-
 domain emergency_continuous_time_multiple_units_test{
 	
 	types {
