@@ -224,6 +224,7 @@ public class EmergencyDomainDataReelElement extends DataReelElement {
 		_natureCodeMap.put("CHOKE", CODE3MED_CAUSE_CODE );
 		_natureCodeMap.put("CODE", CODE3MED_CAUSE_CODE );
 		_natureCodeMap.put("DEATH", CODE3MED_CAUSE_CODE );
+		_natureCodeMap.put("DIABET", CODE3MED_CAUSE_CODE );
 		_natureCodeMap.put("EXPOSE", CODE1MEDICAL_CAUSE_CODE );
 		_natureCodeMap.put("FALL1", CODE1MEDICAL_CAUSE_CODE );
 		_natureCodeMap.put("FALL3", CODE3TRAUMA_CAUSE_CODE );
@@ -333,6 +334,7 @@ public class EmergencyDomainDataReelElement extends DataReelElement {
 		for( ArrayList<LCONST> assign : subs ){
 			if( ((boolean)s.getPVariableAssign(currentCallCodePvarName, assign)) ){
 				ret  = assign;
+				break;
 			}
 		}
 		return ret.get(0)._sConstValue;
@@ -365,6 +367,7 @@ public class EmergencyDomainDataReelElement extends DataReelElement {
 		for( Entry<ArrayList<LCONST>, Object> entry : codes_bools.entrySet() ){
 			if( ((boolean)entry.getValue()) ){
 				ret = entry.getKey();
+				break;
 			}
 		}
 		return ret.get(0)._sConstValue;
@@ -556,7 +559,7 @@ public class EmergencyDomainDataReelElement extends DataReelElement {
 				|| nearest_code.equals( TRANSPORT_CAUSE_CODE ) );
 	}
 
-	private static OBJECT_VAL getClosestParentCause(String natureCode) {
+	public static OBJECT_VAL getClosestParentCause(String natureCode) {
 		if( _natureCodeMap.containsKey(natureCode) ){
 			return _natureCodeMap.get(natureCode);
 		}
@@ -593,6 +596,5 @@ public class EmergencyDomainDataReelElement extends DataReelElement {
 			s.setPVariableAssign(pvar, assign, null);
 		}
 	}
-	
 	
 }

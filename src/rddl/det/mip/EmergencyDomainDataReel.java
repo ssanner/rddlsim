@@ -223,6 +223,8 @@ public class EmergencyDomainDataReel {
 	public static void main(String[] args) throws FileNotFoundException, IOException {
 		EmergencyDomainDataReel reel = new EmergencyDomainDataReel("./files/emergency_domain/jan_2011_calls.csv", 
 				",", true, false, 2, 0, 1);
+		System.out.println(reel.getClosestParentCauses() );
+		
 		EmergencyDomainDataReelElement current = reel.all_frames.get(17);
 		System.out.println( current );
 		
@@ -253,6 +255,17 @@ public class EmergencyDomainDataReel {
 		//TODO : TEST : EXPR -> GRBConstr -> HOP
 		//Tested : Element -> Futures -> Expressions
 		
+	}
+
+	private String getClosestParentCauses() {
+		StringBuilder sb = new StringBuilder();
+		for( final ArrayList<EmergencyDomainDataReelElement> f : frames ){
+			for( EmergencyDomainDataReelElement elem : f ){
+				sb.append(EmergencyDomainDataReelElement.getClosestParentCause(elem.natureCode).toString());
+				sb.append("\n");
+			}
+		}
+		return sb.toString();
 	}
 
 	private ArrayList<Pair<EXPR,EXPR>> to_RDDL_EXPR_constraints(final ArrayList<EmergencyDomainDataReelElement>[] futures, final LVAR future_PREDICATE,
