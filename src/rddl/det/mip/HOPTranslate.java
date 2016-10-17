@@ -953,7 +953,7 @@ public class HOPTranslate extends Translate implements Policy {
 			if( recover ){//error_code == GRB.ERROR_OUT_OF_MEMORY && recover ){
 //				cleanUp(static_grb_model);
 				handleOOM( static_grb_model );
-				return doPlan( subs, false );
+				return doPlan( subs, true );//can cause infinite loop if set to true
 			}else{
 				throw exc;
 			}
