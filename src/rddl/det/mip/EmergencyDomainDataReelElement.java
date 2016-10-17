@@ -199,7 +199,7 @@ public class EmergencyDomainDataReelElement extends DataReelElement {
 	private static final OBJECT_VAL NUISANCE_FIRE_CAUSE_CODE = new OBJECT_VAL("NuisanceFire");
 //	private static final double CALL_RADIUS = 0.2;
 	
-//	private static DecimalFormat _df = new DecimalFormat("##.########");
+	private static DecimalFormat _df = new DecimalFormat("##.########");
 	private static HashMap<String,OBJECT_VAL> _natureCodeMap = new HashMap<>();
 	
 	static{
@@ -279,8 +279,8 @@ public class EmergencyDomainDataReelElement extends DataReelElement {
 		this.callDate= LocalDate.of( callDate.getYear(), callDate.getMonth(), callDate.getDayOfMonth() );
 		this.callTime = callTime;
 		this.callAddress = callAddress;
-		this.callX = (convertToMiles) ? FeetToMiles*callX : callX;
-		this.callY = (convertToMiles) ? FeetToMiles*callY : callY;
+		this.callX = Double.valueOf( _df.format( (convertToMiles) ? FeetToMiles*callX : callX ) );
+		this.callY = Double.valueOf( _df.format( (convertToMiles) ? FeetToMiles*callY : callY ) );
 	}
 		
 	protected EmergencyDomainDataReelElement(final String[] splits, final boolean convertToMiles){
@@ -345,11 +345,11 @@ public class EmergencyDomainDataReelElement extends DataReelElement {
 	}
 
 	protected static double getCurrentCallY(State s) throws EvalException {
-		return (double)s.getPVariableAssign(currentCallPvarName, yPosSubstitution );
+		return Double.valueOf( _df.format( (double)s.getPVariableAssign(currentCallPvarName, yPosSubstitution ) ) );
 	}
 
 	protected static double getCurrentCallX(State s) throws EvalException {
-		return (double)s.getPVariableAssign(currentCallPvarName, xPosSubstitution );
+		return Double.valueOf( _df.format( (double)s.getPVariableAssign(currentCallPvarName, xPosSubstitution ) ) );
 	}
 
 	protected static LocalTime getCurrentCallTime(State s) throws EvalException {
@@ -391,17 +391,17 @@ public class EmergencyDomainDataReelElement extends DataReelElement {
 //	}
 	
 	protected static double getCurrentCallY(HashMap<PVAR_NAME, HashMap<ArrayList<LCONST>, Object>> subs) {
-		return ((Number)(subs.get( currentCallPvarName ).get(yPosSubstitution ))).doubleValue();
+		return Double.valueOf( _df.format( ((Number)(subs.get( currentCallPvarName ).get(yPosSubstitution ))).doubleValue() ) );
 	}
 
 	protected static double getCurrentCallX(HashMap<PVAR_NAME, HashMap<ArrayList<LCONST>, Object>> subs) {
-		return ((Number)(subs.get( currentCallPvarName ).get(xPosSubstitution ))).doubleValue();
+		return Double.valueOf(_df.format( ((Number)(subs.get( currentCallPvarName ).get(xPosSubstitution ))).doubleValue() ));
 	}
 	
 	public static double timeToDouble( LocalTime time, LocalDate date ){
 		double ret_time = time.getHour()+(time.getMinute()/60.0)+(time.getSecond()/(60*60.0));
 		double ret_date = (date.getDayOfYear()-1)*24;
-		double ret = ret_date + ret_time; //Double.valueOf( _df .format( ret_date + ret_time ) );
+		double ret = Double.valueOf( _df .format( ret_date + ret_time ) );
 		assert( ret >= 0 );//&& ret < 24);
 		return ret;
 	}
@@ -410,7 +410,7 @@ public class EmergencyDomainDataReelElement extends DataReelElement {
 		assert( t >= 0 );
 		int numdays = (int) Math.floor(t/24.0);
 		double time_of_day = t - 24*numdays;
-		double val_t = time_of_day;//Double.valueOf( _df.format(time_of_day) );
+		double val_t = Double.valueOf( _df.format(time_of_day) );
 		
 		//t = h + m/60 + s/3600, 0<h<24, 0<m<60, 0<s<60 are ints
 		//15.2345 = 15h, 0.2345*60=14.07=>14m, 14.07-14=0.07*60=4s
