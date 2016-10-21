@@ -37,20 +37,20 @@ public class EmergencyDomainDataReelElement extends DataReelElement {
 	public static final PVAR_NAME currentCallTimePvarName = new PVAR_NAME("currentCallTime");
 	public static final PVAR_NAME currentCallPvarName = new PVAR_NAME("currentCall");
 	public static final PVAR_NAME currentCallCodePvarName = new PVAR_NAME("currentCallCode");
-	public static final PVAR_NAME currentCallRegionPvarName = new PVAR_NAME("currentCallRegion");
+//	public static final PVAR_NAME currentCallRegionPvarName = new PVAR_NAME("currentCallRegion");
 	
 	public static final PVAR_EXPR currentCallPvar = new PVAR_EXPR("currentCall", 
 			new ArrayList<LVAR>( Collections.singletonList( new LVAR("?c") ) ) );
 	public static final PVAR_EXPR currentCallTimePvar = new PVAR_EXPR("currentCallTime", emptySubstitution);
 	public static final PVAR_EXPR currentCallCodePvar = new PVAR_EXPR("currentCallCode", 
 			new ArrayList<LVAR>( Collections.singletonList( new LVAR("?c") ) ) );
-	public static final PVAR_EXPR currentCallRegionPvar = new PVAR_EXPR("currentCallRegion", 
-			new ArrayList<LVAR>( Collections.singletonList( new LVAR("?r") ) ) );
+//	public static final PVAR_EXPR currentCallRegionPvar = new PVAR_EXPR("currentCallRegion", 
+//			new ArrayList<LVAR>( Collections.singletonList( new LVAR("?r") ) ) );
 	
 	public static final PVAR_EXPR tempUniformCausePvar = new PVAR_EXPR("tempUniformCause",emptySubstitution);
 	public static final PVAR_NAME tempUniformCausePvarName = new PVAR_NAME("tempUniformCause");
-	public static final PVAR_EXPR tempUniformRegionPvar = new PVAR_EXPR("tempUniformRegion", emptySubstitution);
-	public static final PVAR_NAME tempUniformRegionPvarName = new PVAR_NAME("tempUniformRegion");
+//	public static final PVAR_EXPR tempUniformRegionPvar = new PVAR_EXPR("tempUniformRegion", emptySubstitution);
+//	public static final PVAR_NAME tempUniformRegionPvarName = new PVAR_NAME("tempUniformRegion");
 	
 	public static final PVAR_NAME gapTimePvarName = new PVAR_NAME("gapTime");
 	public static final PVAR_EXPR gapTimePvar = new PVAR_EXPR("gapTime", emptySubstitution);
@@ -162,101 +162,217 @@ public class EmergencyDomainDataReelElement extends DataReelElement {
 		FIRE_CITY_REGION = pBuilder.build();
 	}
 	
-	private static final ArrayList<String> CAUSE_CODES =  new ArrayList<String>( Arrays.asList(new String[]{"AFA","All","Code1Medical","Code3Med",
-			"Code3Trauma","EMS","Fire","Hazmat","MassCasualty","MVA","NuisanceFire",
-			"Other","OtherEMS","OtherFire","Overpressure","Rescue","StructureFire",
-			"Transport","VehicleFire","WildlandFire"}) );
+	private static final ArrayList<String> CAUSE_CODES =  new ArrayList<String>( 
+			Arrays.asList(new String[]{"Code1Medical","Code3Med","Code3Trauma","EMS",
+					"Fire","Hazmat","MassCasualty","MVA","Other","Overpressure",
+					"Rescue","StructureFire","Transport","VehicleFire","WildlandFire"}) );
 //	region : {Full,GoodSam-T,Stonybrook,Westhills,EMS-City,EMS-County,Fire-City,Fire-Rural};
-	private static final ArrayList<String> REGIONS = new ArrayList<String>( Arrays.asList(new String[]{
-			"Full","GoodSam-T","Stonybrook","Westhills","EMS-City","EMS-County","Fire-City","Fire-Rural"
-	}));
+//	private static final ArrayList<String> REGIONS = new ArrayList<String>( Arrays.asList(new String[]{
+//			"Full","GoodSam-T","Stonybrook","Westhills","EMS-City","EMS-County","Fire-City","Fire-Rural"
+//	}));
 
 	private static final OBJECT_VAL CODE1MEDICAL_CAUSE_CODE = new OBJECT_VAL("Code1Medical");
 	private static final OBJECT_VAL CODE3MED_CAUSE_CODE = new OBJECT_VAL("Code3Med");
 	private static final OBJECT_VAL TRANSPORT_CAUSE_CODE = new OBJECT_VAL("Transport");
 	private static final OBJECT_VAL OTHER_CAUSE_CODE = new OBJECT_VAL("Other");
 	private static final OBJECT_VAL HAZMAT_CAUSE_CODE = new OBJECT_VAL("Hazmat");
-	private static final OBJECT_VAL AFA_CAUSE_CODE = new OBJECT_VAL("AFA");
-	private static final OBJECT_VAL OTHERFIRE_CAUSE_CODE = new OBJECT_VAL("OtherFire");
+//	private static final OBJECT_VAL AFA_CAUSE_CODE = new OBJECT_VAL("AFA");
+//	private static final OBJECT_VAL OTHERFIRE_CAUSE_CODE = new OBJECT_VAL("OtherFire");
 	private static final OBJECT_VAL STRUCTUREFIRE_CAUSE_CODE = new OBJECT_VAL("StructureFire");
 	private static final OBJECT_VAL MVA_CAUSE_CODE = new OBJECT_VAL("MVA");
 	private static final OBJECT_VAL CODE3TRAUMA_CAUSE_CODE = new OBJECT_VAL("Code3Trauma");
 	private static final OBJECT_VAL EMS_CAUSE_CODE = new OBJECT_VAL("EMS");
 	private static final OBJECT_VAL MASSCASUALTY_CAUSE_CODE = new OBJECT_VAL("MassCasualty");
-	private static final OBJECT_VAL OTHEREMS_CAUSE_CODE = new OBJECT_VAL("OtherEMS");
+//	private static final OBJECT_VAL OTHEREMS_CAUSE_CODE = new OBJECT_VAL("OtherEMS");
 	private static final OBJECT_VAL RESCUE_CAUSE_CODE = new OBJECT_VAL("Rescue");
 	
-	private static final OBJECT_VAL EMS_CITY_REGION_CODE = new OBJECT_VAL("EMS-City");
-	private static final OBJECT_VAL WESTHILLS_REGION_CODE= new OBJECT_VAL("Westhills");
-	private static final OBJECT_VAL STONYBROOK_REGION_CODE = new OBJECT_VAL("Stonybrook");
-	private static final OBJECT_VAL GOODSAM_REGION_CODE = new OBJECT_VAL("GoodSam-T");
-	private static final OBJECT_VAL FIRE_RURAL_REGION_CODE = new OBJECT_VAL("Fire-Rural");
-	private static final OBJECT_VAL FIRE_CITY_REGION_CODE = new OBJECT_VAL("Fire-City");
-	private static final OBJECT_VAL EMS_COUNTY_REGION_CODE = new OBJECT_VAL("EMS-County");
+//	private static final OBJECT_VAL EMS_CITY_REGION_CODE = new OBJECT_VAL("EMS-City");
+//	private static final OBJECT_VAL WESTHILLS_REGION_CODE= new OBJECT_VAL("Westhills");
+//	private static final OBJECT_VAL STONYBROOK_REGION_CODE = new OBJECT_VAL("Stonybrook");
+//	private static final OBJECT_VAL GOODSAM_REGION_CODE = new OBJECT_VAL("GoodSam-T");
+//	private static final OBJECT_VAL FIRE_RURAL_REGION_CODE = new OBJECT_VAL("Fire-Rural");
+//	private static final OBJECT_VAL FIRE_CITY_REGION_CODE = new OBJECT_VAL("Fire-City");
+//	private static final OBJECT_VAL EMS_COUNTY_REGION_CODE = new OBJECT_VAL("EMS-County");
 	private static final OBJECT_VAL FIRE_CAUSE_CODE = new OBJECT_VAL("Fire");
 	private static final OBJECT_VAL VEHICLE_FIRE_CAUSE_CODE = new OBJECT_VAL("VehicleFire");
 	private static final OBJECT_VAL WILDLAND_FIRE_CAUSE_CODE = new OBJECT_VAL("WildlandFire");
-	private static final OBJECT_VAL NUISANCE_FIRE_CAUSE_CODE = new OBJECT_VAL("NuisanceFire");
+//	private static final OBJECT_VAL NUISANCE_FIRE_CAUSE_CODE = new OBJECT_VAL("NuisanceFire");
 //	private static final double CALL_RADIUS = 0.2;
 	
 	private static DecimalFormat _df = new DecimalFormat("##.########");
 	private static HashMap<String,OBJECT_VAL> _natureCodeMap = new HashMap<>();
 	
 	static{
+		_natureCodeMap.put("911", EMS_CAUSE_CODE);
 		_natureCodeMap.put("2ND", STRUCTUREFIRE_CAUSE_CODE );
+		_natureCodeMap.put("AA", OTHER_CAUSE_CODE);
+		_natureCodeMap.put("ABDOM1", CODE1MEDICAL_CAUSE_CODE);
+		_natureCodeMap.put("ABDOM3", CODE3MED_CAUSE_CODE);
 		_natureCodeMap.put("ACCBIK", CODE3TRAUMA_CAUSE_CODE );
 		_natureCodeMap.put("ACCFTL", CODE3TRAUMA_CAUSE_CODE );
+		_natureCodeMap.put("ACCHR", MVA_CAUSE_CODE );
 		_natureCodeMap.put("ACCINJ", MVA_CAUSE_CODE );
 		_natureCodeMap.put("ACCNON", MVA_CAUSE_CODE );
 		_natureCodeMap.put("ACCPED", CODE3TRAUMA_CAUSE_CODE );
 		_natureCodeMap.put("ACCUNK", MVA_CAUSE_CODE );
+		_natureCodeMap.put("AIREM", WILDLAND_FIRE_CAUSE_CODE );
+		_natureCodeMap.put("ALARMB", STRUCTUREFIRE_CAUSE_CODE);
+		_natureCodeMap.put("ALARMO", FIRE_CAUSE_CODE );
+		_natureCodeMap.put("ALLCO", MASSCASUALTY_CAUSE_CODE );
 		_natureCodeMap.put("ALLERG", CODE3MED_CAUSE_CODE );
+		_natureCodeMap.put("ANIMAL", EMS_CAUSE_CODE );
+		_natureCodeMap.put("AOA", EMS_CAUSE_CODE);
 		_natureCodeMap.put("APT", STRUCTUREFIRE_CAUSE_CODE );
+		_natureCodeMap.put("ARSON", STRUCTUREFIRE_CAUSE_CODE );
+		_natureCodeMap.put("ASLT1", CODE1MEDICAL_CAUSE_CODE );
 		_natureCodeMap.put("ASLT3", CODE3TRAUMA_CAUSE_CODE );
+		_natureCodeMap.put("ASSPUB", EMS_CAUSE_CODE);
 		_natureCodeMap.put("ATTSUI", CODE3MED_CAUSE_CODE );
 		_natureCodeMap.put("BACK1", CODE1MEDICAL_CAUSE_CODE );
 		_natureCodeMap.put("BACK3", CODE3TRAUMA_CAUSE_CODE );
+		_natureCodeMap.put("BAF", FIRE_CAUSE_CODE );
+		_natureCodeMap.put("BARK", WILDLAND_FIRE_CAUSE_CODE);
+		_natureCodeMap.put("BITE", EMS_CAUSE_CODE);
+		_natureCodeMap.put("BIRTH", EMS_CAUSE_CODE);
 		_natureCodeMap.put("BLEED1", CODE1MEDICAL_CAUSE_CODE );
 		_natureCodeMap.put("BLEED3", CODE3MED_CAUSE_CODE );
 		_natureCodeMap.put("BREATH", CODE3MED_CAUSE_CODE );
-		_natureCodeMap.put("BURNCO", OTHERFIRE_CAUSE_CODE );
-		_natureCodeMap.put("CFA", AFA_CAUSE_CODE );
+		_natureCodeMap.put("BRUSH", FIRE_CAUSE_CODE);
+		_natureCodeMap.put("BURG", FIRE_CAUSE_CODE );
+		_natureCodeMap.put("BURNCO", FIRE_CAUSE_CODE );
+		_natureCodeMap.put("BURN1", CODE1MEDICAL_CAUSE_CODE);
+		_natureCodeMap.put("BURN3", CODE3MED_CAUSE_CODE);
+		_natureCodeMap.put("BURNIN", FIRE_CAUSE_CODE);
+		_natureCodeMap.put("CARFIR", VEHICLE_FIRE_CAUSE_CODE );
+		_natureCodeMap.put("CAID", OTHER_CAUSE_CODE);
+		_natureCodeMap.put("CFA", STRUCTUREFIRE_CAUSE_CODE );
+		_natureCodeMap.put("CHILD", OTHER_CAUSE_CODE);
+		_natureCodeMap.put("CHILL", EMS_CAUSE_CODE);
 		_natureCodeMap.put("CHOKE", CODE3MED_CAUSE_CODE );
+		_natureCodeMap.put("CIVIL", OTHER_CAUSE_CODE);
+		_natureCodeMap.put("CO1", CODE1MEDICAL_CAUSE_CODE);
+		_natureCodeMap.put("CO3", CODE3MED_CAUSE_CODE);
 		_natureCodeMap.put("CODE", CODE3MED_CAUSE_CODE );
+		_natureCodeMap.put("COLD", OTHER_CAUSE_CODE );
+		_natureCodeMap.put("COMM", STRUCTUREFIRE_CAUSE_CODE );
+		_natureCodeMap.put("CPW", OTHER_CAUSE_CODE );
 		_natureCodeMap.put("DEATH", CODE3MED_CAUSE_CODE );
 		_natureCodeMap.put("DIABET", CODE3MED_CAUSE_CODE );
+		_natureCodeMap.put("DISTUR", EMS_CAUSE_CODE );
+		_natureCodeMap.put("DOGATL", EMS_CAUSE_CODE );
+		_natureCodeMap.put("DOMEST", OTHER_CAUSE_CODE);
+		_natureCodeMap.put("DRUNK", CODE3MED_CAUSE_CODE);
+		_natureCodeMap.put("DROWN", CODE1MEDICAL_CAUSE_CODE );
+		_natureCodeMap.put("DUII", EMS_CAUSE_CODE);
+		_natureCodeMap.put("DUMPS", OTHER_CAUSE_CODE);
+		_natureCodeMap.put("DWS", EMS_CAUSE_CODE);
+		_natureCodeMap.put("ELEC", CODE3MED_CAUSE_CODE);
+		_natureCodeMap.put("ELUDE", OTHER_CAUSE_CODE);
+		_natureCodeMap.put("ESCORT", TRANSPORT_CAUSE_CODE);
 		_natureCodeMap.put("EXPOSE", CODE1MEDICAL_CAUSE_CODE );
+		_natureCodeMap.put("EYE", EMS_CAUSE_CODE );
 		_natureCodeMap.put("FALL1", CODE1MEDICAL_CAUSE_CODE );
 		_natureCodeMap.put("FALL3", CODE3TRAUMA_CAUSE_CODE );
+		_natureCodeMap.put("FALSE", OTHER_CAUSE_CODE);
 		_natureCodeMap.put("FIGHT", CODE3MED_CAUSE_CODE );
+		_natureCodeMap.put("FIREWK", FIRE_CAUSE_CODE);
 		_natureCodeMap.put("FLUE", STRUCTUREFIRE_CAUSE_CODE );
+		_natureCodeMap.put("FOLLOW", OTHER_CAUSE_CODE );
+		_natureCodeMap.put("FOREST",WILDLAND_FIRE_CAUSE_CODE );
+		_natureCodeMap.put("FYI",FIRE_CAUSE_CODE );
+		_natureCodeMap.put("GSW", CODE1MEDICAL_CAUSE_CODE);
+		_natureCodeMap.put("HARASS", EMS_CAUSE_CODE);
+		_natureCodeMap.put("HAZMAT", HAZMAT_CAUSE_CODE);
 		_natureCodeMap.put("HEART", CODE3MED_CAUSE_CODE );
+		_natureCodeMap.put("HOM", EMS_CAUSE_CODE );
+		_natureCodeMap.put("HOUSE", STRUCTUREFIRE_CAUSE_CODE);
+		_natureCodeMap.put("JUV", OTHER_CAUSE_CODE );
+		_natureCodeMap.put("KIDNAP", OTHER_CAUSE_CODE );
+		_natureCodeMap.put("LGGRAS", WILDLAND_FIRE_CAUSE_CODE);
+		_natureCodeMap.put("LIFE1", CODE1MEDICAL_CAUSE_CODE);
 		_natureCodeMap.put("LIFE3", CODE3MED_CAUSE_CODE );
 		_natureCodeMap.put("LIFT", CODE1MEDICAL_CAUSE_CODE );
-		_natureCodeMap.put("LINES", OTHERFIRE_CAUSE_CODE );
+		_natureCodeMap.put("LINES", FIRE_CAUSE_CODE );
+		_natureCodeMap.put("LIQLAW", OTHER_CAUSE_CODE);
 		_natureCodeMap.put("MANDWN", CODE3MED_CAUSE_CODE );
+		_natureCodeMap.put("MENTAL", CODE3MED_CAUSE_CODE );
 		_natureCodeMap.put("MED1", CODE1MEDICAL_CAUSE_CODE );
 		_natureCodeMap.put("MED3", CODE3MED_CAUSE_CODE );
+		_natureCodeMap.put("MENACE", EMS_CAUSE_CODE);
+		_natureCodeMap.put("MIP", STRUCTUREFIRE_CAUSE_CODE);
+		_natureCodeMap.put("MISPER", OTHER_CAUSE_CODE );
+		_natureCodeMap.put("MOTOR", MVA_CAUSE_CODE );
+		_natureCodeMap.put("MUTUAL", EMS_CAUSE_CODE);
 		_natureCodeMap.put("OD", CODE3MED_CAUSE_CODE );
-		_natureCodeMap.put("ODOR", OTHERFIRE_CAUSE_CODE );
+		_natureCodeMap.put("ODOR", FIRE_CAUSE_CODE );
+		_natureCodeMap.put("OTCRIM", OTHER_CAUSE_CODE );
+		_natureCodeMap.put("OTFIRE", FIRE_CAUSE_CODE);
+		_natureCodeMap.put("OTTRAF", FIRE_CAUSE_CODE);
+		_natureCodeMap.put("OTORD", EMS_CAUSE_CODE);
+		_natureCodeMap.put("OUT", EMS_CAUSE_CODE);
+		_natureCodeMap.put("POISON", CODE3MED_CAUSE_CODE);
+		_natureCodeMap.put("PROWL", OTHER_CAUSE_CODE);
+		_natureCodeMap.put("PROWLC", OTHER_CAUSE_CODE);
 		_natureCodeMap.put("PUBLIC", OTHER_CAUSE_CODE );
-		_natureCodeMap.put("RFA", AFA_CAUSE_CODE );
+		_natureCodeMap.put("PUBSAF", OTHER_CAUSE_CODE );
+		_natureCodeMap.put("QRT", EMS_CAUSE_CODE );
+		_natureCodeMap.put("RAPE", EMS_CAUSE_CODE );
+		_natureCodeMap.put("RESCUE", RESCUE_CAUSE_CODE);
+		_natureCodeMap.put("RFA", STRUCTUREFIRE_CAUSE_CODE);
+		_natureCodeMap.put("RECKDR", MVA_CAUSE_CODE);
+		_natureCodeMap.put("RO", OTHER_CAUSE_CODE);
+		_natureCodeMap.put("ROB", OTHER_CAUSE_CODE);
+		_natureCodeMap.put("RUNJUV", OTHER_CAUSE_CODE);
 		_natureCodeMap.put("SEIZE", CODE3MED_CAUSE_CODE );
-		_natureCodeMap.put("SMOKE", OTHERFIRE_CAUSE_CODE );
+		_natureCodeMap.put("SEXOFF", EMS_CAUSE_CODE );
+		_natureCodeMap.put("SHOPLF", OTHER_CAUSE_CODE );
+		_natureCodeMap.put("SHOTFR", EMS_CAUSE_CODE );
+		_natureCodeMap.put("SMGRAS", WILDLAND_FIRE_CAUSE_CODE);
+		_natureCodeMap.put("SMOKE", FIRE_CAUSE_CODE );
 		_natureCodeMap.put("SPILL", HAZMAT_CAUSE_CODE );
+		_natureCodeMap.put("SRN", EMS_CAUSE_CODE );
+		_natureCodeMap.put("STING1", CODE1MEDICAL_CAUSE_CODE);
+		_natureCodeMap.put("STING3", CODE3MED_CAUSE_CODE);
+		_natureCodeMap.put("STOLV", OTHER_CAUSE_CODE);
+		_natureCodeMap.put("STOLVR", OTHER_CAUSE_CODE);
 		_natureCodeMap.put("STROKE", CODE3MED_CAUSE_CODE );
+		_natureCodeMap.put("STRUCT", STRUCTUREFIRE_CAUSE_CODE);
+		_natureCodeMap.put("SUICID", EMS_CAUSE_CODE);
+		_natureCodeMap.put("SUSACT", OTHER_CAUSE_CODE);
+		_natureCodeMap.put("SUSPER", OTHER_CAUSE_CODE);
+		_natureCodeMap.put("SUSVEH", EMS_CAUSE_CODE );
+		_natureCodeMap.put("SWARR", OTHER_CAUSE_CODE);
+		_natureCodeMap.put("SWAT", EMS_CAUSE_CODE);
+		_natureCodeMap.put("TAP9", EMS_CAUSE_CODE);
+		_natureCodeMap.put("TAP18", EMS_CAUSE_CODE);
+		_natureCodeMap.put("TAP19", EMS_CAUSE_CODE);
+		_natureCodeMap.put("TAP21", EMS_CAUSE_CODE);
+		_natureCodeMap.put("THEFT", OTHER_CAUSE_CODE );
+		_natureCodeMap.put("THEFTV", OTHER_CAUSE_CODE);
+		_natureCodeMap.put("THREAT", OTHER_CAUSE_CODE);
 		_natureCodeMap.put("TRANS", TRANSPORT_CAUSE_CODE );
 		_natureCodeMap.put("TRAUM1", CODE1MEDICAL_CAUSE_CODE );
 		_natureCodeMap.put("TRAUM3", CODE3TRAUMA_CAUSE_CODE );
+		_natureCodeMap.put("TREE", WILDLAND_FIRE_CAUSE_CODE );
+		_natureCodeMap.put("TRESPA", OTHER_CAUSE_CODE );
+		_natureCodeMap.put("TRF", FIRE_CAUSE_CODE);
 		_natureCodeMap.put("UNCON", CODE3MED_CAUSE_CODE );
+		_natureCodeMap.put("UNK", OTHER_CAUSE_CODE );
 		_natureCodeMap.put("UNKMED", CODE3MED_CAUSE_CODE );
-		_natureCodeMap.put("UNKMED", CODE3MED_CAUSE_CODE );
+		_natureCodeMap.put("VAND", OTHER_CAUSE_CODE);
+		_natureCodeMap.put("WARR", OTHER_CAUSE_CODE);
+		_natureCodeMap.put("WELFAR", EMS_CAUSE_CODE);
+		_natureCodeMap.put("WW", EMS_CAUSE_CODE );
+		_natureCodeMap.put("WRESCUE", RESCUE_CAUSE_CODE);
+		_natureCodeMap.put("XCALL", EMS_CAUSE_CODE);
+		_natureCodeMap.put("XPLODE", MASSCASUALTY_CAUSE_CODE);
+		_natureCodeMap.put("XPORT", TRANSPORT_CAUSE_CODE);
 		_natureCodeMap.put(CODE3MED_CAUSE_CODE._sConstValue, CODE3MED_CAUSE_CODE);
 		_natureCodeMap.put(CODE1MEDICAL_CAUSE_CODE._sConstValue, CODE1MEDICAL_CAUSE_CODE);
 		_natureCodeMap.put(TRANSPORT_CAUSE_CODE._sConstValue, TRANSPORT_CAUSE_CODE);
 		_natureCodeMap.put(HAZMAT_CAUSE_CODE._sConstValue, HAZMAT_CAUSE_CODE);
-		_natureCodeMap.put(OTHERFIRE_CAUSE_CODE._sConstValue, OTHERFIRE_CAUSE_CODE);
-		_natureCodeMap.put(AFA_CAUSE_CODE._sConstValue, AFA_CAUSE_CODE);
+//		_natureCodeMap.put(OTHERFIRE_CAUSE_CODE._sConstValue, OTHERFIRE_CAUSE_CODE);
+//		_natureCodeMap.put(AFA_CAUSE_CODE._sConstValue, AFA_CAUSE_CODE);
 		_natureCodeMap.put(OTHER_CAUSE_CODE._sConstValue, OTHER_CAUSE_CODE);
 		_natureCodeMap.put(STRUCTUREFIRE_CAUSE_CODE._sConstValue, STRUCTUREFIRE_CAUSE_CODE);
 		_natureCodeMap.put(CODE3TRAUMA_CAUSE_CODE._sConstValue, CODE3TRAUMA_CAUSE_CODE);
@@ -274,11 +390,11 @@ public class EmergencyDomainDataReelElement extends DataReelElement {
 	protected EmergencyDomainDataReelElement(String callId, String natureCode,
 			LocalDate callDate, LocalTime callTime, String callAddress,
 			double callX, double callY, final boolean convertToMiles) {
-		this.callId = callId;
-		this.natureCode = natureCode;
+		this.callId = callId.trim();
+		this.natureCode = natureCode.trim();
 		this.callDate= LocalDate.of( callDate.getYear(), callDate.getMonth(), callDate.getDayOfMonth() );
 		this.callTime = callTime;
-		this.callAddress = callAddress;
+		this.callAddress = callAddress.trim();
 		this.callX = Double.valueOf( _df.format( (convertToMiles) ? FeetToMiles*callX : callX ) );
 		this.callY = Double.valueOf( _df.format( (convertToMiles) ? FeetToMiles*callY : callY ) );
 	}
@@ -292,9 +408,9 @@ public class EmergencyDomainDataReelElement extends DataReelElement {
 		this( line.split(separator) , convertToMiles);
 	}
 
-	public DataReelElement slurp(String line, String separator, boolean convertToMiles) {
-		return new EmergencyDomainDataReelElement(line, separator, convertToMiles);
-	}
+//	public DataReelElement slurp(String line, String separator, boolean convertToMiles) {
+//		return new EmergencyDomainDataReelElement(line, separator, convertToMiles);
+//	}
 	
 	@Override
 	public int compareTo(DataReelElement other) {
@@ -469,21 +585,21 @@ public class EmergencyDomainDataReelElement extends DataReelElement {
 			}
 		}
 		
-		final OBJECT_VAL matched_region = getRegion( this.callX, this.callY, this.natureCode );
-		final int region_idx = REGIONS.indexOf(matched_region._sConstValue);
-				
-		for( final String region_str : REGIONS ){
-			EXPR other_region = addStepFuture(currentCallRegionPvar, future_PREDICATE, TIME_PREDICATE, constants, objects)
-					.substitute( Collections.singletonMap( new LVAR("?r"), new OBJECT_VAL(region_str) ), constants, objects)
-					.substitute( Collections.singletonMap( TIME_PREDICATE, time_indices.get(time_step) ), constants, objects )
-					.substitute( Collections.singletonMap( future_PREDICATE, future_indices.get(future) ), constants, objects );
-			
-			if( region_str.equals(matched_region._sConstValue) ){
-				ret.add( new Pair<EXPR,EXPR>( other_region, new BOOL_CONST_EXPR( true ) ) );
-			}else{
-				ret.add( new Pair<EXPR,EXPR>( other_region, new BOOL_CONST_EXPR( false ) ) );				
-			}
-		}
+//		final OBJECT_VAL matched_region = getRegion( this.callX, this.callY, this.natureCode );
+//		final int region_idx = REGIONS.indexOf(matched_region._sConstValue);
+//				
+//		for( final String region_str : REGIONS ){
+//			EXPR other_region = addStepFuture(currentCallRegionPvar, future_PREDICATE, TIME_PREDICATE, constants, objects)
+//					.substitute( Collections.singletonMap( new LVAR("?r"), new OBJECT_VAL(region_str) ), constants, objects)
+//					.substitute( Collections.singletonMap( TIME_PREDICATE, time_indices.get(time_step) ), constants, objects )
+//					.substitute( Collections.singletonMap( future_PREDICATE, future_indices.get(future) ), constants, objects );
+//			
+//			if( region_str.equals(matched_region._sConstValue) ){
+//				ret.add( new Pair<EXPR,EXPR>( other_region, new BOOL_CONST_EXPR( true ) ) );
+//			}else{
+//				ret.add( new Pair<EXPR,EXPR>( other_region, new BOOL_CONST_EXPR( false ) ) );				
+//			}
+//		}
 		
 		if( time_step != 0 ){ //time_indices.size()-1 ){
 			EXPR lhs_time = addStepFuture(gapTimePvar, future_PREDICATE, TIME_PREDICATE, constants, objects)
@@ -496,10 +612,10 @@ public class EmergencyDomainDataReelElement extends DataReelElement {
 				.substitute( Collections.singletonMap( future_PREDICATE, future_indices.get(future) ), constants, objects );
 			ret.add( new Pair<EXPR,EXPR>( lhs_tempuniform_cause, new REAL_CONST_EXPR(1.0*cause_idx) ) );
 
-			EXPR lhs_tempuniform_region = addStepFuture(tempUniformRegionPvar, future_PREDICATE, TIME_PREDICATE, constants, objects)
-					.substitute( Collections.singletonMap( TIME_PREDICATE, time_indices.get(time_step-1) ), constants, objects )
-					.substitute( Collections.singletonMap( future_PREDICATE, future_indices.get(future) ), constants, objects );
-			ret.add( new Pair<EXPR,EXPR>(lhs_tempuniform_region, new REAL_CONST_EXPR(1.0*region_idx) ) );
+//			EXPR lhs_tempuniform_region = addStepFuture(tempUniformRegionPvar, future_PREDICATE, TIME_PREDICATE, constants, objects)
+//					.substitute( Collections.singletonMap( TIME_PREDICATE, time_indices.get(time_step-1) ), constants, objects )
+//					.substitute( Collections.singletonMap( future_PREDICATE, future_indices.get(future) ), constants, objects );
+//			ret.add( new Pair<EXPR,EXPR>(lhs_tempuniform_region, new REAL_CONST_EXPR(1.0*region_idx) ) );
 		}
 		
 //		int rhs_callDay = this.callDate.getDayOfYear();
@@ -512,52 +628,52 @@ public class EmergencyDomainDataReelElement extends DataReelElement {
 		return ret;
 	}
 
-	protected static OBJECT_VAL getRegion(double callX, double callY, String natureCode) {
-		//region : {Full,GoodSam-T,Stonybrook,Westhills,EMS-City,EMS-County,Fire-City,Fire-Rural};
-		//need centers of circular regions
-		if( (Math.pow( callX - GoodSamCenterX, 2) + Math.pow( callY - GoodSamCenterY, 2) <=  GoodSamRadius*GoodSamRadius)
-				&& getClosestParentCause(natureCode).equals(TRANSPORT_CAUSE_CODE ) ){
-			return GOODSAM_REGION_CODE;
-		}else if( (Math.pow( callX - StonybrookCenterX, 2) + Math.pow( callY - StonybrookCenterY, 2) <=  StonybrookRadius*StonybrookRadius)
-				&& getClosestParentCause(natureCode).equals(CODE3MED_CAUSE_CODE ) ){
-			return STONYBROOK_REGION_CODE;
-		}else if( (Math.pow( callX - WestHillsCenterX, 2) + Math.pow( callY - WestHillsCenterY, 2) <=  WestHillsRadius*WestHillsRadius)
-				&& getClosestParentCause(natureCode).equals(CODE3MED_CAUSE_CODE ) ){
-			return WESTHILLS_REGION_CODE;
-		}else if( EMS_CITY_REGION.contains( new Point((float)callX, (float)callY) ) && isEMS(natureCode) ){
-			return EMS_CITY_REGION_CODE;
-		}else if( isEMS(natureCode) ){
-			return EMS_COUNTY_REGION_CODE;
-		}else if( FIRE_CITY_REGION.contains( new Point((float)callX, (float)callY) ) && isFire(natureCode) ){
-			return FIRE_CITY_REGION_CODE;
-		}else if( isFire(natureCode) ){
-			return FIRE_RURAL_REGION_CODE;
-		}
-		//need points of polygon
-		
-		return new OBJECT_VAL("Full");
-	}
+//	protected static OBJECT_VAL getRegion(double callX, double callY, String natureCode) {
+//		//region : {Full,GoodSam-T,Stonybrook,Westhills,EMS-City,EMS-County,Fire-City,Fire-Rural};
+//		//need centers of circular regions
+//		if( (Math.pow( callX - GoodSamCenterX, 2) + Math.pow( callY - GoodSamCenterY, 2) <=  GoodSamRadius*GoodSamRadius)
+//				&& getClosestParentCause(natureCode).equals(TRANSPORT_CAUSE_CODE ) ){
+//			return GOODSAM_REGION_CODE;
+//		}else if( (Math.pow( callX - StonybrookCenterX, 2) + Math.pow( callY - StonybrookCenterY, 2) <=  StonybrookRadius*StonybrookRadius)
+//				&& getClosestParentCause(natureCode).equals(CODE3MED_CAUSE_CODE ) ){
+//			return STONYBROOK_REGION_CODE;
+//		}else if( (Math.pow( callX - WestHillsCenterX, 2) + Math.pow( callY - WestHillsCenterY, 2) <=  WestHillsRadius*WestHillsRadius)
+//				&& getClosestParentCause(natureCode).equals(CODE3MED_CAUSE_CODE ) ){
+//			return WESTHILLS_REGION_CODE;
+//		}else if( EMS_CITY_REGION.contains( new Point((float)callX, (float)callY) ) && isEMS(natureCode) ){
+//			return EMS_CITY_REGION_CODE;
+//		}else if( isEMS(natureCode) ){
+//			return EMS_COUNTY_REGION_CODE;
+//		}else if( FIRE_CITY_REGION.contains( new Point((float)callX, (float)callY) ) && isFire(natureCode) ){
+//			return FIRE_CITY_REGION_CODE;
+//		}else if( isFire(natureCode) ){
+//			return FIRE_RURAL_REGION_CODE;
+//		}
+//		//need points of polygon
+//		
+//		return new OBJECT_VAL("Full");
+//	}
 
 
-	private static boolean isFire(String natureCode) {
-		OBJECT_VAL nearest_code = getClosestParentCause(natureCode);
-		return ( nearest_code.equals(AFA_CAUSE_CODE) || nearest_code.equals(FIRE_CAUSE_CODE) 
-				|| nearest_code.equals(NUISANCE_FIRE_CAUSE_CODE) || nearest_code.equals(OTHERFIRE_CAUSE_CODE) 
-				|| nearest_code.equals(STRUCTUREFIRE_CAUSE_CODE) || nearest_code.equals(VEHICLE_FIRE_CAUSE_CODE) 
-				|| nearest_code.equals(WILDLAND_FIRE_CAUSE_CODE) );
-	}
+//	private static boolean isFire(String natureCode) {
+//		OBJECT_VAL nearest_code = getClosestParentCause(natureCode);
+//		return ( nearest_code.equals(AFA_CAUSE_CODE) || nearest_code.equals(FIRE_CAUSE_CODE) 
+//				|| nearest_code.equals(NUISANCE_FIRE_CAUSE_CODE) || nearest_code.equals(OTHERFIRE_CAUSE_CODE) 
+//				|| nearest_code.equals(STRUCTUREFIRE_CAUSE_CODE) || nearest_code.equals(VEHICLE_FIRE_CAUSE_CODE) 
+//				|| nearest_code.equals(WILDLAND_FIRE_CAUSE_CODE) );
+//	}
 
-	private static boolean isEMS(String natureCode) {
-		OBJECT_VAL nearest_code = getClosestParentCause(natureCode);
-//		cause : {AFA,All,Code1Medical,Code3Med,Code3Trauma,EMS,Fire,Hazmat,MassCasualty,
-//			 MVA,NuisanceFire,Other,OtherEMS,OtherFire,
-//			 Overpressure,Rescue,StructureFire,Transport,VehicleFire,WildlandFire};
-		return ( nearest_code.equals( CODE3MED_CAUSE_CODE ) || nearest_code.equals( CODE1MEDICAL_CAUSE_CODE ) 
-				|| nearest_code.equals( CODE3TRAUMA_CAUSE_CODE ) || nearest_code.equals( EMS_CAUSE_CODE )  
-				|| nearest_code.equals( MASSCASUALTY_CAUSE_CODE ) || nearest_code.equals( MVA_CAUSE_CODE )
-				|| nearest_code.equals( OTHEREMS_CAUSE_CODE ) || nearest_code.equals( RESCUE_CAUSE_CODE )
-				|| nearest_code.equals( TRANSPORT_CAUSE_CODE ) );
-	}
+//	private static boolean isEMS(String natureCode) {
+//		OBJECT_VAL nearest_code = getClosestParentCause(natureCode);
+////		cause : {AFA,All,Code1Medical,Code3Med,Code3Trauma,EMS,Fire,Hazmat,MassCasualty,
+////			 MVA,NuisanceFire,Other,OtherEMS,OtherFire,
+////			 Overpressure,Rescue,StructureFire,Transport,VehicleFire,WildlandFire};
+//		return ( nearest_code.equals( CODE3MED_CAUSE_CODE ) || nearest_code.equals( CODE1MEDICAL_CAUSE_CODE ) 
+//				|| nearest_code.equals( CODE3TRAUMA_CAUSE_CODE ) || nearest_code.equals( EMS_CAUSE_CODE )  
+//				|| nearest_code.equals( MASSCASUALTY_CAUSE_CODE ) || nearest_code.equals( MVA_CAUSE_CODE )
+//				|| nearest_code.equals( OTHEREMS_CAUSE_CODE ) || nearest_code.equals( RESCUE_CAUSE_CODE )
+//				|| nearest_code.equals( TRANSPORT_CAUSE_CODE ) );
+//	}
 
 	public static OBJECT_VAL getClosestParentCause(String natureCode) {
 		if( _natureCodeMap.containsKey(natureCode) ){
@@ -581,11 +697,6 @@ public class EmergencyDomainDataReelElement extends DataReelElement {
 		clearAssignments(s,currentCallCodePvarName);
 		s.setPVariableAssign(currentCallCodePvarName, new ArrayList<LCONST>( 
 				Collections.singletonList( getClosestParentCause(this.natureCode) ) ), true );
-		
-		clearAssignments(s,currentCallRegionPvarName);
-		s.setPVariableAssign( currentCallRegionPvarName, 
-				new ArrayList<LCONST>( Collections.singletonList( 
-						getRegion(this.callX, this.callY, this.natureCode) ) ), true );
 		
 //		s.setPVariableAssign( currentCallDayPvarName, emptySubstitution, this.callDate.getDayOfYear() );
 	}

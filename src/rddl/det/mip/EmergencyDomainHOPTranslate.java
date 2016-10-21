@@ -97,9 +97,9 @@ public class EmergencyDomainHOPTranslate extends HOPTranslate {
 							pvarName.equals(EmergencyDomainDataReelElement.tempUniformCausePvarName._sPVarName) ||
 							pvarName.equals(EmergencyDomainDataReelElement.currentCallCodePvarName._sPVarName) ||
 							pvarName.equals(EmergencyDomainDataReelElement.gapTimePvarName._sPVarName) ||
-							pvarName.equals(EmergencyDomainDataReelElement.currentCallTimePvarName._sPVarName) ||
-							pvarName.equals(EmergencyDomainDataReelElement.tempUniformRegionPvarName._sPVarName) ||  
-							pvarName.equals(EmergencyDomainDataReelElement.currentCallRegionPvarName._sPVarName) ){
+							pvarName.equals(EmergencyDomainDataReelElement.currentCallTimePvarName._sPVarName) ){
+//							pvarName.equals(EmergencyDomainDataReelElement.tempUniformRegionPvarName._sPVarName) ||  
+//							pvarName.equals(EmergencyDomainDataReelElement.currentCallRegionPvarName._sPVarName) ){
 							return;
 						}
 							

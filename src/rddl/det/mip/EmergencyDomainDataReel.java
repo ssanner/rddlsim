@@ -221,8 +221,11 @@ public class EmergencyDomainDataReel {
 	}
 	
 	public static void main(String[] args) throws FileNotFoundException, IOException {
-		EmergencyDomainDataReel reel = new EmergencyDomainDataReel("./files/emergency_domain/jan_2011_calls.csv", 
+//		EmergencyDomainDataReel reel = new EmergencyDomainDataReel("./files/emergency_domain/jan_2011_calls.csv", 
+//				",", true, false, 2, 0, 1);
+		EmergencyDomainDataReel reel = new EmergencyDomainDataReel("./files/emergency_domain/CFD_data_large_uniq.csv", 
 				",", true, false, 2, 0, 1);
+		
 		System.out.println(reel.getClosestParentCauses() );
 		
 		EmergencyDomainDataReelElement current = reel.all_frames.get(17);
@@ -261,7 +264,7 @@ public class EmergencyDomainDataReel {
 		StringBuilder sb = new StringBuilder();
 		for( final ArrayList<EmergencyDomainDataReelElement> f : frames ){
 			for( EmergencyDomainDataReelElement elem : f ){
-				sb.append(EmergencyDomainDataReelElement.getClosestParentCause(elem.natureCode).toString());
+				sb.append(EmergencyDomainDataReelElement.getClosestParentCause(elem.natureCode)._sConstValue);
 				sb.append("\n");
 			}
 		}

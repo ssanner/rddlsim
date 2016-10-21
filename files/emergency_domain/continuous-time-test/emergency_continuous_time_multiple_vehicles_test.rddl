@@ -5,14 +5,12 @@ domain emergency_continuous_time_multiple_units_test{
 		unit : object; 
 		cause : object;
 		role : object;
-		region : object;
 	};
 	
 	pvariables {
 		//state variables
 		currentCallCode(cause) : {state-fluent, bool, default=false};
 		currentCallTime : {state-fluent, real, default=0.0};
-		currentCallRegion(region) : {state-fluent, bool, default=false};
 		
 		currentCall(coordinate) : {state-fluent, real, default=0};
 		timeServiceDone(unit) : {state-fluent, real, default=0.0};
@@ -21,7 +19,6 @@ domain emergency_continuous_time_multiple_units_test{
 		lastUnitService(unit,coordinate) : {state-fluent, real, default=0.0};
 
 		tempUniformCause : {interm-fluent, real};
-		tempUniformRegion : {interm-fluent, real};
 		
 		callMiles(unit) : {interm-fluent, real};
 		callTravelTime(unit) : {interm-fluent, real};
@@ -52,7 +49,6 @@ domain emergency_continuous_time_multiple_units_test{
 		MapLowerBound(coordinate) : {non-fluent, real, default=0};
 		
 		BEFORE(cause,cause) : {non-fluent, bool, default=false};
-		BEFORE_REGION(region,region) : {non-fluent, bool, default=false};
 		
 		HospitalPosition(coordinate) : {non-fluent, real, default=0.0};
 		DestinationHospital(cause) : {non-fluent, bool, default=false};
@@ -66,7 +62,7 @@ domain emergency_continuous_time_multiple_units_test{
 		MAX_INTER_ARRIVAL : {non-fluent, real, default=2.0};
 		
 		HasCapability(unit,role) : {non-fluent, bool, default=false};
-		CauseRequirement(cause,region,role) : {non-fluent, int, default=0};
+		CauseRequirement(cause,role) : {non-fluent, int, default=0};
 		
 		//action
 		dispatch(unit,role) : {action-fluent, bool, default=false};
@@ -83,12 +79,6 @@ domain emergency_continuous_time_multiple_units_test{
 		tempUniformCause = Uniform(0,sum_{?c:cause}[1]);
 		
 		currentCallCode'(?c) = (tempUniformCause >= sum_{?d:cause}[BEFORE(?d,?c)]) ^ (tempUniformCause < 1+sum_{?d:cause}[BEFORE(?d,?c)]);
-		
-		//uniform distribution over region
-		tempUniformRegion = Uniform(0,sum_{?r:region}[1]);
-		
-		currentCallRegion'(?r) = (tempUniformRegion >= sum_{?s:region}[BEFORE_REGION(?s,?r)]) 
-									^ (tempUniformRegion < 1+sum_{?s:region}[BEFORE_REGION(?s,?r)]);
 			 
 		gapTime = Uniform(0, MAX_INTER_ARRIVAL );
 		currentCallTime' = currentCallTime + gapTime; 
@@ -225,12 +215,12 @@ domain emergency_continuous_time_multiple_units_test{
 		
 		fullResponse = if (overwhelm)
 					   then (sum_{?c:coordinate}[MapUpperBound(?c)-MapLowerBound(?c)])/38.0
-					   else abs[ max_{?u:unit}[ 
+					   else max_{?u:unit}[ 
 							if (exists_{?r:role}[dispatch(?u,?r)])
 							then callTravelTime(?u) 
-							else -(sum_{?c:coordinate}[MapUpperBound(?c)-MapLowerBound(?c)])/38.0 ] ];//instead of 25 mins
+							else 0.0 ];//instead of 25 mins
 							
-		overwhelm = exists_{?r:role,?c:cause,?re:region}[ currentCallCode(?c) ^ currentCallRegion(?re) ^ (CauseRequirement(?c,?re,?r) > (sum_{?u:unit}[dispatch(?u,?r)])) ];
+		overwhelm = exists_{?r:role,?c:cause}[ currentCallCode(?c) ^ (CauseRequirement(?c,?r) > (sum_{?u:unit}[dispatch(?u,?r)])) ];
 		
 		timeServiceDone'(?u) = if (exists_{?r:role}[dispatch(?u,?r)]) 
 						   then (currentCallTime + callTravelTime(?u) + (sum_{?r:role}[ if (dispatch(?u,?r)) then RoleServiceTime(?r) else 0.0])
@@ -298,10 +288,7 @@ domain emergency_continuous_time_multiple_units_test{
 		(sum_{?c:cause}[currentCallCode(?c)]) == 1;
 		tempUniformCause >= 0; tempUniformCause <= (sum_{?c:cause}[1]);
 		
-		forall_{?c:cause,?re:region,?r:role}[CauseRequirement(?c,?re,?r) >= 0];
-		
-		(sum_{?r:region}[currentCallRegion(?r)])==1;
-		tempUniformRegion >= 0; tempUniformRegion <= (sum_{?r:region}[1]);
+		forall_{?c:cause,?r:role}[CauseRequirement(?c,?r) >= 0];
 		
 		forall_{?r:role}[ RoleServiceTime(?r) >= 0 ];
 		forall_{?r:role}[ TarryTime(?r) >= 0 ];
@@ -319,9 +306,6 @@ domain emergency_continuous_time_multiple_units_test{
 		forall_{?u:unit}[(sum_{?r:role}[ dispatch(?u,?r) ]) <= 1];
 
 		forall_{?u:unit,?r:role}[ ~dispatch(?u,?r) | HasCapability(?u,?r) ];
-		forall_{?u:unit,?r:role}[ ~dispatch(?u,?r) | (exists_{?c:cause,?re:region}[ currentCallCode(?c) ^ currentCallRegion(?re) ^ (CauseRequirement(?c,?re,?r) > 0) ] ) ];
-	    forall_{?ca:cause,?re:region}[ (~(currentCallCode(?ca) ^ currentCallRegion(?re)))  
-			| (forall_{?ro:role}[ (sum_{?u:unit}[ dispatch(?u,?ro) ]) <= CauseRequirement(?ca,?re,?ro) ]) ];
 
 	};
 }

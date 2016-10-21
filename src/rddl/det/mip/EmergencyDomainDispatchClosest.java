@@ -26,7 +26,7 @@ public class EmergencyDomainDispatchClosest extends EmergencyDomainHOPTranslate 
 	private static final PVAR_NAME vehicleInServicePvar = new PVAR_NAME("unitInService");
 	private static final PVAR_NAME callMilesPvar = new PVAR_NAME("callMiles");
 	private static final ArrayList<ArrayList<LCONST>> vehicleSubs;
-	private static final int NUMVEHICLES=7;
+	private static final int NUMVEHICLES=4;
 	
 	static{
 		vehicleSubs = new ArrayList<ArrayList<LCONST>>();
@@ -53,14 +53,11 @@ public class EmergencyDomainDispatchClosest extends EmergencyDomainHOPTranslate 
 		ArrayList<PVAR_INST_DEF> ret = new ArrayList<PVAR_INST_DEF>();
 		Map<String, Boolean> added = new HashMap<>();
 		String this_code = EmergencyDomainDataReelElement.getCurrentCauseCode(s);
-		OBJECT_VAL this_region = EmergencyDomainDataReelElement.getRegion(
-				EmergencyDomainDataReelElement.getCurrentCallX(s), 
-				EmergencyDomainDataReelElement.getCurrentCallY(s), this_code);
 		
 		for( OBJECT_VAL this_ole : roles ){
 			
 			int role_required = (int)s.getPVariableAssign(causeRequirementPvar , new ArrayList<LCONST>( Arrays.<LCONST>asList(
-						new LCONST[]{ new OBJECT_VAL(this_code), this_region, this_ole } )));
+						new LCONST[]{ new OBJECT_VAL(this_code), this_ole } )));
 			System.out.println(this_ole + " " + role_required );
 			if( role_required == 0 ){
 				continue;
