@@ -2,12 +2,11 @@ non-fluents nf_emergency_continuous_time_multiple_units_test_7 {
 	domain = emergency_continuous_time_multiple_units_test;
 	objects {
 		coordinate : {xpos,ypos};
-		unit : {u1,u2,u3,u4,u5,u6,u7};
-		cause : {AFA,Code1Medical,Code3Med,Code3Trauma,EMS,Fire,Hazmat,MassCasualty,
-				 MVA,NuisanceFire,Other,OtherEMS,OtherFire,
+		unit : {u1,u2,u3,u4,u5};
+		cause : {Code1Medical,Code3Med,Code3Trauma,EMS,Fire,Hazmat,MassCasualty,
+				 MVA,Other,
 				 Overpressure,Rescue,StructureFire,Transport,VehicleFire,WildlandFire};
 		role : {Engine, Ambulance, Ladder, Command};
-		region : {Full,GoodSam-T,Stonybrook,Westhills,EMS-City,EMS-County,Fire-City,Fire-Rural};
 	};
 	
 	non-fluents {
@@ -16,25 +15,6 @@ non-fluents nf_emergency_continuous_time_multiple_units_test_7 {
 		MapLowerBound(xpos)=1300;
 		MapLowerBound(ypos)=30;
 		
-		BEFORE(AFA,Code1Medical)=true;
-		BEFORE(AFA,Code3Med)=true;
-		BEFORE(AFA,Code3Trauma)=true;
-		BEFORE(AFA,EMS)=true;
-		BEFORE(AFA,Fire)=true;
-		BEFORE(AFA,Hazmat)=true;
-		BEFORE(AFA,MassCasualty)=true;
-		BEFORE(AFA,MVA)=true;
-		BEFORE(AFA,NuisanceFire)=true;
-		BEFORE(AFA,Other)=true;
-		BEFORE(AFA,OtherEMS)=true;
-		BEFORE(AFA,OtherFire)=true;
-		BEFORE(AFA,Overpressure)=true;
-		BEFORE(AFA,Rescue)=true;
-		BEFORE(AFA,StructureFire)=true;
-		BEFORE(AFA,Transport)=true;
-		BEFORE(AFA,VehicleFire)=true;
-		BEFORE(AFA,WildlandFire)=true;
-		
 		BEFORE(Code1Medical,Code3Med)=true;
 		BEFORE(Code1Medical,Code3Trauma)=true;
 		BEFORE(Code1Medical,EMS)=true;
@@ -42,10 +22,7 @@ non-fluents nf_emergency_continuous_time_multiple_units_test_7 {
 		BEFORE(Code1Medical,Hazmat)=true;
 		BEFORE(Code1Medical,MassCasualty)=true;
 		BEFORE(Code1Medical,MVA)=true;
-		BEFORE(Code1Medical,NuisanceFire)=true;
 		BEFORE(Code1Medical,Other)=true;
-		BEFORE(Code1Medical,OtherEMS)=true;
-		BEFORE(Code1Medical,OtherFire)=true;
 		BEFORE(Code1Medical,Overpressure)=true;
 		BEFORE(Code1Medical,Rescue)=true;
 		BEFORE(Code1Medical,StructureFire)=true;
@@ -59,10 +36,7 @@ non-fluents nf_emergency_continuous_time_multiple_units_test_7 {
 		BEFORE(Code3Med,Hazmat)=true;
 		BEFORE(Code3Med,MassCasualty)=true;
 		BEFORE(Code3Med,MVA)=true;
-		BEFORE(Code3Med,NuisanceFire)=true;
 		BEFORE(Code3Med,Other)=true;
-		BEFORE(Code3Med,OtherEMS)=true;
-		BEFORE(Code3Med,OtherFire)=true;
 		BEFORE(Code3Med,Overpressure)=true;
 		BEFORE(Code3Med,Rescue)=true;
 		BEFORE(Code3Med,StructureFire)=true;
@@ -75,10 +49,7 @@ non-fluents nf_emergency_continuous_time_multiple_units_test_7 {
 		BEFORE(Code3Trauma,Hazmat)=true;
 		BEFORE(Code3Trauma,MassCasualty)=true;
 		BEFORE(Code3Trauma,MVA)=true;
-		BEFORE(Code3Trauma,NuisanceFire)=true;
 		BEFORE(Code3Trauma,Other)=true;
-		BEFORE(Code3Trauma,OtherEMS)=true;
-		BEFORE(Code3Trauma,OtherFire)=true;
 		BEFORE(Code3Trauma,Overpressure)=true;
 		BEFORE(Code3Trauma,Rescue)=true;
 		BEFORE(Code3Trauma,StructureFire)=true;
@@ -90,10 +61,7 @@ non-fluents nf_emergency_continuous_time_multiple_units_test_7 {
 		BEFORE(EMS,Hazmat)=true;
 		BEFORE(EMS,MassCasualty)=true;
 		BEFORE(EMS,MVA)=true;
-		BEFORE(EMS,NuisanceFire)=true;
 		BEFORE(EMS,Other)=true;
-		BEFORE(EMS,OtherEMS)=true;
-		BEFORE(EMS,OtherFire)=true;
 		BEFORE(EMS,Overpressure)=true;
 		BEFORE(EMS,Rescue)=true;
 		BEFORE(EMS,StructureFire)=true;
@@ -104,10 +72,7 @@ non-fluents nf_emergency_continuous_time_multiple_units_test_7 {
 		BEFORE(Fire,Hazmat)=true;
 		BEFORE(Fire,MassCasualty)=true;
 		BEFORE(Fire,MVA)=true;
-		BEFORE(Fire,NuisanceFire)=true;
 		BEFORE(Fire,Other)=true;
-		BEFORE(Fire,OtherEMS)=true;
-		BEFORE(Fire,OtherFire)=true;
 		BEFORE(Fire,Overpressure)=true;
 		BEFORE(Fire,Rescue)=true;
 		BEFORE(Fire,StructureFire)=true;
@@ -117,10 +82,7 @@ non-fluents nf_emergency_continuous_time_multiple_units_test_7 {
 		
 		BEFORE(Hazmat,MassCasualty)=true;
 		BEFORE(Hazmat,MVA)=true;
-		BEFORE(Hazmat,NuisanceFire)=true;
 		BEFORE(Hazmat,Other)=true;
-		BEFORE(Hazmat,OtherEMS)=true;
-		BEFORE(Hazmat,OtherFire)=true;
 		BEFORE(Hazmat,Overpressure)=true;
 		BEFORE(Hazmat,Rescue)=true;
 		BEFORE(Hazmat,StructureFire)=true;
@@ -129,10 +91,7 @@ non-fluents nf_emergency_continuous_time_multiple_units_test_7 {
 		BEFORE(Hazmat,WildlandFire)=true;
 		
 		BEFORE(MassCasualty,MVA)=true;
-		BEFORE(MassCasualty,NuisanceFire)=true;
 		BEFORE(MassCasualty,Other)=true;
-		BEFORE(MassCasualty,OtherEMS)=true;
-		BEFORE(MassCasualty,OtherFire)=true;
 		BEFORE(MassCasualty,Overpressure)=true;
 		BEFORE(MassCasualty,Rescue)=true;
 		BEFORE(MassCasualty,StructureFire)=true;
@@ -140,51 +99,21 @@ non-fluents nf_emergency_continuous_time_multiple_units_test_7 {
 		BEFORE(MassCasualty,VehicleFire)=true;
 		BEFORE(MassCasualty,WildlandFire)=true;
 		
-		BEFORE(MVA,NuisanceFire)=true;
 		BEFORE(MVA,Other)=true;
-		BEFORE(MVA,OtherEMS)=true;
-		BEFORE(MVA,OtherFire)=true;
 		BEFORE(MVA,Overpressure)=true;
 		BEFORE(MVA,Rescue)=true;
 		BEFORE(MVA,StructureFire)=true;
 		BEFORE(MVA,Transport)=true;
 		BEFORE(MVA,VehicleFire)=true;
 		BEFORE(MVA,WildlandFire)=true;
-		
-		BEFORE(NuisanceFire,Other)=true;
-		BEFORE(NuisanceFire,OtherEMS)=true;
-		BEFORE(NuisanceFire,OtherFire)=true;
-		BEFORE(NuisanceFire,Overpressure)=true;
-		BEFORE(NuisanceFire,Rescue)=true;
-		BEFORE(NuisanceFire,StructureFire)=true;
-		BEFORE(NuisanceFire,Transport)=true;
-		BEFORE(NuisanceFire,VehicleFire)=true;
-		BEFORE(NuisanceFire,WildlandFire)=true;
-		
-		BEFORE(Other,OtherEMS)=true;
-		BEFORE(Other,OtherFire)=true;
+				
 		BEFORE(Other,Overpressure)=true;
 		BEFORE(Other,Rescue)=true;
 		BEFORE(Other,StructureFire)=true;
 		BEFORE(Other,Transport)=true;
 		BEFORE(Other,VehicleFire)=true;
 		BEFORE(Other,WildlandFire)=true;
-		
-		BEFORE(OtherEMS,OtherFire)=true;
-		BEFORE(OtherEMS,Overpressure)=true;
-		BEFORE(OtherEMS,Rescue)=true;
-		BEFORE(OtherEMS,StructureFire)=true;
-		BEFORE(OtherEMS,Transport)=true;
-		BEFORE(OtherEMS,VehicleFire)=true;
-		BEFORE(OtherEMS,WildlandFire)=true;
-		
-		BEFORE(OtherFire,Overpressure)=true;
-		BEFORE(OtherFire,Rescue)=true;
-		BEFORE(OtherFire,StructureFire)=true;
-		BEFORE(OtherFire,Transport)=true;
-		BEFORE(OtherFire,VehicleFire)=true;
-		BEFORE(OtherFire,WildlandFire)=true;
-		
+						
 		BEFORE(Overpressure,Rescue)=true;
 		BEFORE(Overpressure,StructureFire)=true;
 		BEFORE(Overpressure,Transport)=true;
@@ -207,21 +136,16 @@ non-fluents nf_emergency_continuous_time_multiple_units_test_7 {
 		causeRequirement(EMS,Ambulance)=1;
 		causeRequirement(Fire,Engine)=1;
 		
-		causeRequirement(AFA,Ladder)=1;
-		causeRequirement(AFA,Engine)=2;
-		causeRequirement(AFA,Command)=1;
-		
 		causeRequirement(Code1Medical,Ambulance)=1;
 		causeRequirement(Code3Med,Ambulance)=1;
 		causeRequirement(Code3Trauma,Engine)=1;
 		causeRequirement(Hazmat,Engine)=1;
 		causeRequirement(MassCasualty,Ambulance)=2;
-		causeRequirement(OtherEMS,Ambulance)=1;
 		
 		causeRequirement(MVA,Ambulance)=1;
-		causeRequirement(NuisanceFire,Engine)=1;
+		causeRequirement(MVA,Engine)=1;
+		
 		causeRequirement(Transport,Ambulance)=1;
-		causeRequirement(OtherFire,Engine)=1;
 		
 		causeRequirement(Other,Engine)=1;
 		causeRequirement(Other,Ambulance)=1;
@@ -232,12 +156,14 @@ non-fluents nf_emergency_continuous_time_multiple_units_test_7 {
 		causeRequirement(Overpressure,Engine)=1;
 		
 		causeRequirement(Rescue,Ambulance)=1;	
+		causeRequirement(Rescue,Engine)=1;	
 		
 		causeRequirement(StructureFire,Ladder)=1;
 		causeRequirement(StructureFire,Command)=1;
 		causeRequirement(StructureFire,Engine)=2;
 		
 		causeRequirement(VehicleFire,Engine)=1;
+		causeRequirement(VehicleFire,Ambulance)=1;
 		
 		causeRequirement(WildlandFire,Full,Engine)=3;
 		causeRequirement(WildlandFire,Full,Command)=1;
@@ -254,7 +180,6 @@ non-fluents nf_emergency_continuous_time_multiple_units_test_7 {
 		DestinationHospital(Code3Trauma)=true;
 		DestinationHospital(EMS)=true;
 		DestinationHospital(MassCasualty)=true;
-		DestinationHospital(OtherEMS)=true;
 		DestinationHospital(Rescue)=true;		
 
 		TarryTime(Command)=0.25;
@@ -262,12 +187,12 @@ non-fluents nf_emergency_continuous_time_multiple_units_test_7 {
 		
 		TransferPosition(xpos)=1489.20; TransferPosition(ypos)=66.97;
 		DestinationTransfer(Transport)=true;
-	
+		
 		unitHome(u1,xpos)=1418.0; unitHome(u1,ypos)=65.0;	
 		unitHome(u2,xpos)=1415.0; unitHome(u2,ypos)=64.0;	
 		unitHome(u3,xpos)=1416.0; unitHome(u3,ypos)=66.0;	
 		unitHome(u4,xpos)=1417.0; unitHome(u4,ypos)=63.0;	
-		unitHome(u5,xpos)=1415.0; unitHome(u5,ypos)=66.0;	
+		unitHome(u5,xpos)=1415.0; unitHome(u5,ypos)=66.0;
 		unitHome(u6,xpos)=1418.0; unitHome(u6,ypos)=69.0;	
 		unitHome(u7,xpos)=1418.0; unitHome(u7,ypos)=65.0;	
 	
@@ -301,7 +226,7 @@ instance inst_emergency_continuous_time_multiple_units_test_7 {
 		lastUnitService(u6,xpos)=1418.0; lastUnitService(u6,ypos)=69.0;
 		lastUnitService(u7,xpos)=1418.0; lastUnitService(u7,ypos)=65.0;
 		
-		currentCallCode(AFA)=true;
+		currentCallCode(StructureFire)=true;
 		
 	};
 	
