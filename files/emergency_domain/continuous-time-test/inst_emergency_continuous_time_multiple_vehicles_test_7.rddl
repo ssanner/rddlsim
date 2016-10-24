@@ -2,7 +2,7 @@ non-fluents nf_emergency_continuous_time_multiple_units_test_7 {
 	domain = emergency_continuous_time_multiple_units_test;
 	objects {
 		coordinate : {xpos,ypos};
-		unit : {u1,u2,u3,u4,u5};
+		unit : {u1,u2,u3,u4,u5,u6,u7};
 		cause : {Code1Medical,Code3Med,Code3Trauma,EMS,Fire,Hazmat,MassCasualty,
 				 MVA,Other,
 				 Overpressure,Rescue,StructureFire,Transport,VehicleFire,WildlandFire};
