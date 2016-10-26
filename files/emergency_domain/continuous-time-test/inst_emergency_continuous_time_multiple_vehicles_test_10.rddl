@@ -3,8 +3,8 @@ non-fluents nf_emergency_continuous_time_multiple_units_test_10 {
 	objects {
 		coordinate : {xpos,ypos};
 		unit : {u1,u2,u3,u4,u5,u6,u7,u8,u9,u10};
-		cause : {AFA,Code1Medical,Code3Med,Code3Trauma,EMS,Fire,Hazmat,MassCasualty,
-				 MVA,NuisanceFire,Other,OtherEMS,OtherFire,
+		cause : {Code1Medical,Code3Med,Code3Trauma,EMS,Fire,Hazmat,MassCasualty,
+				 MVA,Other,
 				 Overpressure,Rescue,StructureFire,Transport,VehicleFire,WildlandFire};
 		role : {Engine, Ambulance, Ladder, Command};
 	};
@@ -310,7 +310,7 @@ instance inst_emergency_continuous_time_multiple_units_test_10 {
 		lastUnitService(u9,xpos)=1415.0; lastUnitService(u9,ypos)=64.0;
 		lastUnitService(u10,xpos)=1415.0; lastUnitService(u10,ypos)=64.0;
 		
-		currentCallCode(AFA)=true;
+		currentCallCode(StructureFire)=true;
 		
 	};
 	
