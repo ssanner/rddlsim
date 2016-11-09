@@ -1,0 +1,139 @@
+domain Inventory {
+	
+	types {
+		commodity : object;
+	};
+
+	pvariables {
+		///////////////////
+		// Non-fluents
+		///////////////////
+		// The numerical constant PI
+		PI : { non-fluent, real, default = 3.141592653 };
+		// The number of rounds before the demand distributions repeat
+		ROUNDS_PER_CYCLE : { non-fluent, int, default = 24 };
+		// The maximum inventory level of the warehouse
+		MAX_INVENTORY : { non-fluent, int, default = 500 };
+		// The base ordering cost (cost incurred for ordering nonzero number of commodities)
+		BASE_ORDER_COST : { non-fluent, real, default = 8 };
+		// The per unit storage cost
+		STORAGE_COST(commodity) : { non-fluent, real, default = 0 };
+		// The base unmet demand cost (cost of not meeting demands for at least one commodity)
+		BASE_UNMET_DEMAND_COST : { non-fluent, real, default = 2 };
+		// The unmet demand per unit cost (cost of not meeting demands per unit)
+		UNIT_UNMET_DEMAND_COST(commodity) : { non-fluent, real, default = 10 };
+		// Cost per unit of a commodity
+		UNIT_COST(commodity) : { non-fluent, real, default = 1 };
+		// The round at which the specified commodity has maximum expected demand
+		PEAK_DEMAND_ROUND(commodity) : { non-fluent, int, default = 0 };
+		// The minimum expected demand for a commodity.
+		MIN_EXPECTED_DEMAND(commodity) : { non-fluent, int, default = 0 };
+		// The maximum expected demand for a commodity.
+		MAX_EXPECTED_DEMAND(commodity) : { non-fluent, int, default = 30 };
+		// The standard deviation of the demand for a commodity.
+		DEMAND_STD(commodity) : { non-fluent, real, default = 5 };
+		
+		// A fluent that will have a recursive definition
+		PREV(commodity) : { non-fluent, int, default = c1 }; 
+		
+		///////////////////
+		// State Variables
+		///////////////////
+		// The current round in [0, ROUNDS_PER_CYCLE-1]
+		round : { state-fluent, int, default = 0 };
+		// The quantity of a commodity
+		quant(commodity) : { state-fluent, int, default = 0 };
+		// The demand for each commodity
+		demand(commodity) : { state-fluent, int, default = 0 };
+
+		///////////////////
+		// Derived and Intermediate
+		///////////////////
+		unmet(commodity)  : { interm-fluent, real };
+		cmean(commodity)  : { interm-fluent, real };
+		after_demand_quant(commodity) : { interm-fluent, int };
+		after_demand_sum : { interm-fluent, int };
+		rcum_prev(commodity) : { interm-fluent, int };
+		rcum(commodity)  : { interm-fluent, int };
+		
+		///////////////////
+		// Actions
+		///////////////////
+		resupply(commodity) : { action-fluent, int, default = 0 };
+	};
+
+	cpfs {
+		// Update the round
+		round' = if(round < ROUNDS_PER_CYCLE - 1) then round + 1 else 0;
+
+		// Sample the demand for each commodity
+		cmean(?c) = (MAX_EXPECTED_DEMAND(?c) - MIN_EXPECTED_DEMAND(?c)) * ((cos[ 2 * PI * (round + PEAK_DEMAND_ROUND(?c)) / ROUNDS_PER_CYCLE ] + 1) / 2) + MIN_EXPECTED_DEMAND(?c);
+		demand'(?c) = max[ 0, round[Normal( cmean(?c), DEMAND_STD(?c) )]];
+		
+		// Calculate the quantities after subtracting demands
+		after_demand_quant(?c) = max[ 0, ceil[ quant(?c) - demand(?c) ]];
+		after_demand_sum = (sum_{ ?c : commodity } after_demand_quant(?c));
+		// Calculate the unmet demands
+		unmet(?c) = max[ 0, ceil[demand(?c) - quant(?c)]];
+		
+		// Calculate the cumulative resupply amounts corrected so that when they are added to
+		// the after_demand_quant's the sum of the next state quant's is less than MAX_INVENTORY.
+		rcum_prev(?c) = (if(?c == $c1) then 0 else rcum(PREV(?c)));
+		rcum(?c) = if((after_demand_sum + resupply(?c) + rcum_prev(?c)) < MAX_INVENTORY) then (resupply(?c) + rcum_prev(?c)) else (max[ 0, (MAX_INVENTORY - (rcum_prev(?c) + after_demand_sum)) ] + rcum_prev(?c));
+		
+		// Calculate the quantity of each commodity for the new state
+		quant'(?c) = after_demand_quant(?c) + (rcum(?c) - rcum_prev(?c));
+	};
+
+	// Defines the reward function (negative cost)
+	reward = -(if((sum_{?c : commodity} resupply(?c)) > 0) then (BASE_ORDER_COST + (sum_{?c : commodity} resupply(?c) * UNIT_COST(?c))) else 0) // Order costs
+			-(if((sum_{?c : commodity} unmet(?c)) > 0) then (BASE_UNMET_DEMAND_COST + (sum_{?c : commodity} unmet(?c) * UNIT_UNMET_DEMAND_COST(?c))) else 0) // Unmet demand costs
+			-(sum_{?c : commodity} STORAGE_COST(?c) * quant(?c)); // Storage costs
+
+	action-preconditions {
+		// Make sure that the orders don't overfill the warehouse
+		(sum_{?c : commodity} resupply(?c)) <= MAX_INVENTORY;
+		// Cannot order negative quantities
+		forall_{?c : commodity} [ resupply(?c) >= 0 ];
+	};
+}
+
+non-fluents inventory_item2{
+	domain = Inventory;
+	
+	objects {
+		commodity : { c1, c2};
+	};
+
+	non-fluents {
+		// Set the per unit cost for each commodity
+		UNIT_COST(c1) = 1;
+		UNIT_COST(c2) = 3;
+		
+		// Set the demand peak round for each commodity
+		PEAK_DEMAND_ROUND(c1) = 7;
+		PEAK_DEMAND_ROUND(c2) = 9;
+		
+		// Set the demand standard deviation for each commodity
+		DEMAND_STD(c1) = 2;
+		DEMAND_STD(c2) = 1;
+		
+		// Set the maximum expected demand
+		MAX_EXPECTED_DEMAND(c1) = 16;
+		MAX_EXPECTED_DEMAND(c2) = 19;
+		
+		// Define the PREV values needed for recursion
+		PREV(c1) = $c1;
+		PREV(c2) = $c1;
+	};
+}
+
+instance inst_inventory_item2 {
+	domain = Inventory;
+	
+	non-fluents = inventory_item2;
+	
+	max-nondef-actions = pos-inf;
+	horizon = 100;
+	discount = 0.95;
+}

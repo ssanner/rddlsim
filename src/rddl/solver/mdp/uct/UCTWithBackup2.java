@@ -10,8 +10,6 @@ import java.util.Set;
 
 import org.omg.CORBA.portable.RemarshalException;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
-
 import dd.discrete.ADD;
 import dd.discrete.DD;
 

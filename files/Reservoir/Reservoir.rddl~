@@ -1,0 +1,86 @@
+//////////////////////////////////////
+//Reservior.rddl
+//
+//Auther:GA WU
+//////////////////////////////////////
+
+domain Reservoir_Problem{
+
+	requirements = { 
+		reward-deterministic 
+	};
+
+	types {
+		id: object;
+	};
+	
+	pvariables {
+	
+		// Constant
+		MINCAP(id): { non-fluent, real, default = 20 };
+		MAXCAP(id): { non-fluent, real, default = 100 };
+		RAINSTD(id): { non-fluent ,real, default=1 };
+		DOWNSTREAM(id,id): {non-fluent ,bool, default=false };
+		
+		//State
+		rlevel(id): {state-fluent, real, default = 50 };
+		rain(id) : {state-fluent, real, default = 0 };
+		
+		//Interm
+		sample(id) : { interm-fluent, real, level = 1 };
+		lowr(id) : { interm-fluent, real, level = 1 };
+		rhigh(id): { interm-fluent, real, level = 1 };
+		
+		//Action
+		flow(id): { action-fluent, real, default = 0 };
+	};
+	
+	cpfs {
+	
+		rain'(?r) = if (sample(?r) > 0) 
+						then sample(?r)
+						else 0;
+		rlevel'(?r) = rlevel(?r) + rain(?r) - flow(?r) + sum_{?r2: id}[DOWNSTREAM(?r2,?r)*flow(?r2)];
+		sample(?r) = Normal(rain(?r),RAINSTD(?r));
+		lowr(?r) = MINCAP(?r)-rlevel(?r);
+		rhigh(?r) = rlevel(?r)-MAXCAP(?r);
+
+	};
+	
+	reward = sum_{?r: id} [if ((0 >= lowr(?r)) ^ (0 <= rhigh(?r)))
+									then 0
+									else if (0 < lowr(?r))
+										then (-5)*lowr(?r)
+										else (-100)*rhigh(?r)								
+								];
+								
+	state-action-constraints {
+	
+		forall_{?r:id} flow(?r)<=rlevel(?r);
+		forall_{?r:id} flow(?r)>=0;
+	};
+
+}
+
+non-fluents Reservoir_non {
+	domain = Reservoir_Problem;
+	objects{
+		id: {t1,t2,t3,t4,sea};
+	};
+	non-fluents {
+		MAXCAP(sea) = 10000;
+		MINCAP(sea) = 0;
+		DOWNSTREAM(t1,t2);DOWNSTREAM(t2,t3);DOWNSTREAM(t3,t4);DOWNSTREAM(t4,sea);
+	};
+}
+
+instance is1{
+	domain = Reservoir_Problem;
+	non-fluents = Reservoir_non;
+	init-state{
+		rlevel(t1) = 100;
+	};
+	max-nondef-actions = 4;
+	horizon = 20;
+	discount = 1.0;
+}

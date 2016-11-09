@@ -730,7 +730,54 @@ public class State {
 		if (ret == null)
 			ret = def_value;
 		return ret;
-	}	
+	}
+	
+	public ArrayList<ArrayList<LCONST>> getPossibleTerms(PVAR_NAME p, HashMap<Integer, LCONST> knownterms,
+			Object value) throws EvalException{
+		
+		ArrayList<ArrayList<LCONST>> pob_assign=new ArrayList<ArrayList<LCONST>>();
+		// Get correct variable assignments
+		PVARIABLE_DEF pvar_def = _hmPVariables.get(p);
+		HashMap<ArrayList<LCONST>,Object> var_src = null;
+		if (pvar_def instanceof PVARIABLE_STATE_DEF && ((PVARIABLE_STATE_DEF)pvar_def)._bNonFluent)
+			var_src = _nonfluents.get(p);
+		else if (pvar_def instanceof PVARIABLE_STATE_DEF && !((PVARIABLE_STATE_DEF)pvar_def)._bNonFluent)
+			var_src = _state.get(p); 
+		else if (pvar_def instanceof PVARIABLE_ACTION_DEF)
+			var_src = _actions.get(p);
+		else if (pvar_def instanceof PVARIABLE_INTERM_DEF)
+			var_src = _interm.get(p);
+		else if (pvar_def instanceof PVARIABLE_OBS_DEF)
+			var_src = _observ.get(p);
+			
+		if (var_src == null)
+			throw new EvalException("ERROR: no variable source for " + p);
+		
+		for(ArrayList<LCONST> key:var_src.keySet()){
+			boolean giveup=false;
+			for(int index: knownterms.keySet()){
+				if(!key.get(index).equals(knownterms.get(index))){
+					giveup=true;
+					break;
+				}
+			}
+			if(giveup==true){
+				continue;
+			}else if(value!=null){
+				if(value.toString().equals(var_src.get(key).toString())){
+					pob_assign.add(key);
+				}
+				else{
+					giveup=true;
+					continue;
+				}
+			}else{
+				pob_assign.add(key);
+			}
+		}
+		
+		return pob_assign;
+	}
 		
 	public boolean setPVariableAssign(PVAR_NAME p, ArrayList<LCONST> terms, 
 			Object value) {

@@ -13,7 +13,9 @@ import java.util.*;
 
 import rddl.*;
 import rddl.viz.*;
+import util.ArgsParser;
 import rddl.policy.*;
+import rddl.policy.domain.reservoir.*;
 import rddl.RDDL.*;
 import rddl.parser.parser;
 import org.apache.commons.math3.*;
@@ -127,22 +129,29 @@ public class Simulator {
 	public static void main(String[] args) throws Exception {
 			
 		// Argument handling
-		if (args.length < 3 || args.length > 6) {
-			System.out.println("usage: RDDL-file policy-class-name instance-name [state-viz-class-name] [rand seed simulator] [rand seed policy]");
+		if (ArgsParser.getOptionPos("R",args)==-1 ||ArgsParser.getOptionPos("P",args)==-1 || ArgsParser.getOptionPos("I",args)==-1 ) {
+			System.out.println(Help.getSimulatorParaDescription());
 			System.exit(1);
 		}
-		String rddl_file = args[0];
-		String policy_class_name = args[1];
-		String instance_name = args[2];
-		String state_viz_class_name = "rddl.viz.GenericScreenDisplay";
-		if (args.length >= 4)
-			state_viz_class_name = args[3];
+		String rddl_file = ArgsParser.getOption("R", args);
+		String policy_class_name = ArgsParser.getOption("P", args);
+		String instance_name = ArgsParser.getOption("I", args);
+		
+		String state_viz_class_name = "rddl.viz.ValueVectorDisplay";
+		String data_path="";
+		String label_path="";
 		int rand_seed_sim = (int)System.currentTimeMillis(); // 123456
-		if (args.length >= 5)
-			rand_seed_sim = new Integer(args[4]);
 		int rand_seed_policy = (int)System.currentTimeMillis(); // 123456
-		if (args.length >= 6)
-			rand_seed_policy = new Integer(args[5]);
+		int rounds = 1;
+		
+		if (ArgsParser.getOptionPos("V",args)!=-1)
+			state_viz_class_name = ArgsParser.getOption("V", args);
+		if (ArgsParser.getOptionPos("S",args)!=-1)
+			rand_seed_sim = new Integer(ArgsParser.getOption("S", args));
+		if (ArgsParser.getOptionPos("X",args)!=-1)
+			rand_seed_policy = new Integer(ArgsParser.getOption("X", args));
+		if (ArgsParser.getOptionPos("K",args)!=-1)
+			rounds = new Integer(ArgsParser.getOption("K", args));
 		//System.out.println("Using seeds " + rand_seed_sim + ", " + rand_seed_policy);
 		
 		// Load RDDL files

@@ -39,3 +39,32 @@ LICENSE.txt:  GPLv3 license information for RDDLSim source and alternate
 INSTALL.txt:  RDDLSim installation and execution instructions
 
 PROTOCOL.txt: RDDLSim client/server protocol
+
+RDDL Interface Improvement
+===============================================
+
+Updated parameter handling
+
+```
+*********************************************************
+>>> Parameter Description
+*********************************************************
+[1]: -R: RDDL file or directory that contains RDDL file
+[2]: -P: Policy name e.g. rddl.policy.RandomBoolPolicy
+[3]: -I: Instance name e.g. elevators_inst_mdp__9
+[4]: -V: Visualization Method e.g. rddl.viz.GenericScreenDisplay
+[5]: -S: Random seed for simulator to sample output.
+[6]: -X: Random seed for policy to take random actions.
+[7]: -K: Number of rounds. Default:1
+[8]: -D: Output file address for state-action pair
+[9]: -L: Output file address for state label
+*********************************************************
+```
+
+Examples:
+
+1. ./run rddl.sim.Simulator -R files/Reservoir/Reservoir_det.rddl -P rddl.policy.domain.reservoir.StochasticReservoirPolicy -I is1 -V rddl.viz.GenericScreenDisplay
+
+2. ./run rddl.sim.DomainExplorer -R files/Reservoir/Reservoir_det.rddl -P rddl.policy.domain.reservoir.StochasticReservoirPolicy -I is1 -V rddl.viz.ValueVectorDisplay
+
+

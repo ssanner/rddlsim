@@ -11,9 +11,6 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.*;
 
-import com.sun.org.apache.bcel.internal.generic.INSTANCEOF;
-
-
 import dd.discrete.ADD;
 import dd.discrete.ADDBNode;
 import dd.discrete.ADDDNode;

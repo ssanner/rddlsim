@@ -16,4 +16,4 @@ for i in ${libDir}/*.jar ; do
 done
 
 mkdir $BINDIR
-javac -classpath $CP -d $BINDIR src/*/*.java src/*/*/*.java
+javac -classpath $CP -d $BINDIR src/*/*.java src/*/*/*.java src/*/*/*/*/*.java

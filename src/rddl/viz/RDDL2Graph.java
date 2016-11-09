@@ -406,6 +406,7 @@ public class RDDL2Graph {
 	public void launchViewer(int w, int h) throws Exception {
 		//_graph.genDotFile(System.out);
 		_graph.genFormatDotFile(VIEWER_FILE);
+		DotFileFixer.fixFile();
 		DotViewer dv = new DotViewer() {
 			public void nodeClicked(String name) {
 				System.out.println("Lookup: '" + name + "'");
@@ -429,20 +430,21 @@ public class RDDL2Graph {
 	public static void main(String[] args) throws Exception {
 		
 		// Parse arguments
-		if (args.length != 2 && args.length != 5) {
-			System.out.println("usage: RDDL-file instance-name [directed={true,false}] [strict-levels={true,false}] [strict-grouping={true,false}]");
+		if (ArgsParser.getOptionPos("R",args)==-1 || ArgsParser.getOptionPos("I",args)==-1 )  {
+			System.out.println(Help.getGraphParaDescription());
 			System.exit(1);
 		}
-		String rddl_file = args[0];
-		String instance_name = args[1];
+		String rddl_file = ArgsParser.getOption("R", args);
+		String instance_name = ArgsParser.getOption("I", args);
 		boolean strict_grouping = false;
 		boolean strict_levels   = false;
 		boolean directed        = true;
-		if (args.length == 5) {
-			directed        = new Boolean(args[2]);
-			strict_levels   = new Boolean(args[3]);
-			strict_grouping = new Boolean(args[4]);
-		}
+		if (ArgsParser.getOptionPos("D",args)!=-1)
+			directed        = new Boolean(ArgsParser.getOption("D", args));
+		if (ArgsParser.getOptionPos("L",args)!=-1)
+			strict_levels   = new Boolean(ArgsParser.getOption("L", args));
+		if (ArgsParser.getOptionPos("G",args)!=-1)
+			strict_grouping = new Boolean(ArgsParser.getOption("G", args));
 		
 		// If RDDL file is a directory, add all files
 		ArrayList<File> rddl_files = new ArrayList<File>();

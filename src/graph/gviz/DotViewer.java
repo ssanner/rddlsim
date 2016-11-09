@@ -60,7 +60,7 @@ public abstract class DotViewer
 	    System.out.println(fnf.toString());
 	    System.exit(1);
 	}
-	//System.out.println("Displaying: '" + filename + "'");
+	System.out.println("Displaying: '" + filename + "'");
 	showWindow(input);
     }
 
