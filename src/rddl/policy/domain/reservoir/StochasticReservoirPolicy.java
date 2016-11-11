@@ -111,21 +111,11 @@ public class StochasticReservoirPolicy extends Policy {
 		knownterms.put(0, terms.get(0));
 		PVAR_NAME p = new PVAR_NAME("DOWNSTREAM");
 		ArrayList<ArrayList<LCONST>> possible_terms=null;
-		try {
-			possible_terms = s.getPossibleTerms(p, knownterms, true);
-		} catch (EvalException e) {
-			e.printStackTrace();
-		}
-		
-		if(possible_terms.isEmpty()){
-			throw new EvalException("No compariable terms for Pvaraible " + p+" and "+ terms.get(0).toString() +"");
-		}
 
 		double current_rlevel = (Double) s.getPVariableAssign(new PVAR_NAME("rlevel"), terms);
 		double current_high = (Double) s.getPVariableAssign(new PVAR_NAME("HIGH_BOUND"), terms);
 		double current_low = (Double) s.getPVariableAssign(new PVAR_NAME("LOW_BOUND"), terms);
 		double upper_bound = Math.max(0, current_rlevel-current_low);
-//		System.out.println(terms.get(0).toString()+" "+current_rlevel+" "+current_high+" "+current_low+" "+upper_bound);
 		Random random = new Random();
 		if(current_rlevel<=current_high){
 			return random.nextDouble()*upper_bound;
