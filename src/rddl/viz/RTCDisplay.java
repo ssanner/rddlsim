@@ -221,13 +221,13 @@ public class RTCDisplay extends StateViz {
 
 				try{
 					int round = (Integer) _state.getPVariableAssign(ROUND, params0);	//Get the Round Number, used for changing the x-position of the bar
-					double maxTemp = (Double) _state.getPVariableAssign(TEMP_UP, params0);	//Upper Bound of the desired temperature
-					double minTemp = (Double) _state.getPVariableAssign(TEMP_LOW, params0);////Lower bound of the desired temperature
 					 //We will use two constant number for the temperature ceiling and ground; later we will use variables based on the domain specification
 					for (int s = 0; s < list_space.size(); s++){
 						LCONST space = list_space.get(s);
 						params1.set(0, space);
-						Double t = (Double) _state.getPVariableAssign(TEMP, params1);	//Get the temperature of the space
+						double t = (Double) _state.getPVariableAssign(TEMP, params1);	//Get the temperature of the space
+						double maxTemp = (Double) _state.getPVariableAssign(TEMP_UP, params1);	//Upper Bound of the desired temperature
+						double minTemp = (Double) _state.getPVariableAssign(TEMP_LOW, params1);////Lower bound of the desired temperatur
 						Boolean a_on = (Boolean) _state.getPVariableAssign(AIR_ON, params1);	//Get the Action Fluent Air
 
 						Temperature.add(t);
@@ -245,7 +245,6 @@ public class RTCDisplay extends StateViz {
 						for (int r = 0; r < round; r++){
 
 							t = Temperature.get(r*numSpace+s);	//Space Temperature
-
 							a_on = Heat_on.get(r*numSpace+s);	//If the air is on
 							if (t > maxTemp)
 								tempColor = HOT_COLOR;	//Temperature is beyond the comfortable range

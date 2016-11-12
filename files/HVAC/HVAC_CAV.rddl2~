@@ -23,8 +23,8 @@ domain rtc_cav{
   		M_AIR 					: { non-fluent, real, default = 2.7 }; //Mass of HVAC Air Entered the building per second; Unit of kg／
   		TIME_DELTA 				: { non-fluent, real, default = 1 }; //Delta time used to find change in temperature；unit of min
   		TEMP_AIR 				: { non-fluent, real, default = 40 }; //Set a fixed temperature for HVAC air
-  		TEMP_UP 				: { non-fluent, real, default = 23.5 }; //Set an upper bound for the desired temperature range
-  		TEMP_LOW 				: { non-fluent, real, default = 20.0 }; //Set a lower bound for the desired temperature range
+  		TEMP_UP(space)			: { non-fluent, real, default = 23.5 }; //Set an upper bound for the desired temperature range
+  		TEMP_LOW(space)			: { non-fluent, real, default = 20.0 }; //Set a lower bound for the desired temperature range
   		PENALTY 				: { non-fluent, real, default = 20000 }; //A penalty applied when the room temperature goes beyond the desired range
 		//TEMP_VAR				: { non-fluent, real, default = 7 };	//Variance of outside temperature
 
@@ -44,7 +44,7 @@ domain rtc_cav{
 		};
 
   	reward = - (sum_{?s : space} IS_ROOM(?s)*((AIR(?s) * M_AIR) * COST_AIR
-  			    + ((TEMP(?s) < TEMP_LOW) | (TEMP(?s) > TEMP_UP)) * PENALTY));
+  			    + ((TEMP(?s) < TEMP_LOW(?s)) | (TEMP(?s) > TEMP_UP(?s))) * PENALTY));
 
 }
 
@@ -53,7 +53,7 @@ non-fluents nf_rtc_cav{
 	domain = rtc_cav;
 
 	objects{
-		space : { r1, r2, r3, h1, o1 }; //Three rooms, one hallway, and the outside world
+		space : { r1, r2, r3, h, o }; //Three rooms, one hallway, and the outside world
 	};
 
 	non-fluents {
@@ -77,6 +77,6 @@ instance inst_rtc_cav{
 	domain = rtc_cav;
 	non-fluents = nf_rtc_cav;
 
-	horizon = 100;
+	horizon = 40;
 	discount = 0.9;
 }
