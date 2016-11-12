@@ -1,0 +1,285 @@
+> source('C:/Users/ashwi/workspace/RDDLv2/files/emergency_domain/PWGap.R', echo=TRUE)
+
+> jan_calls <- 'C:/Users/ashwi/workspace/RDDLv2/files/emergency_domain/XYT.csv'
+
+> big_calls <- 'C:/Users/ashwi/workspace/RDDLv2/files/emergency_domain/XYT_Big.csv'
+
+> callFile <- big_calls
+
+> calls <- read.csv( callFile )
+
+> attach(calls)
+The following objects are masked from calls (pos = 11):
+
+    Code, Gap, Time, X, Y
+
+The following objects are masked from calls (pos = 12):
+
+    Code, Gap, Time, X, Y
+
+The following objects are masked from calls (pos = 13):
+
+    Code, Gap, Time, X, Y
+
+The following objects are masked from calls (pos = 18):
+
+    Code, Gap, Time, X, Y
+
+
+> X.nz <- X[X!=0]
+
+> Y.nz <- Y[X!=0]
+
+> Time.nz <- Time[X!=0]
+
+> Code.nz <- relevel(Code[X!=0],ref="Code3Med")
+
+> gap <- Time.nz[2:length(Time.nz)]-Time.nz[1:length(Time.nz)-1]
+
+> gap[gap<0] <- 24+gap[gap<0]
+
+> gap <- pmax(0.001,gap)
+
+> stopifnot((length(X.nz)==length(Y.nz))&(length(X.nz)==length(Time.nz))&
++             (length(X.nz)==length(Code.nz)))
+
+> all.data <- data.frame(r=Code.nz,x=X.nz,y=Y.nz,t=Time.nz,g=c(gap,NA))
+
+> print( tail(all.data) )
+                 r        x        y        t         g
+35117        Other 1414.224 63.31441 18.40000 0.1333333
+35118     Code3Med 1414.716 63.50381 18.53333 1.4166667
+35119          MVA 1416.364 65.11366 19.95000 1.3833333
+35120 Code1Medical 1416.004 64.07199 21.33333 1.2500000
+35121     Code3Med 1410.739 62.72729 22.58333 1.2166667
+35122 Code1Medical 1416.970 64.69699 23.80000        NA
+
+> split.index <- floor(length(X.nz)/2)
+
+> train.data <- all.data[1:split.index,]
+
+> print( table(train.data[,'r'] ) )
+
+     Code3Med  Code1Medical   Code3Trauma           EMS          Fire        Hazmat 
+         7943          1760          2014           199           957            72 
+ MassCasualty           MVA         Other        Rescue StructureFire     Transport 
+            1          1227           553             6          1607           931 
+  VehicleFire  WildlandFire 
+           91           200 
+
+> print( tail(train.data) )
+                  r        x        y        t         g
+17556      Code3Med 1415.038 62.99244 10.46667 0.2666667
+17557      Code3Med 1416.894 62.99244 10.73333 0.8000000
+17558     Transport 1417.614 66.96972 11.53333 0.5333333
+17559      Code3Med 1416.857 62.80305 12.06667 0.4333333
+17560      Code3Med 1414.982 62.99244 12.50000 1.3833333
+17561 StructureFire 1417.500 65.92805 13.88333 1.2500000
+
+> test.data <- all.data[1+split.index:dim(all.data)[1]-1,]
+
+> print( table(test.data[,'r'] ) )
+
+     Code3Med  Code1Medical   Code3Trauma           EMS          Fire        Hazmat 
+         8709          1660          2156           198           826            72 
+ MassCasualty           MVA         Other        Rescue StructureFire     Transport 
+            2          1069           431             8          1466           735 
+  VehicleFire  WildlandFire 
+           80           150 
+
+> print( tail(test.data) )
+                 r        x        y        t         g
+35117        Other 1414.224 63.31441 18.40000 0.1333333
+35118     Code3Med 1414.716 63.50381 18.53333 1.4166667
+35119          MVA 1416.364 65.11366 19.95000 1.3833333
+35120 Code1Medical 1416.004 64.07199 21.33333 1.2500000
+35121     Code3Med 1410.739 62.72729 22.58333 1.2166667
+35122 Code1Medical 1416.970 64.69699 23.80000        NA
+
+> require(earth)
+
+> mg <- earth(g~x+y+t,degree=3,nk=30, pmethod="backward",
++             data=train.data,trace=3,thresh=0,glm=list(family=Gamma(link="inverse")))
+x[17561,3] with colnames x y t
+y[17561,1] with colname g
+
+Forward pass: minspan 7 endspan 8    x[17561,3] 412 kB    bx[17561,30] 4.02 MB
+
+         GRSq    RSq     DeltaRSq Pred     PredName         Cut  Terms   Par Deg
+1      0.0000 0.0000                    (Intercept)
+2      0.0640 0.0645       0.0645    3            t      14.117  2   3         1 
+4      0.0661 0.0669     0.002435    3            t      9.0167  4             1 
+6      0.0681 0.0692      0.00225    3            t      16.783  5             1 
+8      0.0679 0.0695    0.0003135    2            y      64.394  6   7     2   2 
+10     0.0686 0.0704    0.0009173    2            y      65.985  8         2   2 
+12     0.0689 0.0711    0.0006362    2            y       63.75  9         2   2 
+14     0.0687 0.0713    0.0002811    1            x      1420.8  10  11    9   3 
+16     0.0712 0.0741     0.002807    3            t      2.7667  12            1 
+18     0.0713 0.0745    0.0003168    3            t      3.1667  13            1 
+20     0.0712 0.0747    0.0002171    3            t      9.1167  14            1 
+22     0.0712 0.0749    0.0002111    2            y      62.349  15        2   2 
+24     0.0711 0.0751    0.0001731    2            y      66.515  16        2   2 
+26     0.0708 0.0753    0.0002077    2            y      72.746  17  18   16   2 
+28     0.0704 0.0754    0.0001428    1            x      1404.9  19  20    2   2 final (reached nk 30)
+
+Reached nk 30
+After forward pass GRSq 0.070 RSq 0.075
+Forward pass complete: 29 terms, 20 terms used
+
+Subset size        GRSq     RSq  DeltaGRSq nPreds
+          1      0.0000  0.0000     0.0000      0  
+          2      0.0205  0.0208     0.0205      1  
+          3      0.0662  0.0668     0.0457      1  
+          4      0.0711  0.0719     0.0049      1  
+          5      0.0711  0.0721    -0.0000      2  
+          6      0.0716  0.0729     0.0005      2  
+          7      0.0722  0.0738     0.0006      2  
+          8      0.0723  0.0742     0.0001      2  
+chosen    9      0.0723  0.0744     0.0000      3  
+         10      0.0723  0.0746    -0.0000      3  
+         11      0.0722  0.0748    -0.0001      3  
+         12      0.0721  0.0750    -0.0001      3  
+         13      0.0720  0.0751    -0.0001      3  
+         14      0.0718  0.0752    -0.0002      3  
+         15      0.0717  0.0754    -0.0001      3  
+         16      0.0714  0.0754    -0.0002      3  
+         17      0.0712  0.0754    -0.0002      3  
+         18      0.0709  0.0754    -0.0003      3  
+         19      0.0707  0.0754    -0.0003      3  
+         20      0.0704  0.0754    -0.0003      3  
+
+Prune method "backward" penalty 3 nprune null: selected 9 of 20 terms, and 3 of 3 preds
+After pruning pass GRSq 0.0723 RSq 0.0744
+
+GLM g: null.deviance 23362.88 (17560 dof)   deviance 21874.69 (17552 dof)   iters 7
+
+> summary(mg)
+Call: earth(formula=g~x+y+t, data=train.data, pmethod="backward", trace=3,
+            glm=list(family=Gamma(link="inverse")), degree=3, nk=30, thresh=0)
+
+GLM coefficients
+                                                   g
+(Intercept)                               0.35583529
+h(t-2.76667)                             -0.19513720
+h(t-3.16667)                              0.27081911
+h(t-9.01667)                             -0.07636198
+h(t-16.7833)                             -0.05753948
+h(y-63.75) * h(t-14.1167)                 0.01447932
+h(y-64.394) * h(t-14.1167)               -0.02442052
+h(y-65.9849) * h(t-14.1167)               0.01220773
+h(x-1420.8) * h(64.394-y) * h(t-14.1167) -0.00253884
+
+Earth selected 9 of 20 terms, and 3 of 3 predictors
+Termination condition: Reached nk 30
+Importance: t, y, x
+Number of terms at each degree of interaction: 1 4 3 1
+Earth GCV 3.954166    RSS 69273.14    GRSq 0.07231898    RSq 0.07443095
+
+GLM null.deviance 23362.88 (17560 dof)   deviance 21874.69 (17552 dof)   iters 7
+
+> require(MASS)
+Loading required package: MASS
+
+> myshape <- gamma.shape( mg$glm.list[[1]] )
+
+> summary(mg$glm.list[[1]],dispersion = 1/myshape$alpha)
+
+Call:
+glm(formula = yarg ~ ., family = family, data = bx.data.frame, 
+    weights = weights, na.action = na.action, control = control, 
+    model = TRUE, method = "glm.fit", x = TRUE, y = TRUE, contrasts = NULL, 
+    trace = (trace >= 2))
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-3.7778  -1.0985  -0.3846   0.3274   4.9378  
+
+Coefficients:
+                                        Estimate Std. Error z value Pr(>|z|)    
+(Intercept)                             0.355835   0.009820  36.235  < 2e-16 ***
+`h(t-9.01667)`                         -0.076362   0.005582 -13.681  < 2e-16 ***
+`h(t-16.7833)`                         -0.057539   0.004646 -12.386  < 2e-16 ***
+`h(y-64.394)*h(t-14.1167)`             -0.024421   0.006193  -3.943 8.05e-05 ***
+`h(y-65.9849)*h(t-14.1167)`             0.012208   0.002810   4.344 1.40e-05 ***
+`h(y-63.75)*h(t-14.1167)`               0.014479   0.004628   3.128  0.00176 ** 
+`h(x-1420.8)*h(64.394-y)*h(t-14.1167)` -0.002539   0.001693  -1.500  0.13362    
+`h(t-2.76667)`                         -0.195137   0.043824  -4.453 8.48e-06 ***
+`h(t-3.16667)`                          0.270819   0.046407   5.836 5.35e-09 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for Gamma family taken to be 1.07028)
+
+    Null deviance: 23363  on 17560  degrees of freedom
+Residual deviance: 21875  on 17552  degrees of freedom
+AIC: 54662
+
+Number of Fisher Scoring iterations: 7
+
+
+> #training error
+> predictions.g <- predict( mg$glm.list[[1]],se.fit = T,
++                           type="response",dispersion = 1/myshape$alpha)
+
+> emp.density <- density(train.data['t'][,1],n=100)
+
+> plot(emp.density$x, emp.density$y, type='l',col='black',ylab='Density',
++      xlab='Time',xlim=c(0,24),main='Arrival of Emergencies (2004-2010)')
+
+> pred.t <- train.data['t'][,1]+predictions.g$fit
+
+> pred.t[pred.t>=24] <- pred.t[pred.t>=24]-24
+
+> pred.density <- density(pred.t,n=100)
+
+> lines(pred.density$x,pred.density$y,col='blue')
+
+> pred.t.upper <- train.data['t'][,1]+predictions.g$fit+4*predictions.g$se.fit
+
+> pred.t.upper[pred.t.upper>=24] <- pred.t.upper[pred.t.upper>=24]-24
+
+> pred.density.upper <- density(pred.t.upper,n=100)
+
+> lines(pred.density.upper$x,pred.density.upper$y,col='green')
+
+> pred.t.lower <- train.data['t'][,1]+predictions.g$fit-4*predictions.g$se.fit
+
+> pred.t.lower[pred.t.lower>=24] <- pred.t.lower[pred.t.lower>=24]-24
+
+> pred.density.lower <- density(pred.t.lower,n=100)
+
+> lines(pred.density.lower$x,pred.density.lower$y,col='red')
+
+> legend('bottom',legend=c('Observed','Predicted','+4SD','-4SD'),cex=0.8,
++        fill=c('black','blue','green','red'))
+
+> train.err <- pred.t[1:length(pred.t)-1]-train.data['t'][,1][2:dim(train.data)[1]]
+
+> print( sum(train.err*train.err) )
+[1] 500829.3
+
+> #test error
+> predictions.test.g <- predict( mg,newdata = test.data,type="response")
+
+> emp.density <- density(test.data['t'][,1],n=100)
+
+> plot(emp.density$x, emp.density$y, type='l',col='black',ylab='Density',
++      xlab='Time',xlim=c(0,24),main='Arrival of Emergencies (2004-2010)')
+
+> pred.test.t <- test.data['t'][,1]+predictions.test.g
+
+> pred.test.t[pred.test.t>=24] <- pred.test.t[pred.test.t>=24]-24
+
+> pred.test.density <- density(pred.test.t,n=100)
+
+> lines(pred.test.density$x,pred.test.density$y,col='blue')
+
+> legend('bottom',legend=c('Observed','Predicted'),cex=0.8,
++        fill=c('black','blue'))
+
+> test.err <- pred.test.t[1:length(pred.test.t)-1]-test.data['t'][,1][2:dim(test.data)[1]]
+
+> print( sum(test.err*test.err) )
+
+[1] 481386.9
+> 

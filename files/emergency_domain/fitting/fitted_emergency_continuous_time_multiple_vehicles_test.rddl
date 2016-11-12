@@ -1,0 +1,381 @@
+domain emergency_continuous_time_multiple_units_test{
+	
+	types {
+		coordinate : object;
+		unit : object; 
+		cause : object;
+		role : object;
+		component : object;
+	};
+	
+	pvariables {
+		//state variables
+		currentCallCode(cause) : {state-fluent, bool, default=false};
+		currentCallTime : {state-fluent, real, default=0.0};
+		
+		currentCall(coordinate) : {state-fluent, real, default=0};
+		timeServiceDone(unit) : {state-fluent, real, default=0.0};
+		timeTarryDone(unit) :  {state-fluent, real, default=0.0};
+		timeBackInBase(unit) : {state-fluent, real, default=0.0};
+		lastUnitService(unit,coordinate) : {state-fluent, real, default=0.0};
+
+		logOdds(cause) : {interm-fluent,real};
+		gumbelNoise(cause) : {interm-fluent, real};
+		oddsBeta(coordinate,cause) : {non-fluent, real, default=0.0};
+		oddsBetaTime(cause) : {non-fluent, real, default=0.0};
+		oddsIntercept(cause) : {non-fluent, real, default=0.0};
+		
+		tempCurrentCallComponent(coordinate) : {interm-fluent,real};
+		tempComponentIdx(coordinate) : {interm-fluent, int};
+		componentIdx(coordinate,component) : {non-fluent, int, default=0};
+		componentCDF(coordinate,component) : {non-fluent, real, default=0};
+		componentVar(coordinate,component) : {non-fluent, real, default=0.0};
+		componentBetaIntercept(coordinate,component) : {non-fluent, real, default=0};
+		componentBetaTime(coordinate,component) : {non-fluent, real, default=0};
+		componentBetaX(coordinate,component) : {non-fluent, real, default=0};
+		nextCall(coordinate) : {interm-fluent, real};
+		
+		callMiles(unit) : {interm-fluent, real};
+		callTravelTime(unit) : {interm-fluent, real};
+		
+		hospitalMiles : {interm-fluent, real};
+		hospitalTravelTime : {interm-fluent, real};
+		
+		transferMiles : {interm-fluent, real};
+		transferTravelTime : {interm-fluent, real};
+		
+		returnMiles(unit) : {interm-fluent, real};
+		returnTravelTime(unit) : {interm-fluent, real}; 
+		
+		unitInService(unit) : {interm-fluent, bool};
+		unitInBase(unit) : {interm-fluent, bool};
+		unitOnSite(unit) : {interm-fluent, bool};
+		
+		//responseTime(unit) : {interm-fluent, real};
+		firstResponse : {interm-fluent, real};
+		fullResponse : {interm-fluent, real};
+		overwhelm : {interm-fluent, bool};
+		gapTime : {interm-fluent, real};
+		nextCallTime : {interm-fluent, real};
+		
+		//constants
+		unitHome(unit,coordinate) : {non-fluent, real, default=0.0};
+		
+		MapUpperBound(coordinate) : {non-fluent, real, default=0};
+		MapLowerBound(coordinate) : {non-fluent, real, default=0};
+		
+		HospitalPosition(coordinate) : {non-fluent, real, default=0.0};
+		DestinationHospital(cause) : {non-fluent, bool, default=false};
+		
+		TransferPosition(coordinate) : {non-fluent, real, default=0.0};
+		DestinationTransfer(cause) : {non-fluent, bool, default=false};
+		
+		RoleServiceTime(role) : {non-fluent, real, default=0.0};
+		TarryTime(role) : {non-fluent, real, default=0.0};
+		//FeetToMiles : {non-fluent, real, default=0.000189};
+		
+		HasCapability(unit,role) : {non-fluent, bool, default=false};
+		CauseRequirement(cause,role) : {non-fluent, int, default=0};
+		
+		//action
+		dispatch(unit,role) : {action-fluent, bool, default=false};
+		
+		W1 : {non-fluent, real, default=0.5};
+		W2 : {non-fluent, real, default=0.5};
+		W3 : {non-fluent, real, default=0};
+		W4 : {non-fluent, real, default=0};
+	};
+	
+	cpfs {
+		//log odds wrt ref category
+		//as learned in multinom()
+		//beta of ref category = 0, logOdds = 0
+		logOdds(?ca) =  oddsIntercept(?ca) + (sum_{?coor:coordinate}[oddsBeta(?coor,?ca)*nextCall(?coor)]) + (oddsBetaTime(?ca) * nextCallTime);
+		// + oddsBetaTime(?ca) * nextCallTime; 
+		//sum_{?coor:coordinate}[oddsBeta(?coor,?ca)*nextCall(?coor)] +
+		
+		gumbelNoise(?ca)=-ln[-ln[ Uniform(0,1) ]];
+		
+		//logOdds(ca)=log(P(ca)/P(ref))
+		//logOdds(ca1)-logOdds(ca2)=log(P(ca1)/P(ca2)) : ca1 vs ca2 
+		currentCallCode'(?c)=forall_{?c2:cause}[ (?c==?c2) | ((logOdds(?c)-logOdds(?c2))>=(gumbelNoise(?c)-gumbelNoise(?c2))) ];
+		
+		//gapTime = Gamma(1/Phi,Phi/Xb)=Gamma(1/Phi,1)*Xb/Phi
+		//Phi was 0.93~1 so just using exp
+		//Exponential(1/Xb)=-log(uniform(0,1))*Xb
+		
+		gapTime = -ln[Uniform(0,1)]*( 0.341806 - 0.067867*max[0,currentCallTime - 9.01667]-0.066900*max[0,currentCallTime - 16.7833]
+									  -2.551978*max[0,currentCall($ypos) - 64.5834] + 0.076299*max[0,currentCall($ypos) - 65.7576]
+									  +0.069730*max[0,currentCallTime - 3.6]+1.638216*max[0,currentCall($ypos) - 64.7917]
+									  +1.731460*max[0,currentCall($ypos) - 64.5076]-0.881581*max[0,currentCall($ypos) - 64.8674]
+									  -0.426595*max[0,currentCallTime - 23.45]+0.234181*max[0,currentCallTime - 22.8833] );								  
+									  
+									  
+		nextCallTime = if (currentCallTime + gapTime >= 24)
+						   then currentCallTime + gapTime - 24
+						   else currentCallTime + gapTime;
+						   
+		currentCallTime' = nextCallTime;
+		
+		tempCurrentCallComponent(?coor) = Uniform(0.0,1.0);
+
+		tempComponentIdx(?coor) = if ( exists_{?comp:component}[ (componentIdx(?coor,?comp)==1) ^ (tempCurrentCallComponent(?coor) < componentCDF(?coor,?comp)) ] )
+								  then 1 
+								  else sum_{?comp1:component,?comp2:component}[
+										if ( (componentIdx(?coor,?comp1)+1==componentIdx(?coor,?comp2) ) 
+										   ^ (componentCDF(?coor,?comp1) < tempCurrentCallComponent(?coor) )
+										   ^ (componentCDF(?coor,?comp2) >= tempCurrentCallComponent(?coor) ) )
+										then componentIdx(?coor,?comp2)
+										else 0 ];
+		
+		nextCall(?coor) = if (?coor == $ypos)
+						  then sum_{?comp:component}[
+							if (componentIdx(?coor,?comp)==tempComponentIdx(?coor))
+							then Normal( componentBetaIntercept(?coor,?comp)+componentBetaTime(?coor,?comp)*nextCallTime+componentBetaX(?coor,?comp)*nextCall($xpos), componentVar(?coor,?comp) )
+							else 0.0 ]
+						  else sum_{?comp:component}[
+							if (componentIdx(?coor,?comp)==tempComponentIdx(?coor))
+							then Normal( componentBetaIntercept(?coor,?comp)+componentBetaTime(?coor,?comp)*nextCallTime, componentVar(?coor,?comp) )
+							else 0.0 ];
+		
+		currentCall'(?coor) = nextCall(?coor);
+					  
+		lastUnitService'(?u,?c) = if (exists_{?r:role}[dispatch(?u,?r)] ^ exists_{?ca:cause}[ currentCallCode(?ca) ^ DestinationHospital(?ca) ] ) 
+								  then HospitalPosition(?c) 
+								  else if (exists_{?r:role}[dispatch(?u,?r)] ^ exists_{?ca:cause}[ currentCallCode(?ca) ^ DestinationTransfer(?ca) ] )
+								  then TransferPosition(?c) 
+								  else if (exists_{?r:role}[dispatch(?u,?r)])
+								  then currentCall(?c)
+								  else if (unitInBase(?u))
+								  then unitHome(?u,?c) 
+								  else lastUnitService(?u,?c);
+		
+		callMiles(?u) = (if (unitInBase(?u)) 
+						      then (sum_{?c:coordinate}[ abs[ unitHome(?u,?c)-currentCall(?c) ] ])
+							  else (sum_{?c:coordinate}[ abs[ lastUnitService(?u,?c)-currentCall(?c) ] ]));
+		
+		callTravelTime(?u) = (if (callMiles(?u) <= 5) 
+						 then callMiles(?u)/38.0
+						 else if (callMiles(?u) > 5 ^ callMiles(?u) <= 7)
+						 then callMiles(?u)/42.0
+						 else if (callMiles(?u) > 7 ^ callMiles(?u) <= 12)
+						 then callMiles(?u)/40.0
+						 else if (callMiles(?u) > 12 ^ callMiles(?u) <= 15)
+						 then callMiles(?u)/48.0
+						 else if (callMiles(?u) > 15 ^ callMiles(?u) <= 17.5)
+						 then callMiles(?u)/56.0
+						 else if (callMiles(?u) > 17.5 ^ callMiles(?u) <= 20)
+						 then callMiles(?u)/52.0
+						 else if (callMiles(?u) > 20 ^ callMiles(?u) <= 25)
+						 then callMiles(?u)/50.0
+						 else if (callMiles(?u) > 25 ^ callMiles(?u) <= 28.5)
+						 then callMiles(?u)/54.0
+						 else if (callMiles(?u) > 28.5 ^ callMiles(?u) <= 41)
+						 then callMiles(?u)/49.0
+						 else if (callMiles(?u) > 41 ^ callMiles(?u) <= 70)
+						 then callMiles(?u)/70.0
+						 else if (callMiles(?u) > 70 ^ callMiles(?u) <= 500)
+						 then callMiles(?u)/70.0
+						 else callMiles(?u)/70.0);
+						 
+		hospitalMiles = if (exists_{?ca:cause}[ currentCallCode(?ca) ^ DestinationHospital(?ca) ] )
+							then (sum_{?c:coordinate}[ abs[ currentCall(?c) - HospitalPosition(?c) ] ] )
+							else 0.0;
+							
+		hospitalTravelTime = if (hospitalMiles <= 5) 
+						 then hospitalMiles/38.0
+						 else if (hospitalMiles > 5 ^ hospitalMiles <= 7)
+						 then hospitalMiles/42.0
+						 else if (hospitalMiles > 7 ^ hospitalMiles <= 12)
+						 then hospitalMiles/40.0
+						 else if (hospitalMiles > 12 ^ hospitalMiles <= 15)
+						 then hospitalMiles/48.0
+						 else if (hospitalMiles > 15 ^ hospitalMiles <= 17.5)
+						 then hospitalMiles/56.0
+						 else if (hospitalMiles > 17.5 ^ hospitalMiles <= 20)
+						 then hospitalMiles/52.0
+						 else if (hospitalMiles > 20 ^ hospitalMiles <= 25)
+						 then hospitalMiles/50.0
+						 else if (hospitalMiles > 25 ^ hospitalMiles <= 28.5)
+						 then hospitalMiles/54.0
+						 else if (hospitalMiles > 28.5 ^ hospitalMiles <= 41)
+						 then hospitalMiles/49.0
+						 else if (hospitalMiles > 41 ^ hospitalMiles <= 70)
+						 then hospitalMiles/70.0
+						 else if (hospitalMiles > 70 ^ hospitalMiles <= 500)
+						 then hospitalMiles/70.0
+						 else hospitalMiles/70.0;
+							
+		transferMiles = if ( exists_{?ca:cause}[ currentCallCode(?ca) ^ DestinationTransfer(?ca) ] )
+							then (sum_{?c:coordinate}[ abs[ currentCall(?c) - TransferPosition(?c) ] ])
+							else 0.0;
+		
+		transferTravelTime = if (transferMiles <= 5) 
+						 then transferMiles/38.0
+						 else if (transferMiles > 5 ^ transferMiles <= 7)
+						 then transferMiles/42.0
+						 else if (transferMiles > 7 ^ transferMiles <= 12)
+						 then transferMiles/40.0
+						 else if (transferMiles > 12 ^ transferMiles <= 15)
+						 then transferMiles/48.0
+						 else if (transferMiles > 15 ^ transferMiles <= 17.5)
+						 then transferMiles/56.0
+						 else if (transferMiles > 17.5 ^ transferMiles <= 20)
+						 then transferMiles/52.0
+						 else if (transferMiles > 20 ^ transferMiles <= 25)
+						 then transferMiles/50.0
+						 else if (transferMiles > 25 ^ transferMiles <= 28.5)
+						 then transferMiles/54.0
+						 else if (transferMiles > 28.5 ^ transferMiles <= 41)
+						 then transferMiles/49.0
+						 else if (transferMiles > 41 ^ transferMiles <= 70)
+						 then transferMiles/70.0
+						 else if (transferMiles > 70 ^ transferMiles <= 500)
+						 then transferMiles/70.0
+						 else transferMiles/70.0;
+				
+		returnMiles(?u) = if (exists_{?ca:cause}[ currentCallCode(?ca) ^ DestinationHospital(?ca) ] ) 
+						  then sum_{?c:coordinate}[ abs[ HospitalPosition(?c) - unitHome(?u,?c) ] ]
+						  else if (exists_{?ca:cause}[ currentCallCode(?ca) ^ DestinationTransfer(?ca) ] )
+						  then sum_{?c:coordinate}[ abs[ TransferPosition(?c) - unitHome(?u,?c) ] ]
+						  else ( sum_{?c:coordinate}[ abs[ currentCall(?c) - unitHome(?u,?c) ] ] );
+		
+		returnTravelTime(?u) = if (returnMiles(?u) <= 5) 
+						 then returnMiles(?u)/38.0
+						 else if (returnMiles(?u) > 5 ^ returnMiles(?u) <= 7)
+						 then returnMiles(?u)/42.0
+						 else if (returnMiles(?u) > 7 ^ returnMiles(?u) <= 12)
+						 then returnMiles(?u)/40.0
+						 else if (returnMiles(?u) > 12 ^ returnMiles(?u) <= 15)
+						 then returnMiles(?u)/48.0
+						 else if (returnMiles(?u) > 15 ^ returnMiles(?u) <= 17.5)
+						 then returnMiles(?u)/56.0
+						 else if (returnMiles(?u) > 17.5 ^ returnMiles(?u) <= 20)
+						 then returnMiles(?u)/52.0
+						 else if (returnMiles(?u) > 20 ^ returnMiles(?u) <= 25)
+						 then returnMiles(?u)/50.0
+						 else if (returnMiles(?u) > 25 ^ returnMiles(?u) <= 28.5)
+						 then returnMiles(?u)/54.0
+						 else if (returnMiles(?u) > 28.5 ^ returnMiles(?u) <= 41)
+						 then returnMiles(?u)/49.0
+						 else if (returnMiles(?u) > 41 ^ returnMiles(?u) <= 70)
+						 then returnMiles(?u)/70.0
+						 else if (returnMiles(?u) > 70 ^ returnMiles(?u) <= 500)
+						 then returnMiles(?u)/70.0
+						 else returnMiles(?u)/70.0;
+		
+		firstResponse = min_{?u:unit}[ if (exists_{?r:role}[dispatch(?u,?r)])
+						   then callTravelTime(?u) 
+						   else (sum_{?c:coordinate}[MapUpperBound(?c)-MapLowerBound(?c)])/38.0 ];
+		
+		fullResponse = if (overwhelm)
+					   then (sum_{?c:coordinate}[MapUpperBound(?c)-MapLowerBound(?c)])/38.0
+					   else max_{?u:unit}[ 
+							if (exists_{?r:role}[dispatch(?u,?r)])
+							then callTravelTime(?u) 
+							else 0.0 ];//instead of 25 mins
+							
+		overwhelm = exists_{?r:role,?c:cause}[ currentCallCode(?c) ^ (CauseRequirement(?c,?r) > (sum_{?u:unit}[dispatch(?u,?r)])) ];
+		
+		timeServiceDone'(?u) = if (exists_{?r:role}[dispatch(?u,?r)]) 
+						   then (currentCallTime + callTravelTime(?u) + (sum_{?r:role}[ if (dispatch(?u,?r)) then RoleServiceTime(?r) else 0.0])
+								 + hospitalTravelTime + transferTravelTime)
+						   else timeServiceDone(?u);
+						
+		timeTarryDone'(?u) = if (exists_{?r:role}[dispatch(?u,?r)])
+					     then (currentCallTime + callTravelTime(?u) + (sum_{?r:role}[ if (dispatch(?u,?r)) then RoleServiceTime(?r) else 0.0]) + hospitalTravelTime  
+								+ transferTravelTime + sum_{?r:role}[if (dispatch(?u,?r)) then TarryTime(?r) else 0.0] ) 
+					     else timeTarryDone(?u);
+						
+		timeBackInBase'(?u) = if (exists_{?r:role}[dispatch(?u,?r)])
+						  then (currentCallTime + callTravelTime(?u) + (sum_{?r:role}[ if (dispatch(?u,?r)) then RoleServiceTime(?r) else 0.0]) + hospitalTravelTime  
+								+ transferTravelTime + sum_{?r:role}[if (dispatch(?u,?r)) then TarryTime(?r) else 0.0] +  returnTravelTime(?u))
+						  else timeBackInBase(?u);
+								  
+		unitInService(?u) = unitInBase(?u) | unitOnSite(?u);
+		
+		unitInBase(?u) = (currentCallTime >= timeBackInBase(?u));
+		
+		unitOnSite(?u) = (currentCallTime >= timeServiceDone(?u)) ^ (currentCallTime <= timeTarryDone(?u));
+		
+		
+	};
+		
+	reward = [- (W1*firstResponse) - (W2*fullResponse) + W3*(firstResponse <= 0.0833 ) - W4*overwhelm];
+	
+	state-invariants {
+		forall_{?u:unit}[ timeTarryDone(?u) >= timeServiceDone(?u) ];
+		forall_{?u:unit}[ timeBackInBase(?u) >= timeTarryDone(?u) ];
+		forall_{?u:unit}[ (timeBackInBase(?u) >= 0) ];
+		forall_{?u:unit}[ (timeTarryDone(?u) >= 0) ];
+		forall_{?u:unit}[ (timeServiceDone(?u) >= 0) ];
+		
+		forall_{?u:unit}[ callMiles(?u) >= 0 ];
+		forall_{?u:unit}[ callMiles(?u) <= (sum_{?c:coordinate}[ MapUpperBound(?c)-MapLowerBound(?c) ]) ];
+		forall_{?u:unit}[ callTravelTime(?u) >= 0 ];
+		forall_{?u:unit}[ callTravelTime(?u) <= 1+(sum_{?c:coordinate}[ MapUpperBound(?c)-MapLowerBound(?c) ])/38.0 ];
+		
+		forall_{?u:unit}[ hospitalMiles >= 0 ];
+		forall_{?u:unit}[ hospitalMiles <= (sum_{?c:coordinate}[ MapUpperBound(?c)-MapLowerBound(?c) ]) ];
+		forall_{?u:unit}[ hospitalTravelTime >= 0 ];
+		forall_{?u:unit}[ hospitalTravelTime <= 1+(sum_{?c:coordinate}[ MapUpperBound(?c)-MapLowerBound(?c) ])/38.0 ];
+		
+		forall_{?u:unit}[ transferMiles >= 0 ];
+		forall_{?u:unit}[ transferMiles <= (sum_{?c:coordinate}[ MapUpperBound(?c)-MapLowerBound(?c) ]) ];
+		forall_{?u:unit}[ transferTravelTime >= 0 ];
+		forall_{?u:unit}[ transferTravelTime <= 1+(sum_{?c:coordinate}[ MapUpperBound(?c)-MapLowerBound(?c) ])/38.0 ];
+		
+		forall_{?u:unit}[ returnMiles(?u) >= 0 ];
+		forall_{?u:unit}[ returnMiles(?u) <= (sum_{?c:coordinate}[ MapUpperBound(?c)-MapLowerBound(?c) ]) ];
+		forall_{?u:unit}[ returnTravelTime(?u) >= 0 ];
+		forall_{?u:unit}[ returnTravelTime(?u) <= 1+(sum_{?c:coordinate}[ MapUpperBound(?c)-MapLowerBound(?c) ])/38.0 ];
+		
+		forall_{?u:unit,?c:coordinate}[ lastUnitService(?u,?c) <= MapUpperBound(?c) ];
+		forall_{?u:unit,?c:coordinate}[ lastUnitService(?u,?c) >= MapLowerBound(?c) ];
+		forall_{?c:coordinate}[ currentCall(?c) <= MapUpperBound(?c) ];
+		forall_{?c:coordinate}[ currentCall(?c) >= MapLowerBound(?c) ];
+		
+		currentCallTime >= 0; currentCallTime < 24;
+		
+		forall_{?u:unit, ?c:coordinate}[ unitHome(?u,?c) <= MapUpperBound(?c) ];
+		forall_{?u:unit, ?c:coordinate}[ unitHome(?u,?c) >= MapLowerBound(?c) ];
+		
+		(sum_{?c:cause}[currentCallCode(?c)]) == 1;
+		
+		forall_{?c:cause,?r:role}[CauseRequirement(?c,?r) >= 0];
+		
+		forall_{?r:role}[ RoleServiceTime(?r) >= 0 ];
+		forall_{?r:role}[ TarryTime(?r) >= 0 ];
+		forall_{?ca:cause}[ DestinationHospital(?ca) + DestinationTransfer(?ca) <= 1 ];
+				
+		firstResponse >= 0.0; firstResponse <= 1+(sum_{?c:coordinate}[MapUpperBound(?c)-MapLowerBound(?c)])/38.0;
+		fullResponse >= 0.0; fullResponse <= 1+(sum_{?c:coordinate}[MapUpperBound(?c)-MapLowerBound(?c)])/38.0;
+		
+		gapTime > 0; gapTime < 24;
+		
+		forall_{?coor:coordinate,?comp:component}[ componentCDF(?coor,?comp) >= 0 ];
+		forall_{?coor:coordinate,?comp:component}[ componentCDF(?coor,?comp) <= 1 ];
+		
+		forall_{?coor:coordinate,?comp:component}[ componentVar(?coor,?comp) > 0 ];
+		
+		forall_{?coor:coordinate}[tempCurrentCallComponent(?coor) >= 0]; 
+		forall_{?coor:coordinate}[tempCurrentCallComponent(?coor) <= 1];
+		
+		forall_{?coor:coordinate}[ nextCall(?coor) >= MapLowerBound(?coor) ];
+		forall_{?coor:coordinate}[ nextCall(?coor) <= MapUpperBound(?coor) ];
+		
+		forall_{?coor:coordinate,?comp:component}[ componentCDF(?coor,?comp) >= 0 ];
+		forall_{?coor:coordinate,?comp:component}[ componentCDF(?coor,?comp) <= 1 ];
+		
+		forall_{?coor:coordinate}[ tempComponentIdx(?coor) >= 1 ];
+		forall_{?coor:coordinate}[ tempComponentIdx(?coor) <= sum_{?comp:component}[1] ];
+	};
+	
+	action-preconditions {
+		forall_{?u:unit,?r:role}[ (~dispatch(?u,?r)) | unitInService(?u) ];
+		forall_{?u:unit}[(sum_{?r:role}[ dispatch(?u,?r) ]) <= 1];
+
+		forall_{?u:unit,?r:role}[ ~dispatch(?u,?r) | HasCapability(?u,?r) ];
+
+	};
+}

@@ -1,0 +1,234 @@
+non-fluents nf_emergency_continuous_time_multiple_units_test_5 {
+	domain = emergency_continuous_time_multiple_units_test;
+	objects {
+		coordinate : {xpos,ypos};
+		unit : {u1,u2,u3,u4,u5};
+		cause : {Code1Medical,Code3Med,Code3Trauma,EMS,Fire,Hazmat,MassCasualty,
+				 MVA,Other,Rescue,StructureFire,Transport,VehicleFire,WildlandFire};
+		role : {Engine, Ambulance, Ladder, Command};
+		component : {comp1,comp2,comp3,comp4,comp5};
+	};
+	
+	non-fluents {
+		MapUpperBound(xpos)=1500;
+		MapUpperBound(ypos)=100;
+		MapLowerBound(xpos)=1300;
+		MapLowerBound(ypos)=20;
+		
+		causeRequirement(EMS,Ambulance)=1;
+		causeRequirement(Fire,Engine)=1;
+		
+		causeRequirement(Code1Medical,Ambulance)=1;
+		causeRequirement(Code3Med,Ambulance)=1;
+		causeRequirement(Code3Trauma,Engine)=1;
+		causeRequirement(Hazmat,Engine)=1;
+		causeRequirement(MassCasualty,Ambulance)=2;
+		
+		causeRequirement(MVA,Ambulance)=1;
+		causeRequirement(MVA,Engine)=1;
+		
+		causeRequirement(Transport,Ambulance)=1;
+		
+		causeRequirement(Other,Engine)=1;
+		causeRequirement(Other,Ambulance)=1;
+		
+		causeRequirement(Rescue,Ambulance)=1;	
+		causeRequirement(Rescue,Engine)=1;	
+		
+		causeRequirement(StructureFire,Ladder)=1;
+		causeRequirement(StructureFire,Command)=1;
+		causeRequirement(StructureFire,Engine)=2;
+		
+		causeRequirement(VehicleFire,Engine)=1;
+		causeRequirement(VehicleFire,Ambulance)=1;
+		
+		causeRequirement(WildlandFire,Full,Engine)=3;
+		causeRequirement(WildlandFire,Full,Command)=1;
+		causeRequirement(WildlandFire,Full,Ladder)=1;
+		
+		RoleServiceTime(Engine)=0.917;
+		RoleServiceTime(Command)=0.75;
+		RoleServiceTime(Ladder)=0.583;
+		RoleServiceTime(Ambulance)=0.75;
+		
+		HospitalPosition(xpos)=1417.63; HospitalPosition(ypos)=66.97;
+		DestinationHospital(Code1Medical)=true;
+		DestinationHospital(Code3Med)=true;
+		DestinationHospital(Code3Trauma)=true;
+		DestinationHospital(EMS)=true;
+		DestinationHospital(MassCasualty)=true;
+		DestinationHospital(Rescue)=true;		
+
+		TarryTime(Command)=0.25;
+		TarryTime(Engine)=0.5;
+		
+		TransferPosition(xpos)=1489.20; TransferPosition(ypos)=66.97;
+		DestinationTransfer(Transport)=true;
+		
+		unitHome(u1,xpos)=1418.0; unitHome(u1,ypos)=65.0;	
+		unitHome(u2,xpos)=1415.0; unitHome(u2,ypos)=64.0;	
+		unitHome(u3,xpos)=1416.0; unitHome(u3,ypos)=66.0;	
+		unitHome(u4,xpos)=1417.0; unitHome(u4,ypos)=63.0;	
+		unitHome(u5,xpos)=1415.0; unitHome(u5,ypos)=66.0;
+	
+		HasCapability(u1,Command)=true;
+		HasCapability(u2,Ambulance)=true;
+		HasCapability(u3,Engine)=true;
+		HasCapability(u4,Ladder)=true;
+		HasCapability(u5,Ambulance)=true;
+		
+		oddsIntercept(Code1Medical)=-76.147463;
+		oddsIntercept(Code3Trauma)=17.648981;
+		oddsIntercept(EMS)=-23.847495;
+		oddsIntercept(Fire)=-234.873413;
+		oddsIntercept(Hazmat)=-38.775947;
+		oddsIntercept(MassCasualty)=1.273354;
+		oddsIntercept(MVA)=34.358112;
+		oddsIntercept(Other)=-94.556425;
+		oddsIntercept(Rescue)=-13.301629;
+		oddsIntercept(StructureFire)=-170.178509;
+		oddsIntercept(Transport)=-328.400669;
+		oddsIntercept(VehicleFire)=-74.720610;
+		oddsIntercept(WildlandFire)=-70.039710;
+		
+		oddsBetaTime(Code1Medical)=-0.006446166;
+		oddsBetaTime(Code3Trauma)=0.004748534;
+		oddsBetaTime(EMS)=0.025578476;
+		oddsBetaTime(Fire)=0.035061927;
+		oddsBetaTime(Hazmat)=0.012681898;
+		oddsBetaTime(MassCasualty)=-0.773927272;
+		oddsBetaTime(MVA)=0.025812730;
+		oddsBetaTime(Other)=0.009585148;
+		oddsBetaTime(Rescue)=0.148032481;
+		oddsBetaTime(StructureFire)=-0.005669485;
+		oddsBetaTime(Transport)=0.014569036;
+		oddsBetaTime(VehicleFire)=0.036252450;
+		oddsBetaTime(WildlandFire)=0.047677014;
+		
+		oddsBeta(xpos,Code1Medical)=0.051456376;
+		oddsBeta(xpos,Code3Trauma)=-0.014450113;
+		oddsBeta(xpos,EMS)=0.014577960;
+		oddsBeta(xpos,Fire)=0.161854962;
+		oddsBeta(xpos,Hazmat)=0.021337913;
+		oddsBeta(xpos,MassCasualty)=-0.019913286;
+		oddsBeta(xpos,MVA)=-0.024169652;
+		oddsBeta(xpos,Other)=0.063024960;
+		oddsBeta(xpos,Rescue)=0.005944417;
+		oddsBeta(xpos,StructureFire)=0.116572013;
+		oddsBeta(xpos,Transport)=0.216020697;
+		oddsBeta(xpos,VehicleFire)=0.045076953;
+		oddsBeta(xpos,WildlandFire)=0.041911200;
+		
+		oddsBeta(ypos,Code1Medical)=0.02885834;
+		oddsBeta(ypos,Code3Trauma)=0.02147784;
+		oddsBeta(ypos,EMS)=-0.01302422;
+		oddsBeta(ypos,Fire)=0.04681811;
+		oddsBeta(ypos,Hazmat)=0.05724390;
+		oddsBeta(ypos,MassCasualty)=0.32840435;
+		oddsBeta(ypos,MVA)=-0.03716295;
+		oddsBeta(ypos,Other)=0.03898012;
+		oddsBeta(ypos,Rescue)=-0.07401833;
+		oddsBeta(ypos,StructureFire)=0.05499774;
+		oddsBeta(ypos,Transport)=0.30629296;
+		oddsBeta(ypos,VehicleFire)=0.09156831;
+		oddsBeta(ypos,WildlandFire)=0.09807748;
+		
+		componentIdx(xpos,comp1)=1;
+		componentIdx(xpos,comp2)=2;
+		componentIdx(xpos,comp3)=3;
+		componentIdx(xpos,comp4)=4;
+		componentIdx(xpos,comp5)=5;
+		
+		componentIdx(ypos,comp1)=1;
+		componentIdx(ypos,comp2)=2;
+		componentIdx(ypos,comp3)=3;
+		componentIdx(ypos,comp4)=4;
+		componentIdx(ypos,comp5)=5;
+		
+		componentCDF(xpos,comp1)=0.0173943;
+		componentCDF(xpos,comp2)=0.2133133;
+		componentCDF(xpos,comp3)=0.2884508;
+		componentCDF(xpos,comp4)=0.9743808;
+		componentCDF(xpos,comp5)=1.0;
+
+		componentVar(xpos,comp1)=12.7064444521;
+		componentVar(xpos,comp2)=8.88278416;
+		componentVar(xpos,comp3)=0.09139556848;
+		componentVar(xpos,comp4)=0.53328697022;
+		componentVar(xpos,comp5)=0.11461000868;
+		
+		componentBetaIntercept(xpos,comp1)=1401.07;
+		componentBetaIntercept(xpos,comp2)=1414.60;
+		componentBetaIntercept(xpos,comp3)=1414.87;
+		componentBetaIntercept(xpos,comp4)=1416.92;
+		componentBetaIntercept(xpos,comp5)=1419.56;
+		
+		componentBetaTime(xpos,comp1)=0.00340035;
+		componentBetaTime(xpos,comp2)=-0.00714237;
+		componentBetaTime(xpos,comp3)=-0.00122846;
+		componentBetaTime(xpos,comp4)=0.00378366;
+		componentBetaTime(xpos,comp5)=0.00156785;
+		
+		componentCDF(ypos,comp1)=0.1188505;
+		componentCDF(ypos,comp2)=0.21426285;
+		componentCDF(ypos,comp3)=0.71114385;
+		componentCDF(ypos,comp4)=0.78315489;
+		componentCDF(ypos,comp5)=1.0;		
+		
+		componentVar(ypos,comp1)=69.0921800835;
+		componentVar(ypos,comp2)=0.06033996268;
+		componentVar(ypos,comp3)=0.4688003961;
+		componentVar(ypos,comp4)=0.11936633206;
+		componentVar(ypos,comp5)=0.19427642982;
+		
+		componentBetaIntercept(ypos,comp1)=-849.4704150;
+		componentBetaIntercept(ypos,comp2)=96.54220739;
+		componentBetaIntercept(ypos,comp3)=-1013.41;
+		componentBetaIntercept(ypos,comp4)= 93.21353236;
+		componentBetaIntercept(ypos,comp5)= -196.846;
+		
+		componentBetaTime(ypos,comp1)=-0.0267834;
+		componentBetaTime(ypos,comp2)=-0.00262338;
+		componentBetaTime(ypos,comp3)=0.00164974;
+		componentBetaTime(ypos,comp4)=0.00510409;
+		componentBetaTime(ypos,comp5)=-0.00429438;
+		
+		componentBetaX(xpos,comp1)=0.0;
+		componentBetaX(xpos,comp2)=-0.0;
+		componentBetaX(xpos,comp3)=0.0;
+		componentBetaX(xpos,comp4)=-0.0;
+		componentBetaX(xpos,comp5)=0.0;
+		
+		componentBetaX(ypos,comp1)=0.6430914;
+		componentBetaX(ypos,comp2)=-0.02375106;
+		componentBetaX(ypos,comp3)=0.761581;
+		componentBetaX(ypos,comp4)=-0.01891062;
+		componentBetaX(ypos,comp5)=0.184308;
+		
+	};  
+}
+
+instance inst_emergency_continuous_time_multiple_units_test_5 {
+	domain = emergency_continuous_time_multiple_units_test;
+	non-fluents = nf_emergency_continuous_time_multiple_units_test_5;
+	
+	init-state {
+		
+		currentCall(xpos)=1420;
+		currentCall(ypos)=64;
+		currentCallTime=0.0;
+		
+		lastUnitService(u1,xpos)=1418.0; lastUnitService(u1,ypos)=65.0;
+		lastUnitService(u2,xpos)=1415.0; lastUnitService(u2,ypos)=64.0;
+		lastUnitService(u3,xpos)=1416.0; lastUnitService(u3,ypos)=66.0;
+		lastUnitService(u4,xpos)=1417.0; lastUnitService(u4,ypos)=63.0;
+		lastUnitService(u5,xpos)=1415.0; lastUnitService(u5,ypos)=66.0;
+		
+		currentCallCode(StructureFire)=true;
+		
+	};
+	
+	//max-nondef-actions = 10;
+	horizon  = 240;
+	discount = 1.0;
+}
