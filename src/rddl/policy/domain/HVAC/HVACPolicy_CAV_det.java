@@ -14,13 +14,13 @@ import rddl.State;
 import rddl.policy.Policy;
 import util.Permutation;
 
-public class HVACPolicy_VAV extends Policy{
+public class HVACPolicy_CAV_det extends Policy{
 	public int MAX_CONCURRENT_ACTIONS = 20;
-	public HVACPolicy_VAV () { 
+	public HVACPolicy_CAV_det () { 
 		super();
 	}
 	
-	public HVACPolicy_VAV(String instance_name) {
+	public HVACPolicy_CAV_det(String instance_name) {
 		super(instance_name);
 	}
 
@@ -96,14 +96,11 @@ public class HVACPolicy_VAV extends Policy{
 		double temp_current = (Double) s.getPVariableAssign(new PVAR_NAME("TEMP"), terms);
 		double temp_up = (Double) s.getPVariableAssign(new PVAR_NAME("TEMP_UP"), terms);
 		double temp_low = (Double) s.getPVariableAssign(new PVAR_NAME("TEMP_LOW"), terms);
-		double air_max =(Double) s.getPVariableAssign(new PVAR_NAME("AIR_MAX"), terms); 
-		Double value = 0.0;
-		if(temp_current<=temp_low){
-			value = air_max;
-		}else if(temp_current>=temp_up){
-			value = 0.0;
+		Boolean value = true;
+		if(temp_current <= temp_low+(temp_up-temp_low)/2){
+			value = true;
 		} else
-			value = Math.random()*air_max;
+			value = false;
 		return value;
 	}
 }
