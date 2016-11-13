@@ -31,11 +31,13 @@ import rddl.RDDL.TYPE_NAME;
 
 public class RTCDisplay extends StateViz {
 
-	private static final Color HOT_COLOR = Color.red;
+	private static final Color HOT_COLOR = Color.black;
 	private static final Color COLD_COLOR = Color.gray;
 	private static final Color COMFORT_COLOR = Color.green;
-	private static final Color AIR_COLOR = Color.MAGENTA;
 	private static final Color BLOCK_COLOR  = new Color(238, 238, 238);
+	private static final int AIR_COLOR_PARAMETER_1 = 255;	//Change the intensive of the color
+	private static final int AIR_COLOR_PARAMETER_2 = 255;
+	private static final int AIR_COLOR_PARAMETER_3 = 255;
 	private static final int INSET_SIZE = 5;
 	private static final int PREF_PIXEL_WIDTH = 700;
 	private static final int PREF_PIXEL_HEIGHT = 480;
@@ -44,7 +46,7 @@ public class RTCDisplay extends StateViz {
 	private JFrame _frame;	//Create a frame
 	private TemperaturePanel _temPanel; //Panel for displaying temperature changes in space
 	static ArrayList<Double> Temperature = new ArrayList<>();
-	static ArrayList<Boolean> Heat_on = new ArrayList<>();
+	static ArrayList<Double> Heat_v = new ArrayList<>();
 
 	public RTCDisplay(){
 		_nTimeDelay = 500; //in milliseconds
@@ -183,6 +185,8 @@ public class RTCDisplay extends StateViz {
 	public static class TemperaturePanel extends JPanel {
 		private static final long serialVersionUID = -8696171670145774254L;
 		private State _state;
+		private double intensity = 1;
+		public Color AIR_COLOR = new Color((int)(AIR_COLOR_PARAMETER_1*intensity), (int)(AIR_COLOR_PARAMETER_2*intensity), (int)(AIR_COLOR_PARAMETER_3*intensity));
 
 		public TemperaturePanel(){
 			super();
@@ -212,26 +216,29 @@ public class RTCDisplay extends StateViz {
 
 				PVAR_NAME TEMP = new PVAR_NAME("TEMP");	//State-Fluent
 				PVAR_NAME ROUND = new PVAR_NAME("round");	//State-Fluent
-				PVAR_NAME AIR_ON =  new PVAR_NAME("AIR_ON");	//State-Fluent indicates if the air is on
+				PVAR_NAME AIR_VOLUME =  new PVAR_NAME("AIR_VOLUME");	//State-Fluent indicates if the air is on
 				PVAR_NAME TEMP_UP = new PVAR_NAME("TEMP_UP");	//Upper Bound of the desired temperature
 				PVAR_NAME TEMP_LOW = new PVAR_NAME("TEMP_LOW");	//Lower bound of the desired temperature
+				PVAR_NAME AIR_MAX = new PVAR_NAME("AIR_MAX");
+				PVAR_NAME IS_ROOM = new PVAR_NAME("IS_ROOM");
 				ArrayList<LCONST> params0 = new ArrayList<LCONST>(0);
 				ArrayList<LCONST> params1 = new ArrayList<LCONST>(1); //Record on space at a time
 				params1.add(null);
 
 				try{
 					int round = (Integer) _state.getPVariableAssign(ROUND, params0);	//Get the Round Number, used for changing the x-position of the bar
-					 //We will use two constant number for the temperature ceiling and ground; later we will use variables based on the domain specification
+					//We will use two constant number for the temperature ceiling and ground; later we will use variables based on the domain specification
 					for (int s = 0; s < list_space.size(); s++){
 						LCONST space = list_space.get(s);
 						params1.set(0, space);
 						double t = (Double) _state.getPVariableAssign(TEMP, params1);	//Get the temperature of the space
 						double maxTemp = (Double) _state.getPVariableAssign(TEMP_UP, params1);	//Upper Bound of the desired temperature
 						double minTemp = (Double) _state.getPVariableAssign(TEMP_LOW, params1);////Lower bound of the desired temperatur
-						Boolean a_on = (Boolean) _state.getPVariableAssign(AIR_ON, params1);	//Get the Action Fluent Air
-
+						double air_v = (Double) _state.getPVariableAssign(AIR_VOLUME, params1);	//Get the Action Fluent Air
+						double air_max = (Double) _state.getPVariableAssign(AIR_MAX, params1); 
+						boolean is_room = (Boolean) _state.getPVariableAssign(IS_ROOM, params1); 
 						Temperature.add(t);
-						Heat_on.add(a_on);
+						Heat_v.add(air_v);
 						Color tempColor;
 
 
@@ -245,7 +252,7 @@ public class RTCDisplay extends StateViz {
 						for (int r = 0; r < round; r++){
 
 							t = Temperature.get(r*numSpace+s);	//Space Temperature
-							a_on = Heat_on.get(r*numSpace+s);	//If the air is on
+							air_v = Heat_v.get(r*numSpace+s);	//If the air is on
 							if (t > maxTemp)
 								tempColor = HOT_COLOR;	//Temperature is beyond the comfortable range
 							else if (t < minTemp)
@@ -265,9 +272,10 @@ public class RTCDisplay extends StateViz {
 							 * The current temperature is affected by the HVAC (on//off) in the previous round;
 							 * therefore, we mark the AIR_ON one round before the current one to reflect this after-effect
 							 */
-							if (a_on){
+							if (air_v > 0 && is_room){
 								Rectangle2D tRect_Air = new Rectangle2D.Double(spacePxlWidth*(r+3-1), spacePxlHeight * (s+0.2), spacePxlWidth, 5);
-								g2.setColor(AIR_COLOR);
+								intensity = (1-air_v/air_max);
+								AIR_COLOR = new Color((int)(AIR_COLOR_PARAMETER_1), (int)(AIR_COLOR_PARAMETER_2*intensity), (int)(AIR_COLOR_PARAMETER_3*intensity));g2.setColor(AIR_COLOR);
 								g2.fill(tRect_Air);
 							}
 
@@ -293,6 +301,8 @@ public class RTCDisplay extends StateViz {
 	 */
 	public static class KeyPanel extends JPanel {
 		private static final long serialVersionUID = -4878871758162122727L;
+		private Color AIR_COLOR = new Color(AIR_COLOR_PARAMETER_1, 0,0);
+
 
 		public KeyPanel() {
 			super();

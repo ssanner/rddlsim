@@ -20,7 +20,7 @@ domain hvac_cav{
   		CAP(space) 				: { non-fluent, real, default = 40 }; //Heat Capacity of the room
   		CAP_AIR 				: { non-fluent, real, default = 1.006 }; //Heat Capacity of the air; unit of kj/(kg*C)
   		COST_AIR 				: { non-fluent, real, default = 1 };	//Cost of heated air from HVAC; unit of $/kg
-  		M_AIR 					: { non-fluent, real, default = 2 }; //Mass of HVAC Air Entered the building per second; Unit of kg／
+  		AIR_MAX(space)		 	: { non-fluent, real, default = 3.0 }; //Mass of HVAC Air Entered the building per second; Unit of kg／
   		TIME_DELTA 				: { non-fluent, real, default = 1 }; //Delta time used to find change in temperature；unit of min
   		TEMP_AIR 				: { non-fluent, real, default = 40 }; //Set a fixed temperature for HVAC air
   		TEMP_UP(space)			: { non-fluent, real, default = 23.5 }; //Set an upper bound for the desired temperature range
@@ -30,7 +30,7 @@ domain hvac_cav{
 
   		//State Variable
   		TEMP(space) 			: { state-fluent, real, default = 10.0 };	//Temperature of the space
-		AIR_ON(space)  			:{ state-fluent, bool, default = false};//State Variable to indicate if the Air is on; used in visualization
+		AIR_VOLUME(space)  		: { state-fluent, real, default = 2.0};//State Variable to indicate if the Air is on; used in visualization
 		round 					: { state-fluent, int, default = 0 };	// The current round 
   		//Action
   		AIR(space) 			 	: { action-fluent, bool, default = false }; //Indicate if the HVAC System is open/closed for the room - Constant Air Volume System
@@ -38,13 +38,13 @@ domain hvac_cav{
 
   	cpfs {
   		//State
-  		TEMP'(?s) = TEMP(?s) + TIME_DELTA/CAP(?s) * (AIR(?s) * M_AIR * CAP_AIR * (TEMP_AIR - TEMP(?s)) + sum_{?p : space} ((ADJ(?s, ?p) | ADJ(?p, ?s)) * (TEMP(?p) - TEMP(?s)) / R_WALL(?s, ?p)));
+  		TEMP'(?s) = TEMP(?s) + TIME_DELTA/CAP(?s) * (AIR(?s) * AIR_MAX(?s) * CAP_AIR * (TEMP_AIR - TEMP(?s)) + sum_{?p : space} ((ADJ(?s, ?p) | ADJ(?p, ?s)) * (TEMP(?p) - TEMP(?s)) / R_WALL(?s, ?p)));
 		    		
 		round' = round + 1;				// Update the round
-		AIR_ON'(?s) = AIR(?s)^IS_ROOM(?s);	//Record the Action in the room
+		AIR_VOLUME'(?s) = if(AIR(?s)) then AIR_MAX(?s) else 0.0;	//Record the Action in the room
 		};
 
-  	reward = - (sum_{?s : space} IS_ROOM(?s)*((AIR(?s) * M_AIR) * COST_AIR
+  	reward = - (sum_{?s : space} IS_ROOM(?s)*((AIR(?s) * AIR_MAX(?s)) * COST_AIR
   			    + ((TEMP(?s) < TEMP_LOW(?s)) | (TEMP(?s) > TEMP_UP(?s))) * PENALTY));
 
 }
