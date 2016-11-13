@@ -29,7 +29,7 @@ import rddl.RDDL.LCONST;
 import rddl.RDDL.PVAR_NAME;
 import rddl.RDDL.TYPE_NAME;
 
-public class RTCDisplay extends StateViz {
+public class HVACDisplay extends StateViz {
 
 	private static final Color HOT_COLOR = Color.black;
 	private static final Color COLD_COLOR = Color.gray;
@@ -48,7 +48,7 @@ public class RTCDisplay extends StateViz {
 	static ArrayList<Double> Temperature = new ArrayList<>();
 	static ArrayList<Double> Heat_v = new ArrayList<>();
 
-	public RTCDisplay(){
+	public HVACDisplay(){
 		_nTimeDelay = 500; //in milliseconds
 	}
 
