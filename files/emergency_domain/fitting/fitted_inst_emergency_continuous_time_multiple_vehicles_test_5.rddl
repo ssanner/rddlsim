@@ -229,6 +229,6 @@ instance inst_emergency_continuous_time_multiple_units_test_5 {
 	};
 	
 	//max-nondef-actions = 10;
-	horizon  = 240;
+	horizon  = 40;
 	discount = 1.0;
 }

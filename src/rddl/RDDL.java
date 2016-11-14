@@ -2203,6 +2203,7 @@ public class RDDL {
 			//N(e1,e2^2) = e1 + e2 N(0,1)
 			//substitute() should be called first to simplify variance term
 			//also works when e2 is PWL, have not tested this.
+//			System.out.println( _normalVarReal );
 			assert( _normalVarReal.isConstant( null, null ) );
 			final double var = _normalVarReal.getDoubleValue( null, null );
 			
@@ -4251,8 +4252,8 @@ public class RDDL {
 				}else{
 					EXPR inner_subs = _e.substitute(subs, constants, objects) ;
 					AGG_EXPR unexpanded = new AGG_EXPR( _op, new ArrayList<>( al_new_terms ), inner_subs );
-//					EXPR expanded = unexpanded.expandArithmeticQuantifier(constants, objects);
-					return unexpanded; //.substitute(subs, constants, objects);
+					EXPR expanded = unexpanded.expandArithmeticQuantifier(constants, objects);
+					return expanded; //.substitute(subs, constants, objects);
 				}
 				
 			} catch (Exception e) {

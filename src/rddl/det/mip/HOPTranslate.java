@@ -206,8 +206,11 @@ public class HOPTranslate extends Translate implements Policy {
 								
 								Map<LVAR, LCONST> subs = getSubs( cpf._exprVarName._alTerms, terms );
 								EXPR new_lhs_stationary = cpf._exprVarName.substitute( subs, constants, objects );
+								
 								EXPR new_rhs_stationary = cpf._exprEquals.substitute(subs, constants, objects);
-								System.out.println(new_lhs_stationary);// + " " + new_rhs_stationary );
+								
+//								System.out.println(new_lhs_stationary );//.+ " " + new_rhs_stationary );
+								System.out.println(new_lhs_stationary + " " + new_rhs_stationary );
 								
 								EXPR lhs_with_tf = new_lhs_stationary.addTerm(TIME_PREDICATE, constants, objects)
 										.addTerm(future_PREDICATE, constants, objects);
