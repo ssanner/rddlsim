@@ -207,11 +207,13 @@ public class HOPTranslate extends Translate implements Policy {
 								Map<LVAR, LCONST> subs = getSubs( cpf._exprVarName._alTerms, terms );
 								EXPR new_lhs_stationary = cpf._exprVarName.substitute( subs, constants, objects );
 								EXPR new_rhs_stationary = cpf._exprEquals.substitute(subs, constants, objects);
+								System.out.println(new_lhs_stationary);// + " " + new_rhs_stationary );
 								
 								EXPR lhs_with_tf = new_lhs_stationary.addTerm(TIME_PREDICATE, constants, objects)
 										.addTerm(future_PREDICATE, constants, objects);
 								EXPR rhs_with_tf = new_rhs_stationary.addTerm(TIME_PREDICATE, constants, objects)
 										.addTerm(future_PREDICATE, constants, objects);
+//								System.out.println(lhs_with_tf + " " + rhs_with_tf );
 								
 								time_terms_indices.stream().forEach( new Consumer< Integer >() {
 									@Override
@@ -255,7 +257,7 @@ public class HOPTranslate extends Translate implements Policy {
 																		GRBVar rhs_var = rhs_future.getGRBConstr( 
 																				GRB.EQUAL, grb_model, constants, objects, type_map);
 																		
-																		System.out.println( lhs_future.toString()+"="+rhs_future.toString() );
+//																		System.out.println( lhs_future.toString()+"="+rhs_future.toString() );
 																		final String nam = RDDL.EXPR.getGRBName(lhs_future)+"="+RDDL.EXPR.getGRBName(rhs_future);
 //																		System.out.println(nam);;
 																		
@@ -380,6 +382,7 @@ public class HOPTranslate extends Translate implements Policy {
 				.addTerm( future_PREDICATE, constants, objects);
 		
 		GRBLinExpr all_sum = new GRBLinExpr();
+		System.out.println(non_stationary);
 		
 		future_TERMS.parallelStream().forEach( new Consumer<LCONST>() {
 			@Override
@@ -390,7 +393,7 @@ public class HOPTranslate extends Translate implements Policy {
 						final EXPR subs_tf = non_stationary.substitute( Collections.singletonMap( TIME_PREDICATE, time_term ), 
 								constants, objects)
 								.substitute( Collections.singletonMap( future_PREDICATE, future_term ),constants, objects);
-						System.out.println( subs_tf );//"Reward_" + time_term + "_" + future_term );
+//						System.out.println( subs_tf );//"Reward_" + time_term + "_" + future_term );
 						
 						synchronized( grb_model ){
 							GRBVar this_future_var = subs_tf.getGRBConstr( GRB.EQUAL, grb_model, constants, objects, type_map);
@@ -461,6 +464,7 @@ public class HOPTranslate extends Translate implements Policy {
 				EXPR non_stationary_pvar_expr = stationary_pvar_expr
 						.addTerm( TIME_PREDICATE, constants, objects )
 						.addTerm( future_PREDICATE, constants, objects);
+				System.out.println( p+" "+terms );
 				
 				for( int future_id = 0 ; future_id < num_futures; ++future_id ){
 					EXPR this_future_init_state = non_stationary_pvar_expr
@@ -474,7 +478,7 @@ public class HOPTranslate extends Translate implements Policy {
 					
 					GRBConstr this_constr = grb_model.addConstr( lhs_var, GRB.EQUAL, rhs_var, nam );
 					
-					System.out.println( this_future_init_state+" "+rhs_expr );
+//					System.out.println( this_future_init_state+" "+rhs_expr );
 //					System.out.println( nam );
 					
 //					System.out.println( this_constr.get(StringAttr.ConstrName) ); 
