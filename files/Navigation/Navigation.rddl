@@ -1,0 +1,75 @@
+//////////////////////////////////////
+//Buser.rddl
+//
+//Author:Buser
+//////////////////////////////////////
+
+domain Navigation_Problem{
+
+	requirements = { 
+		reward-deterministic 
+	};
+
+	types {
+		loc: object;
+	};
+	
+	pvariables {
+	
+		// Constant
+		MINMAZEBOUND(loc): { non-fluent, real, default = -1.0 };
+		LOWMAZEBOUND(loc): { non-fluent, real, default = 0.0 };
+		MAXMAZEBOUND(loc): { non-fluent, real, default = 10.0 };
+		MINACTIONBOUND(loc): { non-fluent, real, default = -0.5 };
+		MAXACTIONBOUND(loc): { non-fluent, real, default = 0.5 };
+		MINOBSBOUND(loc): { non-fluent, real, default = 3.0 };
+		MAXOBSBOUND(loc): { non-fluent, real, default = 6.0 };
+		GOAL(loc): { non-fluent, real, default = 9.5 };
+		PENALTY: {non-fluent, real, default = 1000000.0 };
+		
+		//State
+		inJail: {interm-fluent, bool };
+		location(loc): {state-fluent, real, default = 0.0 };
+				
+		//Action
+		move(loc): { action-fluent, real, default = 0.0 };
+	};
+	
+	cpfs {
+		location'(?l) = if(inJail) then -1 else location(?l) + move(?l);
+		inJail = forall_{?l:loc}[(location(?l) + move(?l) >= MINOBSBOUND(?l)) ^ (location(?l) + move(?l) <= MAXOBSBOUND(?l))];
+	};
+	
+	reward = - (sum_{?l: loc} [if(location(?l) >= LOWMAZEBOUND(?l) ^ location(?l) <= MAXMAZEBOUND(?l)) then abs[GOAL(?l) - location(?l)] else PENALTY]);
+								
+	state-action-constraints {
+		forall_{?l:loc} move(?l)<=MAXACTIONBOUND(?l);
+		forall_{?l:loc} move(?l)>=MINACTIONBOUND(?l);
+		forall_{?l:loc} location(?l)<=MAXMAZEBOUND(?l);
+		forall_{?l:loc} location(?l)>=MINMAZEBOUND(?l);
+	};
+
+}
+
+non-fluents Navigation_non {
+	domain = Navigation_Problem;
+	objects{
+		loc: {x,y};
+	};
+	non-fluents {
+		MINMAZEBOUND(x) = -1.0;
+	};
+}
+
+instance is1{
+	domain = Navigation_Problem;
+	non-fluents = Navigation_non;
+	init-state{
+		location(x) = 0.0;
+		location(y) = 0.0;
+	};
+	max-nondef-actions = 2;
+	horizon = 100;
+	discount = 1.0;
+}
+
