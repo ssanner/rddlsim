@@ -66,7 +66,7 @@ public class StochasticNavigationPolicy extends Policy {
 				RDDL.PVARIABLE_ACTION_DEF action_def = (RDDL.PVARIABLE_ACTION_DEF)pvar_def;
 				
 				Object value = null;
-				if (_random.nextUniform(0d, 1d) < 0.5d) {
+				if (_random.nextUniform(0d, 1d) < 0.3d) {
 					value=0.0;
 					continue;
 					//System.out.println("DEFAULT");
@@ -114,15 +114,15 @@ public class StochasticNavigationPolicy extends Policy {
 		double max_bound=0;
 		double location=0;
 		
-		if(s.getPVariableAssign(new PVAR_NAME("MINMAZEBOUND"), terms) instanceof Double){
-			min_bound = (double) s.getPVariableAssign(new PVAR_NAME("MINMAZEBOUND"), terms);
+		if(s.getPVariableAssign(new PVAR_NAME("MINACTIONBOUND"), terms) instanceof Double){
+			min_bound = (double) s.getPVariableAssign(new PVAR_NAME("MINACTIONBOUND"), terms);
 		}else{
-			min_bound = (double)(int) s.getPVariableAssign(new PVAR_NAME("MINMAZEBOUND"), terms);
+			min_bound = (double)(int) s.getPVariableAssign(new PVAR_NAME("MINACTIONBOUND"), terms);
 		}
-		if(s.getPVariableAssign(new PVAR_NAME("MAXMAZEBOUND"), terms) instanceof Double){
-			max_bound = (double) s.getPVariableAssign(new PVAR_NAME("MAXMAZEBOUND"), terms);
+		if(s.getPVariableAssign(new PVAR_NAME("MAXACTIONBOUND"), terms) instanceof Double){
+			max_bound = (double) s.getPVariableAssign(new PVAR_NAME("MAXACTIONBOUND"), terms);
 		}else{
-			max_bound = (double)(int) s.getPVariableAssign(new PVAR_NAME("MAXMAZEBOUND"), terms);
+			max_bound = (double)(int) s.getPVariableAssign(new PVAR_NAME("MAXACTIONBOUND"), terms);
 		}
 		if( s.getPVariableAssign(new PVAR_NAME("location"), terms) instanceof Double ){
 			location = (double) s.getPVariableAssign(new PVAR_NAME("location"), terms);
@@ -130,30 +130,17 @@ public class StochasticNavigationPolicy extends Policy {
 			location = (double)(int) s.getPVariableAssign(new PVAR_NAME("location"), terms);
 		}
 		Random random = new Random();
-		double epsilon = 0.3;
 		double output=0.0;
-		if(random.nextDouble()>0.3){
-			output = -0.1 + (0.5 +0.1) * random.nextDouble();
-		}
-		else{
-			output = -MAX_REAL_VALUE + (MAX_REAL_VALUE +MAX_REAL_VALUE) * random.nextDouble();
+		double epsilon=0.3;
+		if(random.nextDouble()>0.5){
+			output = 0.15 + random.nextGaussian() * 0.15;
+		}else{
+			output = min_bound+random.nextDouble()*(max_bound-min_bound);
 		}
 		
-		if((output+location)<min_bound||(output+location)>max_bound){
-			return 0.0;
-		}else{
-			return output;
-		}
+		if(output>max_bound){output=max_bound;}
+		if(output<min_bound){output=min_bound;}
+		return output;
 	
-	}
-	
-	public double triangularDistribution(double a, double b, double c) {
-	    double F = (c - a) / (b - a);
-	    double rand = Math.random();
-	    if (rand < F) {
-	        return a + Math.sqrt(rand * (b - a) * (c - a));
-	    } else {
-	        return b - Math.sqrt((1 - rand) * (b - a) * (b - c));
-	    }
 	}
 }

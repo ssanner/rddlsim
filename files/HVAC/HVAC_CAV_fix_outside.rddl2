@@ -37,7 +37,7 @@ domain hvac_cav_fix{
   		//State Variable
   		TEMP(space) 			: { state-fluent, real, default = 15.0 };	//Temperature of the space
 		AIR_VOLUME(space)  		: { state-fluent, real, default = 2.0};//State Variable to indicate if the Air is on; used in visualization
-		round 					: { state-fluent, int, default = 0 };	// The current round 
+		round 					: { interm-fluent, int, default = 0 };	// The current round 
   		//Action
   		AIR(space) 			 	: { action-fluent, bool, default = false }; //Indicate if the HVAC System is open/closed for the room - Constant Air Volume System
 	};
@@ -49,7 +49,7 @@ domain hvac_cav_fix{
  			 + sum_{?p : space} ((ADJ(?s, ?p) | ADJ(?p, ?s)) * (TEMP(?p) - TEMP(?s)) / R_WALL(?s, ?p))
  			 + ADJ_OUTSIDE(?s)*(TEMP_OUTSIDE(?s) - TEMP(?s))/ R_OUTSIDE(?s) 
  			 + ADJ_HALL(?s)*(TEMP_HALL(?s)-TEMP(?s))/R_HALL(?s));    		
-		round' = round + 1;				// Update the round
+		round = round + 1;				// Update the round
 		AIR_VOLUME'(?s) = if(AIR(?s)) then AIR_MAX(?s) else 0.0;	//Record the Action in the room
 		};
 

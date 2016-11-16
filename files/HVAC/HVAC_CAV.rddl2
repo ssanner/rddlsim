@@ -82,6 +82,6 @@ instance inst_hvac_cav{
 	domain = hvac_cav;
 	non-fluents = nf_hvac_cav;
 
-	horizon = 40;
+	horizon = 100;
 	discount = 0.9;
 }
