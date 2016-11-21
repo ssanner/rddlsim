@@ -70,6 +70,7 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 	private static final TYPE_NAME TIME_TYPE = new TYPE_NAME( "time" );
 	protected static final boolean OUTPUT_LP_FILE = false;
 	private static final boolean GRB_LOGGING_ON = false;
+	protected static final boolean RECOVER_INFEASIBLE = true;
 	private double TIME_LIMIT_MINS = 10; 
 	
 	protected RDDL rddl_obj;
@@ -217,7 +218,7 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 	}
 
 	public Map<EXPR, Double> doPlanInitState( ) throws Exception{
-		return doPlan( getSubsWithDefaults(rddl_state), true ); 
+		return doPlan( getSubsWithDefaults(rddl_state), RECOVER_INFEASIBLE ); 
 	}
 
 	public Map< EXPR, Double > doPlan(  HashMap<PVAR_NAME, HashMap<ArrayList<LCONST>, Object>> subs ,
@@ -239,7 +240,7 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 			if( recover ){ //error_code == GRB.ERROR_OUT_OF_MEMORY && recover ){
 				System.out.println("cleaning up and retrying");
 				handleOOM( static_grb_model );
-				return doPlan( subs, false );
+				return doPlan( subs, RECOVER_INFEASIBLE );
 			}else{
 				throw exc;
 			}
@@ -1121,7 +1122,7 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 		}
 		
 		try {
-			Map<EXPR, Double> ret_expr = doPlan( subs, true );
+			Map<EXPR, Double> ret_expr = doPlan( subs, RECOVER_INFEASIBLE );
 			ArrayList<PVAR_INST_DEF> ret = getRootActions(ret_expr);
 			
 //			try{

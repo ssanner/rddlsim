@@ -688,9 +688,11 @@ public class EmergencyDomainDataReelElement extends DataReelElement {
 					.addTerm(future_predicate, constants, objects);
 	}
 	
-	public void setInState( final State s ) throws EvalException{
+	public void setInState( final State s , final boolean accumulate_days) throws EvalException{
 		s.clearIntermFluents();
-		s.setPVariableAssign( currentCallTimePvarName, emptySubstitution, timeToDouble(this.callTime, this.callDate) );
+		final double t = timeToDouble(this.callTime, this.callDate);
+		s.setPVariableAssign( currentCallTimePvarName, emptySubstitution,
+				accumulate_days ? t : (t%24) );
 		s.setPVariableAssign( currentCallPvarName, xPosSubstitution, this.callX );
 		s.setPVariableAssign( currentCallPvarName, yPosSubstitution, this.callY );
 		

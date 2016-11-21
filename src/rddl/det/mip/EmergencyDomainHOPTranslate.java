@@ -268,9 +268,9 @@ public class EmergencyDomainHOPTranslate extends HOPTranslate {
 				if( step == 0 || !randomize_test ){
 					//copy back next state of exogenous vars
 					EmergencyDomainDataReelElement exo_thing = reel.getNextTestingInstance();
-					exo_thing.setInState( rddl_state );
+					exo_thing.setInState( rddl_state , true);
 				}else{
-					stored_next_thing.setInState( rddl_state );
+					stored_next_thing.setInState( rddl_state, true );
 				}
 				System.out.println( "Next State : " + rddl_state );
 				

@@ -481,7 +481,7 @@ public class HOPTranslate extends Translate implements Policy {
 					
 					GRBConstr this_constr = grb_model.addConstr( lhs_var, GRB.EQUAL, rhs_var, nam );
 					
-//					System.out.println( this_future_init_state+" "+rhs_expr );
+					System.out.println( this_future_init_state+" "+rhs_expr );
 //					System.out.println( nam );
 					
 //					System.out.println( this_constr.get(StringAttr.ConstrName) ); 
@@ -960,7 +960,7 @@ public class HOPTranslate extends Translate implements Policy {
 			if( recover ){//error_code == GRB.ERROR_OUT_OF_MEMORY && recover ){
 //				cleanUp(static_grb_model);
 				handleOOM( static_grb_model );
-				return doPlan( subs, true );//can cause infinite loop if set to true
+				return doPlan( subs, RECOVER_INFEASIBLE );//can cause infinite loop if set to true
 			}else{
 				throw exc;
 			}
