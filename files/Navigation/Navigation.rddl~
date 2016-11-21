@@ -19,8 +19,8 @@ domain Navigation_Problem{
 		// Constant
 		MINMAZEBOUND(dim): { non-fluent, real, default = 0.0 };
 		MAXMAZEBOUND(dim): { non-fluent, real, default = 10.0 };
-		MINACTIONBOUND(dim): { non-fluent, real, default = -0.5 };
-		MAXACTIONBOUND(dim): { non-fluent, real, default = 0.5 };
+		MINACTIONBOUND(dim): { non-fluent, real, default = -1.0 };
+		MAXACTIONBOUND(dim): { non-fluent, real, default = 1.0 };
 		MINMUDBOUND(dim): { non-fluent, real, default = 3.0 };
 		MAXMUDBOUND(dim): { non-fluent, real, default = 6.0 };
 		GOAL(dim): { non-fluent, real, default = 10.0 };
@@ -40,9 +40,9 @@ domain Navigation_Problem{
 	
 	cpfs {
 		inMud = forall_{?l:dim}[(location(?l) >= MINMUDBOUND(?l)) ^ (location(?l) <= MAXMUDBOUND(?l))];
-		mudCenter(?l) = (MAXMUDBOUND(?l)-MINMUDBOUND(?l))/2.0;
+		mudCenter(?l) = (MAXMUDBOUND(?l)+MINMUDBOUND(?l))/2.0;
 		proposedLoc(?l) = location(?l) + move(?l);
-		location'(?l) = if(inMud) then location(?l) + move(?l)*pow[abs[location(?l)-mudCenter(?l)]/(MAXMUDBOUND(?l)-mudCenter(?l)),2] 
+		location'(?l) = if(inMud) then location(?l) + move(?l)*pow[(location(?l)-mudCenter(?l))/(MAXMUDBOUND(?l)-mudCenter(?l)),2] 
 				else (if(proposedLoc(?l)<=MAXMAZEBOUND(?l) ^ proposedLoc(?l)>=MINMAZEBOUND(?l)) then proposedLoc(?l) 
 					else (if(proposedLoc(?l)>MAXMAZEBOUND(?l)) then MAXMAZEBOUND(?l) else MINMAZEBOUND(?l)));
 	};

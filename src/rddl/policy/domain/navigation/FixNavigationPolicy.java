@@ -1,6 +1,7 @@
 package rddl.policy.domain.navigation;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import rddl.EvalException;
 import rddl.RDDL;
@@ -9,8 +10,10 @@ import rddl.RDDL.LCONST;
 import rddl.RDDL.PVARIABLE_DEF;
 import rddl.RDDL.PVAR_INST_DEF;
 import rddl.RDDL.PVAR_NAME;
+import rddl.RDDL.TYPE_NAME;
 import rddl.policy.Policy;
 import util.Permutation;
+import java.lang.Math;
 
 public class FixNavigationPolicy extends Policy{
 	public int MAX_CONCURRENT_ACTIONS = 20;
@@ -56,7 +59,7 @@ public class FixNavigationPolicy extends Policy{
 					continue;
 				}  
 				
-				value = 0.5;
+				value = getReasonableValue(s, action_def._typeRange, terms);
 				actions.add(new PVAR_INST_DEF(p._sPVarName, value, terms));
 				try {
 					s.checkStateActionConstraints(actions);
@@ -90,5 +93,46 @@ public class FixNavigationPolicy extends Policy{
 		System.out.println("**Action: " + actions);
 		
 		return actions;
+	}
+	
+	private Object getReasonableValue(State s, TYPE_NAME _typeRange, ArrayList<LCONST> terms) throws EvalException {
+		double min_bound=0;
+		double max_bound=0;
+		double location=0;
+		double goal=0;
+		double output=0;
+		
+		if(s.getPVariableAssign(new PVAR_NAME("MINACTIONBOUND"), terms) instanceof Double){
+			min_bound = (double) s.getPVariableAssign(new PVAR_NAME("MINACTIONBOUND"), terms);
+		}else{
+			min_bound = (double)(int) s.getPVariableAssign(new PVAR_NAME("MINACTIONBOUND"), terms);
+		}
+		if(s.getPVariableAssign(new PVAR_NAME("MAXACTIONBOUND"), terms) instanceof Double){
+			max_bound = (double) s.getPVariableAssign(new PVAR_NAME("MAXACTIONBOUND"), terms);
+		}else{
+			max_bound = (double)(int) s.getPVariableAssign(new PVAR_NAME("MAXACTIONBOUND"), terms);
+		}
+		if( s.getPVariableAssign(new PVAR_NAME("location"), terms) instanceof Double ){
+			location = (double) s.getPVariableAssign(new PVAR_NAME("location"), terms);
+		}else{
+			location = (double)(int) s.getPVariableAssign(new PVAR_NAME("location"), terms);
+		}
+		
+		if( s.getPVariableAssign(new PVAR_NAME("GOAL"), terms) instanceof Double ){
+			goal = (double) s.getPVariableAssign(new PVAR_NAME("GOAL"), terms);
+		}else{
+			goal = (double)(int) s.getPVariableAssign(new PVAR_NAME("GOAL"), terms);
+		}
+		
+		if(Math.abs(goal-location)>=1){
+			output=1;
+		}else{
+			output=goal-location;
+		}
+		
+		if(output>max_bound){output=max_bound;}
+		if(output<min_bound){output=min_bound;}
+		return output;
+	
 	}
 }

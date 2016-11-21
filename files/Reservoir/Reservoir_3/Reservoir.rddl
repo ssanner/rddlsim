@@ -1,0 +1,105 @@
+//////////////////////////////////////
+//Reservior.rddl
+//
+//Auther:GA WU
+//////////////////////////////////////
+
+domain Reservoir_Problem{
+
+	requirements = { 
+		reward-deterministic 
+	};
+
+	types {
+		id: object;
+	};
+	
+	pvariables {
+	
+		// Constant
+		MAXCAP(id): { non-fluent, real, default = 100.0 };
+		HIGH_BOUND(id): { non-fluent, real, default = 80.0 };
+		LOW_BOUND(id): { non-fluent, real, default = 20.0 };
+		RAIN(id): { non-fluent ,real, default = 5.0 };
+		DOWNSTREAM(id,id): {non-fluent ,bool, default = false };
+		DOWNTOSEA(id): {non-fluent, bool, default = false };
+		BIGGESTMAXCAP: {non-fluent, real, default = 1000};
+
+		//Interm
+		vaporated(id): {interm-fluent, real};
+		
+		//State
+		rlevel(id): {state-fluent, real, default = 50.0 };
+		
+		//Action
+		flow(id): { action-fluent, real, default = 0.0 };
+	};
+	
+	cpfs {
+		vaporated(?r) = (1.0/2.0)*sin[rlevel(?r)/BIGGESTMAXCAP]*rlevel(?r);
+		rlevel'(?r) = rlevel(?r) + RAIN(?r)- vaporated(?r) - flow(?r) + sum_{?r2: id}[DOWNSTREAM(?r2,?r)*flow(?r2)];
+
+	};
+	
+	reward = sum_{?r: id} [if (rlevel'(?r)>=LOW_BOUND(?r) ^ (rlevel'(?r)<=HIGH_BOUND(?r)))
+									then 0
+ 									else if (rlevel'(?r)<=LOW_BOUND(?r))
+ 										then (-5)*(LOW_BOUND(?r)-rlevel'(?r))
+										else (-100)*(rlevel'(?r)-HIGH_BOUND(?r))]+sum_{?r2:id}[abs[((HIGH_BOUND(?r2)+LOW_BOUND(?r2))/2.0)-rlevel'(?r2)]*(-0.1)];
+								
+	state-action-constraints {
+	
+		forall_{?r:id} flow(?r)<=rlevel(?r);
+		forall_{?r:id} rlevel(?r)<=MAXCAP(?r);
+		//forall_{?r:id} flow(?r)<=sum_{?r2: id}[(MAXCAP(?r2)-rlevel(?r2))*DOWNSTREAM(?r,?r2)]+100000*DOWNTOSEA(?r);
+		forall_{?r:id} flow(?r)>=0;
+	};
+
+}
+
+non-fluents Reservoir_non {
+	domain = Reservoir_Problem;
+	objects{
+		id: {t1,t2,t3,t4,t5,t6,t7,t8};
+	};
+	non-fluents {
+		RAIN(t1) = 5.0;
+		RAIN(t2) = 3.0;
+		RAIN(t3) = 9.0;
+		RAIN(t4) = 7.0;
+		RAIN(t5) = 15.0;
+		RAIN(t6) = 13.0;
+		RAIN(t7) = 25.0;
+		RAIN(t8) = 30.0;
+		MAXCAP(t3) = 200.0;
+		LOW_BOUND(t3) = 40.0;
+		HIGH_BOUND(t3) = 180.0;
+		MAXCAP(t4) = 300.0;
+		LOW_BOUND(t4) = 60.0;
+		HIGH_BOUND(t4) = 280.0;
+		MAXCAP(t5) = 400.0;
+		LOW_BOUND(t5) = 60.0;
+		HIGH_BOUND(t5) = 380.0;
+		MAXCAP(t6) = 500.0;
+		LOW_BOUND(t6) = 80.0;
+		HIGH_BOUND(t6) = 480.0;
+		MAXCAP(t7) = 800.0;
+		LOW_BOUND(t7) = 100.0;
+		HIGH_BOUND(t7) = 780.0;
+		MAXCAP(t8) = 1000.0;
+		LOW_BOUND(t8) = 120.0;
+		HIGH_BOUND(t8) = 980.0;
+		DOWNSTREAM(t1,t6);DOWNSTREAM(t2,t3);DOWNSTREAM(t3,t5);DOWNSTREAM(t4,t8);DOWNSTREAM(t5,t7);DOWNSTREAM(t6,t7);DOWNSTREAM(t7,t8);DOWNTOSEA(t8);
+	};
+}
+
+instance is1{
+	domain = Reservoir_Problem;
+	non-fluents = Reservoir_non;
+	init-state{
+		rlevel(t1) = 75.0;
+	};
+	max-nondef-actions = 4;
+	horizon = 10;
+	discount = 1.0;
+}

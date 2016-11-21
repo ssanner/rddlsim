@@ -32,6 +32,15 @@ public class Help {
 		return sb.toString();
 	}
 	
+	public static String getRwdExtParaDescription(){
+		StringBuilder sb = new StringBuilder("\n*********************************************************");		
+		sb.append("\n>>> Parameter Description");
+		sb.append("\n*********************************************************");
+		sb.append("\n[1]: -F: Log file or directory that contains Log file");
+		sb.append("\n*********************************************************");
+		return sb.toString();
+	}
+	
 	public static String getGraphParaDescription(){
 		StringBuilder sb = new StringBuilder("\n*********************************************************");		
 		sb.append("\n>>> Parameter Description");

@@ -82,7 +82,7 @@ public class ValueVectorDisplay extends StateViz {
 	public void display(State s, int time) {
 		// TODO Auto-generated method stub
 		String vector = getStateDescription(s);
-		System.out.println(vector);
+		//System.out.println(vector);
 		if(_bSuppressWriteFile == true){
 			if(_bSuppressActionFluents == true){
 				_pLabelOut.println(vector);

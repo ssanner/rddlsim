@@ -66,7 +66,7 @@ public class StochasticNavigationPolicy extends Policy {
 				RDDL.PVARIABLE_ACTION_DEF action_def = (RDDL.PVARIABLE_ACTION_DEF)pvar_def;
 				
 				Object value = null;
-				if (_random.nextUniform(0d, 1d) < 0.3d) {
+				if (_random.nextUniform(0d, 1d) < 0.1d) {
 					value=0.0;
 					continue;
 					//System.out.println("DEFAULT");
@@ -132,8 +132,8 @@ public class StochasticNavigationPolicy extends Policy {
 		Random random = new Random();
 		double output=0.0;
 		double epsilon=0.3;
-		if(random.nextDouble()>0.5){
-			output = 0.15 + random.nextGaussian() * 0.15;
+		if(random.nextDouble()>epsilon){
+			output = 0.5 + random.nextGaussian() * 0.3;
 		}else{
 			output = min_bound+random.nextDouble()*(max_bound-min_bound);
 		}

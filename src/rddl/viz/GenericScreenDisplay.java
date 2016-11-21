@@ -54,10 +54,10 @@ public class GenericScreenDisplay extends StateViz {
 			for (PVAR_NAME p : e.getValue()) {
 
 				// Show interms only if they are derived
-				PVARIABLE_DEF def = s._hmPVariables.get(p._pvarUnprimed);
-				if (def instanceof PVARIABLE_INTERM_DEF
-					&& !((PVARIABLE_INTERM_DEF)def)._bDerived)
-					continue;
+//				PVARIABLE_DEF def = s._hmPVariables.get(p._pvarUnprimed);
+//				if (def instanceof PVARIABLE_INTERM_DEF
+//					&& !((PVARIABLE_INTERM_DEF)def)._bDerived)
+//					continue;
 				String var_type = e.getKey();
 				var_type = var_type.replace("interm", "derived");
 				

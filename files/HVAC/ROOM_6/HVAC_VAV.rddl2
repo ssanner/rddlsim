@@ -1,0 +1,115 @@
+//Room Temperature Control Simulation
+//Here we define space as object, which includes rooms, hallways, and outside of the building.
+//Out objective is to save the cost of using HVAC system, while controlling the room temperature within a certain desired range.
+//We use HVAC system to control the temperature of each room, by turning the HVAC (heating) air on/off
+//Reward function is to calculate the cost to providing cooling/warming control.
+//There will also be thermal transfer both between each space, which will impact the room temperature
+//The amount of heat transferred depends on the temperature difference and the Thermal Resistance of the wall between the spaces
+//We assigns a penalty that will be applied if the room temperature goes beyond the desired temperature range
+
+domain hvac_vav_fix{
+	  types {
+		  space : object;
+  	};
+
+  	pvariables {
+  		//Constants
+  		ADJ(space, space)    : { non-fluent, bool, default = false };	//Indicate if two rooms are adjacent to each other
+  		ADJ_OUTSIDE(space)		: { non-fluent, bool, default = false };	//Indicate if the room is adjacent to the outside
+  		ADJ_HALL(space)			: { non-fluent, bool, default = false };    //Indicate if the room is adjacent to the hallway
+  		R_OUTSIDE(space)		: { non-fluent, real, default = 4};		//Thermal Resistance of the wall between the room and the outside; used to calculate the heat transfered out
+    	R_HALL(space)			: { non-fluent, real, default = 2};		//Thermal Resistance of the wall between the room and the hallway; used to calculate the heat transfered out	
+  		R_WALL(space, space) : { non-fluent, real, default = 1.5 };	//Thermal Resistance of the wall between two rooms
+  		IS_ROOM(space)		 : { non-fluent, bool, default = false };	//Indicate if the space is a room; otherwise it could be a hallway or outside
+  		CAP(space) 			 : { non-fluent, real, default = 80 }; //Heat Capacity of the room
+  		CAP_AIR 			 : { non-fluent, real, default = 1.006 }; //Heat Capacity of the air; unit of kj/(kg*C)
+  		COST_AIR 			 : { non-fluent, real, default = 1 };	//Cost of heated air from HVAC; unit of $/kg
+  		TIME_DELTA 			 : { non-fluent, real, default = 1 }; //Delta time used to find change in temperature；unit of min
+  		TEMP_AIR 			 : { non-fluent, real, default = 40 }; //Set a fixed temperature for HVAC air
+  		TEMP_UP(space)		 : { non-fluent, real, default = 23.5 }; //Set an upper bound for the desired temperature range
+  		TEMP_LOW(space)		 : { non-fluent, real, default = 20.0 }; //Set a lower bound for the desired temperature range
+  		TEMP_OUTSIDE(space)		: { non-fluent, real, default = 6.0 }; //Set the temperature of the outside; used to calculate the temperature difference, and then the amount of heat tranfer
+  		TEMP_HALL(space)		: { non-fluent, real, default = 10.0 }; //Set the temperature of the hallway; used to calculate the temperature difference, and then the amount of heat tranfer
+  		PENALTY 			 : { non-fluent, real, default = 20000 }; //A penalty applied when the room temperature goes beyond the desired range
+		AIR_MAX(space)		 : { non-fluent, real, default = 10.0 }; //The Maximum amount of air entering the room per min, if the HVAC is Variable Air Volume
+		
+		//TEMP_VAR			 : { non-fluent, real, default = 7 };	//Variance of outside temperature
+		//ROUNDS_PER_CYCLE   : { non-fluent, int, default =  };
+			
+  		//State Variable
+  		TEMP(space) 	     : { state-fluent, real, default = 10.0 };	//Temperature of the space
+  		AIR_VOLUME(space)  	 : { state-fluent, real, default = 2.0};//State Variable to indicate if the Air is on; used in visualization
+  		//round 				 : { state-fluent, int, default = 0 };// The current round 
+		
+  		//Action
+  		AIR(space)		     : { action-fluent, real, default = 0.0 }; //The amount (kg/min) of air entering from HVAC System - Variable Air Volume System
+  	};
+
+  	cpfs {
+  		//State
+  		TEMP'(?s) = TEMP(?s) + TIME_DELTA/CAP(?s) * 
+ 			 (AIR(?s) * CAP_AIR * (TEMP_AIR - TEMP(?s)) * IS_ROOM(?s) 
+  			+ sum_{?p : space} ((ADJ(?s, ?p) | ADJ(?p, ?s)) * (TEMP(?p) - TEMP(?s)) / R_WALL(?s, ?p))
+  			+ ADJ_OUTSIDE(?s)*(TEMP_OUTSIDE(?s) - TEMP(?s))/ R_OUTSIDE(?s) 
+ 			+ ADJ_HALL(?s)*(TEMP_HALL(?s)-TEMP(?s))/R_HALL(?s));    
+		//round' = round + 1;	// Update the round
+		AIR_VOLUME'(?s) = AIR(?s) * IS_ROOM(?s); //Record the Action in the room
+		};
+		
+
+	reward = - (sum_{?s : space} IS_ROOM(?s)*(AIR(?s) * COST_AIR
+  			    + ((TEMP(?s) < TEMP_LOW(?s)) | (TEMP(?s) > TEMP_UP(?s))) * PENALTY) + 10.0*abs[((TEMP_UP(?s) + TEMP_LOW(?s))/2.0) - TEMP(?s)]);
+
+
+    action-preconditions{
+			forall_{?s : space} [ AIR(?s) >= 0 ];
+			forall_{?s : space} [ AIR(?s) <= AIR_MAX(?s)];
+		};
+}
+
+
+non-fluents nf_hvac_vav_fix{
+	domain = hvac_vav_fix;
+
+	objects{
+		space : { r1, r2, r3, r4, r5, r6 }; //Three rooms, one hallway, and the outside world
+	};
+
+	non-fluents {
+		//Define rooms
+		IS_ROOM(r1) = true;
+		IS_ROOM(r2) = true;
+		IS_ROOM(r3) = true;
+		IS_ROOM(r4) = true;
+		IS_ROOM(r5) = true;
+		IS_ROOM(r6) = true;
+		
+		//Define the adjacency
+		ADJ(r1, r2) = true;
+		ADJ(r1, r4) = true;
+		ADJ(r2, r3) = true;
+		ADJ(r2, r5) = true;
+		ADJ(r3, r6) = true;
+		ADJ(r4, r5) = true;
+		ADJ(r5, r6) = true;
+		
+		ADJ_OUTSIDE(r1) = true;
+		ADJ_OUTSIDE(r3) = true;
+		ADJ_OUTSIDE(r4) = true;
+		ADJ_OUTSIDE(r6) = true;
+		ADJ_HALL(r1) = true;
+		ADJ_HALL(r2) = true;
+		ADJ_HALL(r3) = true;
+		ADJ_HALL(r4) = true;
+		ADJ_HALL(r5) = true;
+		ADJ_HALL(r6) = true;
+	};
+}
+
+instance inst_hvac_vav_fix{
+	domain = hvac_vav_fix;
+	non-fluents = nf_hvac_vav_fix;
+
+	horizon = 10;
+	discount = 1.0;
+}
