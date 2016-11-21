@@ -60,36 +60,19 @@ domain Reservoir_Problem{
 non-fluents Reservoir_non {
 	domain = Reservoir_Problem;
 	objects{
-		id: {t1,t2,t3,t4,t5,t6,t7,t8};
+		id: {t1,t2,t3};
 	};
 	non-fluents {
 		RAIN(t1) = 5.0;
-		RAIN(t2) = 3.0;
-		RAIN(t3) = 9.0;
-		RAIN(t4) = 7.0;
-		RAIN(t5) = 15.0;
-		RAIN(t6) = 13.0;
-		RAIN(t7) = 25.0;
-		RAIN(t8) = 30.0;
-		MAXCAP(t3) = 200.0;
+		RAIN(t2) = 10.0;
+		RAIN(t3) = 20.0;
+		MAXCAP(t2) = 200.0;
+		LOW_BOUND(t2) = 30.0;
+		HIGH_BOUND(t2) = 180.0;
+		MAXCAP(t3) = 400.0;
 		LOW_BOUND(t3) = 40.0;
-		HIGH_BOUND(t3) = 180.0;
-		MAXCAP(t4) = 300.0;
-		LOW_BOUND(t4) = 60.0;
-		HIGH_BOUND(t4) = 280.0;
-		MAXCAP(t5) = 400.0;
-		LOW_BOUND(t5) = 60.0;
-		HIGH_BOUND(t5) = 380.0;
-		MAXCAP(t6) = 500.0;
-		LOW_BOUND(t6) = 80.0;
-		HIGH_BOUND(t6) = 480.0;
-		MAXCAP(t7) = 800.0;
-		LOW_BOUND(t7) = 100.0;
-		HIGH_BOUND(t7) = 780.0;
-		MAXCAP(t8) = 1000.0;
-		LOW_BOUND(t8) = 120.0;
-		HIGH_BOUND(t8) = 980.0;
-		DOWNSTREAM(t1,t6);DOWNSTREAM(t2,t3);DOWNSTREAM(t3,t5);DOWNSTREAM(t4,t8);DOWNSTREAM(t5,t7);DOWNSTREAM(t6,t7);DOWNSTREAM(t7,t8);DOWNTOSEA(t8);
+		HIGH_BOUND(t3) = 380.0;
+		DOWNSTREAM(t1,t2);DOWNSTREAM(t2,t3);DOWNTOSEA(t3);
 	};
 }
 
