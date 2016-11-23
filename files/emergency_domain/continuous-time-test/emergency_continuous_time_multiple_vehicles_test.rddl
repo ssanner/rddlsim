@@ -11,6 +11,7 @@ domain emergency_continuous_time_multiple_units_test{
 		//state variables
 		currentCallCode(cause) : {state-fluent, bool, default=false};
 		currentCallTime : {state-fluent, real, default=0.0};
+		currentCallTimeOfDay : {state-fluent, real, default=0.0};
 		
 		currentCall(coordinate) : {state-fluent, real, default=0};
 		timeServiceDone(unit) : {state-fluent, real, default=0.0};
@@ -41,6 +42,7 @@ domain emergency_continuous_time_multiple_units_test{
 		fullResponse : {interm-fluent, real};
 		overwhelm : {interm-fluent, bool};
 		gapTime : {interm-fluent, real};
+		nextCallTimeOfDay : {interm-fluent, real};
 		
 		//constants
 		unitHome(unit,coordinate) : {non-fluent, real, default=0.0};
@@ -81,7 +83,14 @@ domain emergency_continuous_time_multiple_units_test{
 		currentCallCode'(?c) = (tempUniformCause >= sum_{?d:cause}[BEFORE(?d,?c)]) ^ (tempUniformCause < 1+sum_{?d:cause}[BEFORE(?d,?c)]);
 			 
 		gapTime = Uniform(0, MAX_INTER_ARRIVAL );
-		currentCallTime' = currentCallTime + gapTime; 
+		
+		nextCallTimeOfDay = if (currentCallTimeOfDay+gapTime >= 24)
+							then currentCallTimeOfDay+gapTime - 24
+							else currentCallTimeOfDay+gapTime;
+						   
+		currentCallTimeOfDay' = nextCallTimeOfDay; 
+						   
+		currentCallTime' = currentCallTime + gapTime;
 		
 		currentCall'(?c) = Uniform( MapLowerBound(?c), MapUpperBound(?c) );//Normal( 0.5*CurrentCallTime )
 		

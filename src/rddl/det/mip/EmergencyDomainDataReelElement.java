@@ -35,6 +35,7 @@ public class EmergencyDomainDataReelElement extends DataReelElement {
 	private static final ArrayList<LCONST> yPosSubstitution = new ArrayList<LCONST>( Collections.singletonList( new OBJECT_VAL("ypos") ) );
 	
 	public static final PVAR_NAME currentCallTimePvarName = new PVAR_NAME("currentCallTime");
+	private static final PVAR_NAME currentCallTimeOfDayPvarName = new PVAR_NAME("currentCallTimeOfDay");
 	public static final PVAR_NAME currentCallPvarName = new PVAR_NAME("currentCall");
 	public static final PVAR_NAME currentCallCodePvarName = new PVAR_NAME("currentCallCode");
 //	public static final PVAR_NAME currentCallRegionPvarName = new PVAR_NAME("currentCallRegion");
@@ -688,11 +689,11 @@ public class EmergencyDomainDataReelElement extends DataReelElement {
 					.addTerm(future_predicate, constants, objects);
 	}
 	
-	public void setInState( final State s , final boolean accumulate_days) throws EvalException{
+	public void setInState( final State s ) throws EvalException{
 		s.clearIntermFluents();
 		final double t = timeToDouble(this.callTime, this.callDate);
-		s.setPVariableAssign( currentCallTimePvarName, emptySubstitution,
-				accumulate_days ? t : (t%24) );
+		s.setPVariableAssign( currentCallTimePvarName, emptySubstitution, t);
+		s.setPVariableAssign( currentCallTimeOfDayPvarName, emptySubstitution, t%24);
 		s.setPVariableAssign( currentCallPvarName, xPosSubstitution, this.callX );
 		s.setPVariableAssign( currentCallPvarName, yPosSubstitution, this.callY );
 		

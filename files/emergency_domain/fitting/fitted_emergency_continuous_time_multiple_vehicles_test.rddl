@@ -12,6 +12,7 @@ domain emergency_continuous_time_multiple_units_test{
 		//state variables
 		currentCallCode(cause) : {state-fluent, bool, default=false};
 		currentCallTime : {state-fluent, real, default=0.0};
+		currentCallTimeOfDay : {state-fluent, real, default=0.0};
 		
 		currentCall(coordinate) : {state-fluent, real, default=0};
 		timeServiceDone(unit) : {state-fluent, real, default=0.0};
@@ -56,7 +57,8 @@ domain emergency_continuous_time_multiple_units_test{
 		fullResponse : {interm-fluent, real};
 		overwhelm : {interm-fluent, bool};
 		gapTime : {interm-fluent, real};
-		nextCallTime : {interm-fluent, real};
+		nextCallTimeOfDay : {interm-fluent, real};
+		
 		
 		//constants
 		unitHome(unit,coordinate) : {non-fluent, real, default=0.0};
@@ -90,9 +92,7 @@ domain emergency_continuous_time_multiple_units_test{
 		//log odds wrt ref category
 		//as learned in multinom()
 		//beta of ref category = 0, logOdds = 0
-		logOdds(?ca) =  oddsIntercept(?ca) + (sum_{?coor:coordinate}[oddsBeta(?coor,?ca)*nextCall(?coor)]) + (oddsBetaTime(?ca) * nextCallTime);
-		// + oddsBetaTime(?ca) * nextCallTime; 
-		//sum_{?coor:coordinate}[oddsBeta(?coor,?ca)*nextCall(?coor)] +
+		logOdds(?ca) =  oddsIntercept(?ca) + (sum_{?coor:coordinate}[oddsBeta(?coor,?ca)*nextCall(?coor)]) + (oddsBetaTime(?ca) * nextCallTimeOfDay);
 		
 		gumbelNoise(?ca)=-ln[-ln[ Uniform(0,1) ]];
 		
@@ -104,18 +104,20 @@ domain emergency_continuous_time_multiple_units_test{
 		//Phi was 0.93~1 so just using exp
 		//Exponential(1/Xb)=-log(uniform(0,1))*Xb
 		
-		gapTime = -ln[Uniform(0,1)]*( 0.341806 - 0.067867*max[0,currentCallTime - 9.01667]-0.066900*max[0,currentCallTime - 16.7833]
+		gapTime = -ln[Uniform(0,1)]*( 0.341806 - 0.067867*max[0,currentCallTimeOfDay - 9.01667]-0.066900*max[0,currentCallTimeOfDay - 16.7833]
 									  -2.551978*max[0,currentCall($ypos) - 64.5834] + 0.076299*max[0,currentCall($ypos) - 65.7576]
-									  +0.069730*max[0,currentCallTime - 3.6]+1.638216*max[0,currentCall($ypos) - 64.7917]
+									  +0.069730*max[0,currentCallTimeOfDay - 3.6]+1.638216*max[0,currentCall($ypos) - 64.7917]
 									  +1.731460*max[0,currentCall($ypos) - 64.5076]-0.881581*max[0,currentCall($ypos) - 64.8674]
-									  -0.426595*max[0,currentCallTime - 23.45]+0.234181*max[0,currentCallTime - 22.8833] );								  
+									  -0.426595*max[0,currentCallTimeOfDay - 23.45]+0.234181*max[0,currentCallTimeOfDay - 22.8833] );								  
 									  
-									  
-		nextCallTime = if (currentCallTime + gapTime >= 24)
-						   then currentCallTime + gapTime - 24
-						   else currentCallTime + gapTime;
 						   
-		currentCallTime' = nextCallTime;
+		nextCallTimeOfDay = if (currentCallTimeOfDay+gapTime >= 24)
+							then currentCallTimeOfDay+gapTime - 24
+							else currentCallTimeOfDay+gapTime;
+						   
+		currentCallTimeOfDay' = nextCallTimeOfDay; 
+						   
+		currentCallTime' = currentCallTime + gapTime;
 		
 		tempCurrentCallComponent(?coor) = Uniform(0.0,1.0);
 
@@ -131,11 +133,11 @@ domain emergency_continuous_time_multiple_units_test{
 		nextCall(?coor) = if (?coor == $ypos)
 						  then sum_{?comp:component}[
 							if (componentIdx(?coor,?comp)==tempComponentIdx(?coor))
-							then Normal( componentBetaIntercept(?coor,?comp)+componentBetaTime(?coor,?comp)*nextCallTime+componentBetaX(?coor,?comp)*nextCall($xpos), componentVar(?coor,?comp) )
+							then Normal( componentBetaIntercept(?coor,?comp)+componentBetaTime(?coor,?comp)*nextCallTimeOfDay+componentBetaX(?coor,?comp)*nextCall($xpos), componentVar(?coor,?comp) )
 							else 0.0 ]
 						  else sum_{?comp:component}[
 							if (componentIdx(?coor,?comp)==tempComponentIdx(?coor))
-							then Normal( componentBetaIntercept(?coor,?comp)+componentBetaTime(?coor,?comp)*nextCallTime, componentVar(?coor,?comp) )
+							then Normal( componentBetaIntercept(?coor,?comp)+componentBetaTime(?coor,?comp)*nextCallTimeOfDay, componentVar(?coor,?comp) )
 							else 0.0 ];
 		
 		currentCall'(?coor) = nextCall(?coor);
@@ -335,7 +337,10 @@ domain emergency_continuous_time_multiple_units_test{
 		forall_{?c:coordinate}[ currentCall(?c) <= MapUpperBound(?c) ];
 		forall_{?c:coordinate}[ currentCall(?c) >= MapLowerBound(?c) ];
 		
-		currentCallTime >= 0; currentCallTime < 24;
+		currentCallTime >= 0; 
+		gapTime > 0; gapTime < 24;
+		currentCallTimeOfDay >= 0; currentCallTimeOfDay < 24;
+		nextCallTimeOfDay >= 0; nextCallTimeOfDay < 24;
 		
 		forall_{?u:unit, ?c:coordinate}[ unitHome(?u,?c) <= MapUpperBound(?c) ];
 		forall_{?u:unit, ?c:coordinate}[ unitHome(?u,?c) >= MapLowerBound(?c) ];
@@ -351,7 +356,7 @@ domain emergency_continuous_time_multiple_units_test{
 		firstResponse >= 0.0; firstResponse <= 1+(sum_{?c:coordinate}[MapUpperBound(?c)-MapLowerBound(?c)])/38.0;
 		fullResponse >= 0.0; fullResponse <= 1+(sum_{?c:coordinate}[MapUpperBound(?c)-MapLowerBound(?c)])/38.0;
 		
-		gapTime > 0; gapTime < 24;
+		
 		
 		forall_{?coor:coordinate,?comp:component}[ componentCDF(?coor,?comp) >= 0 ];
 		forall_{?coor:coordinate,?comp:component}[ componentCDF(?coor,?comp) <= 1 ];
