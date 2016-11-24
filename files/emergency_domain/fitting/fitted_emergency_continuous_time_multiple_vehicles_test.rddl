@@ -57,6 +57,7 @@ domain emergency_continuous_time_multiple_units_test{
 		fullResponse : {interm-fluent, real};
 		overwhelm : {interm-fluent, bool};
 		gapTime : {interm-fluent, real};
+		gapTimeLinearModel : {interm-fluent,real};
 		nextCallTimeOfDay : {interm-fluent, real};
 		
 		
@@ -104,11 +105,12 @@ domain emergency_continuous_time_multiple_units_test{
 		//Phi was 0.93~1 so just using exp
 		//Exponential(1/Xb)=-log(uniform(0,1))*Xb
 		
-		gapTime = -ln[Uniform(0,1)]*( 0.341806 - 0.067867*max[0,currentCallTimeOfDay - 9.01667]-0.066900*max[0,currentCallTimeOfDay - 16.7833]
+		gapTimeLinearModel = ( 0.341806 - 0.067867*max[0,currentCallTimeOfDay - 9.01667]-0.066900*max[0,currentCallTimeOfDay - 16.7833]
 									  -2.551978*max[0,currentCall($ypos) - 64.5834] + 0.076299*max[0,currentCall($ypos) - 65.7576]
 									  +0.069730*max[0,currentCallTimeOfDay - 3.6]+1.638216*max[0,currentCall($ypos) - 64.7917]
 									  +1.731460*max[0,currentCall($ypos) - 64.5076]-0.881581*max[0,currentCall($ypos) - 64.8674]
-									  -0.426595*max[0,currentCallTimeOfDay - 23.45]+0.234181*max[0,currentCallTimeOfDay - 22.8833] );								  
+									  -0.426595*max[0,currentCallTimeOfDay - 23.45]+0.234181*max[0,currentCallTimeOfDay - 22.8833] );
+		gapTime = -ln[Uniform(0,1)]*gapTimeLinearModel;								  
 									  
 						   
 		nextCallTimeOfDay = if (currentCallTimeOfDay+gapTime >= 24)
