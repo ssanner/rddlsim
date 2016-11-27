@@ -6,7 +6,7 @@ non-fluents nf_emergency_continuous_time_multiple_units_test_5 {
 		cause : {Code1Medical,Code3Med,Code3Trauma,EMS,Fire,Hazmat,MassCasualty,
 				 MVA,Other,Rescue,StructureFire,Transport,VehicleFire,WildlandFire};
 		role : {Engine, Ambulance, Ladder, Command};
-		component : {comp1,comp2,comp3,comp4,comp5};
+		component : {comp1,comp2,comp3};
 	};
 	
 	non-fluents {
@@ -136,74 +136,47 @@ non-fluents nf_emergency_continuous_time_multiple_units_test_5 {
 		componentIdx(xpos,comp1)=1;
 		componentIdx(xpos,comp2)=2;
 		componentIdx(xpos,comp3)=3;
-		componentIdx(xpos,comp4)=4;
-		componentIdx(xpos,comp5)=5;
 		
 		componentIdx(ypos,comp1)=1;
 		componentIdx(ypos,comp2)=2;
 		componentIdx(ypos,comp3)=3;
-		componentIdx(ypos,comp4)=4;
-		componentIdx(ypos,comp5)=5;
 		
-		componentCDF(xpos,comp1)=0.0173943;
-		componentCDF(xpos,comp2)=0.2133133;
-		componentCDF(xpos,comp3)=0.2884508;
-		componentCDF(xpos,comp4)=0.9743808;
-		componentCDF(xpos,comp5)=1.0;
+		componentCDF(xpos,comp1)=0.03;
+		componentCDF(xpos,comp2)=0.4;
+		componentCDF(xpos,comp3)=1;
 
-		componentVar(xpos,comp1)=12.7064444521;
-		componentVar(xpos,comp2)=8.88278416;
-		componentVar(xpos,comp3)=0.09139556848;
-		componentVar(xpos,comp4)=0.53328697022;
-		componentVar(xpos,comp5)=0.11461000868;
+		componentSD(xpos,comp1)=5.98;
+		componentSD(xpos,comp2)=2.35;
+		componentSD(xpos,comp3)=0.69;
 		
-		componentBetaIntercept(xpos,comp1)=1401.07;
-		componentBetaIntercept(xpos,comp2)=1414.60;
-		componentBetaIntercept(xpos,comp3)=1414.87;
-		componentBetaIntercept(xpos,comp4)=1416.92;
-		componentBetaIntercept(xpos,comp5)=1419.56;
+		componentBetaIntercept(xpos,comp1)=1405.58;
+		componentBetaIntercept(xpos,comp2)=1415.78;
+		componentBetaIntercept(xpos,comp3)=1416.93;
 		
-		componentBetaTime(xpos,comp1)=0.00340035;
-		componentBetaTime(xpos,comp2)=-0.00714237;
-		componentBetaTime(xpos,comp3)=-0.00122846;
-		componentBetaTime(xpos,comp4)=0.00378366;
-		componentBetaTime(xpos,comp5)=0.00156785;
+		componentBetaTime(xpos,comp1)=0.0131019;
+		componentBetaTime(xpos,comp2)=-0.00218833;
+		componentBetaTime(xpos,comp3)=0.00453499;
 		
-		componentCDF(ypos,comp1)=0.1188505;
-		componentCDF(ypos,comp2)=0.21426285;
-		componentCDF(ypos,comp3)=0.71114385;
-		componentCDF(ypos,comp4)=0.78315489;
-		componentCDF(ypos,comp5)=1.0;		
+		componentCDF(ypos,comp1)=0.1321839;
+		componentCDF(ypos,comp2)=0.132604524;
+		componentCDF(ypos,comp3)=1;
 		
-		componentVar(ypos,comp1)=69.0921800835;
-		componentVar(ypos,comp2)=0.06033996268;
-		componentVar(ypos,comp3)=0.4688003961;
-		componentVar(ypos,comp4)=0.11936633206;
-		componentVar(ypos,comp5)=0.19427642982;
+		componentSD(ypos,comp1)=8.0110470;
+		componentSD(ypos,comp2)=0.009319536;
+		componentSD(ypos,comp3)=1.15126;
+	
+		componentBetaIntercept(ypos,comp1)=-429.0252604;
+		componentBetaIntercept(ypos,comp2)=91.940029476;
+		componentBetaIntercept(ypos,comp3)=-896.243;
 		
-		componentBetaIntercept(ypos,comp1)=-849.4704150;
-		componentBetaIntercept(ypos,comp2)=96.54220739;
-		componentBetaIntercept(ypos,comp3)=-1013.41;
-		componentBetaIntercept(ypos,comp4)= 93.21353236;
-		componentBetaIntercept(ypos,comp5)= -196.846;
+		componentBetaTime(ypos,comp1)=-0.0229183;
+		componentBetaTime(ypos,comp2)=0.006408035;
+		componentBetaTime(ypos,comp3)=-0.00255224;
+	
+		componentBetaX(ypos,comp1)=0.3461729;
+		componentBetaX(ypos,comp2)=-0.018789849;
+		componentBetaX(ypos,comp3)=0.6786420;
 		
-		componentBetaTime(ypos,comp1)=-0.0267834;
-		componentBetaTime(ypos,comp2)=-0.00262338;
-		componentBetaTime(ypos,comp3)=0.00164974;
-		componentBetaTime(ypos,comp4)=0.00510409;
-		componentBetaTime(ypos,comp5)=-0.00429438;
-		
-		componentBetaX(xpos,comp1)=0.0;
-		componentBetaX(xpos,comp2)=-0.0;
-		componentBetaX(xpos,comp3)=0.0;
-		componentBetaX(xpos,comp4)=-0.0;
-		componentBetaX(xpos,comp5)=0.0;
-		
-		componentBetaX(ypos,comp1)=0.6430914;
-		componentBetaX(ypos,comp2)=-0.02375106;
-		componentBetaX(ypos,comp3)=0.761581;
-		componentBetaX(ypos,comp4)=-0.01891062;
-		componentBetaX(ypos,comp5)=0.184308;
 		
 	};  
 }

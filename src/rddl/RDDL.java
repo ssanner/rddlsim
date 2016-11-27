@@ -1694,7 +1694,9 @@ public class RDDL {
 			if( cache_var_name != null && name_map_name != null ){
 				if( !name_map_name.equals(cache_var_name) ){
 					System.out.println("Warning : duplicate MILP variables ");
-					System.out.println(expr_string + " " + cache_var_name + " " + name_map_name );
+					System.out.println(expr_string + " " + cache_var_name + " " + name_map_name
+							+ " " + reverse_name_map.get(cache_var_name)
+							+ " " + reverse_name_map.get(name_map_name) );
 				}
 				assert( name_map_name.equals(cache_var_name) );
 			}else if( cache_var_name != null ){
@@ -2204,10 +2206,13 @@ public class RDDL {
 			//substitute() should be called first to simplify variance term
 			//also works when e2 is PWL, have not tested this.
 //			System.out.println( _normalVarReal );
+			//this needs to be changed to PWL var implementation
+			//leaving this for now for backwards compatibility with AAAI experiments
+			//and implement the Normal that YOU want in RDDL directly
 			assert( _normalVarReal.isConstant( null, null ) );
 			final double var = _normalVarReal.getDoubleValue( null, null );
 			
-			final double sample = rand.nextGaussian(0, var);
+			final double sample = rand.nextGaussian(0, Math.sqrt(var) );
 			System.out.println("Sampled future for normal : " + this + " " + sample );
 			return new OPER_EXPR( _normalMeanReal, new REAL_CONST_EXPR( sample ) , OPER_EXPR.PLUS );
 		}
@@ -4252,8 +4257,8 @@ public class RDDL {
 				}else{
 					EXPR inner_subs = _e.substitute(subs, constants, objects) ;
 					AGG_EXPR unexpanded = new AGG_EXPR( _op, new ArrayList<>( al_new_terms ), inner_subs );
-					EXPR expanded = unexpanded.expandArithmeticQuantifier(constants, objects);
-					return expanded; //.substitute(subs, constants, objects);
+//					EXPR expanded = unexpanded.expandArithmeticQuantifier(constants, objects);
+					return unexpanded; //.substitute(subs, constants, objects);
 				}
 				
 			} catch (Exception e) {

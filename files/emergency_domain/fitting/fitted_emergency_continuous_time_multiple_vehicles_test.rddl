@@ -30,10 +30,10 @@ domain emergency_continuous_time_multiple_units_test{
 		tempComponentIdx(coordinate) : {interm-fluent, int};
 		componentIdx(coordinate,component) : {non-fluent, int, default=0};
 		componentCDF(coordinate,component) : {non-fluent, real, default=0};
-		componentVar(coordinate,component) : {non-fluent, real, default=0.0};
-		componentBetaIntercept(coordinate,component) : {non-fluent, real, default=0};
-		componentBetaTime(coordinate,component) : {non-fluent, real, default=0};
-		componentBetaX(coordinate,component) : {non-fluent, real, default=0};
+		componentSD(coordinate,component) : {non-fluent, real, default=0.0};
+		componentBetaIntercept(coordinate,component) : {non-fluent, real, default=0.0};
+		componentBetaTime(coordinate,component) : {non-fluent, real, default=0.0};
+		componentBetaX(coordinate,component) : {non-fluent, real, default=0.0};
 		nextCall(coordinate) : {interm-fluent, real};
 		
 		callMiles(unit) : {interm-fluent, real};
@@ -105,11 +105,10 @@ domain emergency_continuous_time_multiple_units_test{
 		//Phi was 0.93~1 so just using exp
 		//Exponential(1/Xb)=-log(uniform(0,1))*Xb
 		
-		gapTimeLinearModel = ( 0.341806 - 0.067867*max[0,currentCallTimeOfDay - 9.01667]-0.066900*max[0,currentCallTimeOfDay - 16.7833]
-									  -2.551978*max[0,currentCall($ypos) - 64.5834] + 0.076299*max[0,currentCall($ypos) - 65.7576]
-									  +0.069730*max[0,currentCallTimeOfDay - 3.6]+1.638216*max[0,currentCall($ypos) - 64.7917]
-									  +1.731460*max[0,currentCall($ypos) - 64.5076]-0.881581*max[0,currentCall($ypos) - 64.8674]
-									  -0.426595*max[0,currentCallTimeOfDay - 23.45]+0.234181*max[0,currentCallTimeOfDay - 22.8833] );
+		gapTimeLinearModel = ( 0.335299 -0.070491*max[0,currentCallTimeOfDay - 9.01667]-0.058277*max[0,currentCallTimeOfDay - 16.7833]
+									  -0.130102*max[0,currentCall($ypos) - 64.5834] + 0.070939*max[0,currentCall($ypos) - 65.7576]
+									  +0.070466*max[0,currentCallTimeOfDay - 3.6]+0.071717*max[0,currentCall($ypos) - 64.0341] );
+									  
 		gapTime = -ln[Uniform(0,1)]*gapTimeLinearModel;								  
 									  
 						   
@@ -133,14 +132,22 @@ domain emergency_continuous_time_multiple_units_test{
 										else 0 ];
 		
 		nextCall(?coor) = if (?coor == $ypos)
-						  then sum_{?comp:component}[
+						  then (sum_{?comp:component}[
+										if (componentIdx(?coor,?comp)==tempComponentIdx(?coor))
+										then componentBetaIntercept(?coor,?comp)+componentBetaTime(?coor,?comp)*nextCallTimeOfDay+componentBetaX(?coor,?comp)*nextCall($xpos)
+										else 0.0 ]) + 
+							   (sum_{?comp:component}[
+										if (componentIdx(?coor,?comp)==tempComponentIdx(?coor))
+										then componentSD(?coor,?comp)
+										else 0.0 ]) * Normal(0,1)
+						  else (sum_{?comp:component}[
 							if (componentIdx(?coor,?comp)==tempComponentIdx(?coor))
-							then Normal( componentBetaIntercept(?coor,?comp)+componentBetaTime(?coor,?comp)*nextCallTimeOfDay+componentBetaX(?coor,?comp)*nextCall($xpos), componentVar(?coor,?comp) )
-							else 0.0 ]
-						  else sum_{?comp:component}[
+							then componentBetaIntercept(?coor,?comp)+componentBetaTime(?coor,?comp)*nextCallTimeOfDay
+							else 0.0 ]) +  
+							(sum_{?comp:component}[
 							if (componentIdx(?coor,?comp)==tempComponentIdx(?coor))
-							then Normal( componentBetaIntercept(?coor,?comp)+componentBetaTime(?coor,?comp)*nextCallTimeOfDay, componentVar(?coor,?comp) )
-							else 0.0 ];
+							then componentSD(?coor,?comp)
+							else 0.0 ]) * Normal(0,1);
 		
 		currentCall'(?coor) = nextCall(?coor);
 					  
@@ -363,7 +370,7 @@ domain emergency_continuous_time_multiple_units_test{
 		forall_{?coor:coordinate,?comp:component}[ componentCDF(?coor,?comp) >= 0 ];
 		forall_{?coor:coordinate,?comp:component}[ componentCDF(?coor,?comp) <= 1 ];
 		
-		forall_{?coor:coordinate,?comp:component}[ componentVar(?coor,?comp) > 0 ];
+		forall_{?coor:coordinate,?comp:component}[ componentSD(?coor,?comp) > 0 ];
 		
 		forall_{?coor:coordinate}[tempCurrentCallComponent(?coor) >= 0]; 
 		forall_{?coor:coordinate}[tempCurrentCallComponent(?coor) <= 1];
@@ -376,6 +383,7 @@ domain emergency_continuous_time_multiple_units_test{
 		
 		forall_{?coor:coordinate}[ tempComponentIdx(?coor) >= 1 ];
 		forall_{?coor:coordinate}[ tempComponentIdx(?coor) <= sum_{?comp:component}[1] ];
+		forall_{?coor:coordinate}[ (sum_{?comp:component}[ componentIdx(?coor,?comp) == tempComponentIdx(?coor) ]) == 1 ];
 	};
 	
 	action-preconditions {

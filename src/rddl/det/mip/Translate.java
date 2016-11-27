@@ -368,7 +368,7 @@ public class Translate implements Policy { //  extends rddl.policy.Policy {
 		System.out.println("#State Vars : " + string_state_vars.size() );
 		System.out.println("#Action Vars : " + string_action_vars.size() );
 		System.out.println("Optimization Runtime(mins) : " + grb_model.get( DoubleAttr.Runtime )/60d );
-		System.out.println("Translation time(mins) : " + translate_time.GetTimeSoFarInMinutes() );
+		System.out.println("Translation time(mins) : " + translate_time.GetElapsedTimeInMinutes() );
 	}
 
 	protected void cleanUp(final GRBModel grb_model) throws GRBException {

@@ -290,7 +290,7 @@ model.select.x <- function(ns,xs,times,test.xs,test.times){
     mx <- regmixEM(xs,times,verb = T,#epsilon=eps,
                    beta=rbind( rep(1418,this.n),0 ), maxit = max.it,
                    arbvar = arbvar, arbmean = TRUE  )
-    summary(mx)
+    print(summary(mx))
     plot(mx,whichplots=1)
     sample.x <- sample.mixture.mx(mx,times,arbvar)
     
@@ -332,7 +332,7 @@ model.select.y <- function(ns,ys,xs,times,test.ys,test.xs,test.times){
     
     my <- regmixEM(ys,cbind(times,xs),verb=T,maxit = max.it,arbvar = arbvar,
                    beta=rbind(rep(65,this.n),0,tan((pi/180)*seq(0,180,length.out =this.n )) ), arbmean = TRUE )
-    summary(my)
+    print(summary(my))
     plot(my,whichplots=1)
     
     sample.y <- sample.mixture.my(my,xs,times,arbvar)
@@ -399,12 +399,12 @@ print( tail(test.data) )
 #model.select.x(ns = 1:5,xs = train.data['x'][,1],times = train.data['t'][,1],
                #test.xs = test.data['x'][,1], test.times = test.data['t'][,1])
 
-model.select.y(ns = 1:5,ys = train.data['y'][,1],xs = train.data['x'][,1],times = train.data['t'][,1],
-               test.ys =test.data['y'][,1],test.xs = test.data['x'][,1], test.times = test.data['t'][,1])
+# model.select.y(ns = 1:5,ys = train.data['y'][,1],xs = train.data['x'][,1],times = train.data['t'][,1],
+#                test.ys =test.data['y'][,1],test.xs = test.data['x'][,1], test.times = test.data['t'][,1])
 
-# selected.model <- function(){
-#   mx<-model.select.x(5,xs = train.data['x'][,1],times = train.data['t'][,1],
-#                  test.xs = test.data['x'][,1], test.times = test.data['t'][,1])
-#   my<-model.select.y(4,ys = train.data['y'][,1],xs = train.data['x'][,1],times = train.data['t'][,1],
-#                  test.ys =test.data['y'][,1],test.xs = test.data['x'][,1], test.times = test.data['t'][,1])
-# }
+selected.model <- function(){
+  mx<-model.select.x(3,xs = train.data['x'][,1],times = train.data['t'][,1],
+                 test.xs = test.data['x'][,1], test.times = test.data['t'][,1])
+  my<-model.select.y(3,ys = train.data['y'][,1],xs = train.data['x'][,1],times = train.data['t'][,1],
+                 test.ys =test.data['y'][,1],test.xs = test.data['x'][,1], test.times = test.data['t'][,1])
+}
