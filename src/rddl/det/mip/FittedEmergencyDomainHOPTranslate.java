@@ -407,7 +407,9 @@ public class FittedEmergencyDomainHOPTranslate extends HOPTranslate {
 					rddl_state.computeNextState(rddl_action, rand);
 					System.out.println("Interm State : " + rddl_state );
 					System.out.println("------------------------------------");
-					outFile.write( 60*getFirstResponse(rddl_state) + "," + 60*getFullResponse(rddl_state) + "," + getOverwhelm(rddl_state) );
+					outFile.write( 60*EmergencyDomainHOPTranslate.getFirstResponse(rddl_state) 
+							+ "," + 60*EmergencyDomainHOPTranslate.getFullResponse(rddl_state) 
+							+ "," + EmergencyDomainHOPTranslate.getOverwhelm(rddl_state) );
 					outFile.write("\n");
 					outFile.flush();
 					if(stateViz != null){
@@ -465,18 +467,6 @@ public class FittedEmergencyDomainHOPTranslate extends HOPTranslate {
 		return new Pair<Double,Double>(session_mean_reward, stdev);
 	}
 	
-	public static double getFirstResponse(State s) throws EvalException {
-		return ((Number) s.getPVariableAssign(firstResponsePvarName , EmergencyDomainDataReelElement.emptySubstitution)).doubleValue();
-	}
-
-	public static double getFullResponse(State s) throws EvalException {
-		return ((Number) s.getPVariableAssign(fullResponsePvarName, EmergencyDomainDataReelElement.emptySubstitution)).doubleValue();
-	}
-	
-	public static boolean getOverwhelm(State s) throws EvalException {
-		return (boolean) s.getPVariableAssign(overwhelmPvarName, EmergencyDomainDataReelElement.emptySubstitution);
-	}
-
 	public static void main(String[] args) throws Exception {
 		System.out.println( Arrays.toString( args ) );
 		FittedEmergencyDomainHOPTranslate planner = new FittedEmergencyDomainHOPTranslate( 
