@@ -165,9 +165,9 @@ non-fluents nf_emergency_continuous_time_multiple_units_test_4 {
 		causeRequirement(VehicleFire,Engine)=1;
 		causeRequirement(VehicleFire,Ambulance)=1;
 		
-		causeRequirement(WildlandFire,Full,Engine)=3;
-		causeRequirement(WildlandFire,Full,Command)=1;
-		causeRequirement(WildlandFire,Full,Ladder)=1;
+		causeRequirement(WildlandFire,Engine)=3;
+		causeRequirement(WildlandFire,Command)=1;
+		causeRequirement(WildlandFire,Ladder)=1;
 		
 		RoleServiceTime(Engine)=0.917;
 		RoleServiceTime(Command)=0.75;
