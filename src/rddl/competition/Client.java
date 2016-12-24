@@ -96,6 +96,9 @@ public class Client {
 	 */
 	public static void main(String[] args) {
 
+		System.out.println("RDDL Client Args ");
+		System.out.println( Arrays.toString( args ) );
+		
 		/** Define a host server */
 		String host = Server.HOST_NAME;
 		/** Define a port */
@@ -124,6 +127,7 @@ public class Client {
 		double timeLeft = 0;
 		try {
 			// Cannot assume always in rddl.policy
+			System.out.println("initializing type " + args[3]);
 			Class c = Class.forName(args[3]);
 			
 			// Load RDDL files
