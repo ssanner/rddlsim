@@ -1,0 +1,25 @@
+# Pseudocode for Deep Reinforcement Learning in HVAC
+
+# Import data set that contains state, action, next state
+# Store data as 
+
+# Initialize replay memory D 
+
+# Initialize action-value function Q with random weights
+
+# Randomly pick an initial state s0 within the range
+
+# Do while terminated = False{
+    # Exploration/Exploitation - given probability, take an action randomly or pick the action that will return
+    # the maximum Q
+    # If(rand() > epsilon) && action_list(s).size > 0 # if the probability decides to exploit and there is at 
+    # least a record of action in the current state
+        # action = the action that max Q in the current state (? how do we decide this?)
+    # Else 
+        # action = rand() pick a random action
+    
+    
+    
+
+
+# End}

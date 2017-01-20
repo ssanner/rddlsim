@@ -23,10 +23,6 @@ domain Reservoir_Problem{
 		RAIN(id): { non-fluent ,real, default = 5.0 };
 		DOWNSTREAM(id,id): {non-fluent ,bool, default = false };
 		DOWNTOSEA(id): {non-fluent, bool, default = false };
-		EVAPORATIONFACTOR(id): {non-fluent, real, default = 80.0 };
-
-		//Interm
-		vaporated(id): {interm-fluent, real};
 		
 		//State
 		rlevel(id): {state-fluent, real, default = 50.0 };
@@ -36,12 +32,11 @@ domain Reservoir_Problem{
 	};
 	
 	cpfs {
-		vaporated(?r) = (1.0/2.0)*sin[(1.0/2.0)*rlevel(?r)/MAXCAP(?r)]*EVAPORATIONFACTOR(?r);
 		rlevel'(?r) = //if (!exists_{?rd: id}[DOWNSTREAM(?r,?rd)) 
 				// ?r dumps water to the sea (infinite reservoir)                 
 				//then ...
 				//else
-				rlevel(?r) + RAIN(?r)- vaporated(?r) - flow(?r) + sum_{?r2: id}[DOWNSTREAM(?r2,?r)*flow(?r2)];
+				rlevel(?r) + RAIN(?r) - flow(?r) + sum_{?r2: id}[DOWNSTREAM(?r2,?r)*flow(?r2)];
 
 	};
 	
