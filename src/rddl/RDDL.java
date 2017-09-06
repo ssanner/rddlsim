@@ -1085,7 +1085,14 @@ public class RDDL {
 		
 		public Object sample(HashMap<LVAR,LCONST> subs, State s, RandomDataGenerator r) throws EvalException {
 			// Sample must be either an OBJECT_VAL or ENUM_VAL (both LCONST)
-			return (LCONST)_pvarExpr.sample(subs, s, r);
+			LCONST result = null;
+			try {
+				result = (LCONST)_pvarExpr.sample(subs, s, r);
+			} catch (ClassCastException e) {
+				System.out.println("Could not sample from " + this);
+				throw e;
+			}
+			return result;
 		}
 
 		public void collectGFluents(HashMap<LVAR, LCONST> subs,	State s, HashSet<Pair> gfluents) 

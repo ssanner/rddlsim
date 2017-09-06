@@ -54,4 +54,6 @@ public class StaticValidator {
 	// Object names cannot be reserved words
 
 	// Only reward and observations can reference next-state variables
+	
+	// Check for illegal default values (0 for boolean)
 }
