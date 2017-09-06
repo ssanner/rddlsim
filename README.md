@@ -4,7 +4,8 @@ Implements a parser, simulator, and client/server evaluation architecture for th
 
 * [IPPC 2011 (Discrete)](http://users.cecs.anu.edu.au/~ssanner/IPPC_2011/)
 * [IPPC 2014 (Discrete)](https://ssanner.github.io/IPPC_2014/)
-* [IPPC 2015 (Continuous)](http://users.cecs.anu.edu.au/~ssanner/IPPC_2014/)
+* [IPPC 2015 (Continuous)](http://users.cecs.anu.edu.au/~ssanner/IPPC_2014/) -- cancelled 
+* [IPPC 2018 (Discrete and Continuous)](https://ipc2018-probabilistic.bitbucket.io/)
 
 #### RDDL Resources:
 
