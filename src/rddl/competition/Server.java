@@ -56,7 +56,6 @@ public class Server implements Runnable {
 	public static final boolean SHOW_MSG = false;
 	public static final boolean SHOW_TIMING = false;
 	
-	private static final String LOG_FILE = "rddl";
 	/**
 	 * following is XML definitions
 	 */
@@ -117,7 +116,10 @@ public class Server implements Runnable {
 	private RDDL rddl = null;
 	private static int ID = 0;
 	private static int DEFAULT_NUM_ROUNDS = 30;
-    private static long DEFAULT_TIME_ALLOWED = 1080000; // milliseconds = 18 minutes
+	private static long DEFAULT_TIME_ALLOWED = 1080000; // milliseconds = 18 minutes
+	private static boolean USE_TIMEOUT = true;
+	private static boolean INDIVIDUAL_SESSION = false;
+	private static String LOG_FILE = "rddl";
 	public int port;
 	public int id;
 	public String clientName = null;
@@ -145,10 +147,10 @@ public class Server implements Runnable {
 		ArrayList<RDDL> rddls = new ArrayList<RDDL>();
 		int port = PORT_NUMBER;
 		if ( args.length < 1 ) {
-			System.out.println("usage: rddlfilename-or-dir (optional) portnumber num-rounds random-seed state-viz-class-name");
+			System.out.println("usage: rddlfilename-or-dir (optional) portnumber num-rounds random-seed use-timeout individual-session log-folder state-viz-class-name");
 			System.out.println("\nexample 1: Server rddlfilename-or-dir");
 			System.out.println("example 2: Server rddlfilename-or-dir 2323");
-			System.out.println("example 3: Server rddlfilename-or-dir 2323 100 0 rddl.viz.GenericScreenDisplay");
+			System.out.println("example 3: Server rddlfilename-or-dir 2323 100 0 0 1 experiments/experiment23/ rddl.viz.GenericScreenDisplay");
 			System.exit(1);
 		}
 				
@@ -169,8 +171,19 @@ public class Server implements Runnable {
 			} else {
 				rand_seed = DEFAULT_SEED;
 			}
-			if (args.length > 4) {
-				state_viz = (StateViz)Class.forName(args[4]).newInstance();
+                        if (args.length > 4) {
+                            if (args[4].equals("1"))
+                            	INDIVIDUAL_SESSION = true;
+                        }
+                        if (args.length > 5) {
+                            if (args[5].equals("0"))
+                            	USE_TIMEOUT = false;
+                        }
+                        if (args.length > 6) {
+                            LOG_FILE = args[6] + "/rddl";
+                        }
+			if (args.length > 7) {
+				state_viz = (StateViz)Class.forName(args[7]).newInstance();
 			}
 			System.out.println("RDDL Server Initialized");
 			while (true) {
@@ -310,6 +323,13 @@ public class Server implements Runnable {
 						state.checkStateActionConstraints(ds);
 					} catch (Exception e) {
 						System.out.println("TRIAL ERROR -- STATE-ACTION CONSTRAINT VIOLATION:\n" + e);
+                                                if (INDIVIDUAL_SESSION) {
+                                                	try {
+                                                        	connection.close();
+                                                        }
+                                                        catch (IOException ioe){}
+							System.exit(1);
+                                                }
 						break;
 					}
 					
@@ -318,8 +338,14 @@ public class Server implements Runnable {
 					} catch (Exception ee) {
 						System.out.println("FATAL SERVER EXCEPTION:\n" + ee);
 						//ee.printStackTrace();
+                                                if (INDIVIDUAL_SESSION) {
+                                                	try {
+                                                        	connection.close();
+                                                        }
+                                                        catch (IOException ioe){}
+							System.exit(1);
+                                                }
 						throw ee;
-						//System.exit(1);
 					}
 					//for ( PVAR_NAME pn : state._observ.keySet() ) {
 					//	System.out.println("check1 " + pn);
@@ -356,7 +382,7 @@ public class Server implements Runnable {
 					//        an early round end
 					// TODO: check that this works
 					round_elapsed_time = (System.currentTimeMillis() - start_round_time);
-					OUT_OF_TIME = session_elapsed_time + round_elapsed_time > timeAllowed;
+					OUT_OF_TIME = session_elapsed_time + round_elapsed_time > timeAllowed && USE_TIMEOUT;
 				}
 				accum_total_reward += accum_reward;
 				session_elapsed_time += round_elapsed_time;
@@ -376,6 +402,14 @@ public class Server implements Runnable {
 
 			writeToLog(msg);
 
+                        if (INDIVIDUAL_SESSION) {
+                        	try {
+                                	connection.close();
+                                }
+                                catch (IOException ioe){}
+				System.exit(0);
+                        }
+
 			//need to wait 10 seconds to pretend that we're processing something
 //			try {
 //				Thread.sleep(10000);
@@ -387,6 +421,13 @@ public class Server implements Runnable {
 		catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("\n>> TERMINATING TRIAL.");
+                        if (INDIVIDUAL_SESSION) {
+                        	try {
+                        		connection.close();
+                        	}
+                        	catch (IOException ioe){}
+                        	System.exit(1);
+                        }
 		}
 		finally {
 			try {
@@ -440,6 +481,13 @@ public class Server implements Runnable {
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+                                if (INDIVIDUAL_SESSION) {
+                        		try {
+                        			connection.close();
+                        		}
+                        		catch (IOException ioe){}
+                        		System.exit(1);
+                        	}
 			}
 		}
 	}
@@ -568,7 +616,6 @@ public class Server implements Runnable {
 			System.out.println("FATAL SERVER ERROR:\n" + e);
 			//t.printStackTrace();
 			throw e;
-			//System.exit(1);
 		}
 	}
 	
@@ -888,9 +935,9 @@ public class Server implements Runnable {
 			System.out.println("==BEGIN IS==");
 			System.out.write(bytes, 0, size);
 			System.out.println("\n==END IS==");
-		} catch (IOException e2) {
+		} catch (IOException e) {
 			System.out.println(">>> Inputstream error");
-			e2.printStackTrace();
+			e.printStackTrace();
 		}
 	}
 	
