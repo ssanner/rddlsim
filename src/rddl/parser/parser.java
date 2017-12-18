@@ -1451,7 +1451,8 @@ public class parser extends java_cup.runtime.lr_parser {
 		       //e.printStackTrace();
             }
 
-            return (RDDL)rval.value;		
+            RDDL result = (RDDL)rval.value;
+            return result;
 	}
 
 	// The main runtime method to call
@@ -1485,7 +1486,8 @@ public class parser extends java_cup.runtime.lr_parser {
 		       //e.printStackTrace();
             }
 
-            return (RDDL)rval.value;		
+            RDDL result = (RDDL)rval.value;
+            return result;
 	}
 
 

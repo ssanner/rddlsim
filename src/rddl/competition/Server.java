@@ -65,6 +65,7 @@ public class Server implements Runnable {
 	public static final String PROBLEM_NAME = "problem-name";
 	public static final String SESSION_INIT = "session-init";
 	public static final String SESSION_ID = "session-id";
+    public static final String TASK_DESC = "task";
 	public static final String SESSION_END = "session-end";
 	public static final String TOTAL_REWARD = "total-reward";
 	public static final String IMMEDIATE_REWARD = "immediate-reward";
@@ -77,6 +78,7 @@ public class Server implements Runnable {
 	public static final String CLIENT_IP = "client-ip";
 	
 	public static final String ROUND_REQUEST = "round-request";
+    public static final String EXECUTE_POLICY = "execute-policy";
 	public static final String ROUND_INIT = "round-init";
 	public static final String ROUND_NUM = "round-num";
 	public static final String ROUND_LEFT = "round-left";
@@ -120,11 +122,14 @@ public class Server implements Runnable {
 	private static boolean USE_TIMEOUT = true;
 	private static boolean INDIVIDUAL_SESSION = false;
 	private static String LOG_FILE = "rddl";
+    private static boolean MONITOR_EXECUTION = false;
+    
 	public int port;
 	public int id;
 	public String clientName = null;
 	public String requestedInstance = null;
 	public RandomDataGenerator rand;
+    public boolean executePolicy = true;
 	
 	public State      state;
 	public INSTANCE   instance;
@@ -147,10 +152,10 @@ public class Server implements Runnable {
 		ArrayList<RDDL> rddls = new ArrayList<RDDL>();
 		int port = PORT_NUMBER;
 		if ( args.length < 1 ) {
-			System.out.println("usage: rddlfilename-or-dir (optional) portnumber num-rounds random-seed use-timeout individual-session log-folder state-viz-class-name");
+			System.out.println("usage: rddlfilename-or-dir (optional) portnumber num-rounds random-seed use-timeout individual-session log-folder monitor-execution state-viz-class-name");
 			System.out.println("\nexample 1: Server rddlfilename-or-dir");
 			System.out.println("example 2: Server rddlfilename-or-dir 2323");
-			System.out.println("example 3: Server rddlfilename-or-dir 2323 100 0 0 1 experiments/experiment23/ rddl.viz.GenericScreenDisplay");
+			System.out.println("example 3: Server rddlfilename-or-dir 2323 100 0 0 1 experiments/experiment23/ 1 rddl.viz.GenericScreenDisplay");
 			System.exit(1);
 		}
 				
@@ -171,19 +176,25 @@ public class Server implements Runnable {
 			} else {
 				rand_seed = DEFAULT_SEED;
 			}
-                        if (args.length > 4) {
-                            if (args[4].equals("1"))
-                            	INDIVIDUAL_SESSION = true;
-                        }
-                        if (args.length > 5) {
-                            if (args[5].equals("0"))
-                            	USE_TIMEOUT = false;
-                        }
-                        if (args.length > 6) {
-                            LOG_FILE = args[6] + "/rddl";
-                        }
-			if (args.length > 7) {
-				state_viz = (StateViz)Class.forName(args[7]).newInstance();
+            if (args.length > 4) {
+                if (args[4].equals("1"))
+                    INDIVIDUAL_SESSION = true;
+            }
+            if (args.length > 5) {
+                if (args[5].equals("0"))
+                    USE_TIMEOUT = false;
+            }
+            if (args.length > 6) {
+                LOG_FILE = args[6] + "/rddl";
+            }
+            if (args.length > 7) {
+                assert(args[7].equals("0") || args[7].equals("1"));
+                if (args[7].equals("1")) {
+                    MONITOR_EXECUTION = true;
+                }
+            }
+			if (args.length > 8) {
+				state_viz = (StateViz)Class.forName(args[8]).newInstance();
 			}
 			System.out.println("RDDL Server Initialized");
 			while (true) {
@@ -247,9 +258,12 @@ public class Server implements Runnable {
 			ArrayList<Double> rewards = new ArrayList<Double>(DEFAULT_NUM_ROUNDS * instance._nHorizon);
 			int r = 0;
 			long session_elapsed_time = 0l;
-			for( ; r < numRounds && !OUT_OF_TIME; r++ ) {			
+			for( ; r < numRounds && !OUT_OF_TIME; r++ ) {
+                if (!executePolicy) {
+                    r--;
+                }
 				isrc = readOneMessage(isr);
-				if ( !processXMLRoundRequest(p, isrc) ) {
+				if ( !processXMLRoundRequest(p, isrc, this) ) {
 					break;
 				}
 				
@@ -258,13 +272,18 @@ public class Server implements Runnable {
 				sendOneMessage(osw,msg);
 				
 				long start_round_time = System.currentTimeMillis();
-				System.out.println("Round " + (r+1) + " / " + numRounds + ", time remaining: " + (timeAllowed - session_elapsed_time));
+                if (executePolicy) {
+                    System.out.println("Round " + (r+1) + " / " + numRounds + ", time remaining: " + (timeAllowed - session_elapsed_time));
 				if (SHOW_MEMORY_USAGE)
 					System.out.print("[ Memory usage: " + 
 							_df.format((RUNTIME.totalMemory() - RUNTIME.freeMemory())/1e6d) + "Mb / " + 
 							_df.format(RUNTIME.totalMemory()/1e6d) + "Mb" + 
 							" = " + _df.format(((double) (RUNTIME.totalMemory() - RUNTIME.freeMemory()) / 
 											   (double) RUNTIME.totalMemory())) + " ]\n");
+                } else {
+                    // TODO: For debugging only. Remove this, if a planner simulates there can be many such rounds!
+                    System.out.println("Starting simulation round");
+                }
 				double immediate_reward = 0.0d;
 				double accum_reward = 0.0d;
 				double cur_discount = 1.0d;
@@ -311,25 +330,25 @@ public class Server implements Runnable {
 					//if ( h== 0 && domain._bPartiallyObserved && ds.size() != 0) {
 					//	System.err.println("the first action for partial observable domain should be noop");
 					//}
-					if (SHOW_ACTIONS) {
+					if (SHOW_ACTIONS && executePolicy) {
 						boolean suppress_object_cast_temp = RDDL.SUPPRESS_OBJECT_CAST;
 						RDDL.SUPPRESS_OBJECT_CAST = true;
-						System.out.println("** Actions received: " + ds);
+                        System.out.println("** Actions received: " + ds);
 						RDDL.SUPPRESS_OBJECT_CAST = suppress_object_cast_temp;
 					}
 					
-					// Check state-action constraints (also checks maxNonDefActions)
+					// Check action preconditions (also checks maxNonDefActions)
 					try {
 						state.checkStateActionConstraints(ds);
 					} catch (Exception e) {
-						System.out.println("TRIAL ERROR -- STATE-ACTION CONSTRAINT VIOLATION:\n" + e);
-                                                if (INDIVIDUAL_SESSION) {
-                                                	try {
-                                                        	connection.close();
-                                                        }
-                                                        catch (IOException ioe){}
+						System.out.println("TRIAL ERROR -- ACTION NOT APPLICABLE:\n" + e);
+                        if (INDIVIDUAL_SESSION) {
+                            try {
+                                connection.close();
+                            }
+                            catch (IOException ioe){}
 							System.exit(1);
-                                                }
+                        }
 						break;
 					}
 					
@@ -338,13 +357,13 @@ public class Server implements Runnable {
 					} catch (Exception ee) {
 						System.out.println("FATAL SERVER EXCEPTION:\n" + ee);
 						//ee.printStackTrace();
-                                                if (INDIVIDUAL_SESSION) {
-                                                	try {
-                                                        	connection.close();
-                                                        }
-                                                        catch (IOException ioe){}
+                        if (INDIVIDUAL_SESSION) {
+                            try {
+                                connection.close();
+                            }
+                            catch (IOException ioe){}
 							System.exit(1);
-                                                }
+                        }
 						throw ee;
 					}
 					//for ( PVAR_NAME pn : state._observ.keySet() ) {
@@ -384,7 +403,9 @@ public class Server implements Runnable {
 					round_elapsed_time = (System.currentTimeMillis() - start_round_time);
 					OUT_OF_TIME = session_elapsed_time + round_elapsed_time > timeAllowed && USE_TIMEOUT;
 				}
-				accum_total_reward += accum_reward;
+                if (executePolicy) {
+                    accum_total_reward += accum_reward;
+                }
 				session_elapsed_time += round_elapsed_time;
 				msg = createXMLRoundEnd(requestedInstance, r, accum_reward, h, round_elapsed_time,
                                                         timeAllowed - session_elapsed_time,
@@ -402,13 +423,13 @@ public class Server implements Runnable {
 
 			writeToLog(msg);
 
-                        if (INDIVIDUAL_SESSION) {
-                        	try {
-                                	connection.close();
-                                }
-                                catch (IOException ioe){}
+            if (INDIVIDUAL_SESSION) {
+                try {
+                    connection.close();
+                }
+                catch (IOException ioe){}
 				System.exit(0);
-                        }
+            }
 
 			//need to wait 10 seconds to pretend that we're processing something
 //			try {
@@ -421,13 +442,13 @@ public class Server implements Runnable {
 		catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("\n>> TERMINATING TRIAL.");
-                        if (INDIVIDUAL_SESSION) {
-                        	try {
-                        		connection.close();
-                        	}
-                        	catch (IOException ioe){}
-                        	System.exit(1);
-                        }
+            if (INDIVIDUAL_SESSION) {
+                try {
+                    connection.close();
+                }
+                catch (IOException ioe){}
+                System.exit(1);
+            }
 		}
 		finally {
 			try {
@@ -691,9 +712,26 @@ public class Server implements Runnable {
 			Document dom = db.newDocument();
 			Element rootEle = dom.createElement(SESSION_INIT);
 			dom.appendChild(rootEle);
-			addOneText(dom,rootEle,SESSION_ID, server.id + "");
-			addOneText(dom,rootEle,NUM_ROUNDS, numRounds + "");
-			addOneText(dom,rootEle,TIME_ALLOWED, timeAllowed + "");
+
+            INSTANCE instance = server.rddl._tmInstanceNodes.get(server.requestedInstance);
+            DOMAIN domain = server.rddl._tmDomainNodes.get(instance._sDomain);
+            StringBuilder task = new StringBuilder(domain.toString());
+            task.append(System.getProperty("line.separator"));
+            task.append(System.getProperty("line.separator"));
+            NONFLUENTS nonFluents = null;
+            if (instance._sNonFluents != null) {
+                nonFluents = server.rddl._tmNonFluentNodes.get(instance._sNonFluents);
+                task.append(nonFluents.toString());
+                task.append(System.getProperty("line.separator"));
+                task.append(System.getProperty("line.separator"));
+            }
+            task.append(instance.toString());
+            task.append(System.getProperty("line.separator"));
+            
+            addOneText(dom, rootEle, TASK_DESC, task.toString());
+			addOneText(dom, rootEle, SESSION_ID, server.id + "");
+			addOneText(dom, rootEle, NUM_ROUNDS, numRounds + "");
+			addOneText(dom, rootEle, TIME_ALLOWED, timeAllowed + "");
 			return Client.serialize(dom);
 		}
 		catch (Exception e) {
@@ -726,11 +764,24 @@ public class Server implements Runnable {
 		return;
 	}
 	
-	static boolean processXMLRoundRequest (DOMParser p, InputSource isrc) {
+	static boolean processXMLRoundRequest (DOMParser p, InputSource isrc,
+                                           Server server) {
         try {
 			p.parse(isrc);
 			Element e = p.getDocument().getDocumentElement();
 			if ( e.getNodeName().equals(ROUND_REQUEST) ) {
+                if (MONITOR_EXECUTION) {
+                    System.out.println("Monitoring execution!");
+                    String executePolicyString = getTextValue(e, EXECUTE_POLICY).get(0);
+                    if (executePolicyString.equals("yes")) {
+                        server.executePolicy = true;
+                    } else {
+                        assert(executePolicyString.equals("no"));
+                        server.executePolicy = false;
+                        System.out.println("Do not execute the policy!");
+                    }
+                    
+                }
 				return true;			
 			}
 			return false;

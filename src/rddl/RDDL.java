@@ -29,7 +29,7 @@ public class RDDL {
 	public static boolean ASSUME_ACTION_OBSERVED = false;
 	public static boolean USE_PREFIX = false;
 	public static boolean SUPPRESS_OBJECT_CAST = false;
-	
+
 	public RDDL() { }
 
 	public RDDL(RDDL rddl) { 
