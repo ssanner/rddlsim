@@ -796,7 +796,11 @@ public class Server implements Runnable {
 			if ( e.getNodeName().equals(ROUND_REQUEST) ) {
                 if (MONITOR_EXECUTION) {
                     System.out.println("Monitoring execution!");
-                    String executePolicyString = getTextValue(e, EXECUTE_POLICY).get(0);
+                    String executePolicyString = "no";
+                    ArrayList<String> exec_pol = getTextValue(e, EXECUTE_POLICY);
+                    if (exec_pol != null && exec_pol.size() > 0) {
+                        executePolicyString = exec_pol.get(0).trim();
+                    }
                     if (executePolicyString.equals("yes")) {
                         server.executePolicy = true;
                     } else {
