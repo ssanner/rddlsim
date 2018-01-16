@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -62,6 +64,7 @@ public class Server implements Runnable {
 	public static final String SESSION_REQUEST = "session-request";
 	public static final String CLIENT_NAME = "client-name";
 	public static final String INSTANCE_NAME = "instance-name";
+    public static final String INPUT_LANGUAGE = "input-language";
 	public static final String PROBLEM_NAME = "problem-name";
 	public static final String SESSION_INIT = "session-init";
 	public static final String SESSION_ID = "session-id";
@@ -130,6 +133,7 @@ public class Server implements Runnable {
 	public String requestedInstance = null;
 	public RandomDataGenerator rand;
     public boolean executePolicy = true;
+    public String inputLanguage = "rddl";
 	
 	public State      state;
 	public INSTANCE   instance;
@@ -516,7 +520,7 @@ public class Server implements Runnable {
 	void resetState () {
 		state.init(domain._hmObjects, nonFluents != null ? nonFluents._hmObjects : null, instance._hmObjects, 
 				domain._hmTypes, domain._hmPVariables, domain._hmCPF,
-				instance._alInitState, nonFluents == null ? null : nonFluents._alNonFluents,
+				instance._alInitState, nonFluents == null ? new ArrayList<PVAR_INST_DEF>() : nonFluents._alNonFluents, instance._alNonFluents,
 				domain._alStateConstraints, domain._alActionPreconditions, domain._alStateInvariants, 
 				domain._exprReward, instance._nNonDefActions);
 		
@@ -713,22 +717,36 @@ public class Server implements Runnable {
 			Element rootEle = dom.createElement(SESSION_INIT);
 			dom.appendChild(rootEle);
 
-            INSTANCE instance = server.rddl._tmInstanceNodes.get(server.requestedInstance);
-            DOMAIN domain = server.rddl._tmDomainNodes.get(instance._sDomain);
-            StringBuilder task = new StringBuilder(domain.toString());
-            task.append(System.getProperty("line.separator"));
-            task.append(System.getProperty("line.separator"));
-            NONFLUENTS nonFluents = null;
-            if (instance._sNonFluents != null) {
-                nonFluents = server.rddl._tmNonFluentNodes.get(instance._sNonFluents);
-                task.append(nonFluents.toString());
-                task.append(System.getProperty("line.separator"));
-                task.append(System.getProperty("line.separator"));
-            }
-            task.append(instance.toString());
-            task.append(System.getProperty("line.separator"));
-            
-            addOneText(dom, rootEle, TASK_DESC, task.toString());
+			INSTANCE instance = server.rddl._tmInstanceNodes.get(server.requestedInstance);
+			DOMAIN domain = server.rddl._tmDomainNodes.get(instance._sDomain);
+
+			String domainFile = domain._sFileName;
+			String instanceFile = instance._sFileName;
+
+			System.out.println(server.inputLanguage);
+
+			if (server.inputLanguage.equals("ppddl")) {
+				domainFile = domainFile.replaceAll("rddl", "ppddl");
+				instanceFile = instanceFile.replaceAll("rddl", "ppddl");
+				// System.out.println(domainFile + " / " + instanceFile);
+			}
+
+			// NONFLUENTS nonFluents = null;
+			// if (instance._sNonFluents != null) {
+			//     nonFluents = server.rddl._tmNonFluentNodes.get(instance._sNonFluents);
+			// }
+			StringBuilder task = new StringBuilder(new String(Files.readAllBytes(Paths.get(domainFile))));
+			// if (nonFluents != null) {
+			// task.append(System.getProperty("line.separator"));
+			// task.append(System.getProperty("line.separator"));
+ 			// task.append(new String(Files.readAllBytes(Paths.get(nonFluents._sFileName))));
+			// }
+			task.append(System.getProperty("line.separator"));
+			task.append(System.getProperty("line.separator"));
+			task.append(new String(Files.readAllBytes(Paths.get(instanceFile))));
+			task.append(System.getProperty("line.separator"));
+
+			addOneText(dom, rootEle, TASK_DESC, task.toString());
 			addOneText(dom, rootEle, SESSION_ID, server.id + "");
 			addOneText(dom, rootEle, NUM_ROUNDS, numRounds + "");
 			addOneText(dom, rootEle, TIME_ALLOWED, timeAllowed + "");
@@ -748,6 +766,12 @@ public class Server implements Runnable {
 			if ( e.getNodeName().equals(SESSION_REQUEST) ) {
 				server.requestedInstance = getTextValue(e, PROBLEM_NAME).get(0);
 				server.clientName = getTextValue(e,CLIENT_NAME).get(0);
+				ArrayList<String> lang = getTextValue(e, INPUT_LANGUAGE);
+				if (lang != null && lang.size() > 0) {
+					if (lang.get(0).equals("ppddl")) {
+						server.inputLanguage = "ppddl";
+ 					}
+				}
 				NodeList nl = e.getElementsByTagName(NO_XML_HEADER);
 				if ( nl.getLength() > 0 ) {
 					NO_XML_HEADING = true;

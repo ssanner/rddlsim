@@ -160,7 +160,7 @@ public class Client {
 			
 			state.init(domain._hmObjects, nonFluents != null ? nonFluents._hmObjects : null, instance._hmObjects,
 					domain._hmTypes, domain._hmPVariables, domain._hmCPF,
-					instance._alInitState, nonFluents == null ? null : nonFluents._alNonFluents,
+					instance._alInitState, nonFluents == null ? new ArrayList<PVAR_INST_DEF>() : nonFluents._alNonFluents, instance._alNonFluents,
 					domain._alStateConstraints, domain._alActionPreconditions, domain._alStateInvariants, 
 					domain._exprReward, instance._nNonDefActions);
 			
@@ -217,7 +217,7 @@ public class Client {
 											   (double) RUNTIME.totalMemory())) + " ]\n");
 				state.init(domain._hmObjects, nonFluents != null ? nonFluents._hmObjects : null, instance._hmObjects,
 						domain._hmTypes, domain._hmPVariables, domain._hmCPF,
-						instance._alInitState, nonFluents == null ? null : nonFluents._alNonFluents,
+						instance._alInitState, nonFluents == null ? new ArrayList<PVAR_INST_DEF>() : nonFluents._alNonFluents, instance._alNonFluents,
 						domain._alStateConstraints, domain._alActionPreconditions, domain._alStateInvariants,  
 						domain._exprReward, instance._nNonDefActions);
 				msg = createXMLRoundRequest();

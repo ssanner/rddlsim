@@ -112,7 +112,8 @@ public class State {
 					 HashMap<PVAR_NAME,PVARIABLE_DEF> pvariables,
 					 HashMap<PVAR_NAME,CPF_DEF> cpfs,
 					 ArrayList<PVAR_INST_DEF> init_state,
-					 ArrayList<PVAR_INST_DEF> nonfluents,
+					 ArrayList<PVAR_INST_DEF> nf_nonfluents,
+					 ArrayList<PVAR_INST_DEF> i_nonfluents,
 					 ArrayList<BOOL_EXPR> state_action_constraints, // deprecated but still usable
 					 ArrayList<BOOL_EXPR> action_preconditions,
 					 ArrayList<BOOL_EXPR> state_invariants,
@@ -269,8 +270,8 @@ public class State {
 
 		// Set initial state and pvariables
 		setPVariables(_state, init_state);
-		if (nonfluents != null)
-			setPVariables(_nonfluents, nonfluents);
+		setPVariables(_nonfluents, nf_nonfluents);
+		setPVariables(_nonfluents, i_nonfluents);
 			
 		// Derive fluent ordering
 		try {

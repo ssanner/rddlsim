@@ -93,7 +93,7 @@ public class RDDL2Graph {
 		// in State that we'll need to produce the DBN
 		state.init(d._hmObjects, n != null ? n._hmObjects : null, i._hmObjects,  
 				d._hmTypes, d._hmPVariables, d._hmCPF,
-				i._alInitState, n == null ? null : n._alNonFluents, 
+				i._alInitState, n == null ? new ArrayList<PVAR_INST_DEF>() : n._alNonFluents, i._alNonFluents,
 				d._alStateConstraints, d._alActionPreconditions, d._alStateInvariants, 
 				d._exprReward, i._nNonDefActions);
 		

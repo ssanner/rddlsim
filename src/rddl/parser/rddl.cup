@@ -110,7 +110,7 @@ terminal DOMAIN, INSTANCE, HORIZON, DISCOUNT, OBJECTS, INIT_STATE,
 		 AGG_OPER, REWARD, FORALL, DOLLAR_SIGN, 
 		 EXISTS, AND, AMPERSAND, OR, NOT, KRON_DELTA, DIRAC_DELTA, UNIFORM, BERNOULLI, DISCRETE,
 		 NORMAL, POISSON, EXPONENTIAL, PLUS, TIMES, DIV, MINUS, IF, THEN, TERMINATE_WHEN, 
-		 ELSE, SWITCH, DOT, OTHERWISE, WEIBULL, GAMMA, MULTINOMIAL, DIRICHLET;
+		 ELSE, SWITCH, DOT, OTHERWISE, WEIBULL, GAMMA, MULTINOMIAL, DIRICHLET, TERMINAL;
 terminal SEMI, LPAREN, RPAREN, COMMA, LBRACK, COLON, QUESTION, 
          RBRACK, LESS, LESSEQ, GREATER, GREATEREQ, IMPLY, EQUIV, 
          ASSIGN_EQUAL, COMP_EQUAL, TRUE, FALSE, NEQ, UMINUS; 
@@ -217,7 +217,10 @@ DOMAIN_BLOCK ::= DOMAIN IDENT:name LCURLY REQ_SECTION:domain DOMAIN_LIST:list RC
 		 ;
 		 
 REQ_SECTION ::= REQUIREMENTS ASSIGN_EQUAL LCURLY STRING_LIST:list RCURLY SEMI {: RESULT = new RDDL.DOMAIN(list); :}
-		 |  REQUIREMENTS ASSIGN_EQUAL LCURLY RCURLY SEMI {: RESULT = new RDDL.DOMAIN(new ArrayList()); :}
+		 | REQUIREMENTS ASSIGN_EQUAL LCURLY RCURLY SEMI {: RESULT = new RDDL.DOMAIN(new ArrayList()); :}
+/* RDDL2 allows definition of requirements section with equals sign (for consistency with the rest of the syntax) */
+		 | REQUIREMENTS LCURLY STRING_LIST:list RCURLY SEMI {: RESULT = new RDDL.DOMAIN(list); :}
+		 | REQUIREMENTS LCURLY RCURLY SEMI {: RESULT = new RDDL.DOMAIN(new ArrayList()); :}
 		 ;
 		 		 
 /* RDDL2: Allow objects specification in domain */
@@ -572,7 +575,7 @@ INSTANCE_BLOCK ::= INSTANCE IDENT:name LCURLY
                            MAX_NONDEF_ACTIONS ASSIGN_EQUAL POS_INT_TYPE_OR_POS_INF:a SEMI
                            HORIZON_SPEC:h SEMI
                            DISCOUNT ASSIGN_EQUAL DOUBLE:d SEMI RCURLY
-			{: RESULT = new RDDL.INSTANCE(name,domain,nonfluents,objects,state_list,a,h,d); :} 
+			{: RESULT = new RDDL.INSTANCE(name,domain,nonfluents,null,objects,state_list,a,h,d); :} 
 		| INSTANCE IDENT:name LCURLY 
                            DOMAIN ASSIGN_EQUAL IDENT:domain SEMI
                            OBJECTS LCURLY OBJECTS_LIST:objects RCURLY SEMI 
@@ -580,7 +583,7 @@ INSTANCE_BLOCK ::= INSTANCE IDENT:name LCURLY
                            MAX_NONDEF_ACTIONS ASSIGN_EQUAL POS_INT_TYPE_OR_POS_INF:a SEMI
                            HORIZON_SPEC:h SEMI
                            DISCOUNT ASSIGN_EQUAL DOUBLE:d SEMI RCURLY
-			{: RESULT = new RDDL.INSTANCE(name,domain,null,objects,state_list,a,h,d); :} 
+			{: RESULT = new RDDL.INSTANCE(name,domain,null,null,objects,state_list,a,h,d); :} 
 		| INSTANCE IDENT:name LCURLY 
                            DOMAIN ASSIGN_EQUAL IDENT:domain SEMI
                            NON_FLUENTS ASSIGN_EQUAL IDENT:nonfluents SEMI 
@@ -588,14 +591,14 @@ INSTANCE_BLOCK ::= INSTANCE IDENT:name LCURLY
                            MAX_NONDEF_ACTIONS ASSIGN_EQUAL POS_INT_TYPE_OR_POS_INF:a SEMI
                            HORIZON_SPEC:h SEMI
                            DISCOUNT ASSIGN_EQUAL DOUBLE:d SEMI RCURLY
-			{: RESULT = new RDDL.INSTANCE(name,domain,nonfluents,null,state_list,a,h,d); :} 
+			{: RESULT = new RDDL.INSTANCE(name,domain,nonfluents,null,null,state_list,a,h,d); :} 
 		| INSTANCE IDENT:name LCURLY 
                            DOMAIN ASSIGN_EQUAL IDENT:domain SEMI
                            INIT_STATE LCURLY PVAR_INST_LIST:state_list RCURLY SEMI 
                            MAX_NONDEF_ACTIONS ASSIGN_EQUAL POS_INT_TYPE_OR_POS_INF:a SEMI
                            HORIZON_SPEC:h SEMI
                            DISCOUNT ASSIGN_EQUAL DOUBLE:d SEMI RCURLY
-			{: RESULT = new RDDL.INSTANCE(name,domain,null,null,state_list,a,h,d); :} 
+			{: RESULT = new RDDL.INSTANCE(name,domain,null,null,null,state_list,a,h,d); :} 
 		| INSTANCE IDENT:name LCURLY 
                            DOMAIN ASSIGN_EQUAL IDENT:domain SEMI
                            NON_FLUENTS ASSIGN_EQUAL IDENT:nonfluents SEMI 
@@ -603,27 +606,27 @@ INSTANCE_BLOCK ::= INSTANCE IDENT:name LCURLY
                            MAX_NONDEF_ACTIONS ASSIGN_EQUAL POS_INT_TYPE_OR_POS_INF:a SEMI
                            HORIZON_SPEC:h SEMI
                            DISCOUNT ASSIGN_EQUAL DOUBLE:d SEMI RCURLY
-			{: RESULT = new RDDL.INSTANCE(name,domain,nonfluents,objects,new ArrayList(),a,h,d); :} 
+			{: RESULT = new RDDL.INSTANCE(name,domain,nonfluents,null,objects,new ArrayList(),a,h,d); :} 
 		| INSTANCE IDENT:name LCURLY 
                            DOMAIN ASSIGN_EQUAL IDENT:domain SEMI
                            OBJECTS LCURLY OBJECTS_LIST:objects RCURLY SEMI 
                            MAX_NONDEF_ACTIONS ASSIGN_EQUAL POS_INT_TYPE_OR_POS_INF:a SEMI
                            HORIZON_SPEC:h SEMI
                            DISCOUNT ASSIGN_EQUAL DOUBLE:d SEMI RCURLY
-			{: RESULT = new RDDL.INSTANCE(name,domain,null,objects,new ArrayList(),a,h,d); :} 
+			{: RESULT = new RDDL.INSTANCE(name,domain,null,null,objects,new ArrayList(),a,h,d); :} 
 		| INSTANCE IDENT:name LCURLY 
                            DOMAIN ASSIGN_EQUAL IDENT:domain SEMI
                            NON_FLUENTS ASSIGN_EQUAL IDENT:nonfluents SEMI 
                            MAX_NONDEF_ACTIONS ASSIGN_EQUAL POS_INT_TYPE_OR_POS_INF:a SEMI
                            HORIZON_SPEC:h SEMI
                            DISCOUNT ASSIGN_EQUAL DOUBLE:d SEMI RCURLY
-			{: RESULT = new RDDL.INSTANCE(name,domain,nonfluents,null,new ArrayList(),a,h,d); :} 
+			{: RESULT = new RDDL.INSTANCE(name,domain,nonfluents,null,null,new ArrayList(),a,h,d); :} 
 		| INSTANCE IDENT:name LCURLY 
                            DOMAIN ASSIGN_EQUAL IDENT:domain SEMI
                            MAX_NONDEF_ACTIONS ASSIGN_EQUAL POS_INT_TYPE_OR_POS_INF:a SEMI
                            HORIZON_SPEC:h SEMI
                            DISCOUNT ASSIGN_EQUAL DOUBLE:d SEMI RCURLY
-			{: RESULT = new RDDL.INSTANCE(name,domain,null,null,new ArrayList(),a,h,d); :}
+			{: RESULT = new RDDL.INSTANCE(name,domain,null,null,null,new ArrayList(),a,h,d); :}
 /* New section omits MAX_NONDEF_ACTIONS */ 
 		| INSTANCE IDENT:name LCURLY 
                            DOMAIN ASSIGN_EQUAL IDENT:domain SEMI
@@ -632,51 +635,68 @@ INSTANCE_BLOCK ::= INSTANCE IDENT:name LCURLY
                            INIT_STATE LCURLY PVAR_INST_LIST:state_list RCURLY SEMI 
                            HORIZON_SPEC:h SEMI
                            DISCOUNT ASSIGN_EQUAL DOUBLE:d SEMI RCURLY
-			{: RESULT = new RDDL.INSTANCE(name,domain,nonfluents,objects,state_list,null,h,d); :} 
+			{: RESULT = new RDDL.INSTANCE(name,domain,nonfluents,null,objects,state_list,null,h,d); :} 
 		| INSTANCE IDENT:name LCURLY 
                            DOMAIN ASSIGN_EQUAL IDENT:domain SEMI
                            OBJECTS LCURLY OBJECTS_LIST:objects RCURLY SEMI 
                            INIT_STATE LCURLY PVAR_INST_LIST:state_list RCURLY SEMI 
                            HORIZON_SPEC:h SEMI
                            DISCOUNT ASSIGN_EQUAL DOUBLE:d SEMI RCURLY
-			{: RESULT = new RDDL.INSTANCE(name,domain,null,objects,state_list,null,h,d); :} 
+			{: RESULT = new RDDL.INSTANCE(name,domain,null,null,objects,state_list,null,h,d); :} 
 		| INSTANCE IDENT:name LCURLY 
                            DOMAIN ASSIGN_EQUAL IDENT:domain SEMI
                            NON_FLUENTS ASSIGN_EQUAL IDENT:nonfluents SEMI 
                            INIT_STATE LCURLY PVAR_INST_LIST:state_list RCURLY SEMI 
                            HORIZON_SPEC:h SEMI
                            DISCOUNT ASSIGN_EQUAL DOUBLE:d SEMI RCURLY
-			{: RESULT = new RDDL.INSTANCE(name,domain,nonfluents,null,state_list,null,h,d); :} 
+			{: RESULT = new RDDL.INSTANCE(name,domain,nonfluents,null,null,state_list,null,h,d); :} 
 		| INSTANCE IDENT:name LCURLY 
                            DOMAIN ASSIGN_EQUAL IDENT:domain SEMI
                            INIT_STATE LCURLY PVAR_INST_LIST:state_list RCURLY SEMI 
                            HORIZON_SPEC:h SEMI
                            DISCOUNT ASSIGN_EQUAL DOUBLE:d SEMI RCURLY
-			{: RESULT = new RDDL.INSTANCE(name,domain,null,null,state_list,null,h,d); :} 
+			{: RESULT = new RDDL.INSTANCE(name,domain,null,null,null,state_list,null,h,d); :} 
 		| INSTANCE IDENT:name LCURLY 
                            DOMAIN ASSIGN_EQUAL IDENT:domain SEMI
                            NON_FLUENTS ASSIGN_EQUAL IDENT:nonfluents SEMI 
                            OBJECTS LCURLY OBJECTS_LIST:objects RCURLY SEMI 
                            HORIZON_SPEC:h SEMI
                            DISCOUNT ASSIGN_EQUAL DOUBLE:d SEMI RCURLY
-			{: RESULT = new RDDL.INSTANCE(name,domain,nonfluents,objects,new ArrayList(),null,h,d); :} 
+			{: RESULT = new RDDL.INSTANCE(name,domain,nonfluents,null,objects,new ArrayList(),null,h,d); :} 
 		| INSTANCE IDENT:name LCURLY 
                            DOMAIN ASSIGN_EQUAL IDENT:domain SEMI
                            OBJECTS LCURLY OBJECTS_LIST:objects RCURLY SEMI 
                            HORIZON_SPEC:h SEMI
                            DISCOUNT ASSIGN_EQUAL DOUBLE:d SEMI RCURLY
-			{: RESULT = new RDDL.INSTANCE(name,domain,null,objects,new ArrayList(),null,h,d); :} 
+			{: RESULT = new RDDL.INSTANCE(name,domain,null,null,objects,new ArrayList(),null,h,d); :} 
 		| INSTANCE IDENT:name LCURLY 
                            DOMAIN ASSIGN_EQUAL IDENT:domain SEMI
                            NON_FLUENTS ASSIGN_EQUAL IDENT:nonfluents SEMI 
                            HORIZON_SPEC:h SEMI
                            DISCOUNT ASSIGN_EQUAL DOUBLE:d SEMI RCURLY
-			{: RESULT = new RDDL.INSTANCE(name,domain,nonfluents,null,new ArrayList(),null,h,d); :} 
+			{: RESULT = new RDDL.INSTANCE(name,domain,nonfluents,null,null,new ArrayList(),null,h,d); :} 
 		| INSTANCE IDENT:name LCURLY 
                            DOMAIN ASSIGN_EQUAL IDENT:domain SEMI
                            HORIZON_SPEC:h SEMI
                            DISCOUNT ASSIGN_EQUAL DOUBLE:d SEMI RCURLY
-			{: RESULT = new RDDL.INSTANCE(name,domain,null,null,new ArrayList(),null,h,d); :} 
+			{: RESULT = new RDDL.INSTANCE(name,domain,null,null,null,new ArrayList(),null,h,d); :}
+/* These are required for IPC 2018 and will be part of RDDL 2. We should list all possible legal combinations though */
+		| INSTANCE IDENT:name LCURLY 
+                           DOMAIN ASSIGN_EQUAL IDENT:domain SEMI
+                           OBJECTS LCURLY OBJECTS_LIST:objects RCURLY SEMI
+                           NON_FLUENTS LCURLY PVAR_INST_LIST:nonfluents_list RCURLY SEMI 
+                           INIT_STATE LCURLY PVAR_INST_LIST:state_list RCURLY SEMI 
+                           HORIZON_SPEC:h SEMI
+                           DISCOUNT ASSIGN_EQUAL DOUBLE:d SEMI RCURLY
+			{: RESULT = new RDDL.INSTANCE(name,domain,null,nonfluents_list,objects,state_list,null,h,d); :}
+		| INSTANCE IDENT:name LCURLY 
+                           DOMAIN ASSIGN_EQUAL IDENT:domain SEMI
+                           OBJECTS LCURLY OBJECTS_LIST:objects RCURLY SEMI
+                           NON_FLUENTS LCURLY PVAR_INST_LIST:nonfluents_list RCURLY SEMI 
+                           INIT_STATE LCURLY PVAR_INST_LIST:state_list RCURLY SEMI 
+                           TERMINAL ASSIGN_EQUAL EXPR:expr SEMI
+                           DISCOUNT ASSIGN_EQUAL DOUBLE:d SEMI RCURLY
+			{: RESULT = new RDDL.INSTANCE(name,domain,null,nonfluents_list,objects,state_list,null,expr,d); :}
 		;
 
 		

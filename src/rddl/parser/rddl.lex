@@ -55,6 +55,7 @@ WHITE_SPACE_CHAR=[\r\n\ \t\b\012]
 "default" { return new Symbol(sym.DEFAULT, yytext()); }
 "max-nondef-actions" { return new Symbol(sym.MAX_NONDEF_ACTIONS, yytext()); }
 "terminate-when" { return new Symbol(sym.TERMINATE_WHEN, yytext()); }
+"terminal" { return new Symbol(sym.TERMINAL, yytext()); }
 "cpfs" { return new Symbol(sym.CPFS, yytext()); }
 "cdfs" { return new Symbol(sym.CDFS, yytext()); }
 "reward" { return new Symbol(sym.REWARD, yytext()); }

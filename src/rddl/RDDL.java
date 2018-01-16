@@ -1,6 +1,6 @@
 /**
  * RDDL: Defines all nodes in the internal tree representation of RDDL
- *       and simulation code for sampling from expression constructs.
+ *		 and simulation code for sampling from expression constructs.
  * 
  * @author Scott Sanner (ssanner@gmail.com)
  * @version 10/10/10
@@ -22,7 +22,7 @@ import util.Pair;
 
 public class RDDL {
 
-	public final static boolean DEBUG_EXPR_EVAL  = false;
+	public final static boolean DEBUG_EXPR_EVAL	 = false;
 	public final static boolean DEBUG_PVAR_NAMES = true;
 	public static TreeSet<String> PVAR_SRC_SET = new TreeSet<String>();
 	
@@ -32,9 +32,9 @@ public class RDDL {
 
 	public RDDL() { }
 
-	public RDDL(RDDL rddl) { 
-		addOtherRDDL(rddl);
-	}
+	// public RDDL(RDDL rddl) { 
+	//	addOtherRDDL(rddl);
+	// }
 	
 	public RDDL(String rddl_file_or_dir) {
 		try {
@@ -43,10 +43,10 @@ public class RDDL {
 				for (File f2 : f.listFiles())
 					if (f2.getName().endsWith(".rddl") || f2.getName().endsWith(".rddl2")) {
 						System.out.println("Loading: " + f2);
-						addOtherRDDL(parser.parse(f2));
+						addOtherRDDL(parser.parse(f2), rddl_file_or_dir + "/" + f2.getName());
 					}
 			} else
-				addOtherRDDL(parser.parse(f));
+				addOtherRDDL(parser.parse(f), rddl_file_or_dir + "/" + f.getName());
 		} catch (Exception e) {
 			System.out.println("ERROR: Could not instantiate RDDL for '" + rddl_file_or_dir + "'\n");// + e);
 			//e.printStackTrace();
@@ -78,7 +78,7 @@ public class RDDL {
 		_tmNonFluentNodes.put(n._sName, n);		
 	}
 	
-	public void addOtherRDDL(RDDL rddl) {
+	public void addOtherRDDL(RDDL rddl, String fileName) {
 		Set<String> overlap_d = new TreeSet<String>(_tmDomainNodes.keySet());
 		Set<String> overlap_n = new TreeSet<String>(_tmNonFluentNodes.keySet());
 		Set<String> overlap_i = new TreeSet<String>(_tmInstanceNodes.keySet());
@@ -96,6 +96,15 @@ public class RDDL {
 		if (overlap_i.size() != 0) {
 			System.err.println("ERROR: conflicting (duplicate) instance names: " + overlap_i);
 			System.exit(1);
+		}
+		for (DOMAIN d : rddl._tmDomainNodes.values()) {
+			d.setFileName(fileName);
+		}
+		for (INSTANCE i : rddl._tmInstanceNodes.values()) {
+			i.setFileName(fileName);
+		}
+		for (NONFLUENTS n : rddl._tmNonFluentNodes.values()) {
+			n.setFileName(fileName);
 		}
 		_tmDomainNodes.putAll(rddl._tmDomainNodes);
 		_tmInstanceNodes.putAll(rddl._tmInstanceNodes);	
@@ -163,6 +172,8 @@ public class RDDL {
 					_bRewardDeterministic = true;
 				} else if (s.equals("partially-observed")) {
 					_bPartiallyObserved = true;
+				} else if (s.equals("preconditions")) {
+					_bPreconditions = true;
 				} else {
 					System.err.println("Unrecognized requirement '" + s + "'.");
 				}
@@ -171,6 +182,10 @@ public class RDDL {
 		
 		public void setName(String s) {
 			_sDomainName = s;
+		}
+
+		public void setFileName(String s) {
+			_sFileName = s;
 		}
 		
 		public void addDefs(ArrayList l) throws Exception {
@@ -224,10 +239,11 @@ public class RDDL {
 		}
 		
 		public String _sDomainName = null;
+		public String _sFileName = null;
 		public String _sCPFHeader  = null;
 		
 		// WARNING: these are no longer set properly... should avoid using them until they
-		//          are derived from domain analysis.
+		// are derived from domain analysis.
 		public boolean _bConcurrent = false;  // more than one non-default action 
 		public boolean _bContinuous = false;  // use of real type
 		public boolean _bInteger = false;     // use of int type
@@ -237,6 +253,7 @@ public class RDDL {
 		public boolean _bCPFDeterministic = false;     // cpfs are deterministic
 		public boolean _bRewardDeterministic = false;  // reward is deterministic
 		public boolean _bPartiallyObserved = false;    // domain is a POMDP
+		public boolean _bPreconditions = false;	 // use of action preconditions
 		
 		public HashMap<TYPE_NAME,TYPE_DEF>      _hmTypes      = new HashMap<TYPE_NAME,TYPE_DEF>();
 		public HashMap<PVAR_NAME,PVARIABLE_DEF> _hmPVariables = new HashMap<PVAR_NAME,PVARIABLE_DEF>();
@@ -264,7 +281,8 @@ public class RDDL {
 					+ (_bMultivalued ? "    multivalued,\n" : "")
 					+ (_bIntermediateNodes ? "    intermediate-nodes,\n" : "")
 					+ (_bStateConstraints ?  "    constrained-state,\n" : "")
-					+ (_bPartiallyObserved ? "    partially-observed,\n" : ""));
+					+ (_bPartiallyObserved ? "    partially-observed,\n" : "")
+					+ (_bPreconditions ? "    preconditions,\n" : ""));
 			if (sb.length() > len) // i.e, we've added some requirements 
 				sb.delete(sb.length() - 2, sb.length() - 1); // Remove last ,
 			sb.append("  };\n");
@@ -339,7 +357,7 @@ public class RDDL {
 	public static class INSTANCE {
 		
 		// objects and non_fluents may be null
-		public INSTANCE(String name, String domain, String nonfluents, 
+		public INSTANCE(String name, String domain, String nonfluents, ArrayList nonfluentsList,
 						ArrayList objects, ArrayList init_state, 
 						Integer nondef_actions, Object horizon, double discount) {
 			
@@ -349,7 +367,10 @@ public class RDDL {
 			
 			_sName     = name;
 			_sDomain   = domain;
-			_sNonFluents    = nonfluents;
+			if (nonfluentsList != null) {
+				_alNonFluents = (ArrayList<PVAR_INST_DEF>)nonfluentsList;
+			}
+			_sNonFluents	= nonfluents;
 			_nNonDefActions = nondef_actions;
 			if (horizon instanceof Integer) {
 				_nHorizon = (Integer)horizon;
@@ -367,8 +388,13 @@ public class RDDL {
 					_hmObjects.put(od._sObjectClass, od);
 			_alInitState = (ArrayList<PVAR_INST_DEF>)init_state;
 		}
+
+		public void setFileName(String s) {
+			_sFileName = s;
+		}
 		
-		public String _sName     = null;
+		public String _sName    = null;
+		public String _sFileName = null;
 		public String _sDomain   = null;
 		public String _sNonFluents = null;
 		public int _nNonDefActions = -1;
@@ -378,6 +404,7 @@ public class RDDL {
 		
 		public HashMap<TYPE_NAME,OBJECTS_DEF> _hmObjects = new HashMap<TYPE_NAME,OBJECTS_DEF>();
 		public ArrayList<PVAR_INST_DEF> _alInitState = new ArrayList<PVAR_INST_DEF>();
+		public ArrayList<PVAR_INST_DEF> _alNonFluents = new ArrayList<PVAR_INST_DEF>();
 		
 		public String toString() {
 			StringBuilder sb = new StringBuilder();
@@ -399,6 +426,14 @@ public class RDDL {
 					sb.append("    " + isd + "\n");
 				}
 				sb.append("  };\n");
+			}
+			if (!_alNonFluents.isEmpty()) {
+				sb.append("	 non-fluents {\n");
+				for (PVAR_INST_DEF isd : _alNonFluents) {
+					sb.append("	   " + isd + "\n");
+				}
+				sb.append("	 };\n");
+				sb.append("}");
 			}
 			sb.append("  max-nondef-actions = "  + (_nNonDefActions == Integer.MAX_VALUE ? "pos-inf" : _nNonDefActions) + ";\n");
 			sb.append("  horizon = "  + (_termCond != null ? "terminate-when (" + _termCond + ")" : _nHorizon) + ";\n");
@@ -422,8 +457,13 @@ public class RDDL {
 					_hmObjects.put(od._sObjectClass, od);
 			_alNonFluents = (ArrayList<PVAR_INST_DEF>)non_fluents;
 		}
+
+		public void setFileName(String s) {
+			_sFileName = s;
+		}
 		
 		public String _sName = null;
+		public String _sFileName = null;
 		public String _sDomain = null;
 		
 		public HashMap<TYPE_NAME,OBJECTS_DEF> _hmObjects = new HashMap<TYPE_NAME,OBJECTS_DEF>();
@@ -733,12 +773,12 @@ public class RDDL {
 		public TYPE_NAME _typeSuperclass = null;
 		
 		public String toString() {
-            if(_typeSuperclass != null) {
-                return _sName + " : " + _typeSuperclass + ";";
-            } else {
-                return _sName + " : object;";
-            }
-        }
+			if(_typeSuperclass != null) {
+				return _sName + " : " + _typeSuperclass + ";";
+			} else {
+				return _sName + " : object;";
+			}
+		}
 	}
 	
 	public abstract static class PVARIABLE_DEF {
@@ -1198,10 +1238,10 @@ public class RDDL {
 			
 			// Allow enums to be interpreted as ints if the part after the @ is an int
 			try {
-                _intVal = Integer.parseInt(enum_name.substring(1));
-            } catch(NumberFormatException nfe) {
-                _intVal = null;
-            }
+				_intVal = Integer.parseInt(enum_name.substring(1));
+			} catch(NumberFormatException nfe) {
+				_intVal = null;
+			}
 		}
 		
 		@Override

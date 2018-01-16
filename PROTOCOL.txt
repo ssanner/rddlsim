@@ -24,7 +24,6 @@ server: session-init
 --
 server: end-session
 
-
 NOTES REGARDING SERVER SESSION TIME LIMITS (currently set at 1080000 ms = 18 min): 
 
 (1) All times are specified in milliseconds.
@@ -66,14 +65,15 @@ CLIENT MESSAGES:
 
 
 -Session request
-session-request => "<session-request>" <name> <problem> "</session-request>"
+session-request => "<session-request>" <name> <problem> <input-language> "</session-request>" (Input language was added for IPC 2018)
 name => "<client-name>" <WORD> "</client-name>"
 problem => "<problem-name>" <WORD> "</problem-name>"
+input-language => "input-language>" "rddl"|"ppddl" "</input-language>
 
 
 -Round request
 round-request => "<round-request>" <execute-policy> "</round-request>"
-execute-policy => "<execute-policy>" <WORD> "</execute-policy>" (Since IPC 2018)
+execute-policy => "<execute-policy>" "yes"|"no" "</execute-policy>" (Since IPC 2018)
 
 
 -Action spec
