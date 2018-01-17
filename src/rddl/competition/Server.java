@@ -25,6 +25,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -746,7 +747,13 @@ public class Server implements Runnable {
 			task.append(new String(Files.readAllBytes(Paths.get(instanceFile))));
 			task.append(System.getProperty("line.separator"));
 
-			addOneText(dom, rootEle, TASK_DESC, task.toString());
+			// We have to send the description encoded to Base64 as "<"
+			// and ">" signs are replaced in XML text by &lt; and &gt;,
+			// respectively. This seems the cleanest solution, even
+			// though it requires the client to decode the description.
+			byte[] encodedBytes = Base64.getEncoder().encode(task.toString().getBytes());
+
+			addOneText(dom, rootEle, TASK_DESC, new String(encodedBytes));
 			addOneText(dom, rootEle, SESSION_ID, server.id + "");
 			addOneText(dom, rootEle, NUM_ROUNDS, numRounds + "");
 			addOneText(dom, rootEle, TIME_ALLOWED, timeAllowed + "");
@@ -768,7 +775,7 @@ public class Server implements Runnable {
 				server.clientName = getTextValue(e,CLIENT_NAME).get(0);
 				ArrayList<String> lang = getTextValue(e, INPUT_LANGUAGE);
 				if (lang != null && lang.size() > 0) {
-					if (lang.get(0).equals("ppddl")) {
+					if (lang.get(0).trim().equals("ppddl")) {
 						server.inputLanguage = "ppddl";
  					}
 				}
