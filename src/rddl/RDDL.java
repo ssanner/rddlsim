@@ -43,10 +43,10 @@ public class RDDL {
 				for (File f2 : f.listFiles())
 					if (f2.getName().endsWith(".rddl") || f2.getName().endsWith(".rddl2")) {
 						System.out.println("Loading: " + f2);
-						addOtherRDDL(parser.parse(f2), rddl_file_or_dir + "/" + f2.getName());
+						addOtherRDDL(parser.parse(f2), f2.getName().substring(0, f2.getName().lastIndexOf('.')));  
 					}
 			} else
-				addOtherRDDL(parser.parse(f), rddl_file_or_dir + "/" + f.getName());
+				addOtherRDDL(parser.parse(f), f.getName().substring(0, f.getName().lastIndexOf('.')));
 		} catch (Exception e) {
 			System.out.println("ERROR: Could not instantiate RDDL for '" + rddl_file_or_dir + "'\n");// + e);
 			//e.printStackTrace();

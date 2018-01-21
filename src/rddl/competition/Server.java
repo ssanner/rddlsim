@@ -126,7 +126,9 @@ public class Server implements Runnable {
 	private static boolean USE_TIMEOUT = true;
 	private static boolean INDIVIDUAL_SESSION = false;
 	private static String LOG_FILE = "rddl";
-    private static boolean MONITOR_EXECUTION = false;
+	private static boolean MONITOR_EXECUTION = false;
+	private static String SERVER_FILES_DIR = "";
+	private static String CLIENT_FILES_DIR = "";
     
 	public int port;
 	public int id;
@@ -166,7 +168,20 @@ public class Server implements Runnable {
 				
 		try {
 			// Load RDDL files
-			RDDL rddl = new RDDL(args[0]);
+			SERVER_FILES_DIR = new String(args[0]);
+			CLIENT_FILES_DIR = new String(args[0]);
+
+			File[] subDirs = new File(args[0]).listFiles(File::isDirectory);
+			// Check if there are subdirectories called "client" and "server"
+			for (File subDir : subDirs) {
+				if (subDir.getName().equals("server")) {
+				SERVER_FILES_DIR =  new String(subDir.getPath());
+				} else if (subDir.getName().equals("client")) {
+					CLIENT_FILES_DIR =  new String(subDir.getPath());
+				}
+			}
+
+			RDDL rddl = new RDDL(SERVER_FILES_DIR);
 
 			if ( args.length > 1) {
 				port = Integer.valueOf(args[1]);
@@ -721,16 +736,10 @@ public class Server implements Runnable {
 			INSTANCE instance = server.rddl._tmInstanceNodes.get(server.requestedInstance);
 			DOMAIN domain = server.rddl._tmDomainNodes.get(instance._sDomain);
 
-			String domainFile = domain._sFileName;
-			String instanceFile = instance._sFileName;
+			String domainFile = CLIENT_FILES_DIR + "/" + domain._sFileName + "." + server.inputLanguage;
+			String instanceFile = CLIENT_FILES_DIR + "/" + instance._sFileName + "." + server.inputLanguage;
 
-			System.out.println(server.inputLanguage);
 
-			if (server.inputLanguage.equals("ppddl")) {
-				domainFile = domainFile.replaceAll("rddl", "ppddl");
-				instanceFile = instanceFile.replaceAll("rddl", "ppddl");
-				// System.out.println(domainFile + " / " + instanceFile);
-			}
 
 			// NONFLUENTS nonFluents = null;
 			// if (instance._sNonFluents != null) {
