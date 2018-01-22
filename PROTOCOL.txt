@@ -68,7 +68,7 @@ CLIENT MESSAGES:
 session-request => "<session-request>" <name> <problem> <input-language> "</session-request>" (Input language was added for IPC 2018)
 name => "<client-name>" <WORD> "</client-name>"
 problem => "<problem-name>" <WORD> "</problem-name>"
-input-language => "input-language>" "rddl"|"ppddl" "</input-language>
+input-language => "input-language>" "rddl"|"pddl" "</input-language>
 
 
 -Round request

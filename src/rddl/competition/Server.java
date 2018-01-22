@@ -205,7 +205,7 @@ public class Server implements Runnable {
                     USE_TIMEOUT = false;
             }
             if (args.length > 6) {
-                LOG_FILE = args[6] + "/rddl";
+                LOG_FILE = args[6] + "/logs";
             }
             if (args.length > 7) {
                 assert(args[7].equals("0") || args[7].equals("1"));
@@ -739,8 +739,6 @@ public class Server implements Runnable {
 			String domainFile = CLIENT_FILES_DIR + "/" + domain._sFileName + "." + server.inputLanguage;
 			String instanceFile = CLIENT_FILES_DIR + "/" + instance._sFileName + "." + server.inputLanguage;
 
-
-
 			// NONFLUENTS nonFluents = null;
 			// if (instance._sNonFluents != null) {
 			//     nonFluents = server.rddl._tmNonFluentNodes.get(instance._sNonFluents);
@@ -784,8 +782,8 @@ public class Server implements Runnable {
 				server.clientName = getTextValue(e,CLIENT_NAME).get(0);
 				ArrayList<String> lang = getTextValue(e, INPUT_LANGUAGE);
 				if (lang != null && lang.size() > 0) {
-					if (lang.get(0).trim().equals("ppddl")) {
-						server.inputLanguage = "ppddl";
+					if (lang.get(0).trim().equals("pddl")) {
+						server.inputLanguage = "pddl";
  					}
 				}
 				NodeList nl = e.getElementsByTagName(NO_XML_HEADER);
