@@ -166,6 +166,8 @@ public class State {
 				addConstants(etd._sName, values);
 			}
 		}
+
+		HashMap<TYPE_NAME,ArrayList<LCONST>> inheritedObjects = new HashMap<TYPE_NAME,ArrayList<LCONST>>();
 		
 		// Now add in constants to superclasses as well
 		for (TYPE_NAME tname : _hmObject2Consts.keySet()) {
@@ -182,10 +184,15 @@ public class State {
 				// We have a superclass, so add it's constants
 				cur_tname = ((OBJECT_TYPE_DEF)def)._typeSuperclass; // Update for future iterations
 				//ArrayList<LCONST> constants = _hmObject2Consts.get(cur_tname);
-				addConstants(cur_tname, child_constants);				
-			} 
+				//addConstants(cur_tname, child_constants);
+				inheritedObjects.put(cur_tname, child_constants);
+			}
 		}
-		
+
+		for (HashMap.Entry<TYPE_NAME,ArrayList<LCONST>> entry : inheritedObjects.entrySet()) {
+			addConstants(entry.getKey(), entry.getValue());
+		}
+
 		// =============================
 		
 		// TODO: Expand enum and object types according to the constants
