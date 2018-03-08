@@ -279,9 +279,9 @@ public class Server implements Runnable {
 			int r = 0;
 			long session_elapsed_time = 0l;
 			for( ; r < numRounds && !OUT_OF_TIME; r++ ) {
-                if (!executePolicy) {
-                    r--;
-                }
+				if (!executePolicy) {
+					r--;
+				}
 				isrc = readOneMessage(isr);
 				if ( !processXMLRoundRequest(p, isrc, this) ) {
 					break;
@@ -292,18 +292,16 @@ public class Server implements Runnable {
 				sendOneMessage(osw,msg);
 				
 				long start_round_time = System.currentTimeMillis();
-                if (executePolicy) {
-                    System.out.println("Round " + (r+1) + " / " + numRounds + ", time remaining: " + (timeAllowed - session_elapsed_time));
-				if (SHOW_MEMORY_USAGE)
-					System.out.print("[ Memory usage: " + 
+				if (executePolicy) {
+					System.out.println("Round " + (r+1) + " / " + numRounds + ", time remaining: " + (timeAllowed - session_elapsed_time));
+					if (SHOW_MEMORY_USAGE)
+						System.out.print("[ Memory usage: " + 
 							_df.format((RUNTIME.totalMemory() - RUNTIME.freeMemory())/1e6d) + "Mb / " + 
 							_df.format(RUNTIME.totalMemory()/1e6d) + "Mb" + 
 							" = " + _df.format(((double) (RUNTIME.totalMemory() - RUNTIME.freeMemory()) / 
 											   (double) RUNTIME.totalMemory())) + " ]\n");
-                } else {
-                    // TODO: For debugging only. Remove this, if a planner simulates there can be many such rounds!
-                    System.out.println("Starting simulation round");
-                }
+				}
+
 				double immediate_reward = 0.0d;
 				double accum_reward = 0.0d;
 				double cur_discount = 1.0d;
@@ -353,7 +351,7 @@ public class Server implements Runnable {
 					if (SHOW_ACTIONS && executePolicy) {
 						boolean suppress_object_cast_temp = RDDL.SUPPRESS_OBJECT_CAST;
 						RDDL.SUPPRESS_OBJECT_CAST = true;
-                        System.out.println("** Actions received: " + ds);
+						System.out.println("** Actions received: " + ds);
 						RDDL.SUPPRESS_OBJECT_CAST = suppress_object_cast_temp;
 					}
 					
@@ -362,13 +360,12 @@ public class Server implements Runnable {
 						state.checkStateActionConstraints(ds);
 					} catch (Exception e) {
 						System.out.println("TRIAL ERROR -- ACTION NOT APPLICABLE:\n" + e);
-                        if (INDIVIDUAL_SESSION) {
-                            try {
-                                connection.close();
-                            }
-                            catch (IOException ioe){}
+						if (INDIVIDUAL_SESSION) {
+							try {
+								connection.close();
+							} catch (IOException ioe){}
 							System.exit(1);
-                        }
+						}
 						break;
 					}
 					
@@ -377,13 +374,12 @@ public class Server implements Runnable {
 					} catch (Exception ee) {
 						System.out.println("FATAL SERVER EXCEPTION:\n" + ee);
 						//ee.printStackTrace();
-                        if (INDIVIDUAL_SESSION) {
-                            try {
-                                connection.close();
-                            }
-                            catch (IOException ioe){}
+						if (INDIVIDUAL_SESSION) {
+							try {
+								connection.close();
+							} catch (IOException ioe){}
 							System.exit(1);
-                        }
+						}
 						throw ee;
 					}
 					//for ( PVAR_NAME pn : state._observ.keySet() ) {
@@ -423,9 +419,10 @@ public class Server implements Runnable {
 					round_elapsed_time = (System.currentTimeMillis() - start_round_time);
 					OUT_OF_TIME = session_elapsed_time + round_elapsed_time > timeAllowed && USE_TIMEOUT;
 				}
-                if (executePolicy) {
-                    accum_total_reward += accum_reward;
-                }
+				if (executePolicy) {
+					accum_total_reward += accum_reward;
+					System.out.println("** Round reward: " + accum_reward);
+				}
 				session_elapsed_time += round_elapsed_time;
 				msg = createXMLRoundEnd(requestedInstance, r, accum_reward, h, round_elapsed_time,
                                                         timeAllowed - session_elapsed_time,
@@ -443,13 +440,12 @@ public class Server implements Runnable {
 
 			writeToLog(msg);
 
-            if (INDIVIDUAL_SESSION) {
-                try {
-                    connection.close();
-                }
-                catch (IOException ioe){}
+			if (INDIVIDUAL_SESSION) {
+				try {
+					connection.close();
+				} catch (IOException ioe){}
 				System.exit(0);
-            }
+			}
 
 			//need to wait 10 seconds to pretend that we're processing something
 //			try {
@@ -462,13 +458,12 @@ public class Server implements Runnable {
 		catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("\n>> TERMINATING TRIAL.");
-            if (INDIVIDUAL_SESSION) {
-                try {
-                    connection.close();
-                }
-                catch (IOException ioe){}
-                System.exit(1);
-            }
+			if (INDIVIDUAL_SESSION) {
+				try {
+					connection.close();
+				} catch (IOException ioe){}
+				System.exit(1);
+			}
 		}
 		finally {
 			try {
