@@ -1,3 +1,4 @@
+#!/bin/bash
 Home=.
 libDir=${Home}/lib
 CP=${Home}/bin
