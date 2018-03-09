@@ -201,8 +201,12 @@ public class Server implements Runnable {
                     INDIVIDUAL_SESSION = true;
             }
             if (args.length > 5) {
-                if (args[5].equals("0"))
+                if (args[5].equals("0")) {
                     USE_TIMEOUT = false;
+		} else {
+			USE_TIMEOUT = true;
+			DEFAULT_TIME_ALLOWED = Integer.valueOf(args[5]) * 1000;
+		}
             }
             if (args.length > 6) {
                 LOG_FILE = args[6] + "/logs";
@@ -250,6 +254,7 @@ public class Server implements Runnable {
 			InetAddress ia = connection.getInetAddress();
 			String client_hostname = ia.getCanonicalHostName();
 			String client_IP = ia.getHostAddress();
+			long start_time = System.currentTimeMillis();
 			System.out.println("Connection from client address: " + client_hostname + " / " + client_IP);
 			writeToLog(createClientHostMessage(client_hostname, client_IP));
 			
@@ -277,7 +282,6 @@ public class Server implements Runnable {
 			double accum_total_reward = 0d;
 			ArrayList<Double> rewards = new ArrayList<Double>(DEFAULT_NUM_ROUNDS * instance._nHorizon);
 			int r = 0;
-			long session_elapsed_time = 0l;
 			for( ; r < numRounds && !OUT_OF_TIME; r++ ) {
 				if (!executePolicy) {
 					r--;
@@ -288,12 +292,11 @@ public class Server implements Runnable {
 				}
 				
 				resetState();
-				msg = createXMLRoundInit(r+1, numRounds, timeAllowed - session_elapsed_time, timeAllowed);
-				sendOneMessage(osw,msg);
+				msg = createXMLRoundInit(r+1, numRounds, timeAllowed - System.currentTimeMillis() + start_time, timeAllowed);
+			sendOneMessage(osw,msg);
 				
-				long start_round_time = System.currentTimeMillis();
 				if (executePolicy) {
-					System.out.println("Round " + (r+1) + " / " + numRounds + ", time remaining: " + (timeAllowed - session_elapsed_time));
+					System.out.println("Round " + (r+1) + " / " + numRounds + ", time remaining: " + (timeAllowed - System.currentTimeMillis() + start_time));
 					if (SHOW_MEMORY_USAGE)
 						System.out.print("[ Memory usage: " + 
 							_df.format((RUNTIME.totalMemory() - RUNTIME.freeMemory())/1e6d) + "Mb / " + 
@@ -307,7 +310,6 @@ public class Server implements Runnable {
 				double cur_discount = 1.0d;
 				int h = 0;
 				HashMap<PVAR_NAME, HashMap<ArrayList<LCONST>, Object>> observStore =null;
-				long round_elapsed_time = 0l;
 				for( ; h < instance._nHorizon && !OUT_OF_TIME; h++ ) {
 					
 					Timer timer = new Timer();
@@ -320,7 +322,7 @@ public class Server implements Runnable {
 					//		}
 					//	}
 					//}
-					msg = createXMLTurn(state, h+1, domain, observStore, (timeAllowed - session_elapsed_time - round_elapsed_time), immediate_reward);
+					msg = createXMLTurn(state, h+1, domain, observStore, timeAllowed - System.currentTimeMillis() + start_time, immediate_reward);
 					
 					if (SHOW_TIMING)
 						System.out.println("**TIME to create XML turn: " + timer.GetTimeSoFarAndReset());
@@ -416,16 +418,14 @@ public class Server implements Runnable {
 					// Scott: Update 2014 to check for out of time... this can trigger
 					//        an early round end
 					// TODO: check that this works
-					round_elapsed_time = (System.currentTimeMillis() - start_round_time);
-					OUT_OF_TIME = session_elapsed_time + round_elapsed_time > timeAllowed && USE_TIMEOUT;
+					OUT_OF_TIME = ((System.currentTimeMillis() - start_time) > timeAllowed) && USE_TIMEOUT;
 				}
 				if (executePolicy) {
 					accum_total_reward += accum_reward;
 					System.out.println("** Round reward: " + accum_reward);
 				}
-				session_elapsed_time += round_elapsed_time;
-				msg = createXMLRoundEnd(requestedInstance, r, accum_reward, h, round_elapsed_time,
-                                                        timeAllowed - session_elapsed_time,
+				msg = createXMLRoundEnd(requestedInstance, r, accum_reward, h,
+							timeAllowed - System.currentTimeMillis() + start_time,
                                                         clientName, immediate_reward);
 				if (SHOW_MSG)
 					System.out.println("Sending msg:\n" + msg);
@@ -433,7 +433,8 @@ public class Server implements Runnable {
 				
 				writeToLog(msg);
 			}
-			msg = createXMLSessionEnd(requestedInstance, accum_total_reward, r, session_elapsed_time, timeAllowed - session_elapsed_time, this.clientName, this.id);
+			msg = createXMLSessionEnd(requestedInstance, accum_total_reward, r,
+						  timeAllowed - System.currentTimeMillis() + start_time, this.clientName, this.id);
 			if (SHOW_MSG)
 				System.out.println("Sending msg:\n" + msg);
 			sendOneMessage(osw, msg);
@@ -954,7 +955,7 @@ public class Server implements Runnable {
 	}
 	
 	static String createXMLRoundEnd (String requested_instance, int round, double reward,
-                                         int turnsUsed, long timeUsed, long timeLeft, String client_name, double immediateReward) {
+					 int turnsUsed, long timeLeft, String client_name, double immediateReward) {
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		try {
 			DocumentBuilder db = dbf.newDocumentBuilder();
@@ -966,7 +967,6 @@ public class Server implements Runnable {
 			addOneText(dom,rootEle,	ROUND_NUM, round + "");
 			addOneText(dom,rootEle, ROUND_REWARD, reward + "");			
 			addOneText(dom,rootEle, TURNS_USED, turnsUsed + "");
-			addOneText(dom,rootEle, TIME_USED, timeUsed + "");
 			addOneText(dom,rootEle, TIME_LEFT, timeLeft + "");
                         addOneText(dom,rootEle, IMMEDIATE_REWARD, immediateReward + "");
 			return Client.serialize(dom);
@@ -986,7 +986,7 @@ public class Server implements Runnable {
 	}
 	
 	static String createXMLSessionEnd(String requested_instance, 
-			double reward, int roundsUsed, long timeUsed, long timeLeft, 
+					  double reward, int roundsUsed, long timeLeft, 
 			String clientName, int sessionId) {
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		try {
@@ -997,7 +997,6 @@ public class Server implements Runnable {
 			addOneText(dom,rootEle,INSTANCE_NAME, requested_instance);			
 			addOneText(dom,rootEle,TOTAL_REWARD, reward + "");			
 			addOneText(dom,rootEle,ROUNDS_USED, roundsUsed + "");
-			addOneText(dom,rootEle,TIME_USED, timeUsed + "");
 			addOneText(dom,rootEle,CLIENT_NAME, clientName + "");
 			addOneText(dom,rootEle,SESSION_ID, sessionId + "");
 			addOneText(dom,rootEle,TIME_LEFT, timeLeft + "");
