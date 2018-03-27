@@ -280,7 +280,7 @@ public class Server implements Runnable {
 			//System.out.println("STATE:\n" + state);
 			
 			double accum_total_reward = 0d;
-			ArrayList<Double> rewards = new ArrayList<Double>(DEFAULT_NUM_ROUNDS * instance._nHorizon);
+			ArrayList<Double> rewards = new ArrayList<Double>();
 			int r = 0;
 			for( ; r < numRounds && !OUT_OF_TIME; r++ ) {
 				if (!executePolicy) {
@@ -310,8 +310,7 @@ public class Server implements Runnable {
 				double cur_discount = 1.0d;
 				int h = 0;
 				HashMap<PVAR_NAME, HashMap<ArrayList<LCONST>, Object>> observStore =null;
-				for( ; h < instance._nHorizon && !OUT_OF_TIME; h++ ) {
-					
+				while (true) {
 					Timer timer = new Timer();
 				
 					//if ( observStore != null) {
@@ -419,6 +418,12 @@ public class Server implements Runnable {
 					//        an early round end
 					// TODO: check that this works
 					OUT_OF_TIME = ((System.currentTimeMillis() - start_time) > timeAllowed) && USE_TIMEOUT;
+					h++;
+
+					if (OUT_OF_TIME || ((instance._termCond == null) && (h == instance._nHorizon)) ||
+					   ((instance._termCond != null) && state.checkTerminationCondition(instance._termCond))) {
+						break;
+					}
 				}
 				if (executePolicy) {
 					accum_total_reward += accum_reward;
