@@ -196,27 +196,28 @@ public class Server implements Runnable {
 			} else {
 				rand_seed = DEFAULT_SEED;
 			}
-            if (args.length > 4) {
-                if (args[4].equals("1"))
-                    INDIVIDUAL_SESSION = true;
-            }
-            if (args.length > 5) {
-                if (args[5].equals("0")) {
-                    USE_TIMEOUT = false;
-		} else {
-			USE_TIMEOUT = true;
-			DEFAULT_TIME_ALLOWED = Integer.valueOf(args[5]) * 1000;
-		}
-            }
-            if (args.length > 6) {
-                LOG_FILE = args[6] + "/logs";
-            }
-            if (args.length > 7) {
-                assert(args[7].equals("0") || args[7].equals("1"));
-                if (args[7].equals("1")) {
-                    MONITOR_EXECUTION = true;
-                }
-            }
+			if (args.length > 4) {
+				if (args[4].equals("1")) {
+					INDIVIDUAL_SESSION = true;
+				}
+			}
+			if (args.length > 5) {
+				if (args[5].equals("0")) {
+					USE_TIMEOUT = false;
+				} else {
+					USE_TIMEOUT = true;
+					DEFAULT_TIME_ALLOWED = Integer.valueOf(args[5]) * 1000;
+				}
+			}
+			if (args.length > 6) {
+				LOG_FILE = args[6] + "/logs";
+			}
+			if (args.length > 7) {
+				assert(args[7].equals("0") || args[7].equals("1"));
+				if (args[7].equals("1")) {
+					MONITOR_EXECUTION = true;
+				}
+			}
 			if (args.length > 8) {
 				state_viz = (StateViz)Class.forName(args[8]).newInstance();
 			}
@@ -416,12 +417,20 @@ public class Server implements Runnable {
 										
 					// Scott: Update 2014 to check for out of time... this can trigger
 					//        an early round end
-					// TODO: check that this works
 					OUT_OF_TIME = ((System.currentTimeMillis() - start_time) > timeAllowed) && USE_TIMEOUT;
 					h++;
 
-					if (OUT_OF_TIME || ((instance._termCond == null) && (h == instance._nHorizon)) ||
-					   ((instance._termCond != null) && state.checkTerminationCondition(instance._termCond))) {
+					// Thomas: Update 2018 to allow simulation of SSPs
+					if (OUT_OF_TIME) {
+						// System.out.println("OUT OF TIME!");
+						break;
+					}
+					if ((instance._termCond == null) && (h == instance._nHorizon)) {
+						// System.out.println("Horizon reached");
+						break;
+					}
+					if ((instance._termCond != null) && state.checkTerminationCondition(instance._termCond)) {
+						// System.out.println("Terminal state reached");
 						break;
 					}
 				}
