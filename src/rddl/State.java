@@ -148,15 +148,21 @@ public class State {
 		//  that we instantiate parents before children and then recursively instantiate children)
 		
 		_hmObject2Consts = new HashMap<TYPE_NAME,ArrayList<LCONST>>();
-		if (domain_objects != null)
-			for (OBJECTS_DEF obj_def : domain_objects.values())
+		if (domain_objects != null) {
+			for (OBJECTS_DEF obj_def : domain_objects.values()) {
 				addConstants(obj_def._sObjectClass, obj_def._alObjects);
-		if (nonfluent_objects != null)
-			for (OBJECTS_DEF obj_def : nonfluent_objects.values())
+			}
+		}
+		if (nonfluent_objects != null) {
+			for (OBJECTS_DEF obj_def : nonfluent_objects.values()) {
 				addConstants(obj_def._sObjectClass, obj_def._alObjects);
-		if (instance_objects != null)
-			for (OBJECTS_DEF obj_def : instance_objects.values())
+			}
+		}
+		if (instance_objects != null) {
+			for (OBJECTS_DEF obj_def : instance_objects.values()) {
 				addConstants(obj_def._sObjectClass, obj_def._alObjects);
+			}
+		}
 		for (Map.Entry<TYPE_NAME,TYPE_DEF> e : typedefs.entrySet()) {
 			if (e.getValue() instanceof ENUM_TYPE_DEF) {
 				ENUM_TYPE_DEF etd = (ENUM_TYPE_DEF)e.getValue();
@@ -174,18 +180,28 @@ public class State {
 				
 			// Add superclass constants for each tname
 			TYPE_NAME cur_tname = tname;
+			ArrayList<LCONST> child_constants = new ArrayList<LCONST>();
 			while (true) {
-				// Terminate loop if enum or no superclass
-				ArrayList<LCONST> child_constants = _hmObject2Consts.get(cur_tname);
 				TYPE_DEF def = typedefs.get(cur_tname);
-				if (!(def instanceof OBJECT_TYPE_DEF) || ((OBJECT_TYPE_DEF)def)._typeSuperclass == null)
+				// Terminate loop if enum or no superclass
+				if (!(def instanceof OBJECT_TYPE_DEF) || ((OBJECT_TYPE_DEF)def)._typeSuperclass == null) {
 					break;
+				}
+				ArrayList<LCONST> new_child_constants = _hmObject2Consts.get(cur_tname);
+				if (new_child_constants != null) {
+					child_constants.addAll(new_child_constants);
+				}
 
 				// We have a superclass, so add it's constants
 				cur_tname = ((OBJECT_TYPE_DEF)def)._typeSuperclass; // Update for future iterations
-				//ArrayList<LCONST> constants = _hmObject2Consts.get(cur_tname);
-				//addConstants(cur_tname, child_constants);
-				inheritedObjects.put(cur_tname, child_constants);
+
+				if (inheritedObjects.get(cur_tname) != null) {
+					ArrayList<LCONST> merged_objects = inheritedObjects.get(cur_tname);
+					merged_objects.addAll(child_constants);
+					inheritedObjects.put(cur_tname, merged_objects);
+				} else {                
+					inheritedObjects.put(cur_tname, child_constants);
+				}
 			}
 		}
 
@@ -356,10 +372,13 @@ public class State {
 		// Merge constants without duplication
 		ArrayList<LCONST> new_constants = new ArrayList<LCONST>(constants);
 		ArrayList<LCONST> cur_constants = _hmObject2Consts.get(object_class);
-		if (cur_constants != null) 
-			for (LCONST c : cur_constants)
-				if (!new_constants.contains(c))
+		if (cur_constants != null) {
+			for (LCONST c : cur_constants) {
+				if (!new_constants.contains(c)) {
 					new_constants.add(c);
+				}
+			}
+		}
 		_hmObject2Consts.put(object_class, new_constants);
 	}
 	
