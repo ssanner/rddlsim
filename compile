@@ -1,3 +1,4 @@
+#!/bin/bash
 Home=.
 libDir=${Home}/lib
 CP=${Home}/src
@@ -15,5 +16,6 @@ for i in ${libDir}/*.jar ; do
     CP="${CP}${SEP}$i"
 done
 
+rm -rf $BINDIR
 mkdir $BINDIR
 javac -classpath $CP -d $BINDIR src/*/*.java src/*/*/*.java
