@@ -1,0 +1,18 @@
+function create_group_task {
+    HIERARCHY=$1
+    GROUPNAME=$2
+    echo $GROUPNAME	
+    sudo cgcreate -a $USER:$USER_GROUP -t $USER:$USER_GROUP -g $HIERARCHY:$GROUPNAME
+}
+
+function remove_cgroup {
+    HIERARCHY=$1
+    GROUPNAME=$2
+    rmdir $CGROUPS_ROOT/$HIERARCHY/$GROUPNAME
+}
+
+function get_tasks_in_cgroup {
+    HIERARCHY=$1
+    GROUPNAME=$2
+    cat $CGROUPS_ROOT/$HIERARCHY/$GROUPNAME/tasks
+}
