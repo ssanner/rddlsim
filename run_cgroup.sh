@@ -5,11 +5,16 @@ IPPC_CPUACCT_CGROUP=$CGROUPS_ROOT/cpuacct/ippc
 IPPC_MEMORY_CGROUP=$CGROUPS_ROOT/memory/ippc
 
 
-if [ "$#" -ne 1 ]; then
-    echo "Usage: ./run_cgroup.sh /path/to/rddl/domains"
+if [ "$#" -ne 3 ]; then
+    echo "Usage: ./run_cgroup.sh /path/to/rddl/domains [MEMORY LIMIT]"
     exit
 fi
 BENCHMARK_DIR=$1
+shift
+MEMORY_LIMIT=$1
+shift
+TIME_LIMIT=$1
+shift
 
 
 ### ATTENTION!!!!

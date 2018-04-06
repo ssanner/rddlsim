@@ -165,7 +165,7 @@ public class Server implements Runnable {
 		type_of_time = 0;
 		cgroup_name = "ippc-test";
 		if ( args.length < 1 ) {
-			System.out.println("usage: rddlfilename-or-dir (optional) portnumber num-rounds random-seed use-timeout individual-session log-folder monitor-execution state-viz-class-name cpu-time-boolean client-process-name");
+			System.out.println("usage: rddlfilename-or-dir (optional) portnumber num-rounds random-seed use-timeout individual-session log-folder monitor-execution state-viz-class-name");
 			System.out.println("\nexample 1: Server rddlfilename-or-dir");
 			System.out.println("example 2: Server rddlfilename-or-dir 2323");
 			System.out.println("example 3: Server rddlfilename-or-dir 2323 100 0 0 1 experiments/experiment23/ 1 rddl.viz.GenericScreenDisplay");

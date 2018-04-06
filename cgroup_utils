@@ -16,3 +16,21 @@ function get_tasks_in_cgroup {
     GROUPNAME=$2
     cat $CGROUPS_ROOT/$HIERARCHY/$GROUPNAME/tasks
 }
+
+function set_memory_limit {
+    echo $MEMORY_LIMIT
+    GROUPNAME=$1
+    MEMORY_LIMIT=$2
+    cgset -r memory.limit_in_bytes=$MEMORY_LIMIT $GROUPNAME
+    cgset -r memory.swappiness=0 $GROUPNAME	
+}
+
+function get_cpu_usage_in_ns {
+    GROUPNAME=$1
+    cgget -nv -r cpuacct.usage $GROUPNAME
+}
+
+function get_memory_usage {
+    GROUPNAME=$1
+    cgget -nv -r memory.max_usage_in_bytes $GROUPNAME
+}
