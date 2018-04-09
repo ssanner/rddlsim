@@ -35,7 +35,7 @@ import rddl.RDDL.TYPE_NAME;
  * 
  * <p>
  * The research leading to these results has received funding from the European
- * Research Counsel under the European Union’s Seventh Framework Program
+ * Research Counsel under the European Union's Seventh Framework Program
  * (FP7/2007-2013) / ERC Grant Agreement No 306638.
  * </p>
  * 
