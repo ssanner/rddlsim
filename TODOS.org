@@ -1,0 +1,4 @@
+* TODO <2018-04-09 Mon>
+  - We have the same memory limit problem.
+  - Some instances take so much memory just to parse that they never really talk to planner and are never killed.
+  - Do we need a monitor time limit?

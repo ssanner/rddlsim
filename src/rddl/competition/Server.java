@@ -223,6 +223,7 @@ public class Server implements Runnable {
 		System.out.println("Using Cgroups. Name of Cgroup: "+ args[8]);
 		type_of_time = 1;
 		cgroup_name = args[8];
+		
 	    }
 	    if (args.length > 9) {
 		state_viz = (StateViz)Class.forName(args[9]).newInstance();
