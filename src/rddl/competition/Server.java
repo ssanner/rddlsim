@@ -163,7 +163,17 @@ public class Server implements Runnable {
 		ArrayList<RDDL> rddls = new ArrayList<RDDL>();
 		int port = PORT_NUMBER;
 		type_of_time = 0;
+
 		cgroup_name = "ippc-test";
+		System.err.println("0: " + args[0]);
+		System.err.println("1: " + args[1]);
+		System.err.println("2: " + args[2]);
+		System.err.println("3: " + args[3]);
+		System.err.println("4: " + args[4]);
+		System.err.println("5: " + args[5]);
+		System.err.println("6: " + args[6]);
+		System.err.println("7: " + args[7]);
+		System.err.println("8: " + args[8]);
 		if ( args.length < 1 ) {
 			System.out.println("usage: rddlfilename-or-dir (optional) portnumber num-rounds random-seed use-timeout individual-session log-folder monitor-execution state-viz-class-name");
 			System.out.println("\nexample 1: Server rddlfilename-or-dir");
@@ -209,6 +219,12 @@ public class Server implements Runnable {
             if (args.length > 5) {
                 if (args[5].equals("0"))
                     USE_TIMEOUT = false;
+		else {
+		    USE_TIMEOUT = true;
+		    DEFAULT_TIME_ALLOWED = Integer.parseInt(args[5]) * 1000;
+		    System.err.println("Total time allowed: " + DEFAULT_TIME_ALLOWED);
+		}
+		    
             }
             if (args.length > 6) {
                 LOG_FILE = args[6] + "/logs";
@@ -255,7 +271,7 @@ public class Server implements Runnable {
 	public void run() {
 		DOMParser p = new DOMParser();
 		int numRounds = DEFAULT_NUM_ROUNDS;
-		long timeAllowed = DEFAULT_TIME_ALLOWED;
+		long timeAllowed = DEFAULT_TIME_ALLOWED;//HEREHERE;
 				
 		try {
 			
@@ -291,6 +307,7 @@ public class Server implements Runnable {
 			ArrayList<Double> rewards = new ArrayList<Double>(DEFAULT_NUM_ROUNDS * instance._nHorizon);
 			int r = 0;
 			long session_elapsed_time = 0l;
+ 			System.err.println("Starting time is already: " + session_elapsed_time);
 			for( ; r < numRounds && !OUT_OF_TIME; r++ ) {
                 if (!executePolicy) {
                     r--;
@@ -303,8 +320,11 @@ public class Server implements Runnable {
 				resetState();
 				msg = createXMLRoundInit(r+1, numRounds, timeAllowed - session_elapsed_time, timeAllowed);
 				sendOneMessage(osw,msg);
-				
-				long start_round_time = System.currentTimeMillis();
+				Process session_process = Runtime.getRuntime().exec(new String[] {"cgget", "-nv", "-r", "cpuacct.usage", cgroup_name});
+				BufferedReader session_process_input = new BufferedReader(new InputStreamReader(session_process.getInputStream()));
+				String session_time_string = session_process_input.readLine();				
+				long start_round_time = Long.parseLong(session_time_string) / 1000000;
+				System.err.println("Starting round time: " + start_round_time);
                 if (executePolicy) {
                     System.out.println("Round " + (r+1) + " / " + numRounds + ", time remaining: " + (timeAllowed - session_elapsed_time));
 				if (SHOW_MEMORY_USAGE)
@@ -442,18 +462,17 @@ public class Server implements Runnable {
 					// TODO: check that this works
 
 					if (type_of_time == 0) {
-					    OUT_OF_TIME = session_elapsed_time + round_elapsed_time > timeAllowed && USE_TIMEOUT;
 					    round_elapsed_time = (System.currentTimeMillis() - start_round_time);
+					    OUT_OF_TIME =  round_elapsed_time + session_elapsed_time > timeAllowed && USE_TIMEOUT;
 					}
 					else {
  					    Process process = Runtime.getRuntime().exec(new String[] {"cgget", "-nv", "-r", "cpuacct.usage", cgroup_name});
 					    BufferedReader input = new BufferedReader(new InputStreamReader(process.getInputStream()));
 					    String line = input.readLine();
 					    total_cpu_time = Long.parseLong(line) / 1000000; //(sec + min + hour)*1000;
-					    System.err.println(total_cpu_time); //<-- Parse data here.		   
-					    OUT_OF_TIME = session_elapsed_time + total_cpu_time > timeAllowed && USE_TIMEOUT;
+					    OUT_OF_TIME = total_cpu_time  > timeAllowed && USE_TIMEOUT;
  					}
-					System.out.println(round_elapsed_time + " " +total_cpu_time); //<-- Parse data here.					
+					//					System.out.println("Elapsed time:" + total_cpu_time); //<-- Parse data here.					
 
 				}
                 if (executePolicy) {
@@ -461,8 +480,9 @@ public class Server implements Runnable {
                 }
                  		if (type_of_time == 0) 
 				    session_elapsed_time += round_elapsed_time;
-				else
-				    session_elapsed_time += total_cpu_time;
+				else {
+				    session_elapsed_time = total_cpu_time;
+				}
 				msg = createXMLRoundEnd(requestedInstance, r, accum_reward, h, round_elapsed_time,
                                                         timeAllowed - session_elapsed_time,
                                                         clientName, immediate_reward);

@@ -7,7 +7,7 @@ IPPC_MEMORY_CGROUP=$CGROUPS_ROOT/memory/ippc
 
 if [ "$#" -ne 4 ]; then
     echo "Usage: ./run_cgroup.sh /path/to/rddl/domains [MEMORY LIMIT] [TIME LIMIT] [PORT]"
-    echo "MEMORY LIMIT: memory limit for the clients in megabytes (without MB or M)"
+    echo "MEMORY LIMIT: memory limit for the clients in kilobytes (without KB or K)"
     echo "TIME LIMIT: total time limit"
     echo "PORT: connection port"
     exit
@@ -48,9 +48,22 @@ CPUACCT_GROUP=$(create_group_task cpuacct /ippc/limited_$$) # Shared by the clie
 echo "Script created the time group $CPUACCT_GROUP for the client and the server."
 
 
-set_memory_limit $MEMORY_GROUP "$MEMORY_LIMIT"M # set cgroups to 8GB
+### SETTING UP THE MEMORY.
+# The "excess" parameter is an additional to guarantee the cgroup to work fine
+# with singularity images.
+ULIMIT_MEMORY_LIMIT=$MEMORY_LIMIT
+CGROUP_MEMORY_LIMIT=$(($ULIMIT_MEMORY_LIMIT + 128000))
+MONITOR_MEMORY_LIMIT=$ULIMIT_MEMORY_LIMIT
+
+set_memory_limit $MEMORY_GROUP "$MEMORY_LIMIT"K 
 echo "Setting memory limit to $MEMORY_LIMIT megabytes"
 echo "Setting memory limit to $TIME_LIMIT seconds"
+
+
+### SETTING UP THE TIME
+# Give an extra time limit to allow graceful exit
+KILL_WAIT=10
+
 
 ################################
 ### START THE SERVER AND WAIT
@@ -61,12 +74,13 @@ echo "Setting memory limit to $TIME_LIMIT seconds"
 ## REMARK: there is a sleep after the cgexec.
 ################################
 
+set +e
 (
     cgexec -g cpuacct:$CPUACCT_GROUP --sticky ./run rddl.competition.Server $BENCHMARK_DIR $PORT 100 1 1 $TIME_LIMIT ./ 1 $CPUACCT_GROUP \
 	   > server.out 2> server.err
 )&
 SERVER_PID=$!
-sleep 25
+sleep 10
 
 echo "Server created."
 
@@ -83,24 +97,30 @@ echo "Server created."
 ### we are using the same one. We are also using a naive INSTANCE.
 #
 RUNDIR="$(pwd)"
-INSTANCE=recon_demo_inst_mdp__1
+INSTANCE=crossing_traffic_demo_inst_mdp__1
 (
+    # Limiting the "extra" time limit
+    ulimit -S -t $(($TIME_LIMIT + $KILL_WAIT)) #$TIME_LIMIT
+    ulimit -H -t $(($TIME_LIMIT + $KILL_WAIT))
+    # # Limiting the "extra" memory limit
+    ulimit -c 0
+    ulimit -v $ULIMIT_MEMORY_LIMIT
     cgexec -g cpuacct:$CPUACCT_GROUP -g memory:$MEMORY_GROUP --sticky singularity run -C -H $RUNDIR planner.img $INSTANCE $PORT \
 	   > client.out 2> client.err
     exit $?
 )&
-#
-###
 CLIENT_PID=$!
-echo "Runnin the client planner." 
-wait $CLIENT_PID
+sleep 5
+echo "Running the client planner." 
+monitor_client $CLIENT_PID $(($MONITOR_MEMORY_LIMIT * 1024)) $MEMORY_GROUP
 CLIENT_EXIT_CODE=$?
 echo "Exit code of the planner: $CLIENT_EXIT_CODE"
 
-echo "Remove is right now not working"
-#exit
-# Remove is right now not working
-sleep 10
+print_resource_usage $CPUACCT_GROUP $MEMORY_GROUP
+
+sleep 4
+
+set -e
 remove_cgroup cpuacct $CPUACCT_GROUP
 remove_cgroup memory $MEMORY_GROUP
 
