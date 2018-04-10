@@ -91,6 +91,8 @@ public class Server implements Runnable {
 	public static final String ROUND_REWARD = "round-reward";
 	public static final String TURNS_USED = "turns-used";
 	public static final String TIME_USED = "time-used";
+
+	public static final String TIME_LEFT_REQUEST = "time-left-request";
 	
 	public static final String TURN = "turn";
 	public static final String TURN_NUM = "turn-num";
@@ -135,8 +137,9 @@ public class Server implements Runnable {
 	public String clientName = null;
 	public String requestedInstance = null;
 	public RandomDataGenerator rand;
-    public boolean executePolicy = true;
-    public String inputLanguage = "rddl";
+	public boolean executePolicy = true;
+	public String inputLanguage = "rddl";
+	public int numSimulations = 0;
 	
 	public State      state;
 	public INSTANCE   instance;
@@ -229,7 +232,11 @@ public class Server implements Runnable {
 				Runnable runnable = new Server(connection, ++ID, rddl, state_viz, port, rdg);
 				Thread thread = new Thread(runnable);
 				thread.start();
+				if (INDIVIDUAL_SESSION) {
+					break;
+				}
 			}
+			System.out.println("Client has connected (this is a session for a single client).");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			System.out.println(e);
@@ -454,6 +461,13 @@ public class Server implements Runnable {
 			sendOneMessage(osw, msg);
 
 			writeToLog(msg);
+
+			System.out.println("Session finished successfully: " + clientName);
+			System.out.println("Time left: " + (timeAllowed - System.currentTimeMillis() + start_time));
+			System.out.println("Number of simulations: " + numSimulations);
+			System.out.println("Number of runs: " + numRounds);
+			System.out.println("Accumulated reward: " + (accum_total_reward));
+			System.out.println("Average reward: " + (accum_total_reward / numRounds));
 
 			if (INDIVIDUAL_SESSION) {
 				try {
@@ -818,22 +832,22 @@ public class Server implements Runnable {
 			p.parse(isrc);
 			Element e = p.getDocument().getDocumentElement();
 			if ( e.getNodeName().equals(ROUND_REQUEST) ) {
-                if (MONITOR_EXECUTION) {
-                    System.out.println("Monitoring execution!");
-                    String executePolicyString = "no";
-                    ArrayList<String> exec_pol = getTextValue(e, EXECUTE_POLICY);
-                    if (exec_pol != null && exec_pol.size() > 0) {
-                        executePolicyString = exec_pol.get(0).trim();
-                    }
-                    if (executePolicyString.equals("yes")) {
-                        server.executePolicy = true;
-                    } else {
-                        assert(executePolicyString.equals("no"));
-                        server.executePolicy = false;
-                        System.out.println("Do not execute the policy!");
-                    }
-                    
-                }
+				if (MONITOR_EXECUTION) {
+					// System.out.println("Monitoring execution!");
+					String executePolicyString = "no";
+					ArrayList<String> exec_pol = getTextValue(e, EXECUTE_POLICY);
+					if (exec_pol != null && exec_pol.size() > 0) {
+						executePolicyString = exec_pol.get(0).trim();
+					}
+					if (executePolicyString.equals("yes")) {
+						server.executePolicy = true;
+					} else {
+						assert(executePolicyString.equals("no"));
+						server.executePolicy = false;
+						server.numSimulations++;
+						// System.out.println("Do not execute the policy!");
+					}
+				}
 				return true;			
 			}
 			return false;
