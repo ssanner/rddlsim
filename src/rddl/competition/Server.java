@@ -92,8 +92,10 @@ public class Server implements Runnable {
 	public static final String TURNS_USED = "turns-used";
 	public static final String TIME_USED = "time-used";
 
-	public static final String TIME_LEFT_REQUEST = "time-left-request";
-	
+	public static final String RESOURCE_REQUEST = "resource-request";
+	public static final String RESOURCE_NOTIFICATION = "resource-notification";
+	public static final String MEMORY_LEFT = "memory-left";
+
 	public static final String TURN = "turn";
 	public static final String TURN_NUM = "turn-num";
 	public static final String OBSERVED_FLUENT = "observed-fluent";
@@ -236,7 +238,7 @@ public class Server implements Runnable {
 					break;
 				}
 			}
-			System.out.println("Client has connected (this is a session for a single client).");
+			System.out.println("Single client has connected, no more are accepted.");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			System.out.println(e);
@@ -263,7 +265,7 @@ public class Server implements Runnable {
 			String client_hostname = ia.getCanonicalHostName();
 			String client_IP = ia.getHostAddress();
 			long start_time = System.currentTimeMillis();
-			System.out.println("Connection from client address: " + client_hostname + " / " + client_IP);
+			System.out.println("Connection from client at address " + client_hostname + " / " + client_IP);
 			writeToLog(createClientHostMessage(client_hostname, client_IP));
 			
 			// Begin communication protocol from PROTOCOL.txt
@@ -271,6 +273,7 @@ public class Server implements Runnable {
 			InputSource isrc = readOneMessage(isr);
 			requestedInstance = null;
 			processXMLSessionRequest(p, isrc, this);
+			System.out.println("Client name: " + clientName);
 			System.out.println("Instance requested: " + requestedInstance);
 	
 			if (!rddl._tmInstanceNodes.containsKey(requestedInstance)) {
@@ -291,12 +294,18 @@ public class Server implements Runnable {
 			ArrayList<Double> rewards = new ArrayList<Double>();
 			int r = 0;
 			for( ; r < numRounds && !OUT_OF_TIME; r++ ) {
-				if (!executePolicy) {
-					r--;
-				}
+			boolean roundRequested = false;
+			while (!roundRequested) {
 				isrc = readOneMessage(isr);
-				if ( !processXMLRoundRequest(p, isrc, this) ) {
-					break;
+				roundRequested =  processXMLRoundRequest(p, isrc, this);
+				if (!roundRequested) {
+					msg = createXMLResourceNotification(timeAllowed - System.currentTimeMillis() + start_time);
+					sendOneMessage(osw,msg);
+				}
+			}
+
+			if (!executePolicy) {
+					r--;
 				}
 				
 				resetState();
@@ -305,12 +314,13 @@ public class Server implements Runnable {
 				
 				if (executePolicy) {
 					System.out.println("Round " + (r+1) + " / " + numRounds + ", time remaining: " + (timeAllowed - System.currentTimeMillis() + start_time));
-					if (SHOW_MEMORY_USAGE)
+					if (SHOW_MEMORY_USAGE) {
 						System.out.print("[ Memory usage: " + 
 							_df.format((RUNTIME.totalMemory() - RUNTIME.freeMemory())/1e6d) + "Mb / " + 
 							_df.format(RUNTIME.totalMemory()/1e6d) + "Mb" + 
 							" = " + _df.format(((double) (RUNTIME.totalMemory() - RUNTIME.freeMemory()) / 
 											   (double) RUNTIME.totalMemory())) + " ]\n");
+					}
 				}
 
 				double immediate_reward = 0.0d;
@@ -336,34 +346,23 @@ public class Server implements Runnable {
 					
 					if (SHOW_MSG)
 						System.out.println("Sending msg:\n" + msg);
+
 					sendOneMessage(osw,msg);
 
-					isrc = readOneMessage(isr);	
-					if (isrc == null)
-						throw new Exception("FATAL SERVER EXCEPTION: EMPTY CLIENT MESSAGE");
+					ArrayList<PVAR_INST_DEF> ds = null;
+					while (ds == null) {
+						isrc = readOneMessage(isr);
+						if (isrc == null) {
+							throw new Exception("FATAL SERVER EXCEPTION: EMPTY CLIENT MESSAGE");
+						}
 
-					if (SHOW_TIMING)
-						System.out.println("**TIME to send/read msg: " + timer.GetTimeSoFarAndReset());
-						
-					ArrayList<PVAR_INST_DEF> ds = processXMLAction(p,isrc,state);
-					if ( ds == null ) {
-						break;
+						ds = processXMLAction(p,isrc,state);
+						if ( ds == null ) {
+							msg = createXMLResourceNotification(timeAllowed - System.currentTimeMillis() + start_time);
+							sendOneMessage(osw,msg);
+						}
 					}
-					
-					if (SHOW_TIMING)
-						System.out.println("**TIME to process XML action: " + timer.GetTimeSoFarAndReset());
-					
-					//Sungwook: this is not required.  -Scott
-					//if ( h== 0 && domain._bPartiallyObserved && ds.size() != 0) {
-					//	System.err.println("the first action for partial observable domain should be noop");
-					//}
-					if (SHOW_ACTIONS && executePolicy) {
-						boolean suppress_object_cast_temp = RDDL.SUPPRESS_OBJECT_CAST;
-						RDDL.SUPPRESS_OBJECT_CAST = true;
-						System.out.println("** Actions received: " + ds);
-						RDDL.SUPPRESS_OBJECT_CAST = suppress_object_cast_temp;
-					}
-					
+
 					// Check action preconditions (also checks maxNonDefActions)
 					try {
 						state.checkStateActionConstraints(ds);
@@ -377,7 +376,18 @@ public class Server implements Runnable {
 						}
 						break;
 					}
-					
+
+					//Sungwook: this is not required.  -Scott
+					//if ( h== 0 && domain._bPartiallyObserved && ds.size() != 0) {
+					//	System.err.println("the first action for partial observable domain should be noop");
+					//}
+					if (SHOW_ACTIONS && executePolicy) {
+						boolean suppress_object_cast_temp = RDDL.SUPPRESS_OBJECT_CAST;
+						RDDL.SUPPRESS_OBJECT_CAST = true;
+						System.out.println("** Actions received: " + ds);
+						RDDL.SUPPRESS_OBJECT_CAST = suppress_object_cast_temp;
+					}
+
 					try {
 						state.computeNextState(ds, rand);
 					} catch (Exception ee) {
@@ -639,6 +649,10 @@ public class Server implements Runnable {
 				System.out.println("Received action msg:");
 				printXMLNode(e);
 			}
+			if ( e.getNodeName().equals(RESOURCE_REQUEST) ) {
+				return null;
+			}
+            
 			if ( !e.getNodeName().equals(ACTIONS) ) {
 				System.out.println("ERROR: NO ACTIONS NODE");
 				System.out.println("Received action msg:");
@@ -849,8 +863,12 @@ public class Server implements Runnable {
 					}
 				}
 				return true;			
+			} else if ( e.getNodeName().equals(RESOURCE_REQUEST) ) {
+				return false;
 			}
-			return false;
+			System.out.println("Illegal message from server: " + e.getNodeName());
+			System.out.println("round request or time left request expected");
+			System.exit(1);
 		} catch (SAXException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -960,6 +978,24 @@ public class Server implements Runnable {
 			throw e;
 			//System.exit(1);
 			//return null;
+		}
+	}
+
+	static String createXMLResourceNotification(double timeLeft) {
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		try {
+			DocumentBuilder db = dbf.newDocumentBuilder();
+			Document dom = db.newDocument();
+			Element rootEle = dom.createElement(RESOURCE_NOTIFICATION);
+			dom.appendChild(rootEle);
+			addOneText(dom,rootEle,TIME_LEFT, timeLeft + "");
+			// TODO: memory left is not implemented yet
+			addOneText(dom,rootEle,MEMORY_LEFT, "enough");
+			return Client.serialize(dom);
+		}
+		catch (Exception e) {
+			System.out.println(e);
+			return null;
 		}
 	}
 	
