@@ -62,7 +62,7 @@ echo "Setting memory limit to $TIME_LIMIT seconds"
 
 ### SETTING UP THE TIME
 # Give an extra time limit to allow graceful exit
-KILL_WAIT=10
+KILL_WAIT=2
 
 
 ################################
@@ -76,8 +76,7 @@ KILL_WAIT=10
 
 set +e
 (
-    cgexec -g cpuacct:$CPUACCT_GROUP --sticky ./run rddl.competition.Server $BENCHMARK_DIR $PORT 100 1 1 $TIME_LIMIT ./ 1 $CPUACCT_GROUP \
-	   > server.out 2> server.err
+    cgexec -g cpuacct:$CPUACCT_GROUP --sticky ./run rddl.competition.Server $BENCHMARK_DIR $PORT 100 1 1 $TIME_LIMIT ./ 1 > server.out 2> server.err
 )&
 SERVER_PID=$!
 sleep 10

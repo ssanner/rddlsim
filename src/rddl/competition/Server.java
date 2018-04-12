@@ -140,8 +140,9 @@ public class Server implements Runnable {
 	public String clientName = null;
 	public String requestedInstance = null;
 	public RandomDataGenerator rand;
-    public boolean executePolicy = true;
-    public String inputLanguage = "rddl";
+	public boolean executePolicy = true;
+	public String inputLanguage = "rddl";
+	public int numSimulations = 0;
 	
 	public State      state;
 	public INSTANCE   instance;
@@ -149,10 +150,9 @@ public class Server implements Runnable {
 	public DOMAIN     domain;
 	public StateViz   stateViz;
 
-    // Variables for CPU time measurement.
+        // Variables for CPU time measurement.
         public static int type_of_time;
         public static String cgroup_name;
-
 	
 	/**
 	 * 
@@ -165,21 +165,10 @@ public class Server implements Runnable {
 		
 		// StateViz state_viz = new GenericScreenDisplay(true); 
 		StateViz state_viz = new NullScreenDisplay(false);
-
+		type_of_time = 0;
+		cgroup_name = "ippc-test";
 		ArrayList<RDDL> rddls = new ArrayList<RDDL>();
 		int port = PORT_NUMBER;
-		type_of_time = 0;
-
-		cgroup_name = "ippc-test";
-		System.err.println("0: " + args[0]);
-		System.err.println("1: " + args[1]);
-		System.err.println("2: " + args[2]);
-		System.err.println("3: " + args[3]);
-		System.err.println("4: " + args[4]);
-		System.err.println("5: " + args[5]);
-		System.err.println("6: " + args[6]);
-		System.err.println("7: " + args[7]);
-		System.err.println("8: " + args[8]);
 		if ( args.length < 1 ) {
 			System.out.println("usage: rddlfilename-or-dir (optional) portnumber num-rounds random-seed use-timeout individual-session log-folder monitor-execution state-viz-class-name");
 			System.out.println("\nexample 1: Server rddlfilename-or-dir");
@@ -218,48 +207,49 @@ public class Server implements Runnable {
 			} else {
 				rand_seed = DEFAULT_SEED;
 			}
-            if (args.length > 4) {
-                if (args[4].equals("1"))
-                    INDIVIDUAL_SESSION = true;
-            }
-            if (args.length > 5) {
-                if (args[5].equals("0"))
-                    USE_TIMEOUT = false;
-		else {
-		    USE_TIMEOUT = true;
-		    DEFAULT_TIME_ALLOWED = Integer.parseInt(args[5]) * 1000;
-		    System.err.println("Total time allowed: " + DEFAULT_TIME_ALLOWED);
-		}
-		    
-            }
-            if (args.length > 6) {
-                LOG_FILE = args[6] + "/logs";
-            }
-            if (args.length > 7) {
-                assert(args[7].equals("0") || args[7].equals("1"));
-                if (args[7].equals("1")) {
-                    MONITOR_EXECUTION = true;
-                }
-            }
-	    if (args.length > 8) {
-		System.out.println("Using Cgroups. Name of Cgroup: "+ args[8]);
-		type_of_time = 1;
-		cgroup_name = args[8];
-		
-	    }
-	    if (args.length > 9) {
-		state_viz = (StateViz)Class.forName(args[9]).newInstance();
-	    }
-
-	    System.out.println("RDDL Server Initialized");
-	    while (true) {
-		Socket connection = socket1.accept();
-		RandomDataGenerator rdg = new RandomDataGenerator();
-		rdg.reSeed(rand_seed + ID); // Ensures predictable but different seed on every session if a single client connects and all session requests run in same order
-		Runnable runnable = new Server(connection, ++ID, rddl, state_viz, port, rdg);
-		Thread thread = new Thread(runnable);
-		thread.start();
-	    }
+			if (args.length > 4) {
+				if (args[4].equals("1")) {
+					INDIVIDUAL_SESSION = true;
+				}
+			}
+			if (args.length > 5) {
+				if (args[5].equals("0")) {
+					USE_TIMEOUT = false;
+				} else {
+					USE_TIMEOUT = true;
+					DEFAULT_TIME_ALLOWED = Integer.valueOf(args[5]) * 1000;
+				}
+			}
+			if (args.length > 6) {
+				LOG_FILE = args[6] + "/logs";
+			}
+			if (args.length > 7) {
+				assert(args[7].equals("0") || args[7].equals("1"));
+				if (args[7].equals("1")) {
+					MONITOR_EXECUTION = true;
+				}
+			}
+			if (args.length > 8) {
+			    System.out.println("Using Cgroups. Name of Cgroup: "+ args[8]);
+			    type_of_time = 1;
+			    cgroup_name = args[8];		
+			}
+			if (args.length > 9) {
+				state_viz = (StateViz)Class.forName(args[8]).newInstance();
+			}
+			System.out.println("RDDL Server Initialized");
+			while (true) {
+				Socket connection = socket1.accept();
+				RandomDataGenerator rdg = new RandomDataGenerator();
+				rdg.reSeed(rand_seed + ID); // Ensures predictable but different seed on every session if a single client connects and all session requests run in same order
+				Runnable runnable = new Server(connection, ++ID, rddl, state_viz, port, rdg);
+				Thread thread = new Thread(runnable);
+				thread.start();
+				if (INDIVIDUAL_SESSION) {
+					break;
+				}
+			}
+			System.out.println("Single client has connected, no more are accepted.");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			System.out.println(e);
@@ -285,8 +275,8 @@ public class Server implements Runnable {
 			InetAddress ia = connection.getInetAddress();
 			String client_hostname = ia.getCanonicalHostName();
 			String client_IP = ia.getHostAddress();
-			long start_time = System.currentTimeMillis();
-			System.out.println("Connection from client address: " + client_hostname + " / " + client_IP);
+			long start_time = getCgroupTime(cgroup_name);
+			System.out.println("Connection from client at address " + client_hostname + " / " + client_IP);
 			writeToLog(createClientHostMessage(client_hostname, client_IP));
 			
 			// Begin communication protocol from PROTOCOL.txt
@@ -315,26 +305,28 @@ public class Server implements Runnable {
 			ArrayList<Double> rewards = new ArrayList<Double>();
 			int r = 0;
 			for( ; r < numRounds && !OUT_OF_TIME; r++ ) {
-				if (!executePolicy) {
-					r--;
-				}
+			boolean roundRequested = false;
+			while (!roundRequested) {
 				isrc = readOneMessage(isr);
-				if ( !processXMLRoundRequest(p, isrc, this) ) {
-					break;
+				roundRequested =  processXMLRoundRequest(p, isrc, this);
+				if (!roundRequested) {
+					msg = createXMLResourceNotification(timeAllowed - getCgroupTime(cgroup_name) + start_time);
+					sendOneMessage(osw,msg);
+				}
+			}
+
+			if (!executePolicy) {
+					r--;
 				}
 				
 				resetState();
-				msg = createXMLRoundInit(r+1, numRounds, timeAllowed - session_elapsed_time, timeAllowed);
-				sendOneMessage(osw,msg);
-				Process session_process = Runtime.getRuntime().exec(new String[] {"cgget", "-nv", "-r", "cpuacct.usage", cgroup_name});
-				BufferedReader session_process_input = new BufferedReader(new InputStreamReader(session_process.getInputStream()));
-				String session_time_string = session_process_input.readLine();				
-				long start_round_time = Long.parseLong(session_time_string) / 1000000;
-				System.err.println("Starting round time: " + start_round_time);
-                if (executePolicy) {
-                    System.out.println("Round " + (r+1) + " / " + numRounds + ", time remaining: " + (timeAllowed - session_elapsed_time));
-				if (SHOW_MEMORY_USAGE)
-					System.out.print("[ Memory usage: " + 
+				msg = createXMLRoundInit(r+1, numRounds, timeAllowed - getCgroupTime(cgroup_name) + start_time, timeAllowed);
+			sendOneMessage(osw,msg);
+				
+				if (executePolicy) {
+					System.out.println("Round " + (r+1) + " / " + numRounds + ", time remaining: " + (timeAllowed - getCgroupTime(cgroup_name) + start_time));
+					if (SHOW_MEMORY_USAGE) {
+						System.out.print("[ Memory usage: " + 
 							_df.format((RUNTIME.totalMemory() - RUNTIME.freeMemory())/1e6d) + "Mb / " + 
 							_df.format(RUNTIME.totalMemory()/1e6d) + "Mb" + 
 							" = " + _df.format(((double) (RUNTIME.totalMemory() - RUNTIME.freeMemory()) / 
@@ -358,7 +350,7 @@ public class Server implements Runnable {
 					//		}
 					//	}
 					//}
-					msg = createXMLTurn(state, h+1, domain, observStore, timeAllowed - System.currentTimeMillis() + start_time, immediate_reward);
+					msg = createXMLTurn(state, h+1, domain, observStore, timeAllowed - getCgroupTime(cgroup_name) + start_time, immediate_reward);
 					
 					if (SHOW_TIMING)
 						System.out.println("**TIME to create XML turn: " + timer.GetTimeSoFarAndReset());
@@ -368,32 +360,20 @@ public class Server implements Runnable {
 
 					sendOneMessage(osw,msg);
 
-					isrc = readOneMessage(isr);	
-					if (isrc == null)
-						throw new Exception("FATAL SERVER EXCEPTION: EMPTY CLIENT MESSAGE");
+					ArrayList<PVAR_INST_DEF> ds = null;
+					while (ds == null) {
+						isrc = readOneMessage(isr);
+						if (isrc == null) {
+							throw new Exception("FATAL SERVER EXCEPTION: EMPTY CLIENT MESSAGE");
+						}
 
-					if (SHOW_TIMING)
-						System.out.println("**TIME to send/read msg: " + timer.GetTimeSoFarAndReset());
-						
-					ArrayList<PVAR_INST_DEF> ds = processXMLAction(p,isrc,state);
-					if ( ds == null ) {
-						break;
+						ds = processXMLAction(p,isrc,state);
+						if ( ds == null ) {
+							msg = createXMLResourceNotification(timeAllowed - getCgroupTime(cgroup_name) + start_time);
+							sendOneMessage(osw,msg);
+						}
 					}
-					
-					if (SHOW_TIMING)
-						System.out.println("**TIME to process XML action: " + timer.GetTimeSoFarAndReset());
-					
-					//Sungwook: this is not required.  -Scott
-					//if ( h== 0 && domain._bPartiallyObserved && ds.size() != 0) {
-					//	System.err.println("the first action for partial observable domain should be noop");
-					//}
-					if (SHOW_ACTIONS && executePolicy) {
-						boolean suppress_object_cast_temp = RDDL.SUPPRESS_OBJECT_CAST;
-						RDDL.SUPPRESS_OBJECT_CAST = true;
-						System.out.println("** Actions received: " + ds);
-						RDDL.SUPPRESS_OBJECT_CAST = suppress_object_cast_temp;
-					}
-					
+
 					// Check action preconditions (also checks maxNonDefActions)
 					try {
 						state.checkStateActionConstraints(ds);
@@ -465,24 +445,13 @@ public class Server implements Runnable {
 										
 					// Scott: Update 2014 to check for out of time... this can trigger
 					//        an early round end
-					OUT_OF_TIME = ((System.currentTimeMillis() - start_time) > timeAllowed) && USE_TIMEOUT;
+					OUT_OF_TIME = ((getCgroupTime(cgroup_name) - start_time) > timeAllowed) && USE_TIMEOUT;
 					h++;
 
 					// Thomas: Update 2018 to allow simulation of SSPs
 					if (OUT_OF_TIME) {
 						// System.out.println("OUT OF TIME!");
 						break;
-					}
-					if (type_of_time == 1) { {
- 					    Process process = Runtime.getRuntime().exec(new String[] {"cgget", "-nv", "-r", "cpuacct.usage", cgroup_name});
-					    BufferedReader input = new BufferedReader(new InputStreamReader(process.getInputStream()));
-					    String line = input.readLine();
-					    total_cpu_time = Long.parseLong(line) / 1000000; //(sec + min + hour)*1000;
-					    OUT_OF_TIME = total_cpu_time  > timeAllowed && USE_TIMEOUT;
- 					} else {
-						round_elapsed_time = (System.currentTimeMillis() - start_round_time);
-					  	OUT_OF_TIME =  round_elapsed_time + session_elapsed_time > timeAllowed && USE_TIMEOUT;
-					
 					}
 					if ((instance._termCond == null) && (h == instance._nHorizon)) {
 						// System.out.println("Horizon reached");
@@ -493,16 +462,12 @@ public class Server implements Runnable {
 						break;
 					}
 				}
-                if (executePolicy) {
-                    accum_total_reward += accum_reward;
-                }
-                 		if (type_of_time == 0) 
-				    session_elapsed_time += round_elapsed_time;
-				else {
-				    session_elapsed_time = total_cpu_time;
+				if (executePolicy) {
+					accum_total_reward += accum_reward;
+					System.out.println("** Round reward: " + accum_reward);
 				}
-				msg = createXMLRoundEnd(requestedInstance, r, accum_reward, h, round_elapsed_time,
-                                                        timeAllowed - session_elapsed_time,
+				msg = createXMLRoundEnd(requestedInstance, r, accum_reward, h,
+							timeAllowed - getCgroupTime(cgroup_name) + start_time,
                                                         clientName, immediate_reward);
 				if (SHOW_MSG)
 					System.out.println("Sending msg:\n" + msg);
@@ -510,7 +475,8 @@ public class Server implements Runnable {
 				
 				writeToLog(msg);
 			}
-			msg = createXMLSessionEnd(requestedInstance, accum_total_reward, r, session_elapsed_time, timeAllowed - session_elapsed_time, this.clientName, this.id);
+			msg = createXMLSessionEnd(requestedInstance, accum_total_reward, r,
+						  timeAllowed - getCgroupTime(cgroup_name) + start_time, this.clientName, this.id);
 			if (SHOW_MSG)
 				System.out.println("Sending msg:\n" + msg);
 			sendOneMessage(osw, msg);
@@ -518,7 +484,7 @@ public class Server implements Runnable {
 			writeToLog(msg);
 
 			System.out.println("Session finished successfully: " + clientName);
-			System.out.println("Time left: " + (timeAllowed - System.currentTimeMillis() + start_time));
+			System.out.println("Time left: " + (timeAllowed - getCgroupTime(cgroup_name) + start_time));
 			System.out.println("Number of simulations: " + numSimulations);
 			System.out.println("Number of runs: " + numRounds);
 			System.out.println("Accumulated reward: " + (accum_total_reward));
@@ -1106,7 +1072,6 @@ public class Server implements Runnable {
 			addOneText(dom,rootEle,INSTANCE_NAME, requested_instance);			
 			addOneText(dom,rootEle,TOTAL_REWARD, reward + "");			
 			addOneText(dom,rootEle,ROUNDS_USED, roundsUsed + "");
-			addOneText(dom,rootEle,TIME_USED, timeUsed + "");
 			addOneText(dom,rootEle,CLIENT_NAME, clientName + "");
 			addOneText(dom,rootEle,SESSION_ID, sessionId + "");
 			addOneText(dom,rootEle,TIME_LEFT, timeLeft + "");
@@ -1172,5 +1137,15 @@ public class Server implements Runnable {
 			sb.append("  ");
 		return sb;
 	}
+
+    public static long getCgroupTime(String cgroup_name) throws java.io.IOException {
+	if (type_of_time == 0) return System.currentTimeMillis();
+	Process process = Runtime.getRuntime().exec(new String[] {"cgget", "-nv", "-r", "cpuacct.usage", cgroup_name});
+	BufferedReader process_input = new BufferedReader(new InputStreamReader(process.getInputStream()));
+	String time_string = process_input.readLine();				
+	long round_time = Long.parseLong(time_string) / 1000000;
+	return round_time;
+    }
+
 }
 
