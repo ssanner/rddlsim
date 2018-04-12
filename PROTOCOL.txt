@@ -83,6 +83,9 @@ name => "<action-name>" <WORD> "</action-name>
 arg => "<action-arg>" <WORD> "</action-arg>"
 value => "<action-value>" <WORD> "</action-value>"
 
+-Resource request
+resource-request => "<resource-request> </resource-request>"
+
 
 SERVER MESSAGES:
 
@@ -136,3 +139,7 @@ client-name => "<client-name>" <WORD> "</client-name>"
 session-id => "<session-id>" <WORD> "</session-id>"
 time-left => "<time-left>"  <WORD>  "</time-left>"
 
+-Resource notification
+resource-notification => "<resource-notification>" <time-left> <memory-left> "</resource-notification>"
+time-left => "<time-left>"  <WORD>  "</time-left>"
+memory-left => "<memory-left>"  <WORD>  "</memory-left>"
