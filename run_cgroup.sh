@@ -76,10 +76,11 @@ KILL_WAIT=2
 
 set +e
 (
-    cgexec -g cpuacct:$CPUACCT_GROUP --sticky ./run rddl.competition.Server $BENCHMARK_DIR $PORT 100 1 1 $TIME_LIMIT ./ 1 > server.out 2> server.err
+    #cgexec -g cpuacct:$CPUACCT_GROUP --sticky ./run rddl.competition.Server $BENCHMARK_DIR $PORT 100 1 1 $TIME_LIMIT ./ 1 1 $CPUACCT_GROUP > server.out 2> server.err
+    cgexec -g cpuacct:$CPUACCT_GROUP --sticky ./run rddl.competition.Server $BENCHMARK_DIR $PORT 100 1 1 $TIME_LIMIT ./ 1 0 prost > server.out 2> server.err
 )&
 SERVER_PID=$!
-sleep 10
+sleep 3
 
 echo "Server created."
 
