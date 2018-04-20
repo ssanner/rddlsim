@@ -10,6 +10,7 @@ package rddl.competition;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -204,7 +205,7 @@ public class Client {
 			
 			/**Read the socket's InputStream and append to a StringBuffer */
 
-			InputSource isrc = Server.readOneMessage(isr);
+			InputSource isrc = readOneMessage(isr);
 			Client client = processXMLSessionInit(p, isrc);
 			System.out.println(client.id + ":" + client.numRounds);
 			int r = 0;
@@ -222,7 +223,7 @@ public class Client {
 						domain._exprReward, instance._nNonDefActions);
 				msg = createXMLRoundRequest();
 				Server.sendOneMessage(osw, msg);
-				isrc = Server.readOneMessage(isr);
+				isrc = readOneMessage(isr);
 				timeLeft = processXMLRoundInit(p, isrc, r+1);
 				policy.roundInit(timeLeft, instance._nHorizon, r+1 /*round*/, client.numRounds);
 				if ( timeLeft < 0 ) {
@@ -233,7 +234,7 @@ public class Client {
 				boolean round_ended_early = false;
 				for(; h < instance._nHorizon; h++ ) {
 					if (SHOW_MSG) System.out.println("Reading turn message");
-					isrc = Server.readOneMessage(isr);
+					isrc = readOneMessage(isr);
 					Element e = parseMessage(p, isrc);
 					round_ended_early = e.getNodeName().equals(Server.ROUND_END);
 					if (round_ended_early)
@@ -266,7 +267,7 @@ public class Client {
 					break;
 				}
 				if (!round_ended_early) // otherwise isrc is the round-end message
-					isrc = Server.readOneMessage(isr);
+					isrc = readOneMessage(isr);
 				Element round_end_msg = parseMessage(p, isrc);
 				double reward = processXMLRoundEnd(round_end_msg);
 				policy.roundEnd(reward);
@@ -275,7 +276,7 @@ public class Client {
 				if (getTimeLeft(round_end_msg) <= 0l)
 					break;
 			}
-			isrc = Server.readOneMessage(isr);
+			isrc = readOneMessage(isr);
 			double total_reward = processXMLSessionEnd(p, isrc);
 			policy.sessionEnd(total_reward);
 			
@@ -571,5 +572,40 @@ public class Client {
 		}
 		return -1;
 	}
+
+    public static final int MAX_BYTES = 10485760;
+    public static byte[] bytes = new byte[MAX_BYTES];
+
+    // Synchronize because this uses a global bytes[] buffer
+    public static synchronized InputSource readOneMessage(InputStream isr) {
+        try {
+            int cur_pos = 0;
+            //System.out.println("\n===\n");
+            while (true && cur_pos < MAX_BYTES) {
+                cur_pos += isr.read( bytes, cur_pos, 1 );
+                if (/* Socket closed  */ cur_pos == -1 || 
+                    /* End of message */ bytes[cur_pos - 1] == '\0')
+                    break;
+                //System.out.print(cur_pos + "[" + Byte.toString(bytes[cur_pos - 1]) + "]");
+            }
+            //System.out.println("\n===\n");
+
+            //while((character = isr.read()) != '\0' && character != -1) { 
+            //    message.append((char)character);
+            //}
+            if (SHOW_MSG) {
+                System.out.println("Received message [" + (cur_pos - 1) + "]: **" + new String(bytes, 0, cur_pos - 1) + "**");
+            }
+            //ByteArrayInputStream bais = new ByteArrayInputStream(message.toString().getBytes());
+            ByteArrayInputStream bais = new ByteArrayInputStream(bytes, 0, cur_pos - 1); // No '\0'
+            InputSource isrc = new InputSource();
+            isrc.setByteStream(bais);
+            return isrc;
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return null;
+        }
+    }
 }
 
