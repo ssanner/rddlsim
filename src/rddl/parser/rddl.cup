@@ -697,6 +697,26 @@ INSTANCE_BLOCK ::= INSTANCE IDENT:name LCURLY
                            TERMINAL ASSIGN_EQUAL EXPR:expr SEMI
                            DISCOUNT ASSIGN_EQUAL DOUBLE:d SEMI RCURLY
 			{: RESULT = new RDDL.INSTANCE(name,domain,null,nonfluents_list,objects,state_list,null,expr,d); :}
+        | INSTANCE IDENT:name LCURLY 
+                           DOMAIN ASSIGN_EQUAL IDENT:domain SEMI
+                           OBJECTS LCURLY OBJECTS_LIST:objects RCURLY SEMI
+                           INIT_STATE LCURLY PVAR_INST_LIST:state_list RCURLY SEMI 
+                           TERMINAL ASSIGN_EQUAL EXPR:expr SEMI
+                           DISCOUNT ASSIGN_EQUAL DOUBLE:d SEMI RCURLY
+			{: RESULT = new RDDL.INSTANCE(name,domain,null,null,objects,state_list,null,expr,d); :}
+        | INSTANCE IDENT:name LCURLY 
+                           DOMAIN ASSIGN_EQUAL IDENT:domain SEMI
+                           OBJECTS LCURLY OBJECTS_LIST:objects RCURLY SEMI
+                           NON_FLUENTS LCURLY PVAR_INST_LIST:nonfluents_list RCURLY SEMI  
+                           TERMINAL ASSIGN_EQUAL EXPR:expr SEMI
+                           DISCOUNT ASSIGN_EQUAL DOUBLE:d SEMI RCURLY
+			{: RESULT = new RDDL.INSTANCE(name,domain,null,nonfluents_list,objects,null,null,expr,d); :}
+        | INSTANCE IDENT:name LCURLY 
+                           DOMAIN ASSIGN_EQUAL IDENT:domain SEMI
+                           OBJECTS LCURLY OBJECTS_LIST:objects RCURLY SEMI
+                           TERMINAL ASSIGN_EQUAL EXPR:expr SEMI
+                           DISCOUNT ASSIGN_EQUAL DOUBLE:d SEMI RCURLY
+			{: RESULT = new RDDL.INSTANCE(name,domain,null,null,objects,null,null,expr,d); :}
 		;
 
 		

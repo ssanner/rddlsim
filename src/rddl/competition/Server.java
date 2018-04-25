@@ -304,6 +304,7 @@ public class Server implements Runnable {
             e.printStackTrace();
         }
     }
+
     Server (Socket s, int i, RDDL rddl, StateViz state_viz, int port, RandomDataGenerator rgen) {
         this.connection = s;
         this.id = i;
@@ -312,6 +313,7 @@ public class Server implements Runnable {
         this.port = port;
         this.rand = rgen;
     }
+
     public void run() {
         DOMParser p = new DOMParser();
         int numRounds = DEFAULT_NUM_ROUNDS;
