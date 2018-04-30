@@ -630,6 +630,9 @@ public class State {
 	
 	public int setPVariables(HashMap<PVAR_NAME,HashMap<ArrayList<LCONST>,Object>> assign, 
 							  ArrayList<PVAR_INST_DEF> src) {
+		if (src == null) {
+			return 0;
+		}
 
 		int non_def = 0;
 		boolean fatal_error = false;
