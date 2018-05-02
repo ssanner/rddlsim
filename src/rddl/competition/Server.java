@@ -320,7 +320,6 @@ public class Server implements Runnable {
         long timeAllowed = DEFAULT_TIME_ALLOWED;
 
         try {
-
             // Log client host name and IP address
             InetAddress ia = connection.getInetAddress();
             String client_hostname = ia.getCanonicalHostName();
@@ -780,16 +779,21 @@ public class Server implements Runnable {
 
             int cur_pos = 0;
             //System.out.println("\n===\n");
-            while (true && cur_pos < MAX_BYTES) {
+            while (cur_pos < MAX_BYTES) {
                 if (type_of_time == 0 && ((timeAllowed - getTime(group_name) + start_time < 0))) {
                     Runtime.getRuntime().exec("pkill " + group_name);
                     System.err.println("Planner " + group_name + " is out of time. Killing the client and terminate.");
                     System.exit(1);
                 }
-                cur_pos += isr.read( bytes, cur_pos, 1 );
-                if (/* Socket closed  */ cur_pos == -1 || 
-                    /* End of message */ bytes[cur_pos - 1] == '\0')
+		if (isr.available() != 0) {
+			cur_pos += isr.read( bytes, cur_pos, 1 );
+			if (/* End of message */ bytes[cur_pos - 1] == '\0') {
+				break;
+			}
+		}
+		if (/* Socket closed  */ cur_pos == -1) {
                     break;
+		}
                 //System.out.print(cur_pos + "[" + Byte.toString(bytes[cur_pos - 1]) + "]");
             }
             //System.out.println("\n===\n");

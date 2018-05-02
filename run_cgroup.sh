@@ -20,6 +20,8 @@ TIME_LIMIT=$1
 shift
 PORT=$1
 shift
+PLANNER_NAME=$1
+shift
 
 
 ### ATTENTION!!!!
@@ -77,7 +79,7 @@ KILL_WAIT=2
 set +e
 (
     #cgexec -g cpuacct:$CPUACCT_GROUP --sticky ./run rddl.competition.Server $BENCHMARK_DIR $PORT 100 1 1 $TIME_LIMIT ./ 1 1 $CPUACCT_GROUP > server.out 2> server.err
-    cgexec -g cpuacct:$CPUACCT_GROUP --sticky ./run rddl.competition.Server $BENCHMARK_DIR $PORT 100 1 1 $TIME_LIMIT ./ 1 0 prost > server.out 2> server.err
+    cgexec -g cpuacct:$CPUACCT_GROUP --sticky ./run rddl.competition.Server $BENCHMARK_DIR $PORT 100 1 1 $TIME_LIMIT ./ 1 0 $PLANNER_NAME > server.out 2> server.err
 )&
 SERVER_PID=$!
 sleep 3
