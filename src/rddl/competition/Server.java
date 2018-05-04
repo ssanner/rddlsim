@@ -780,7 +780,7 @@ public class Server implements Runnable {
             int cur_pos = 0;
             //System.out.println("\n===\n");
             while (cur_pos < MAX_BYTES) {
-                if (type_of_time == 0 && ((timeAllowed - getTime(group_name) + start_time < 0))) {
+                if ((timeAllowed - getTime(group_name) + start_time < 0)) {
                     Runtime.getRuntime().exec("pkill " + group_name);
                     System.err.println("Planner " + group_name + " is out of time. Killing the client and terminate.");
                     System.exit(1);
