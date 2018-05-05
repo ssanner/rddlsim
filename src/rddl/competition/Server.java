@@ -781,8 +781,8 @@ public class Server implements Runnable {
             //System.out.println("\n===\n");
             while (cur_pos < MAX_BYTES) {
                 if ((timeAllowed - getTime(group_name) + start_time < 0)) {
-                    Runtime.getRuntime().exec("pkill " + group_name);
                     System.err.println("Planner " + group_name + " is out of time. Killing the client and terminate.");
+                    Runtime.getRuntime().exec("bash kill_cgroup.sh " + group_name);//, null, new File("/home/tkeller/workspace/rddlsim/"));
                     System.exit(1);
                 }
 		if (isr.available() != 0) {
