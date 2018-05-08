@@ -30,7 +30,6 @@
 
 
 # Kill all processes that are in this same cgroup ($1)
-echo "Killing cgroup"
 [ -z "$1" ] && echo "Need cgroup path" && exit 1
 CGROUP=$1
 [ ! -f /sys/fs/cgroup/memory/$CGROUP/cgroup.procs ] && echo "No such cgroup: $1" && exit 1
