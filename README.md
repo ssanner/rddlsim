@@ -21,7 +21,9 @@ Implements a parser, simulator, and client/server evaluation architecture for th
       year = 2010}
 ```
 
-* [RDDL Tutorial](http://users.rsise.anu.edu.au/~ssanner/Papers/RDDL_Tutorial_ICAPS_2014.pdf)
+* [RDDL Tutorial Slides](http://users.rsise.anu.edu.au/~ssanner/Papers/RDDL_Tutorial_ICAPS_2014.pdf)
+
+* [RDDL Tutorial Website](https://sites.google.com/site/rddltutorial/) -- a step-by-step guide to building the Wildfire domain, simulating it in RDDLSim, and using the [PROST](https://bitbucket.org/tkeller/prost/wiki/Home) planner with it.
 
 When you checkout the code, the first file you'll want to look at is [INSTALL.txt](https://github.com/ssanner/rddlsim/blob/master/INSTALL.txt)... this includes everything you need to start simulating, visualizing, and translating domains in < 5 minutes!
 
