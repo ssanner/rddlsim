@@ -2,6 +2,14 @@
 //
 // A boolean version of the wildfire fighting domain.
 //
+// V4 CHANGE: In this version we want to add a third action to allow a single 
+//            aerial water drop which has high cost but puts out a fire in all 
+//            cells neighboring the cell where the water is dropped.
+//
+//            Note that this change requires addition of an action fluent and 
+//            changes to the cpfs, rewards, and state-action-constraints (to 
+//            enforce a maximum of one water drop).
+//
 // Author: Zhenyu Yu (fry3721@gmail.com)
 //
 // General reference:

@@ -59,6 +59,6 @@ instance wildfire_inst_mdp__1_v3 {
 	};
 
 	max-nondef-actions = 1;
-	horizon  = 40;
+	horizon  = 4;
 	discount = 1.0;
 }

@@ -2,7 +2,7 @@
 //
 // A boolean version of the wildfire fighting domain.
 //
-// V2 CHANGE: 
+// V2 CHANGE: modify Wildfire so that a cell stops burning as soon as it is out of fuel
 //
 // Author: Zhenyu Yu (fry3721@gmail.com)
 //

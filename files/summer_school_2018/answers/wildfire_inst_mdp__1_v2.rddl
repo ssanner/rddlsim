@@ -1,10 +1,26 @@
+// V2 CHANGE: Modify the instance to expand the topology of the grid with an extra column x_pos "x4" (and hence a total of 12 cells).  
+//
+//            However, when connecting the new cells to neighboring cells, only allow horizontal connections to the new cells, i.e., (x3,Y)<->(x4,Y) for any y_pos Y, but not (x4,Y)<->(x4,Y+/-1).  
+//
+//            Don't forget symmetry if you want to make the new edges bidirectional (since the current Wildfire assumes unidirectional edges).
+//
 non-fluents nf_wildfire_inst_mdp__1_v2 {
 	domain = wildfire_mdp_v2;
 	objects {
-		x_pos : {x1,x2,x3};
+		x_pos : {x1,x2,x3,x4};
 		y_pos : {y1,y2,y3};
 	};
 	non-fluents {
+	
+		// V2 ADDITION
+		NEIGHBOR(x3,y1,x4,y1);
+		NEIGHBOR(x3,y2,x4,y2);
+		NEIGHBOR(x3,y3,x4,y3);
+		NEIGHBOR(x4,y1,x3,y1); // symmetric case
+		NEIGHBOR(x4,y2,x3,y2); // symmetric case
+		NEIGHBOR(x4,y3,x3,y3); // symmetric case
+	
+		// Original fluents
 		NEIGHBOR(x1,y1,x1,y2);
 		NEIGHBOR(x1,y1,x2,y1);
 		NEIGHBOR(x1,y1,x2,y2);

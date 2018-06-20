@@ -2,6 +2,12 @@
 //
 // A boolean version of the wildfire fighting domain.
 //
+// V2 CHANGE: modify Wildfire so that a cell stops burning as soon as it is out of fuel
+//
+// V3 CHANGE: Extend the v2 modification to add a new fluent almost-out-of-fuel that
+//            allows a fire to burn for three time steps, i.e., a burning cell 
+//            progresses to almost-out-of-fuel then out-of-fuel.
+//
 // Author: Zhenyu Yu (fry3721@gmail.com)
 //
 // General reference:
@@ -58,6 +64,9 @@ domain wildfire_mdp_v3 {
 		// State fluents
 		burning(x_pos, y_pos)     : { state-fluent, bool, default = false }; // cell currently on fire
 		out-of-fuel(x_pos, y_pos) : { state-fluent, bool, default = false }; // cell does not have fuel to burn (i.e., cut-out or already burned)
+
+		// V3 ADDITION
+		almost-out-of-fuel(x_pos, y_pos) : { state-fluent, bool, default = false }; // cell is almost out-of-fuel
 		
 		// Action fluents
 		put-out(x_pos, y_pos) : { action-fluent, bool, default = false }; // actions to put-out out the fire
@@ -68,7 +77,8 @@ domain wildfire_mdp_v3 {
 	cpfs {
 		
 		burning'(?x, ?y) = 
-			if ( put-out(?x, ?y) ) // Intervention to put out fire?
+			// V2 CHANGE: we added the second disjunct so that a cell will stop burning once it is out-of-fuel
+			if ( put-out(?x, ?y) | out-of-fuel(?x,?y) ) // Intervention to put out fire?
 				then false
             // Modification: targets can only start to burn if at least one neighbor is on fire
             else if (~out-of-fuel(?x, ?y) ^ ~burning(?x, ?y)) // Ignition of a new fire? Depends on neighbors.
@@ -79,8 +89,14 @@ domain wildfire_mdp_v3 {
 				burning(?x, ?y); // State persists
 		
 		// Modification: only allow non-target cells to be cut-out (cannot remove fuel from targets, e.g., housing)
-		out-of-fuel'(?x, ?y) = out-of-fuel(?x, ?y) | burning(?x,?y) | (~TARGET(?x, ?y) ^ cut-out(?x, ?y));
-						
+		
+		// V3 CHANGE: burning no longer leads to out-of-fuel, but almost out-of-fuel leads to out-of-fuel
+		// OLD: out-of-fuel'(?x, ?y) = out-of-fuel(?x, ?y) | burning(?x,?y) | (~TARGET(?x, ?y) ^ cut-out(?x, ?y));
+		// NEW:
+		out-of-fuel'(?x, ?y) = out-of-fuel(?x, ?y) | almost-out-of-fuel(?x,?y) | (~TARGET(?x, ?y) ^ cut-out(?x, ?y));
+					
+		// V3 CHANGE: need to add transition for new fluent -- burning can cause, otherwise previous state persists
+		almost-out-of-fuel'(?x,?y) = almost-out-of-fuel(?x,?y) | burning(?x,?y);
 	};
     	
 	reward = 
