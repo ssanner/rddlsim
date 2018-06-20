@@ -7,7 +7,7 @@
 //            cells neighboring the cell where the water is dropped.
 //
 //            Note that this change requires addition of an action fluent and 
-//            changes to the cpfs, rewards, and state-action-constraints (to 
+//            changes to the cpfs, rewards, and action-preconditions (to 
 //            enforce a maximum of one water drop).
 //
 // Author: Zhenyu Yu (fry3721@gmail.com)
@@ -57,6 +57,9 @@ domain wildfire_mdp_v4 {
 		PENALTY_TARGET_BURN    : {non-fluent, real, default = -100 }; // Penalty for each target cell that is burning  
 		PENALTY_NONTARGET_BURN : {non-fluent, real, default =   -5 }; // Penalty for each non-target cell that is burning
 	
+		// V4 CHANGE: Specify constant cost for WATER_DROP action
+		COST_WATERDROP         : {non-fluent, real, default =  -25 }; // Cost to do an aerial water drop
+	
 		// Topology of the cells (can be any neighborhood topology, not necessarily rectangular)
 		NEIGHBOR(x_pos, y_pos, x_pos, y_pos) : { non-fluent, bool, default = false };
 		
@@ -70,13 +73,19 @@ domain wildfire_mdp_v4 {
 		// Action fluents
 		put-out(x_pos, y_pos) : { action-fluent, bool, default = false }; // actions to put-out out the fire
 		cut-out(x_pos, y_pos) : { action-fluent, bool, default = false }; // cut-out out the fuel
+		
+		// V4 ADDITION: Add new action fluent for water-drop
+		water-drop(x_pos, y_pos) : { action-fluent, bool, default = false }; // actions to put-out out the fire		
 			
 	};
 
 	cpfs {
 		
 		burning'(?x, ?y) = 
-			if ( put-out(?x, ?y) ) // Intervention to put out fire?
+			// V4 CHANGE: Add water-drop effect first (broader impact than put-out)
+			if ( water-drop(?x, ?y) | (exists_{?x2: x_pos, ?y2: y_pos} (NEIGHBOR(?x, ?y, ?x2, ?y2) ^ water-drop(?x2, ?y2)) ))
+				then false
+			else if ( put-out(?x, ?y) ) // Intervention to put out fire?
 				then false
             // Modification: targets can only start to burn if at least one neighbor is on fire
             else if (~out-of-fuel(?x, ?y) ^ ~burning(?x, ?y)) // Ignition of a new fire? Depends on neighbors.
@@ -91,8 +100,15 @@ domain wildfire_mdp_v4 {
 						
 	};
     	
+    // V4 CHANGE: Add action precondition requirement that a water-drop can only be applied in at most one cell
+    action-preconditions {
+    	[ sum_{?x: x_pos, ?y: y_pos} COST_WATERDROP*water-drop(?x, ?y) ] <= 1;
+    };
+    	
+    // V4 CHANGE: Add in first reward component
 	reward = 
- 	    [sum_{?x: x_pos, ?y: y_pos} [ COST_CUTOUT*cut-out(?x, ?y) ]]
+ 	    [sum_{?x: x_pos, ?y: y_pos} [ COST_WATERDROP*water-drop(?x, ?y) ]]
+ 	  + [sum_{?x: x_pos, ?y: y_pos} [ COST_CUTOUT*cut-out(?x, ?y) ]]
  	  + [sum_{?x: x_pos, ?y: y_pos} [ COST_PUTOUT*put-out(?x, ?y) ]]
  	    // Modification: if a target is out-of-fuel, it was burnt so still penalize (since it could not have been cut-out)
  	  + [sum_{?x: x_pos, ?y: y_pos} [ PENALTY_TARGET_BURN*[ (burning(?x, ?y) | out-of-fuel(?x, ?y)) ^ TARGET(?x, ?y) ]]]
