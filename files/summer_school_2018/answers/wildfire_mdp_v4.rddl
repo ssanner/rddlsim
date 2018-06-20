@@ -102,7 +102,7 @@ domain wildfire_mdp_v4 {
     	
     // V4 CHANGE: Add action precondition requirement that a water-drop can only be applied in at most one cell
     action-preconditions {
-    	[ sum_{?x: x_pos, ?y: y_pos} COST_WATERDROP*water-drop(?x, ?y) ] <= 1;
+    	[ sum_{?x: x_pos, ?y: y_pos} water-drop(?x, ?y) ] <= 1;
     };
     	
     // V4 CHANGE: Add in first reward component

@@ -93,7 +93,7 @@ domain wildfire_mdp_v3 {
 		// V3 CHANGE: burning no longer leads to out-of-fuel, but almost out-of-fuel leads to out-of-fuel
 		// OLD: out-of-fuel'(?x, ?y) = out-of-fuel(?x, ?y) | burning(?x,?y) | (~TARGET(?x, ?y) ^ cut-out(?x, ?y));
 		// NEW:
-		out-of-fuel'(?x, ?y) = out-of-fuel(?x, ?y) | almost-out-of-fuel(?x,?y) | (~TARGET(?x, ?y) ^ cut-out(?x, ?y));
+		out-of-fuel'(?x, ?y) = out-of-fuel(?x, ?y) | (almost-out-of-fuel(?x,?y) ^ burning(?x,?y)) | (~TARGET(?x, ?y) ^ cut-out(?x, ?y));
 					
 		// V3 CHANGE: need to add transition for new fluent -- burning can cause, otherwise previous state persists
 		almost-out-of-fuel'(?x,?y) = almost-out-of-fuel(?x,?y) | burning(?x,?y);
