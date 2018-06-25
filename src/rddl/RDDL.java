@@ -1964,6 +1964,9 @@ public class RDDL {
 		// Note: Dirichlet produces a vector
 		public Object sample(HashMap<LVAR,LCONST> subs, State s, RandomDataGenerator r) throws EvalException {
 			double prob = ((Number)_exprProb.sample(subs, s, r)).doubleValue();
+            if (prob > 1.0d && prob < 1.00001d) {
+                prob = 1.0d;
+            }
 			if (prob < 0.0d || prob > 1.0d)
 				throw new EvalException("RDDL: Bernoulli prob " + prob + " not in [0,1]\n" + _exprProb);
 			return r.nextUniform(0d,1d) < prob; // Bernoulli parameter is prob of being true
