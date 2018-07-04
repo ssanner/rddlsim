@@ -446,6 +446,7 @@ public class Server implements Runnable {
                         RDDL.SUPPRESS_OBJECT_CAST = true;
                         System.out.println("** Actions received: " + ds);
                         RDDL.SUPPRESS_OBJECT_CAST = suppress_object_cast_temp;
+                        System.out.println("** Remaining time: " + (timeAllowed - getTime(group_name) + start_time));
                     }
 
                     try {
