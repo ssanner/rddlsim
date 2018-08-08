@@ -353,13 +353,16 @@ public class Server implements Runnable {
             double accum_total_reward = 0d;
             ArrayList<Double> rewards = new ArrayList<Double>();
             int r = 0;
+            long rem_time = 0;
             for( ; r < numRounds && !OUT_OF_TIME; r++ ) {
                 boolean roundRequested = false;
                 while (!roundRequested) {
                     isrc = readOneMessage(isr, timeAllowed, start_time);
                     roundRequested =  processXMLRoundRequest(p, isrc, this);
                     if (!roundRequested) {
-                        msg = createXMLResourceNotification(timeAllowed - getTime(group_name) + start_time);
+                        
+                        rem_time = getRemainingTime(group_name, timeAllowed, start_time, true);
+                        msg = createXMLResourceNotification(rem_time);
                         sendOneMessage(osw,msg);
                     }
                 }
@@ -369,11 +372,12 @@ public class Server implements Runnable {
                 }
 
                 resetState();
-                msg = createXMLRoundInit(r+1, numRounds, timeAllowed - getTime(group_name) + start_time, timeAllowed);
+                rem_time = getRemainingTime(group_name, timeAllowed, start_time, true);
+                msg = createXMLRoundInit(r+1, numRounds, rem_time, timeAllowed);
                 sendOneMessage(osw,msg);
 
                 if (executePolicy) {
-                    System.out.println("Round " + (r+1) + " / " + numRounds + ", time remaining: " + (timeAllowed - getTime(group_name) + start_time));
+                    System.out.println("Round " + (r+1) + " / " + numRounds + ", time remaining: " + getRemainingTime(group_name, timeAllowed, start_time, false));
                     if (SHOW_MEMORY_USAGE) {
                         System.out.print("[ Memory usage: " + 
                                          _df.format((RUNTIME.totalMemory() - RUNTIME.freeMemory())/1e6d) + "Mb / " + 
@@ -399,7 +403,8 @@ public class Server implements Runnable {
                     //        }
                     //    }
                     //}
-                    msg = createXMLTurn(state, h+1, domain, observStore, timeAllowed - getTime(group_name) + start_time, immediate_reward);
+                    rem_time = getRemainingTime(group_name, timeAllowed, start_time, true);
+                    msg = createXMLTurn(state, h+1, domain, observStore, rem_time, immediate_reward);
 
                     if (SHOW_TIMING)
                         System.out.println("**TIME to create XML turn: " + timer.GetTimeSoFarAndReset());
@@ -418,7 +423,8 @@ public class Server implements Runnable {
 
                         ds = processXMLAction(p,isrc,state);
                         if ( ds == null ) {
-                            msg = createXMLResourceNotification(timeAllowed - getTime(group_name) + start_time);
+                            rem_time = getRemainingTime(group_name, timeAllowed, start_time, true);
+                            msg = createXMLResourceNotification(rem_time);
                             sendOneMessage(osw,msg);
                         }
                     }
@@ -446,7 +452,7 @@ public class Server implements Runnable {
                         RDDL.SUPPRESS_OBJECT_CAST = true;
                         System.out.println("** Actions received: " + ds);
                         RDDL.SUPPRESS_OBJECT_CAST = suppress_object_cast_temp;
-                        System.out.println("** Remaining time: " + (timeAllowed - getTime(group_name) + start_time));
+                        System.out.println("** Remaining time: " + getRemainingTime(group_name, timeAllowed, start_time, false));
                     }
 
                     try {
@@ -495,7 +501,7 @@ public class Server implements Runnable {
 
                     // Scott: Update 2014 to check for out of time... this can trigger
                     //        an early round end
-                    OUT_OF_TIME = ((getTime(group_name) - start_time) > timeAllowed) && USE_TIMEOUT;
+                    OUT_OF_TIME = (getRemainingTime(group_name, timeAllowed, start_time, false) < -10000) && USE_TIMEOUT;
                     h++;
 
                     // Thomas: Update 2018 to allow simulation of SSPs
@@ -516,17 +522,18 @@ public class Server implements Runnable {
                     accum_total_reward += accum_reward;
                     System.out.println("** Round reward: " + accum_reward);
                 }
+                rem_time = getRemainingTime(group_name, timeAllowed, start_time, true);
                 msg = createXMLRoundEnd(requestedInstance, r, accum_reward, h,
-                                        timeAllowed - getTime(group_name) + start_time,
-                                        clientName, immediate_reward);
+                                        rem_time, clientName, immediate_reward);
                 if (SHOW_MSG)
                     System.out.println("Sending msg:\n" + msg);
                 sendOneMessage(osw, msg);
 
                 writeToLog(msg);
             }
+            rem_time = getRemainingTime(group_name, timeAllowed, start_time, true);
             msg = createXMLSessionEnd(requestedInstance, accum_total_reward, r,
-                                      timeAllowed - getTime(group_name) + start_time, this.clientName, this.id);
+                                      rem_time, this.clientName, this.id);
             if (SHOW_MSG)
                 System.out.println("Sending msg:\n" + msg);
             sendOneMessage(osw, msg);
@@ -534,7 +541,7 @@ public class Server implements Runnable {
             writeToLog(msg);
 
             System.out.println("Session finished successfully: " + clientName);
-            System.out.println("Time left: " + (timeAllowed - getTime(group_name) + start_time));
+            System.out.println("Time left: " + getRemainingTime(group_name, timeAllowed, start_time, false));
             System.out.println("Number of simulations: " + numSimulations);
             System.out.println("Number of runs: " + numRounds);
             System.out.println("Accumulated reward: " + (accum_total_reward));
@@ -781,23 +788,23 @@ public class Server implements Runnable {
             int cur_pos = 0;
             //System.out.println("\n===\n");
             while (cur_pos < MAX_BYTES) {
-                if ((timeAllowed - getTime(group_name) + start_time < 0)) {
-                    System.err.println("Planner " + group_name + " is out of time. Killing the client and terminate.");
+                if (getRemainingTime(group_name, timeAllowed, start_time, false) < -10000) {
+                    System.err.println("Planner is out of time. Terminating now.");
 
-		    ProcessBuilder pb = new ProcessBuilder("./kill_cgroup.sh", "ippc/limited_12345");
-		    Process p = pb.start();
-		    System.err.println("Planner killed, exiting now");
+                    // ProcessBuilder pb = new ProcessBuilder("./kill_cgroup.sh", "ippc/limited_12345");
+                    // Process p = pb.start();
+                    // System.err.println("Exiting server.");
                     System.exit(1);
                 }
-		if (isr.available() != 0) {
-			cur_pos += isr.read( bytes, cur_pos, 1 );
-			if (/* End of message */ bytes[cur_pos - 1] == '\0') {
-				break;
-			}
-		}
-		if (/* Socket closed  */ cur_pos == -1) {
+                if (isr.available() != 0) {
+                    cur_pos += isr.read( bytes, cur_pos, 1 );
+                    if (/* End of message */ bytes[cur_pos - 1] == '\0') {
+                        break;
+                    }
+                }
+                if (/* Socket closed  */ cur_pos == -1) {
                     break;
-		}
+                }
                 //System.out.print(cur_pos + "[" + Byte.toString(bytes[cur_pos - 1]) + "]");
             }
             //System.out.println("\n===\n");
@@ -1208,6 +1215,14 @@ public class Server implements Runnable {
         String time_string = process_input.readLine();
         long round_time = Long.parseLong(time_string) / 1000000;
         return round_time;
+    }
+
+    public static long getRemainingTime(String group_name, long time_allowed, long start_time, boolean enforce_positive) throws java.io.IOException {
+        long rem_time = time_allowed - getTime(group_name) + start_time;
+        if ((rem_time < 500) && enforce_positive) {
+            rem_time = 500;
+        }
+        return rem_time;
     }
 
 }

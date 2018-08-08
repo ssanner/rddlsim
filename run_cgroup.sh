@@ -38,8 +38,15 @@ USER_GROUP=$USER
 set -e # Not sure yet if we should use it here.
 source "${BASH_SOURCE%/*}/cgroup_utils"
 
-if [ ! -d "$IPPC_CGROUP" ]; then
-    sudo cgcreate -a $USER:$USER_GROUP -t $USER:$USER_GROUP -g cpuacct:ippc
+if [ ! -d "$IPPC_CPUACCT_CGROUP" ]; then
+    echo "cpuacct cgroup IPPC not found!"
+    exit 1
+fi
+
+if [ ! -d "$IPPC_MEMORY_CGROUP" ]; then
+    echo "memory cgroup IPPC not found!"
+    echo $IPPC_CGROUP
+    exit 1
 fi
 
 

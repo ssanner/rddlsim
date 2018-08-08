@@ -2,7 +2,7 @@ function create_group_task {
     HIERARCHY=$1
     GROUPNAME=$2
     echo $GROUPNAME	
-    sudo cgcreate -a $USER:$USER_GROUP -t $USER:$USER_GROUP -g $HIERARCHY:$GROUPNAME
+    cgcreate -a $USER:$USER_GROUP -t $USER:$USER_GROUP -g $HIERARCHY:$GROUPNAME
 }
 
 function remove_cgroup {
