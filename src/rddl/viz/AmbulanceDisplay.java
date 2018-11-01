@@ -84,9 +84,9 @@ public class AmbulanceDisplay extends StateViz {
 
 		_bd.clearAllCells();
 		_bd.clearAllLines();
-		for (LCONST ambl : ambulances) {
-			for (LCONST xpos : list_xpos) {
-				for (LCONST ypos : list_ypos) {
+		for (LCONST xpos : list_xpos) {
+			for (LCONST ypos : list_ypos) {
+				for (LCONST ambl : ambulances) {
 					int col = new Integer(xpos.toString().substring(2, xpos.toString().length()));
 					int row = new Integer(ypos.toString().substring(2, ypos.toString().length())) - 1;
 
@@ -107,17 +107,21 @@ public class AmbulanceDisplay extends StateViz {
 						letter = "H";
 					
 					Color color = Color.green;
-					
+
 					if (b_emergency_at && b_ambulance_at)
 						color = Color.pink;
-					else if (b_ambulance_at && b_with_patient) 
+					else if (b_ambulance_at && b_with_patient)
 						color = Color.yellow;
-					else if (b_emergency_at) 
+					else if (b_emergency_at)
 						color = Color.red;
 					else if (b_ambulance_at)
 						color = Color.white;
-					
+
 					_bd.setCell(row, col, color, letter);
+
+					// If a0 is found on cell, color regarding a1 would not be displayed on it.
+					if (b_ambulance_at)
+						break;
 				}
 			}
 		}

@@ -17,7 +17,7 @@ domain ambulance_mdp {
 	
 	pvariables {
 		// Probability emergency occurs at a cell
-		EMERGENCY-PARAM : { non-fluent, real, default = 0.05 }; 		  		
+		EMERGENCY-PARAM : { non-fluent, real, default = 0.01 }; 		  		
 
 		// Action costs and penalties
 		PENALTY_NOT_ARRIVING   : {non-fluent, real, default = -100 }; // Penalty for not arriving to the emergency cell
