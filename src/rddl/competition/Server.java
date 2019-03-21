@@ -788,7 +788,7 @@ public class Server implements Runnable {
             int cur_pos = 0;
             //System.out.println("\n===\n");
             while (cur_pos < MAX_BYTES) {
-                if (getRemainingTime(group_name, timeAllowed, start_time, false) < -10000) {
+                if (USE_TIMEOUT && (getRemainingTime(group_name, timeAllowed, start_time, false) < -10000)) {
                     System.err.println("Planner is out of time. Terminating now.");
 
                     // ProcessBuilder pb = new ProcessBuilder("./kill_cgroup.sh", "ippc/limited_12345");
@@ -988,7 +988,7 @@ public class Server implements Runnable {
             turnNum.appendChild(textTurnNum);
             rootEle.appendChild(turnNum);
             Element timeElem = dom.createElement(TIME_LEFT);
-            Text textTimeElem = dom.createTextNode(timeLeft + "");
+            Text textTimeElem = dom.createTextNode(_df.format(timeLeft) + "");
             timeElem.appendChild(textTimeElem);
             rootEle.appendChild(timeElem);
             Element immediateRewardElem = dom.createElement(IMMEDIATE_REWARD);
@@ -1069,7 +1069,7 @@ public class Server implements Runnable {
             Document dom = db.newDocument();
             Element rootEle = dom.createElement(RESOURCE_NOTIFICATION);
             dom.appendChild(rootEle);
-            addOneText(dom,rootEle,TIME_LEFT, timeLeft + "");
+            addOneText(dom,rootEle,TIME_LEFT, _df.format(timeLeft) + "");
             // TODO: memory left is not implemented yet
             addOneText(dom,rootEle,MEMORY_LEFT, "enough");
             return Client.serialize(dom);
@@ -1090,7 +1090,7 @@ public class Server implements Runnable {
             dom.appendChild(rootEle);
             addOneText(dom,rootEle,ROUND_NUM, round + "");
             addOneText(dom,rootEle,ROUND_LEFT, (numRounds - round) + "");
-            addOneText(dom,rootEle,TIME_LEFT, timeLeft + "");
+            addOneText(dom,rootEle,TIME_LEFT, _df.format(timeLeft) + "");
             return Client.serialize(dom);
         }
         catch (Exception e) {
@@ -1112,7 +1112,7 @@ public class Server implements Runnable {
             addOneText(dom,rootEle,    ROUND_NUM, round + "");
             addOneText(dom,rootEle, ROUND_REWARD, reward + "");            
             addOneText(dom,rootEle, TURNS_USED, turnsUsed + "");
-            addOneText(dom,rootEle, TIME_LEFT, timeLeft + "");
+            addOneText(dom,rootEle, TIME_LEFT, _df.format(timeLeft) + "");
             addOneText(dom,rootEle, IMMEDIATE_REWARD, immediateReward + "");
             return Client.serialize(dom);
         }
@@ -1144,7 +1144,7 @@ public class Server implements Runnable {
             addOneText(dom,rootEle,ROUNDS_USED, roundsUsed + "");
             addOneText(dom,rootEle,CLIENT_NAME, clientName + "");
             addOneText(dom,rootEle,SESSION_ID, sessionId + "");
-            addOneText(dom,rootEle,TIME_LEFT, timeLeft + "");
+            addOneText(dom,rootEle,TIME_LEFT, _df.format(timeLeft) + "");
             return Client.serialize(dom);
         }
         catch (Exception e) {
