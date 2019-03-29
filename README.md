@@ -25,6 +25,8 @@ Implements a parser, simulator, and client/server evaluation architecture for th
 
 * [RDDL Tutorial Website](https://sites.google.com/site/rddltutorial/) -- a step-by-step guide to building the Wildfire domain, simulating it in RDDLSim, and using the [PROST](https://bitbucket.org/tkeller/prost/wiki/Home) planner with it.
 
+* [Tensorplan for RDDL](https://libraries.io/github/thiagopbueno/tf-plan) -- a Tensorflow-based planner for continuous RDDL domains
+
 When you checkout the code, the first file you'll want to look at is [INSTALL.txt](https://github.com/ssanner/rddlsim/blob/master/INSTALL.txt)... this includes everything you need to start simulating, visualizing, and translating domains in < 5 minutes!
 
 If you want to use an MDP or POMDP planner in conjunction with RDDL, please check out planner releases at the above IPPC competition web pages... all support the RDDL Client/Server protocol.
