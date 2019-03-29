@@ -882,7 +882,7 @@ public class Server implements Runnable {
             addOneText(dom, rootEle, TASK_DESC, new String(encodedBytes));
             addOneText(dom, rootEle, SESSION_ID, server.id + "");
             addOneText(dom, rootEle, NUM_ROUNDS, numRounds + "");
-            addOneText(dom, rootEle, TIME_ALLOWED, timeAllowed + "");
+            addOneText(dom, rootEle, TIME_ALLOWED, _df.format(timeAllowed) + "");
             return Client.serialize(dom);
         }
         catch (Exception e) {
