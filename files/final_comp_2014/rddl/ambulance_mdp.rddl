@@ -1,0 +1,109 @@
+///////////////////////////////////////////////////////////////////////////////
+//
+// An ambulance domain.
+//
+// Author: Parth Jaggi (parthjaggi@iitrpr.ac.in)
+//
+//  
+///////////////////////////////////////////////////////////////////////////////
+
+domain ambulance_mdp {
+
+	types {
+		ambulance : object;
+		x_pos     : object;
+		y_pos     : object;
+	};
+	
+	pvariables {
+		// Probability emergency occurs at a cell
+		EMERGENCY-PARAM : { non-fluent, real, default = 0.01 }; 		  		
+
+		// Action costs and penalties
+		PENALTY_NOT_ARRIVING   : {non-fluent, real, default = -100 }; // Penalty for not arriving to the emergency cell
+		PENALTY_NOT_DELIVERING : {non-fluent, real, default =  -10 }; // Penalty for not delivering patient to hospital
+
+		// Useful definitions
+		ADJACENT-EAST(x_pos, y_pos, x_pos, y_pos) : { non-fluent, bool, default = false }; 		  		
+
+		// Hospital to which emergency patients need to be delivered.  
+		HOSPITAL(x_pos, y_pos) : {non-fluent, bool, default = false }; 
+
+		// Ambulance State
+		with-patient(ambulance) : { state-fluent, bool, default = false };
+
+		// State fluents
+		emergency-at(x_pos, y_pos) 			  : { state-fluent, bool, default = false }; // Is there emergency at (x,y)
+		ambulance-at(ambulance, x_pos, y_pos) : { state-fluent, bool, default = false }; // Is ambulance at (x,y)
+
+		// Action fluents
+		go-east(ambulance)   : { action-fluent, bool, default = false };
+		go-west(ambulance)   : { action-fluent, bool, default = false }; 
+		pick-patient(ambulance) : { action-fluent, bool, default = false }; 
+			
+	};
+
+	cpfs {
+		
+		emergency-at'(?x, ?y) = 
+			// Emergency cannot occur at hospital.
+			if ( HOSPITAL(?x, ?y) ) then false
+
+			// Emergency remains true if no ambulance has picked patient. 
+			// Else Bernoulli spawning of emergencies. 
+			else if ( emergency-at(?x, ?y) ^ 
+				~exists_{?a: ambulance} [ambulance-at(?a, ?x, ?y) ^ pick-patient(?a)] )
+				then true
+			else Bernoulli(EMERGENCY-PARAM);
+
+		
+		// Ambulance movement
+		ambulance-at'(?a, ?x, ?y) = 
+
+			// No movement
+			if ( ~go-east(?a) ^ ~go-west(?a) )
+				then ambulance-at(?a, ?x, ?y)
+
+			// Successful Ambulance movement
+			else if ( go-east(?a) ^ exists_{?x2: x_pos, ?y2: y_pos} 
+				[ambulance-at(?a, ?x2, ?y2) ^ ADJACENT-EAST(?x2, ?y2, ?x, ?y)])
+				then true
+			else if ( go-west(?a) ^ exists_{?x2: x_pos, ?y2: y_pos} 
+				[ambulance-at(?a, ?x2, ?y2) ^ ADJACENT-EAST(?x, ?y, ?x2, ?y2)])
+				then true
+
+			// Failed movement on boundaries
+			else if ( go-east(?a) ^ ~exists_{?x2: x_pos, ?y2: y_pos} 
+				[ambulance-at(?a, ?x, ?y) ^ ADJACENT-EAST(?x, ?y, ?x2, ?y2)])
+				then ambulance-at(?a, ?x, ?y)
+			else if ( go-west(?a) ^ ~exists_{?x2: x_pos, ?y2: y_pos} 
+				[ambulance-at(?a, ?x, ?y) ^ ADJACENT-EAST(?x2, ?y2, ?x, ?y)])
+				then ambulance-at(?a, ?x, ?y)
+
+			// Ambulance cannot be on remaining cells
+			else false;
+
+
+		// Ambulance Picks Patient
+		with-patient'(?a) = 
+			if ( pick-patient(?a) ^ exists_{?x: x_pos, ?y: y_pos} 
+				[ambulance-at(?a, ?x, ?y) ^ emergency-at(?x, ?y)] )
+				then true
+
+			// Patient delivered to hospital
+			else if ( exists_{?x: x_pos, ?y: y_pos} 
+				[ambulance-at(?a, ?x, ?y) ^ HOSPITAL(?x, ?y)] )
+				then false
+			else with-patient(?a);
+
+	};
+
+	reward = 
+ 	    [sum_{?x: x_pos, ?y: y_pos} [ PENALTY_NOT_ARRIVING * emergency-at(?x, ?y) ]]
+ 	  + [sum_{?a: ambulance} [ PENALTY_NOT_DELIVERING * with-patient(?a) ]];
+	
+}
+
+
+
+
