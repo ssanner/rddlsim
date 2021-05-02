@@ -5,6 +5,44 @@ standard version of each domain that everyone can use and compare on
 
 ===
 
+Elevators Domain, from Jihwan Jeong:
+
+While experimenting with the domain, it turned out that the current reward structure prevents elevators from picking up people. This is because there is no motivation for an agent to deliver people. Currently, the elevators domain (see files/final_comp/rddl_domains/elevators_mdp.rddl) has two non-fluents (ELEVATOR-PENALTY-RIGHT-DIR (default=0.75), ELEVATOR-PENALTY-WRONG-DIR (default=3.00)) and the following reward:
+
+    reward = [sum_{?e: elevator} [
+		-ELEVATOR-PENALTY-RIGHT-DIR * (person-in-elevator-going-up(?e) ^ elevator-dir-up(?e))
+		]] + 
+		[sum_{?e: elevator} [
+		-ELEVATOR-PENALTY-RIGHT-DIR * (person-in-elevator-going-down(?e) ^ ~elevator-dir-up(?e))
+		]] + 
+		[sum_{?e: elevator} [
+		-ELEVATOR-PENALTY-WRONG-DIR * (person-in-elevator-going-up(?e) ^ ~elevator-dir-up(?e))
+		]] + 
+		[sum_{?e: elevator} [
+		-ELEVATOR-PENALTY-WRONG-DIR * (person-in-elevator-going-down(?e) ^ elevator-dir-up(?e))
+		]] + 
+		[sum_{?f: floor} [
+		- person-waiting-up(?f) - person-waiting-down(?f)
+		]];
+
+However, as the number of people waiting on each floor doesn't build up (i.e., it's either 0 or 1), a good enough policy may not bother to pick up people. If an elevator doesn't pick up people, then the agent will receive negative rewards only for people awaiting on each floor. When an elevator picks up a person, another person can then show up on the floor, which increases the total number of people existing in the environment. So, in this case, the agent gets a penalty for the person inside the elevator (0.75 if going in the right direction, 3.00 otherwise) as well as for the newly arrived person (1.00 per floor).
+
+To encourage a more reasonable behavior (i.e., picking up and delivering people to their destination), the following changes need to be made (see files/rddl/examples/elevators_mdp.rddl):
+
+	1. Define two more non-fluents: REWARD-DELIVERED and PEOPLE-PENALTY-WAITING
+	2. Incorporate positive reward for delivering people to their destination and negative reward for people awaiting for pick-up:
+
+	[PEOPLE-PENALTY-WAITING * sum_{?f: floor} [
+			- person-waiting-up(?f) - person-waiting-down(?f)
+	]] + 
+	[sum_{?e: elevator} [REWARD-DELIVERED * ((person-in-elevator-going-up(?e) ^ exists_{?f : floor} [elevator-at-floor(?e, ?f) ^ TOP-FLOOR(?f)]) |
+						(person-in-elevator-going-down(?e) ^ exists_{?f : floor} [elevator-at-floor(?e, ?f) ^ BOTTOM-FLOOR(?f)]))
+	]];
+
+Relative scales of REWARD-DELIVERED, PEOPLE-PENALTY-WAITING, ELEVATOR-PENALTY-RIGHT-DIR, and ELEVATOR-PENALTY-WRONG-DIR will determine what would be the optimal behavior in this domain. As an example, the elevators_mdp.rddl file in files/rddl/examples/ uses 30.0, 2.95, 1.00, and 3.00, respectively. 
+
+===
+
 Elevators Domain, from Alan Olsen:
 
 It's not a problem, just makes the domain easier: passengers are able
