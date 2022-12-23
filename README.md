@@ -1,4 +1,4 @@
-#### Java RDDLSim
+#### Java RDDLSim (this repo)
 
 Implements a parser, simulator, and client/server evaluation architecture for the relational dynamic influence diagram language (RDDL) -- pronounced "riddle". RDDL is intended to compactly support the representation of a wide range of relational MDPs and POMDPs and support the efficient simulation of these domains. RDDL is used in a number of past and present **International Probabilistic Planning Competitions (IPPCs)**:
 
@@ -7,9 +7,9 @@ Implements a parser, simulator, and client/server evaluation architecture for th
 * [IPPC 2015 (Continuous)](http://users.cecs.anu.edu.au/~ssanner/IPPC_2014/) -- cancelled 
 * [IPPC 2018 (Discrete)](https://ipc2018-probabilistic.bitbucket.io/)
 
-#### Python RDDLGym
+#### Python RDDLGym (external repo)
 
-Please see the [IPPC 2023](https://ataitler.github.io/IPPC2023/) and [PyRDDLGym](https://github.com/ataitler/pyRDDLGym).
+Please see [PyRDDLGym](https://github.com/ataitler/pyRDDLGym) and the [IPPC 2023 (Discrete and Continuous)](https://ataitler.github.io/IPPC2023/).
 
 #### RDDL Resources:
 
