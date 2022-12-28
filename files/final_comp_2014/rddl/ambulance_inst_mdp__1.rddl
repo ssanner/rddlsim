@@ -1,0 +1,33 @@
+non-fluents nf_ambulance_inst_mdp__1 {
+	domain = ambulance_mdp;
+	objects {
+		ambulance : {a0,a1};
+		x_pos     : {x1,x2,x3,x4,x5,x6,x7,x8,x9,x10};
+		y_pos     : {y1};
+	};
+	non-fluents {
+		ADJACENT-EAST(x1,y1,x2,y1);
+		ADJACENT-EAST(x2,y1,x3,y1);
+		ADJACENT-EAST(x3,y1,x4,y1);
+		ADJACENT-EAST(x4,y1,x5,y1);
+		ADJACENT-EAST(x5,y1,x6,y1);
+		ADJACENT-EAST(x6,y1,x7,y1);
+		ADJACENT-EAST(x7,y1,x8,y1);
+		ADJACENT-EAST(x8,y1,x9,y1);
+		ADJACENT-EAST(x9,y1,x10,y1);
+		HOSPITAL(x2,y1);
+		HOSPITAL(x8,y1);
+	};
+}
+
+instance ambulance_inst_mdp__1 {
+	domain = ambulance_mdp;
+	non-fluents = nf_ambulance_inst_mdp__1;
+	init-state {
+		ambulance-at(a0, x2, y1);
+		ambulance-at(a1, x8, y1);
+	};
+	max-nondef-actions = 1;
+	horizon  = 40;
+	discount = 1.0;
+}
