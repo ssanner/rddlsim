@@ -32,7 +32,7 @@ Please see [PyRDDLGym](https://github.com/pyrddlgym-project) -- **consider migra
 
 * [RDDL Tutorial Slides](http://users.rsise.anu.edu.au/~ssanner/Papers/RDDL_Tutorial_ICAPS_2014.pdf)
 
-* [RDDL Wildfire Tutorial](https://ataitler.github.io/IPPC2023/pyrddlgym_rddl_tutorial.html) -- a step-by-step guide to building the Wildfire domain, exercises, and using the [PROST](https://bitbucket.org/tkeller/prost/wiki/Home) planner with it in PyRDDLGym.
+* [RDDL Wildfire Tutorial](https://ataitler.github.io/IPPC2023/pyrddlgym_rddl_tutorial.html) -- a step-by-step guide to building the Wildfire domain, exercises, and using the [PROST](https://github.com/prost-planner/prost) planner with it in PyRDDLGym.
 
 * [RDDL + PyRDDLGym Tutorial](https://pyrddlgym-project.github.io/AAAI24-lab) -- RDDL language overview followed by tutorial exercises and Google Colab examples in Python for PyRDDLGym.
 
