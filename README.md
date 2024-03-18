@@ -1,17 +1,22 @@
 #### Java RDDLSim (this repo)
 
-Implements a parser, simulator, and client/server evaluation architecture for the relational dynamic influence diagram language (RDDL) -- pronounced "riddle". RDDL is intended to compactly support the representation of a wide range of relational MDPs and POMDPs and support the efficient simulation of these domains. RDDL is used in a number of past and present **International Probabilistic Planning Competitions (IPPCs)**:
+Implements a Java parser, simulator, and client/server evaluation architecture for the relational dynamic influence diagram language (RDDL) -- pronounced "riddle". RDDL is intended to compactly support the representation of a wide range of relational MDPs and POMDPs and support the efficient simulation of these domains. 
+
+When you checkout the Java code, the first file you'll want to look at is [INSTALL.txt](https://github.com/ssanner/rddlsim/blob/master/INSTALL.txt)... this includes everything you need to start simulating, visualizing, and translating domains in < 5 minutes!
+
+#### Python RDDLGym (external repo)
+
+Please see [PyRDDLGym](https://github.com/pyrddlgym-project) -- **consider migrating to the Python version unless you have a Java requirement**.  Java planners can be interfaced to PyRDDLGym (see how this is done for [PROST](https://github.com/pyrddlgym-project/pyRDDLGym-prost)).
+
+#### International Probabilistic Planning Competitions (IPPCs)
 
 * [IPPC 2011 (Discrete)](http://users.cecs.anu.edu.au/~ssanner/IPPC_2011/)
 * [IPPC 2014 (Discrete)](https://ssanner.github.io/IPPC_2014/)
 * [IPPC 2015 (Continuous)](http://users.cecs.anu.edu.au/~ssanner/IPPC_2014/) -- cancelled 
 * [IPPC 2018 (Discrete)](https://ipc2018-probabilistic.bitbucket.io/)
+* [IPPC 2023 (Discrete and Continuous)](https://ataitler.github.io/IPPC2023/)
 
-#### Python RDDLGym (external repo)
-
-Please see [PyRDDLGym](https://github.com/ataitler/pyRDDLGym) and the [IPPC 2023 (Discrete and Continuous)](https://ataitler.github.io/IPPC2023/).
-
-#### RDDL Resources:
+#### RDDL Resources and Tutorials:
 
 * [RDDL Language Guide](http://users.cecs.anu.edu.au/~ssanner/IPPC_2011/RDDL.pdf)
 
@@ -27,10 +32,7 @@ Please see [PyRDDLGym](https://github.com/ataitler/pyRDDLGym) and the [IPPC 2023
 
 * [RDDL Tutorial Slides](http://users.rsise.anu.edu.au/~ssanner/Papers/RDDL_Tutorial_ICAPS_2014.pdf)
 
-* [RDDL Tutorial Website](https://sites.google.com/site/rddltutorial/) -- a step-by-step guide to building the Wildfire domain, simulating it in RDDLSim, and using the [PROST](https://bitbucket.org/tkeller/prost/wiki/Home) planner with it.
+* [RDDL Wildfire Tutorial](https://ataitler.github.io/IPPC2023/pyrddlgym_rddl_tutorial.html) -- a step-by-step guide to building the Wildfire domain, exercises, and using the [PROST](https://bitbucket.org/tkeller/prost/wiki/Home) planner with it in PyRDDLGym.
 
-* [Tensorplan for RDDL](https://libraries.io/github/thiagopbueno/tf-plan) -- a Tensorflow-based planner for continuous RDDL domains
+* [RDDL + PyRDDLGym Tutorial](https://pyrddlgym-project.github.io/AAAI24-lab) -- RDDL language overview followed by tutorial exercises and Google Colab examples in Python for PyRDDLGym.
 
-When you checkout the code, the first file you'll want to look at is [INSTALL.txt](https://github.com/ssanner/rddlsim/blob/master/INSTALL.txt)... this includes everything you need to start simulating, visualizing, and translating domains in < 5 minutes!
-
-If you want to use an MDP or POMDP planner in conjunction with RDDL, please check out planner releases at the above IPPC competition web pages... all support the RDDL Client/Server protocol.
